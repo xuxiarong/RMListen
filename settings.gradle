@@ -1,2 +1,3 @@
+include ':music-player-lib'
 include ':app',":baselib"
 rootProject.name = "RMListen"
