@@ -40,6 +40,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
 
     api project(path: ':baselib')
-    api rootProject.ext.dependencies["kotlinCoroutine"]
+    api rootProject.ext.dependencies["kotlinCoroutineCore"]
+    api rootProject.ext.dependencies["kotlinCoroutineAndroid"]
 
 }
