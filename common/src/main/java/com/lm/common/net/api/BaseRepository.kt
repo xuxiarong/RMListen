@@ -23,9 +23,7 @@ open class BaseRepository {
         errorMessage: String
     ): BaseResult<T> {
         return try {
-            withContext(Dispatchers.IO) {
-                call()
-            }
+            call()
         } catch (e: Exception) {
             // An exception was thrown when calling the API so we're converting this to an IOException
             BaseResult.Error(IOException(errorMessage, e))
@@ -36,7 +34,7 @@ open class BaseRepository {
         response: BaseResponse<T>, successBlock: (suspend CoroutineScope.() -> Unit)? = null,
         errorBlock: (suspend CoroutineScope.() -> Unit)? = null
     ): BaseResult<T> {
-        return withContext(Dispatchers.Main) {
+        return try {
             coroutineScope {
                 if (response.errorCode == -1) {
                     errorBlock?.let { it() }
@@ -46,8 +44,10 @@ open class BaseRepository {
                     BaseResult.Success(response.data)
                 }
             }
+        } catch (e: Exception) {
+            // An exception was thrown when calling the API so we're converting this to an IOException
+            BaseResult.Error(e)
         }
-
     }
 
 
