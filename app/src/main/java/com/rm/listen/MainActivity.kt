@@ -1,7 +1,8 @@
 package com.rm.listen
 
 import android.os.Bundle
-import com.lmm.basic.baselib.BaseActivity
+import android.util.Log
+import com.lm.mvvmcore.base.BaseActivity
 import com.music.player.lib.bean.BaseAudioInfo
 import com.music.player.lib.constants.MusicConstants
 import com.music.player.lib.manager.MusicPlayerManager
@@ -10,13 +11,15 @@ import com.music.player.lib.model.MusicPlayerConfig
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
-    override fun attachLayoutRes(): Int {
-        return R.layout.activity_main
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initConfig()
+    }
+
+    override fun getLayoutResId(): Int {
+        return R.layout.activity_main
     }
 
     /**
@@ -52,13 +55,16 @@ class MainActivity : BaseActivity() {
     override fun initView() {
         tv_play.setOnClickListener {
             val baseAudioInfo = BaseAudioInfo()
-            baseAudioInfo.audioPath = "https://webfs.yun.kugou.com/202008031715/cb4388c9845840640f0054c2ee2b3c6d/G189/M09/18/1D/nZQEAF5FiQaAUUnYACSiLQtae4I363.mp3"
+            baseAudioInfo.audioPath =
+                "https://webfs.yun.kugou.com/202008031715/cb4388c9845840640f0054c2ee2b3c6d/G189/M09/18/1D/nZQEAF5FiQaAUUnYACSiLQtae4I363.mp3"
             MusicPlayerManager.getInstance().addPlayMusicToTop(baseAudioInfo)
             MusicPlayerManager.getInstance().play()
         }
-
     }
 
-    override fun start() {
+    override fun initData() {
+        Log.e("suolong", "initData: " )
     }
+
+
 }

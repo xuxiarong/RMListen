@@ -2,7 +2,7 @@ package com.rm.listen
 
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.lmm.basic.baselib.BaseApplication
+import com.lm.common.net.api.BaseApplication
 
 /**
  * desc   :

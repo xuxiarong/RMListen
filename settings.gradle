@@ -1,4 +1,5 @@
+include ':mvvmcore'
 include ':common'
 include ':music-player-lib'
-include ':app',":baselib"
+include ':app'
 rootProject.name = "RMListen"
