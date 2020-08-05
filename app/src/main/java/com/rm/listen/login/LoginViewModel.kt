@@ -17,7 +17,10 @@ import kotlinx.coroutines.withContext
  * date   : 2020/08/04
  * version: 1.0
  */
-class LoginViewModel(private val repository: LoginRepository, private val provider: CoroutinesDispatcherProvider) : BaseViewModel() {
+class LoginViewModel(
+    private val repository: LoginRepository,
+    private val provider: CoroutinesDispatcherProvider
+) : BaseViewModel() {
 
     val userName = ObservableField<String>("")
     val passWord = ObservableField<String>("")
@@ -26,11 +29,16 @@ class LoginViewModel(private val repository: LoginRepository, private val provid
     val uiState: LiveData<LoginUiState<User>>
         get() = _uiState
 
-    private fun isInputValid(userName: String, passWord: String) = userName.isNotBlank() && passWord.isNotBlank()
+    private fun isInputValid(userName: String, passWord: String) =
+        userName.isNotBlank() && passWord.isNotBlank()
 
     private fun loginDataChanged() {
-        _uiState.value = LoginUiState(enableLoginButton = isInputValid(userName.get()
-                ?: "", passWord.get() ?: ""))
+        _uiState.value = LoginUiState(
+            enableLoginButton = isInputValid(
+                userName.get()
+                    ?: "", passWord.get() ?: ""
+            )
+        )
     }
 
     fun login() {
@@ -46,13 +54,15 @@ class LoginViewModel(private val repository: LoginRepository, private val provid
             val result = repository.login(userName.get() ?: "", passWord.get() ?: "")
 
             result.checkResult(
-                    onSuccess = {
-                        _uiState.postValue(LoginUiState(isSuccess = it, enableLoginButton = true))
-                    },
-                    onError = {
-                        _uiState.postValue(LoginUiState(isError = it, enableLoginButton = true))
-                    })
+                onSuccess = {
+                    _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
+                },
+                onError = {
+                    _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
+                })
         }
+
+
     }
 
     fun register() {
@@ -64,9 +74,9 @@ class LoginViewModel(private val repository: LoginRepository, private val provid
             val result = repository.register(userName.get() ?: "", passWord.get() ?: "")
 
             result.checkResult({
-                _uiState.postValue(LoginUiState(isSuccess = it, enableLoginButton = true))
+                _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
             }, {
-                _uiState.postValue((LoginUiState(isError = it, enableLoginButton = true)))
+                _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
             })
         }
     }

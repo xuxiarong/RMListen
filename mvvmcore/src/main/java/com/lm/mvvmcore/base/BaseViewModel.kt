@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * desc   :
@@ -16,19 +16,19 @@ import kotlinx.coroutines.withContext
 open class BaseViewModel : ViewModel() {
 
     open class UiState<T>(
-            val isLoading: Boolean = false,
-            val isRefresh: Boolean = false,
-            val isSuccess: T? = null,
-            val isError: String?= null
+        val isLoading: Boolean = false,
+        val isRefresh: Boolean = false,
+        val isSuccess: T? = null,
+        val isError: String? = null
     )
 
 
     open class BaseUiModel<T>(
-            var showLoading: Boolean = false,
-            var showError: String? = null,
-            var showSuccess: T? = null,
-            var showEnd: Boolean = false, // 加载更多
-            var isRefresh: Boolean = false // 刷新
+        var showLoading: Boolean = false,
+        var showError: String? = null,
+        var showSuccess: T? = null,
+        var showEnd: Boolean = false, // 加载更多
+        var isRefresh: Boolean = false // 刷新
 
     )
 
@@ -36,14 +36,10 @@ open class BaseViewModel : ViewModel() {
 
 
     fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {
-
-        viewModelScope.launch { block() }
-
+        viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
     }
 
-    suspend fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
-        withContext(Dispatchers.IO) {
-            block
-        }
+    fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
+        viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
     }
 }
