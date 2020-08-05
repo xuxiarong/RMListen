@@ -10,8 +10,9 @@ import com.rm.listen.api.ListenApiService
 import com.rm.listen.bean.User
 
 /**
- * Created by luyao
- * on 2019/4/10 9:42
+ * desc   :
+ * date   : 2020/08/04
+ * version: 1.0
  */
 class LoginRepository(val service: ListenApiService) : BaseRepository() {
 

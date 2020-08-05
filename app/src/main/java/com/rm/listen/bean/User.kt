@@ -2,10 +2,10 @@ package com.rm.listen.bean
 
 
 /**
- * Created by Lu
- * on 2018/4/5 08:02
+ * desc   :
+ * date   : 2020/08/04
+ * version: 1.0
  */
-
 /*
  * {
     "data": {

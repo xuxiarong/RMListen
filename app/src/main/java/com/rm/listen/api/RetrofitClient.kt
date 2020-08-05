@@ -11,7 +11,7 @@ import java.io.File
 
 /**
  * desc   :
- * date   : 2020/08/05
+ * date   : 2020/08/04
  * version: 1.0
  */
 object RetrofitClient : BaseRetrofitClient() {

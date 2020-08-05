@@ -23,7 +23,9 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 
 /**
- * Provide coroutines context.
+ * desc   :
+ * date   : 2020/08/04
+ * version: 1.0
  */
 data class CoroutinesDispatcherProvider  (
         val main: CoroutineDispatcher = Dispatchers.Main,

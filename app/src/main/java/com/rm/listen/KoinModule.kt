@@ -8,8 +8,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
- * Created by luyao
- * on 2019/11/15 15:44
+ * desc   :
+ * date   : 2020/08/04
+ * version: 1.0
  */
 
 val viewModelModule = module {

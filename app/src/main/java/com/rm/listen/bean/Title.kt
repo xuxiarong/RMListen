@@ -1,7 +1,8 @@
 package com.rm.listen.bean
 
 /**
- * Created by luyao
- * on 2020/5/26 16:22
+ * desc   :
+ * date   : 2020/08/04
+ * version: 1.0
  */
-class Title(val title: String, val icon: Int, val action: () -> Unit)
+class Title(val title: Int, val icon: Int, val action: () -> Unit)

@@ -2,8 +2,9 @@ package com.rm.listen
 
 import com.lm.common.net.api.BaseResult
 /**
- * Created by luyao
- * on 2020/3/30 16:19
+ * desc   :
+ * date   : 2020/08/04
+ * version: 1.0
  */
 inline fun <T : Any> BaseResult<T>.checkResult(crossinline onSuccess: (T) -> Unit, crossinline onError: (String?) -> Unit) {
     if (this is BaseResult.Success) {

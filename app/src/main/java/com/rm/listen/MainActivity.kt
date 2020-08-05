@@ -10,6 +10,11 @@ import com.music.player.lib.manager.SqlLiteCacheManager
 import com.music.player.lib.model.MusicPlayerConfig
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * desc   :
+ * date   : 2020/08/01
+ * version: 1.0
+ */
 class MainActivity : BaseActivity() {
 
 

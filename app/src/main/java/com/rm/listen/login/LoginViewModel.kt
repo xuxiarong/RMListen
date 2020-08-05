@@ -47,16 +47,16 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
 
             result.checkResult(
                     onSuccess = {
-                        _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
+                        _uiState.postValue(LoginUiState(isSuccess = it, enableLoginButton = true))
                     },
                     onError = {
-                        _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
+                        _uiState.postValue(LoginUiState(isError = it, enableLoginButton = true))
                     })
         }
     }
 
     fun register() {
-        viewModelScope.launch(provider.computation) {
+        viewModelScope.launch(provider.main) {
             if (userName.get().isNullOrBlank() || passWord.get().isNullOrBlank()) return@launch
 
             withContext(provider.main) { _uiState.value = LoginUiState(isLoading = true) }
@@ -64,9 +64,9 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
             val result = repository.register(userName.get() ?: "", passWord.get() ?: "")
 
             result.checkResult({
-                _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
+                _uiState.postValue(LoginUiState(isSuccess = it, enableLoginButton = true))
             }, {
-                _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
+                _uiState.postValue((LoginUiState(isError = it, enableLoginButton = true)))
             })
         }
     }
