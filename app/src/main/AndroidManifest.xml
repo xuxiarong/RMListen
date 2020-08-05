@@ -4,15 +4,16 @@
     package="com.rm.listen">
 
     <application
+        android:name=".ListenApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".ListenApplication"
         android:theme="@style/Theme.AppCompat"
         tools:ignore="MissingClass">
-        <activity android:name=".MainActivity">
+<!--        <activity android:name=".mine.MineActivity"></activity>-->
+        <activity android:name=".mine.MineActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

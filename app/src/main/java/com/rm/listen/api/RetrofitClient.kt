@@ -1,5 +1,7 @@
-package com.lm.common.net.api
+package com.rm.listen.api
 
+import com.lm.common.net.api.BaseApplication
+import com.lm.common.net.api.BaseRetrofitClient
 import com.lm.common.util.NetWorkUtils
 import okhttp3.Cache
 import okhttp3.CacheControl
@@ -8,12 +10,13 @@ import java.io.File
 
 
 /**
- * Created by luyao
- * on 2018/3/13 15:45
+ * desc   :
+ * date   : 2020/08/05
+ * version: 1.0
  */
 object RetrofitClient : BaseRetrofitClient() {
 
-    val service by lazy { getService(WanService::class.java, WanService.BASE_URL) }
+    val service by lazy { getService(ListenApiService::class.java, ListenApiService.BASE_URL) }
 
 
     override fun handleBuilder(builder: OkHttpClient.Builder) {

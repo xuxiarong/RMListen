@@ -40,6 +40,10 @@ dependencies {
     api rootProject.ext.dependencies["retrofit_converter_gson"]
     api rootProject.ext.dependencies["okhttp_logging_interceptor"]
 
+    api rootProject.ext.dependencies["koin_android"]
+    api rootProject.ext.dependencies["koin_androidx_scope"]
+    api rootProject.ext.dependencies["koin_androidx_viewmodel"]
+
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

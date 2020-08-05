@@ -1,13 +1,13 @@
-package com.lm.mvvmcore.base
+package com.lm.common.net.api
 
 /**
  * Created by luyao
  * on 2019/10/12 11:08
  */
-sealed class Result<out T : Any> {
+sealed class BaseResult<out T : Any> {
 
-    data class Success<out T : Any>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
+    data class Success<out T : Any>(val data: T) : BaseResult<T>()
+    data class Error(val exception: Exception) : BaseResult<Nothing>()
 
     override fun toString(): String {
         return when (this) {

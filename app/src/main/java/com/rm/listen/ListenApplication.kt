@@ -3,6 +3,8 @@ package com.rm.listen
 import android.content.Context
 import androidx.multidex.MultiDex
 import com.lm.common.net.api.BaseApplication
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 /**
  * desc   :
@@ -11,8 +13,13 @@ import com.lm.common.net.api.BaseApplication
  */
 class ListenApplication : BaseApplication() {
 
+
     override fun onCreate() {
         super.onCreate()
+        startKoin {
+            androidContext(this@ListenApplication)
+            modules(appModule)
+        }
     }
 
     override fun attachBaseContext(base: Context?) {

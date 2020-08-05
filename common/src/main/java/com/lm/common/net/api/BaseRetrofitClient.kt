@@ -1,6 +1,5 @@
 package com.lm.common.net.api
 
-import com.lm.common.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,8 +7,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
- * Created by luyao
- * on 2018/3/13 14:58
+ * desc   :
+ * date   : 2020/08/05
+ * version: 1.0
  */
 abstract class BaseRetrofitClient {
 
@@ -21,11 +21,11 @@ abstract class BaseRetrofitClient {
         get() {
             val builder = OkHttpClient.Builder()
             val logging = HttpLoggingInterceptor()
-            if (BuildConfig.DEBUG) {
-                logging.level = HttpLoggingInterceptor.Level.BODY
-            } else {
-                logging.level = HttpLoggingInterceptor.Level.BASIC
-            }
+//            if (BuildConfig.DEBUG) {
+//                logging.level = HttpLoggingInterceptor.Level.BODY
+//            } else {
+//                logging.level = HttpLoggingInterceptor.Level.BASIC
+//            }
 
             builder.addInterceptor(logging)
                     .connectTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)
