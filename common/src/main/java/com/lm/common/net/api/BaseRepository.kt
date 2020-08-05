@@ -2,7 +2,9 @@ package com.lm.common.net.api
 
 import com.lm.common.net.bean.BaseResponse
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 /**
@@ -13,29 +15,39 @@ import java.io.IOException
 open class BaseRepository {
 
     suspend fun <T : Any> apiCall(call: suspend () -> BaseResponse<T>): BaseResponse<T> {
-        return call.invoke()
+        return withContext(Dispatchers.IO) { call.invoke() }
     }
 
-    suspend fun <T : Any> safeApiCall(call: suspend () -> BaseResult<T>, errorMessage: String): BaseResult<T> {
+    suspend fun <T : Any> safeApiCall(
+        call: suspend () -> BaseResult<T>,
+        errorMessage: String
+    ): BaseResult<T> {
         return try {
-            call()
+            withContext(Dispatchers.IO) {
+                call()
+            }
         } catch (e: Exception) {
             // An exception was thrown when calling the API so we're converting this to an IOException
             BaseResult.Error(IOException(errorMessage, e))
         }
     }
 
-    suspend fun <T : Any> executeResponse(response: BaseResponse<T>, successBlock: (suspend CoroutineScope.() -> Unit)? = null,
-                                          errorBlock: (suspend CoroutineScope.() -> Unit)? = null): BaseResult<T> {
-        return coroutineScope {
-            if (response.errorCode == -1) {
-                errorBlock?.let { it() }
-                BaseResult.Error(IOException(response.errorMsg))
-            } else {
-                successBlock?.let { it() }
-                BaseResult.Success(response.data)
+    suspend fun <T : Any> executeResponse(
+        response: BaseResponse<T>, successBlock: (suspend CoroutineScope.() -> Unit)? = null,
+        errorBlock: (suspend CoroutineScope.() -> Unit)? = null
+    ): BaseResult<T> {
+        return withContext(Dispatchers.Main) {
+            coroutineScope {
+                if (response.errorCode == -1) {
+                    errorBlock?.let { it() }
+                    BaseResult.Error(IOException(response.errorMsg))
+                } else {
+                    successBlock?.let { it() }
+                    BaseResult.Success(response.data)
+                }
             }
         }
+
     }
 
 
