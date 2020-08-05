@@ -45,8 +45,7 @@ class LoginViewModel(
         }
         _uiState.value = LoginUiState(isLoading = true)
         launchOnIO {
-            val result = repository.login(userName.get() ?: "", passWord.get() ?: "")
-            result.checkResult(
+            repository.login(userName.get() ?: "", passWord.get() ?: "").checkResult(
                 onSuccess = {
                     _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
                 },
@@ -60,12 +59,13 @@ class LoginViewModel(
         if (userName.get().isNullOrBlank() || passWord.get().isNullOrBlank()) return
         _uiState.value = LoginUiState(isLoading = true)
         launchOnIO {
-            val result = repository.register(userName.get() ?: "", passWord.get() ?: "")
-            result.checkResult({
-                _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
-            }, {
-                _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
-            })
+            repository.register(userName.get() ?: "", passWord.get() ?: "").checkResult(
+                onSuccess = {
+                    _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
+                },
+                onError = {
+                    _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
+                })
         }
     }
 
