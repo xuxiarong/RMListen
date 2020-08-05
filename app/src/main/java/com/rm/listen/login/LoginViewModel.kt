@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
  * date   : 2020/08/04
  * version: 1.0
  */
-class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDispatcherProvider) : BaseViewModel() {
+class LoginViewModel(private val repository: LoginRepository, private val provider: CoroutinesDispatcherProvider) : BaseViewModel() {
 
     val userName = ObservableField<String>("")
     val passWord = ObservableField<String>("")
@@ -28,7 +28,7 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
 
     private fun isInputValid(userName: String, passWord: String) = userName.isNotBlank() && passWord.isNotBlank()
 
-    fun loginDataChanged() {
+    private fun loginDataChanged() {
         _uiState.value = LoginUiState(enableLoginButton = isInputValid(userName.get()
                 ?: "", passWord.get() ?: ""))
     }
