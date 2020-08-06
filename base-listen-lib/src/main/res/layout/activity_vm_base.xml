@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="baseViewModel"
+            type="com.rm.baselisten.BaseListenViewModel" />
+
+<!--        <variable-->
+<!--            name="title"-->
+<!--            type="com.rm.listen.bean.Title" />-->
+    </data>
+
+
+    <FrameLayout
+        android:id="@+id/flBaseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+<!--        <include layout="@layout/title_layout"-->
+<!--            app:title="@{title}"/>-->
+</layout>

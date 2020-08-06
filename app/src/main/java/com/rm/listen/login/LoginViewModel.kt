@@ -5,7 +5,6 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.lm.mvvmcore.base.BaseViewModel
-import com.rm.listen.CoroutinesDispatcherProvider
 import com.rm.listen.bean.User
 import com.rm.listen.checkResult
 import com.rm.listen.repository.LoginRepository
@@ -16,9 +15,7 @@ import com.rm.listen.repository.LoginRepository
  * version: 1.0
  */
 class LoginViewModel(
-    private val repository: LoginRepository,
-    private val provider: CoroutinesDispatcherProvider
-) : BaseViewModel() {
+    private val repository: LoginRepository) : BaseViewModel() {
 
     val userName = ObservableField<String>("")
     val passWord = ObservableField<String>("")
