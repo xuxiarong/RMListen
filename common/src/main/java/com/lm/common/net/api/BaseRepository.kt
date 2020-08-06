@@ -25,7 +25,7 @@ open class BaseRepository {
 
     suspend fun <T : Any> apiCall(call: suspend () -> BaseResponse<T>): BaseResult<T> {
         return try {
-            executeResponse(call())
+            return executeResponse(call())
         } catch (e: Exception) {
             BaseResult.Error(e)
         }
@@ -36,9 +36,9 @@ open class BaseRepository {
         errorBlock: (suspend CoroutineScope.() -> Unit)? = null
     ): BaseResult<T> {
         return coroutineScope {
-            if (response.code == -1) {
+            if (response.errorCode == -1) {
                 errorBlock?.let { it() }
-                BaseResult.Error(IOException(response.msg))
+                BaseResult.Error(IOException(response.errorMsg))
             } else {
                 successBlock?.let { it() }
                 BaseResult.Success(response.data)

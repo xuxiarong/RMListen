@@ -1,5 +1,6 @@
 package com.rm.listen.login
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,13 +44,17 @@ class LoginViewModel(
             _uiState.value = LoginUiState(enableLoginButton = false)
             return
         }
+        Log.i("llj","userName---->>${userName.get()}")
+        Log.i("llj","passWord---->>${passWord.get()}")
         _uiState.value = LoginUiState(isLoading = true)
         launchOnIO {
             repository.login(userName.get() ?: "", passWord.get() ?: "").checkResult(
                 onSuccess = {
+                    Log.i("llj","登陆成功！！")
                     _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
                 },
                 onError = {
+                    Log.e("llj","登陆失败！！--->>>$it")
                     _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
                 })
         }
@@ -61,9 +66,11 @@ class LoginViewModel(
         launchOnIO {
             repository.register(userName.get() ?: "", passWord.get() ?: "").checkResult(
                 onSuccess = {
+                    Log.i("llj","注册成功！！")
                     _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
                 },
                 onError = {
+                    Log.e("llj","注册失败！！----->$it")
                     _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
                 })
         }
