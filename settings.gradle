@@ -1,3 +1,4 @@
+include ':base-listen-lib'
 include ':mvvmcore'
 include ':common'
 include ':music-player-lib'

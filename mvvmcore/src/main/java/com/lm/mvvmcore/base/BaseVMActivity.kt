@@ -12,7 +12,6 @@ import androidx.databinding.ViewDataBinding
  * version: 1.0
  */
 abstract class BaseVMActivity : AppCompatActivity() {
-
     protected inline fun <reified T : ViewDataBinding> binding(
             @LayoutRes resId: Int
     ): Lazy<T> = lazy { DataBindingUtil.setContentView<T>(this, resId).apply {
