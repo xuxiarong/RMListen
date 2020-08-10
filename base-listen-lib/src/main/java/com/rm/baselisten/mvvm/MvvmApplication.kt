@@ -1,4 +1,4 @@
-package com.lm.mvvmcore.base
+package com.rm.baselisten.mvvm
 
 /**
  * desc   :

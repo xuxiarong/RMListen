@@ -1,6 +1,6 @@
 package com.rm.baselisten
 
-//import com.lm.mvvmcore.base.BaseVMActivity
+//import com.rm.baselisten.mvvm.BaseVMActivity
 
 /**
  * desc   :

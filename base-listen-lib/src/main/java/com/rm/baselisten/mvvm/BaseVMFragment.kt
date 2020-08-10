@@ -1,4 +1,4 @@
-package com.lm.mvvmcore.base
+package com.rm.baselisten.mvvm
 
 import android.os.Bundle
 import android.view.LayoutInflater

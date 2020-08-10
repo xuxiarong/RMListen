@@ -1,4 +1,4 @@
-package com.rm.listen.binding
+package com.rm.baselisten.binding
 
 import android.view.View
 import androidx.databinding.BindingAdapter
@@ -8,8 +8,7 @@ import androidx.databinding.BindingAdapter
  * date   : 2020/08/04
  * version: 1.0
  */
-
-@BindingAdapter("android:visibility")
-fun View.visibility(isVisible: Boolean) {
+@BindingAdapter("isVisible")
+fun View.isVisible(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.GONE
 }

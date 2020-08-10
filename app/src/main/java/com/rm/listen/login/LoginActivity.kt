@@ -3,6 +3,7 @@ package com.rm.listen.login
 import android.app.ProgressDialog
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.rm.baselisten.activity.BaseNetActivity
 import com.rm.listen.R
 import com.rm.listen.bean.Title
 import com.rm.listen.databinding.ActivityLoginBinding
@@ -13,11 +14,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * date   : 2020/08/04
  * version: 1.0
  */
-class LoginActivity : BaseNetActivity() {
+ class LoginActivity : BaseNetActivity() {
 
     private val loginViewModel by viewModel<LoginViewModel>()
     private val loginBinding by initChildModule<ActivityLoginBinding>()
-    override fun getLayoutId(): Int {
+     override fun getLayoutId(): Int {
         return R.layout.activity_login
     }
 

@@ -10,7 +10,7 @@
 
         <variable
             name="statusModel"
-            type="com.rm.baselisten.net.BaseStatusModel" />
+            type="com.rm.baselisten.net.bean.BaseStatusModel" />
 
         <import type="android.view.View"/>
     </data>
@@ -28,24 +28,26 @@
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:visibility="@{statusModel.hasNet}"
-            layout="@layout/base_layout_error"/>
+            layout="@layout/base_layout_error"
+            app:statusModel="@{statusModel}" />
+
 
         <include
             android:id="@+id/layoutLoading"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:visibility="@{statusModel.loading}"
-            layout="@layout/base_layout_loading"/>
+            layout="@layout/base_layout_loading"
+            app:statusModel="@{statusModel}" />
+
 
         <include
             android:id="@+id/layoutEmpty"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            isVisible="@{statusModel.hasData}"
-            layout="@layout/base_layout_empty"/>
+            layout="@layout/base_layout_empty"
+            app:statusModel="@{statusModel}" />
 
 
 <!--        <TextView-->

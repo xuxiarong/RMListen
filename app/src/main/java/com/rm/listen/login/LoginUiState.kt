@@ -1,6 +1,7 @@
 package com.rm.listen.login
 
-import com.lm.mvvmcore.base.BaseViewModel
+import com.rm.baselisten.mvvm.BaseViewModel
+
 
 /**
  * desc   :

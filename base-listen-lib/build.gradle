@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -23,6 +24,10 @@ android {
         }
     }
 
+    buildFeatures {
+        dataBinding = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -36,7 +41,6 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation project(path: ':mvvmcore')
 
     api rootProject.ext.dependencies["retrofit"]
     api rootProject.ext.dependencies["retrofit_converter_gson"]
@@ -45,6 +49,14 @@ dependencies {
     api rootProject.ext.dependencies["koin_androidx_scope"]
     api rootProject.ext.dependencies["koin_androidx_viewmodel"]
 
+    api rootProject.ext.androidx["appcompat"]
+    api rootProject.ext.androidx["core_ktx"]
+    api rootProject.ext.androidx["kotlin_stdlib"]
+    api rootProject.ext.androidx["viewmodel_ktx"]
+    api rootProject.ext.androidx["livedata_ktx"]
+    api rootProject.ext.androidx["coroutines_android"]
+    api rootProject.ext.androidx["lifecycle_extension"]
+    api 'com.android.support:multidex:1.0.3'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

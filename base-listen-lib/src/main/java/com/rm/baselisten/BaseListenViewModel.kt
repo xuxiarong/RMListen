@@ -2,7 +2,7 @@ package com.rm.baselisten
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lm.mvvmcore.base.BaseViewModel
+import com.rm.baselisten.mvvm.BaseViewModel
 import com.rm.baselisten.net.api.BaseRepository
 
 /**

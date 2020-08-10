@@ -2,12 +2,12 @@ package com.rm.listen
 
 import android.os.Bundle
 import android.util.Log
-import com.lm.mvvmcore.base.BaseActivity
 import com.music.player.lib.bean.BaseAudioInfo
 import com.music.player.lib.constants.MusicConstants
 import com.music.player.lib.manager.MusicPlayerManager
 import com.music.player.lib.manager.SqlLiteCacheManager
 import com.music.player.lib.model.MusicPlayerConfig
+import com.rm.baselisten.activity.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**

@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/ll_empty"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/base_empty"/>
+    <data>
+        <variable
+            name="statusModel"
+            type="com.rm.baselisten.net.bean.BaseStatusModel" />
 
-    <TextView
-        android:id="@+id/tv_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/base_fine_no_data"
-        android:textColor="#333333"
-        android:textSize="18sp"/>
+        <import type="android.view.View"/>
+    </data>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/base_click_me_to_retry"/>
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        isVisible="@{!statusModel.hasData}"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/base_empty" />
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/base_fine_no_data"
+            android:textColor="#333333"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/base_click_me_to_retry" />
+    </LinearLayout>
+</layout>

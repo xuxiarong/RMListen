@@ -2,11 +2,7 @@ package com.rm.baselisten
 
 import android.app.Application
 import android.content.Context
-import com.rm.baselisten.load.core.LoadSir
-import com.rm.baselisten.load.impl.EmptyCallback
-import com.rm.baselisten.load.impl.ErrorCallback
-import com.rm.baselisten.load.impl.LoadingCallback
-import com.rm.baselisten.load.impl.TimeoutCallback
+import androidx.multidex.MultiDex
 import kotlin.properties.Delegates
 
 /**
@@ -23,17 +19,11 @@ open class BaseApplication : Application(){
     override fun onCreate() {
         super.onCreate()
         CONTEXT = applicationContext
-        init()
     }
 
-    private fun init() {
-        LoadSir.beginBuilder()
-            .addCallback(ErrorCallback())
-            .addCallback(LoadingCallback())
-            .addCallback(EmptyCallback())
-            .addCallback(TimeoutCallback())
-            .setDefaultCallback(LoadingCallback::class.java)
-            .commit()
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this);
     }
 
 }

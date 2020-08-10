@@ -1,7 +1,5 @@
 package com.rm.listen
 
-import android.content.Context
-import androidx.multidex.MultiDex
 import com.rm.baselisten.BaseApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -22,8 +20,4 @@ class ListenApplication : BaseApplication() {
         }
     }
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        MultiDex.install(this);
-    }
 }

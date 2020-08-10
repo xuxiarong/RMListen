@@ -1,4 +1,4 @@
-package com.lm.mvvmcore.base
+package com.rm.baselisten.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

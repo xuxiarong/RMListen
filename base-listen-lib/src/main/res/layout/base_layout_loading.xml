@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/ll_loading"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <data>
+        <variable
+            name="statusModel"
+            type="com.rm.baselisten.net.bean.BaseStatusModel" />
 
-</LinearLayout>
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        isVisible="@{statusModel.loading}"
+        android:gravity="center">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</layout>

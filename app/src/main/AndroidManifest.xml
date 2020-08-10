@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="MissingClass">
-        <activity android:name=".login.BaseNetActivity"></activity>
+        <activity android:name="com.rm.baselisten.activity.BaseNetActivity"></activity>
         <!-- <activity android:name=".mine.MineActivity"></activity> -->
         <activity android:name=".login.LoginActivity">
             <intent-filter>

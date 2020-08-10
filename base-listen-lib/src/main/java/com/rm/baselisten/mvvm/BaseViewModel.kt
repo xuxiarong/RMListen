@@ -1,4 +1,4 @@
-package com.lm.mvvmcore.base
+package com.rm.baselisten.mvvm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

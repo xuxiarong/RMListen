@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.lm.mvvmcore.base.BaseViewModel
+import com.rm.baselisten.mvvm.BaseViewModel
 import com.rm.listen.bean.User
 import com.rm.listen.checkResult
 import com.rm.listen.repository.LoginRepository
