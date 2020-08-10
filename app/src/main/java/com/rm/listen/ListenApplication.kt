@@ -2,7 +2,7 @@ package com.rm.listen
 
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.lm.common.net.api.BaseApplication
+import com.rm.baselisten.BaseApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

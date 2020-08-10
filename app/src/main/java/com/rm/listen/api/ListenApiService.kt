@@ -1,6 +1,6 @@
 package com.rm.listen.api
 
-import com.lm.common.net.bean.BaseResponse
+import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.listen.bean.User
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

@@ -1,9 +1,9 @@
 package com.rm.listen.repository
 
 import com.google.gson.Gson
-import com.lm.common.net.api.BaseRepository
-import com.lm.common.net.api.BaseResult
-import com.lm.common.util.Preference
+import com.rm.baselisten.net.api.BaseRepository
+import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.util.Preference
 import com.rm.listen.api.ListenApiService
 import com.rm.listen.bean.User
 

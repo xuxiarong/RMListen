@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="baseTitle"
+            type="com.rm.baselisten.BaseTitle" />
+
+        <variable
+            name="statusModel"
+            type="com.rm.baselisten.net.BaseStatusModel" />
+
+        <import type="android.view.View"/>
+    </data>
+
+
+    <FrameLayout
+        android:id="@+id/flBaseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/layoutNetError"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{statusModel.hasNet}"
+            layout="@layout/base_layout_error"/>
+
+        <include
+            android:id="@+id/layoutLoading"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="@{statusModel.loading}"
+            layout="@layout/base_layout_loading"/>
+
+        <include
+            android:id="@+id/layoutEmpty"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            isVisible="@{statusModel.hasData}"
+            layout="@layout/base_layout_empty"/>
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_error"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            isVisible="@{!statusModel.hasNet}"-->
+<!--            android:text="@string/net_error"-->
+<!--            />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_data_empty"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            isVisible="@{!statusModel.hasData}"-->
+<!--            android:text="@string/data_empty"-->
+<!--            />-->
+
+    </FrameLayout>
+
+</layout>

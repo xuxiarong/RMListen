@@ -1,6 +1,6 @@
 package com.rm.listen
 
-import com.lm.common.net.api.BaseResult
+import com.rm.baselisten.net.api.BaseResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

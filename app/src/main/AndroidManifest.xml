@@ -5,7 +5,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:name=".ListenApplication"
         android:allowBackup="true"
@@ -15,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="MissingClass">
-<!--        <activity android:name=".mine.MineActivity"></activity>-->
+        <activity android:name=".login.BaseNetActivity"></activity>
+        <!-- <activity android:name=".mine.MineActivity"></activity> -->
         <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

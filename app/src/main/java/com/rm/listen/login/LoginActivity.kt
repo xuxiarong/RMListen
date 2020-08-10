@@ -3,7 +3,6 @@ package com.rm.listen.login
 import android.app.ProgressDialog
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.rm.baselisten.BaseListenVMActivity
 import com.rm.listen.R
 import com.rm.listen.bean.Title
 import com.rm.listen.databinding.ActivityLoginBinding
@@ -14,23 +13,36 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * date   : 2020/08/04
  * version: 1.0
  */
-class LoginActivity : BaseListenVMActivity() {
+class LoginActivity : BaseNetActivity() {
 
     private val loginViewModel by viewModel<LoginViewModel>()
+    private val loginBinding by initChildModule<ActivityLoginBinding>()
     override fun getLayoutId(): Int {
         return R.layout.activity_login
     }
 
-    val chidlbinding by binding<ActivityLoginBinding>(com.rm.baselisten.R.layout.activity_vm_base).apply {
-    }
-
-    private val loginmodel by binding<ActivityLoginBinding>(R.layout.activity_login)
-
     override fun initView() {
-        chidlbinding.run {
+        loginBinding.run {
             viewModel = loginViewModel
             title = Title(R.string.login, R.drawable.arrow_back) { onBackPressed() }
         }
+    }
+
+    private var count = 0
+
+    override fun onResume() {
+        super.onResume()
+        count++
+        if(count %4 == 0){
+            showContent()
+        }else if(count %4 == 1){
+            showDataEmpty()
+        }else if(count %4 == 2){
+            showNetError()
+        }else{
+            showLoading()
+        }
+
     }
 
     override fun initData() {

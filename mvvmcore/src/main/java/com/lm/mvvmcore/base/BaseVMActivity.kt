@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
 /**
- * desc   :
+ * desc   : 基类的MvvmActivity
  * date   : 2020/08/05
  * version: 1.0
  */
