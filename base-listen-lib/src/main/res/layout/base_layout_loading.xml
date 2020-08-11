@@ -2,10 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable
-            name="statusModel"
-            type="com.rm.baselisten.net.bean.BaseStatusModel" />
-
         <import type="android.view.View"/>
     </data>
 
@@ -13,7 +9,6 @@
         android:id="@+id/ll_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        isVisible="@{statusModel.loading}"
         android:gravity="center">
 
         <ProgressBar

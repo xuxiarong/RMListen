@@ -4,7 +4,8 @@ import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.mvvm.BaseViewModel
+import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.listen.R
 import com.rm.listen.bean.User
 import com.rm.listen.checkResult
 import com.rm.listen.repository.LoginRepository
@@ -14,15 +15,13 @@ import com.rm.listen.repository.LoginRepository
  * date   : 2020/08/04
  * version: 1.0
  */
-class LoginViewModel(
-    private val repository: LoginRepository) : BaseViewModel() {
+class LoginViewModel(private val repository: LoginRepository) : BaseNetViewModel(R.layout.activity_login) {
 
     val userName = ObservableField<String>("")
     val passWord = ObservableField<String>("")
 
     private val _uiState = MutableLiveData<LoginUiState<User>>()
-    val uiState: LiveData<LoginUiState<User>>
-        get() = _uiState
+    val uiState: LiveData<LoginUiState<User>> get() = _uiState
 
     private fun isInputValid(userName: String, passWord: String) =
         userName.isNotBlank() && passWord.isNotBlank()

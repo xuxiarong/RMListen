@@ -2,9 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable
-            name="statusModel"
-            type="com.rm.baselisten.net.bean.BaseStatusModel" />
 
         <import type="android.view.View"/>
     </data>
@@ -14,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        isVisible="@{!statusModel.hasData}"
         android:orientation="vertical">
 
         <ImageView

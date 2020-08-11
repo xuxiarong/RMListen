@@ -7,54 +7,45 @@ import androidx.databinding.ViewDataBinding
 import com.rm.baselisten.R
 import com.rm.baselisten.databinding.ActivityBaseNetBinding
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.net.bean.BaseStatusModel
+import com.rm.baselisten.viewmodel.BaseNetViewModel
 
 /**
  * desc   :
  * date   : 2020/08/04
  * version: 1.0
  */
-abstract class BaseNetActivity : BaseVMActivity() {
+abstract class BaseNetActivity< T : ViewDataBinding, VM : BaseNetViewModel> : BaseVMActivity() {
 
-    abstract fun getLayoutId(): Int
-    protected lateinit var childActivity : View
-    protected lateinit var statusModel: BaseStatusModel
+    abstract fun getViewModel() : VM
 
-
-    protected val baseBinding by binding<ActivityBaseNetBinding>(R.layout.activity_base_net)
+    protected lateinit var baseBinding : ActivityBaseNetBinding
+    protected lateinit var baseViewModel : VM
+    protected lateinit var databind : T
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        baseViewModel = getViewModel()
+        baseViewModel.setContentView(baseViewModel.layoutId)
+
+        baseBinding = DataBindingUtil.setContentView<ActivityBaseNetBinding>(this,R.layout.activity_base_net).apply{
+            lifecycleOwner = this@BaseNetActivity
+        }
+        baseBinding.viewModel = baseViewModel
+        databind = DataBindingUtil.bind(View.inflate(this,baseViewModel.layoutId,null))!!
         super.onCreate(savedInstanceState)
-        childActivity = View.inflate(this@BaseNetActivity,getLayoutId(),null)
-        baseBinding.flBaseLayout.addView(childActivity,0)
-        statusModel = BaseStatusModel(true,true,false)
-        baseBinding.statusModel = statusModel
     }
 
-    protected inline fun <reified T : ViewDataBinding> initChildModule(): Lazy<T> = lazy {
-        DataBindingUtil.setContentView<T>(this, getLayoutId())
-    }
 
     protected fun showContent(){
-        childActivity.visibility = View.VISIBLE
-        baseBinding.statusModel = BaseStatusModel(true,true,false)
+        baseViewModel.showContent()
+    }
+    protected fun showEmpty(){
+        baseViewModel.showEmpty()
+    }
+    protected fun showError(){
+        baseViewModel.showError()
+    }
+    protected fun showLoad(){
+        baseViewModel.showLoad()
     }
 
-    protected fun showLoading(){
-        childActivity.visibility = View.VISIBLE
-        baseBinding.statusModel = BaseStatusModel(true,true,true)
-
-    }
-
-
-    protected fun showNetError(){
-        childActivity.visibility = View.GONE
-        baseBinding.statusModel = BaseStatusModel(false,true,false)
-
-    }
-
-    protected fun showDataEmpty(){
-        childActivity.visibility = View.GONE
-        baseBinding.statusModel = BaseStatusModel(true,false,false)
-    }
 }

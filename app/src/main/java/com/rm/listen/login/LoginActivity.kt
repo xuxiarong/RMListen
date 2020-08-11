@@ -14,16 +14,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * date   : 2020/08/04
  * version: 1.0
  */
- class LoginActivity : BaseNetActivity() {
+class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
 
     private val loginViewModel by viewModel<LoginViewModel>()
-    private val loginBinding by initChildModule<ActivityLoginBinding>()
-     override fun getLayoutId(): Int {
-        return R.layout.activity_login
+
+    override fun getViewModel(): LoginViewModel {
+        return loginViewModel
     }
 
     override fun initView() {
-        loginBinding.run {
+        databind.run {
             viewModel = loginViewModel
             title = Title(R.string.login, R.drawable.arrow_back) { onBackPressed() }
         }
@@ -34,14 +34,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
     override fun onResume() {
         super.onResume()
         count++
-        if(count %4 == 0){
+        if (count % 4 == 0) {
             showContent()
-        }else if(count %4 == 1){
-            showDataEmpty()
-        }else if(count %4 == 2){
-            showNetError()
-        }else{
-            showLoading()
+        } else if (count % 4 == 1) {
+            showEmpty()
+        } else if (count % 4 == 2) {
+            showError()
+        } else {
+            showLoad()
         }
 
     }
@@ -56,7 +56,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
                 it.isSuccess?.let {
                     dismissProgressDialog()
-                    Toast.makeText(this@LoginActivity,"登陆成功",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@LoginActivity, "登陆成功", Toast.LENGTH_LONG).show()
                 }
 
                 it.isError?.let { err ->

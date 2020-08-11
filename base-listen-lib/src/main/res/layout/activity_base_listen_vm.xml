@@ -7,7 +7,7 @@
     <data>
         <variable
             name="baseTitle"
-            type="com.rm.baselisten.BaseTitle" />
+            type="com.rm.baselisten.BaseTitleModel" />
     </data>
 
 

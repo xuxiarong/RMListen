@@ -5,69 +5,20 @@
 
     <data>
         <variable
-            name="baseTitle"
-            type="com.rm.baselisten.BaseTitle" />
-
-        <variable
-            name="statusModel"
-            type="com.rm.baselisten.net.bean.BaseStatusModel" />
+            name="viewModel"
+            type="com.rm.baselisten.viewmodel.BaseNetViewModel" />
 
         <import type="android.view.View"/>
     </data>
 
 
-    <FrameLayout
+    <com.rm.baselisten.view.BaseNetLayout
         android:id="@+id/flBaseLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:bind_model="@{viewModel.baseNetModel}"
         android:orientation="vertical">
 
-
-        <include
-            android:id="@+id/layoutNetError"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            layout="@layout/base_layout_error"
-            app:statusModel="@{statusModel}" />
-
-
-        <include
-            android:id="@+id/layoutLoading"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            layout="@layout/base_layout_loading"
-            app:statusModel="@{statusModel}" />
-
-
-        <include
-            android:id="@+id/layoutEmpty"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            layout="@layout/base_layout_empty"
-            app:statusModel="@{statusModel}" />
-
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_error"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            isVisible="@{!statusModel.hasNet}"-->
-<!--            android:text="@string/net_error"-->
-<!--            />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_data_empty"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            isVisible="@{!statusModel.hasData}"-->
-<!--            android:text="@string/data_empty"-->
-<!--            />-->
-
-    </FrameLayout>
+    </com.rm.baselisten.view.BaseNetLayout>
 
 </layout>
