@@ -23,10 +23,10 @@ class BaseNetLayout : FrameLayout {
 
     private var initFinished = false
 
-    private var contentView = inflateViewWithLayoutId(R.layout.activity_default)
-    private var errorView = inflateViewWithLayoutId(R.layout.base_layout_error)
-    private var loadView = inflateViewWithLayoutId(R.layout.base_layout_loading)
-    private var emptyView = inflateViewWithLayoutId(R.layout.base_layout_empty)
+    private var contentView: View = inflateViewWithLayoutId(R.layout.activity_default)
+    private var errorView: View = inflateViewWithLayoutId(R.layout.base_layout_error)
+    private var loadView: View = inflateViewWithLayoutId(R.layout.base_layout_loading)
+    private var emptyView: View = inflateViewWithLayoutId(R.layout.base_layout_empty)
 
     private var layoutMap: HashMap<String, BaseLayoutBean> = HashMap()
 
@@ -41,14 +41,14 @@ class BaseNetLayout : FrameLayout {
     )
 
     fun init() {
-        if(!initFinished){
+        if (!initFinished) {
             layoutMap[CONTENT_LAYOUT] = BaseLayoutBean(R.layout.activity_default, contentView)
             layoutMap[ERROR_LAYOUT] = BaseLayoutBean(R.layout.base_layout_error, errorView)
             layoutMap[LOAD_LAYOUT] = BaseLayoutBean(R.layout.base_layout_loading, loadView)
             layoutMap[EMPTY_LAYOUT] = BaseLayoutBean(R.layout.base_layout_empty, emptyView)
             initFinished = true
             layoutMap.forEach {
-                addViewWithName(it.key,it.value.view)
+                addViewWithName(it.key, it.value.view)
             }
         }
     }
@@ -114,6 +114,10 @@ class BaseNetLayout : FrameLayout {
             EMPTY_LAYOUT ->
                 if (childCount > 4) removeViewAt(3)
         }
+    }
+
+    fun getContentView(): View {
+        return contentView
     }
 
     fun inflateViewWithLayoutId(layoutId: Int): View {
