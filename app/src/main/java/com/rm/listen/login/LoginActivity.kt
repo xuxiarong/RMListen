@@ -36,6 +36,8 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
     override fun onResume() {
         super.onResume()
         count++
+        databind.login.visibility = View.VISIBLE
+
         if (count % 4 == 0) {
             showContent()
         } else if (count % 4 == 1) {

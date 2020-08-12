@@ -17,26 +17,23 @@ abstract class BaseNetActivity< T : ViewDataBinding, VM : BaseNetViewModel> : Ba
 
     abstract fun getViewModel() : VM
 
-    protected lateinit var baseBinding : ActivityBaseNetBinding
-    protected lateinit var baseViewModel : VM
+    private lateinit var baseBinding : ActivityBaseNetBinding
+    private lateinit var baseViewModel : VM
     protected lateinit var databind : T
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        baseViewModel = getViewModel()
+        super.onCreate(savedInstanceState)
         baseBinding = DataBindingUtil.setContentView<ActivityBaseNetBinding>(this,R.layout.activity_base_net).apply{
             lifecycleOwner = this@BaseNetActivity
         }
-        baseBinding.viewModel = baseViewModel
+        baseViewModel = getViewModel()
         baseBinding.flBaseLayout.setContentLayout(baseViewModel.layoutId)
-     //  baseViewModel.setContentView(baseViewModel.layoutId)
-        val  contentParent=baseBinding.flBaseLayout.getChildAt(0)
-
-        databind = DataBindingUtil.bind<T>(contentParent)!!;
-        super.onCreate(savedInstanceState)
-
+        baseBinding.viewModel = baseViewModel
+        databind = DataBindingUtil.bind(baseBinding.flBaseLayout.getContentView())!!
+        startObserve()
+        initView()
+        initData()
     }
-
 
 
     protected fun showContent(){

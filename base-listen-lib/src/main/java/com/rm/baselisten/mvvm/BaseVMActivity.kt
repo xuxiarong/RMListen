@@ -12,9 +12,7 @@ abstract class BaseVMActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startObserve()
-        initView()
-        initData()
+
     }
 
     abstract fun initView()

@@ -34,13 +34,7 @@ class BaseNetLayout : FrameLayout {
 
     constructor (context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
-        context!!,
-        attrs,
-        defStyle
-    ){
-        init()
-    }
+    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context!!, attrs, defStyle){ init() }
 
     fun init() {
         if (!initFinished) {
@@ -56,7 +50,7 @@ class BaseNetLayout : FrameLayout {
     }
 
 
-    fun addChild(key: String, layoutId: Int) {
+    private fun addChild(key: String, layoutId: Int) {
         //是相同的View，不做处理
         if (layoutMap.containsKey(key) && layoutMap[key]?.layoutId == layoutId) {
             return
@@ -131,7 +125,6 @@ class BaseNetLayout : FrameLayout {
     }
 
     fun setContentLayout(@LayoutRes layoutId: Int) {
-//        init()
         addChild(CONTENT_LAYOUT, layoutId)
     }
 
@@ -174,7 +167,6 @@ class BaseNetLayout : FrameLayout {
             View.GONE
         }
     }
-
 
     data class BaseLayoutBean(@LayoutRes var layoutId: Int, var view: View)
 
