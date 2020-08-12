@@ -1,3 +1,8 @@
+include ':module-mine'
+include ':module-listen'
+include ':module-play'
+include ':module-search'
+include ':module-home'
 include ':base-listen-lib'
 include ':music-player-lib'
 include ':app'
