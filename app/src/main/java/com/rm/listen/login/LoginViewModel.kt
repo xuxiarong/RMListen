@@ -4,8 +4,9 @@ import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.alibaba.android.arouter.launcher.ARouter
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.component_comm.ARouterUtils
 import com.rm.listen.R
 import com.rm.listen.bean.User
 import com.rm.listen.checkResult
@@ -37,7 +38,8 @@ class LoginViewModel(private val repository: LoginRepository) : BaseNetViewModel
     }
 
     fun login() {
-        ARouter.getInstance().build("/home/TestActivity").navigation()
+        ARouterUtils.getHomeService().login(BaseApplication.CONTEXT)
+//        ARouter.getInstance().build("/home/TestActivity").navigation()
 //        if (userName.get().isNullOrBlank() || passWord.get().isNullOrBlank()) {
 //            _uiState.value = LoginUiState(enableLoginButton = false)
 //            return

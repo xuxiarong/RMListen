@@ -17,10 +17,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        //配置阿里ARouter路由
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
             }
         }
     }
@@ -58,6 +58,7 @@ dependencies {
     implementation project(path: ':module-play')
     implementation project(path: ':module-listen')
     implementation project(path: ':module-mine')
+    api project(path: ':component-comm')
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -66,4 +67,6 @@ dependencies {
     // 本地module
     implementation project(path: ':music-player-lib')
     implementation project(path: ':base-listen-lib')
+
+    kapt rootProject.ext.dependencies["router_compiler"]
 }

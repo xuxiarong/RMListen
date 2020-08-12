@@ -1,6 +1,7 @@
 package com.rm.module_home
 
-import com.alibaba.android.arouter.facade.annotation.Route
+import android.content.Context
+import android.content.Intent
 import com.rm.baselisten.activity.BaseActivity
 
 /**
@@ -8,8 +9,15 @@ import com.rm.baselisten.activity.BaseActivity
  * date   : 2020/08/12
  * version: 1.1
  */
-@Route(path = "/home/TestActivity")
 class TestActivity : BaseActivity() {
+    companion object {
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, TestActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            })
+        }
+    }
+
     override fun getLayoutResId(): Int = R.layout.activity_test
 
     override fun initView() {

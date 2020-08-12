@@ -1,7 +1,7 @@
 package com.rm.component_comm.home
 
-import androidx.fragment.app.Fragment
-import com.rm.component_comm.IProvider
+import android.content.Context
+import com.alibaba.android.arouter.facade.template.IProvider
 
 /**
  * desc   :
@@ -9,5 +9,5 @@ import com.rm.component_comm.IProvider
  * version: 1.1
  */
 interface HomeService : IProvider {
-    fun getHomeFragment(): Fragment
+    fun login(context: Context)
 }
