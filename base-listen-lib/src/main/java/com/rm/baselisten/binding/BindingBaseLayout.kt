@@ -12,7 +12,7 @@ import com.rm.baselisten.view.BaseNetLayout
 @BindingAdapter("bind_model", requireAll = false)
 fun BaseNetLayout.bindModel(netModel: BaseNetModel) {
 
-    init()
+//    init()
     setContentLayout(netModel.baseNetLayoutModel.contentLayout)
     setErrorLayout(netModel.baseNetLayoutModel.netErrorLayout)
     setLoadLayout(netModel.baseNetLayoutModel.loadLayout)

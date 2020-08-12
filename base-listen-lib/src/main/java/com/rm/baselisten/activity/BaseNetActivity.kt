@@ -1,7 +1,6 @@
 package com.rm.baselisten.activity
 
 import android.os.Bundle
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.rm.baselisten.R
@@ -23,16 +22,21 @@ abstract class BaseNetActivity< T : ViewDataBinding, VM : BaseNetViewModel> : Ba
     protected lateinit var databind : T
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        baseViewModel = getViewModel()
-        baseViewModel.setContentView(baseViewModel.layoutId)
 
+        baseViewModel = getViewModel()
         baseBinding = DataBindingUtil.setContentView<ActivityBaseNetBinding>(this,R.layout.activity_base_net).apply{
             lifecycleOwner = this@BaseNetActivity
         }
         baseBinding.viewModel = baseViewModel
-        databind = DataBindingUtil.bind(View.inflate(this,baseViewModel.layoutId,null))!!
+        baseBinding.flBaseLayout.setContentLayout(baseViewModel.layoutId)
+     //  baseViewModel.setContentView(baseViewModel.layoutId)
+        val  contentParent=baseBinding.flBaseLayout.getChildAt(0)
+
+        databind = DataBindingUtil.bind<T>(contentParent)!!;
         super.onCreate(savedInstanceState)
+
     }
+
 
 
     protected fun showContent(){

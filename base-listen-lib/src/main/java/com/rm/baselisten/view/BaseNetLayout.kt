@@ -38,7 +38,9 @@ class BaseNetLayout : FrameLayout {
         context!!,
         attrs,
         defStyle
-    )
+    ){
+        init()
+    }
 
     fun init() {
         if (!initFinished) {
@@ -129,6 +131,7 @@ class BaseNetLayout : FrameLayout {
     }
 
     fun setContentLayout(@LayoutRes layoutId: Int) {
+//        init()
         addChild(CONTENT_LAYOUT, layoutId)
     }
 

@@ -1,6 +1,8 @@
 package com.rm.listen.login
 
 import android.app.ProgressDialog
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.rm.baselisten.activity.BaseNetActivity
@@ -41,6 +43,8 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
         } else if (count % 4 == 2) {
             showError()
         } else {
+            Log.i("llj","其他情况 !!!!")
+            databind.login.visibility = View.GONE
             showLoad()
         }
 

@@ -41,6 +41,7 @@ open class BaseNetViewModel(private val baseLayoutId: Int) : BaseViewModel(baseL
 
     fun setContentView(layoutId:Int){
         _baseNetModel.value = _baseNetModel.value?.setContentLayout(layoutId)
+
     }
 
     fun setErrorView(layoutId:Int){
