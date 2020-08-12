@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.alibaba.android.arouter.launcher.ARouter
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 import com.rm.listen.R
 import com.rm.listen.bean.User
@@ -36,24 +37,25 @@ class LoginViewModel(private val repository: LoginRepository) : BaseNetViewModel
     }
 
     fun login() {
-        if (userName.get().isNullOrBlank() || passWord.get().isNullOrBlank()) {
-            _uiState.value = LoginUiState(enableLoginButton = false)
-            return
-        }
-        Log.i("llj","userName---->>${userName.get()}")
-        Log.i("llj","passWord---->>${passWord.get()}")
-        _uiState.value = LoginUiState(isLoading = true)
-        launchOnIO {
-            repository.login(userName.get() ?: "", passWord.get() ?: "").checkResult(
-                onSuccess = {
-                    Log.i("llj","登陆成功！！")
-                    _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
-                },
-                onError = {
-                    Log.e("llj","登陆失败！！--->>>$it")
-                    _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
-                })
-        }
+        ARouter.getInstance().build("/home/TestActivity").navigation()
+//        if (userName.get().isNullOrBlank() || passWord.get().isNullOrBlank()) {
+//            _uiState.value = LoginUiState(enableLoginButton = false)
+//            return
+//        }
+//        Log.i("llj","userName---->>${userName.get()}")
+//        Log.i("llj","passWord---->>${passWord.get()}")
+//        _uiState.value = LoginUiState(isLoading = true)
+//        launchOnIO {
+//            repository.login(userName.get() ?: "", passWord.get() ?: "").checkResult(
+//                onSuccess = {
+//                    Log.i("llj","登陆成功！！")
+//                    _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
+//                },
+//                onError = {
+//                    Log.e("llj","登陆失败！！--->>>$it")
+//                    _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
+//                })
+//        }
     }
 
     fun register() {

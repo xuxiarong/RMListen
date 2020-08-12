@@ -16,6 +16,13 @@ android {
         multiDexEnabled true //添加分包
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //配置阿里ARouter路由
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
     }
 
     buildTypes {

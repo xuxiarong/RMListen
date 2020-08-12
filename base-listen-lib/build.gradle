@@ -19,6 +19,13 @@ android {
 
     buildTypes {
         release {
+            buildConfigField "boolean", "IS_DEBUG", "false"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug{
+            buildConfigField "boolean", "IS_DEBUG", "true"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -48,6 +55,8 @@ dependencies {
     api rootProject.ext.dependencies["koin_android"]
     api rootProject.ext.dependencies["koin_androidx_scope"]
     api rootProject.ext.dependencies["koin_androidx_viewmodel"]
+    api rootProject.ext.dependencies["router"]
+    annotationProcessor rootProject.ext.dependencies["router_compiler"]
 
     api rootProject.ext.androidx["appcompat"]
     api rootProject.ext.androidx["core_ktx"]
