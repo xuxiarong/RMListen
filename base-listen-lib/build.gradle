@@ -55,7 +55,9 @@ dependencies {
     api rootProject.ext.dependencies["koin_android"]
     api rootProject.ext.dependencies["koin_androidx_scope"]
     api rootProject.ext.dependencies["koin_androidx_viewmodel"]
+    api rootProject.ext.dependencies["constraint_layout"]
     api rootProject.ext.dependencies["router"]
+
     annotationProcessor rootProject.ext.dependencies["router_compiler"]
 
     api rootProject.ext.androidx["appcompat"]
@@ -65,6 +67,7 @@ dependencies {
     api rootProject.ext.androidx["livedata_ktx"]
     api rootProject.ext.androidx["coroutines_android"]
     api rootProject.ext.androidx["lifecycle_extension"]
+
     api 'com.android.support:multidex:1.0.3'
     implementation project(path: ':business-lib')
 

@@ -46,8 +46,8 @@ ext {
             licensesDialog            : "2.1.0",
             verticalTabLayout         : "1.2.5",
             material_dialogs          : "3.3.0",
-            material                  : "1.2.0-beta01"
-
+            material                  : "1.2.0-beta01",
+            constraint_layout:"1.1.3"
     ]
 
     dependencies = [
@@ -61,6 +61,7 @@ ext {
             koin_androidx_viewmodel   : "org.koin:koin-androidx-viewmodel:${version.koin}",
             material                  : "com.google.android.material:material:${version.material}",
             material_dialogs_input    : "com.afollestad.material-dialogs:input:${version.material_dialogs}",
+            constraint_layout            : "com.android.support.constraint:constraint-layout:${version.constraint_layout}",
 
             //router
             router                    : "com.alibaba:arouter-api:1.5.0",
