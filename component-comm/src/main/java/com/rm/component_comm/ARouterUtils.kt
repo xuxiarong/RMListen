@@ -13,7 +13,7 @@ import com.rm.component_comm.home.HomeService
 class ARouterUtils {
     companion object{
         fun getHomeService(): HomeService {
-            return ARouter.getInstance().build(Constance.PATH_HOME).navigation() as HomeService
+            return ARouter.getInstance().build(Constance.PATH_HOME_SERVICE).navigation() as HomeService
         }
 
         fun init(application: Application){

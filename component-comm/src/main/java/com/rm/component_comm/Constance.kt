@@ -7,6 +7,6 @@ package com.rm.component_comm
  */
 interface Constance {
     companion object {
-        const val PATH_HOME = "/home/testActivity"
+        const val PATH_HOME_SERVICE = "/home/service"
     }
 }

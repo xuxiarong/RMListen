@@ -1,6 +1,7 @@
 package com.rm.component_comm.home
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.template.IProvider
 
 /**
@@ -10,4 +11,6 @@ import com.alibaba.android.arouter.facade.template.IProvider
  */
 interface HomeService : IProvider {
     fun login(context: Context)
+    // 获取主页Fragment
+    fun getHomeFragment(): Fragment
 }
