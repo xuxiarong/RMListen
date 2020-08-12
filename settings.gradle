@@ -1,3 +1,5 @@
+include ':component-comm'
+include ':business-lib'
 include ':module-mine'
 include ':module-listen'
 include ':module-play'
