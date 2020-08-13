@@ -19,7 +19,7 @@ class ListenApplication : BaseApplication() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@ListenApplication)
-//            modules(appModule)
+            modules(appModule)
         }
     }
 
