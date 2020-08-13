@@ -52,16 +52,16 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(path: ':module-main')
     implementation project(path: ':module-home')
     implementation project(path: ':module-search')
     implementation project(path: ':module-play')
     implementation project(path: ':module-listen')
     implementation project(path: ':module-mine')
     implementation project(path: ':component-comm')
-    implementation rootProject.ext.dependencies["material"]
+//    implementation rootProject.ext.dependencies["material"]
     // 本地module
-    implementation project(path: ':music-player-lib')
+//    implementation project(path: ':music-player-lib')
     implementation project(path: ':base-listen-lib')
-    implementation project(path: ':module-main')
     kapt rootProject.ext.dependencies["router_compiler"]
 }

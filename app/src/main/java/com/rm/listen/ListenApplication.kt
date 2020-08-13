@@ -11,14 +11,12 @@ import org.koin.core.context.startKoin
  * version: 1.0
  */
 class ListenApplication : BaseApplication() {
-
-
     override fun onCreate() {
         super.onCreate()
         ARouterUtils.init(this)
         startKoin {
             androidContext(this@ListenApplication)
-            modules(appModule)
+//            modules(appModule)
         }
     }
 
