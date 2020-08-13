@@ -78,7 +78,7 @@ ext {
             lifecycle_extension: "androidx.lifecycle:lifecycle-extensions:${version.lifecycle_extension}",
             viewmodel_ktx      : "androidx.lifecycle:lifecycle-viewmodel-ktx:${version.viewmodel_ktx}",
             livedata_ktx       : "androidx.lifecycle:lifecycle-livedata-ktx:${version.livedata_ktx}",
-            coroutines_android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutines_android}",
+            coroutines_android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutines_android}"
     ]
 
     // 所有的导包信息

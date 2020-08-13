@@ -52,21 +52,15 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation project(path: ':module-home')
     implementation project(path: ':module-search')
     implementation project(path: ':module-play')
     implementation project(path: ':module-listen')
     implementation project(path: ':module-mine')
-    api project(path: ':component-comm')
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
+    implementation project(path: ':component-comm')
     implementation rootProject.ext.dependencies["material"]
     // 本地module
     implementation project(path: ':music-player-lib')
     implementation project(path: ':base-listen-lib')
-
     kapt rootProject.ext.dependencies["router_compiler"]
 }
