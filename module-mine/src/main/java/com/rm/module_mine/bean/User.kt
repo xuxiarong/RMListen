@@ -1,4 +1,4 @@
-package com.rm.listen.bean
+package com.rm.module_mine.bean
 
 
 /**

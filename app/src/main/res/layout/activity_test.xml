@@ -8,9 +8,6 @@
         <variable
             name="viewModel"
             type="com.rm.listen.test.TestViewModel" />
-        <variable
-            name="title"
-            type="com.rm.listen.bean.Title" />
         <import type="android.view.View"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

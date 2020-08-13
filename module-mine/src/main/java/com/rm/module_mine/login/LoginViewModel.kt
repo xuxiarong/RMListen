@@ -1,16 +1,14 @@
-package com.rm.listen.login
+package com.rm.module_mine.login
 
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.viewmodel.BaseNetViewModel
-import com.rm.component_comm.ARouterUtils
-import com.rm.listen.R
-import com.rm.listen.bean.User
-import com.rm.listen.checkResult
-import com.rm.listen.repository.LoginRepository
+import com.rm.module_mine.R
+import com.rm.module_mine.bean.User
+import com.rm.module_mine.checkResult
+import com.rm.module_mine.repository.LoginRepository
 
 /**
  * desc   :
@@ -38,26 +36,26 @@ class LoginViewModel(private val repository: LoginRepository) : BaseNetViewModel
     }
 
     fun login() {
-        ARouterUtils.getHomeService().login(BaseApplication.CONTEXT)
+//        ARouterUtils.getHomeService().login(BaseApplication.CONTEXT)
 //        ARouter.getInstance().build("/home/TestActivity").navigation()
-//        if (userName.get().isNullOrBlank() || passWord.get().isNullOrBlank()) {
-//            _uiState.value = LoginUiState(enableLoginButton = false)
-//            return
-//        }
-//        Log.i("llj","userName---->>${userName.get()}")
-//        Log.i("llj","passWord---->>${passWord.get()}")
-//        _uiState.value = LoginUiState(isLoading = true)
-//        launchOnIO {
-//            repository.login(userName.get() ?: "", passWord.get() ?: "").checkResult(
-//                onSuccess = {
-//                    Log.i("llj","登陆成功！！")
-//                    _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
-//                },
-//                onError = {
-//                    Log.e("llj","登陆失败！！--->>>$it")
-//                    _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
-//                })
-//        }
+        if (userName.get().isNullOrBlank() || passWord.get().isNullOrBlank()) {
+            _uiState.value = LoginUiState(enableLoginButton = false)
+            return
+        }
+        Log.i("llj","userName---->>${userName.get()}")
+        Log.i("llj","passWord---->>${passWord.get()}")
+        _uiState.value = LoginUiState(isLoading = true)
+        launchOnIO {
+            repository.login(userName.get() ?: "", passWord.get() ?: "").checkResult(
+                onSuccess = {
+                    Log.i("llj","登陆成功！！")
+                    _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
+                },
+                onError = {
+                    Log.e("llj","登陆失败！！--->>>$it")
+                    _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
+                })
+        }
     }
 
     fun register() {

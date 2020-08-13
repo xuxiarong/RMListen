@@ -1,13 +1,8 @@
 package com.rm.listen.test
 
-import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.rm.baselisten.activity.BaseNetActivity
-import com.rm.listen.R
-import com.rm.listen.bean.Title
-import com.rm.listen.databinding.ActivityLoginBinding
 import com.rm.listen.databinding.ActivityTestBinding
-import com.rm.listen.login.LoginViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TestActivity : BaseNetActivity<ActivityTestBinding, TestViewModel>()  {

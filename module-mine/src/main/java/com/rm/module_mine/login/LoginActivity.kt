@@ -1,12 +1,12 @@
-package com.rm.listen.login
+package com.rm.module_mine.login
 
 import android.app.ProgressDialog
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.rm.baselisten.activity.BaseNetActivity
-import com.rm.listen.R
-import com.rm.listen.bean.Title
-import com.rm.listen.databinding.ActivityLoginBinding
+import com.rm.module_mine.R
+import com.rm.module_mine.bean.Title
+import com.rm.module_mine.databinding.ActivityLoginBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
