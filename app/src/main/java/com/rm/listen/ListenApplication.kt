@@ -1,6 +1,7 @@
 package com.rm.listen
 
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.util.Cxt
 import com.rm.component_comm.ARouterUtils
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -20,6 +21,7 @@ class ListenApplication : BaseApplication() {
             androidContext(this@ListenApplication)
             modules(appModule)
         }
+        Cxt.context=CONTEXT
     }
 
 }

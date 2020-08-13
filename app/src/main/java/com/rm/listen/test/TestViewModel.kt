@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.flow as flow
  * @Version: 1.0.0
  */
 class TestViewModel :
-    BaseNetViewModel(R.layout.activity_home_test) {
+    BaseNetViewModel(R.layout.activity_test) {
 
     val downTimeData = MutableLiveData<String>()
     val downTime = ObservableField<String>()

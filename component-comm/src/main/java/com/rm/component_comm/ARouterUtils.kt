@@ -16,6 +16,9 @@ import com.rm.component_comm.search.SearchService
  * version: 1.0
  */
 class ARouterUtils {
+    fun arouterTo(path:String){
+         ARouter.getInstance().build(ARouterPathConstance.PATH_MAIN_SERVICE).navigation()
+    }
     companion object{
         /**
          * 获取主工程module路由服务

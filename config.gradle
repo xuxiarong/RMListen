@@ -47,8 +47,8 @@ ext {
             verticalTabLayout         : "1.2.5",
             material_dialogs          : "3.3.0",
             material                  : "1.2.0-beta01",
-            greendao:"3.3.0"
-
+            greendao                  : "3.3.0",
+            mmkv                      : "1.2.1"
     ]
 
     dependencies = [
@@ -62,13 +62,15 @@ ext {
             koin_androidx_viewmodel   : "org.koin:koin-androidx-viewmodel:${version.koin}",
             material                  : "com.google.android.material:material:${version.material}",
             material_dialogs_input    : "com.afollestad.material-dialogs:input:${version.material_dialogs}",
-            constraint_layout            : "com.android.support.constraint:constraint-layout:${version.constraint_layout}",
+            constraint_layout         : "com.android.support.constraint:constraint-layout:${version.constraint_layout}",
 
             //router
             router                    : "com.alibaba:arouter-api:1.5.0",
             router_compiler           : "com.alibaba:arouter-compiler:1.2.2",
             //sqllite
-            greendao:"org.greenrobot:greendao:${version.greendao}"
+            greendao                  : "org.greenrobot:greendao:${version.greendao}",
+            //save
+            mmkvs                      : "com.tencent:mmkv-static:${version.mmkv}"
     ]
 
     androidx = [
@@ -78,7 +80,7 @@ ext {
             lifecycle_extension: "androidx.lifecycle:lifecycle-extensions:${version.lifecycle_extension}",
             viewmodel_ktx      : "androidx.lifecycle:lifecycle-viewmodel-ktx:${version.viewmodel_ktx}",
             livedata_ktx       : "androidx.lifecycle:lifecycle-livedata-ktx:${version.livedata_ktx}",
-            coroutines_android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutines_android}"
+            coroutines_android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutines_android}",
     ]
 
     // 所有的导包信息

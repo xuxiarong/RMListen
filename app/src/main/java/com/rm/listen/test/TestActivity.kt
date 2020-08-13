@@ -2,7 +2,11 @@ package com.rm.listen.test
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import com.alibaba.android.arouter.launcher.ARouter
 import com.rm.baselisten.activity.BaseNetActivity
+import com.rm.baselisten.util.getBooleanMMKV
+import com.rm.component_comm.*
+import com.rm.component_comm.interceptor.LoginNavigationCallbackImpl
 import com.rm.listen.R
 import com.rm.listen.bean.Title
 import com.rm.listen.databinding.ActivityLoginBinding
@@ -28,9 +32,21 @@ class TestActivity : BaseNetActivity<ActivityTestBinding, TestViewModel>()  {
 
     override fun initData() {
         testViewModel.zipLoad()
+        databind.toMine.setOnClickListener {
+            navigateToForResult(ConstantsARouter.Mine.F_MAIN,1)
+        }
+
+        databind.hasLogin.setOnClickListener {
+            navigateWithTo(ConstantsARouter.Mine.F_MAIN).withBoolean(IS_LOGIN, IS_LOGIN.getBooleanMMKV(false)).navigation(this,LoginNavigationCallbackImpl())
+        }
+        databind.login.setOnClickListener {
+            navigateWithTo(ConstantsARouter.Mine.F_TEST).withBoolean(IS_LOGIN, IS_LOGIN.getBooleanMMKV(false)).navigation(this,LoginNavigationCallbackImpl())
+
+        }
+
+
     }
 
     override fun startObserve() {
     }
-
 }

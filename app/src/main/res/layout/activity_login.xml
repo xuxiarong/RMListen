@@ -12,6 +12,7 @@
         <variable
             name="title"
             type="com.rm.listen.bean.Title" />
+
     </data>
 
 
