@@ -45,6 +45,4 @@ open class BaseRepository {
             }
         }
     }
-
-
 }

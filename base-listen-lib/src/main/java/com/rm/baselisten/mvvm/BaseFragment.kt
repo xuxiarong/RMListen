@@ -26,5 +26,6 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
     abstract fun initView()
 
+
     abstract fun initData()
 }
