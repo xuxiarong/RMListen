@@ -3,7 +3,9 @@ package com.rm.listen
 import com.rm.baselisten.BaseApplication
 import com.rm.component_comm.ARouterUtils
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 /**
  * desc   :
@@ -15,6 +17,7 @@ class ListenApplication : BaseApplication() {
         super.onCreate()
         ARouterUtils.init(this)
         startKoin {
+            androidLogger(Level.DEBUG)
             androidContext(this@ListenApplication)
 //            modules(appModule)
         }

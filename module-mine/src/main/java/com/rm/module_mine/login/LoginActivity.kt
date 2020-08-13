@@ -25,7 +25,7 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
     override fun initView() {
         databind.run {
             viewModel = loginViewModel
-            title = Title(R.string.login, R.drawable.arrow_back) { onBackPressed() }
+            title = Title(R.string.login, R.drawable.base_icon_back) { onBackPressed() }
         }
     }
 
