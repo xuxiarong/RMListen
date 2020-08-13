@@ -18,7 +18,7 @@ class TestActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutResId(): Int = R.layout.activity_test
+    override fun getLayoutResId(): Int = R.layout.activity_home_test
 
     override fun initView() {
     }

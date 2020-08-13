@@ -62,5 +62,6 @@ dependencies {
     // 本地module
     implementation project(path: ':music-player-lib')
     implementation project(path: ':base-listen-lib')
+    implementation project(path: ':module-main')
     kapt rootProject.ext.dependencies["router_compiler"]
 }

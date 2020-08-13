@@ -1,14 +1,11 @@
 package com.rm.listen.test
 
 import android.util.Log
-import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 import com.rm.listen.R
-import com.rm.listen.bean.User
-import com.rm.listen.login.LoginUiState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.flow as flow
@@ -25,7 +22,7 @@ import kotlinx.coroutines.flow.flow as flow
  * @Version: 1.0.0
  */
 class TestViewModel :
-    BaseNetViewModel(R.layout.activity_test) {
+    BaseNetViewModel(R.layout.activity_home_test) {
 
     val downTimeData = MutableLiveData<String>()
     val downTime = ObservableField<String>()

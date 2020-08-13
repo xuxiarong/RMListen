@@ -1,3 +1,4 @@
+include ':module-main'
 include ':component-comm'
 include ':business-lib'
 include ':module-mine'

@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.template.IProvider
 
 /**
- * desc   :
+ * desc   : Home工程module路由服务接口
  * date   : 2020/08/12
- * version: 1.1
+ * version: 1.0
  */
 interface HomeService : IProvider {
     fun login(context: Context)

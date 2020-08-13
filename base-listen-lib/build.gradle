@@ -76,7 +76,7 @@ dependencies {
     api rootProject.ext.androidx["lifecycle_extension"]
 
     api 'com.android.support:multidex:1.0.3'
-    implementation project(path: ':business-lib')
+//    implementation project(path: ':business-lib')
     api rootProject.ext.dependencies["greendao"]
 
 }
