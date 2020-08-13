@@ -1,7 +1,7 @@
-package com.rm.listen.api
+package com.rm.module_mine.api
 
 import com.rm.baselisten.net.bean.BaseResponse
-import com.rm.listen.bean.User
+import com.rm.module_mine.bean.User
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET

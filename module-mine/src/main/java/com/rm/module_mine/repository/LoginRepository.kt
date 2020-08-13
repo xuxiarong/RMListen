@@ -1,11 +1,11 @@
-package com.rm.listen.repository
+package com.rm.module_mine.repository
 
 import com.google.gson.Gson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.baselisten.util.Preference
-import com.rm.listen.api.ListenApiService
-import com.rm.listen.bean.User
+import com.rm.module_mine.api.ListenApiService
+import com.rm.module_mine.bean.User
 
 /**
  * desc   :

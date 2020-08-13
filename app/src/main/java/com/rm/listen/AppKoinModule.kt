@@ -1,12 +1,10 @@
 package com.rm.listen
 
 import com.rm.baselisten.net.CoroutinesDispatcherProvider
-import com.rm.listen.api.ListenApiService
-import com.rm.listen.api.RetrofitClient
-import com.rm.listen.login.LoginViewModel
-import com.rm.listen.repository.LoginRepository
-import com.rm.listen.test.TestRepository
-import com.rm.listen.test.TestViewModel
+import com.rm.module_mine.api.ListenApiService
+import com.rm.module_mine.api.RetrofitClient
+import com.rm.module_mine.login.LoginViewModel
+import com.rm.module_mine.repository.LoginRepository
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -16,18 +14,16 @@ import org.koin.dsl.module
  * version: 1.0
  */
 
-val viewModelModule = module {
+val viewModelModule = module(createdAtStart = true, override = false) {
     viewModel {
         LoginViewModel(get())
-        TestViewModel()
     }
 }
 
-val repositoryModule = module {
+val repositoryModule = module(createdAtStart = true, override = false) {
     single { RetrofitClient.getService(ListenApiService::class.java, ListenApiService.BASE_URL) }
     single { CoroutinesDispatcherProvider() }
     single { LoginRepository(get()) }
-    single { TestRepository() }
 }
 
 val appModule = listOf(viewModelModule, repositoryModule)

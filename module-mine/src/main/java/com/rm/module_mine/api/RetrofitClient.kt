@@ -1,4 +1,4 @@
-package com.rm.listen.api
+package com.rm.module_mine.api
 
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.net.api.BaseRetrofitClient

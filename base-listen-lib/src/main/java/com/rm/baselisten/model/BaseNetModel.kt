@@ -1,7 +1,6 @@
 package com.rm.baselisten.model
 
 import androidx.annotation.LayoutRes
-import com.rm.baselisten.BaseTitleModel
 import com.rm.baselisten.R
 import com.rm.baselisten.net.BaseNetStatus
 import com.rm.baselisten.net.bean.BaseStatusModel

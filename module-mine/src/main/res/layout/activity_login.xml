@@ -7,12 +7,11 @@
     <data>
         <variable
             name="viewModel"
-            type="com.rm.listen.login.LoginViewModel" />
+            type="com.rm.module_mine.login.LoginViewModel" />
 
         <variable
             name="title"
-            type="com.rm.listen.bean.Title" />
-
+            type="com.rm.module_mine.bean.Title" />
     </data>
 
 
