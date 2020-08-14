@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.rm.baselisten.R
+import com.rm.baselisten.binding.bindChild
 import com.rm.baselisten.databinding.ActivityBaseNetBinding
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.viewmodel.BaseNetViewModel
@@ -15,7 +16,6 @@ import com.rm.baselisten.viewmodel.BaseNetViewModel
  * version: 1.0
  */
 abstract class BaseNetActivity< T : ViewDataBinding, VM : BaseNetViewModel> : BaseVMActivity() {
-
 
     private val baseBinding : ActivityBaseNetBinding by lazy {
         DataBindingUtil.setContentView<ActivityBaseNetBinding>(this, R.layout.activity_base_net).apply {
@@ -32,8 +32,8 @@ abstract class BaseNetActivity< T : ViewDataBinding, VM : BaseNetViewModel> : Ba
         baseViewModel = getViewModel()
         baseBinding.viewModel = baseViewModel
         startBaseObserve()
-        baseBinding.flBaseLayout.setContentLayout(baseViewModel.layoutId)
-        databind = DataBindingUtil.bind(baseBinding.flBaseLayout.getContentView())!!
+        val contentView = baseBinding.clBaseContainer.bindChild(baseViewModel.layoutId)
+        databind = DataBindingUtil.bind(contentView)!!
         startObserve()
         initView()
         initData()

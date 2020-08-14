@@ -1,13 +1,12 @@
 package com.rm.baselisten.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.model.BaseNetLayoutModel
 import com.rm.baselisten.model.BaseNetModel
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseViewModel
-import com.rm.baselisten.net.BaseNetStatus
-import com.rm.baselisten.net.bean.BaseStatusModel
+import com.rm.baselisten.model.BaseNetStatus
+import com.rm.baselisten.model.BaseStatusModel
 
 /**
  * desc   :
@@ -22,8 +21,7 @@ open class BaseNetViewModel(private val baseLayoutId: Int) : BaseViewModel(baseL
 
     var baseStatusModel = MutableLiveData<BaseStatusModel>()
 
-    private var _baseLayoutModel = MutableLiveData<BaseNetLayoutModel>()
-    val baseLayoutModel: LiveData<BaseNetLayoutModel> get() = _baseLayoutModel
+     var baseLayoutModel = MutableLiveData<BaseNetLayoutModel>()
 
     fun showContent() {
         baseStatusModel.value?.netStatus = BaseNetStatus.BASE_SHOW_CONTENT
@@ -40,29 +38,4 @@ open class BaseNetViewModel(private val baseLayoutId: Int) : BaseViewModel(baseL
     fun showError() {
         baseNetModel.value = baseNetModel.value?.setStatus(BaseNetStatus.BASE_SHOW_NET_ERROR)
     }
-
-    fun setEmptyView(layoutId: Int) {
-        baseNetModel.value = baseNetModel.value?.setEmptyLayout(layoutId)
-    }
-
-    fun setContentView(layoutId: Int) {
-        baseNetModel.value = baseNetModel.value?.setContentLayout(layoutId)
-
-    }
-
-    fun setErrorView(layoutId: Int) {
-        baseNetModel.value = baseNetModel.value?.setErrorLayout(layoutId)
-    }
-
-    fun setLoadView(layoutId: Int) {
-        baseNetModel.value = baseNetModel.value?.setLoadLayout(layoutId)
-    }
-
-    fun setTitle(title: String) {
-        var baseTitleModel1 = BaseTitleModel()
-        baseTitleModel1.mainTitle = title
-        baseTitleModel.postValue(baseTitleModel1)
-    }
-
-
 }

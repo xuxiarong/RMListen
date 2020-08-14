@@ -2,9 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
-
         <import type="android.view.View"/>
+        <import type="com.rm.baselisten.model.BaseNetStatus"/>
+
+        <variable
+            name="status"
+            type="com.rm.baselisten.model.BaseStatusModel" />
     </data>
 
     <LinearLayout
@@ -12,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        isVisible="@{status.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR}"
         android:orientation="vertical">
 
         <ImageView

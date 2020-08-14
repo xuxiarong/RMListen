@@ -1,6 +1,4 @@
-package com.rm.baselisten.net.bean
-
-import com.rm.baselisten.net.BaseNetStatus
+package com.rm.baselisten.model
 
 /**
  * desc   :

@@ -1,4 +1,4 @@
-package com.rm.baselisten.net
+package com.rm.baselisten.model
 
 /**
  * desc   :

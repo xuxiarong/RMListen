@@ -29,9 +29,9 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
         baseTitleModel.mainTitle = getString(R.string.mine_login)
         loginViewModel.baseTitleModel.value = baseTitleModel
 
-        databind.run {
-            viewModel = loginViewModel
-        }
+//        databind.run {
+//            viewModel = loginViewModel
+//        }
     }
 
     private var count = 0

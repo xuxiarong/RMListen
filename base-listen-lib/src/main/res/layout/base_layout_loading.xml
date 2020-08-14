@@ -3,12 +3,18 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="com.rm.baselisten.model.BaseNetStatus"/>
+
+        <variable
+            name="status"
+            type="com.rm.baselisten.model.BaseStatusModel" />
     </data>
 
     <LinearLayout
         android:id="@+id/ll_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        isVisible="@{status.netStatus == BaseNetStatus.BASE_SHOW_LOADING}"
         android:gravity="center">
 
         <ProgressBar

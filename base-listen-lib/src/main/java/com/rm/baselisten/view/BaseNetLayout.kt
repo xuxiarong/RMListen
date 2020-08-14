@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import com.rm.baselisten.R
-import com.rm.baselisten.net.BaseNetStatus
+import com.rm.baselisten.model.BaseNetStatus
 
 /**
  * desc   :
