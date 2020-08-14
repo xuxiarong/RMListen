@@ -68,6 +68,9 @@ dependencies {
     if(!rootProject.ext.isMineApp){
         implementation project(path: ':module-mine')
     }
+    if(!rootProject.ext.isLoginApp){
+        implementation project(path: ':module-login')
+    }
 
     implementation project(path: ':component-comm')
     implementation rootProject.ext.dependencies["material"]
