@@ -9,11 +9,11 @@ import com.rm.baselisten.view.BaseNetLayout
  * date   : 2020/08/04
  * version: 1.0
  */
-@BindingAdapter("bind_model", requireAll = false)
-fun BaseNetLayout.bindModel(netModel: BaseNetModel) {
+@BindingAdapter("bindTitle", requireAll = false)
+fun BaseNetLayout.bindTitle(netModel: BaseNetModel) {
 
 //    init()
-//    setContentLayout(netModel.baseNetLayoutModel.contentLayout)
+    setContentLayout(netModel.baseNetLayoutModel.contentLayout)
     setErrorLayout(netModel.baseNetLayoutModel.netErrorLayout)
     setLoadLayout(netModel.baseNetLayoutModel.loadLayout)
     setEmptyLayout(netModel.baseNetLayoutModel.emptyLayout)

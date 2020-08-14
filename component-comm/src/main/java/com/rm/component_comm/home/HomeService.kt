@@ -10,7 +10,7 @@ import com.alibaba.android.arouter.facade.template.IProvider
  * version: 1.0
  */
 interface HomeService : IProvider {
-    fun login(context: Context)
+    fun routerTest(context: Context)
     // 获取主页Fragment
     fun getHomeFragment(): Fragment
 }

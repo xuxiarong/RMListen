@@ -13,7 +13,7 @@ import com.rm.component_comm.home.HomeService
  */
 @Route(path = ARouterPathConstance.PATH_HOME_SERVICE)
 class HomeServiceImpl:HomeService {
-    override fun login(context: Context) {
+    override fun routerTest(context: Context) {
         TestActivity.startActivity(context)
     }
 

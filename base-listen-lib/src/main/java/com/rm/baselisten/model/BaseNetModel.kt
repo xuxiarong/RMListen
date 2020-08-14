@@ -26,7 +26,7 @@ class BaseNetModel {
         if(baseTitleModel!=null){
             this.baseTitleModel = baseTitleModel
         }else{
-            this.baseTitleModel = BaseTitleModel("")
+            this.baseTitleModel = BaseTitleModel().setTitle("登陆")
         }
         return this
     }

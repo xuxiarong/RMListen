@@ -14,7 +14,10 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         btnTest.setOnClickListener{
-            ARouterUtils.getHomeService().login(this)
+            ARouterUtils.getHomeService().routerTest(this)
+        }
+        btnLogin.setOnClickListener{
+            ARouterUtils.getMineService().routerLogin(this)
         }
     }
 

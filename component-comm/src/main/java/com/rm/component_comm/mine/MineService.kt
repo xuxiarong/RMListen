@@ -1,5 +1,6 @@
 package com.rm.component_comm.mine
 
+import android.content.Context
 import com.alibaba.android.arouter.facade.template.IProvider
 
 /**
@@ -8,4 +9,5 @@ import com.alibaba.android.arouter.facade.template.IProvider
  * version: 1.0
  */
 interface MineService : IProvider {
+    fun routerLogin(context: Context)
 }

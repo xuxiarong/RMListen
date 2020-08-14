@@ -20,8 +20,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/title_layout"
-            app:title="@{title}"/>
+<!--        <include layout="@layout/title_layout"-->
+<!--            app:title="@{title}"/>-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/userNameLayout"
