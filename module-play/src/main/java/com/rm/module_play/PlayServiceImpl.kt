@@ -2,7 +2,7 @@ package com.rm.module_play
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.component_comm.ARouterPathConstance
+import com.rm.component_comm.ConstantsARouter
 import com.rm.component_comm.play.PlayService
 
 /**
@@ -10,7 +10,7 @@ import com.rm.component_comm.play.PlayService
  * date   : 2020/08/13
  * version: 1.0
  */
-@Route(path = ARouterPathConstance.PATH_PLAY_SERVICE)
+@Route(path = ConstantsARouter.Play.PATH_PLAY_SERVICE)
 class PlayServiceImpl : PlayService {
     override fun init(context: Context?) {
     }

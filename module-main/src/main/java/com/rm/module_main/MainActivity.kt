@@ -1,7 +1,10 @@
 package com.rm.module_main
 
 import com.rm.baselisten.activity.BaseActivity
-import com.rm.component_comm.ARouterUtils
+import com.rm.component_comm.ConstantsARouter
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.mine.MineService
+import com.rm.component_comm.navigateTo
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -12,12 +15,20 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
     override fun getLayoutResId(): Int = R.layout.activity_main
 
+    lateinit var homeService: HomeService
+    lateinit var mineService: MineService
     override fun initView() {
-        btnTest.setOnClickListener{
-            ARouterUtils.getHomeService().routerTest(this)
+        homeService = (navigateTo(ConstantsARouter.Home.PATH_HOME_SERVICE) as HomeService)
+
+        btnTest.setOnClickListener {
+            homeService.routerTest(this@MainActivity)
         }
-        btnLogin.setOnClickListener{
-            ARouterUtils.getMineService().routerLogin(this)
+
+        mineService = (navigateTo(ConstantsARouter.Mine.PATH_MINE_SERVICE) as MineService)
+
+
+        btnLogin.setOnClickListener {
+            mineService.routerLogin(this)
         }
     }
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MineActivity">
+    <TextView
+        android:layout_centerInParent="true"
+        android:textColor="#091"
+        android:gravity="center"
+        android:text="我是个人主页"
+        android:background="#ff00ff"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        tools:ignore="MissingConstraints" />
+
+</RelativeLayout>

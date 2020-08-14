@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rm.module_search">
+
+    <application
+        android:name="debug.SearchApplication"
+        android:icon="@mipmap/search_ic_launcher"
+        android:label="@string/search_app_name"
+        android:theme="@style/BusinessAppTheme">
+        <activity android:name="debug.SearchMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

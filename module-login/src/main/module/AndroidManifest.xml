@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.rm.module_login">
+
+    <application
+        android:name="debug.LoginApplication"
+        android:icon="@mipmap/login_ic_launcher"
+        android:label="@string/login_app_name"
+        android:theme="@style/BusinessAppTheme">
+        <activity android:name="debug.LoginMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

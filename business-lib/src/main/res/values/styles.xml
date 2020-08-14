@@ -1,0 +1,13 @@
+<resources>
+    <style name="BusinessAppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/businessColorPrimary</item>
+        <item name="colorPrimaryDark">@color/businessColorPrimaryDark</item>
+        <item name="colorAccent">@color/businessColorAccent</item>
+        <item name="drawerArrowStyle">@style/BusinessDrawerArrowStyle</item>
+    </style>
+
+    <style name="BusinessDrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/businessWhite</item>
+    </style>
+</resources>

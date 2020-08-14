@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".test.TestActivity">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.listen.test.TestViewModel" />
+
+
+        <variable
+            name="activity"
+            type="com.rm.listen.test.TestActivity" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/down_time"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:textColor="#ff00ff"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:inputType="number"
+            android:text="@={viewModel.downTime}"
+            app:layout_constraintTop_toBottomOf="@+id/down_time"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_start_dwon"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:onClick="@{() -> viewModel.downTime()}"
+            android:text="开始"
+            app:layout_constraintTop_toBottomOf="@+id/et_input"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/bt_start_dwon"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/to_mine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="路由跳转到个人主页" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/has_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginRight="10dp"
+                    android:text="登陆" />
+
+                <Button
+                    android:id="@+id/login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="不需要登陆" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/need_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_marginRight="10dp"
+                    android:text="需要登陆" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="退出登陆" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

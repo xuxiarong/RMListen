@@ -53,15 +53,26 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':module-main')
-    implementation project(path: ':module-home')
-    implementation project(path: ':module-search')
-    implementation project(path: ':module-play')
-    implementation project(path: ':module-listen')
-    implementation project(path: ':module-mine')
+    if(!rootProject.ext.isHomeApp){
+        implementation project(path: ':module-home')
+    }
+    if(!rootProject.ext.isSearchApp){
+        implementation project(path: ':module-search')
+    }
+    if(!rootProject.ext.isPlayApp){
+        implementation project(path: ':module-play')
+    }
+    if(!rootProject.ext.isListenApp){
+        implementation project(path: ':module-listen')
+    }
+    if(!rootProject.ext.isMineApp){
+        implementation project(path: ':module-mine')
+    }
+    if(!rootProject.ext.isLoginApp){
+        implementation project(path: ':module-login')
+    }
+
     implementation project(path: ':component-comm')
-//    implementation rootProject.ext.dependencies["material"]
-    // 本地module
-//    implementation project(path: ':music-player-lib')
     implementation project(path: ':base-listen-lib')
     kapt rootProject.ext.dependencies["router_compiler"]
 }

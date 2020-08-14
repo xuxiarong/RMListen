@@ -1,6 +1,7 @@
 package com.rm.listen
 
 import com.rm.baselisten.net.CoroutinesDispatcherProvider
+import com.rm.listen.test.TestViewModel
 import com.rm.module_mine.api.ListenApiService
 import com.rm.module_mine.api.RetrofitClient
 import com.rm.module_mine.login.LoginViewModel
@@ -14,13 +15,14 @@ import org.koin.dsl.module
  * version: 1.0
  */
 
-val viewModelModule = module(createdAtStart = true, override = false) {
+val viewModelModule = module {
     viewModel {
         LoginViewModel(get())
+        TestViewModel()
     }
 }
 
-val repositoryModule = module(createdAtStart = true, override = false) {
+val repositoryModule = module {
     single { RetrofitClient.getService(ListenApiService::class.java, ListenApiService.BASE_URL) }
     single { CoroutinesDispatcherProvider() }
     single { LoginRepository(get()) }

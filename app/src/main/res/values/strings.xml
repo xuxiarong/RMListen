@@ -1,14 +1,3 @@
 <resources>
     <string name="app_name">RMListen</string>
-    <string name="play">播放</string>
-
-    <string name="username">用户名</string>
-    <string name="password">密码</string>
-    <string name="login">登录</string>
-    <string name="please_input_username">请输入用户名</string>
-    <string name="please_input_psw">请输入密码</string>
-    <string name="is_logining">正在登录</string>
-    <string name="or">Or</string>
-    <string name="register">注册</string>
-    <string name="is_registering">正在注册</string>
 </resources>

@@ -1,10 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rm.module_mine">
+package="com.rm.module_mine">
 
-    <application>
-        <activity android:name=".login.LoginActivity"
-                  android:launchMode="singleTop"
-            />
+<application>
+    <activity
+        android:name=".login.LoginActivity"
+        android:launchMode="singleTop" />
+    <activity android:name=".TestNotActivity"></activity>
+    <activity android:name=".TestMineActivity" />
+    <activity android:name=".MineActivity" />
+</application>
 
-    </application>
 </manifest>

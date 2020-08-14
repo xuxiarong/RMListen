@@ -1,5 +1,14 @@
 // 全局总配置
 ext {
+
+    isHomeApp = false // 主页模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isSearchApp = false // 搜索模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isPlayApp = false // 播放模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isListenApp = false // 我听模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isMineApp = false // 个人模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isLoginApp = false // 登陆模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isPayApp = false // 支付模块开关，false = 作为lib组件存在，true = 作为App独立存在
+
     android = [
             compileSdkVersion: 29,
             buildToolsVersion: "29.0.3",
@@ -47,7 +56,8 @@ ext {
             verticalTabLayout         : "1.2.5",
             material_dialogs          : "3.3.0",
             material                  : "1.2.0-beta01",
-            greendao:"3.3.0"
+            greendao                  : "3.3.0",
+            mmkv                      : "1.2.1"
 
     ]
 
@@ -62,13 +72,15 @@ ext {
             koin_androidx_viewmodel   : "org.koin:koin-androidx-viewmodel:${version.koin}",
             material                  : "com.google.android.material:material:${version.material}",
             material_dialogs_input    : "com.afollestad.material-dialogs:input:${version.material_dialogs}",
-            constraint_layout            : "com.android.support.constraint:constraint-layout:${version.constraint_layout}",
+            constraint_layout         : "com.android.support.constraint:constraint-layout:${version.constraint_layout}",
 
             //router
             router                    : "com.alibaba:arouter-api:1.5.0",
             router_compiler           : "com.alibaba:arouter-compiler:1.2.2",
             //sqllite
-            greendao:"org.greenrobot:greendao:${version.greendao}"
+            greendao                  : "org.greenrobot:greendao:${version.greendao}",
+            //save
+            mmkvs                      : "com.tencent:mmkv-static:${version.mmkv}"
     ]
 
     androidx = [
@@ -78,7 +90,7 @@ ext {
             lifecycle_extension: "androidx.lifecycle:lifecycle-extensions:${version.lifecycle_extension}",
             viewmodel_ktx      : "androidx.lifecycle:lifecycle-viewmodel-ktx:${version.viewmodel_ktx}",
             livedata_ktx       : "androidx.lifecycle:lifecycle-livedata-ktx:${version.livedata_ktx}",
-            coroutines_android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutines_android}"
+            coroutines_android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutines_android}",
     ]
 
     // 所有的导包信息
