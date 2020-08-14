@@ -8,7 +8,7 @@
 
 **Project中若干Lib说明**：
 
-- base-listen-lib： 基础模块的封装，适用于应用层开发
+- base-listen-lib： 基础模块的封装，适用于应用层开发、基础工具等
 - business-lib： 组件化的业务lib，统一配置网络、style、权限、bean实体、数据库等。
 - component-comm: 用于组件间路由通讯
 - music-player-lib: 音频播放器
