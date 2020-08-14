@@ -20,7 +20,7 @@ class DaoUtil<T, K> {
     var mSession: AbstractDao<T, K>? = null
 
     constructor(cls:Class<T>,key:K){
-        mSession=DaoManager.daoManager.daoSession.getDao(cls) as AbstractDao<T, K>
+//        mSession=DaoManager.daoManager.daoSession.getDao(cls) as AbstractDao<T, K>
     }
 
 
