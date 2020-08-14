@@ -65,9 +65,9 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:background="@color/mine_colorPrimary"
+            android:background="@color/businessColorPrimary"
             android:text="@string/mine_login"
-            android:textColor="@color/mine_white"
+            android:textColor="@color/businessWhite"
             android:textSize="16sp"
             android:onClick="@{() -> viewModel.login()}"/>
 <!--        android:enabled="@{viewModel.uiState.enableLoginButton}"-->
@@ -79,9 +79,9 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:background="@color/mine_colorPrimary"
+            android:background="@color/businessColorPrimary"
             android:text="@string/mine_register"
-            android:textColor="@color/mine_white"
+            android:textColor="@color/businessWhite"
             android:textSize="16sp"
             android:enabled="@{viewModel.uiState.enableLoginButton}"
             android:onClick="@{() -> viewModel.register()}"/>

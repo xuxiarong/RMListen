@@ -1,17 +1,4 @@
 <resources>
-
-    <style name="MineAppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/mine_colorPrimary</item>
-        <item name="colorPrimaryDark">@color/mine_colorPrimaryDark</item>
-        <item name="colorAccent">@color/mine_colorAccent</item>
-        <item name="drawerArrowStyle">@style/MineDrawerArrowStyle</item>
-    </style>
-
-    <style name="MineDrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/mine_white</item>
-    </style>
-
     <style name="Mine_Article_text" parent="@style/Widget.MaterialComponents.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

@@ -1,15 +1,2 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="ListenAppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/listen_colorPrimary</item>
-        <item name="colorPrimaryDark">@color/listen_colorPrimaryDark</item>
-        <item name="colorAccent">@color/listen_colorAccent</item>
-        <item name="drawerArrowStyle">@style/ListenDrawerArrowStyle</item>
-    </style>
-
-    <style name="ListenDrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/listen_white</item>
-    </style>
-
 </resources>

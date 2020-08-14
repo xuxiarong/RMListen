@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mine_colorPrimary">#6200EE</color>
-    <color name="mine_colorPrimaryDark">#3700B3</color>
-    <color name="mine_colorAccent">#03DAC5</color>
-
-    <color name="mine_white">#ffffff</color>
     <color name="mine_black">#000000</color>
     <color name="mine_gray">#8e8e8e</color>
     <color name="mine_light_gray">#e0e0e0</color>

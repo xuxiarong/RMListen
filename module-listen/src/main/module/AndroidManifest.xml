@@ -4,13 +4,9 @@
 
     <application
         android:name=".app.ListenApplication"
-        android:allowBackup="true"
         android:icon="@mipmap/listen_ic_launcher"
         android:label="@string/listen_app_name"
-        android:supportsRtl="true"
-        android:theme="@style/ListenAppTheme"
-        tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:label">
+        android:theme="@style/BusinessAppTheme">
         <activity android:name=".activity.ListenMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

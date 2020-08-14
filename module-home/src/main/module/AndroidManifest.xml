@@ -4,13 +4,9 @@
 
     <application
         android:name=".app.HomeApplication"
-        android:allowBackup="true"
         android:icon="@mipmap/home_ic_launcher"
         android:label="@string/home_app_name"
-        android:supportsRtl="true"
-        android:theme="@style/HomeAppTheme"
-        tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:label">
+        android:theme="@style/BusinessAppTheme">
         <activity android:name=".activity.HomeMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

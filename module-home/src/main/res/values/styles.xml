@@ -1,15 +1,2 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="HomeAppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/home_colorPrimary</item>
-        <item name="colorPrimaryDark">@color/home_colorPrimaryDark</item>
-        <item name="colorAccent">@color/home_colorAccent</item>
-        <item name="drawerArrowStyle">@style/HomeDrawerArrowStyle</item>
-    </style>
-
-    <style name="HomeDrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/home_white</item>
-    </style>
-
 </resources>
