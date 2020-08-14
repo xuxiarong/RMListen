@@ -1,6 +1,8 @@
 package com.rm.module_mine.login
 
 import android.app.ProgressDialog
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.rm.baselisten.activity.BaseNetActivity
@@ -30,20 +32,20 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
 
     override fun onResume() {
         super.onResume()
-//        count++
-//        databind.login.visibility = View.VISIBLE
-//
-//        if (count % 4 == 0) {
-//            showContent()
-//        } else if (count % 4 == 1) {
-//            showEmpty()
-//        } else if (count % 4 == 2) {
-//            showError()
-//        } else {
-//            Log.i("llj","其他情况 !!!!")
-//            databind.login.visibility = View.GONE
-//            showLoad()
-//        }
+        count++
+        databind.login.visibility = View.VISIBLE
+
+        if (count % 4 == 0) {
+            showContent()
+        } else if (count % 4 == 1) {
+            showEmpty()
+        } else if (count % 4 == 2) {
+            showError()
+        } else {
+            Log.i("llj","其他情况 !!!!")
+            databind.login.visibility = View.GONE
+            showLoad()
+        }
 
     }
 
