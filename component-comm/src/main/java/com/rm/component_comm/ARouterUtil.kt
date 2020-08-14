@@ -1,11 +1,5 @@
 package com.rm.component_comm
-
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.alibaba.android.arouter.core.LogisticsCenter
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.launcher.ARouter
 
@@ -20,11 +14,11 @@ import com.alibaba.android.arouter.launcher.ARouter
  * @UpdateRemark: 更新说明
  * @Version: 1.0.0
  */
-private const val ResultTag = "StartActivityForResult"
+
 /**
  * 普通跳转
  */
-fun navigateTo(path:String){
+fun navigateTo(path: String) {
     ARouter.getInstance().build(path).navigation()
 }
 
@@ -32,21 +26,25 @@ fun navigateTo(path:String){
  * 携带参数
  */
 fun navigateWithTo(path: String): Postcard {
-    return  ARouter.getInstance().build(path)
+    return ARouter.getInstance().build(path)
 }
 
 /**
  * forResult不携带参数
  */
-fun FragmentActivity.navigateToForResult(path: String,code:Int) {
-    ARouter.getInstance().build(path).navigation(this,code)
+fun FragmentActivity.navigateToForResult(path: String, code: Int) {
+    ARouter.getInstance().build(path).navigation(this, code)
+
+}
+
+fun  hasLoginNavigateTo(){
 
 }
 /**
- * forResult不携带参数
+ * forResult携带参数
  */
-fun FragmentActivity.navigateWithToForResult(path: String): Postcard  {
-   return ARouter.getInstance().build(path)
+fun navigateWithToForResult(path: String): Postcard {
+    return ARouter.getInstance().build(path)
 }
 
 

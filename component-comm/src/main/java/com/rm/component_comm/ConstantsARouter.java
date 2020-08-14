@@ -22,10 +22,10 @@ public interface ConstantsARouter {
 
     //个人路径
     interface Mine {
-        String F_TEST= "/rm/module_mine/TestNot";
-         String F_MAIN= "/rm/module_mine/TestMineActivity";
-         String F_LOGIN_PATH="/listen/login.Login";
-
+        String F_TEST = "/rm/module_mine/TestNot";
+        String F_MAIN = "/rm/module_mine/TestMineActivity";
+        String F_LOGIN_PATH = "/listen/login.Login";
+        String F_NEED_LOGIN = "/rm/module_mine/NeedLoginActivity";
     }
 
     //搜索路径

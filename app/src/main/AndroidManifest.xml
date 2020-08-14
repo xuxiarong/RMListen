@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="MissingClass">
-        <activity android:name=".test.LoginTestActivity"></activity>
+        <activity android:name=".test.NeedLoginActivity"></activity>
+        <activity android:name=".test.LoginTestActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".test.TestActivity">
             <intent-filter>

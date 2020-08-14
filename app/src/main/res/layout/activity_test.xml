@@ -10,9 +10,6 @@
             name="viewModel"
             type="com.rm.listen.test.TestViewModel" />
 
-        <variable
-            name="title"
-            type="com.rm.listen.bean.Title" />
 
         <variable
             name="activity"
@@ -96,6 +93,7 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/need_login"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:layout_marginRight="10dp"

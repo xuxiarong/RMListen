@@ -2,7 +2,6 @@ package com.rm.component_comm.interceptor
 
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.callback.NavigationCallback
-import com.alibaba.android.arouter.launcher.ARouter
 import com.rm.component_comm.ConstantsARouter
 import com.rm.component_comm.navigateTo
 
@@ -17,7 +16,7 @@ import com.rm.component_comm.navigateTo
  * @UpdateRemark: 更新说明
  * @Version: 1.0.0
  */
-open class LoginNavigationCallbackImpl: NavigationCallback {
+open class LoginNavigationCallbackImpl : NavigationCallback {
     override fun onLost(postcard: Postcard?) {
         //找到了
     }
@@ -28,7 +27,7 @@ open class LoginNavigationCallbackImpl: NavigationCallback {
 
     override fun onInterrupt(postcard: Postcard?) {
         //拦截进行登陆
-      navigateTo(ConstantsARouter.Mine.F_LOGIN_PATH)
+        navigateTo(ConstantsARouter.Mine.F_LOGIN_PATH)
     }
 
     override fun onArrival(postcard: Postcard?) {

@@ -16,16 +16,18 @@ import com.rm.component_comm.search.SearchService
  * version: 1.0
  */
 class ARouterUtils {
-    fun arouterTo(path:String){
-         ARouter.getInstance().build(ARouterPathConstance.PATH_MAIN_SERVICE).navigation()
+    fun arouterTo(path: String) {
+        ARouter.getInstance().build(ARouterPathConstance.PATH_MAIN_SERVICE).navigation()
     }
-    companion object{
+
+    companion object {
         /**
          * 获取主工程module路由服务
          * @return MainService
          */
         fun getMainService(): MainService {
-            return ARouter.getInstance().build(ARouterPathConstance.PATH_MAIN_SERVICE).navigation() as MainService
+            return ARouter.getInstance().build(ARouterPathConstance.PATH_MAIN_SERVICE)
+                .navigation() as MainService
         }
 
         /**
@@ -33,7 +35,8 @@ class ARouterUtils {
          * @return HomeService
          */
         fun getHomeService(): HomeService {
-            return ARouter.getInstance().build(ARouterPathConstance.PATH_HOME_SERVICE).navigation() as HomeService
+            return ARouter.getInstance().build(ARouterPathConstance.PATH_HOME_SERVICE)
+                .navigation() as HomeService
         }
 
         /**
@@ -41,7 +44,8 @@ class ARouterUtils {
          * @return ListenService
          */
         fun getListenService(): ListenService {
-            return ARouter.getInstance().build(ARouterPathConstance.PATH_LISTEN_SERVICE).navigation() as ListenService
+            return ARouter.getInstance().build(ARouterPathConstance.PATH_LISTEN_SERVICE)
+                .navigation() as ListenService
         }
 
         /**
@@ -49,7 +53,8 @@ class ARouterUtils {
          * @return ListenService
          */
         fun getMineService(): MineService {
-            return ARouter.getInstance().build(ARouterPathConstance.PATH_MINE_SERVICE).navigation() as MineService
+            return ARouter.getInstance().build(ARouterPathConstance.PATH_MINE_SERVICE)
+                .navigation() as MineService
         }
 
         /**
@@ -57,7 +62,8 @@ class ARouterUtils {
          * @return ListenService
          */
         fun getPlayService(): PlayService {
-            return ARouter.getInstance().build(ARouterPathConstance.PATH_PLAY_SERVICE).navigation() as PlayService
+            return ARouter.getInstance().build(ARouterPathConstance.PATH_PLAY_SERVICE)
+                .navigation() as PlayService
         }
 
         /**
@@ -65,11 +71,12 @@ class ARouterUtils {
          * @return ListenService
          */
         fun getSearchService(): SearchService {
-            return ARouter.getInstance().build(ARouterPathConstance.PATH_SEARCH_SERVICE).navigation() as SearchService
+            return ARouter.getInstance().build(ARouterPathConstance.PATH_SEARCH_SERVICE)
+                .navigation() as SearchService
         }
 
-        fun init(application: Application){
-            if(BuildConfig.DEBUG){
+        fun init(application: Application) {
+            if (BuildConfig.DEBUG) {
                 ARouter.openLog()
                 ARouter.openDebug()
             }
