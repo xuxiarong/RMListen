@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.rm.baselisten.activity.BaseNetActivity
+import com.rm.baselisten.model.BaseTitleModel
+import com.rm.module_mine.R
 import com.rm.module_mine.databinding.ActivityLoginBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,6 +25,10 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
     }
 
     override fun initView() {
+        var baseTitleModel = BaseTitleModel()
+        baseTitleModel.mainTitle = getString(R.string.mine_login)
+        loginViewModel.baseTitleModel.value = baseTitleModel
+
         databind.run {
             viewModel = loginViewModel
         }

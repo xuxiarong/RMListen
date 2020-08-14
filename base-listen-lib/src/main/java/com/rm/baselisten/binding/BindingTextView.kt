@@ -2,6 +2,7 @@ package com.rm.baselisten.binding
 
 import android.text.TextUtils
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
 /**
@@ -10,6 +11,12 @@ import androidx.databinding.BindingAdapter
  * version: 1.0
  */
 @BindingAdapter("bindText")
-fun View.bindText(content: String?) {
-    visibility = if (TextUtils.isEmpty(content)) View.GONE else View.VISIBLE
+fun TextView.bindText(content: String?) {
+
+    visibility = if (TextUtils.isEmpty(content)) {
+        View.GONE
+    } else {
+        text = content
+        View.VISIBLE
+    }
 }

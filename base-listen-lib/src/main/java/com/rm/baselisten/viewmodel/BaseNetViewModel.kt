@@ -15,56 +15,53 @@ import com.rm.baselisten.net.bean.BaseStatusModel
  * version: 1.0
  */
 open class BaseNetViewModel(private val baseLayoutId: Int) : BaseViewModel(baseLayoutId) {
-    private var _baseNetModel = MutableLiveData<BaseNetModel>()
-    val baseNetModel: LiveData<BaseNetModel> get() = _baseNetModel
 
-    private var _baseTitleModel = MutableLiveData<BaseTitleModel>()
-    val baseTitleModel : LiveData<BaseTitleModel> get() = _baseTitleModel
+    var baseNetModel = MutableLiveData<BaseNetModel>()
 
+    var baseTitleModel = MutableLiveData<BaseTitleModel>()
 
-    private var _baseStatusModel = MutableLiveData<BaseStatusModel>()
-    val baseStatusModel : LiveData<BaseStatusModel> get() = _baseStatusModel
+    var baseStatusModel = MutableLiveData<BaseStatusModel>()
 
     private var _baseLayoutModel = MutableLiveData<BaseNetLayoutModel>()
-    val baseLayoutModel : LiveData<BaseNetLayoutModel> get() = _baseLayoutModel
+    val baseLayoutModel: LiveData<BaseNetLayoutModel> get() = _baseLayoutModel
 
-    fun showContent(){
+    fun showContent() {
         baseStatusModel.value?.netStatus = BaseNetStatus.BASE_SHOW_CONTENT
     }
 
-    fun showLoad(){
+    fun showLoad() {
         baseStatusModel.value?.netStatus = BaseNetStatus.BASE_SHOW_LOADING
     }
 
-    fun showEmpty(){
+    fun showEmpty() {
         baseStatusModel.value?.netStatus = BaseNetStatus.BASE_SHOW_DATA_EMPTY
     }
 
-    fun showError(){
-        _baseNetModel.value = _baseNetModel.value?.setStatus(BaseNetStatus.BASE_SHOW_NET_ERROR)
+    fun showError() {
+        baseNetModel.value = baseNetModel.value?.setStatus(BaseNetStatus.BASE_SHOW_NET_ERROR)
     }
 
-    fun setEmptyView(layoutId:Int){
-        _baseNetModel.value = _baseNetModel.value?.setEmptyLayout(layoutId)
+    fun setEmptyView(layoutId: Int) {
+        baseNetModel.value = baseNetModel.value?.setEmptyLayout(layoutId)
     }
 
-    fun setContentView(layoutId:Int){
-        _baseNetModel.value = _baseNetModel.value?.setContentLayout(layoutId)
+    fun setContentView(layoutId: Int) {
+        baseNetModel.value = baseNetModel.value?.setContentLayout(layoutId)
 
     }
 
-    fun setErrorView(layoutId:Int){
-        _baseNetModel.value = _baseNetModel.value?.setErrorLayout(layoutId)
+    fun setErrorView(layoutId: Int) {
+        baseNetModel.value = baseNetModel.value?.setErrorLayout(layoutId)
     }
 
-    fun setLoadView(layoutId:Int){
-        _baseNetModel.value = _baseNetModel.value?.setLoadLayout(layoutId)
+    fun setLoadView(layoutId: Int) {
+        baseNetModel.value = baseNetModel.value?.setLoadLayout(layoutId)
     }
 
-    fun setTitle(title : String){
+    fun setTitle(title: String) {
         var baseTitleModel1 = BaseTitleModel()
         baseTitleModel1.mainTitle = title
-        _baseTitleModel.postValue(baseTitleModel1)
+        baseTitleModel.postValue(baseTitleModel1)
     }
 
 
