@@ -4,8 +4,6 @@ import com.rm.baselisten.net.CoroutinesDispatcherProvider
 import com.rm.listen.test.TestViewModel
 import com.rm.module_mine.api.ListenApiService
 import com.rm.module_mine.api.RetrofitClient
-import com.rm.module_mine.login.LoginViewModel
-import com.rm.module_mine.repository.LoginRepository
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -17,7 +15,6 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel {
-        LoginViewModel(get())
         TestViewModel()
     }
 }
@@ -25,7 +22,6 @@ val viewModelModule = module {
 val repositoryModule = module {
     single { RetrofitClient.getService(ListenApiService::class.java, ListenApiService.BASE_URL) }
     single { CoroutinesDispatcherProvider() }
-    single { LoginRepository(get()) }
 }
 
 val appModule = listOf(viewModelModule, repositoryModule)
