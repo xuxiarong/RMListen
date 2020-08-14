@@ -36,8 +36,6 @@ class LoginViewModel(private val repository: LoginRepository) : BaseNetViewModel
     }
 
     fun login() {
-        setTitle("登陆")
-
 //        ARouterUtils.getHomeService().login(BaseApplication.CONTEXT)
 //        ARouter.getInstance().build("/home/TestActivity").navigation()
         if (userName.get().isNullOrBlank() || passWord.get().isNullOrBlank()) {

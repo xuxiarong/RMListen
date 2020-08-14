@@ -58,11 +58,11 @@ abstract class BaseNetActivity< T : ViewDataBinding, VM : BaseNetViewModel> : Ba
     }
 
     private fun setLayout() {
-        TODO("Not yet implemented")
+
     }
 
     private fun setStatus() {
-        TODO("Not yet implemented")
+
     }
 
     private fun setTitle() {
