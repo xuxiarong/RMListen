@@ -1,4 +1,4 @@
-package com.rm.module_login.activity
+package debug
 
 import com.rm.baselisten.activity.BaseActivity
 import com.rm.module_login.R

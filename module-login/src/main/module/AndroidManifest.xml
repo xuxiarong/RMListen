@@ -3,11 +3,11 @@
     package="com.rm.module_login">
 
     <application
-        android:name=".app.LoginApplication"
+        android:name="debug.LoginApplication"
         android:icon="@mipmap/login_ic_launcher"
         android:label="@string/login_app_name"
         android:theme="@style/BusinessAppTheme">
-        <activity android:name=".activity.LoginMainActivity">
+        <activity android:name="debug.LoginMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

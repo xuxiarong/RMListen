@@ -3,11 +3,11 @@
     package="com.rm.module_listen">
 
     <application
-        android:name=".app.ListenApplication"
+        android:name="debug.ListenApplication"
         android:icon="@mipmap/listen_ic_launcher"
         android:label="@string/listen_app_name"
         android:theme="@style/BusinessAppTheme">
-        <activity android:name=".activity.ListenMainActivity">
+        <activity android:name="debug.ListenMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

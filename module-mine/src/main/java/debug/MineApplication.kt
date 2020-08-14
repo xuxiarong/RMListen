@@ -1,4 +1,4 @@
-package com.rm.module_mine.app
+package debug
 
 import com.rm.baselisten.BaseApplication
 

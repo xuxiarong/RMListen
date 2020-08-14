@@ -1,15 +1,15 @@
-package com.rm.module_play.activity
+package debug
 
 import com.rm.baselisten.activity.BaseActivity
-import com.rm.module_play.R
+import com.rm.module_mine.R
 
 /**
  * desc   :
  * date   : 2020/08/13
  * version: 1.0
  */
-class PlayMainActivity : BaseActivity() {
-    override fun getLayoutResId(): Int = R.layout.play_activity_main
+class MineMainActivity : BaseActivity() {
+    override fun getLayoutResId(): Int = R.layout.mine_activity_main
 
     override fun initView() {
     }

@@ -3,11 +3,11 @@
     package="com.rm.module_home">
 
     <application
-        android:name=".app.HomeApplication"
+        android:name="debug.HomeApplication"
         android:icon="@mipmap/home_ic_launcher"
         android:label="@string/home_app_name"
         android:theme="@style/BusinessAppTheme">
-        <activity android:name=".activity.HomeMainActivity">
+        <activity android:name="debug.HomeMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

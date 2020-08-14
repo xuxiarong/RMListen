@@ -1,4 +1,4 @@
-package com.rm.module_search.app
+package debug
 
 import com.rm.baselisten.BaseApplication
 
@@ -7,5 +7,5 @@ import com.rm.baselisten.BaseApplication
  * date   : 2020/08/13
  * version: 1.0
  */
-class SearchApplication : BaseApplication() {
+class ListenApplication : BaseApplication() {
 }
