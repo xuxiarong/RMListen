@@ -1,0 +1,11 @@
+package com.rm.module_play.app
+
+import com.rm.baselisten.BaseApplication
+
+/**
+ * desc   :
+ * date   : 2020/08/13
+ * version: 1.0
+ */
+class PlayApplication : BaseApplication() {
+}

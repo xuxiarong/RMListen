@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rm.module_play">
+
+    <application
+        android:name=".app.PlayApplication"
+        android:icon="@mipmap/play_ic_launcher"
+        android:label="@string/play_app_name"
+        android:theme="@style/BusinessAppTheme">
+        <activity android:name=".activity.PlayMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
