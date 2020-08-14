@@ -2,6 +2,7 @@ package com.rm.listen
 
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.Cxt
+//import com.rm.business_lib.db.DaoManager.Companion.daoManager
 import com.rm.component_comm.initARouter
 import com.rm.module_mine.mineModule
 import org.koin.android.ext.koin.androidContext
@@ -25,6 +26,7 @@ class ListenApplication : BaseApplication() {
             modules(mineModule)
         }
         Cxt.context=CONTEXT
+//        daoManager.initDaoManger()
     }
 
 }

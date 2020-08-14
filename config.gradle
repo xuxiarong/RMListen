@@ -1,6 +1,7 @@
 // 全局总配置
 ext {
 
+    isMainApp = false // 主模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isHomeApp = false // 主页模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isSearchApp = false // 搜索模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isPlayApp = false // 播放模块开关，false = 作为lib组件存在，true = 作为App独立存在
@@ -57,30 +58,34 @@ ext {
             material_dialogs          : "3.3.0",
             material                  : "1.2.0-beta01",
             greendao                  : "3.3.0",
-            mmkv                      : "1.2.1"
+            mmkv                      : "1.2.1",
+            adapter_helper            : "3.0.4@aar",
+            roundview                 : "1.1.4@aar"
 
     ]
 
     dependencies = [
             // network
-            retrofit                  : "com.squareup.retrofit2:retrofit:${version.retrofit}",
-            retrofit_converter_gson   : "com.squareup.retrofit2:converter-gson:${version.retrofit_converter_gson}",
-            okhttp_logging_interceptor: "com.squareup.okhttp3:logging-interceptor:${version.okhttp_logging_interceptor}",
+            retrofit                     : "com.squareup.retrofit2:retrofit:${version.retrofit}",
+            retrofit_converter_gson      : "com.squareup.retrofit2:converter-gson:${version.retrofit_converter_gson}",
+            okhttp_logging_interceptor   : "com.squareup.okhttp3:logging-interceptor:${version.okhttp_logging_interceptor}",
 
-            koin_android              : "org.koin:koin-android:${version.koin}",
-            koin_androidx_scope       : "org.koin:koin-androidx-scope:${version.koin}",
-            koin_androidx_viewmodel   : "org.koin:koin-androidx-viewmodel:${version.koin}",
-            material                  : "com.google.android.material:material:${version.material}",
-            material_dialogs_input    : "com.afollestad.material-dialogs:input:${version.material_dialogs}",
-            constraint_layout         : "com.android.support.constraint:constraint-layout:${version.constraint_layout}",
+            koin_android                 : "org.koin:koin-android:${version.koin}",
+            koin_androidx_scope          : "org.koin:koin-androidx-scope:${version.koin}",
+            koin_androidx_viewmodel      : "org.koin:koin-androidx-viewmodel:${version.koin}",
+            material                     : "com.google.android.material:material:${version.material}",
+            material_dialogs_input       : "com.afollestad.material-dialogs:input:${version.material_dialogs}",
+            constraint_layout            : "com.android.support.constraint:constraint-layout:${version.constraint_layout}",
 
             //router
-            router                    : "com.alibaba:arouter-api:1.5.0",
-            router_compiler           : "com.alibaba:arouter-compiler:1.2.2",
+            router                       : "com.alibaba:arouter-api:1.5.0",
+            router_compiler              : "com.alibaba:arouter-compiler:1.2.2",
             //sqllite
-            greendao                  : "org.greenrobot:greendao:${version.greendao}",
+            greendao                     : "org.greenrobot:greendao:${version.greendao}",
             //save
-            mmkvs                      : "com.tencent:mmkv-static:${version.mmkv}"
+            mmkvs                        : "com.tencent:mmkv-static:${version.mmkv}",
+            base_adapter: "com.github.CymChad:BaseRecyclerViewAdapterHelper:${version.adapter_helper}",
+            roundview                    : "com.flyco.roundview:FlycoRoundView_Lib:${version.roundview}"
     ]
 
     androidx = [
