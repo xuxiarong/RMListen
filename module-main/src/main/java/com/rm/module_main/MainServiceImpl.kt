@@ -2,7 +2,7 @@ package com.rm.module_main
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.component_comm.ARouterPathConstance
+import com.rm.component_comm.ConstantsARouter
 import com.rm.component_comm.main.MainService
 
 /**
@@ -10,7 +10,7 @@ import com.rm.component_comm.main.MainService
  * date   : 2020/08/13
  * version: 1.0
  */
-@Route(path = ARouterPathConstance.PATH_MAIN_SERVICE)
+@Route(path = ConstantsARouter.Main.PATH_MAIN_SERVICE)
 class MainServiceImpl : MainService {
     override fun init(context: Context?) {
     }

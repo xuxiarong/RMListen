@@ -1,7 +1,9 @@
 package com.rm.module_main
 
 import com.rm.baselisten.activity.BaseActivity
-import com.rm.component_comm.ARouterUtils
+import com.rm.component_comm.ConstantsARouter
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.navigateTo
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -12,9 +14,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
     override fun getLayoutResId(): Int = R.layout.activity_main
 
+    lateinit var homeService:HomeService
     override fun initView() {
+        homeService = (navigateTo(ConstantsARouter.Home.PATH_HOME_SERVICE) as HomeService)
         btnTest.setOnClickListener{
-            ARouterUtils.getHomeService().login(this)
+            homeService.login(this)
+//            (navigateWithTo(ARouterPathConstance.PATH_HOME_SERVICE).navigation() as HomeService).login(this)
+//            ARouterUtils.getHomeService().login(this)
         }
     }
 

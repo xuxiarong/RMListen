@@ -1,5 +1,8 @@
 package com.rm.component_comm
+
+import android.app.Application
 import androidx.fragment.app.FragmentActivity
+import com.alibaba.android.arouter.BuildConfig
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.launcher.ARouter
 
@@ -15,11 +18,21 @@ import com.alibaba.android.arouter.launcher.ARouter
  * @Version: 1.0.0
  */
 
+
+fun initARouter(application: Application) {
+    if (BuildConfig.DEBUG) {
+        ARouter.openLog()
+        ARouter.openDebug()
+    }
+    ARouter.init(application)
+}
+
+
 /**
  * 普通跳转
  */
-fun navigateTo(path: String) {
-    ARouter.getInstance().build(path).navigation()
+fun navigateTo(path: String): Any {
+    return ARouter.getInstance().build(path).navigation()
 }
 
 /**
@@ -37,9 +50,10 @@ fun FragmentActivity.navigateToForResult(path: String, code: Int) {
 
 }
 
-fun  hasLoginNavigateTo(){
+fun hasLoginNavigateTo() {
 
 }
+
 /**
  * forResult携带参数
  */
