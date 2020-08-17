@@ -1,13 +1,8 @@
 package com.rm.listen
 
-import com.rm.baselisten.util.Cxt
-import com.rm.business_lib.db.DaoManager.Companion.daoManager
+//import com.rm.business_lib.db.DaoManager.Companion.daoManager
 import com.rm.component_comm.ComponentApplication
-import com.rm.module_mine.mineModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+import org.koin.core.context.loadKoinModules
 
 /**
  * desc   :
@@ -17,14 +12,8 @@ import org.koin.core.logger.Level
 class ListenApplication : ComponentApplication() {
     override fun onCreate() {
         super.onCreate()
-        startKoin {
-            androidLogger(Level.DEBUG)
-            androidContext(this@ListenApplication)
-            modules(appModule)
-            modules(mineModule)
-        }
-        Cxt.context=CONTEXT
-        daoManager.initDaoManger()
+        loadKoinModules(appModule)
+//        daoManager.initDaoManger()
     }
 
 }

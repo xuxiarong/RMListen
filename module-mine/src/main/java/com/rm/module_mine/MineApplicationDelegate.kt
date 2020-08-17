@@ -2,6 +2,7 @@ package com.rm.module_mine
 
 import android.util.Log
 import com.rm.component_comm.base.IApplicationDelegate
+import org.koin.core.context.loadKoinModules
 
 /**
  * desc   : Mine 组件 application 需要处理的逻辑在这里
@@ -11,6 +12,7 @@ import com.rm.component_comm.base.IApplicationDelegate
 class MineApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         Log.i("llj","Module Mine onCreate()!!!")
+        loadKoinModules(mineModule)
     }
 
     override fun onTerminate() {
