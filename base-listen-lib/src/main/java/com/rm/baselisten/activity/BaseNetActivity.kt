@@ -30,9 +30,10 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
 
     protected abstract fun getLayoutId(): Int
     protected abstract fun initViewModel(): VM
-    protected abstract fun initDataBind()
     private lateinit var baseViewModel: VM
     protected lateinit var childView: View
+    protected lateinit var dataBind : T
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +44,9 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
         startBaseObserve()
         //baseActivity布局添加子类的布局
         childView = baseBinding.clBaseContainer.bindChild(getLayoutId())
+        dataBind = DataBindingUtil.bind(childView)!!
         //初始化子类的dataBind
-        initDataBind()
+        dataBind = DataBindingUtil.bind(childView)!!
         //开启子类的LiveData数据监听
         startObserve()
         initView()

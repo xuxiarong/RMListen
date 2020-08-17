@@ -3,7 +3,6 @@ package com.rm.module_mine.login
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.rm.baselisten.activity.BaseNetActivity
 import com.rm.baselisten.model.BaseNetStatus
@@ -22,16 +21,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
 
     private val loginViewModel by viewModel<LoginViewModel>()
-    private lateinit var dataBind : ActivityLoginBinding
 
 
     override fun initViewModel(): LoginViewModel = loginViewModel
 
     override fun getLayoutId(): Int = R.layout.activity_login
-
-    override fun initDataBind() {
-        dataBind = DataBindingUtil.bind(childView)!!
-    }
 
     override fun initView() {
         val baseTitleModel = BaseTitleModel()
