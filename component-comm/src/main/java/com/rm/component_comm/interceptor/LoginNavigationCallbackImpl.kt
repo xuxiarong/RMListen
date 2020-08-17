@@ -2,8 +2,8 @@ package com.rm.component_comm.interceptor
 
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.callback.NavigationCallback
-import com.rm.component_comm.ConstantsARouter
 import com.rm.component_comm.navigateTo
+import com.rm.component_comm.router.ConstantsARouter
 
 /**
  * desc   :
@@ -21,7 +21,7 @@ open class LoginNavigationCallbackImpl : NavigationCallback {
 
     override fun onInterrupt(postcard: Postcard?) {
         //拦截进行登陆
-        navigateTo(ConstantsARouter.Mine.F_LOGIN_PATH)
+        navigateTo(ConstantsARouter.F_LOGIN_PATH)
     }
 
     override fun onArrival(postcard: Postcard?) {

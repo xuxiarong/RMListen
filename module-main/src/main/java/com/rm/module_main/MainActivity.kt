@@ -1,10 +1,9 @@
 package com.rm.module_main
 
 import com.rm.baselisten.activity.BaseActivity
-import com.rm.component_comm.ConstantsARouter
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.mine.MineService
-import com.rm.component_comm.navigateTo
+import com.rm.component_comm.router.RouterHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -18,13 +17,15 @@ class MainActivity : BaseActivity() {
     lateinit var homeService: HomeService
     lateinit var mineService: MineService
     override fun initView() {
-        homeService = (navigateTo(ConstantsARouter.Home.PATH_HOME_SERVICE) as HomeService)
+//        homeService = (navigateTo(ConstantsARouter.Home.PATH_HOME_SERVICE) as HomeService)
+        homeService = RouterHelper.createRouter(HomeService::class.java)
 
         btnTest.setOnClickListener {
             homeService.routerTest(this@MainActivity)
         }
 
-        mineService = (navigateTo(ConstantsARouter.Mine.PATH_MINE_SERVICE) as MineService)
+//        mineService = (navigateTo(ConstantsARouter.Mine.PATH_MINE_SERVICE) as MineService)
+        mineService = RouterHelper.createRouter(MineService::class.java)
 
 
         btnLogin.setOnClickListener {

@@ -34,7 +34,7 @@ greendao {
 }
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    api project(path: ':base-listen-lib')
+    implementation project(path: ':base-listen-lib')
     api rootProject.ext.dependencies["greendao"]
     api rootProject.ext.dependencies["base_adapter"]
     api rootProject.ext.dependencies["roundview"]
