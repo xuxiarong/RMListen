@@ -6,8 +6,8 @@ import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.annotation.Interceptor
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback
 import com.alibaba.android.arouter.facade.template.IInterceptor
-import com.rm.component_comm.ConstantsARouter
 import com.rm.component_comm.IS_LOGIN
+import com.rm.component_comm.router.ConstantsARouter
 
 /**
  * desc   :
@@ -24,8 +24,8 @@ class LoginInterceptorImpl : IInterceptor {
             callback?.onContinue(postcard)
         } else {  // 如果没有登录
             when (path) {
-                ConstantsARouter.Mine.F_TEST,
-                ConstantsARouter.Mine.F_LOGIN_PATH -> callback?.onContinue(postcard)
+                ConstantsARouter.F_TEST,
+                ConstantsARouter.F_LOGIN_PATH -> callback?.onContinue(postcard)
                 else -> callback?.onInterrupt(null)
             }
         }
