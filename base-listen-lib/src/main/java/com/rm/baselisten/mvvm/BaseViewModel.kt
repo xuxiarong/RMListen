@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
  * date   : 2020/08/05
  * version: 1.0
  */
-open class BaseViewModel(val layoutId : Int) : ViewModel() {
+open class BaseViewModel : ViewModel() {
 
 
     open class UiState<T>(
@@ -21,15 +21,6 @@ open class BaseViewModel(val layoutId : Int) : ViewModel() {
         val isRefresh: Boolean = false,
         val isSuccess: T? = null,
         val isError: String? = null
-    )
-
-
-    open class BaseUiModel<T>(
-        var showLoading: Boolean = false,
-        var showError: String? = null,
-        var showSuccess: T? = null,
-        var showEnd: Boolean = false, // 加载更多
-        var isRefresh: Boolean = false // 刷新
     )
 
     val mException: MutableLiveData<Throwable> = MutableLiveData()

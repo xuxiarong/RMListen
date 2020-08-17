@@ -5,7 +5,6 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.viewmodel.BaseNetViewModel
-import com.rm.module_mine.R
 import com.rm.module_mine.bean.User
 import com.rm.module_mine.checkResult
 import com.rm.module_mine.repository.LoginRepository
@@ -15,7 +14,7 @@ import com.rm.module_mine.repository.LoginRepository
  * date   : 2020/08/04
  * version: 1.0
  */
-class LoginViewModel(private val repository: LoginRepository) : BaseNetViewModel(R.layout.activity_login) {
+class LoginViewModel(private val repository: LoginRepository) : BaseNetViewModel() {
 
     val userName = ObservableField<String>("")
     val passWord = ObservableField<String>("")

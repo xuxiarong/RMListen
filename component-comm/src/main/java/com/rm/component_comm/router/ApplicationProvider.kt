@@ -63,8 +63,8 @@ interface ApplicationProvider : IProvider {
                 val fields = pathClass.declaredFields
                 for (field in fields) {
                     field.isAccessible = true
-                    val routerPath = field[null] as String
-                    list.add(routerPath)
+                    val routerPath = field[null] as? String
+                    list.add(routerPath?:"")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

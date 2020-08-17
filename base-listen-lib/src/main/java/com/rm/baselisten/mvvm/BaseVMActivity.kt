@@ -17,5 +17,4 @@ abstract class BaseVMActivity : AppCompatActivity() {
 
     abstract fun initView()
     abstract fun initData()
-    abstract fun startObserve()
 }

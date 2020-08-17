@@ -142,5 +142,15 @@
             bindClick="@{title.rightIcon1Click}"
             tools:src="@drawable/base_icon_back" />
 
+        <View
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#000"
+            android:layout_marginStart="-10dp"
+            android:layout_marginEnd="-10dp"
+            isVisible="@{title.hasDivider}"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

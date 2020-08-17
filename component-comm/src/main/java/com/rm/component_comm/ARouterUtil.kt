@@ -2,7 +2,6 @@ package com.rm.component_comm
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
-import com.alibaba.android.arouter.BuildConfig
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.launcher.ARouter
 
