@@ -17,7 +17,6 @@
         android:id="@+id/clBaseContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        bindChild="@{viewModel.baseLayoutModel.contentLayout}"
         >
 
         <ViewStub
@@ -64,17 +63,6 @@
             bind:status="@{viewModel.baseStatusModel}"
 
             />
-
-
-<!--        <com.rm.baselisten.view.BaseNetLayout-->
-<!--            android:id="@+id/flBaseLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/baseTitleLayout"-->
-<!--            android:orientation="vertical">-->
-
-<!--        </com.rm.baselisten.view.BaseNetLayout>-->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

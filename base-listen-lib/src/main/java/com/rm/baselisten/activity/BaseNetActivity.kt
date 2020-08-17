@@ -40,11 +40,10 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
         //获取子类初始化的ViewModel
         baseViewModel = initViewModel()
         baseBinding.viewModel = baseViewModel
-        //开启liveData的数据变化监听
+        //开启base的liveData的数据变化监听
         startBaseObserve()
         //baseActivity布局添加子类的布局
         childView = baseBinding.clBaseContainer.bindChild(getLayoutId())
-        dataBind = DataBindingUtil.bind(childView)!!
         //初始化子类的dataBind
         dataBind = DataBindingUtil.bind(childView)!!
         //开启子类的LiveData数据监听
@@ -65,15 +64,6 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
         baseViewModel.baseTitleModel.observe(this, Observer {
             setTitle()
         })
-
-        baseViewModel.baseLayoutModel.observe(this, Observer {
-            setLayout()
-        })
-
-    }
-
-    private fun setLayout() {
-
     }
 
     private fun setStatus(statusModel: BaseStatusModel) {

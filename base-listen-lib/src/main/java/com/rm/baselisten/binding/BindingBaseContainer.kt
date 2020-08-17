@@ -26,7 +26,5 @@ fun ConstraintLayout.bindChild(@LayoutRes layoutId: Int) : View {
     }
 
     return View(context)
-//    init()
-//    setContentLayout(netModel.baseNetLayoutModel.contentLayout)
 
 }
