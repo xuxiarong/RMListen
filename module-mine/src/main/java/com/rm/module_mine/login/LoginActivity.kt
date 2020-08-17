@@ -59,9 +59,11 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
         dataBind.login.visibility = View.VISIBLE
 
         if (count % 4 == 0) {
-            loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_NET_ERROR)
+            loginViewModel.baseStatusModel.value =
+                BaseStatusModel(BaseNetStatus.BASE_SHOW_NET_ERROR)
         } else if (count % 4 == 1) {
-            loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_DATA_EMPTY)
+            loginViewModel.baseStatusModel.value =
+                BaseStatusModel(BaseNetStatus.BASE_SHOW_DATA_EMPTY)
         } else if (count % 4 == 2) {
             loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
         } else {

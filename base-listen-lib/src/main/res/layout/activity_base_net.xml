@@ -9,6 +9,8 @@
             name="viewModel"
             type="com.rm.baselisten.viewmodel.BaseNetViewModel" />
 
+        <import type="com.rm.baselisten.model.BaseNetStatus"/>
+        <import type="com.rm.baselisten.model.BaseStatusModel"/>
         <import type="android.view.View"/>
     </data>
 
@@ -28,6 +30,13 @@
             tools:ignore="MissingConstraints" />
 
         <ViewStub
+            android:id="@+id/baseChildView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/baseTitleLayout"
+            />
+
+        <ViewStub
             android:id="@+id/baseLoad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +44,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout="@layout/base_layout_loading"
             bind:status="@{viewModel.baseStatusModel}"
             />
 
@@ -47,7 +55,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout="@layout/base_layout_error"
             bind:status="@{viewModel.baseStatusModel}"
             />
 
@@ -59,7 +66,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout="@layout/base_layout_empty"
             bind:status="@{viewModel.baseStatusModel}"
 
             />

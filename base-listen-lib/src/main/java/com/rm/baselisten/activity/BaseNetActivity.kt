@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.rm.baselisten.R
-import com.rm.baselisten.binding.bindChild
 import com.rm.baselisten.databinding.ActivityBaseNetBinding
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
@@ -31,8 +30,8 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
     protected abstract fun getLayoutId(): Int
     protected abstract fun initViewModel(): VM
     private lateinit var baseViewModel: VM
-    protected lateinit var childView: View
-    protected lateinit var dataBind : T
+    protected var childView: View? = null
+    protected lateinit var dataBind: T
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,13 +42,23 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
         //开启base的liveData的数据变化监听
         startBaseObserve()
         //baseActivity布局添加子类的布局
-        childView = baseBinding.clBaseContainer.bindChild(getLayoutId())
+//        childView = baseBinding.clBaseContainer.bindChild(getLayoutId())
         //初始化子类的dataBind
-        dataBind = DataBindingUtil.bind(childView)!!
         //开启子类的LiveData数据监听
+        initChild()
         startObserve()
         initView()
         initData()
+    }
+
+    private fun initChild() {
+        if (!baseBinding.baseChildView.isInflated) {
+            baseBinding.baseChildView.viewStub?.layoutResource = getLayoutId()
+            childView = baseBinding.baseChildView.viewStub?.inflate()
+            if (childView != null) {
+                dataBind = DataBindingUtil.bind(childView!!)!!
+            }
+        }
     }
 
     /**
@@ -67,27 +76,30 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
     }
 
     private fun setStatus(statusModel: BaseStatusModel) {
-        when(statusModel.netStatus){
-            BaseNetStatus.BASE_SHOW_DATA_EMPTY ->{
-                if(!baseBinding.baseEmpty.isInflated){
+        when (statusModel.netStatus) {
+            BaseNetStatus.BASE_SHOW_DATA_EMPTY -> {
+                if (!baseBinding.baseEmpty.isInflated) {
+                    baseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
                     baseBinding.baseEmpty.viewStub?.inflate()
                 }
-                childView.visibility = View.GONE
+                childView?.visibility = View.GONE
             }
-            BaseNetStatus.BASE_SHOW_NET_ERROR ->{
-                if(!baseBinding.baseError.isInflated){
+            BaseNetStatus.BASE_SHOW_NET_ERROR -> {
+                if (!baseBinding.baseError.isInflated) {
+                    baseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
                     baseBinding.baseError.viewStub?.inflate()
                 }
-                childView.visibility = View.GONE
+                childView?.visibility = View.GONE
             }
-            BaseNetStatus.BASE_SHOW_LOADING ->{
-                if(!baseBinding.baseLoad.isInflated){
+            BaseNetStatus.BASE_SHOW_LOADING -> {
+                if (!baseBinding.baseLoad.isInflated) {
+                    baseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
                     baseBinding.baseLoad.viewStub?.inflate()
                 }
-                childView.visibility = View.VISIBLE
+                childView?.visibility = View.VISIBLE
             }
-            BaseNetStatus.BASE_SHOW_CONTENT ->{
-                childView.visibility = View.VISIBLE
+            BaseNetStatus.BASE_SHOW_CONTENT -> {
+                childView?.visibility = View.VISIBLE
             }
         }
     }
@@ -99,5 +111,17 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
     }
 
     abstract fun startObserve()
+
+    open protected fun initErrorLayout() : Int{
+        return R.layout.base_layout_error
+    }
+
+    open protected fun initLoadLayout() : Int{
+        return R.layout.base_layout_loading
+    }
+
+    open protected fun initEmptyLayout() : Int{
+        return R.layout.base_layout_empty
+    }
 
 }
