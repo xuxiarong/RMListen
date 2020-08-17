@@ -27,22 +27,21 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
 
     override fun initView() {
         val baseTitleModel = BaseTitleModel()
-        baseTitleModel.mainTitle = getString(R.string.mine_login)
-        baseTitleModel.subTitle = "我是副标题"
-        baseTitleModel.leftIcon = R.drawable.base_icon_back
-        baseTitleModel.leftIcon1 = R.drawable.base_icon_back
-        baseTitleModel.leftText = "刷新"
-        baseTitleModel.leftIconClick = {finish()}
-        baseTitleModel.leftTextClick = { ToastUtil.show(this, "leftTextClick" )}
-        baseTitleModel.leftIcon1Click = { ToastUtil.show(this, "leftIcon1Click" )}
 
-        baseTitleModel.rightIcon = R.drawable.base_icon_back
-        baseTitleModel.rightIcon1 = R.drawable.base_icon_back
-        baseTitleModel.rightText = "刷新"
-        baseTitleModel.rightIconClick = {ToastUtil.show(this, "rightTextClick" )}
-        baseTitleModel.rightTextClick = { ToastUtil.show(this," rightTextClick" )}
-        baseTitleModel.rightIcon1Click = { ToastUtil.show(this," rightIcon1Click" )}
-
+        baseTitleModel.setLeftIcon(R.drawable.base_icon_back)
+            .setTitle("主标题")
+            .setSubTitle("我是副标题")
+            .setLeftIconClick { finish() }
+            .setLeftText("左边")
+            .setLeftTextClick { ToastUtil.show(this, "leftTextClick") }
+            .setLeftIcon1(R.drawable.base_icon_back)
+            .setLeftIcon1Click { ToastUtil.show(this, "leftIcon1Click") }
+            .setRightIcon(R.drawable.base_icon_back)
+            .setRightIconClick { ToastUtil.show(this, "RightIconClick") }
+            .setRightText("右边")
+            .setRightTextClick { ToastUtil.show(this, " rightTextClick") }
+            .setRightIcon1(R.drawable.base_icon_back)
+            .setRightIcon1Click { ToastUtil.show(this, " rightIcon1Click") }
         loginViewModel.baseTitleModel.value = baseTitleModel
 
 //        databind.run {
@@ -64,7 +63,7 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
         } else if (count % 4 == 2) {
             showError()
         } else {
-            Log.i("llj","其他情况 !!!!")
+            Log.i("llj", "其他情况 !!!!")
             databind.login.visibility = View.GONE
             showLoad()
         }

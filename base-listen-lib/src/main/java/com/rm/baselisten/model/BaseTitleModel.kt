@@ -9,29 +9,27 @@ import com.rm.baselisten.R
  * version: 1.0
  */
 class BaseTitleModel {
-     var noTitle  = false
-     var noBack  = false
-     var leftIcon = R.drawable.base_icon_back
-     var leftIcon1 = 0
-     var leftText  = ""
-     var mainTitle  = ""
-     var subTitle  = ""
-     var rightIcon  = 0
-     var rightIcon1 = 0
-     var rightText  = ""
+    var noTitle  = false
+    var noBack  = false
+    var leftIcon = R.drawable.base_icon_back
+    var leftIcon1 = 0
+    var leftText  = ""
+    var mainTitle  = ""
+    var subTitle  = ""
+    var rightIcon  = 0
+    var rightIcon1 = 0
+    var rightText  = ""
+    var leftIconClick: (() -> Unit)? = null
+    var leftIcon1Click: (() -> Unit)? = null
+    var leftTextClick: (() -> Unit)? = null
+    var rightIconClick: (() -> Unit)? = null
+    var rightIcon1Click: (() -> Unit)? = null
+    var rightTextClick: (() -> Unit)? = null
 
-     var leftIconClick: (() -> Unit)? = null
-     var leftIcon1Click: (() -> Unit)? = null
-     var leftTextClick: (() -> Unit)? = null
-
-     var rightIconClick: (() -> Unit)? = null
-     var rightIcon1Click: (() -> Unit)? = null
-     var rightTextClick: (() -> Unit)? = null
-
-
-//    fun setNoTitle(noTitle: Boolean){
-//        this.noTitle = noTitle
-//    }
+    fun setNoTitle(noTitle: Boolean): BaseTitleModel{
+        this.noTitle = noTitle
+        return this
+    }
 
     fun setNoBack(noBack: Boolean): BaseTitleModel {
         this.noBack = noBack
