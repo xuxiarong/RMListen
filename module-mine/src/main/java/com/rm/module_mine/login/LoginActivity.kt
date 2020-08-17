@@ -1,11 +1,13 @@
 package com.rm.module_mine.login
 
-import android.app.ProgressDialog
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.rm.baselisten.activity.BaseNetActivity
+import com.rm.baselisten.model.BaseNetStatus
+import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_mine.R
@@ -20,9 +22,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
 
     private val loginViewModel by viewModel<LoginViewModel>()
+    private lateinit var dataBind : ActivityLoginBinding
 
-    override fun getViewModel(): LoginViewModel {
-        return loginViewModel
+
+    override fun initViewModel(): LoginViewModel = loginViewModel
+
+    override fun getLayoutId(): Int = R.layout.activity_login
+
+    override fun initDataBind() {
+        dataBind = DataBindingUtil.bind(childView)!!
     }
 
     override fun initView() {
@@ -54,18 +62,18 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
     override fun onResume() {
         super.onResume()
         count++
-        databind.login.visibility = View.VISIBLE
+        dataBind.login.visibility = View.VISIBLE
 
         if (count % 4 == 0) {
-            showContent()
+            loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_NET_ERROR)
         } else if (count % 4 == 1) {
-            showEmpty()
+            loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_DATA_EMPTY)
         } else if (count % 4 == 2) {
-            showError()
+            loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
         } else {
             Log.i("llj", "其他情况 !!!!")
-            databind.login.visibility = View.GONE
-            showLoad()
+            dataBind.login.visibility = View.GONE
+            loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
         }
 
     }
@@ -76,29 +84,17 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
     override fun startObserve() {
         loginViewModel.apply {
             uiState.observe(this@LoginActivity, Observer {
-                if (it.isLoading) showProgressDialog()
+                loginViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING))
 
                 it.isSuccess?.let {
-                    dismissProgressDialog()
+                    loginViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT))
                     Toast.makeText(this@LoginActivity, "登陆成功", Toast.LENGTH_LONG).show()
                 }
 
                 it.isError?.let { err ->
-                    dismissProgressDialog()
+                    loginViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT))
                 }
             })
         }
     }
-
-    private var progressDialog: ProgressDialog? = null
-    private fun showProgressDialog() {
-        if (progressDialog == null)
-            progressDialog = ProgressDialog(this)
-        progressDialog?.show()
-    }
-
-    private fun dismissProgressDialog() {
-        progressDialog?.dismiss()
-    }
-
 }

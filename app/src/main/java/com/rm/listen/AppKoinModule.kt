@@ -1,10 +1,8 @@
 package com.rm.listen
 
 import com.rm.baselisten.net.CoroutinesDispatcherProvider
-import com.rm.listen.test.TestViewModel
 import com.rm.module_mine.api.ListenApiService
 import com.rm.module_mine.api.RetrofitClient
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
@@ -14,9 +12,7 @@ import org.koin.dsl.module
  */
 
 val viewModelModule = module {
-    viewModel {
-        TestViewModel()
-    }
+
 }
 
 val repositoryModule = module {
