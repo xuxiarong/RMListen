@@ -11,6 +11,6 @@ import androidx.databinding.BindingAdapter
 @BindingAdapter("bindClick")
 fun View.bindClick(action :(() -> Unit)?) {
     if(action!=null){
-        setOnClickListener { action }
+        setOnClickListener { action() }
     }
 }

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.rm.baselisten.activity.BaseNetActivity
 import com.rm.baselisten.model.BaseTitleModel
+import com.rm.baselisten.util.ToastUtil
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.ActivityLoginBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,8 +26,23 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
     }
 
     override fun initView() {
-        var baseTitleModel = BaseTitleModel()
+        val baseTitleModel = BaseTitleModel()
         baseTitleModel.mainTitle = getString(R.string.mine_login)
+        baseTitleModel.subTitle = "我是副标题"
+        baseTitleModel.leftIcon = R.drawable.base_icon_back
+        baseTitleModel.leftIcon1 = R.drawable.base_icon_back
+        baseTitleModel.leftText = "刷新"
+        baseTitleModel.leftIconClick = {finish()}
+        baseTitleModel.leftTextClick = { ToastUtil.show(this, "leftTextClick" )}
+        baseTitleModel.leftIcon1Click = { ToastUtil.show(this, "leftIcon1Click" )}
+
+        baseTitleModel.rightIcon = R.drawable.base_icon_back
+        baseTitleModel.rightIcon1 = R.drawable.base_icon_back
+        baseTitleModel.rightText = "刷新"
+        baseTitleModel.rightIconClick = {ToastUtil.show(this, "rightTextClick" )}
+        baseTitleModel.rightTextClick = { ToastUtil.show(this," rightTextClick" )}
+        baseTitleModel.rightIcon1Click = { ToastUtil.show(this," rightIcon1Click" )}
+
         loginViewModel.baseTitleModel.value = baseTitleModel
 
 //        databind.run {
