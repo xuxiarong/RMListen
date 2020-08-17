@@ -19,7 +19,6 @@ class DaoManager private constructor() {
             DaoManager()
         }
 
-
     }
     fun initDaoManger() {
         //创建数据库

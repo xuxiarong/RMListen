@@ -18,7 +18,6 @@ class MineServiceImpl : MineService {
     override fun routerLogin(context: Context) {
         context.startActivity(Intent(context, LoginActivity::class.java))
     }
-
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return MineApplicationDelegate::class.java
     }
