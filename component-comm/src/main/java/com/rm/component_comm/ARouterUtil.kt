@@ -7,15 +7,9 @@ import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.launcher.ARouter
 
 /**
- *
- * @ClassName: ARouterUtil
- * @Description:
- * @Author: 鲸鱼
- * @CreateDate: 8/13/20 3:05 PM
- * @UpdateUser: 更新者
- * @UpdateDate: 8/13/20 3:05 PM
- * @UpdateRemark: 更新说明
- * @Version: 1.0.0
+ * desc   :
+ * date   : 2020/08/13
+ * version: 1.0
  */
 
 

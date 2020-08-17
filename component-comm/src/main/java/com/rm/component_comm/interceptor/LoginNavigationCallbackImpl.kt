@@ -6,15 +6,9 @@ import com.rm.component_comm.ConstantsARouter
 import com.rm.component_comm.navigateTo
 
 /**
- *
- * @ClassName: LoginNavigationCallbackImpl
- * @Description: 登陆拦截器回调
- * @Author: 鲸鱼
- * @CreateDate: 8/13/20 4:58 PM
- * @UpdateUser: 更新者
- * @UpdateDate: 8/13/20 4:58 PM
- * @UpdateRemark: 更新说明
- * @Version: 1.0.0
+ * desc   :
+ * date   : 2020/08/13
+ * version: 1.0
  */
 open class LoginNavigationCallbackImpl : NavigationCallback {
     override fun onLost(postcard: Postcard?) {

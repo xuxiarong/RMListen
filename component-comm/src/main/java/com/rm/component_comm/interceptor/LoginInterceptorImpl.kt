@@ -10,15 +10,9 @@ import com.rm.component_comm.ConstantsARouter
 import com.rm.component_comm.IS_LOGIN
 
 /**
- *
- * @ClassName: LoginInterceptorImpl
- * @Description: 判断登陆拦截器
- * @Author: 鲸鱼
- * @CreateDate: 8/13/20 4:53 PM
- * @UpdateUser: 更新者
- * @UpdateDate: 8/13/20 4:53 PM
- * @UpdateRemark: 更新说明
- * @Version: 1.0.0
+ * desc   :
+ * date   : 2020/08/13
+ * version: 1.0
  */
 @Interceptor(name = "login", priority = 6)
 class LoginInterceptorImpl : IInterceptor {
