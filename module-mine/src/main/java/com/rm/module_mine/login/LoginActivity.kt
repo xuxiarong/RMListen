@@ -1,6 +1,5 @@
 package com.rm.module_mine.login
 
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -8,6 +7,7 @@ import com.rm.baselisten.activity.BaseNetActivity
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.model.BaseTitleModel
+import com.rm.baselisten.util.LogcatUtil
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.ActivityLoginBinding
@@ -67,7 +67,7 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
         } else if (count % 4 == 2) {
             loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
         } else {
-            Log.i("llj", "其他情况 !!!!")
+            LogcatUtil.i("llj", "其他情况 !!!!")
             dataBind.login.visibility = View.GONE
             loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
         }

@@ -1,6 +1,6 @@
 package com.rm.module_mine
 
-import android.util.Log
+import com.rm.baselisten.util.LogcatUtil
 import com.rm.component_comm.base.IApplicationDelegate
 import org.koin.core.context.loadKoinModules
 
@@ -11,19 +11,19 @@ import org.koin.core.context.loadKoinModules
  */
 class MineApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        Log.i("llj","Module Mine onCreate()!!!")
+        LogcatUtil.i("llj","Module Mine onCreate()!!!")
         loadKoinModules(mineModule)
     }
 
     override fun onTerminate() {
-        Log.i("llj","Module Mine onTerminate()!!!")
+        LogcatUtil.i("llj","Module Mine onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        Log.i("llj","Module Mine onLowMemory()!!!")
+        LogcatUtil.i("llj","Module Mine onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        Log.i("llj","Module Mine onTrimMemory(),---level--->>>$level")
+        LogcatUtil.i("llj","Module Mine onTrimMemory(),---level--->>>$level")
     }
 }

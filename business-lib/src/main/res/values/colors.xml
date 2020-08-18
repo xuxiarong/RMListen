@@ -4,4 +4,8 @@
     <color name="businessColorPrimaryDark">#3700B3</color>
     <color name="businessColorAccent">#03DAC5</color>
     <color name="businessWhite">#ffffff</color>
+
+    <color name="busness_head_color">#333333</color>
+    <color name="busness_second_color">#666666</color>
+    <color name="busness_third_color">#b1b1b1</color>
 </resources>
