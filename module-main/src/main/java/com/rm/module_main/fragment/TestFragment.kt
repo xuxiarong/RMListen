@@ -1,4 +1,4 @@
-package com.rm.module_main
+package com.rm.module_main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.rm.module_main.R
 
 class TestFragment : Fragment() {
     override fun onCreateView(

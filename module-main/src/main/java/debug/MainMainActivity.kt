@@ -2,7 +2,7 @@ package debug
 
 import com.rm.baselisten.activity.BaseActivity
 import com.rm.module_main.R
-import com.rm.module_main.MyViewPagerAdapter
+import com.rm.module_main.adapter.MyViewPagerAdapter
 import com.rm.module_main.customview.bottomtab.NavigationController
 import com.rm.module_main.customview.NoTouchViewPager
 import com.rm.module_main.customview.bottomtab.BottomTabView
