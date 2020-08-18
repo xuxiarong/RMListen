@@ -8,4 +8,7 @@
     <color name="busness_head_color">#333333</color>
     <color name="busness_second_color">#666666</color>
     <color name="busness_third_color">#b1b1b1</color>
+
+    <color name="bottom_drawer_outside_background">#80000000</color>
+    <color name="bottom_drawer_handle_view_color">#E0E0E0</color>
 </resources>
