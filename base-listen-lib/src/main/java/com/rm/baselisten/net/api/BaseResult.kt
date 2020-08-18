@@ -1,8 +1,9 @@
 package com.rm.baselisten.net.api
 
 /**
- * Created by luyao
- * on 2019/10/12 11:08
+ * desc   :
+ * date   : 2020/08/18
+ * version: 1.0
  */
 sealed class BaseResult<out T : Any> {
 

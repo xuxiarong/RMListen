@@ -5,15 +5,9 @@ import android.text.TextUtils
 import android.widget.Toast
 
 /**
- * 应用模块: utils
- *
- *
- * 类描述: toast显示工具类
- *
- *
- *
- * @author darryrzhoong
- * @since 2020-01-27
+ * desc   :
+ * date   : 2020/08/18
+ * version: 1.0
  */
 object ToastUtil {
     private var mToast: Toast? = null
