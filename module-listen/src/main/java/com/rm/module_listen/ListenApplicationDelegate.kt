@@ -1,6 +1,6 @@
 package com.rm.module_listen
 
-import android.util.Log
+import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
 
 /**
@@ -10,18 +10,18 @@ import com.rm.component_comm.base.IApplicationDelegate
  */
 class ListenApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        Log.i("llj","Module Listen onCreate()!!!")
+        DLog.d(TAG,"Module Listen onCreate()!!!")
     }
 
     override fun onTerminate() {
-        Log.i("llj","Module Listen onTerminate()!!!")
+        DLog.d(TAG,"Module Listen onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        Log.i("llj","Module Listen onLowMemory()!!!")
+        DLog.d(TAG,"Module Listen onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        Log.i("llj","Module Listen onTrimMemory(),---level--->>>$level")
+        DLog.d(TAG,"Module Listen onTrimMemory(),---level--->>>$level")
     }
 }

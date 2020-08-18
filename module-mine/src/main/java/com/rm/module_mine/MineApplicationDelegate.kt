@@ -11,19 +11,19 @@ import org.koin.core.context.loadKoinModules
  */
 class MineApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        DLog.i("llj","Module Mine onCreate()!!!")
+        DLog.d(TAG,"Module Mine onCreate()!!!")
         loadKoinModules(mineModule)
     }
 
     override fun onTerminate() {
-        DLog.i("llj","Module Mine onTerminate()!!!")
+        DLog.d(TAG,"Module Mine onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        DLog.i("llj","Module Mine onLowMemory()!!!")
+        DLog.d(TAG,"Module Mine onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        DLog.i("llj","Module Mine onTrimMemory(),---level--->>>$level")
+        DLog.d(TAG,"Module Mine onTrimMemory(),---level--->>>$level")
     }
 }

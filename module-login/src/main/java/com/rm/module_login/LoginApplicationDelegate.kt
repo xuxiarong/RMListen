@@ -10,18 +10,18 @@ import com.rm.component_comm.base.IApplicationDelegate
  */
 class LoginApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        DLog.i("llj","Module Login onCreate()!!!")
+        DLog.d(TAG,"Module Login onCreate()!!!")
     }
 
     override fun onTerminate() {
-        DLog.i("llj","Module Login onTerminate()!!!")
+        DLog.d(TAG,"Module Login onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        DLog.i("llj","Module Login onLowMemory()!!!")
+        DLog.d(TAG,"Module Login onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        DLog.i("llj","Module Login onTrimMemory(),---level--->>>$level")
+        DLog.d(TAG,"Module Login onTrimMemory(),---level--->>>$level")
     }
 }

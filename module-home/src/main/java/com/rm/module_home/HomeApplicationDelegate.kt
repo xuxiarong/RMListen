@@ -10,18 +10,18 @@ import com.rm.component_comm.base.IApplicationDelegate
  */
 class HomeApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        DLog.i("llj","Module Home onCreate()!!!")
+        DLog.d(TAG,"Module Home onCreate()!!!")
     }
 
     override fun onTerminate() {
-        DLog.i("llj","Module Home onTerminate()!!!")
+        DLog.d(TAG,"Module Home onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        DLog.i("llj","Module Home onLowMemory()!!!")
+        DLog.d(TAG,"Module Home onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        DLog.i("llj","Module Home onTrimMemory(),---level--->>>$level")
+        DLog.d(TAG,"Module Home onTrimMemory(),---level--->>>$level")
     }
 }

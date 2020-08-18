@@ -10,18 +10,18 @@ import com.rm.component_comm.base.IApplicationDelegate
  */
 class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        DLog.i("llj","Module Play onCreate()!!!")
+        DLog.d(TAG,"Module Play onCreate()!!!")
     }
 
     override fun onTerminate() {
-        DLog.i("llj","Module Play onTerminate()!!!")
+        DLog.d(TAG,"Module Play onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        DLog.i("llj","Module Play onLowMemory()!!!")
+        DLog.d(TAG,"Module Play onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        DLog.i("llj","Module Play onTrimMemory(),---level--->>>$level")
+        DLog.d(TAG,"Module Play onTrimMemory(),---level--->>>$level")
     }
 }

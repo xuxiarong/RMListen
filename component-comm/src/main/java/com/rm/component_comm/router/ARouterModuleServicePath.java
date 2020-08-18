@@ -26,4 +26,7 @@ public interface ARouterModuleServicePath {
 
     // login
     String PATH_LOGIN_SERVICE = "/module_login/service";
+
+    // pay
+    String PATH_PAY_SERVICE = "/module_pay/service";
 }
