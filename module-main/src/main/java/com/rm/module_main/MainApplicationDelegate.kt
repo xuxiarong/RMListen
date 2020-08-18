@@ -1,6 +1,6 @@
 package com.rm.module_main
 
-import android.util.Log
+import com.rm.baselisten.util.LogcatUtil
 import com.rm.component_comm.base.IApplicationDelegate
 
 /**
@@ -10,18 +10,18 @@ import com.rm.component_comm.base.IApplicationDelegate
  */
 class MainApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        Log.i("llj","Module Main onCreate()!!!")
+        LogcatUtil.i("llj","Module Main onCreate()!!!")
     }
 
     override fun onTerminate() {
-        Log.i("llj","Module Main onTerminate()!!!")
+        LogcatUtil.i("llj","Module Main onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        Log.i("llj","Module Main onLowMemory()!!!")
+        LogcatUtil.i("llj","Module Main onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        Log.i("llj","Module Main onTrimMemory(),---level--->>>$level")
+        LogcatUtil.i("llj","Module Main onTrimMemory(),---level--->>>$level")
     }
 }
