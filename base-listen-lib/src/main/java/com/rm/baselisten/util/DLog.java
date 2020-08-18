@@ -12,7 +12,7 @@ import java.util.Date;
  * date : 2019-09-24 19:05
  * description :
  */
-public class LogcatUtil {
+public class DLog {
   private static final boolean DEBUG = BuildConfig.DEBUG;
   private static final String APP_PREFIX = "";
 

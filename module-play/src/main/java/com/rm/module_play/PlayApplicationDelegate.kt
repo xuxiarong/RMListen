@@ -1,6 +1,6 @@
 package com.rm.module_play
 
-import com.rm.baselisten.util.LogcatUtil
+import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
 
 /**
@@ -10,18 +10,18 @@ import com.rm.component_comm.base.IApplicationDelegate
  */
 class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        LogcatUtil.i("llj","Module Play onCreate()!!!")
+        DLog.i("llj","Module Play onCreate()!!!")
     }
 
     override fun onTerminate() {
-        LogcatUtil.i("llj","Module Play onTerminate()!!!")
+        DLog.i("llj","Module Play onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        LogcatUtil.i("llj","Module Play onLowMemory()!!!")
+        DLog.i("llj","Module Play onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        LogcatUtil.i("llj","Module Play onTrimMemory(),---level--->>>$level")
+        DLog.i("llj","Module Play onTrimMemory(),---level--->>>$level")
     }
 }
