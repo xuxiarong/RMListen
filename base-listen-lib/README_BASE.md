@@ -1,4 +1,4 @@
-## **听书Android客户端**
+## **BaseModel技术分析文档**
 
 
 
@@ -6,21 +6,32 @@
 
 >项目中公用的基类，管理类，工具类等等的集合依赖库，与业务逻辑无关，可以随时提供给其余项目使用。
 
-**Base库基本说明**：
+**Base库基本说明(按照功能分包)**：
 
-- base-listen-lib： 基础模块的封装，适用于应用层开发、基础工具等
-- business-lib： 组件化的业务lib，统一配置网络、style、权限、bean实体、数据库等。
-- component-comm: 用于组件间路由通讯
-- music-player-lib: 音频播放器
+- activity: BaseActivity和BaseNetActivity的封装
+- binding: 使用databinding的自定义属性绑定的基类封装
+- json: 用于解析json数据
+- model: 用于存放BaseViewModel中包含的model
+- mvvm: 对Mvvm模式的Activity和Fragment的封装
+- net: 对网络模块的封装，本项目采用的网络框架为:retrofit + 协程
+- util: 通用工具类的统一目录
+- view: 通用自定义View的目录
+- viewmodel: 基类的viewmodel封装
 
-**Project中若干组件module说明**：
+**Base模块中部分功能使用注意事项和示例**：
 
-- app: 负责各个业务组件的组装、添加multiDex功能、一些常见的操作：混淆，签名等。
-- module-main: 闪屏页、引导页、MainActivity
+- BaseNetActivity: 包含了网络请求的基类Activity，封装成了Mvvm+databind+liveData的模式,包含childBiew。Enpty,error,load等状态Biew，其中
+
+  module-main: 闪屏页、引导页、MainActivity
+
 - module-home: 首页具体业务
+
 - module-search: 搜索具体业务
+
 - module-play:  播放具体业务
+
 - module-listen: 我听具体业务
+
 - module-mine: 我的具体业务  
 
 ### **深色模式介绍**

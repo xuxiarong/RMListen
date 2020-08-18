@@ -112,15 +112,15 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
 
     abstract fun startObserve()
 
-    open protected fun initErrorLayout() : Int{
+    protected open fun initErrorLayout() : Int{
         return R.layout.base_layout_error
     }
 
-    open protected fun initLoadLayout() : Int{
+    protected open fun initLoadLayout() : Int{
         return R.layout.base_layout_loading
     }
 
-    open protected fun initEmptyLayout() : Int{
+    protected open fun initEmptyLayout() : Int{
         return R.layout.base_layout_empty
     }
 
