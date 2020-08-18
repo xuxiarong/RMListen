@@ -1,2 +1,7 @@
 <resources>
+    <declare-styleable name="BottomTabView">
+        <attr name="PaddingTop" format="dimension"/>
+        <attr name="PaddingBottom" format="dimension"/>
+    </declare-styleable>
+
 </resources>
