@@ -1,7 +1,9 @@
 package debug
 
+import android.content.Intent
 import com.rm.baselisten.activity.BaseActivity
 import com.rm.module_listen.R
+import com.rm.module_listen.player.TestPalyerActivity
 
 /**
  * desc   :
@@ -15,5 +17,6 @@ class ListenMainActivity : BaseActivity() {
     }
 
     override fun initData() {
+        startActivity(Intent(this,TestPalyerActivity::class.java))
     }
 }
