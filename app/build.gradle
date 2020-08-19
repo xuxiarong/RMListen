@@ -48,6 +48,7 @@ android {
     kapt {
         generateStubs = true
     }
+
 }
 
 dependencies {
@@ -55,7 +56,6 @@ dependencies {
     if(!rootProject.ext.isMainApp){
         implementation project(path: ':module-main')
     }
-
     if(!rootProject.ext.isHomeApp){
         implementation project(path: ':module-home')
     }
@@ -73,6 +73,9 @@ dependencies {
     }
     if(!rootProject.ext.isLoginApp){
         implementation project(path: ':module-login')
+    }
+    if(!rootProject.ext.isPayApp){
+        implementation project(path: ':module-pay')
     }
 
     implementation project(path: ':component-comm')

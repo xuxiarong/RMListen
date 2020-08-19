@@ -27,7 +27,7 @@ class NormalItemView @JvmOverloads constructor(
     private var mCheckedTextColor = 0x56000000
     private var mChecked = false
     override fun getAccessibilityClassName(): CharSequence {
-        return OnlyIconItemView::class.java.name
+        return NormalItemView::class.java.name
     }
 
     /**

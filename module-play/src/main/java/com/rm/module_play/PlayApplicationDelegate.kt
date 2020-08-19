@@ -1,6 +1,6 @@
 package com.rm.module_play
 
-import android.util.Log
+import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
 
 /**
@@ -10,18 +10,18 @@ import com.rm.component_comm.base.IApplicationDelegate
  */
 class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        Log.i("llj","Module Play onCreate()!!!")
+        DLog.d(TAG,"Module Play onCreate()!!!")
     }
 
     override fun onTerminate() {
-        Log.i("llj","Module Play onTerminate()!!!")
+        DLog.d(TAG,"Module Play onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        Log.i("llj","Module Play onLowMemory()!!!")
+        DLog.d(TAG,"Module Play onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        Log.i("llj","Module Play onTrimMemory(),---level--->>>$level")
+        DLog.d(TAG,"Module Play onTrimMemory(),---level--->>>$level")
     }
 }

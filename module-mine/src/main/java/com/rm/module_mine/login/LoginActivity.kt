@@ -1,6 +1,5 @@
 package com.rm.module_mine.login
 
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -14,7 +13,7 @@ import com.rm.module_mine.databinding.ActivityLoginBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
- * desc   :
+ * desc   : 登陆注册的界面
  * date   : 2020/08/04
  * version: 1.0
  */
@@ -67,7 +66,6 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
         } else if (count % 4 == 2) {
             loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
         } else {
-            Log.i("llj", "其他情况 !!!!")
             dataBind.login.visibility = View.GONE
             loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
         }

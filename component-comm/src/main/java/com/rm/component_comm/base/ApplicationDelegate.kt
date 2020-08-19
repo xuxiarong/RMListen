@@ -444,6 +444,9 @@ class ApplicationManager {
  * 一个组件的代理类 ：与Application的生命周期捆绑
  */
 interface IApplicationDelegate {
+    val TAG: String
+        get() = "IApplicationDelegate"
+
     fun onCreate()
     fun onTerminate()
     fun onLowMemory()

@@ -5,8 +5,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 
 /**
- * Created by luyao
- * on 2018/3/13 16:16
+ * desc   :
+ * date   : 2020/08/18
+ * version: 1.0
  */
 class NetWorkUtils {
 

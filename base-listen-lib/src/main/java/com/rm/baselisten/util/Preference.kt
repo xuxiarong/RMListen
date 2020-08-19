@@ -8,8 +8,9 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * Created by luyao
- * on 2018/1/19 15:50
+ * desc   :
+ * date   : 2020/08/18
+ * version: 1.0
  */
 class Preference<T>(val name: String, private val default: T) : ReadWriteProperty<Any?, T> {
 
