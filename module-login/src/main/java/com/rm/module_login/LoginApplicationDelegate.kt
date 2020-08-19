@@ -1,6 +1,6 @@
 package com.rm.module_login
 
-import com.rm.baselisten.util.LogcatUtil
+import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
 
 /**
@@ -10,18 +10,18 @@ import com.rm.component_comm.base.IApplicationDelegate
  */
 class LoginApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        LogcatUtil.i("llj","Module Login onCreate()!!!")
+        DLog.d(TAG,"Module Login onCreate()!!!")
     }
 
     override fun onTerminate() {
-        LogcatUtil.i("llj","Module Login onTerminate()!!!")
+        DLog.d(TAG,"Module Login onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        LogcatUtil.i("llj","Module Login onLowMemory()!!!")
+        DLog.d(TAG,"Module Login onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        LogcatUtil.i("llj","Module Login onTrimMemory(),---level--->>>$level")
+        DLog.d(TAG,"Module Login onTrimMemory(),---level--->>>$level")
     }
 }
