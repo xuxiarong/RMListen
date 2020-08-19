@@ -5,6 +5,7 @@
     xmlns:binding="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_mine.login.LoginViewModel" />
@@ -20,8 +21,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-<!--        <include layout="@layout/title_layout"-->
-<!--            app:title="@{title}"/>-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/userNameLayout"
@@ -34,7 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="@={viewModel.userName}" />
+                android:text="@={viewModel.userName}"
+                binding:afterTextChanged="@{viewModel.verifyInput}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,7 +51,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:singleLine="true"
-                android:text="@={viewModel.passWord}" />
+                android:text="@={viewModel.passWord}"
+                binding:afterTextChanged="@{viewModel.verifyInput}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,28 +62,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
             android:background="@color/businessColorPrimary"
+            android:enabled="@{viewModel.uiState.enableLoginButton}"
+            android:onClick="@{() -> viewModel.login()}"
             android:text="@string/mine_login"
             android:textColor="@color/businessWhite"
-            android:textSize="16sp"
-            android:onClick="@{() -> viewModel.login()}"/>
-<!--        android:enabled="@{viewModel.uiState.enableLoginButton}"-->
+            android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
             android:background="@color/businessColorPrimary"
+            android:enabled="@{viewModel.uiState.enableLoginButton}"
+            android:onClick="@{() -> viewModel.register()}"
             android:text="@string/mine_register"
             android:textColor="@color/businessWhite"
-            android:textSize="16sp"
-            android:enabled="@{viewModel.uiState.enableLoginButton}"
-            android:onClick="@{() -> viewModel.register()}"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 

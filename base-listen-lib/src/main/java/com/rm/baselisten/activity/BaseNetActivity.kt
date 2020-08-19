@@ -13,13 +13,15 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 
 /**
- * desc   :
+ * desc   :包含网络状态，数据状态的基类Activity T:对应界面布局的dataBind对象 VM:对应界面的ViewModel对象
  * date   : 2020/08/04
  * version: 1.0
  */
-abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : BaseVMActivity() {
+abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : BaseVMActivity() {
 
-    //初始化base的dataBind对象，并且注册lifecycle
+    /**
+     * 初始化base的dataBind对象，并且注册lifecycle
+     */
     private val baseBinding: ActivityBaseNetBinding by lazy {
         DataBindingUtil.setContentView<ActivityBaseNetBinding>(this, R.layout.activity_base_net)
             .apply {
@@ -27,11 +29,32 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
             }
     }
 
+    /**
+     * 获取子类布局的ID
+     * @return Int 子类布局的ID
+     */
     protected abstract fun getLayoutId(): Int
+
+    /**
+     * 初始化子类的ViewModel
+     * @return VM 子类的ViewModel
+     */
     protected abstract fun initViewModel(): VM
+
+    /**
+     * 定义BaseViewModel
+     */
     private lateinit var baseViewModel: VM
-    protected var childView: View? = null
-    protected lateinit var dataBind: T
+
+    /**
+     * 定义子类的View，用于跟子类的dataBind进行绑定
+     */
+    private var childView: View? = null
+
+    /**
+     * 定义子类的dataBing对象
+     */
+    protected lateinit var dataBind: V
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,16 +64,19 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
         baseBinding.viewModel = baseViewModel
         //开启base的liveData的数据变化监听
         startBaseObserve()
-        //baseActivity布局添加子类的布局
-//        childView = baseBinding.clBaseContainer.bindChild(getLayoutId())
-        //初始化子类的dataBind
-        //开启子类的LiveData数据监听
+        //初始化子类的布局
         initChild()
+        //开启子类的LiveData监听
         startObserve()
+        //初始化子类的View
         initView()
+        //初始化子类的数据
         initData()
     }
 
+    /**
+     * 初始化子类布局
+     */
     private fun initChild() {
         if (!baseBinding.baseChildView.isInflated) {
             baseBinding.baseChildView.viewStub?.layoutResource = getLayoutId()
@@ -75,6 +101,10 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
         })
     }
 
+    /**
+     * 根据网络状态，数据状态设置显示的View
+     * @param statusModel BaseStatusModel 当前的界面状态
+     */
     private fun setStatus(statusModel: BaseStatusModel) {
         when (statusModel.netStatus) {
             BaseNetStatus.BASE_SHOW_DATA_EMPTY -> {
@@ -104,22 +134,41 @@ abstract class BaseNetActivity<T : ViewDataBinding, VM : BaseNetViewModel> : Bas
         }
     }
 
+    /**
+     * 设置标题栏
+     */
     private fun setTitle() {
         if (!baseBinding.baseTitleLayout.isInflated) {
             baseBinding.baseTitleLayout.viewStub?.inflate()
         }
     }
 
+    /**
+     * 开启子类的LiveData观察者
+     */
     abstract fun startObserve()
 
+
+    /**
+     * 初始化网络错误的View
+     * @return Int 化网络错误View的layoutId
+     */
     protected open fun initErrorLayout() : Int{
         return R.layout.base_layout_error
     }
 
+    /**
+     * 初始化加载中的View
+     * @return Int 加载中View的layoutId
+     */
     protected open fun initLoadLayout() : Int{
         return R.layout.base_layout_loading
     }
 
+    /**
+     * 初始化空数据的View
+     * @return Int 空数据View的layoutId
+     */
     protected open fun initEmptyLayout() : Int{
         return R.layout.base_layout_empty
     }

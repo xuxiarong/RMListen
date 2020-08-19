@@ -14,7 +14,7 @@ import com.rm.module_mine.databinding.ActivityLoginBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
- * desc   :
+ * desc   : 登陆注册的界面
  * date   : 2020/08/04
  * version: 1.0
  */

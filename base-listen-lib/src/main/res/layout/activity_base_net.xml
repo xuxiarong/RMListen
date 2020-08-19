@@ -5,13 +5,10 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <!-- 声明BaseNetActivity所需要的ViewModel -->
         <variable
             name="viewModel"
             type="com.rm.baselisten.viewmodel.BaseNetViewModel" />
-
-        <import type="com.rm.baselisten.model.BaseNetStatus"/>
-        <import type="com.rm.baselisten.model.BaseStatusModel"/>
-        <import type="android.view.View"/>
     </data>
 
 
@@ -21,6 +18,7 @@
         android:layout_height="match_parent"
         >
 
+        <!-- BaseNetActivity的TitleBar -->
         <ViewStub
             android:id="@+id/baseTitleLayout"
             android:layout_width="match_parent"
@@ -29,6 +27,7 @@
             bind:title="@{viewModel.baseTitleModel}"
             tools:ignore="MissingConstraints" />
 
+        <!-- BaseNetActivity的子类布局容器 -->
         <ViewStub
             android:id="@+id/baseChildView"
             android:layout_width="match_parent"
@@ -36,6 +35,7 @@
             app:layout_constraintTop_toBottomOf="@+id/baseTitleLayout"
             />
 
+        <!-- BaseNetActivity的正在加载中布局容器 -->
         <ViewStub
             android:id="@+id/baseLoad"
             android:layout_width="wrap_content"
@@ -47,6 +47,7 @@
             bind:status="@{viewModel.baseStatusModel}"
             />
 
+        <!-- BaseNetActivity的网络错误布局容器 -->
         <ViewStub
             android:id="@+id/baseError"
             android:layout_width="wrap_content"
@@ -58,6 +59,7 @@
             bind:status="@{viewModel.baseStatusModel}"
             />
 
+        <!-- BaseNetActivity的空数据布局容器 -->
         <ViewStub
             android:id="@+id/baseEmpty"
             android:layout_width="wrap_content"
