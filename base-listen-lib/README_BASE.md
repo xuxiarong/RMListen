@@ -20,6 +20,24 @@
 
 **Base模块中部分功能使用注意事项和示例**：
 
+- 如果某个module需要使用databinding，需要在该module的build.gradle的文件中加入
+
+  ```
+  android {
+  	    kotlinOptions {
+          jvmTarget = JavaVersion.VERSION_1_8
+      }
+  
+      buildFeatures {
+          dataBinding = true
+      }
+  
+      kapt {
+          generateStubs = true
+      }
+  }
+  ```
+
 - BaseNetActivity: 包含了网络请求的基类Activity，封装成了Mvvm+databind+liveData的模式,包含childView,empty,error,load等状态View，并且可以支持自定义异常状态布局。实现了View层与Model层双向绑定
 
   
