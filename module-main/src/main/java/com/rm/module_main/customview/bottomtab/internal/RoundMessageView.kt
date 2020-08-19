@@ -35,7 +35,7 @@ class RoundMessageView @JvmOverloads constructor(
     }
 
     fun tintMessageBackground(@ColorInt color: Int) {
-        val wrappedDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.bg_message_round)!!)
+        val wrappedDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.main_bg_message_round)!!)
         wrappedDrawable.mutate()
         DrawableCompat.setTint(wrappedDrawable, color)
         ViewCompat.setBackground(mOval, wrappedDrawable)
