@@ -39,7 +39,7 @@ abstract class BaseVMFragment<V:ViewDataBinding>(@LayoutRes val layoutId: Int) :
         super.onViewCreated(view, savedInstanceState)
     }
 
-    abstract fun initView()
+    protected open fun initView(){}
     abstract fun initData()
     abstract fun startObserve()
 }
