@@ -67,8 +67,11 @@ dependencies {
     api rootProject.ext.androidx["livedata_ktx"]
     api rootProject.ext.androidx["coroutines_android"]
     api rootProject.ext.androidx["lifecycle_extension"]
+    api rootProject.ext.androidx["recyclerview"]
+//    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
     api rootProject.ext.dependencies["mmkvs"]
-    api 'com.android.support:multidex:1.0.3'
+    api rootProject.ext.dependencies["multidex"]
 //    implementation project(path: ':business-lib')
 
 

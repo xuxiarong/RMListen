@@ -23,6 +23,7 @@ open class BaseRetrofitClient {
 
         @JvmStatic
         val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { BaseRetrofitClient() }
+        const val BASE_URL = "https://www.wanandroid.com"
     }
 
     private val client: OkHttpClient
