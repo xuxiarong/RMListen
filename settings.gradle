@@ -12,4 +12,4 @@ include ':base-listen-lib'
 include ':music-player-lib'
 include ':app'
 rootProject.name = "RMListen"
-include ':music-ijkplayer-lib'
+include ':music-exoplayer-lib'
