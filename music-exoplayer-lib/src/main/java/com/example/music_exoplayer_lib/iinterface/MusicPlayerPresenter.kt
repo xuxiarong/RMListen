@@ -1,8 +1,8 @@
 package com.example.music_exoplayer_lib.iinterface
 
 import com.example.music_exoplayer_lib.bean.BaseAudioInfo
+import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.example.music_exoplayer_lib.listener.MusicPlayerInfoListener
-import com.example.music_exoplayer_lib.manager.MusicPlayerManager
 
 /**
  *
@@ -106,4 +106,23 @@ interface MusicPlayerPresenter {
      * 移除监听播放对象事件
      */
     fun removePlayInfoListener()
+
+    /**
+     * 添加一个播放状态监听器到监听器池子
+     * @param listener 实现监听器的对象
+     */
+    fun addOnPlayerEventListener(listener: MusicPlayerEventListener)
+
+    /**
+     * 从监听器池子中移除一个监听器
+     * @param listener 实现监听器的对象
+     */
+    fun removePlayerListener(listener: MusicPlayerEventListener)
+
+    /**
+     * 清空监听器池子所有的监听器对象
+     */
+    fun removeAllPlayerListener()
+
+
 }

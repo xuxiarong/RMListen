@@ -63,6 +63,7 @@ class RMPlayer constructor(var context: Context) {
 
             override fun onLoadingChanged(isLoading: Boolean) {
 
+
             }
 
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
