@@ -14,15 +14,15 @@ import androidx.fragment.app.Fragment
  * date   : 2020/08/05
  * version: 1.0
  */
-abstract class BaseVMFragment<T:ViewDataBinding>(@LayoutRes val layoutId: Int) : Fragment(layoutId) {
+abstract class BaseVMFragment<V:ViewDataBinding>(@LayoutRes val layoutId: Int) : Fragment(layoutId) {
 
-    lateinit var binding:T
+    protected lateinit var binding:V
 
-    protected  fun < T : ViewDataBinding> binding(
+    protected  fun < V : ViewDataBinding> binding(
             inflater: LayoutInflater,
             @LayoutRes layoutId: Int,
             container: ViewGroup?
-    ): T =   DataBindingUtil.inflate<T>(inflater,layoutId, container,false).apply {
+    ): V =   DataBindingUtil.inflate<V>(inflater,layoutId, container,false).apply {
         lifecycleOwner = this@BaseVMFragment
     }
 
