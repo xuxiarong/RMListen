@@ -80,6 +80,5 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':business-lib')
     implementation project(path: ':component-comm')
-    implementation project(path: ':base-listen-lib')
     kapt rootProject.ext.dependencies["router_compiler"]
 }

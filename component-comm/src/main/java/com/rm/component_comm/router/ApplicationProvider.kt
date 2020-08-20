@@ -46,6 +46,7 @@ interface ApplicationProvider : IProvider {
                 queryRouterPath()
             for (routerPath in routerPathList) {
                 val provider: ApplicationProvider = RouterHelper.createRouter(routerPath)
+                    ?: continue
                 applicationClassList.add(provider.getApplicationDelegateClass())
             }
             return applicationClassList
