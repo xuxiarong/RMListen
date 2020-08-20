@@ -57,6 +57,18 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
+
+    kapt {
+        generateStubs = true
+    }
 }
 
 dependencies {
