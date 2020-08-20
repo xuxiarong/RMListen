@@ -7,7 +7,7 @@ package com.rm.component_comm.router;
  */
 public interface ARouterModuleServicePath {
     // main
-    String PATH_MAIN_SERVICE = "/main/service";
+    String PATH_MAIN_SERVICE = "/module_main/service";
 
     // home
     String PATH_HOME_SERVICE = "/module_home/service";

@@ -7,6 +7,9 @@ package com.rm.baselisten.net.api
  */
 sealed class BaseResult<out T : Any> {
 
+
+    val code : Int = 0
+    val message : String = ""
     data class Success<out T : Any>(val data: T) : BaseResult<T>()
     data class Error(val exception: Exception) : BaseResult<Nothing>()
 

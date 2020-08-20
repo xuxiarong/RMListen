@@ -45,9 +45,9 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
             .setRightIcon1Click { ToastUtil.show(this, " rightIcon1Click") }
         loginViewModel.baseTitleModel.value = baseTitleModel
 
-//        databind.run {
-//            viewModel = loginViewModel
-//        }
+        dataBind.run {
+            viewModel = loginViewModel
+        }
     }
 
     private var count = 0

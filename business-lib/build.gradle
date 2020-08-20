@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -23,6 +24,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        dataBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
 }
 greendao {
     //数据库的schema版本，也可以理解为数据库版本号
@@ -41,4 +55,6 @@ dependencies {
     api rootProject.ext.dependencies["greendao"]
     api rootProject.ext.dependencies["base_adapter"]
     api rootProject.ext.dependencies["roundview"]
+    api rootProject.ext.dependencies["glide"]
+    api rootProject.ext.androidx["xBanner"]
 }

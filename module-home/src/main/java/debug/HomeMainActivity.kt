@@ -5,6 +5,8 @@ import com.rm.baselisten.activity.BaseActivity
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
 import com.rm.module_home.R
 import com.rm.module_main.adapter.HomeTestViewPagerAdapter
+import com.rm.module_home.activity.menu.MenuActivity
+import kotlinx.android.synthetic.main.home_activity_main.*
 
 /**
  * desc   :
@@ -15,6 +17,9 @@ class HomeMainActivity : BaseActivity() {
     override fun getLayoutResId(): Int = R.layout.home_activity_main
 
     override fun initView() {
+        btnMenu.setOnClickListener {
+            MenuActivity.startActivity(this)
+        }
         var viewPager= findViewById<ViewPager>(R.id.view_pager)
         var bendLayout= findViewById<BendTabLayout>(R.id.bend_tab)
         viewPager.adapter=HomeTestViewPagerAdapter(supportFragmentManager,8)
@@ -22,6 +27,5 @@ class HomeMainActivity : BaseActivity() {
     }
 
     override fun initData() {
-
     }
 }

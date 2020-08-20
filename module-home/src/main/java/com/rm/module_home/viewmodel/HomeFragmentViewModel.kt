@@ -1,11 +1,11 @@
-package com.rm.module_main.viewmodel
+package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.rm.module_main.model.HomeBannerModel
-import com.rm.module_main.model.HomeBoutiqueModel
-import com.rm.module_main.model.HomeCollectModel
-import com.rm.module_main.model.HomeRecommendModel
+import com.rm.module_home.model.HomeBannerModel
+import com.rm.module_home.model.HomeBoutiqueModel
+import com.rm.module_home.model.HomeCollectModel
+import com.rm.module_home.model.HomeRecommendModel
 
 /**
  * desc   :

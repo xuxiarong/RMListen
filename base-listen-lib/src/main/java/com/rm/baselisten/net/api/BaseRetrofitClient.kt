@@ -83,4 +83,14 @@ open class BaseRetrofitClient {
             .baseUrl(baseUrl)
             .build().create(serviceClass)
     }
+
+    fun <S> getService(serviceClass: Class<S>): S {
+        return Retrofit.Builder()
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//                .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
+            .baseUrl(BASE_URL)
+            .build().create(serviceClass)
+    }
 }
