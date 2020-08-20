@@ -10,7 +10,11 @@ import com.rm.component_comm.router.ApplicationProvider
  * version: 1.0
  */
 interface HomeService : ApplicationProvider {
-    fun routerTest(context: Context)
+    /**
+     * 跳转到听单界面
+     * @param context Context
+     */
+    fun startMenuActivity(context: Context)
     // 获取主页Fragment
     fun getHomeFragment(): Fragment
 }

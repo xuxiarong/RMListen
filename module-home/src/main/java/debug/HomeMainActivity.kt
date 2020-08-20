@@ -2,6 +2,8 @@ package debug
 
 import com.rm.baselisten.activity.BaseActivity
 import com.rm.module_home.R
+import com.rm.module_home.activity.menu.MenuActivity
+import kotlinx.android.synthetic.main.home_activity_main.*
 
 /**
  * desc   :
@@ -12,6 +14,9 @@ class HomeMainActivity : BaseActivity() {
     override fun getLayoutResId(): Int = R.layout.home_activity_main
 
     override fun initView() {
+        btnMenu.setOnClickListener {
+            MenuActivity.startActivity(this)
+        }
     }
 
     override fun initData() {

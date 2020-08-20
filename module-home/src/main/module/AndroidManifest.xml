@@ -15,5 +15,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.rm.module_home.TestActivity" />
+        <activity
+            android:name="com.rm.module_home.activity.menu.MenuActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
