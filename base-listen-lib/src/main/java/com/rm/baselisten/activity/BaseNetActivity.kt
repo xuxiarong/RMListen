@@ -2,6 +2,7 @@ package com.rm.baselisten.activity
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -10,6 +11,7 @@ import com.rm.baselisten.databinding.ActivityBaseNetBinding
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.DisplayUtils
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 
 /**
@@ -140,6 +142,11 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
     private fun setTitle() {
         if (!baseBinding.baseTitleLayout.isInflated) {
             baseBinding.baseTitleLayout.viewStub?.inflate()
+            if (childView != null) {
+                val layoutParams = childView?.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.topMargin = DisplayUtils.dip2px(this, 48.0f)
+                childView?.layoutParams = layoutParams
+            }
         }
     }
 
@@ -153,7 +160,7 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
      * 初始化网络错误的View
      * @return Int 化网络错误View的layoutId
      */
-    protected open fun initErrorLayout() : Int{
+    protected open fun initErrorLayout(): Int {
         return R.layout.base_layout_error
     }
 
@@ -161,7 +168,7 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
      * 初始化加载中的View
      * @return Int 加载中View的layoutId
      */
-    protected open fun initLoadLayout() : Int{
+    protected open fun initLoadLayout(): Int {
         return R.layout.base_layout_loading
     }
 
@@ -169,7 +176,7 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
      * 初始化空数据的View
      * @return Int 空数据View的layoutId
      */
-    protected open fun initEmptyLayout() : Int{
+    protected open fun initEmptyLayout(): Int {
         return R.layout.base_layout_empty
     }
 
