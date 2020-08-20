@@ -9,9 +9,11 @@ import android.os.IBinder
 import com.example.music_exoplayer_lib.bean.BaseAudioInfo
 import com.example.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.example.music_exoplayer_lib.listener.MusicInitializeCallBack
+import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.example.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.example.music_exoplayer_lib.service.MusicPlayerBinder
 import com.example.music_exoplayer_lib.service.MusicPlayerService
+import com.example.music_exoplayer_lib.utils.ExoplayerLogger
 
 /**
  *
@@ -30,16 +32,15 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
 
-    private class MusicPlayerServiceConnection : ServiceConnection {
+    internal class MusicPlayerServiceConnection : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if ((service as? MusicPlayerBinder) != null) {
                 mBinder = service
-
+                ExoplayerLogger.exoLog("MusicPlayerServiceConnection${System.currentTimeMillis()}")
             }
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-
         }
     }
 
@@ -47,19 +48,18 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         context: Context,
         callBack: MusicInitializeCallBack
     ) {
-        if (null != context && context is Activity) {
-            val mConnection = MusicPlayerServiceConnection()
+        ExoplayerLogger.exoLog("initialize${System.currentTimeMillis()}")
+        mConnection = MusicPlayerServiceConnection()
+        mConnection?.let {
             val intent = Intent(context, MusicPlayerService::class.java)
             context.startService(intent)
-            MusicPlayerManager.mConnection?.let {
-                context.bindService(
-                    intent, it,
-                    Context.BIND_AUTO_CREATE
-                )
-            }
-        } else {
-            IllegalStateException("Must pass in Activity type Context!")
+            context.bindService(
+                intent, it,
+                Context.BIND_AUTO_CREATE
+            )
+            callBack.onSuccess()
         }
+
     }
 
     override fun startPlayerMusic(index: Int) {
@@ -75,7 +75,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun pause() {
-        TODO("Not yet implemented")
+        mBinder?.pause()
     }
 
     override fun play() {
@@ -128,6 +128,18 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun removePlayInfoListener() {
         TODO("Not yet implemented")
+    }
+
+    override fun addOnPlayerEventListener(listener: MusicPlayerEventListener) {
+        mBinder?.setOnPlayerEventListener(listener)
+    }
+
+    override fun removePlayerListener(listener: MusicPlayerEventListener) {
+        mBinder?.removePlayerListener(listener);
+    }
+
+    override fun removeAllPlayerListener() {
+        mBinder?.removeAllPlayerListener();
     }
 
 }
