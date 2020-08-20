@@ -1,4 +1,4 @@
-package com.rm.module_main.model
+package com.rm.module_home.model
 
 /**
  * desc   :

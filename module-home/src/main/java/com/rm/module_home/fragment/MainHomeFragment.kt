@@ -1,15 +1,15 @@
-package com.rm.module_main.fragment
+package com.rm.module_home.fragment
 
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.module_main.R
-import com.rm.module_main.databinding.MainHomeFragmentBinding
+import com.rm.module_home.R
+import com.rm.module_home.databinding.HomeHomeFragmentBinding
 
 /**
  * desc   :
  * date   : 2020/08/20
  * version: 1.0
  */
-class MainHomeFragment:BaseVMFragment<MainHomeFragmentBinding>(R.layout.main_home_fragment) {
+class MainHomeFragment:BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_home_fragment) {
     override fun initView() {
         TODO("Not yet implemented")
     }
