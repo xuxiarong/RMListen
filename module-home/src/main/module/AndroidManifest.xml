@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.rm.module_home">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name="debug.HomeApplication"
         android:icon="@mipmap/home_ic_launcher"

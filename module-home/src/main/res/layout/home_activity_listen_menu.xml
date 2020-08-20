@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -12,10 +13,15 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-        <View
+        <com.stx.xhb.androidx.XBanner
+            android:id="@+id/xbanner"
             android:layout_width="match_parent"
             android:layout_height="176dp"
-            android:background="#345477"/>
+            app:AutoPlayTime="3000"
+            app:pointsPosition="RIGHT"
+            app:tipTextSize="12sp"
+            app:pageChangeDuration="800"
+            bindData="@{viewModel.bannerInfoList}"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
