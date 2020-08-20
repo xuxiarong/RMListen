@@ -1,6 +1,5 @@
 package com.rm.module_home.fragment
 
-import androidx.fragment.app.FragmentTransaction
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
@@ -26,9 +25,9 @@ class MainHomeFragment:BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_hom
 
     companion object{
         fun getInstance(){
-            val transaction: FragmentTransaction = .beginTransaction()
-            transaction.add(frameId, fragment)
-            transaction.commit()
+//            val transaction: FragmentTransaction = .beginTransaction()
+//            transaction.add(frameId, fragment)
+//            transaction.commit()
         }
     }
 

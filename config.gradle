@@ -62,8 +62,12 @@ ext {
             mmkv                      : "1.2.1",
             adapter_helper            : "3.0.4@aar",
             roundview                 : "1.1.4@aar",
+<<<<<<< HEAD
             //StatusBar处理库
             "statusBarLib"            : "2.3.3",
+=======
+            xBanner                   : "1.1.0"
+>>>>>>> 34bf0a918cdb0ab55e096529d7835b43ac427751
 
     ]
 
@@ -100,7 +104,10 @@ ext {
             viewmodel_ktx      : "androidx.lifecycle:lifecycle-viewmodel-ktx:${version.viewmodel_ktx}",
             livedata_ktx       : "androidx.lifecycle:lifecycle-livedata-ktx:${version.livedata_ktx}",
             coroutines_android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.coroutines_android}",
-            recyclerview       : "androidx.recyclerview:recyclerview:${version.recyclerview}"]
+            recyclerview       : "androidx.recyclerview:recyclerview:${version.recyclerview}",
+            xBanner            : "com.github.xiaohaibin:XBanner:androidx_v${version.xBanner}"
+    ]
+
 
     // 所有的导包信息
 
