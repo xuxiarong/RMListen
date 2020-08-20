@@ -1,5 +1,6 @@
 package com.rm.module_home.fragment
 
+import androidx.fragment.app.FragmentTransaction
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
@@ -10,6 +11,7 @@ import com.rm.module_home.databinding.HomeHomeFragmentBinding
  * version: 1.0
  */
 class MainHomeFragment:BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_home_fragment) {
+
     override fun initView() {
         TODO("Not yet implemented")
     }
@@ -21,4 +23,13 @@ class MainHomeFragment:BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_hom
     override fun startObserve() {
         TODO("Not yet implemented")
     }
+
+    companion object{
+        fun getInstance(){
+            val transaction: FragmentTransaction = .beginTransaction()
+            transaction.add(frameId, fragment)
+            transaction.commit()
+        }
+    }
+
 }

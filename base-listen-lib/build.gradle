@@ -59,6 +59,7 @@ dependencies {
     api rootProject.ext.dependencies["koin_androidx_scope"]
     api rootProject.ext.dependencies["koin_androidx_viewmodel"]
     api rootProject.ext.dependencies["constraint_layout"]
+    api rootProject.ext.dependencies["statusBarLib"]
 
     api rootProject.ext.androidx["appcompat"]
     api rootProject.ext.androidx["core_ktx"]
