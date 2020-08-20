@@ -24,4 +24,34 @@
     </style>
     <dimen name="minimized_sheet_top_left_radius">20dp</dimen>
 
+    <style name="TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">@dimen/bend_tab_text_size</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="Base.BendTabLayout" parent="android:Widget">
+        <item name="bendTabMaxWidth">@dimen/bend_tab_max_width</item>
+        <item name="bendTabIndicatorColor">?attr/colorAccent</item>
+        <item name="bendTabIndicatorHeight">2dp</item>
+        <item name="bendTabPaddingStart">12dp</item>
+        <item name="bendTabPaddingEnd">12dp</item>
+        <item name="bendTabBackground">?attr/selectableItemBackground</item>
+        <item name="bendTabSelectedTextColor">?android:textColorPrimary</item>
+        <item name="bendTabUnSelectedTextColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="BendTabLayout_Default_Style" parent="Base.BendTabLayout">
+        <item name="bendTabMaxWidth">@dimen/bend_tab_max_width</item>
+        <item name="bendTabIndicatorColor">?attr/colorAccent</item>
+        <item name="bendTabIndicatorHeight">2dp</item>
+        <item name="bendTabPaddingStart">12dp</item>
+        <item name="bendTabPaddingEnd">12dp</item>
+        <item name="bendTabBackground">?attr/selectableItemBackground</item>
+        <item name="bendTabSelectedTextColor">?android:textColorPrimary</item>
+        <item name="bendTabUnSelectedTextColor">?android:textColorSecondary</item>
+        <item name="bendTabGravity">fill</item>
+        <item name="bendTabMode">fixed</item>
+    </style>
+
 </resources>

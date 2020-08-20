@@ -12,4 +12,38 @@
     <declare-styleable name="BottomDrawerDialog">
         <attr name="is_cancelable_on_touch_outside" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="BendTabLayout">
+        <attr name="bendTabIndicatorAnimation" format="boolean" />
+        <attr name="bendTabIndicatorColor" format="color" />
+        <attr name="bendTabIndicatorHeight" format="dimension" />
+        <attr name="bendTabIndicatorWidth" format="dimension" />
+        <attr name="bendTabContentStart" format="dimension" />
+        <attr name="bendTabBackground" format="reference" />
+        <attr name="bendTabTextSize" format="dimension" />
+        <attr name="bendTabMode">
+            <enum name="scrollable" value="0" />
+            <enum name="fixed" value="1" />
+        </attr>
+        <attr name="bendTabGravity">
+            <enum name="fill" value="0" />
+            <enum name="center" value="1" />
+        </attr>
+        <attr name="bendTabMinWidth" format="dimension" />
+        <attr name="bendTabMaxWidth" format="dimension" />
+        <attr name="bendTabSelectedTextColor" format="color" />
+        <attr name="bendTabUnSelectedTextColor" format="color" />
+        <attr name="bendTabPaddingStart" format="dimension" />
+        <attr name="bendTabPaddingTop" format="dimension" />
+        <attr name="bendTabPaddingEnd" format="dimension" />
+        <attr name="bendTabPaddingBottom" format="dimension" />
+        <attr name="bendTabPadding" format="dimension" />
+        <attr name="indicatorMarginTop" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="BendTabItem">
+        <attr name="android:text" />
+        <attr name="android:icon" />
+        <attr name="android:layout" />
+    </declare-styleable>
 </resources>
