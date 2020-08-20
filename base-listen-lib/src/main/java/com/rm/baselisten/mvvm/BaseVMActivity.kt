@@ -15,6 +15,8 @@ abstract class BaseVMActivity : AppCompatActivity() {
 
     }
 
-    abstract fun initView()
+    protected open fun initView(){
+        
+    }
     abstract fun initData()
 }
