@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--标题 Style-->
+    <style name="TextViewHeadStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_head_size</item>
+        <item name="android:textColor">@color/business_head_color</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!--内容 Style-->
+    <style name="TextViewSecondStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_second_size</item>
+        <item name="android:textColor">@color/business_second_color</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!--最小内容 Style-->
+    <style name="TextViewSmallStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_small_size</item>
+        <item name="android:textColor">@color/business_second_color</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+</resources>
