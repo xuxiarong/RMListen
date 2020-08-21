@@ -1,4 +1,4 @@
-package com.rm.module_home.bean
+package com.rm.business_lib.xbanner
 
 import com.stx.xhb.androidx.entity.BaseBannerInfo
 

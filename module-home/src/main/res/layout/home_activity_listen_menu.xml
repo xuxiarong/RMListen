@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_home.activity.menu.MenuViewModel" />
@@ -13,18 +14,19 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+
         <com.stx.xhb.androidx.XBanner
             android:id="@+id/xbanner"
+            bindData="@{viewModel.bannerInfoList}"
             android:layout_width="match_parent"
             android:layout_height="176dp"
-            app:AutoPlayTime="3000"
+            app:AutoPlayTime="5000"
+            app:pageChangeDuration="1000"
             app:pointsPosition="RIGHT"
-            app:tipTextSize="12sp"
-            app:pageChangeDuration="800"
-            bindData="@{viewModel.bannerInfoList}"/>
+            app:tipTextSize="12sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 </layout>
