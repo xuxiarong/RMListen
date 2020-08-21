@@ -4,6 +4,7 @@ import com.rm.baselisten.net.api.BaseRetrofitClient
 import com.rm.module_home.activity.menu.MenuViewModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.repository.MenuRepository
+import com.rm.module_home.viewmodel.HomeFragmentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -16,6 +17,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel {
         MenuViewModel(get())
+        HomeFragmentViewModel()
     }
 }
 
