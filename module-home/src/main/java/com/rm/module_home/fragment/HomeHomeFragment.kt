@@ -2,11 +2,11 @@ package com.rm.module_home.fragment
 
 import com.rm.baselisten.binding.layoutHorizontal
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.business_lib.xbanner.BannerInfo
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeCollectAdapter
-import com.rm.module_home.bean.BannerInfo
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
 import com.rm.module_home.model.HomeCollectModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel

@@ -2,7 +2,7 @@ package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.rm.module_home.bean.BannerInfo
+import com.rm.business_lib.xbanner.BannerInfo
 import com.rm.module_home.model.HomeBoutiqueModel
 import com.rm.module_home.model.HomeCollectModel
 import com.rm.module_home.model.HomeRecommendModel
