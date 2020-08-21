@@ -12,7 +12,7 @@ import org.koin.core.context.loadKoinModules
 class HomeApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG,"Module Home onCreate()!!!")
-        loadKoinModules(homeModule)
+        loadKoinModules(homeModules)
     }
 
     override fun onTerminate() {

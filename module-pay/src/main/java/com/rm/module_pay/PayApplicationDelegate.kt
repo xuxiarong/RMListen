@@ -2,6 +2,7 @@ package com.rm.module_pay
 
 import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
+import org.koin.core.context.loadKoinModules
 
 /**
  * desc   : Pay 组件 application 需要处理的逻辑在这里
@@ -11,6 +12,7 @@ import com.rm.component_comm.base.IApplicationDelegate
 class PayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG,"Module Pay onCreate()!!!")
+        loadKoinModules(payModules)
     }
 
     override fun onTerminate() {
