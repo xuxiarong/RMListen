@@ -2,8 +2,6 @@
     package="com.rm.module_home">
 
     <application>
-        <activity android:name="com.rm.module_home.TestActivity" />
-
         <!-- 听单-->
         <activity
             android:name="com.rm.module_home.activity.menu.MenuActivity"
