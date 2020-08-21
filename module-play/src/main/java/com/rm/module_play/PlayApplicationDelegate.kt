@@ -2,6 +2,7 @@ package com.rm.module_play
 
 import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
+import org.koin.core.context.loadKoinModules
 
 /**
  * desc   : Play 组件 application 需要处理的逻辑在这里
@@ -11,6 +12,7 @@ import com.rm.component_comm.base.IApplicationDelegate
 class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG,"Module Play onCreate()!!!")
+        loadKoinModules(playModules)
     }
 
     override fun onTerminate() {

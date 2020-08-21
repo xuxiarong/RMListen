@@ -1,8 +1,7 @@
-package com.rm.module_home.binding
+package com.rm.business_lib.xbanner
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.rm.module_home.bean.BannerInfo
 import com.stx.xhb.androidx.XBanner
 
 /**
@@ -18,6 +17,6 @@ fun XBanner.bindData(bannerInfoList: List<BannerInfo>?) {
 
     setBannerData(bannerInfoList)
     loadImage { _, _, view, position ->
-        com.rm.business_lib.glide.loadImage(view as ImageView, bannerInfoList[position].imgUrl)
+        com.rm.business_lib.glide.loadRoundCornersImage(8f,view as ImageView, bannerInfoList[position].imgUrl)
     }
 }

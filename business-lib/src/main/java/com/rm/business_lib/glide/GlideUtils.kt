@@ -5,7 +5,9 @@ import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.rm.baselisten.util.DisplayUtils
 import com.rm.business_lib.R
 
 /**
@@ -23,7 +25,13 @@ fun loadImage(imageView: ImageView, url: String, @DrawableRes defaultResId: Int)
         .apply(options)
         .into(imageView)
 }
-fun loadImageByTransform(imageView: ImageView,url: String, @DrawableRes defaultResId: Int,transformation: BitmapTransformation){
+
+fun loadImageByTransform(
+    imageView: ImageView,
+    url: String,
+    @DrawableRes defaultResId: Int,
+    transformation: BitmapTransformation
+) {
     if (imageView.context == null) return
     val options: RequestOptions = RequestOptions() //图片加载出来前，显示的图片
         .placeholder(defaultResId) //url为空的时候,显示的图片
@@ -35,7 +43,7 @@ fun loadImageByTransform(imageView: ImageView,url: String, @DrawableRes defaultR
         .into(imageView)
 }
 
-fun loadImage(imageView: ImageView, url: String){
+fun loadImage(imageView: ImageView, url: String) {
     loadImage(
         imageView,
         url,
@@ -43,12 +51,30 @@ fun loadImage(imageView: ImageView, url: String){
     )
 }
 
-fun loadCircleImage(imageView: ImageView,url: String, @DrawableRes defaultResId: Int){
+fun loadCircleImage(imageView: ImageView, url: String, @DrawableRes defaultResId: Int) {
     loadImageByTransform(
         imageView,
         url,
         defaultResId,
         CircleCrop()
+    )
+}
+
+fun loadRoundCornersImage(imageView: ImageView, url: String, @DrawableRes defaultResId: Int) {
+    loadImageByTransform(
+        imageView,
+        url,
+        defaultResId,
+        RoundedCorners(6)
+    )
+}
+
+fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String) {
+    loadImageByTransform(
+        imageView,
+        url,
+        R.drawable.business_defualt_img,
+        RoundedCorners(DisplayUtils.dip2px(imageView.context, corner))
     )
 }
 

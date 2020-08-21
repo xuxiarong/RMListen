@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import com.rm.baselisten.activity.BaseNetActivity
 import com.rm.baselisten.model.BaseTitleModel
+import com.rm.business_lib.xbanner.BannerInfo
 import com.rm.module_home.R
-import com.rm.module_home.bean.BannerInfo
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,10 +45,5 @@ class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewMode
         bannerList.add(BannerInfo("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg"))
         bannerList.add(BannerInfo("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg"))
         menuViewModel.bannerInfoList.value = bannerList
-
-//        xbanner.setBannerData(bannerList)
-//        xbanner.loadImage { _, _, view, position ->
-//            loadImage(view as ImageView,bannerList[position].imgUrl)
-//        }
     }
 }

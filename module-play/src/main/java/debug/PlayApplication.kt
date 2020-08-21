@@ -1,9 +1,13 @@
 package debug
 
-import android.content.Context
-import com.example.music_exoplayer_lib.listener.MusicInitializeCallBack
-import com.example.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.util.Cxt
+import com.rm.module_play.playModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 /**
  * desc   :
@@ -11,8 +15,13 @@ import com.rm.baselisten.BaseApplication
  * version: 1.0
  */
 class PlayApplication : BaseApplication() {
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidLogger(Level.DEBUG)
+            androidContext(this@PlayApplication)
+        }
+        Cxt.context=CONTEXT
+        loadKoinModules(playModules)
     }
 }

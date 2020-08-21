@@ -2,7 +2,7 @@ package debug
 
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.Cxt
-import com.rm.module_home.homeModule
+import com.rm.module_home.homeModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.loadKoinModules
@@ -22,6 +22,6 @@ class HomeApplication : BaseApplication() {
             androidContext(this@HomeApplication)
         }
         Cxt.context=CONTEXT
-        loadKoinModules(homeModule)
+        loadKoinModules(homeModules)
     }
 }
