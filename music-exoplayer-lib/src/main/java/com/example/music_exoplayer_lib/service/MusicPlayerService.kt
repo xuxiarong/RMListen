@@ -8,41 +8,34 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Message
 import com.example.music_exoplayer_lib.bean.BaseAudioInfo
-import com.example.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.example.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.example.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.example.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.source.*
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import java.util.*
 
 /**
  * desc   :播放器核心类
  * date   : 2020/08/13
  * version: 1.0
  */
-internal class MusicPlayerService : Service(), MusicPlayerPresenter, Player.EventListener {
+internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     val UPDATE_PROGRESS_DELAY = 500L
     private val mOnPlayerEventListeners = arrayListOf<MusicPlayerEventListener>()
-    private val mExoPlayer by lazy {
-        ExoPlayerFactory.newSimpleInstance(
-            this,
-            DefaultRenderersFactory(this),
-            DefaultTrackSelector(),
-            DefaultLoadControl()
-        ).apply {
+    private val mEventListener = ExoPlayerEventListener()
+    private val mExoPlayer: SimpleExoPlayer by lazy {
+        SimpleExoPlayer.Builder(this).build().apply {
             audioAttributes = AudioAttributes.Builder()
                 .setContentType(C.CONTENT_TYPE_MUSIC)
+                .setUsage(C.USAGE_MEDIA)
                 .build()
+            addListener(mEventListener)
         }
+
     }
     private val dataSourceFactory: DefaultDataSourceFactory by lazy {
         DefaultDataSourceFactory(
@@ -50,36 +43,21 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter, Player.Even
         )
     }
 
-    private val concatenatingMediaSource by lazy {
-        ConcatenatingMediaSource()
-    }
-
     //进度条消息
     @SuppressLint("HandlerLeak")
     private val mUpdateProgressHandler = object : Handler() {
         override fun handleMessage(msg: Message) {
-            val duration = mExoPlayer?.duration ?: 0
-            val position = mExoPlayer?.currentPosition ?: 0
-            onUpdateProgress(position, duration)
+            val duration = mExoPlayer.contentDuration ?: 0
+            val currentPosition = mExoPlayer.contentPosition ?: 0
+            exoLog("duration===>${duration?.toInt()}")
+            onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
         }
     }
 
     //Service委托代理人
     private var mPlayerBinder: MusicPlayerBinder? = null
-    override fun onCreate() {
-        super.onCreate()
-        initPlayerConfig()
 
-    }
-
-    /**
-     * 初始化播放器
-     */
-    private fun initPlayerConfig() {
-        mExoPlayer.addListener(this)
-
-    }
 
     /**MusicPlayerPresenter方法实现*/
     override fun onBind(intent: Intent): IBinder {
@@ -89,17 +67,18 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter, Player.Even
         return mPlayerBinder as MusicPlayerBinder
     }
 
-    val RADIO_URL = "http://kastos.cdnstream.com/1345_32"
+    val RADIO_URL =
+        "https://webfs.yun.kugou.com/202008211909/9887fb4705db0d4413a61ed8448c20c0/G164/M02/19/09/hJQEAF1ou5aAVrTxADlcwhIMwfQ617.mp3"
+
+//    val RADIO_URL = "http://kastos.cdnstream.com/1345_32"
 
     @Synchronized
     private fun startPlay(musicInfo: BaseAudioInfo) {
-        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-            .createMediaSource(Uri.parse(RADIO_URL))
-        concatenatingMediaSource.addMediaSource(mediaSource)
-        with(mExoPlayer) {
-            prepare(mediaSource)
-            playWhenReady = true
-        }
+        mExoPlayer.prepare(
+            ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(RADIO_URL))
+        )
+        mExoPlayer.playWhenReady = true
 
     }
 
@@ -129,7 +108,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter, Player.Even
     }
 
     override fun onStop() {
-        TODO("Not yet implemented")
+        mUpdateProgressHandler.removeMessages(0)
+        mExoPlayer.release()
+        mExoPlayer.removeListener(mEventListener)
     }
 
     override fun playLastMusic() {
@@ -141,11 +122,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter, Player.Even
     }
 
     override fun isPlaying(): Boolean {
-        TODO("Not yet implemented")
+        return mExoPlayer.playWhenReady == true
     }
 
     override fun getDurtion(): Long {
-        TODO("Not yet implemented")
+        //播放总长度
+        return mExoPlayer.contentDuration
     }
 
     override fun getCurrentPlayerID(): Long {
@@ -153,7 +135,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter, Player.Even
     }
 
     override fun seekTo(currentTime: Long) {
-        TODO("Not yet implemented")
+        mExoPlayer.seekTo(currentTime)
     }
 
     override fun getCurrentPlayerMusic(): BaseAudioInfo {
@@ -183,44 +165,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter, Player.Even
     override fun removeAllPlayerListener() {
         mOnPlayerEventListeners.clear()
     }
-    /**--------播放器回调-----------*/
-
-    /**
-     * 播放错误信息
-     */
-    override fun onPlayerError(error: ExoPlaybackException?) {
-
-    }
-
-    override fun onTracksChanged(
-        trackGroups: TrackGroupArray?,
-        trackSelections: TrackSelectionArray?
-    ) {
-        exoLog("onPlayerStateChanged")
-    }
-
-    /**
-     * 播放状态改变
-     */
-    var i = 0
-    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        when (playbackState) {
-            Player.STATE_IDLE, Player.STATE_BUFFERING, Player.STATE_READY -> {
-                if (!mUpdateProgressHandler.hasMessages(0)) {
-                    mUpdateProgressHandler.sendEmptyMessage(0)
-                }
-            }
-            Player.STATE_ENDED -> {
-                mUpdateProgressHandler.removeMessages(0)
-            }
-        }
-        exoLog(mExoPlayer.getCurrentWindowIndex())
-    }
-
-    override fun onPositionDiscontinuity(reason: Int) {
-        exoLog(mExoPlayer.currentPosition)
-
-    }
 
     /**
      * 更新播放进度
@@ -228,7 +172,44 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter, Player.Even
     private fun onUpdateProgress(currentPosition: Long, duration: Long) {
 
         mOnPlayerEventListeners.forEach {
-            it.onTaskRuntime(0,currentPosition,0,0)
+            it.onTaskRuntime(duration, currentPosition, 0, 0)
+        }
+    }
+
+    private inner class ExoPlayerEventListener : Player.EventListener {
+        /**
+         * 播放状态改变
+         */
+        var i = 0
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) {
+                Player.STATE_IDLE, Player.STATE_BUFFERING, Player.STATE_READY -> {
+                    if (!mUpdateProgressHandler.hasMessages(0)) {
+                        mUpdateProgressHandler.sendEmptyMessage(0)
+                    }
+                }
+                Player.STATE_ENDED -> {
+                    mUpdateProgressHandler.removeMessages(0)
+                }
+            }
+        }
+
+        override fun onTimelineChanged(timeline: Timeline, reason: Int) {
+            exoLog(mExoPlayer.contentDuration)
+        }
+
+        override fun onLoadingChanged(isLoading: Boolean) {
+            exoLog(mExoPlayer.contentDuration)
+
+        }
+
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            if (isPlaying){
+                mOnPlayerEventListeners.forEach {
+                    it.onPrepared(getDurtion())
+                }
+            }
         }
     }
 }
+

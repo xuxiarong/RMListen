@@ -31,4 +31,8 @@ class MusicPlayerBinder constructor(val presenter:MusicPlayerPresenter): Binder(
     fun removeAllPlayerListener() {
         presenter.removeAllPlayerListener()
     }
+     fun getDurtion(): Long {
+        //播放总长度
+        return presenter.getDurtion()
+    }
 }

@@ -26,6 +26,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation rootProject.ext.androidx["core_ktx"]
     implementation rootProject.ext.androidx["kotlin_stdlib"]
-    implementation "com.google.android.exoplayer:exoplayer-core:2.10.5"
+    implementation "com.google.android.exoplayer:exoplayer-core:2.11.4"
 
 }

@@ -16,29 +16,47 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <Button
-        android:id="@+id/start_play"
-        android:text="播放"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        tools:ignore="MissingConstraints" />
-    <Button
-        android:id="@+id/start_pause"
-        android:text="暂停"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        tools:ignore="MissingConstraints" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatSeekBar
-        android:id="@+id/seek_bar"
-        android:max="100"
-        android:layout_marginTop="5dp"
-        android:progress="30"
-        android:layout_width="200dp"
-        android:layout_height="5dp"/>
-</LinearLayout>
+        <Button
+            android:id="@+id/start_play"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="播放"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/start_pause"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="暂停"
+            tools:ignore="MissingConstraints" />
+
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="300dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="5dp" />
+
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_process"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+            <TextView
+                android:id="@+id/tv_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"></TextView>
+        </RelativeLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
