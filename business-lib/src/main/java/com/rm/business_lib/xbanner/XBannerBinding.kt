@@ -17,6 +17,6 @@ fun XBanner.bindData(bannerInfoList: List<BannerInfo>?) {
 
     setBannerData(bannerInfoList)
     loadImage { _, _, view, position ->
-        com.rm.business_lib.glide.loadImage(view as ImageView, bannerInfoList[position].imgUrl)
+        com.rm.business_lib.glide.loadRoundCornersImage(8f,view as ImageView, bannerInfoList[position].imgUrl)
     }
 }

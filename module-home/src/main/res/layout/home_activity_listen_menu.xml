@@ -22,8 +22,10 @@
             android:layout_height="176dp"
             app:AutoPlayTime="5000"
             app:pageChangeDuration="1000"
+            app:viewPagerClipChildren = "true"
+            app:isClipChildrenMode = "true"
             app:pointsPosition="RIGHT"
-            app:tipTextSize="12sp" />
+            app:tipTextSize="12sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
