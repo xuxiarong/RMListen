@@ -15,10 +15,8 @@ import org.koin.dsl.module
  */
 
 val viewModelModule = module {
-    viewModel {
-        MenuViewModel(get())
-        HomeFragmentViewModel()
-    }
+    viewModel { HomeFragmentViewModel() }
+    viewModel { MenuViewModel(get()) }
 }
 
 val repositoryModule = module {
