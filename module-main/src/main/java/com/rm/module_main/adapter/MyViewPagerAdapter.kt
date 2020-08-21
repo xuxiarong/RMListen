@@ -12,12 +12,15 @@ class MyViewPagerAdapter(fm: FragmentManager, private val size: Int) :
     FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
 
-        if(position == 0){
-            return RouterHelper.createRouter(HomeService::class.java).getHomeFragment()
+        if (position == 0) {
+            val homeService = RouterHelper.createRouter(HomeService::class.java)
+            if (homeService != null) {
+                return homeService.getHomeFragment()
+            }
         }
 
-       return TestFragment()
-           .apply { arguments= Bundle().apply { putString("title",position.toString()) } }
+        return TestFragment()
+            .apply { arguments = Bundle().apply { putString("title", position.toString()) } }
     }
 
     override fun getCount(): Int {
