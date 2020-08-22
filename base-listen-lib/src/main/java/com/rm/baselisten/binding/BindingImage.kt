@@ -1,10 +1,11 @@
 package com.rm.baselisten.binding
 
-import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.thridlib.glide.loadCircleImage
 import com.rm.baselisten.thridlib.glide.loadImage
+import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
 
 /**
  * desc   :
@@ -19,22 +20,19 @@ fun ImageView.bindSrc(resourceId: Int?) {
     } else {
         visibility = View.GONE
     }
-
 }
 
-@SuppressLint("CheckResult")
-@BindingAdapter("bindUrl")
-fun ImageView.bindUrl(url: String) {
-    loadImage(this,url)
+@BindingAdapter("corner", "bindUrl", "isCircle", requireAll = false)
+fun ImageView.bindUrl(corner: Float, bindUrl: String, isCircle: Boolean) {
+    when {
+        isCircle -> {
+            loadCircleImage(this, bindUrl)
+        }
+        corner > 0 -> {
+            loadRoundCornersImage(corner, this, bindUrl)
+        }
+        else -> {
+            loadImage(this, bindUrl)
+        }
+    }
 }
-
-//@BindingAdapter("bindRoundUrl")
-//fun ImageView.bindRoundUrl(corner:Float,url: String) {
-//    loadRoundCornersImage(corner,this,url)
-//}
-//
-//@SuppressLint("CheckResult")
-//@BindingAdapter("bindCircleUrl")
-//fun ImageView.bindCircleUrl(url: String) {
-//    loadCircleImage(this,url)
-//}
