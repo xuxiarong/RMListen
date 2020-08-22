@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/home_menu_book_adapter_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintDimensionRatio="h,106:106"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="#00ff00" />
+
+    <com.flyco.roundview.RoundTextView
+        android:id="@+id/home_menu_book_adapter_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_16"
+        android:gravity="center"
+        android:paddingStart="@dimen/dp_4"
+        android:paddingEnd="@dimen/dp_4"
+        android:textColor="@color/businessWhite"
+        android:textSize="@dimen/business_sp_10"
+        app:layout_constraintRight_toRightOf="@id/home_menu_book_adapter_icon"
+        app:layout_constraintTop_toTopOf="@id/home_menu_book_adapter_icon"
+        app:rv_backgroundColor="@color/business_head_color"
+        app:rv_cornerRadius_BL="@dimen/dp_4"
+        app:rv_cornerRadius_TR="@dimen/dp_4"
+        tools:text="文案" />
+
+    <TextView
+        android:id="@+id/home_menu_book_adapter_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_4"
+        android:textColor="@color/business_head_color"
+        android:textSize="@dimen/business_second_size"
+        app:layout_constraintLeft_toLeftOf="@id/home_menu_book_adapter_icon"
+        app:layout_constraintTop_toBottomOf="@id/home_menu_book_adapter_icon"
+        tools:text="Afamefuna \nOkparo" />
+</androidx.constraintlayout.widget.ConstraintLayout>

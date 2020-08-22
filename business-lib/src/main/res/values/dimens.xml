@@ -20,6 +20,7 @@
     <dimen name="business_head_size">16sp</dimen>
     <dimen name="business_second_size">14sp</dimen>
     <dimen name="business_small_size">12sp</dimen>
+    <dimen name="business_sp_10">10sp</dimen>
 
 
 
@@ -65,5 +66,6 @@
     <dimen name="dp_38">38dp</dimen>
     <dimen name="dp_39">39dp</dimen>
     <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_106">106dp</dimen>
 
 </resources>

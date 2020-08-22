@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -16,19 +17,21 @@
         android:orientation="vertical">
 
         <com.stx.xhb.androidx.XBanner
-            android:id="@+id/xbanner"
+            android:id="@+id/home_menu_banner"
             bindData="@{viewModel.bannerInfoList}"
             android:layout_width="match_parent"
             android:layout_height="176dp"
             app:AutoPlayTime="5000"
+            app:isClipChildrenMode="true"
             app:pageChangeDuration="1000"
-            app:viewPagerClipChildren = "true"
-            app:isClipChildrenMode = "true"
             app:pointsPosition="RIGHT"
-            app:tipTextSize="12sp"/>
+            app:tipTextSize="12sp"
+            app:viewPagerClipChildren="true" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_menu_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
     </LinearLayout>
 </layout>
