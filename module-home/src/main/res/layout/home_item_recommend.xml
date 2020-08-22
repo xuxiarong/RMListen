@@ -29,6 +29,7 @@
             android:background="@drawable/business_shape_4dp"
             android:src="@mipmap/home_ic_launcher"
             bindUrl="@{item.url}"
+            corner="4.0"
             />
 
         <TextView

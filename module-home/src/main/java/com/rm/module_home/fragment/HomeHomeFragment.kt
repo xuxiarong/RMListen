@@ -1,10 +1,13 @@
 package com.rm.module_home.fragment
 
 import com.rm.baselisten.adapter.BaseMultiAdapter
+import com.rm.baselisten.binding.bindHorizontalLayout
+import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.menu.MenuActivity
+import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.adapter.HomeCollectAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
 import com.rm.module_home.model.HomeCollectModel
@@ -38,11 +41,11 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
             R.layout.home_item_collect,
             BR.collectViewModel
         )
-//
-//        binding.homeRvCollect.bindHorizontalLayout(homeCollectAdapter)
-//
-//        val homeAdapter = HomeAdapter(generateHomeTestData(),BR.item)
-//        binding.homeRvRecommend.bindVerticalLayout(homeAdapter)
+
+        binding.homeRvCollect.bindHorizontalLayout(homeCollectAdapter)
+
+        val homeAdapter = HomeAdapter(generateHomeTestData(),BR.item)
+        binding.homeRvRecommend.bindVerticalLayout(homeAdapter)
 
 
         binding.run {
