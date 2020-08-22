@@ -101,7 +101,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun getDurtion(): Long {
-        return  mBinder?.getDurtion()?:0
+        return mBinder?.getDurtion() ?: 0
     }
 
     override fun getCurrentPlayerID(): Long {
@@ -109,7 +109,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun seekTo(currentTime: Long) {
-        TODO("Not yet implemented")
+        mBinder?.seekTo(currentTime)
     }
 
     override fun getCurrentPlayerMusic(): BaseAudioInfo {
@@ -142,6 +142,10 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun setPlayerMultiple(p: Float) {
         mBinder?.setPlayerMultiple(p)
+    }
+
+    override fun getCurDurtion(): Long {
+        return mBinder?.getCurDurtion()?:0
     }
 
 }

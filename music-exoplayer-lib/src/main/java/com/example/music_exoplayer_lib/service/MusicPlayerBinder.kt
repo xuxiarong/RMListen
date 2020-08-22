@@ -10,13 +10,14 @@ import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
  * @data: 8/19/20 3:05 PM
  * @Version: 1.0.0
  */
-class MusicPlayerBinder constructor(val presenter:MusicPlayerPresenter): Binder() {
+class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binder() {
 
     fun startPlayMusic(position: Int) {
         presenter.startPlayerMusic(0)
     }
+
     //暂停
-    fun pause(){
+    fun pause() {
         presenter.pause()
     }
 
@@ -31,14 +32,27 @@ class MusicPlayerBinder constructor(val presenter:MusicPlayerPresenter): Binder(
     fun removeAllPlayerListener() {
         presenter.removeAllPlayerListener()
     }
-     fun getDurtion(): Long {
+
+    fun getDurtion(): Long {
         //播放总长度
         return presenter.getDurtion()
     }
+
     /**
      * 播放倍数
      */
-    fun setPlayerMultiple(p:Float){
+    fun setPlayerMultiple(p: Float) {
         presenter.setPlayerMultiple(p)
+    }
+
+    fun seekTo(currentTime: Long) {
+        presenter.seekTo(currentTime)
+    }
+
+    /**
+     * 返回当前播放时长
+     */
+    fun getCurDurtion(): Long {
+        return presenter.getCurDurtion()
     }
 }

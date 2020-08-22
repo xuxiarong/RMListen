@@ -129,5 +129,8 @@ interface MusicPlayerPresenter {
      */
     fun setPlayerMultiple(p:Float)
 
-
+    /**
+     * 返回当前时长
+     */
+    fun getCurDurtion(): Long
 }

@@ -35,7 +35,7 @@
             android:text="暂停"
             tools:ignore="MissingConstraints" />
 
-        <SeekBar
+        <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seek_bar"
             android:layout_width="300dp"
             android:layout_height="5dp"
@@ -78,6 +78,18 @@
                 android:layout_marginLeft="10dp"
                 android:id="@+id/tv_three"
                 android:text="3倍速度播放"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/tv_forward"
+                android:text="快进30s"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/tv_back"
+                android:text="后退30s"
                 android:layout_width="40dp"
                 android:layout_height="40dp"/>
         </LinearLayout>

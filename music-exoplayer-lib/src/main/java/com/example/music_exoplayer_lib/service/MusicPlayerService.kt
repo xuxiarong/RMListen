@@ -168,7 +168,11 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun setPlayerMultiple(p: Float) {
-        mExoPlayer.setPlaybackParameters(PlaybackParameters(p,1.0f))
+        mExoPlayer.setPlaybackParameters(PlaybackParameters(p, 1.0f))
+    }
+
+    override fun getCurDurtion(): Long {
+        return mExoPlayer.currentPosition
     }
 
     /**
@@ -209,7 +213,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-            if (isPlaying){
+            if (isPlaying) {
                 mOnPlayerEventListeners.forEach {
                     it.onPrepared(getDurtion())
                 }
