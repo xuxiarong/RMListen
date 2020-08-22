@@ -38,12 +38,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
         val homeCollectAdapter = HomeCollectAdapter(
              listOf(
                 HomeCollectModel(R.drawable.home_icon_collect_recommend, "精品推荐") { startMenu() },
-                 HomeCollectModel(R.drawable.home_icon_collect_rank, "榜单") { startMenu() },
-                 HomeCollectModel(R.drawable.home_icon_head_reading, "看书") { startMenu() },
-                HomeCollectModel(R.drawable.home_icon_collect_listen, "听单") { startMenu() }),R.layout.home_item_collect,BR.collectViewModel
+                 HomeCollectModel(R.drawable.home_icon_collect_rank, "榜单") {  },
+                 HomeCollectModel(R.drawable.home_icon_head_reading, "看书") {  },
+                HomeCollectModel(R.drawable.home_icon_collect_listen, "听单") { }),R.layout.home_item_collect,BR.collectViewModel
         )
-        binding.mainRvCollect.layoutHorizontal(homeCollectAdapter)
-        binding.mainRvCollect.adapter = homeCollectAdapter
+        binding.homeRvCollect.layoutHorizontal(homeCollectAdapter)
+        binding.homeRvCollect.adapter = homeCollectAdapter
         binding.run {
             collectViewModel = homeViewModel
         }

@@ -13,7 +13,7 @@ import com.rm.baselisten.holder.BaseBindHolder
  * date   : 2020/08/21
  * version: 1.0
  */
-open class BaseBindAdapter<T> constructor(var data: List<T>, var layoutId: Int, var brId: Int) :
+open class BaseBindAdapter<T : BaseBindAdapter.IBindItemType> constructor(var data: List<T>, var layoutId: Int, private var brId: Int) :
     RecyclerView.Adapter<BaseBindHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindHolder {
@@ -30,6 +30,14 @@ open class BaseBindAdapter<T> constructor(var data: List<T>, var layoutId: Int, 
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    interface IBindItemType{
+        fun bindType() : Int
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return data[position].bindType()
     }
 
 }

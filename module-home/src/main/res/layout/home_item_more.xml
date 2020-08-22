@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="collectViewModel"
+            type="com.rm.module_home.model.HomeCollectModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_marginEnd="10dp"
+        bindClick="@{collectViewModel.itemClick}"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemCollectIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/busness_head_color"
+            android:textSize="@dimen/bottom_sheet_corner_radius"
+            tools:text="新书推荐"
+            bindSrc="@{collectViewModel.imageId}"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemCollectName"
+            app:layout_constraintTop_toBottomOf="@+id/homeItemCollectIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/busness_head_color"
+            android:textSize="@dimen/home_text_12_sp"
+            android:text="@string/home_listen_list"
+            bindText="@{collectViewModel.collectName}"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
