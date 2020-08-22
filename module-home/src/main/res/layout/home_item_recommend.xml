@@ -7,42 +7,66 @@
     <data>
 
         <variable
-            name="collectViewModel"
-            type="com.rm.module_home.model.HomeCollectModel" />
+            name="item"
+            type="com.rm.module_home.model.HomeRecommendModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="77dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        bindClick="@{collectViewModel.itemClick}"
+        android:layout_marginTop="12dp"
+        bindClick="@{item.itemClick}"
         >
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/homeItemCollectIcon"
+            android:id="@+id/homeItemRecommendIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            bindSrc="@{collectViewModel.imageId}"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/business_shape_4dp"
+            android:src="@mipmap/home_ic_launcher"
+            bindUrl="@{item.url}"
+            />
+
+        <TextView
+            android:id="@+id/homeItemRecommendTag"
+            app:layout_constraintTop_toTopOf="@+id/homeItemRecommendIcon"
+            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendIcon"
+            android:background="@drawable/business_shape_vip_tag"
+            android:text="@string/business_tag_vip"
+            android:layout_width="24dp"
+            android:layout_height="16dp"/>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemRecommendName"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendIcon"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/business_head_color"
+            android:textSize="@dimen/business_second_size"
+            tools:text="Carolyn Gregory"
+            bindText="@{item.name}"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeItemCollectName"
-            app:layout_constraintTop_toBottomOf="@+id/homeItemCollectIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="6dp"
+            android:id="@+id/homeItemRecommendAuthor"
+            app:layout_constraintBottom_toBottomOf="@+id/homeItemRecommendIcon"
+            app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendIcon"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="9dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/busness_head_color"
-            android:textSize="@dimen/home_text_12_sp"
-            android:text="@string/home_listen_list"
-            bindText="@{collectViewModel.collectName}"
+            android:textColor="@color/business_head_color"
+            android:textSize="@dimen/business_second_size"
+            tools:text="小丸子"
+            bindText="@{item.author}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

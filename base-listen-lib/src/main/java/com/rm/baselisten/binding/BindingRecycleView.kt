@@ -22,23 +22,28 @@ import androidx.recyclerview.widget.RecyclerView
 //    addItemDecoration(DefaultItemAnimator(top, left, bottom, right))
 //}
 
-@BindingAdapter("bindAdapter")
-fun RecyclerView.bindAdapter(adapter: RecyclerView.Adapter<*>) {
-    setAdapter(adapter)
-}
-
-@BindingAdapter("layoutVertical")
-fun RecyclerView.layoutVertical(adapter: RecyclerView.Adapter<*>) {
+@BindingAdapter("bindVerticalLayout")
+fun RecyclerView.bindVerticalLayout(adapter: RecyclerView.Adapter<*>) {
     val layoutManager = LinearLayoutManager(context)
     layoutManager.orientation = LinearLayoutManager.VERTICAL
     setLayoutManager(layoutManager)
     itemAnimator = DefaultItemAnimator()
+    this.adapter = adapter
 }
 
-@BindingAdapter("layoutHorizontal")
-fun RecyclerView.layoutHorizontal(adapter: RecyclerView.Adapter<*>) {
+@BindingAdapter("bindHorizontalLayout")
+fun RecyclerView.bindHorizontalLayout(adapter: RecyclerView.Adapter<*>) {
     val layoutManager = LinearLayoutManager(context)
     layoutManager.orientation = LinearLayoutManager.HORIZONTAL
     setLayoutManager(layoutManager)
     itemAnimator = DefaultItemAnimator()
+    this.adapter = adapter
 }
+
+//@BindingAdapter("bindGridLayout")
+//fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>,spanCount : Int) {
+//    val layoutManager = GridLayoutManager(context,spanCount)
+//    setLayoutManager(layoutManager)
+//    itemAnimator = DefaultItemAnimator()
+//    this.adapter = adapter
+//}

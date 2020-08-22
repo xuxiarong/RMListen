@@ -1,2 +1,4 @@
 <resources>
+    <string name="business_more">更多</string>
+    <string name="business_tag_vip">VIP</string>
 </resources>

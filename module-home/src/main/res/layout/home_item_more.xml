@@ -7,43 +7,54 @@
     <data>
 
         <variable
-            name="collectViewModel"
-            type="com.rm.module_home.model.HomeCollectModel" />
+            name="item"
+            type="com.rm.module_home.model.HomeMoreModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="28dp"
-        android:layout_marginEnd="10dp"
-        bindClick="@{collectViewModel.itemClick}"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
         >
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeItemCollectIcon"
+            android:id="@+id/homeItemMoreTitle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="28dp"
+            android:layout_height="@dimen/dp_28"
             android:gravity="center_vertical"
-            android:textColor="@color/busness_head_color"
-            android:textSize="@dimen/bottom_sheet_corner_radius"
+            android:textColor="@color/business_head_color"
+            android:textSize="@dimen/business_head_large_size"
+            android:textStyle="bold"
             tools:text="新书推荐"
-            bindSrc="@{collectViewModel.imageId}"
+            bindText="@{item.title}"
             />
 
+
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeItemCollectName"
-            app:layout_constraintTop_toBottomOf="@+id/homeItemCollectIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="6dp"
+            android:id="@+id/homeItemMoreText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/busness_head_color"
-            android:textSize="@dimen/home_text_12_sp"
-            android:text="@string/home_listen_list"
-            bindText="@{collectViewModel.collectName}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/homeItemIconNext"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/business_second_color"
+            android:textSize="@dimen/business_second_size"
+            android:text="@string/business_more"
+            bindClick="@{item.moreClick}"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/homeItemIconNext"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="14dp"
+            android:layout_height="24dp"
+            android:src="@drawable/business_ic_next"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
