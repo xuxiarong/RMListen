@@ -35,4 +35,10 @@ class MusicPlayerBinder constructor(val presenter:MusicPlayerPresenter): Binder(
         //播放总长度
         return presenter.getDurtion()
     }
+    /**
+     * 播放倍数
+     */
+    fun setPlayerMultiple(p:Float){
+        presenter.setPlayerMultiple(p)
+    }
 }

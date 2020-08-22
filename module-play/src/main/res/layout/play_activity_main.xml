@@ -58,5 +58,28 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"></TextView>
         </RelativeLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:text="一倍速播放"
+                android:id="@+id/tv_one"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:text="1.5倍速度播放"
+                android:id="@+id/tv_one_b"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/tv_three"
+                android:text="3倍速度播放"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

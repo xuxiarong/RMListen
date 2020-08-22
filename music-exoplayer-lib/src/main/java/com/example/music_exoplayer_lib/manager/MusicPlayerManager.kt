@@ -140,4 +140,8 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mBinder?.removeAllPlayerListener();
     }
 
+    override fun setPlayerMultiple(p: Float) {
+        mBinder?.setPlayerMultiple(p)
+    }
+
 }

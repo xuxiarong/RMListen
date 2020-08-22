@@ -124,5 +124,10 @@ interface MusicPlayerPresenter {
      */
     fun removeAllPlayerListener()
 
+    /**
+     * 播放倍数
+     */
+    fun setPlayerMultiple(p:Float)
+
 
 }

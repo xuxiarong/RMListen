@@ -34,6 +34,19 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
         start_pause.setOnClickListener {
             musicPlayerManger.pause()
         }
+        //一倍速播放
+        tv_one.setOnClickListener {
+            musicPlayerManger.setPlayerMultiple(1f)
+
+        }
+        //1.5倍速播放
+        tv_one_b.setOnClickListener {
+            musicPlayerManger.setPlayerMultiple(1.5f)
+        }
+        //3倍速播放
+        tv_three.setOnClickListener {
+            musicPlayerManger.setPlayerMultiple(3f)
+        }
 
     }
 
