@@ -28,7 +28,7 @@ class MenuRepository(val service: HomeApiService) : BaseRepository() {
             BookBean(
                 0,
                 "Afamefuna\nOkparo",
-                "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3960365117,342814576&fm=26&gp=0.jpg",
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3984473917,238095211&fm=26&gp=0.jpg",
                 "古代"
             )
         )
@@ -36,7 +36,7 @@ class MenuRepository(val service: HomeApiService) : BaseRepository() {
             BookBean(
                 1,
                 "Sakane Miiko",
-                "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2053303169,3628786419&fm=26&gp=0.jpg",
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598095666640&di=59e290804282ed57054f6e7237e82434&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%3D580%2Fsign%3D19a60d9f8744ebf86d716437e9f8d736%2Fd87ae686c9177f3e15cfc89170cf3bc79d3d56e0.jpg",
                 "现代"
             )
         )
@@ -44,7 +44,7 @@ class MenuRepository(val service: HomeApiService) : BaseRepository() {
             BookBean(
                 2,
                 "Emiliya\nPerevalova",
-                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598074116276&di=46786c53bef15f03cfe9c49a1e0fe568&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fb7b4f993c7fc940bbe8102e17e2451fd5b5f43a2146dc-dTHyfQ_fw658",
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598095570935&di=073c83a1d4756bbb0646b3d3fc846dff&imgtype=0&src=http%3A%2F%2Fimg1.gtimg.com%2Frushidao%2Fpics%2Fhv1%2F20%2F108%2F1744%2F113431160.jpg",
                 "未来"
             )
         )
