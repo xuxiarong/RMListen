@@ -56,7 +56,8 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
     }
 
     override fun onPrepared(totalDurtion: Long) {
-        TODO("Not yet implemented")
+        seek_bar.max=totalDurtion.toInt()
+        tv_end.text=formatTimeInMillisToString(totalDurtion)
     }
 
     override fun onBufferingUpdate(percent: Int) {
@@ -81,10 +82,9 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        ExoplayerLogger.exoLog(
-            "position=${currentDurtion.toInt()} duration=${formatTimeInMillisToString(
-                currentDurtion
-            )}"
+        seek_bar.progress=currentDurtion.toInt()
+        tv_process.text=formatTimeInMillisToString(currentDurtion)
+        ExoplayerLogger.exoLog("currentDurtion=${currentDurtion.toInt()} duration=${totalDurtion.toInt()}"
         )
     }
 

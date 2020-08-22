@@ -36,7 +36,6 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             if ((service as? MusicPlayerBinder) != null) {
                 mBinder = service
-                ExoplayerLogger.exoLog("MusicPlayerServiceConnection${System.currentTimeMillis()}")
             }
         }
 
@@ -48,7 +47,6 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         context: Context,
         callBack: MusicInitializeCallBack
     ) {
-        ExoplayerLogger.exoLog("initialize${System.currentTimeMillis()}")
         mConnection = MusicPlayerServiceConnection()
         mConnection?.let {
             val intent = Intent(context, MusicPlayerService::class.java)
@@ -103,7 +101,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun getDurtion(): Long {
-        TODO("Not yet implemented")
+        return  mBinder?.getDurtion()?:0
     }
 
     override fun getCurrentPlayerID(): Long {

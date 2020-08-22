@@ -39,8 +39,8 @@
             android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/busness_head_color"
-            android:textSize="@dimen/home_text_12_sp"
+            android:textColor="@color/business_head_color"
+            android:textSize="@dimen/business_small_size"
             android:text="@string/home_listen_list"
             bindText="@{collectViewModel.collectName}"
             />

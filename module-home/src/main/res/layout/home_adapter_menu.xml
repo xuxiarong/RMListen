@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.flyco.roundview.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/padding_width"
+    android:layout_marginEnd="@dimen/padding_width"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/dp_12"
+    android:paddingTop="@dimen/dp_12"
+    android:paddingEnd="@dimen/dp_12"
+    android:paddingBottom="@dimen/dp_18"
+    app:rv_cornerRadius="@dimen/corner_radius"
+    app:rv_strokeColor="@color/stroke_color"
+    app:rv_strokeWidth="@dimen/stroke_width">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/home_menu_adapter_name"
+            style="@style/TextViewHeadStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            tools:text="幻海航行 | 领略科幻的海洋" />
+
+        <TextView
+            android:id="@+id/home_menu_adapter_total_books_number"
+            style="@style/TextViewSecondStyle"
+            android:drawableEnd="@drawable/business_ic_next"
+            android:drawablePadding="@dimen/dp_2"
+            tools:text="共30本" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/dp_9"
+        android:paddingBottom="@dimen/dp_14">
+
+        <ImageView
+            android:id="@+id/home_menu_adapter_author_icon"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            tools:src="#00ff00" />
+
+        <TextView
+            android:id="@+id/home_menu_adapter_author_name"
+            style="@style/TextViewSmallStyle"
+            android:layout_marginStart="@dimen/dp_6"
+            tools:text="小丸子" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/home_ic_favorites"
+            android:layout_marginStart="@dimen/dp_14" />
+
+        <TextView
+            android:id="@+id/home_menu_adapter_collection_number"
+            style="@style/TextViewSmallStyle"
+            android:layout_marginStart="@dimen/dp_2"
+            tools:text="3.4W" />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_menu_adapter_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</com.flyco.roundview.RoundLinearLayout>

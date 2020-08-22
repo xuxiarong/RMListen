@@ -60,6 +60,15 @@ fun loadCircleImage(imageView: ImageView, url: String, @DrawableRes defaultResId
     )
 }
 
+fun loadCircleImage(imageView: ImageView, url: String) {
+    loadImageByTransform(
+        imageView,
+        url,
+        R.drawable.business_defualt_img,
+        CircleCrop()
+    )
+}
+
 fun loadRoundCornersImage(imageView: ImageView, url: String, @DrawableRes defaultResId: Int) {
     loadImageByTransform(
         imageView,
