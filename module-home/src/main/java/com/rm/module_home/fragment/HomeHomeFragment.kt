@@ -58,6 +58,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
             HomeMoreModel("精品推荐") { moreClick() },
             HomeRecommendModel(
                 "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                8.0f,
                 "Carolyn Gregory",
                 "小丸子",
                 "Vip"

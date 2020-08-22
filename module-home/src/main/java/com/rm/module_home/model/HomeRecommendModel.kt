@@ -10,6 +10,7 @@ import com.rm.module_home.R
  */
 data class HomeRecommendModel constructor(
     val url: String,
+    val iconCorner : Float,
     val name: String,
     val author: String,
     val tag: String,
