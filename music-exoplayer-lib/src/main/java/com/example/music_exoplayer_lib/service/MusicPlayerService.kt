@@ -43,6 +43,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         )
     }
 
+
     //进度条消息
     @SuppressLint("HandlerLeak")
     private val mUpdateProgressHandler = object : Handler() {
@@ -166,6 +167,14 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mOnPlayerEventListeners.clear()
     }
 
+    override fun setPlayerMultiple(p: Float) {
+        mExoPlayer.setPlaybackParameters(PlaybackParameters(p, 1.0f))
+    }
+
+    override fun getCurDurtion(): Long {
+        return mExoPlayer.currentPosition
+    }
+
     /**
      * 更新播放进度
      */
@@ -204,7 +213,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-            if (isPlaying){
+            if (isPlaying) {
                 mOnPlayerEventListeners.forEach {
                     it.onPrepared(getDurtion())
                 }

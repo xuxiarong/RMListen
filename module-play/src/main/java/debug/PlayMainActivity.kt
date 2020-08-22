@@ -1,6 +1,7 @@
 package debug
 
 import android.content.Context
+import android.widget.SeekBar
 import com.example.music_exoplayer_lib.bean.BaseAudioInfo
 import com.example.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.example.music_exoplayer_lib.listener.MusicInitializeCallBack
@@ -34,7 +35,38 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
         start_pause.setOnClickListener {
             musicPlayerManger.pause()
         }
+        //一倍速播放
+        tv_one.setOnClickListener {
+            musicPlayerManger.setPlayerMultiple(1f)
 
+        }
+        //1.5倍速播放
+        tv_one_b.setOnClickListener {
+            musicPlayerManger.setPlayerMultiple(1.5f)
+        }
+        //3倍速播放
+        tv_three.setOnClickListener {
+            musicPlayerManger.setPlayerMultiple(3f)
+        }
+        seek_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                musicPlayerManger.seekTo(seekBar?.progress?.toLong() ?: 0)
+            }
+        })
+        //快进
+        tv_forward.setOnClickListener {
+            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 30)
+        }
+        //后退
+        tv_back.setOnClickListener {
+            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 30)
+        }
     }
 
     override fun initData() {
@@ -56,8 +88,8 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
     }
 
     override fun onPrepared(totalDurtion: Long) {
-        seek_bar.max=totalDurtion.toInt()
-        tv_end.text=formatTimeInMillisToString(totalDurtion)
+        seek_bar.max = totalDurtion.toInt()
+        tv_end.text = formatTimeInMillisToString(totalDurtion)
     }
 
     override fun onBufferingUpdate(percent: Int) {
@@ -82,9 +114,10 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        seek_bar.progress=currentDurtion.toInt()
-        tv_process.text=formatTimeInMillisToString(currentDurtion)
-        ExoplayerLogger.exoLog("currentDurtion=${currentDurtion.toInt()} duration=${totalDurtion.toInt()}"
+        seek_bar.progress = currentDurtion.toInt()
+        tv_process.text = formatTimeInMillisToString(currentDurtion)
+        ExoplayerLogger.exoLog(
+            "currentDurtion=${currentDurtion.toInt()} duration=${totalDurtion.toInt()}"
         )
     }
 
