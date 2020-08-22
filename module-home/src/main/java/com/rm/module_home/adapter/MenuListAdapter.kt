@@ -60,6 +60,8 @@ class MenuBookAdapter() :
             item.icon
         )
     }
+
+
 }
 
 fun getCannotScrollGridLayoutManager(context: Context, orientation: Int): LinearLayoutManager {

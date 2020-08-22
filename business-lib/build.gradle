@@ -55,5 +55,6 @@ dependencies {
     api rootProject.ext.dependencies["greendao"]
     api rootProject.ext.dependencies["base_adapter"]
     api rootProject.ext.dependencies["roundview"]
+    api rootProject.ext.dependencies["cardview"]
     api rootProject.ext.androidx["xBanner"]
 }

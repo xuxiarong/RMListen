@@ -64,7 +64,8 @@ ext {
             roundview                 : "1.1.4@aar",
             //StatusBar处理库
             "statusBarLib"            : "2.3.3",
-            xBanner                   : "1.1.0"
+            xBanner                   : "1.1.0",
+            cardview                  : "28.0.0"
 
     ]
 
@@ -94,7 +95,10 @@ ext {
             roundview                 : "com.flyco.roundview:FlycoRoundView_Lib:${version.roundview}",
 
             // glide
-            glide: "com.github.bumptech.glide:glide:${version.glide}"
+            glide                     : "com.github.bumptech.glide:glide:${version.glide}",
+
+            // cardView
+            cardview                  : "com.android.support:cardview-v7:${version.cardview}"
     ]
 
     androidx = [
