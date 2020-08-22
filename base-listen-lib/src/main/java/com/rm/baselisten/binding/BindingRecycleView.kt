@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.decoration.GridSpaceItemDecoration
+import com.rm.baselisten.util.DisplayUtils
 
 /**
  * desc   :
@@ -52,4 +54,9 @@ fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>, spanCount: Int
     val layoutManager = GridLayoutManager(context, spanCount)
     setLayoutManager(layoutManager)
     this.adapter = adapter
+}
+
+@BindingAdapter("gridItemDecoration")
+fun RecyclerView.gridItemDecoration(span:Float){
+    addItemDecoration(GridSpaceItemDecoration(DisplayUtils.dip2px(context,span),0,false,GridSpaceItemDecoration.GRIDLAYOUT))
 }
