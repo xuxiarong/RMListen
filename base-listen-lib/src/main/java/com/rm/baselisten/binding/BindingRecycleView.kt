@@ -2,6 +2,7 @@ package com.rm.baselisten.binding
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -27,6 +28,7 @@ fun RecyclerView.bindVerticalLayout(adapter: RecyclerView.Adapter<*>) {
     val layoutManager = LinearLayoutManager(context)
     layoutManager.orientation = LinearLayoutManager.VERTICAL
     setLayoutManager(layoutManager)
+
     itemAnimator = DefaultItemAnimator()
     this.adapter = adapter
 }
@@ -40,10 +42,14 @@ fun RecyclerView.bindHorizontalLayout(adapter: RecyclerView.Adapter<*>) {
     this.adapter = adapter
 }
 
-//@BindingAdapter("bindGridLayout")
-//fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>,spanCount : Int) {
-//    val layoutManager = GridLayoutManager(context,spanCount)
-//    setLayoutManager(layoutManager)
-//    itemAnimator = DefaultItemAnimator()
-//    this.adapter = adapter
-//}
+@BindingAdapter("bindText")
+fun RecyclerView.bindText(visible: Int) {
+    visibility = visible
+}
+
+@BindingAdapter("bindGridLayout", "bindCount", requireAll = false)
+fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>, spanCount: Int) {
+    val layoutManager = GridLayoutManager(context, spanCount)
+    setLayoutManager(layoutManager)
+    this.adapter = adapter
+}
