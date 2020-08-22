@@ -1,4 +1,4 @@
-package com.rm.business_lib.glide
+package com.rm.baselisten.thridlib.glide
 
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -8,7 +8,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.rm.baselisten.util.DisplayUtils
-import com.rm.business_lib.R
 
 /**
  * desc   :
@@ -47,7 +46,7 @@ fun loadImage(imageView: ImageView, url: String) {
     loadImage(
         imageView,
         url,
-        R.drawable.business_defualt_img
+        0
     )
 }
 
@@ -64,7 +63,7 @@ fun loadCircleImage(imageView: ImageView, url: String) {
     loadImageByTransform(
         imageView,
         url,
-        R.drawable.business_defualt_img,
+        0,
         CircleCrop()
     )
 }
@@ -82,7 +81,7 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String) {
     loadImageByTransform(
         imageView,
         url,
-        R.drawable.business_defualt_img,
+        0,
         RoundedCorners(DisplayUtils.dip2px(imageView.context, corner))
     )
 }

@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/padding_width"
+    android:layout_marginTop="@dimen/dp_12"
     android:layout_marginEnd="@dimen/padding_width"
+    android:layout_marginBottom="@dimen/dp_12"
     android:orientation="vertical"
     android:paddingStart="@dimen/dp_12"
     android:paddingTop="@dimen/dp_12"
@@ -59,8 +61,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/home_ic_favorites"
-            android:layout_marginStart="@dimen/dp_14" />
+            android:layout_marginStart="@dimen/dp_14"
+            android:src="@drawable/home_ic_favorites" />
 
         <TextView
             android:id="@+id/home_menu_adapter_collection_number"
@@ -73,5 +75,5 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_menu_adapter_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 </com.flyco.roundview.RoundLinearLayout>

@@ -28,3 +28,10 @@ fun ImageView.bindUrl(url: String) {
     Glide.with(context).load(url)
         .into(this)
 }
+
+@SuppressLint("CheckResult")
+@BindingAdapter("bindRoundUrl")
+fun ImageView.bindRoundUrl(url: String) {
+    Glide.with(context).load(url)
+        .into(this)
+}
