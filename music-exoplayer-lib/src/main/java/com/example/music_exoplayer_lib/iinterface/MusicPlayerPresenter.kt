@@ -133,4 +133,9 @@ interface MusicPlayerPresenter {
      * 返回当前时长
      */
     fun getCurDurtion(): Long
+
+    /**
+     * 设置定时关闭
+     */
+    fun setAlarm(times:Int)
 }

@@ -9,6 +9,7 @@ import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.example.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.example.music_exoplayer_lib.utils.ExoplayerLogger
 import com.rm.baselisten.activity.BaseActivity
+import com.rm.baselisten.util.ToastUtil
 import com.rm.module_play.R
 import kotlinx.android.synthetic.main.play_activity_main.*
 import kotlinx.coroutines.*
@@ -66,6 +67,15 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
         //后退
         tv_back.setOnClickListener {
             musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 30)
+        }
+        //定时关闭播放器
+        tv_commit.setOnClickListener {
+            if (et_times.text.isNotEmpty()) {
+                musicPlayerManger.setAlarm(et_times.text.toString().toInt()*1000)
+            } else {
+                ToastUtil.show(this, "请输入时间")
+
+            }
         }
     }
 

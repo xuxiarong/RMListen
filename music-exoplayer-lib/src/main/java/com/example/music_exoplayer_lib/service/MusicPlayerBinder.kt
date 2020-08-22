@@ -1,8 +1,10 @@
 package com.example.music_exoplayer_lib.service
 
+import android.content.Context
 import android.os.Binder
 import com.example.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.example.music_exoplayer_lib.manager.AlarmManger
 
 /**
  *
@@ -54,5 +56,12 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
      */
     fun getCurDurtion(): Long {
         return presenter.getCurDurtion()
+    }
+
+    /**
+     * 定时关闭播放器
+     */
+    fun setAlarm(times: Int) {
+        presenter.setAlarm(times)
     }
 }

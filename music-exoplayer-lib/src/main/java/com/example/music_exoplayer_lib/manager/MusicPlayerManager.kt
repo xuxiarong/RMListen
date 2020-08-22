@@ -148,4 +148,8 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         return mBinder?.getCurDurtion()?:0
     }
 
+    override fun setAlarm(times: Int) {
+        mBinder?.setAlarm(times)
+    }
+
 }

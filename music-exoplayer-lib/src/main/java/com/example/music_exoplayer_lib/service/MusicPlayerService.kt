@@ -12,6 +12,7 @@ import com.example.music_exoplayer_lib.bean.BaseAudioInfo
 import com.example.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.example.music_exoplayer_lib.listener.MusicPlayerInfoListener
+import com.example.music_exoplayer_lib.manager.AlarmManger
 import com.example.music_exoplayer_lib.manager.MusicAudioFocusManager
 import com.example.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import com.google.android.exoplayer2.*
@@ -100,6 +101,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 override val isPlaying: Boolean
                     get() = isPlaying()
             }) ?: -1
+
+
     }
 
     /**
@@ -231,7 +234,11 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         return mExoPlayer.currentPosition
     }
 
-    /**
+    override fun setAlarm(times: Int) {
+        AlarmManger(this.applicationContext).setAlarm(times)
+    }
+
+    /**z
      * 更新播放进度
      */
     private fun onUpdateProgress(currentPosition: Long, duration: Long) {
