@@ -3,6 +3,7 @@ package com.example.music_exoplayer_lib.service
 import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
+import android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
 import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
@@ -11,10 +12,11 @@ import com.example.music_exoplayer_lib.bean.BaseAudioInfo
 import com.example.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.example.music_exoplayer_lib.listener.MusicPlayerInfoListener
+import com.example.music_exoplayer_lib.manager.MusicAudioFocusManager
 import com.example.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.source.*
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 
@@ -24,9 +26,13 @@ import com.google.android.exoplayer2.util.Util
  * version: 1.0
  */
 internal class MusicPlayerService : Service(), MusicPlayerPresenter {
+    //更新播放进度时间频率
     val UPDATE_PROGRESS_DELAY = 500L
     private val mOnPlayerEventListeners = arrayListOf<MusicPlayerEventListener>()
     private val mEventListener = ExoPlayerEventListener()
+
+    //是否被动暂停，用来处理音频焦点失去标记
+    private var mIsPassive = false
     private val mExoPlayer: SimpleExoPlayer by lazy {
         SimpleExoPlayer.Builder(this).build().apply {
             audioAttributes = AudioAttributes.Builder()
@@ -43,22 +49,66 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         )
     }
 
+    //音频管理
+    private var mAudioFocusManager: MusicAudioFocusManager? = null
 
     //进度条消息
     @SuppressLint("HandlerLeak")
     private val mUpdateProgressHandler = object : Handler() {
         override fun handleMessage(msg: Message) {
-            val duration = mExoPlayer.contentDuration ?: 0
-            val currentPosition = mExoPlayer.contentPosition ?: 0
-            exoLog("duration===>${duration?.toInt()}")
+            val duration = mExoPlayer.contentDuration
+            val currentPosition = mExoPlayer.contentPosition
+            exoLog("duration===>${duration.toInt()}")
             onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
         }
     }
+    //音频焦点
+    var requestAudioFocus = -1
 
     //Service委托代理人
     private var mPlayerBinder: MusicPlayerBinder? = null
 
+    override fun onCreate() {
+        super.onCreate()
+        mAudioFocusManager = MusicAudioFocusManager(this.applicationContext)
+        requestAudioFocus = mAudioFocusManager?.requestAudioFocus(
+            object : MusicAudioFocusManager.OnAudioFocusListener {
+                /**
+                 * 恢复音频输出焦点，这里恢复播放需要和用户调用恢复播放有区别
+                 * 因为当用户主动暂停，获取到音频焦点后不应该恢复播放，而是继续保持暂停状态
+                 */
+                override fun onFocusGet() {
+                    //如果是被动失去焦点的，则继续播放，否则继续保持暂停状态
+                    if (mIsPassive) {
+                        play()
+                    }
+                }
+
+                /**
+                 * 失去音频焦点后暂停播放，这里暂停播放需要和用户主动暂停有区别，做一个标记，配合onResume。
+                 * 当获取到音频焦点后，根据onResume根据标识状态看是否需要恢复播放
+                 */
+                override fun onFocusOut() {
+                    passivePause()
+                }
+
+                /**
+                 * 返回播放器是否正在播放
+                 * @return 为true正在播放
+                 */
+                override val isPlaying: Boolean
+                    get() = isPlaying()
+            }) ?: -1
+    }
+
+    /**
+     * 被动暂停播放，仅提供给失去焦点时内部调用
+     */
+    private fun passivePause() {
+        mExoPlayer.playWhenReady=false
+        this.mIsPassive=true
+    }
 
     /**MusicPlayerPresenter方法实现*/
     override fun onBind(intent: Intent): IBinder {
@@ -74,14 +124,16 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 //    val RADIO_URL = "http://kastos.cdnstream.com/1345_32"
 
     @Synchronized
-    private fun startPlay(musicInfo: BaseAudioInfo) {
-        mExoPlayer.prepare(
-            ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(RADIO_URL))
-        )
-        mExoPlayer.playWhenReady = true
-
-    }
+    private fun startPlay(musicInfo: BaseAudioInfo) =
+        if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
+            mExoPlayer.prepare(
+                ProgressiveMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.parse(RADIO_URL))
+            )
+            mExoPlayer.playWhenReady = true
+        } else {
+            exoLog("未成功获取音频输出焦点")
+        }
 
     override fun startPlayerMusic(index: Int) {
         startPlay(BaseAudioInfo())
@@ -99,9 +151,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mExoPlayer.playWhenReady = false
         mUpdateProgressHandler.removeMessages(0)
     }
-
+    /**
+     * 恢复播放
+     */
     override fun play() {
-        TODO("Not yet implemented")
+        mExoPlayer.playWhenReady =true
+        this.mIsPassive =false
     }
 
     override fun setLoop(loop: Boolean) {
@@ -112,6 +167,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mUpdateProgressHandler.removeMessages(0)
         mExoPlayer.release()
         mExoPlayer.removeListener(mEventListener)
+        mAudioFocusManager?.releaseAudioFocus()
     }
 
     override fun playLastMusic() {
@@ -189,7 +245,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         /**
          * 播放状态改变
          */
-        var i = 0
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_IDLE, Player.STATE_BUFFERING, Player.STATE_READY -> {

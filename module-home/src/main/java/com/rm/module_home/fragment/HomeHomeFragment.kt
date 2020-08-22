@@ -31,10 +31,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
 
         val homeCollectAdapter = HomeCollectAdapter(
             listOf(
-                HomeCollectModel(R.drawable.home_icon_collect_recommend, "精品推荐") { startMenu() },
+                HomeCollectModel(R.drawable.home_icon_collect_recommend, "精品推荐") { },
                 HomeCollectModel(R.drawable.home_icon_collect_rank, "榜单") { },
                 HomeCollectModel(R.drawable.home_icon_head_reading, "看书") { },
-                HomeCollectModel(R.drawable.home_icon_collect_listen, "听单") { }),
+                HomeCollectModel(R.drawable.home_icon_collect_listen, "听单") { startMenu() }),
             R.layout.home_item_collect,
             BR.collectViewModel
         )
