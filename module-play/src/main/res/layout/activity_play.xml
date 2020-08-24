@@ -19,9 +19,9 @@
             android:id="@+id/report_why_arrow"
             app:arrow_direction="top"
             android:layout_marginLeft="5dp"
-            app:arrow_line_color="@android:color/white"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
+            app:arrow_line_color="@color/business_text_color_b1b1b1"
+            android:layout_width="25dp"
+            android:layout_height="15dp"
             tools:ignore="MissingConstraints" />
 
 
