@@ -1,20 +1,17 @@
 package debug
 
-import android.content.Context
 import android.widget.SeekBar
-import com.example.music_exoplayer_lib.bean.BaseAudioInfo
-import com.example.music_exoplayer_lib.ext.formatTimeInMillisToString
-import com.example.music_exoplayer_lib.listener.MusicInitializeCallBack
-import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.example.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import com.example.music_exoplayer_lib.utils.ExoplayerLogger
+import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
+import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
+import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 import com.rm.baselisten.activity.BaseActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_play.R
 import kotlinx.android.synthetic.main.play_activity_main.*
 import kotlinx.coroutines.*
-import okhttp3.internal.wait
-import org.koin.core.scope.Scope
 
 /**
  * desc   :

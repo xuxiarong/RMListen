@@ -1,8 +1,8 @@
-package com.example.music_exoplayer_lib.iinterface
+package com.rm.music_exoplayer_lib.iinterface
 
-import com.example.music_exoplayer_lib.bean.BaseAudioInfo
-import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.example.music_exoplayer_lib.listener.MusicPlayerInfoListener
+import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 
 /**
  *

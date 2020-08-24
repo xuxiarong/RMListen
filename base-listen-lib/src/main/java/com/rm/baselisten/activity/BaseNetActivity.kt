@@ -13,6 +13,8 @@ import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DisplayUtils
 import com.rm.baselisten.viewmodel.BaseNetViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import kotlin.reflect.KClass
 
 /**
  * desc   :包含网络状态，数据状态的基类Activity T:对应界面布局的dataBind对象 VM:对应界面的ViewModel对象
@@ -30,6 +32,10 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
                 lifecycleOwner = this@BaseNetActivity
             }
     }
+    protected val mViewModel by lazy {
+        val clazz = this.javaClass.kotlin.supertypes[0].arguments[1].type?.classifier as KClass<VM>
+        getViewModel(clazz) //koin 注入
+    }
 
     /**
      * 获取子类布局的ID
@@ -42,6 +48,8 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
      * @return VM 子类的ViewModel
      */
     protected abstract fun initViewModel(): VM
+
+//    protected lateinit var mViewModel: VM
 
     /**
      * 定义BaseViewModel
@@ -62,6 +70,7 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //获取子类初始化的ViewModel
+//        createViewModel()
         baseViewModel = initViewModel()
         baseBinding.viewModel = baseViewModel
         //开启base的liveData的数据变化监听
@@ -180,4 +189,23 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
         return R.layout.base_layout_empty
     }
 
+
+//    /**
+//     * 创建 ViewModel
+//     */
+//    @Suppress("UNCHECKED_CAST")
+//    private fun createViewModel() {
+//        val type = javaClass.genericSuperclass
+//        if (type is ParameterizedType) {
+//            val tp = type.actualTypeArguments[1]
+//            val tClass = tp as? Class<VM> ?: BaseNetViewModel::class.java
+//            mViewModel = ViewModelProvider(this, ViewModelFactory()).get(tClass) as VM
+//        }
+//
+//    }
+//    class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
+//        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+//            return modelClass.newInstance()
+//        }
+//    }
 }

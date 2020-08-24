@@ -1,4 +1,4 @@
-package com.example.music_exoplayer_lib.utils
+package com.rm.music_exoplayer_lib.utils
 
 import android.util.Log
 

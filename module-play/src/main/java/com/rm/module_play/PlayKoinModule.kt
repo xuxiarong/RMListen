@@ -1,5 +1,7 @@
 package com.rm.module_play
 
+import com.rm.module_play.viewmodel.PlayViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
@@ -9,6 +11,7 @@ import org.koin.dsl.module
  */
 val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
+    viewModel { PlayViewModel() }
 }
 
 val repositoryModule = module {

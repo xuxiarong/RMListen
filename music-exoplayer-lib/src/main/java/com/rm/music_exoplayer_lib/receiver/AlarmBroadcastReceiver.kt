@@ -1,14 +1,13 @@
-package com.example.music_exoplayer_lib.receiver
+package com.rm.music_exoplayer_lib.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.example.music_exoplayer_lib.constants.ACTION_ALARM_REPLENISH_STOCK
-import com.example.music_exoplayer_lib.constants.ACTION_ALARM_SYNCHRONIZE
-import com.example.music_exoplayer_lib.manager.MusicPlayerManager
-import com.example.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import com.example.music_exoplayer_lib.utils.ExoplayerLogger
+import com.rm.music_exoplayer_lib.constants.ACTION_ALARM_REPLENISH_STOCK
+import com.rm.music_exoplayer_lib.constants.ACTION_ALARM_SYNCHRONIZE
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 /**
  *

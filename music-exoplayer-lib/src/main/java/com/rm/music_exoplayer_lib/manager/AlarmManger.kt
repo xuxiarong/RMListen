@@ -1,4 +1,4 @@
-package com.example.music_exoplayer_lib.manager
+package com.rm.music_exoplayer_lib.manager
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.SystemClock
-import com.example.music_exoplayer_lib.constants.ACTION_ALARM_REPLENISH_STOCK
-import com.example.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
+import com.rm.music_exoplayer_lib.constants.ACTION_ALARM_REPLENISH_STOCK
+import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 
 
 /**

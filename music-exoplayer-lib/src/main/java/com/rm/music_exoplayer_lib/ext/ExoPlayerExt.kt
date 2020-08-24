@@ -1,4 +1,4 @@
-package com.example.music_exoplayer_lib.ext
+package com.rm.music_exoplayer_lib.ext
 
 import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset

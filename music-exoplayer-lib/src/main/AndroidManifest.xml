@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.music_exoplayer_lib">
+    package="com.rm.music_exoplayer_lib">
 
     <application>
         <service
-            android:name=".service.MusicPlayerService"
+            android:name="com.rm.music_exoplayer_lib.service.MusicPlayerService"
             android:enabled="true"
             android:exported="true" />
-        <receiver android:name=".receiver.AlarmBroadcastReceiver">
+        <receiver android:name="com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver">
             <intent-filter>
                 <action android:name="witmoon.auto.replenish.stock.action"/>
             </intent-filter>

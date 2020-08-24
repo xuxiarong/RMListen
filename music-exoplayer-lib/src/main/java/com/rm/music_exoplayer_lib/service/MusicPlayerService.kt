@@ -1,4 +1,4 @@
-package com.example.music_exoplayer_lib.service
+package com.rm.music_exoplayer_lib.service
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -8,13 +8,13 @@ import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
-import com.example.music_exoplayer_lib.bean.BaseAudioInfo
-import com.example.music_exoplayer_lib.iinterface.MusicPlayerPresenter
-import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.example.music_exoplayer_lib.listener.MusicPlayerInfoListener
-import com.example.music_exoplayer_lib.manager.AlarmManger
-import com.example.music_exoplayer_lib.manager.MusicAudioFocusManager
-import com.example.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
+import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
+import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
+import com.rm.music_exoplayer_lib.manager.AlarmManger
+import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ProgressiveMediaSource

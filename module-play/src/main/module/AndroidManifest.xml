@@ -1,17 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rm.module_play">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="debug.PlayApplication"
         android:icon="@mipmap/play_ic_launcher"
         android:label="@string/play_app_name"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/BusinessAppTheme">
-        <activity android:name="debug.PlayMainActivity">
+        android:theme="@style/BusinessAppTheme"
+        android:usesCleartextTraffic="true">
+<!--        <activity android:name=".activity.PlayActivity"></activity>-->
+        <activity android:name=".activity.PlayActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

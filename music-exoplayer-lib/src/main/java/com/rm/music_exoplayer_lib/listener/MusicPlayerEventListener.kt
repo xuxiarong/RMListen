@@ -1,6 +1,6 @@
-package com.example.music_exoplayer_lib.listener
+package com.rm.music_exoplayer_lib.listener
 
-import com.example.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.example.music_exoplayer_lib.constants
+package com.rm.music_exoplayer_lib.constants
 
 /**
  *

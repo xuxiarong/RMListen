@@ -1,10 +1,10 @@
-package com.example.music_exoplayer_lib.manager
+package com.rm.music_exoplayer_lib.manager
 
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.AudioManager.OnAudioFocusChangeListener
-import com.example.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 
 /**
  *音频监听器，当音频输出焦点被其他 MediaPlayer 实例抢占，则暂停播放，重新获取到音频输出焦点，自动恢复播放

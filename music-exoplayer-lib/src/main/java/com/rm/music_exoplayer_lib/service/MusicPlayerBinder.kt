@@ -1,10 +1,8 @@
-package com.example.music_exoplayer_lib.service
+package com.rm.music_exoplayer_lib.service
 
-import android.content.Context
 import android.os.Binder
-import com.example.music_exoplayer_lib.iinterface.MusicPlayerPresenter
-import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.example.music_exoplayer_lib.manager.AlarmManger
+import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
+import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 
 /**
  *

@@ -1,19 +1,17 @@
-package com.example.music_exoplayer_lib.manager
+package com.rm.music_exoplayer_lib.manager
 
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import com.example.music_exoplayer_lib.bean.BaseAudioInfo
-import com.example.music_exoplayer_lib.iinterface.MusicPlayerPresenter
-import com.example.music_exoplayer_lib.listener.MusicInitializeCallBack
-import com.example.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.example.music_exoplayer_lib.listener.MusicPlayerInfoListener
-import com.example.music_exoplayer_lib.service.MusicPlayerBinder
-import com.example.music_exoplayer_lib.service.MusicPlayerService
-import com.example.music_exoplayer_lib.utils.ExoplayerLogger
+import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
+import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
+import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
+import com.rm.music_exoplayer_lib.service.MusicPlayerBinder
+import com.rm.music_exoplayer_lib.service.MusicPlayerService
 
 /**
  *
