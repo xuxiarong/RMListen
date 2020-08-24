@@ -6,5 +6,9 @@
         <activity
             android:name="com.rm.module_home.activity.menu.MenuActivity"
             android:screenOrientation="portrait" />
+        <!-- 精品推荐-->
+        <activity
+            android:name="com.rm.module_home.activity.boutique.BoutiqueRecommendActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

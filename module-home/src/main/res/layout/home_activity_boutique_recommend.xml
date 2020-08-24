@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.activity.boutique.BoutiqueRecommendViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
+            android:id="@+id/home_boutique_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            app:bendTabIndicatorAnimation="true"
+            app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+            app:bendTabIndicatorHeight="@dimen/dp_1"
+            app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+            app:bendTabIndicatorWidth="@dimen/dp_24"
+            app:bendTabMode="scrollable"
+            app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+            app:bendTabTextSize="@dimen/business_text_size_16sp"
+            app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/home_boutique_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

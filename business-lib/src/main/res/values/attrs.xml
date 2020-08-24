@@ -38,6 +38,7 @@
         <attr name="bendTabPaddingEnd" format="dimension" />
         <attr name="bendTabPaddingBottom" format="dimension" />
         <attr name="bendTabPadding" format="dimension" />
+        <attr name="bendTabIndicatorStrokeWidth" format="dimension" /><!-- 线条粗细值-->
         <attr name="indicatorMarginTop" format="dimension" />
     </declare-styleable>
 

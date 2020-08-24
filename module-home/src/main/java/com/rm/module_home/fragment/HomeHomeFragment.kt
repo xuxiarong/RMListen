@@ -6,6 +6,7 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.activity.boutique.BoutiqueRecommendActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.adapter.HomeCollectAdapter
@@ -34,7 +35,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
 
         val homeCollectAdapter = HomeCollectAdapter(
             listOf(
-                HomeCollectModel(R.drawable.home_icon_collect_recommend, "精品推荐") { },
+                HomeCollectModel(R.drawable.home_icon_collect_recommend, "精品推荐") { startBoutiqueRecommend() },
                 HomeCollectModel(R.drawable.home_icon_collect_rank, "榜单") { },
                 HomeCollectModel(R.drawable.home_icon_head_reading, "看书") { },
                 HomeCollectModel(R.drawable.home_icon_collect_listen, "听单") { startMenu() }),
@@ -44,7 +45,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
 
         binding.homeRvCollect.bindHorizontalLayout(homeCollectAdapter)
 
-        val homeAdapter = HomeAdapter(generateHomeTestData(),BR.item)
+        val homeAdapter = HomeAdapter(generateHomeTestData(), BR.item)
         binding.homeRvRecommend.bindVerticalLayout(homeAdapter)
 
 
@@ -69,6 +70,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
 
     fun startMenu() {
         MenuActivity.startActivity(context!!)
+    }
+
+    private fun startBoutiqueRecommend() {
+        BoutiqueRecommendActivity.startActivity(context!!)
     }
 
     fun recommendClick() {

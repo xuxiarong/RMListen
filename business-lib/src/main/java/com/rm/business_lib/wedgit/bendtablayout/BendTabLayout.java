@@ -16,7 +16,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -34,7 +33,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
@@ -245,6 +243,7 @@ public class BendTabLayout extends HorizontalScrollView {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BendTabLayout, defStyleAttr, R.style.BendTabLayout_Default_Style);
 
         mTabStrip.setSelectedIndicatorHeight(a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabIndicatorHeight, 0));
+        mTabStrip.setSelectedIndicatorStrokeWidth(a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabIndicatorStrokeWidth,8));
         // default value was 28dp
         mTabStrip.setSelectedIndicatorWidth(a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabIndicatorWidth, dpToPx(28)));
         mTabStrip.setSelectedIndicatorColor(a.getColor(R.styleable.BendTabLayout_bendTabIndicatorColor, 0));
@@ -1690,6 +1689,7 @@ public class BendTabLayout extends HorizontalScrollView {
     private class SlidingTabStrip extends LinearLayout {
         private int mSelectedIndicatorHeight;
         private int mSelectedIndicatorWidth;
+        private int mSelectedIndicatorStrokeWidth;
         private final Paint mSelectedIndicatorPaint;
 
         int mSelectedPosition = -1;
@@ -1735,6 +1735,14 @@ public class BendTabLayout extends HorizontalScrollView {
         void setSelectedIndicatorWidth(int width) {
             if (mSelectedIndicatorWidth != width) {
                 mSelectedIndicatorWidth = width;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+        }
+
+        // 设置线条粗细
+        void setSelectedIndicatorStrokeWidth(int width) {
+            if (mSelectedIndicatorStrokeWidth != width) {
+                mSelectedIndicatorStrokeWidth = width;
                 ViewCompat.postInvalidateOnAnimation(this);
             }
         }
@@ -2003,7 +2011,7 @@ public class BendTabLayout extends HorizontalScrollView {
 //                            mIndicatorRight, getHeight() - mIndicatorMarginTop, mSelectedIndicatorPaint);
                 mSelectedIndicatorPaint.setStyle(Paint.Style.STROKE);
                 mSelectedIndicatorPaint.setStrokeCap(Paint.Cap.ROUND);
-                mSelectedIndicatorPaint.setStrokeWidth(8f);
+                mSelectedIndicatorPaint.setStrokeWidth(mSelectedIndicatorStrokeWidth);
 //                    RectF oval = new RectF(mIndicatorLeft, getTop(),
 //                            mIndicatorRight, getBottom());
 //                    canvas.drawArc(oval,45,45,false,mSelectedIndicatorPaint);
