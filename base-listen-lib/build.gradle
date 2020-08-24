@@ -75,6 +75,7 @@ dependencies {
     api rootProject.ext.dependencies["mmkvs"]
     api rootProject.ext.dependencies["multidex"]
     api rootProject.ext.dependencies["kotlin_reflect"]
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.72"
 //    implementation project(path: ':business-lib')
 
 

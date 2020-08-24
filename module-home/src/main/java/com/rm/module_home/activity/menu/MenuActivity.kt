@@ -10,10 +10,8 @@ import com.rm.module_home.R
 import com.rm.module_home.adapter.MenuListAdapter
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import kotlinx.android.synthetic.main.home_activity_listen_menu.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewModel>() {
-    private val menuViewModel by viewModel<MenuViewModel>()
 
     private val menuListAdapter by lazy { MenuListAdapter() }
 
@@ -26,10 +24,8 @@ class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewMode
 
     override fun getLayoutId(): Int = R.layout.home_activity_listen_menu
 
-    override fun initViewModel(): MenuViewModel = menuViewModel
-
     override fun startObserve() {
-        menuViewModel.menuList.observe(this){
+        mViewModel.menuList.observe(this){
             menuListAdapter.setNewInstance(it)
         }
     }
@@ -40,9 +36,9 @@ class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewMode
             .setLeftIconClick {
                 finish()
             }
-        menuViewModel.baseTitleModel.value = baseTitleModel
+        mViewModel.baseTitleModel.value = baseTitleModel
         dataBind.run {
-            viewModel = menuViewModel
+            viewModel = mViewModel
         }
 
         home_menu_recycler_view.layoutManager = LinearLayoutManager(this,
@@ -52,8 +48,8 @@ class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewMode
 
     override fun initData() {
 
-        menuViewModel.getMenuBanner()
+        mViewModel.getMenuBanner()
 
-        menuViewModel.getMenuListInfo()
+        mViewModel.getMenuListInfo()
     }
 }

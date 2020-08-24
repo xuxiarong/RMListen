@@ -10,7 +10,6 @@ import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.ActivityLoginBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * desc   : 登陆注册的界面
@@ -18,11 +17,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * version: 1.0
  */
 class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
-
-    private val loginViewModel by viewModel<LoginViewModel>()
-
-
-    override fun initViewModel(): LoginViewModel = loginViewModel
 
     override fun getLayoutId(): Int = R.layout.activity_login
 
@@ -43,10 +37,10 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
             .setRightTextClick { ToastUtil.show(this, " rightTextClick") }
             .setRightIcon1(R.drawable.base_icon_back)
             .setRightIcon1Click { ToastUtil.show(this, " rightIcon1Click") }
-        loginViewModel.baseTitleModel.value = baseTitleModel
+        mViewModel.baseTitleModel.value = baseTitleModel
 
         dataBind.run {
-            viewModel = loginViewModel
+            viewModel = mViewModel
         }
     }
 
@@ -58,16 +52,16 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
         dataBind.login.visibility = View.VISIBLE
 
         if (count % 4 == 0) {
-            loginViewModel.baseStatusModel.value =
+            mViewModel.baseStatusModel.value =
                 BaseStatusModel(BaseNetStatus.BASE_SHOW_NET_ERROR)
         } else if (count % 4 == 1) {
-            loginViewModel.baseStatusModel.value =
+            mViewModel.baseStatusModel.value =
                 BaseStatusModel(BaseNetStatus.BASE_SHOW_DATA_EMPTY)
         } else if (count % 4 == 2) {
-            loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
+            mViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
         } else {
             dataBind.login.visibility = View.GONE
-            loginViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
+            mViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
         }
 
     }
@@ -76,17 +70,17 @@ class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
     }
 
     override fun startObserve() {
-        loginViewModel.apply {
+        mViewModel.apply {
             uiState.observe(this@LoginActivity, Observer {
-                loginViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING))
+                mViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING))
 
                 it.isSuccess?.let {
-                    loginViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT))
+                    mViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT))
                     Toast.makeText(this@LoginActivity, "登陆成功", Toast.LENGTH_LONG).show()
                 }
 
                 it.isError?.let { err ->
-                    loginViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT))
+                    mViewModel.baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT))
                 }
             })
         }

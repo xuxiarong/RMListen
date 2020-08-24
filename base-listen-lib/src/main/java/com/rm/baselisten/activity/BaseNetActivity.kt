@@ -44,19 +44,6 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
     protected abstract fun getLayoutId(): Int
 
     /**
-     * 初始化子类的ViewModel
-     * @return VM 子类的ViewModel
-     */
-    protected abstract fun initViewModel(): VM
-
-//    protected lateinit var mViewModel: VM
-
-    /**
-     * 定义BaseViewModel
-     */
-    private lateinit var baseViewModel: VM
-
-    /**
      * 定义子类的View，用于跟子类的dataBind进行绑定
      */
     private var childView: View? = null
@@ -71,8 +58,7 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
         super.onCreate(savedInstanceState)
         //获取子类初始化的ViewModel
 //        createViewModel()
-        baseViewModel = initViewModel()
-        baseBinding.viewModel = baseViewModel
+        baseBinding.viewModel = mViewModel
         //开启base的liveData的数据变化监听
         startBaseObserve()
         //初始化子类的布局
@@ -103,11 +89,11 @@ abstract class BaseNetActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Bas
      */
     private fun startBaseObserve() {
 
-        baseViewModel.baseStatusModel.observe(this, Observer {
+        mViewModel.baseStatusModel.observe(this, Observer {
             setStatus(it)
         })
 
-        baseViewModel.baseTitleModel.observe(this, Observer {
+        mViewModel.baseTitleModel.observe(this, Observer {
             setTitle()
         })
     }
