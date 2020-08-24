@@ -6,6 +6,14 @@
         android:icon="@mipmap/search_ic_launcher"
         android:label="@string/search_app_name"
         android:theme="@style/BusinessAppTheme">
+        <!-- ui适配设置-->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="375" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="812" />
+
         <activity android:name="debug.SearchMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
