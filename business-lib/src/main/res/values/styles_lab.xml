@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 标签样式-->
+    <style name="BusinessLabStyleBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <!-- 半圆角标签部分-->
+    <!-- 背景色：#ff5e5e,文本：10sp，白色-->
+    <style name="BusinessLabStyleHalfRound_FF5E5E" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_half_round_ff5e5e</item>
+        <item name="android:textSize">@dimen/business_text_size_10sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:paddingStart">@dimen/dp_2</item>
+        <item name="android:paddingEnd">@dimen/dp_2</item>
+    </style>
+
+    <!-- 背景色：渐变#ffdf85 到 #ffba56,文本：10sp,白色-->
+    <style name="BusinessLabStyleHalfRound_FFDF85_TO_FFBA56" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_half_round_ffdf85_to_ffba56</item>
+        <item name="android:textSize">@dimen/business_text_size_10sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:paddingStart">@dimen/dp_2</item>
+        <item name="android:paddingEnd">@dimen/dp_2</item>
+    </style>
+
+    <!-- 背景色：#b3333333,文本：10sp,白色-->
+    <style name="BusinessLabStyleHalfRound_B3333333" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_half_round_b3333333</item>
+        <item name="android:textSize">@dimen/business_text_size_10sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:paddingStart">@dimen/dp_2</item>
+        <item name="android:paddingEnd">@dimen/dp_2</item>
+    </style>
+
+    <!-- 全圆角标签部分-->
+    <!-- 背景色：#b3333333,文本10sp,白色-->
+    <style name="BusinessLabStyleRound_B1B1B1" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_round_b1b1b1</item>
+        <item name="android:textSize">@dimen/business_text_size_10sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:paddingStart">@dimen/dp_2</item>
+        <item name="android:paddingEnd">@dimen/dp_2</item>
+    </style>
+
+    <!-- 背景色：#ff5e5e,文本：12sp,#333333-->
+    <style name="BusinessLabStyleRound_FF5E5E" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_round_ff5e5e</item>
+        <item name="android:textSize">@dimen/business_text_size_12sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:paddingStart">@dimen/dp_4</item>
+        <item name="android:paddingEnd">@dimen/dp_4</item>
+        <item name="android:paddingTop">@dimen/dp_2</item>
+        <item name="android:paddingBottom">@dimen/dp_2</item>
+    </style>
+
+    <!-- 背景色：#ffba56,文本：12sp,#333333-->
+    <style name="BusinessLabStyleRound_FFBA56" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_round_ffba56</item>
+        <item name="android:textSize">@dimen/business_text_size_12sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:paddingStart">@dimen/dp_4</item>
+        <item name="android:paddingEnd">@dimen/dp_4</item>
+        <item name="android:paddingTop">@dimen/dp_2</item>
+        <item name="android:paddingBottom">@dimen/dp_2</item>
+    </style>
+
+    <!-- 背景色：#b1b1b1,文本：12sp,#333333-->
+    <style name="BusinessLabStyleRound_E8E8E8" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_round_e8e8e8</item>
+        <item name="android:textSize">@dimen/business_text_size_12sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:paddingStart">@dimen/dp_4</item>
+        <item name="android:paddingEnd">@dimen/dp_4</item>
+        <item name="android:paddingTop">@dimen/dp_2</item>
+        <item name="android:paddingBottom">@dimen/dp_2</item>
+    </style>
+
+    <!-- 圆角方框标签部分-->
+    <!-- 方框颜色：#b1b1b1,文本：8sp,#b1b1b1-->
+    <style name="BusinessLabStyleRect_B1B1B1" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_stroke_rect_b1b1b1</item>
+        <item name="android:textSize">@dimen/business_text_size_8sp</item>
+        <item name="android:textColor">@color/business_text_color_b1b1b1</item>
+        <item name="android:padding">@dimen/dp_2</item>
+    </style>
+
+    <!-- 背景色：#ff5e5e,文本：8sp,#ff5e5e-->
+    <style name="BusinessLabStyleRect_FF5E5E" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_stroke_rect_ff5e5e</item>
+        <item name="android:textSize">@dimen/business_text_size_8sp</item>
+        <item name="android:textColor">@color/business_color_ff5e5e</item>
+        <item name="android:padding">@dimen/dp_2</item>
+    </style>
+
+    <!-- 背景色：#ffba56,文本：8sp,#ffba56-->
+    <style name="BusinessLabStyleRect_FFBA56" parent="@style/BusinessLabStyleBase">
+        <item name="android:background">@drawable/business_shape_stroke_rect_ffba56</item>
+        <item name="android:textSize">@dimen/business_text_size_8sp</item>
+        <item name="android:textColor">@color/business_color_ffba56</item>
+        <item name="android:padding">@dimen/dp_2</item>
+    </style>
+
+
+</resources>

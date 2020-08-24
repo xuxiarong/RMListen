@@ -4,11 +4,11 @@
     <solid
         android:color="@android:color/holo_red_light"
         />
-    <corners android:topRightRadius="4dp"
-        android:bottomLeftRadius="4dp"/>
+    <corners android:topRightRadius="@dimen/dp_4"
+        android:bottomLeftRadius="@dimen/dp_4"/>
     <gradient
-        android:startColor="#ffdf85"
-        android:endColor="#ffba56"
+        android:startColor="@color/business_color_ffdf85"
+        android:endColor="@color/business_color_ffba56"
         android:angle="270"
         />
 </shape>

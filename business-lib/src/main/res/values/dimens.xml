@@ -14,13 +14,17 @@
     <dimen name="stroke_width">1dp</dimen> <!-- 边框线条宽度-->
     <dimen name="padding_width">8dp</dimen> <!-- 大部分界面的边距-->
 
+    <dimen name="line">1dp</dimen> <!-- 边框线宽度 -->
 
-    <!-- 文本size-->
-    <dimen name="business_head_large_size">20sp</dimen>
-    <dimen name="business_head_size">16sp</dimen>
-    <dimen name="business_second_size">14sp</dimen>
-    <dimen name="business_small_size">12sp</dimen>
-    <dimen name="business_sp_10">10sp</dimen>
+
+    <!-- 公共文本size-->
+    <dimen name="business_text_size_20sp">20sp</dimen> <!-- 最大字号-->
+    <dimen name="business_text_size_18sp">18sp</dimen><!-- 一级字号-->
+    <dimen name="business_text_size_16sp">16sp</dimen><!-- 二级字号-->
+    <dimen name="business_text_size_14sp">14sp</dimen><!-- 三级字号-->
+    <dimen name="business_text_size_12sp">12sp</dimen><!-- 四级字号-->
+    <dimen name="business_text_size_10sp">10sp</dimen><!-- 五级字号-->
+    <dimen name="business_text_size_8sp">8sp</dimen>
 
 
 
