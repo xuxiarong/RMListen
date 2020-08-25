@@ -4,12 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rm.business_lib.bean.BannerInfo
 import com.rm.module_home.R
-import com.rm.module_home.model.HomeBoutiqueModel
 import com.rm.module_home.model.HomeRecommendModel
 import com.rm.module_home.model.home.collect.HomeCollectModel
 import com.rm.module_home.model.home.grid.HomeGridRecommendModel
 import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleModel
 import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleModel
+import com.rm.module_home.model.home.ver.HomeRecommendVerModel
 
 /**
  * desc   :
@@ -23,9 +23,7 @@ class HomeFragmentViewModel : ViewModel() {
     var homeHorSingleList = MutableLiveData<List<HomeRecommendHorSingleModel>>()
     var homeHorDoubleList = MutableLiveData<List<HomeRecommendHorDoubleModel>>()
     var homeGridList = MutableLiveData<List<HomeGridRecommendModel>>()
-
-    var homeBoutiqueModel = MutableLiveData<HomeBoutiqueModel>()
-    var homeRecommendModel = MutableLiveData<HomeRecommendModel>()
+    var homeVerList = MutableLiveData<List<HomeRecommendVerModel>>()
 
     fun initBannerInfo() {
         val bannerList = mutableListOf<BannerInfo>()
@@ -267,4 +265,43 @@ class HomeFragmentViewModel : ViewModel() {
         this.homeGridList.value = singleList
     }
 
+    fun initVerList(){
+        homeVerList.value = listOf(
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            ),
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            ),
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            ),
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            ),
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            )
+        )
+    }
 }

@@ -35,12 +35,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopTag"
                 bindText="@{item.topRecommendModel.tag}"
-                android:layout_width="24dp"
-                android:layout_height="16dp"
-                android:background="@drawable/business_shape_half_round_ffdf85_to_ffba56"
-                android:gravity="center"
-                android:textColor="@color/business_text_color_ffffff"
-                android:textSize="@dimen/business_text_size_10sp"
+                style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon" />
 
@@ -93,12 +88,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomTag"
                 bindText="@{item.bottomRecommendModel.tag}"
-                android:layout_width="24dp"
-                android:layout_height="16dp"
-                android:background="@drawable/business_shape_half_round_ffdf85_to_ffba56"
-                android:gravity="center"
-                android:textColor="@color/business_text_color_ffffff"
-                android:textSize="@dimen/business_text_size_10sp"
+                style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon" />
 

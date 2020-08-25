@@ -2,7 +2,6 @@ package com.rm.module_home.model.home.ver
 
 import com.rm.baselisten.adapter.BaseMultiAdapter
 import com.rm.module_home.R
-import com.rm.module_home.model.HomeRecommendModel
 
 /**
  * desc   :
@@ -10,7 +9,11 @@ import com.rm.module_home.model.HomeRecommendModel
  * version: 1.0
  */
 data class HomeRecommendVerModel constructor(
-    val verModel: HomeRecommendModel
+    var imageUrl : String,
+    val tag : String,
+    val title : String,
+    val content : String,
+    val author : String
 ) : BaseMultiAdapter.IBindItemType {
     override fun bindType(): Int {
         return R.layout.home_item_recommend_ver

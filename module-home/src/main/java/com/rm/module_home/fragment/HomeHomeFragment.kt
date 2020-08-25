@@ -15,6 +15,7 @@ import com.rm.module_home.model.home.grid.HomeGridRecommendRvModel
 import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleRvModel
 import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleRvModel
 import com.rm.module_home.model.home.more.HomeMoreModel
+import com.rm.module_home.model.home.ver.HomeRecommendVerRvModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,6 +42,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
         homeViewModel.initSingleList()
         homeViewModel.initDoubleList()
         homeViewModel.initGridList()
+        homeViewModel.initVerList()
         mHomeAdapter = HomeAdapter(homeViewModel, initHomeAdapter(), BR.item)
         binding.homeRv.bindVerticalLayout(mHomeAdapter)
 
@@ -58,7 +60,9 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
             HomeMoreModel("精品推荐Grid") { startHorSingleMore() },
             HomeGridRecommendRvModel(),
             HomeMoreModel("精品推荐Single") { startHorSingleMore() },
-            HomeRecommendHorSingleRvModel()
+            HomeRecommendHorSingleRvModel(),
+            HomeMoreModel("新书推荐Single") { startHorSingleMore() },
+            HomeRecommendVerRvModel()
         )
     }
 
