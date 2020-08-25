@@ -34,10 +34,10 @@
             bindText="@{item.singleModel.tag}"
             android:layout_width="24dp"
             android:layout_height="16dp"
-            android:background="@drawable/business_shape_vip_tag"
+            android:background="@drawable/business_shape_half_round_ffdf85_to_ffba56"
             android:gravity="center"
             android:textColor="@color/businessWhite"
-            android:textSize="@dimen/business_sp_10"
+            android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
 
@@ -48,8 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/business_head_color"
-            android:textSize="@dimen/business_second_size"
+            android:textColor="@color/business_color_b3333333"
+            android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Carolyn Gregory" />
@@ -61,8 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/business_head_color"
-            android:textSize="@dimen/business_second_size"
+            android:textColor="@color/business_color_b1b1b1"
+            android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintBottom_toBottomOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendHorDoubleTopIcon"
             tools:text="小丸子" />

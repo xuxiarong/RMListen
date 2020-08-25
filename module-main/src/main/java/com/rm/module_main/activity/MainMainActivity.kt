@@ -42,7 +42,7 @@ class MainMainActivity : BaseActivity() {
 //    }
 
     override fun initView() {
-        navigationController = findViewById<BottomTabView>(R.id.tab).custom().run {
+        navigationController = findViewById<BottomTabView>(R.id.mainTab).custom().run {
 
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(

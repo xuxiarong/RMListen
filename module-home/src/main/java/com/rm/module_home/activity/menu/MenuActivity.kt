@@ -3,8 +3,8 @@ package com.rm.module_home.activity.menu
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.baselisten.activity.BaseNetActivity
+import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.module_home.R
 import com.rm.module_home.adapter.MenuListAdapter
@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.home_activity_listen_menu.*
 
 class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewModel>() {
 
-    private val menuListAdapter by lazy { MenuListAdapter() }
 
     companion object {
         fun startActivity(context: Context) {
@@ -25,8 +24,8 @@ class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewMode
     override fun getLayoutId(): Int = R.layout.home_activity_listen_menu
 
     override fun startObserve() {
-        mViewModel.menuList.observe(this){
-            menuListAdapter.setNewInstance(it)
+        mViewModel.menuList.observe(this) {
+            home_menu_recycler_view.bindVerticalLayout(MenuListAdapter().apply { setNewInstance(it) })
         }
     }
 
@@ -40,10 +39,6 @@ class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewMode
         dataBind.run {
             viewModel = mViewModel
         }
-
-        home_menu_recycler_view.layoutManager = LinearLayoutManager(this,
-            LinearLayoutManager.VERTICAL,false)
-        home_menu_recycler_view.adapter = menuListAdapter
     }
 
     override fun initData() {

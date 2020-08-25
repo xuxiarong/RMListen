@@ -4,7 +4,7 @@ ext {
     isMainApp = false // 主模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isHomeApp = false // 主页模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isSearchApp = false // 搜索模块开关，false = 作为lib组件存在，true = 作为App独立存在
-    isPlayApp = true // 播放模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isPlayApp = false // 播放模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isListenApp = false // 我听模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isMineApp = false // 个人模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isLoginApp = false // 登陆模块开关，false = 作为lib组件存在，true = 作为App独立存在
@@ -15,8 +15,8 @@ ext {
             buildToolsVersion: "29.0.3",
             minSdkVersion    : 21,
             targetSdkVersion : 29,
-            versionCode      : 3,
-            versionName      : "1.1.0.2020.07.16",    //必须是int或者float，否则影响线上升级
+            versionCode      : 1,
+            versionName      : "1.0.0",    //必须是int或者float，否则影响线上升级
             databaseVersion  : 1 // 数据库版本号
     ]
 
@@ -65,7 +65,8 @@ ext {
             //StatusBar处理库
             "statusBarLib"            : "2.3.3",
             xBanner                   : "1.1.0",
-            cardview                  : "28.0.0"
+            cardview                  : "28.0.0",
+            autosize                  : "1.2.1"
 
     ]
 
@@ -99,7 +100,10 @@ ext {
             glide                     : "com.github.bumptech.glide:glide:${version.glide}",
 
             // cardView
-            cardview                  : "com.android.support:cardview-v7:${version.cardview}"
+            cardview                  : "com.android.support:cardview-v7:${version.cardview}",
+
+            // 今日头条优化后的适配方案
+            autosize                  : "me.jessyan:autosize:${version.autosize}"
     ]
 
     androidx = [

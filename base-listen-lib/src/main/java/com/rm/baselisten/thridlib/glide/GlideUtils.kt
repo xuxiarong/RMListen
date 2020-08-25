@@ -78,6 +78,10 @@ fun loadRoundCornersImage(imageView: ImageView, url: String, @DrawableRes defaul
 }
 
 fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String) {
+    if (corner <= 0) {
+        loadImage(imageView, url)
+        return
+    }
     loadImageByTransform(
         imageView,
         url,

@@ -10,7 +10,7 @@
         android:layout_height="match_parent" />
 
     <com.rm.module_main.customview.bottomtab.BottomTabView
-        android:id="@+id/tab"
+        android:id="@+id/mainTab"
         android:elevation="8dp"
         android:layout_width="match_parent"
         android:layout_height="70dp"

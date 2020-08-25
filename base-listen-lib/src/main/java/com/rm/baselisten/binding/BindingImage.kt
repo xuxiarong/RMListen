@@ -23,12 +23,9 @@ fun ImageView.bindSrc(resourceId: Int?) {
     }
 }
 
-@BindingAdapter("corner", "bindUrl", "isCircle", requireAll = false)
-fun ImageView.bindUrl(corner: Float, bindUrl: String, isCircle: Boolean) {
-    if(TextUtils.isEmpty((bindUrl))){
-        return
-    }
 
+@BindingAdapter("corner", "bindUrl", "isCircle", requireAll = false)
+fun ImageView.bindUrl(corner: Float = 0f, bindUrl: String, isCircle: Boolean = false) {
     when {
         isCircle -> {
             loadCircleImage(this, bindUrl)

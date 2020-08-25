@@ -15,5 +15,129 @@
         android:layout_height="match_parent"
         tools:context=".activity.PlayActivity">
 
+        <RelativeLayout
+            android:id="@+id/rl_music_playe_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <com.rm.business_lib.wedgit.arrow.ArrowView
+                android:id="@+id/report_why_arrow"
+                android:layout_width="20dp"
+                android:layout_height="13dp"
+                android:layout_marginLeft="5dp"
+                app:arrow_direction="bottom"
+                app:arrow_line_color="@color/business_text_color_333333"
+                app:arrow_width="2dp"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/music_ic_icon_share_bc" />
+        </RelativeLayout>
+
+
+        <com.flyco.roundview.RoundFrameLayout
+            android:id="@+id/fl_music_playe_bg"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            app:layout_constraintTop_toBottomOf="@+id/rl_music_playe_title"
+            app:rv_backgroundColor="@color/business_text_color_333333"
+            app:rv_cornerRadius="8dp"
+            tools:ignore="MissingConstraints">
+
+        </com.flyco.roundview.RoundFrameLayout>
+
+        <TextView
+            android:id="@+id/fl_music_playe_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="《与罗摩相遇》第一章"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_music_playe_bg"
+            tools:ignore="MissingConstraints" />
+
+        <RelativeLayout
+            android:id="@+id/rl_music_play_titles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_music_playe_page"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/tv_music_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="与罗摩相遇 >"
+                android:textColor="@color/business_text_color_666666" />
+
+            <com.flyco.roundview.RoundTextView
+                android:layout_width="80dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="32dp"
+                android:layout_toRightOf="@+id/tv_music_title"
+                android:gravity="center"
+                android:text="加入听单"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="12sp"
+                app:rv_cornerRadius="18dp"
+                app:rv_strokeColor="@color/stroke_color"
+                app:rv_strokeWidth="1dp" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/rl_music_play_titles"
+            tools:ignore="MissingConstraints">
+
+            <RelativeLayout
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
+                    android:id="@+id/music_play_bubbleSeekBar"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    app:barHeight="4dp"
+                    app:bubbleBackgroud="@mipmap/play_ic_launcher"
+                    app:bubbleHeight="30dp"
+                    app:bubbleOffset="20dp"
+                    app:bubbleWidth="100dp"
+                    app:max="100.0"
+                    app:min="50.0"
+                    app:secondTrack="@drawable/track_s"
+                    app:thumb="@drawable/thumb"
+                    app:thumbHeight="20dp"
+                    app:thumbTextColor="#FFFFFFFF"
+                    app:thumbTextSize="10dp"
+                    app:thumbWidth="60dp"
+                    app:track="@drawable/track" />
+
+
+            </RelativeLayout>
+
+
+        </FrameLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

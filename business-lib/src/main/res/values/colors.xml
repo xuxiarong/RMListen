@@ -5,13 +5,23 @@
     <color name="businessColorAccent">#03DAC5</color>
     <color name="businessWhite">#ffffff</color>
 
-    <color name="business_head_color">#333333</color>
-    <color name="business_second_color">#666666</color>
-    <color name="business_third_color">#b1b1b1</color>
-
     <color name="bottom_drawer_outside_background">#80000000</color>
     <color name="bottom_drawer_handle_view_color">#E0E0E0</color>
 
     <!-- 边框色值-->
     <color name="stroke_color">#e8e8e8</color>
+
+    <!-- 公共色值-->
+    <color name="business_text_color_333333">#333333</color><!-- 一级文字 -->
+    <color name="business_text_color_666666">#666666</color><!-- 二级文字 -->
+    <color name="business_text_color_b1b1b1">#b1b1b1</color><!-- 三级文字 -->
+    <color name="business_text_color_ffffff">#ffffff</color><!-- 白色文字 -->
+
+    <color name="business_color_ff5e5e">#ff5e5e</color> <!-- 主色 -->
+    <color name="business_color_ffdf85">#ffdf85</color> <!-- 黄色 -->
+    <color name="business_color_ffba56">#ffba56</color> <!-- 橙色 -->
+    <color name="business_color_b3333333">#b3333333</color><!--半透明黑 -->
+    <color name="business_color_e8e8e8">#e8e8e8</color>
+    <color name="business_color_b1b1b1">#b1b1b1</color>
+
 </resources>

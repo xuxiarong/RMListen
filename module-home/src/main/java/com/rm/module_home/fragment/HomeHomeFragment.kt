@@ -5,6 +5,7 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
@@ -38,6 +39,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
         mHomeAdapter = HomeAdapter(homeViewModel, initHomeAdapter(), BR.item)
         binding.homeRv.bindVerticalLayout(mHomeAdapter)
 
+
         binding.run {
             collectViewModel = homeViewModel
         }
@@ -66,6 +68,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
 
     }
 
+
     fun recommendClick() {
 
     }
@@ -75,7 +78,6 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
     }
 
     override fun startObserve() {
-
     }
 
 }

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--标题 Style-->
+    <style name="TextViewHeadStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_16sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!--内容 Style-->
+    <style name="TextViewSecondStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_14sp</item>
+        <item name="android:textColor">@color/business_text_color_666666</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!--最小内容 Style-->
+    <style name="TextViewSmallStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_12sp</item>
+        <item name="android:textColor">@color/business_text_color_666666</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+
+    <!-- 公共文本样式-->
+    <!-- 一级颜色文本样式 -->
+    <!-- size = 18sp，color = #333333-->
+    <style name="BusinessTextStyleFirst_1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_18sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 16sp，color = #333333-->
+    <style name="BusinessTextStyleFirst_2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_16sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 14sp，color = #333333-->
+    <style name="BusinessTextStyleFirst_3">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_14sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 12sp，color = #333333-->
+    <style name="BusinessTextStyleFirst_4">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_12sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 10sp，color = #333333-->
+    <style name="BusinessTextStyleFirst_5">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_10sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+
+    <!-- 二级级颜色文本样式 -->
+    <!-- size = 18sp，color = #666666-->
+    <style name="BusinessTextStyleSecond_1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_18sp</item>
+        <item name="android:textColor">@color/business_text_color_666666</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 16sp，color = #666666-->
+    <style name="BusinessTextStyleSecond_2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_16sp</item>
+        <item name="android:textColor">@color/business_text_color_666666</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 14sp，color = #666666-->
+    <style name="BusinessTextStyleSecond_3">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_14sp</item>
+        <item name="android:textColor">@color/business_text_color_666666</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 12sp，color = #666666-->
+    <style name="BusinessTextStyleSecond_4">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_12sp</item>
+        <item name="android:textColor">@color/business_text_color_666666</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 10sp，color = #666666-->
+    <style name="BusinessTextStyleSecond_5">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_10sp</item>
+        <item name="android:textColor">@color/business_text_color_666666</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+
+    <!-- 三级级颜色文本样式 -->
+    <!-- size = 18sp，color = #b1b1b1-->
+    <style name="BusinessTextStyleThird_1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_18sp</item>
+        <item name="android:textColor">@color/business_text_color_b1b1b1</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 16sp，color = #b1b1b1-->
+    <style name="BusinessTextStyleThird_2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_16sp</item>
+        <item name="android:textColor">@color/business_text_color_b1b1b1</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 14sp，color = #b1b1b1-->
+    <style name="BusinessTextStyleThird_3">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_14sp</item>
+        <item name="android:textColor">@color/business_text_color_b1b1b1</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 12sp，color = #b1b1b1-->
+    <style name="BusinessTextStyleThird_4">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_12sp</item>
+        <item name="android:textColor">@color/business_text_color_b1b1b1</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- size = 10sp，color = #b1b1b1-->
+    <style name="BusinessTextStyleThird_5">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_10sp</item>
+        <item name="android:textColor">@color/business_text_color_b1b1b1</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+</resources>

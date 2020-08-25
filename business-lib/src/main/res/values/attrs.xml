@@ -6,7 +6,7 @@
         <attr name="bottom_sheet_corner_radius" format="dimension" />
         <attr name="bottom_sheet_extra_padding" format="dimension" />
         <attr name="bottom_drawer_background" format="reference" />
-        <attr name="content_view" format="reference"/>
+        <attr name="content_view" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="BottomDrawerDialog">
@@ -38,6 +38,7 @@
         <attr name="bendTabPaddingEnd" format="dimension" />
         <attr name="bendTabPaddingBottom" format="dimension" />
         <attr name="bendTabPadding" format="dimension" />
+        <attr name="bendTabIndicatorStrokeWidth" format="dimension" /><!-- 线条粗细值-->
         <attr name="indicatorMarginTop" format="dimension" />
     </declare-styleable>
 
@@ -45,5 +46,43 @@
         <attr name="android:text" />
         <attr name="android:icon" />
         <attr name="android:layout" />
+    </declare-styleable>
+    <!--    自定义箭头的属性-->
+    <declare-styleable name="round_style">
+        <attr name="back_color" format="color|reference" />
+        <attr name="stroke_color" format="color|reference" />
+        <attr name="stroke_width" format="dimension" />
+        <attr name="stroke_radius" format="dimension" />
+        <attr name="is_circle" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="ArrowView">
+        <attr name="arrow_width" format="dimension" />
+        <attr name="arrow_full" format="boolean" />
+        <attr name="arrow_line_color" format="color|reference" />
+        <attr name="arrow_direction" format="enum">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="top" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+    </declare-styleable>
+    <!--    播放器进度条自定义的属性-->
+    <declare-styleable name="DaXuBubbleSeekBar">
+        <attr name="min" format="float|reference" />
+        <attr name="max" format="float|reference" />
+        <attr name="thumbHeight" format="dimension|reference" />
+        <attr name="thumbWidth" format="dimension|reference" />
+        <attr name="thumbTextColor" format="color|reference" />
+        <attr name="thumbTextSize" format="dimension|reference" />
+        <attr name="barHeight" format="dimension|reference" />
+        <attr name="track" format="reference" />
+        <attr name="secondTrack" format="reference" />
+        <attr name="thumb" format="reference" />
+        <attr name="bubbleBackgroud" format="reference" />
+        <attr name="bubbleWidth" format="dimension|reference" />
+        <attr name="bubbleHeight" format="dimension|reference" />
+        <attr name="bubbleOffset" format="dimension|reference" />
+        <attr name="trackMarginLeft" format="dimension|reference" />
+        <attr name="trackMarginRight" format="dimension|reference" />
     </declare-styleable>
 </resources>

@@ -8,6 +8,14 @@
         android:icon="@mipmap/home_ic_launcher"
         android:label="@string/home_app_name"
         android:theme="@style/BusinessAppTheme">
+        <!-- ui适配设置-->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="375" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="812" />
+
         <activity android:name="debug.HomeMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,8 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 听单列表-->
         <activity
             android:name="com.rm.module_home.activity.menu.MenuActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- 精品推荐-->
+        <activity
+            android:name="com.rm.module_home.activity.boutique.BoutiqueActivity"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

@@ -68,3 +68,18 @@ https://github.com/xiaohaibin/XBanner
 - 支持Glide/Fresco等主流图片加载框架加载图片
 - 支持自定义布局
 - 支持AndroidX
+
+### ****自定义View****
+###****Arrow****
+### 用途：自定义箭头 支持上下左右方向
+###用法（向下的箭头）
+```
+        <com.rm.business_lib.wedgit.arrow.ArrowView
+            android:id="@+id/report_why_arrow"
+            app:arrow_direction="top"
+            android:layout_marginLeft="5dp"
+            app:arrow_line_color="@color/business_text_color_b1b1b1"
+            android:layout_width="25dp"
+            android:layout_height="15dp"
+            tools:ignore="MissingConstraints" />
+```

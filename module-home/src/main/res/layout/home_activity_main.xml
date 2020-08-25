@@ -22,15 +22,9 @@
         android:layout_height="wrap_content"
         android:text="跳转听单" />
 
-    <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
-        android:id="@+id/bend_tab"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        app:bendTabIndicatorAnimation="true"
-        app:bendTabMode="scrollable" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <Button
+        android:id="@+id/btnBoutique"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="精品推荐" />
 </LinearLayout>
