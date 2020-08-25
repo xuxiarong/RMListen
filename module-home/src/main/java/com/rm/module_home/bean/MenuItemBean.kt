@@ -1,5 +1,7 @@
 package com.rm.module_home.bean
 
+import com.rm.business_lib.bean.BookBean
+
 /**
  * desc   :
  * date   : 2020/08/21

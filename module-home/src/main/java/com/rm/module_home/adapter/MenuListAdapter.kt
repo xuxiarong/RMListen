@@ -11,8 +11,8 @@ import com.rm.baselisten.decoration.GridSpaceItemDecoration
 import com.rm.baselisten.thridlib.glide.loadCircleImage
 import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
 import com.rm.baselisten.util.DisplayUtils
+import com.rm.business_lib.bean.BookBean
 import com.rm.module_home.R
-import com.rm.module_home.bean.BookBean
 import com.rm.module_home.bean.MenuItemBean
 
 /**
