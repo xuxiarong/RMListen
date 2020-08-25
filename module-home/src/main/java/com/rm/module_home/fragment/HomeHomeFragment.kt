@@ -5,6 +5,7 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
@@ -33,7 +34,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
 
     override fun initView() {
         homeViewModel.initBannerInfo()
-        homeViewModel.initCollect({startMenu()},{startMenu()},{startMenu()},{startMenu()})
+        homeViewModel.initCollect({ startBoutique() },
+            { startMenu() },
+            { startMenu() },
+            { startMenu() })
         homeViewModel.initSingleList()
         homeViewModel.initDoubleList()
         homeViewModel.initGridList()
@@ -56,6 +60,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
             HomeMoreModel("精品推荐Single") { startHorSingleMore() },
             HomeRecommendHorSingleRvModel()
         )
+    }
+
+    private fun startBoutique() {
+        context?.let {
+            BoutiqueActivity.startActivity(it)
+        }
     }
 
     private fun startMenu() {

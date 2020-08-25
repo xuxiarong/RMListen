@@ -5,7 +5,7 @@ import com.rm.baselisten.adapter.BaseMultiAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.holder.BaseBindHolder
-import com.rm.business_lib.xbanner.bindData
+import com.rm.business_lib.binding.bindData
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.*

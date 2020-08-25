@@ -1,9 +1,9 @@
 package com.rm.module_home.repository
 
 import com.rm.baselisten.net.api.BaseRepository
-import com.rm.business_lib.xbanner.BannerInfo
-import com.rm.module_home.api.HomeApiService
 import com.rm.business_lib.bean.BookBean
+import com.rm.business_lib.bean.BannerInfo
+import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.bean.MenuItemBean
 
 /**
@@ -100,6 +100,46 @@ class MenuRepository(val service: HomeApiService) : BaseRepository() {
                 bookList1
             )
         )
+
+
+        val bookList2 = mutableListOf<BookBean>()
+        bookList2.add(
+            BookBean(
+                0,
+                "1_0",
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598075810332&di=b8ec1ef91766907dd06bd27b674d9243&imgtype=0&src=http%3A%2F%2Fa3.att.hudong.com%2F14%2F75%2F01300000164186121366756803686.jpg",
+                "古代"
+            )
+        )
+        bookList2.add(
+            BookBean(
+                1,
+                "1_1",
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598075810332&di=3132d4d94e28e5632c4043d1f5572643&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F56%2F12%2F01300000164151121576126282411.jpg",
+                "现代"
+            )
+        )
+        bookList2.add(
+            BookBean(
+                2,
+                "1_2",
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598075810331&di=b0fbc54b483e31bd000bfbfefb485460&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F22%2F59%2F19300001325156131228593878903.jpg",
+                "未来"
+            )
+        )
+        menuItemList.add(
+            MenuItemBean(
+                "第三个item",
+                "两个人也寂寞"
+                ,
+                "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1027245443,3552957153&fm=26&gp=0.jpg"
+                ,
+                "3.9W",
+                120,
+                bookList2
+            )
+        )
+
         return menuItemList
     }
 }

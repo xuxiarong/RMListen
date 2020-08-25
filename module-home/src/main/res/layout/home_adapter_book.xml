@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dp_18">
+    android:paddingStart="@dimen/dp_16"
+    android:paddingTop="@dimen/dp_18"
+    android:paddingEnd="@dimen/dp_16">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/home_book_adapter_icon"

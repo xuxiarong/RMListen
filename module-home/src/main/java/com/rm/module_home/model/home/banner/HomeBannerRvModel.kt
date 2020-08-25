@@ -1,7 +1,7 @@
 package com.rm.module_home.model.home.banner
 
 import com.rm.baselisten.adapter.BaseMultiAdapter
-import com.rm.business_lib.xbanner.BannerInfo
+import com.rm.business_lib.bean.BannerInfo
 import com.rm.module_home.R
 
 /**
