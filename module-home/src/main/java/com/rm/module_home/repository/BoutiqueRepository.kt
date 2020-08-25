@@ -4,13 +4,27 @@ import com.rm.baselisten.net.api.BaseRepository
 import com.rm.business_lib.xbanner.BannerInfo
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.bean.BookBean
+import com.rm.module_home.bean.CategoryTabBean
 
 /**
  * desc   :
  * date   : 2020/08/24
  * version: 1.0
  */
-class BoutiqueRecommendRepository(val service: HomeApiService) : BaseRepository() {
+class BoutiqueRepository(val service: HomeApiService) : BaseRepository() {
+
+    fun getTabList():List<CategoryTabBean>{
+        val tabList = mutableListOf<CategoryTabBean>()
+        tabList.add(CategoryTabBean(1,"武侠"))
+        tabList.add(CategoryTabBean(2,"情感"))
+        tabList.add(CategoryTabBean(3,"都市"))
+        tabList.add(CategoryTabBean(4,"校园"))
+        tabList.add(CategoryTabBean(5,"科普读物"))
+        tabList.add(CategoryTabBean(6,"科幻巨作️"))
+        tabList.add(CategoryTabBean(7,"悬疑"))
+        return tabList;
+    }
+
     fun getBanner(): MutableList<BannerInfo> {
         val bannerList = mutableListOf<BannerInfo>()
         bannerList.add(BannerInfo("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597921071741&di=f7334148be90918832df8165a435eab5&imgtype=0&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D3807836035%2C2971917368%26fm%3D214%26gp%3D0.jpg"))

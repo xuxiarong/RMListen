@@ -4,9 +4,10 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.rm.module_home.bean.CategoryTabBean
 import com.rm.module_home.fragment.HomePagerTestFragment
 
-class HomeTestViewPagerAdapter(fm: FragmentManager, private val size: Int) :
+class HomeTestViewPagerAdapter(fm: FragmentManager, private val tabList: List<CategoryTabBean>) :
     FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
        return HomePagerTestFragment()
@@ -14,10 +15,10 @@ class HomeTestViewPagerAdapter(fm: FragmentManager, private val size: Int) :
     }
 
     override fun getCount(): Int {
-        return size
+        return tabList.size
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return "精品$position"
+        return tabList[position].name
     }
 }

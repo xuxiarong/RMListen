@@ -6,7 +6,7 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.activity.boutique.BoutiqueRecommendActivity
+import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.adapter.HomeCollectAdapter
@@ -73,7 +73,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
     }
 
     private fun startBoutiqueRecommend() {
-        BoutiqueRecommendActivity.startActivity(context!!)
+        BoutiqueActivity.startActivity(context!!)
     }
 
     fun recommendClick() {
