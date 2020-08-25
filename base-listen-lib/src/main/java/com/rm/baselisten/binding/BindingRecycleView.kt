@@ -1,5 +1,6 @@
 package com.rm.baselisten.binding
 
+import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,6 +34,7 @@ fun RecyclerView.bindVerticalLayout(adapter: RecyclerView.Adapter<*>) {
 
     itemAnimator = DefaultItemAnimator()
     this.adapter = adapter
+    overScrollMode = View.OVER_SCROLL_NEVER
 }
 
 @BindingAdapter("bindHorizontalLayout")
@@ -42,6 +44,7 @@ fun RecyclerView.bindHorizontalLayout(adapter: RecyclerView.Adapter<*>) {
     setLayoutManager(layoutManager)
     itemAnimator = DefaultItemAnimator()
     this.adapter = adapter
+    overScrollMode = View.OVER_SCROLL_NEVER
 }
 
 @BindingAdapter("bindText")
@@ -54,9 +57,17 @@ fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>, spanCount: Int
     val layoutManager = GridLayoutManager(context, spanCount)
     setLayoutManager(layoutManager)
     this.adapter = adapter
+    overScrollMode = View.OVER_SCROLL_NEVER
 }
 
 @BindingAdapter("gridItemDecoration")
-fun RecyclerView.gridItemDecoration(span:Float){
-    addItemDecoration(GridSpaceItemDecoration(DisplayUtils.dip2px(context,span),0,false,GridSpaceItemDecoration.GRIDLAYOUT))
+fun RecyclerView.gridItemDecoration(span: Float) {
+    addItemDecoration(
+        GridSpaceItemDecoration(
+            DisplayUtils.dip2px(context, span),
+            0,
+            false,
+            GridSpaceItemDecoration.GRIDLAYOUT
+        )
+    )
 }

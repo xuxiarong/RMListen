@@ -1,6 +1,7 @@
 package com.rm.module_home
 
 import com.rm.baselisten.net.api.BaseRetrofitClient
+import com.rm.module_home.activity.boutique.BoutiqueFragmentViewModel
 import com.rm.module_home.activity.boutique.BoutiqueViewModel
 import com.rm.module_home.activity.menu.MenuViewModel
 import com.rm.module_home.api.HomeApiService
@@ -21,6 +22,7 @@ val viewModelModule = module {
     viewModel { HomeFragmentViewModel() }
     viewModel { MenuViewModel(get()) }
     viewModel { BoutiqueViewModel(get()) }
+    viewModel { BoutiqueFragmentViewModel(get()) }
 }
 
 val repositoryModule = module {

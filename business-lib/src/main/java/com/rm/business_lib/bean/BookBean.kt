@@ -7,7 +7,9 @@ package com.rm.business_lib.bean
  */
 data class BookBean(
     val id: Int,
-    val name: String,
-    val icon: String,
-    val tips: String
+    val name: String = "",
+    val icon: String = "",
+    val tips: String = "",
+    val describe: String = "",
+    val author: String = ""
 )

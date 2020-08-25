@@ -37,6 +37,7 @@
         <item name="android:textSize">@dimen/business_text_size_18sp</item>
         <item name="android:textColor">@color/business_text_color_333333</item>
         <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 16sp，color = #333333-->
@@ -46,6 +47,7 @@
         <item name="android:textSize">@dimen/business_text_size_16sp</item>
         <item name="android:textColor">@color/business_text_color_333333</item>
         <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 14sp，color = #333333-->
@@ -55,6 +57,7 @@
         <item name="android:textSize">@dimen/business_text_size_14sp</item>
         <item name="android:textColor">@color/business_text_color_333333</item>
         <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 12sp，color = #333333-->
@@ -64,6 +67,7 @@
         <item name="android:textSize">@dimen/business_text_size_12sp</item>
         <item name="android:textColor">@color/business_text_color_333333</item>
         <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 10sp，color = #333333-->
@@ -73,6 +77,7 @@
         <item name="android:textSize">@dimen/business_text_size_10sp</item>
         <item name="android:textColor">@color/business_text_color_333333</item>
         <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 
@@ -84,6 +89,7 @@
         <item name="android:textSize">@dimen/business_text_size_18sp</item>
         <item name="android:textColor">@color/business_text_color_666666</item>
         <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 16sp，color = #666666-->
@@ -93,6 +99,7 @@
         <item name="android:textSize">@dimen/business_text_size_16sp</item>
         <item name="android:textColor">@color/business_text_color_666666</item>
         <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 14sp，color = #666666-->
@@ -102,6 +109,7 @@
         <item name="android:textSize">@dimen/business_text_size_14sp</item>
         <item name="android:textColor">@color/business_text_color_666666</item>
         <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 12sp，color = #666666-->
@@ -111,6 +119,7 @@
         <item name="android:textSize">@dimen/business_text_size_12sp</item>
         <item name="android:textColor">@color/business_text_color_666666</item>
         <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 10sp，color = #666666-->
@@ -120,6 +129,7 @@
         <item name="android:textSize">@dimen/business_text_size_10sp</item>
         <item name="android:textColor">@color/business_text_color_666666</item>
         <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 
@@ -131,6 +141,7 @@
         <item name="android:textSize">@dimen/business_text_size_18sp</item>
         <item name="android:textColor">@color/business_text_color_b1b1b1</item>
         <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 16sp，color = #b1b1b1-->
@@ -140,6 +151,7 @@
         <item name="android:textSize">@dimen/business_text_size_16sp</item>
         <item name="android:textColor">@color/business_text_color_b1b1b1</item>
         <item name="android:lineSpacingExtra">@dimen/dp_4</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 14sp，color = #b1b1b1-->
@@ -149,6 +161,7 @@
         <item name="android:textSize">@dimen/business_text_size_14sp</item>
         <item name="android:textColor">@color/business_text_color_b1b1b1</item>
         <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 12sp，color = #b1b1b1-->
@@ -158,6 +171,7 @@
         <item name="android:textSize">@dimen/business_text_size_12sp</item>
         <item name="android:textColor">@color/business_text_color_b1b1b1</item>
         <item name="android:lineSpacingExtra">@dimen/dp_3</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- size = 10sp，color = #b1b1b1-->
@@ -167,5 +181,6 @@
         <item name="android:textSize">@dimen/business_text_size_10sp</item>
         <item name="android:textColor">@color/business_text_color_b1b1b1</item>
         <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
     </style>
 </resources>
