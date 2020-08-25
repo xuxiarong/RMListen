@@ -7,6 +7,7 @@ import com.rm.module_home.R
 import com.rm.module_home.model.HomeBoutiqueModel
 import com.rm.module_home.model.HomeRecommendModel
 import com.rm.module_home.model.home.collect.HomeCollectModel
+import com.rm.module_home.model.home.grid.HomeGridRecommendModel
 import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleModel
 import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleModel
 
@@ -21,6 +22,7 @@ class HomeFragmentViewModel : ViewModel() {
     var homeCollectModel = MutableLiveData<List<HomeCollectModel>>()
     var homeHorSingleList = MutableLiveData<List<HomeRecommendHorSingleModel>>()
     var homeHorDoubleList = MutableLiveData<List<HomeRecommendHorDoubleModel>>()
+    var homeGridList = MutableLiveData<List<HomeGridRecommendModel>>()
 
     var homeBoutiqueModel = MutableLiveData<HomeBoutiqueModel>()
     var homeRecommendModel = MutableLiveData<HomeRecommendModel>()
@@ -56,36 +58,52 @@ class HomeFragmentViewModel : ViewModel() {
             ) { })
     }
 
-    fun initSingleList(){
+    fun initSingleList() {
         val singleList = ArrayList<HomeRecommendHorSingleModel>()
-        singleList.add(HomeRecommendHorSingleModel(HomeRecommendModel(
-            "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
-                8.0f,
-                "1111111",
-                "小丸子11",
-                "Vip")
-        ))
-        singleList.add(HomeRecommendHorSingleModel(HomeRecommendModel(
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
-            8.0f,
-            "222222222",
-            "小丸子22",
-            "Vip")
-        ))
-        singleList.add(HomeRecommendHorSingleModel(HomeRecommendModel(
-            "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
-            8.0f,
-            "3333333333",
-            "小丸子33",
-            "Vip")
-        ))
-        singleList.add(HomeRecommendHorSingleModel(HomeRecommendModel(
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
-            8.0f,
-            "4444444444",
-            "小丸子44",
-            "Vip")
-        ))
+        singleList.add(
+            HomeRecommendHorSingleModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "1111111",
+                    "小丸子11",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeRecommendHorSingleModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "222222222",
+                    "小丸子22",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeRecommendHorSingleModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "3333333333",
+                    "小丸子33",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeRecommendHorSingleModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "4444444444",
+                    "小丸子44",
+                    "Vip"
+                )
+            )
+        )
         this.homeHorSingleList.value = singleList
     }
 
@@ -176,6 +194,78 @@ class HomeFragmentViewModel : ViewModel() {
                 bottom4
             )
         )
-        this.homeHorDoubleList.value =  recommendHorDoubleList
+        this.homeHorDoubleList.value = recommendHorDoubleList
     }
+
+    fun initGridList() {
+        val singleList = ArrayList<HomeGridRecommendModel>()
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "1111111",
+                    "小丸子11",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "222222222",
+                    "小丸子22",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "3333333333",
+                    "小丸子33",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "4444444444",
+                    "小丸子44",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "3333333333",
+                    "小丸子33",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "4444444444",
+                    "小丸子44",
+                    "Vip"
+                )
+            )
+        )
+        this.homeGridList.value = singleList
+    }
+
 }

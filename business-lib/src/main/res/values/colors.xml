@@ -14,7 +14,8 @@
     <!-- 公共色值-->
     <color name="business_text_color_333333">#333333</color><!-- 一级文字 -->
     <color name="business_text_color_666666">#666666</color><!-- 二级文字 -->
-    <color name="business_text_color_b1b1b1">#b1b1b1</color><!-- 三级文字 -->
+    <color name="business_text_color_999999">#999999</color><!-- 三级文字 -->
+    <color name="business_text_color_b1b1b1">#b1b1b1</color><!-- 四级文字 -->
     <color name="business_text_color_ffffff">#ffffff</color><!-- 白色文字 -->
 
     <color name="business_color_ff5e5e">#ff5e5e</color> <!-- 主色 -->
@@ -23,5 +24,6 @@
     <color name="business_color_b3333333">#b3333333</color><!--半透明黑 -->
     <color name="business_color_e8e8e8">#e8e8e8</color>
     <color name="business_color_b1b1b1">#b1b1b1</color>
+    <color name="business_color_d6d6d6">#d6d6d6</color>
 
 </resources>

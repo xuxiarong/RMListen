@@ -5,12 +5,12 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
 import com.rm.module_home.model.home.banner.HomeBannerRvModel
 import com.rm.module_home.model.home.collect.HomeCollectRvModel
+import com.rm.module_home.model.home.grid.HomeGridRecommendRvModel
 import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleRvModel
 import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleRvModel
 import com.rm.module_home.model.home.more.HomeMoreModel
@@ -36,9 +36,9 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
         homeViewModel.initCollect()
         homeViewModel.initSingleList()
         homeViewModel.initDoubleList()
+        homeViewModel.initGridList()
         mHomeAdapter = HomeAdapter(homeViewModel, initHomeAdapter(), BR.item)
         binding.homeRv.bindVerticalLayout(mHomeAdapter)
-
 
         binding.run {
             collectViewModel = homeViewModel
@@ -51,6 +51,8 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
             HomeCollectRvModel(),
             HomeMoreModel("精品推荐Double") { startHorDoubleMore() },
             HomeRecommendHorDoubleRvModel(),
+            HomeMoreModel("精品推荐Grid") { startHorSingleMore() },
+            HomeGridRecommendRvModel(),
             HomeMoreModel("精品推荐Single") { startHorSingleMore() },
             HomeRecommendHorSingleRvModel()
         )
