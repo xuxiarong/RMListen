@@ -27,7 +27,6 @@ class HomeFragmentViewModel : ViewModel() {
     var homeBoutiqueModel = MutableLiveData<HomeBoutiqueModel>()
     var homeRecommendModel = MutableLiveData<HomeRecommendModel>()
 
-
     fun initBannerInfo() {
         val bannerList = mutableListOf<BannerInfo>()
         bannerList.add(BannerInfo("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597921071741&di=f7334148be90918832df8165a435eab5&imgtype=0&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D3807836035%2C2971917368%26fm%3D214%26gp%3D0.jpg"))
@@ -37,25 +36,25 @@ class HomeFragmentViewModel : ViewModel() {
         homeBannerInfoList.value = bannerList
     }
 
-    fun initCollect() {
+    fun initCollect(vararg clickList: () -> Unit) {
 
         homeCollectModel.value = listOf(
             HomeCollectModel(
                 R.drawable.home_icon_collect_recommend,
                 "精品推荐"
-            ) { },
+            ) { clickList[0]() },
             HomeCollectModel(
                 R.drawable.home_icon_collect_rank,
                 "榜单"
-            ) { },
+            ) { clickList[1]() },
             HomeCollectModel(
                 R.drawable.home_icon_head_reading,
                 "看书"
-            ) { },
+            ) { clickList[2]() },
             HomeCollectModel(
                 R.drawable.home_icon_collect_listen,
                 "听单"
-            ) { })
+            ) { clickList[3]() })
     }
 
     fun initSingleList() {

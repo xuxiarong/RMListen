@@ -33,7 +33,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
 
     override fun initView() {
         homeViewModel.initBannerInfo()
-        homeViewModel.initCollect()
+        homeViewModel.initCollect({startMenu()},{startMenu()},{startMenu()},{startMenu()})
         homeViewModel.initSingleList()
         homeViewModel.initDoubleList()
         homeViewModel.initGridList()
@@ -58,7 +58,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
         )
     }
 
-    fun startMenu() {
+    private fun startMenu() {
         MenuActivity.startActivity(context!!)
     }
 
