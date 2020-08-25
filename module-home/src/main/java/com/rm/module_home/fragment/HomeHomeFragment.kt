@@ -61,7 +61,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
             HomeGridRecommendRvModel(),
             HomeMoreModel("精品推荐Single") { startHorSingleMore() },
             HomeRecommendHorSingleRvModel(),
-            HomeMoreModel("新书推荐Single") { startHorSingleMore() },
+            HomeMoreModel("新书推荐") { startHorSingleMore() },
             HomeRecommendVerRvModel()
         )
     }
