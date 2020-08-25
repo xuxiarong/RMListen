@@ -15,7 +15,7 @@ interface MusicPlayerPresenter {
      * 开始播放指定位置音频文件
      * @param index 指定的位置 0-data.size()
      */
-    fun startPlayerMusic(index: Int)
+    fun startPlayMusic(index: Int)
 
     /**
      * 开始播放任务
@@ -138,4 +138,19 @@ interface MusicPlayerPresenter {
      * 设置定时关闭
      */
     fun setAlarm(times:Int)
+
+    /**
+     * 更新内部播放器的数据集合位置，此方法适合在外部列表已经改变了，需同步至内部播放器
+     * @param audios 待播放列表
+     * @param index 位置
+     */
+    fun updateMusicPlayerData(audios: List<*>, index: Int)
+
+    /**
+     * 返回播放器内部工作状态
+     * @return 播放状态，详见MusicConstants常量定义
+     */
+    fun getPlayerState(): Int
+
+
 }

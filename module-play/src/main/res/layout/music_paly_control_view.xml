@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="66dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            app:layout_constraintRight_toLeftOf="@+id/rl_music_paly_button"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"
+            android:layout_marginEnd="44dp"
+            android:background="@drawable/music_play_ic_icon_bf"
+            tools:ignore="MissingConstraints" />
+
+        <FrameLayout
+            android:id="@+id/rl_music_paly_button"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <ProgressBar
+                android:layout_width="66dp"
+                android:layout_gravity="center"
+                android:layout_height="66dp"
+                android:indeterminate="false"
+                android:indeterminateDrawable="@drawable/music_play_progressbar" />
+
+            <com.rm.module_play.view.PlayButtonView
+                android:id="@+id/music_play_button"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:background="?selectableItemBackgroundBorderless"
+                app:pauseButtonTint="@color/business_text_color_ffffff"
+                app:playButtonTint="@color/business_text_color_ffffff"
+                app:progressTrackColor="@color/business_color_ff5e5e"
+                app:showProgressTrack="true" />
+        </FrameLayout>
+
+        <ImageView
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/rl_music_paly_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="44dp"
+            android:background="@drawable/music_play_ic_icon_bc"
+            tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

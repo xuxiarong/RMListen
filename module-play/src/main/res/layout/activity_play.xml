@@ -103,40 +103,31 @@
 
         </RelativeLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/rl_music_play_process"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_music_play_titles"
             tools:ignore="MissingConstraints">
 
-            <RelativeLayout
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
-                    android:id="@+id/music_play_bubbleSeekBar"
-                    android:layout_width="260dp"
-                    android:layout_height="wrap_content"
-                    app:barHeight="4dp"
-                    app:bubbleBackgroud="@mipmap/play_ic_launcher"
-                    app:bubbleHeight="30dp"
-                    app:bubbleOffset="20dp"
-                    app:bubbleWidth="100dp"
-                    app:max="100.0"
-                    app:min="50.0"
-                    app:secondTrack="@drawable/track_s"
-                    app:thumb="@drawable/thumb"
-                    app:thumbHeight="20dp"
-                    app:thumbTextColor="#FFFFFFFF"
-                    app:thumbTextSize="10dp"
-                    app:thumbWidth="60dp"
-                    app:track="@drawable/track" />
+            <include layout="@layout/music_play_process_time" />
 
+        </RelativeLayout>
 
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_music_play_process"
+            tools:ignore="MissingConstraints">
 
-
-        </FrameLayout>
+            <include layout="@layout/music_paly_control_view" />
+        </RelativeLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
