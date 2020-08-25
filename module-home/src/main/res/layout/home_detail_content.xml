@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModul"
+            type="com.rm.module_home.model.HomeDetailModel"
+            />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingTop="@dimen/dp_8"
+        android:paddingStart="@dimen/dp_16"
+        android:id="@+id/detail_top_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingBottom="@dimen/dp_26"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/detail_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/temp_detail_icon"
+            android:scaleType="centerCrop"
+            android:layout_width="144dp"
+            android:layout_height="144dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:text="14W"
+            android:textColor="@color/businessWhite"
+            android:drawableStart="@drawable/home_icon_play_ed"
+            app:layout_constraintEnd_toEndOf="@id/detail_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="@dimen/dp_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintStart_toEndOf="@id/detail_icon"
+                android:layout_marginStart="@dimen/dp_12"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="标题两行，且保持省略是否"
+                android:lines="2"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textSize="@dimen/business_sp_18"
+                android:textColor="@color/business_text_color_333333"
+                android:id="@+id/detail_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintTop_toBottomOf="@+id/detail_title"
+                app:layout_constraintStart_toEndOf="@id/detail_icon"
+                android:layout_marginStart="@dimen/dp_12"
+                android:text="作者：曹雪芹"
+                android:lines="1"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:textSize="@dimen/business_small_size"
+                android:textColor="@color/business_text_color_666666"
+                android:id="@+id/detail_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintTop_toBottomOf="@+id/detail_author"
+                app:layout_constraintStart_toEndOf="@id/detail_icon"
+                android:layout_marginStart="@dimen/dp_12"
+                android:text="主播：小丸子的朋友"
+                android:lines="1"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:textSize="@dimen/business_small_size"
+                android:textColor="@color/business_text_color_666666"
+                android:id="@+id/detail_anthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    app:layout_constraintTop_toBottomOf="@+id/detail_anthor"
+                    app:layout_constraintStart_toEndOf="@id/detail_icon"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:id="@+id/home_detail_btn_subscribe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/businessWhite"
+                    android:background="@drawable/shape_red_20"
+                    android:text="@string/home_detail_sub" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:layout_constraintStart_toEndOf="@id/home_detail_btn_subscribe"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:src="@drawable/home_ic_favorites"
+                    android:background="@drawable/shape_round"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_detail_tx_status"
+            android:text="已连载12集"
+            app:layout_constraintTop_toBottomOf="@id/detail_icon"
+            android:textColor="@color/business_text_color_666666"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginBottom="@dimen/dp_12"
+            android:id="@+id/home_detail_recyc_style"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_tx_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_detail_tx_content_title"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_recyc_style"
+            android:text="@string/home_detail_brief_introduction"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:textColor="@color/business_text_color_333333"
+            android:layout_height="wrap_content"/>
+
+        <com.rm.business_lib.wedgit.arrow.ArrowView
+            android:id="@+id/home_detail_tx_content"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_tx_content_title"
+            android:text="@string/home_detail_brief_introduction"
+            android:layout_width="match_parent"
+            android:textColor="@color/business_text_color_666666"
+            android:layout_height="@dimen/dp_23"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

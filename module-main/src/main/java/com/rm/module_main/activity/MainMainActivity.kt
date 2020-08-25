@@ -42,7 +42,9 @@ class MainMainActivity : BaseActivity() {
 //    }
 
     override fun initView() {
-        navigationController = findViewById<BottomTabView>(R.id.mainTab).custom().run {
+        //homeService = RouterHelper.createRouter(HomeService::class.java)
+
+        navigationController = findViewById<BottomTabView>(R.id.tab).custom().run {
 
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(

@@ -10,5 +10,9 @@
         <activity
             android:name="com.rm.module_home.activity.boutique.BoutiqueActivity"
             android:screenOrientation="portrait" />
+        <!-- 书籍详情 -->
+        <activity
+            android:name="com.rm.module_home.activity.detail.DetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
