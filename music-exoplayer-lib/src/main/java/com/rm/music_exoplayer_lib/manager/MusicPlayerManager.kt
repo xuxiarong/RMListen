@@ -58,7 +58,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     }
 
-    override fun startPlayerMusic(index: Int) {
+    override fun startPlayMusic(index: Int) {
         mBinder?.startPlayMusic(index)
     }
 
@@ -148,6 +148,15 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun setAlarm(times: Int) {
         mBinder?.setAlarm(times)
+    }
+
+    override fun updateMusicPlayerData(audios: List<*>, index: Int) {
+
+
+    }
+
+    override fun getPlayerState(): Int {
+        TODO("Not yet implemented")
     }
 
 }

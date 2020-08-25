@@ -3,7 +3,6 @@ package debug
 import android.widget.SeekBar
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
-import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
@@ -11,7 +10,6 @@ import com.rm.baselisten.activity.BaseActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_play.R
 import kotlinx.android.synthetic.main.play_activity_main.*
-import kotlinx.coroutines.*
 
 /**
  * desc   :
@@ -27,7 +25,7 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
         //播放
         start_play.setOnClickListener {
 
-            musicPlayerManger.startPlayerMusic(0)
+            musicPlayerManger.startPlayMusic(0)
         }
         //暂停
         start_pause.setOnClickListener {
@@ -77,14 +75,7 @@ class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
     }
 
     override fun initData() {
-        GlobalScope.launch {
-            async {
-                musicPlayerManger.initialize(this@PlayMainActivity,
-                    MusicInitializeCallBack {})
-                delay(300)
-            }.await()
-            musicPlayerManger.addOnPlayerEventListener(this@PlayMainActivity)
-        }
+
 
 
     }

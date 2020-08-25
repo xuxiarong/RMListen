@@ -26,7 +26,8 @@ import java.util.*
  * @data: 8/24/20 7:02 PM
  * @Version: 1.0.0
  */
-@SuppressLint("CustomViewStyleable")
+@Suppress("DEPRECATION")
+@SuppressLint("CustomViewStyleable", "Recycle")
 class BubbleSeekBar @JvmOverloads constructor(
     context: Context,
     @Nullable attrs: AttributeSet? = null,
@@ -50,7 +51,7 @@ class BubbleSeekBar @JvmOverloads constructor(
             : Int
     private var mThumbTextSize //拇指文字大小
             : Int
-    private var mThumbText=""
+    private var mThumbText = ""
     private var mTrack //轨道
             : Drawable?
     private var mSecondTrack //二层轨道
@@ -113,6 +114,7 @@ class BubbleSeekBar @JvmOverloads constructor(
         mTrackLength = measureWidth - mThumbWidth
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -145,9 +147,9 @@ class BubbleSeekBar @JvmOverloads constructor(
      * 计算Bubble
      */
     private fun calculateBubble() {
-        mLayoutParams.x = mPoint[0] + mThumbOffset - (mBubbleFL?.width?:0 - mThumbWidth) / 2
+        mLayoutParams.x = mPoint[0] + mThumbOffset - (mBubbleFL?.width ?: 0 - mThumbWidth) / 2
         mLayoutParams.y =
-            mPoint[1] - (mBubbleFL?.height?:0)- (mThumbHeight shr 1) - mBubbleOffset
+            mPoint[1] - (mBubbleFL?.height ?: 0) - (mThumbHeight shr 1) - mBubbleOffset
         mWindowManager.updateViewLayout(mBubbleFL, mLayoutParams)
     }
 
@@ -425,7 +427,7 @@ class BubbleSeekBar @JvmOverloads constructor(
              * 绘制文字
              */
             val rect = Rect()
-            mPaint.getTextBounds(mThumbText, 0, mThumbText.length , rect)
+            mPaint.getTextBounds(mThumbText, 0, mThumbText.length, rect)
             val x = (mThumbWidth - rect.width()) / 2.0f + rect.width() / 2.0f
             val y = (mThumbHeight - rect.height()) / 2.0f + rect.height()
             canvas.drawText(mThumbText, x, y, mPaint)
@@ -507,7 +509,7 @@ class BubbleSeekBar @JvmOverloads constructor(
         private var sBuildProperties: Properties? = null
         private val sBuildPropertiesLock = Any()
         private val buildProperties: Properties?
-            private get() {
+            get() {
                 synchronized(sBuildPropertiesLock) {
                     if (sBuildProperties == null) {
                         sBuildProperties = Properties()
