@@ -8,20 +8,21 @@
 
         <variable
             name="item"
-            type="com.rm.module_home.model.HomeRecommendModel" />
+            type="com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        bindClick="@{item.itemClick}"
+        android:id="@+id/homeItemRecommendHorDoubleTop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="10dp">
+        android:layout_marginEnd="12dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/homeItemRecommendIcon"
-            bindUrl="@{item.url}"
-            corner="@{item.iconCorner}"
+            android:id="@+id/homeItemRecommendHorDoubleTopIcon"
+            bindUrl="@{item.singleModel.url}"
+            corner="@{item.singleModel.iconCorner}"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="fitXY"
@@ -29,58 +30,44 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeItemRecommendTag"
-            bindText="@{item.tag}"
+            android:id="@+id/homeItemRecommendHorDoubleTopTag"
+            bindText="@{item.singleModel.tag}"
             android:layout_width="24dp"
             android:layout_height="16dp"
             android:background="@drawable/business_shape_vip_tag"
             android:gravity="center"
             android:textColor="@color/businessWhite"
             android:textSize="@dimen/business_sp_10"
-            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendIcon"
-            app:layout_constraintTop_toTopOf="@+id/homeItemRecommendIcon" />
-
-        <!--        <com.flyco.roundview.RoundTextView-->
-        <!--            android:id="@+id/homeItemRecommendTag"-->
-        <!--            android:layout_width="@dimen/dp_24"-->
-        <!--            android:layout_height="@dimen/dp_16"-->
-        <!--            android:gravity="center"-->
-        <!--            android:textColor="@color/businessWhite"-->
-        <!--            android:textSize="@dimen/business_sp_10"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/homeItemRecommendIcon"-->
-        <!--            app:layout_constraintTop_toTopOf="@id/homeItemRecommendIcon"-->
-        <!--            android:background="#ffdf85"-->
-        <!--            app:rv_cornerRadius_BL="@dimen/dp_4"-->
-        <!--            app:rv_cornerRadius_TR="@dimen/dp_4"-->
-        <!--            bindText="@{item.tag}"-->
-        <!--            tools:text="VIP" />-->
-
+            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeItemRecommendName"
-            bindText="@{item.name}"
+            android:id="@+id/homeItemRecommendHorDoubleTopName"
+            bindText="@{item.singleModel.name}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginTop="8dp"
             android:textColor="@color/business_head_color"
             android:textSize="@dimen/business_second_size"
-            app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendIcon"
+            app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Carolyn Gregory" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeItemRecommendAuthor"
-            bindText="@{item.author}"
+            android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
+            bindText="@{item.singleModel.author}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/business_head_color"
             android:textSize="@dimen/business_second_size"
-            app:layout_constraintBottom_toBottomOf="@+id/homeItemRecommendIcon"
-            app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendHorDoubleTopIcon"
             tools:text="小丸子" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

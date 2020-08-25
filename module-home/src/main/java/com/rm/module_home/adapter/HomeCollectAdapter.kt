@@ -1,7 +1,7 @@
 package com.rm.module_home.adapter
 
 import com.rm.baselisten.adapter.BaseBindAdapter
-import com.rm.module_home.model.HomeCollectModel
+import com.rm.module_home.model.home.collect.HomeCollectModel
 
 /**
  * desc   :

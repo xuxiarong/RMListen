@@ -1,5 +1,6 @@
 package com.rm.baselisten.binding
 
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -24,6 +25,10 @@ fun ImageView.bindSrc(resourceId: Int?) {
 
 @BindingAdapter("corner", "bindUrl", "isCircle", requireAll = false)
 fun ImageView.bindUrl(corner: Float, bindUrl: String, isCircle: Boolean) {
+    if(TextUtils.isEmpty((bindUrl))){
+        return
+    }
+
     when {
         isCircle -> {
             loadCircleImage(this, bindUrl)

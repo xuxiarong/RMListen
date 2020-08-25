@@ -1,4 +1,4 @@
-package com.rm.module_home.model
+package com.rm.module_home.model.home.collect
 
 import com.rm.baselisten.adapter.BaseMultiAdapter
 import com.rm.module_home.R

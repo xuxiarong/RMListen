@@ -9,60 +9,9 @@
             type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/homeRv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.stx.xhb.androidx.XBanner
-            android:id="@+id/mainBanner"
-            bindData="@{collectViewModel.bannerInfoList}"
-            android:layout_width="match_parent"
-            android:layout_height="176dp"
-            app:AutoPlayTime="3000"
-            app:layout_constraintTop_toTopOf="parent"
-            app:pageChangeDuration="800"
-            app:pointsPosition="RIGHT"
-            app:tipTextSize="12sp" />
-
-        <FrameLayout
-            android:id="@+id/flCollectContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/mainBanner">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homeRvCollect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="26dp"
-                android:layout_gravity="center_horizontal" />
-        </FrameLayout>
-
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homeRvRecommend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="26dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/flCollectContainer"
-             />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homeRvRecommend1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="26dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/homeRvRecommend"
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        />
 </layout>

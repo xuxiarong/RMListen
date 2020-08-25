@@ -5,15 +5,15 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
-
         <variable
             name="item"
-            type="com.rm.module_home.model.HomeMoreModel" />
+            type="com.rm.module_home.model.home.more.HomeMoreModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="28dp"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginEnd="@dimen/dp_16"
         >

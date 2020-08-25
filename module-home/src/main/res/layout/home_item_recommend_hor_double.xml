@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/homehorSingleItemRecommendHorDoubleTop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                bindUrl="@{item.topRecommendModel.url}"
+                corner="@{item.topRecommendModel.iconCorner}"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleTopTag"
+                bindText="@{item.topRecommendModel.tag}"
+                android:layout_width="24dp"
+                android:layout_height="16dp"
+                android:background="@drawable/business_shape_vip_tag"
+                android:gravity="center"
+                android:textColor="@color/businessWhite"
+                android:textSize="@dimen/business_sp_10"
+                app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleTopName"
+                bindText="@{item.topRecommendModel.name}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/business_head_color"
+                android:textSize="@dimen/business_second_size"
+                app:layout_constraintLeft_toRightOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Carolyn Gregory" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleTopAuthor"
+                bindText="@{item.topRecommendModel.author}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/business_head_color"
+                android:textSize="@dimen/business_second_size"
+                app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                app:layout_constraintLeft_toRightOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                tools:text="小丸子" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintTop_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleTop"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="12dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                bindUrl="@{item.bottomRecommendModel.url}"
+                corner="@{item.bottomRecommendModel.iconCorner}"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleBottomTag"
+                bindText="@{item.bottomRecommendModel.tag}"
+                android:layout_width="24dp"
+                android:layout_height="16dp"
+                android:background="@drawable/business_shape_vip_tag"
+                android:gravity="center"
+                android:textColor="@color/businessWhite"
+                android:textSize="@dimen/business_sp_10"
+                app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleBottomName"
+                bindText="@{item.bottomRecommendModel.name}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/business_head_color"
+                android:textSize="@dimen/business_second_size"
+                app:layout_constraintLeft_toRightOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Carolyn Gregory" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleBottomAuthor"
+                bindText="@{item.bottomRecommendModel.author}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/business_head_color"
+                android:textSize="@dimen/business_second_size"
+                app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                app:layout_constraintLeft_toRightOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                tools:text="小丸子" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
