@@ -13,8 +13,8 @@ import com.rm.module_login.repository.LoginRepository
  */
 class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseNetViewModel() {
     // 输入框取消按钮是否显示标识
-    var isCancelBtnVisible = MutableLiveData<Boolean>()
-    var phone = ObservableField<String>()
+    var isCancelBtnVisible = MutableLiveData<Boolean>(false)
+    var phone = ObservableField<String>("")
 
     // 国家代码具体值
     var countryCode = MutableLiveData<String>()
@@ -22,6 +22,6 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseNetV
     val phoneNumber : (String ) -> Unit = {afterInputChange()}
 
     fun afterInputChange() {
-        DLog.d("zean","phone = $phone")
+        DLog.d("zean","phone = ${phone.get()}")
     }
 }

@@ -11,7 +11,11 @@ import androidx.databinding.BindingAdapter
  * version: 1.0
  */
 @BindingAdapter(value = ["afterTextChanged"])
-fun EditText.afterTextChanged(action: (String) -> Unit){
+fun EditText.afterTextChanged(action: ((String) -> Unit)?){
+    if(action == null){
+        return
+    }
+
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
         }
