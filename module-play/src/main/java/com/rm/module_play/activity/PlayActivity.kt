@@ -4,7 +4,7 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import com.rm.baselisten.activity.BaseNetActivity
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
 import com.rm.module_play.view.PlayButtonView
@@ -19,7 +19,7 @@ import kotlinx.coroutines.*
 
 
 class PlayActivity :
-    BaseNetActivity<com.rm.module_play.databinding.ActivityPlayBinding, PlayViewModel>() {
+    BaseVMActivity<com.rm.module_play.databinding.ActivityPlayBinding, PlayViewModel>() {
 
     override fun getLayoutId(): Int = R.layout.activity_play
 

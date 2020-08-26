@@ -15,11 +15,16 @@
             android:name="design_height_in_dp"
             android:value="812" />
 
-        <activity android:name="debug.LoginMainActivity">
+        <activity android:name="debug.LoginMainDebugActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 验证码登陆 -->
+        <activity
+            android:name=".activity.LoginByVerifyCodeActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

@@ -18,12 +18,14 @@ class BaseTitleModel {
     var leftText = ""
     var mainTitle = ""
     var subTitle = ""
+    var rightBackground = 0
     var rightIcon = 0
     var rightIcon1 = 0
     var rightText = ""
     var leftIconClick: (() -> Unit)? = null
     var leftIcon1Click: (() -> Unit)? = null
     var leftTextClick: (() -> Unit)? = null
+    var rightContainerClick: (() -> Unit)? = null
     var rightIconClick: (() -> Unit)? = null
     var rightIcon1Click: (() -> Unit)? = null
     var rightTextClick: (() -> Unit)? = null
@@ -76,6 +78,15 @@ class BaseTitleModel {
         return this
     }
 
+    fun setRightBackground(@DrawableRes rightBackground : Int): BaseTitleModel{
+        this.rightBackground = rightBackground
+        return this
+    }
+
+    fun setRightContainerClick(rightContainerClick: () -> Unit): BaseTitleModel {
+        this.rightContainerClick = rightContainerClick
+        return this
+    }
 
     fun setRightIcon(@DrawableRes rightIcon: Int): BaseTitleModel {
         this.rightIcon = rightIcon

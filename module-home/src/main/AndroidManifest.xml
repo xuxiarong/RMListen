@@ -10,6 +10,10 @@
         <activity
             android:name="com.rm.module_home.activity.boutique.BoutiqueActivity"
             android:screenOrientation="portrait" />
+        <!--榜单-->
+        <activity
+            android:name="com.rm.module_home.activity.list.TopListActivity"
+            android:screenOrientation="portrait" />
         <!-- 书籍详情 -->
         <activity
             android:name="com.rm.module_home.activity.detail.DetailActivity"

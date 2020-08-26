@@ -16,10 +16,10 @@ import com.rm.baselisten.thridlib.lifecycle.LifecycleHelper.with
  * @Description :  statusbar库的封装使用
  */
 class ImmersionBarHelper(
-    private var immersionBar: ImmersionBar?,
+    private var immersionBar: ImmersionBar,
     private val resources: Resources
 ) : LifecycleObserver {
-    fun statusBar(): ImmersionBar? {
+    fun statusBar(): ImmersionBar {
         return immersionBar
     }
 
@@ -39,13 +39,14 @@ class ImmersionBarHelper(
      * @param colorId R.color
      * @return
      */
+    @Suppress("DEPRECATION")
     fun init(@ColorRes colorId: Int): ImmersionBarHelper {
         init(resources.getColor(colorId), true)
         return this
     }
 
     fun init(color: Int, darkFont: Boolean): ImmersionBarHelper {
-        immersionBar!!.reset()
+        immersionBar.reset()
             .statusBarColorInt(color)
             .statusBarDarkFont(darkFont, 0.2f)
             .autoDarkModeEnable(darkFont) //添加自动切换
@@ -60,7 +61,7 @@ class ImmersionBarHelper(
      * @return
      */
     fun defaultInit(): ImmersionBarHelper {
-        immersionBar!!.reset().barColor(color_transparent)
+        immersionBar.reset().barColor(color_transparent)
             .statusBarDarkFont(true, 0.2f)
             .navigationBarColor(color_black)
             .statusBarDarkFont(true).init()
@@ -72,7 +73,7 @@ class ImmersionBarHelper(
      * @return ImmersionBarHelper
      */
     fun defaultInitWhiteFont(): ImmersionBarHelper {
-        immersionBar!!.reset().barColor(color_transparent)
+        immersionBar.reset().barColor(color_transparent)
             .statusBarDarkFont(true, 0.2f)
             .navigationBarColor(color_black)
             .statusBarDarkFont(false).init()
@@ -80,8 +81,7 @@ class ImmersionBarHelper(
     }
 
     fun release(): ImmersionBarHelper {
-        immersionBar!!.destroy()
-        immersionBar = null
+        immersionBar.destroy()
         return this
     }
 

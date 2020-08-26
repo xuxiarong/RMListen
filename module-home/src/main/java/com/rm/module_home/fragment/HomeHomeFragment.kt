@@ -3,11 +3,12 @@ package com.rm.module_home.fragment
 import com.rm.baselisten.adapter.BaseMultiAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.mvvm.BaseNetFragment
+import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.boutique.BoutiqueActivity
+import com.rm.module_home.activity.list.TopListActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
@@ -25,7 +26,7 @@ import com.rm.module_home.viewmodel.HomeFragmentViewModel
  * date   : 2020/08/20
  * version: 1.0
  */
-class HomeHomeFragment : BaseNetFragment<HomeHomeFragmentBinding,HomeFragmentViewModel>() {
+class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentViewModel>() {
 
     private lateinit var mHomeAdapter: HomeAdapter
 
@@ -34,27 +35,23 @@ class HomeHomeFragment : BaseNetFragment<HomeHomeFragmentBinding,HomeFragmentVie
     }
 
     override fun initView() {
+
+        setStatusBar(R.color.base_activity_bg_color)
+
         val baseTitleModel = BaseTitleModel()
 
         baseTitleModel.setLeftIcon(R.drawable.base_icon_back)
             .setTitle("主标题")
-            .setSubTitle("我是副标题")
             .setLeftIconClick { activity?.finish() }
-            .setLeftText("左边")
-            .setLeftTextClick { ToastUtil.show(activity, "leftTextClick") }
-            .setLeftIcon1(R.drawable.base_icon_back)
-            .setLeftIcon1Click { ToastUtil.show(activity, "leftIcon1Click") }
-            .setRightIcon(R.drawable.base_icon_back)
-            .setRightIconClick { ToastUtil.show(activity, "RightIconClick") }
-            .setRightText("右边")
-            .setRightTextClick { ToastUtil.show(activity, " rightTextClick") }
+            .setRightText("周榜")
             .setRightIcon1(R.drawable.base_icon_back)
-            .setRightIcon1Click { ToastUtil.show(activity, " rightIcon1Click") }
+            .setRightBackground(R.drawable.business_shape_stroke_rect_b1b1b1)
+            .setRightContainerClick { ToastUtil.show(activity, " rightContainerClick ") }
         mViewModel.baseTitleModel.value = baseTitleModel
 
         mViewModel.initBannerInfo()
         mViewModel.initCollect({ startBoutique() },
-            { startMenu() },
+            { startRank() },
             { startMenu() },
             { startMenu() })
         mViewModel.initSingleList()
@@ -87,6 +84,12 @@ class HomeHomeFragment : BaseNetFragment<HomeHomeFragmentBinding,HomeFragmentVie
     private fun startBoutique() {
         context?.let {
             BoutiqueActivity.startActivity(it)
+        }
+    }
+
+    private fun startRank(){
+        context?.let {
+            TopListActivity.startActivity(it)
         }
     }
 

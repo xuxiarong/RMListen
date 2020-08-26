@@ -1,5 +1,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.rm.module_home">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -16,7 +15,7 @@
             android:name="design_height_in_dp"
             android:value="812" />
 
-        <activity android:name="debug.HomeMainActivity">
+        <activity android:name="debug.HomeMainDebugActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,6 +31,11 @@
         <!-- 精品推荐-->
         <activity
             android:name="com.rm.module_home.activity.boutique.BoutiqueActivity"
+            android:screenOrientation="portrait" />
+
+        <!--榜单-->
+        <activity
+            android:name="com.rm.module_home.activity.list.TopListActivity"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

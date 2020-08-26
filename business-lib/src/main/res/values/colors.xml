@@ -4,6 +4,7 @@
     <color name="businessColorPrimaryDark">#3700B3</color>
     <color name="businessColorAccent">#03DAC5</color>
     <color name="businessWhite">#ffffff</color>
+    <color name="business_transparent">#00000000</color>
 
     <color name="bottom_drawer_outside_background">#80000000</color>
     <color name="bottom_drawer_handle_view_color">#E0E0E0</color>
@@ -25,5 +26,6 @@
     <color name="business_color_e8e8e8">#e8e8e8</color>
     <color name="business_color_b1b1b1">#b1b1b1</color>
     <color name="business_color_d6d6d6">#d6d6d6</color>
+    <color name="business_color_999999">#999999</color>
 
 </resources>

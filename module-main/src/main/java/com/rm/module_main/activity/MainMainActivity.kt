@@ -1,7 +1,7 @@
 package com.rm.module_main.activity
 
 import androidx.core.content.ContextCompat
-import com.rm.baselisten.activity.BaseActivity
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.mine.MineService
 import com.rm.module_main.R
@@ -20,7 +20,7 @@ class MainMainActivity : BaseActivity() {
 
     private lateinit var navigationController: NavigationController
 
-    override fun getLayoutResId(): Int = R.layout.main_activity_main
+    override fun getLayoutId() = R.layout.main_activity_main
     lateinit var homeService: HomeService
     lateinit var mineService: MineService
 
@@ -42,9 +42,7 @@ class MainMainActivity : BaseActivity() {
 //    }
 
     override fun initView() {
-        //homeService = RouterHelper.createRouter(HomeService::class.java)
-
-        navigationController = findViewById<BottomTabView>(R.id.tab).custom().run {
+        navigationController = findViewById<BottomTabView>(R.id.mainTab).custom().run {
 
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
