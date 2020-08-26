@@ -38,18 +38,11 @@ class HomeHomeFragment : BaseNetFragment<HomeHomeFragmentBinding,HomeFragmentVie
 
         baseTitleModel.setLeftIcon(R.drawable.base_icon_back)
             .setTitle("主标题")
-            .setSubTitle("我是副标题")
             .setLeftIconClick { activity?.finish() }
-            .setLeftText("左边")
-            .setLeftTextClick { ToastUtil.show(activity, "leftTextClick") }
-            .setLeftIcon1(R.drawable.base_icon_back)
-            .setLeftIcon1Click { ToastUtil.show(activity, "leftIcon1Click") }
-            .setRightIcon(R.drawable.base_icon_back)
-            .setRightIconClick { ToastUtil.show(activity, "RightIconClick") }
-            .setRightText("右边")
-            .setRightTextClick { ToastUtil.show(activity, " rightTextClick") }
+            .setRightText("周榜")
             .setRightIcon1(R.drawable.base_icon_back)
-            .setRightIcon1Click { ToastUtil.show(activity, " rightIcon1Click") }
+            .setRightBackground(R.drawable.business_shape_stroke_rect_b1b1b1)
+            .setRightContainerClick { ToastUtil.show(activity, " rightContainerClick ") }
         mViewModel.baseTitleModel.value = baseTitleModel
 
         mViewModel.initBannerInfo()
