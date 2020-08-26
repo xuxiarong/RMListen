@@ -70,7 +70,10 @@
     <dimen name="dp_38">38dp</dimen>
     <dimen name="dp_39">39dp</dimen>
     <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_41">41dp</dimen>
     <dimen name="dp_45">45dp</dimen>
+    <dimen name="dp_96">96dp</dimen>
     <dimen name="dp_106">106dp</dimen>
+    <dimen name="dp_360">360dp</dimen>
 
 </resources>

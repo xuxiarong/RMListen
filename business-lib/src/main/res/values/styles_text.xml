@@ -183,4 +183,44 @@
         <item name="android:lineSpacingExtra">@dimen/dp_2</item>
         <item name="android:ellipsize">end</item>
     </style>
+
+    <!--size = 10sp color = #ffffff-->
+    <style name="BusinessTextStyleFourth_1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_10sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!--size = 12sp color = #ffffff-->
+    <style name="BusinessTextStyleFourth_2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_12sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!--size = 14sp color = #ffffff-->
+    <style name="BusinessTextStyleFourth_3">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_14sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!--size = 16sp color = #ffffff-->
+    <style name="BusinessTextStyleFourth_4">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_16sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>
