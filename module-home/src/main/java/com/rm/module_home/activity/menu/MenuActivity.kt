@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.observe
-import com.rm.baselisten.activity.BaseNetActivity
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.business_lib.binding.bindData
@@ -14,7 +14,7 @@ import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.home_activity_listen_menu.*
 
-class MenuActivity : BaseNetActivity<HomeActivityListenMenuBinding, MenuViewModel>() {
+class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel>() {
     private val headView by lazy {
         View.inflate(this, R.layout.home_header_banner, null)
     }

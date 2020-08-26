@@ -1,8 +1,6 @@
 package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.rm.baselisten.mvvm.BaseNetFragment
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 import com.rm.business_lib.bean.BannerInfo
 import com.rm.module_home.R

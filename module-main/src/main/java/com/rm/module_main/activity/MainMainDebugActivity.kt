@@ -1,7 +1,7 @@
 package com.rm.module_main.activity
 
 import androidx.core.content.ContextCompat
-import com.rm.baselisten.activity.BaseActivity
+import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.mine.MineService
 import com.rm.module_main.R
@@ -16,7 +16,7 @@ import com.rm.module_main.customview.bottomtab.item.NormalItemView
  * date   : 2020/08/12
  * version: 1.0
  */
-class MainMainActivity : BaseActivity() {
+class MainMainDebugActivity : BaseDebugActivity() {
 
     private lateinit var navigationController: NavigationController
 
@@ -44,41 +44,41 @@ class MainMainActivity : BaseActivity() {
     override fun initView() {
         navigationController = findViewById<BottomTabView>(R.id.mainTab).custom().run {
 
-            addItem(NormalItemView(this@MainMainActivity).apply {
+            addItem(NormalItemView(this@MainMainDebugActivity).apply {
                 initialize(
                     R.drawable.main_ic_home_tab_listen_bar,
                     R.drawable.main_ic_home_tab_listen_bar_selected,
                     getString(R.string.main_tab_listen_bar)
                 )
-                setTextCheckedColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_accent))
-                setTextDefaultColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_disable))
+                setTextCheckedColor(ContextCompat.getColor(this@MainMainDebugActivity, R.color.main_color_accent))
+                setTextDefaultColor(ContextCompat.getColor(this@MainMainDebugActivity, R.color.main_color_disable))
             })
-            addItem(NormalItemView(this@MainMainActivity).apply {
+            addItem(NormalItemView(this@MainMainDebugActivity).apply {
                 initialize(
                     R.drawable.main_ic_home_tab_search,
                     R.drawable.main_ic_home_tab_search_selected,
                     getString(R.string.main_tab_search)
                 )
-                setTextCheckedColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_accent))
-                setTextDefaultColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_disable))
+                setTextCheckedColor(ContextCompat.getColor(this@MainMainDebugActivity, R.color.main_color_accent))
+                setTextDefaultColor(ContextCompat.getColor(this@MainMainDebugActivity, R.color.main_color_disable))
             })
-            addItem(NormalItemView(this@MainMainActivity).apply {
+            addItem(NormalItemView(this@MainMainDebugActivity).apply {
                 initialize(
                     R.drawable.main_ic_home_tab_my_listen,
                     R.drawable.main_ic_home_tab_my_listen_selected,
                     getString(R.string.main_tab_my_listen)
                 )
-                setTextCheckedColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_accent))
-                setTextDefaultColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_disable))
+                setTextCheckedColor(ContextCompat.getColor(this@MainMainDebugActivity, R.color.main_color_accent))
+                setTextDefaultColor(ContextCompat.getColor(this@MainMainDebugActivity, R.color.main_color_disable))
             })
-            addItem(NormalItemView(this@MainMainActivity).apply {
+            addItem(NormalItemView(this@MainMainDebugActivity).apply {
                 initialize(
                     R.drawable.main_ic_home_tab_user,
                     R.drawable.main_ic_home_tab_user_selected,
                     getString(R.string.main_tab_user)
                 )
-                setTextCheckedColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_accent))
-                setTextDefaultColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_disable))
+                setTextCheckedColor(ContextCompat.getColor(this@MainMainDebugActivity, R.color.main_color_accent))
+                setTextDefaultColor(ContextCompat.getColor(this@MainMainDebugActivity, R.color.main_color_disable))
             })
         }.build()
         navigationController.addPlaceholder(2)

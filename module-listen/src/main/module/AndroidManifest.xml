@@ -15,7 +15,7 @@
             android:name="design_height_in_dp"
             android:value="812" />
 
-        <activity android:name="debug.ListenMainActivity">
+        <activity android:name="debug.ListenMainDebugActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

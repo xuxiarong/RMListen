@@ -1,4 +1,4 @@
-package com.rm.baselisten.activity
+package com.rm.baselisten.debug
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
  * date   : 2020/08/05
  * version: 1.0
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseDebugActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

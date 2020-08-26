@@ -3,7 +3,7 @@ package com.rm.module_mine.login
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.rm.baselisten.activity.BaseNetActivity
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.model.BaseTitleModel
@@ -16,7 +16,7 @@ import com.rm.module_mine.databinding.ActivityLoginBinding
  * date   : 2020/08/04
  * version: 1.0
  */
-class LoginActivity : BaseNetActivity<ActivityLoginBinding, LoginViewModel>() {
+class LoginActivity : BaseVMActivity<ActivityLoginBinding, LoginViewModel>() {
 
     override fun getLayoutId(): Int = R.layout.activity_login
 

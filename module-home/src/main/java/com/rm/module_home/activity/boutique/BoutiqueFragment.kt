@@ -4,7 +4,7 @@ import android.view.View
 import androidx.lifecycle.observe
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.mvvm.BaseNetFragment
+import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.DisplayUtils
 import com.rm.business_lib.binding.paddingBindData
 import com.rm.module_home.R
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.home_fragment_boutique.*
  * version: 1.0
  */
 class BoutiqueFragment(private val categoryTabBean: CategoryTabBean) :
-    BaseNetFragment<HomeFragmentBoutiqueBinding, BoutiqueFragmentViewModel>() {
+    BaseVMFragment<HomeFragmentBoutiqueBinding, BoutiqueFragmentViewModel>() {
 
     private val headView by lazy {
         View.inflate(activity, R.layout.home_header_banner, null).apply {

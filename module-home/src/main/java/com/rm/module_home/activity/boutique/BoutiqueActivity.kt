@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.observe
-import com.rm.baselisten.activity.BaseNetActivity
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.module_home.R
 import com.rm.module_home.bean.CategoryTabBean
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.home_activity_boutique.*
  * 精品推荐界面
  */
 class BoutiqueActivity :
-    BaseNetActivity<HomeActivityBoutiqueBinding, BoutiqueViewModel>() {
+    BaseVMActivity<HomeActivityBoutiqueBinding, BoutiqueViewModel>() {
 
     companion object {
         fun startActivity(context: Context) {

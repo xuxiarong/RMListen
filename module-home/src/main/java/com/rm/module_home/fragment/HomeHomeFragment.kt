@@ -3,7 +3,7 @@ package com.rm.module_home.fragment
 import com.rm.baselisten.adapter.BaseMultiAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.mvvm.BaseNetFragment
+import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -25,7 +25,7 @@ import com.rm.module_home.viewmodel.HomeFragmentViewModel
  * date   : 2020/08/20
  * version: 1.0
  */
-class HomeHomeFragment : BaseNetFragment<HomeHomeFragmentBinding,HomeFragmentViewModel>() {
+class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentViewModel>() {
 
     private lateinit var mHomeAdapter: HomeAdapter
 

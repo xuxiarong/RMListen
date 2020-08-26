@@ -6,7 +6,7 @@ import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
-import com.rm.baselisten.activity.BaseActivity
+import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_play.R
 import kotlinx.android.synthetic.main.play_activity_main.*
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.play_activity_main.*
  * date   : 2020/08/13
  * version: 1.0
  */
-class PlayMainActivity : BaseActivity(), MusicPlayerEventListener {
+class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
     override fun getLayoutResId(): Int = R.layout.play_activity_main
 
     override fun initView() {
