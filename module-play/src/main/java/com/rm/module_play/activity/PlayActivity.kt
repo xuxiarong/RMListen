@@ -11,6 +11,7 @@ import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
 import com.rm.module_play.databinding.ActivityPlayBinding
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
+import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -83,7 +84,13 @@ class PlayActivity :
             musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 15)
         }
         music_play_point.setOnClickListener {
-            showMusicPlayMoreDialog()
+            showMusicPlayMoreDialog{
+                if (it==0){
+                    showMusicPlayTimeSettingDialog()
+                }else{
+
+                }
+            }
         }
 
     }
