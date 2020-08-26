@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.flyco.roundview.RoundLinearLayout
+        android:id="@+id/content_root"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="horizontal"
+        app:rv_backgroundColor="@android:color/white"
+        app:rv_cornerRadius_TL="10dp"
+        app:rv_cornerRadius_TR="10dp"
+        tools:ignore="MissingConstraints">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="42dp"
+            android:layout_marginTop="23dp"
+            android:orientation="vertical">
+
+            <com.flyco.roundview.RoundFrameLayout
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+
+                app:rv_cornerRadius="48dp"
+                app:rv_strokeColor="@color/business_color_e8e8e8"
+                app:rv_strokeWidth="1dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/music_play_ic_icon_timing_ce" />
+            </com.flyco.roundview.RoundFrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="14sp"
+                android:textColor="@color/business_text_color_666666"
+                android:layout_marginTop="7dp"
+                android:text="定时器" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="62dp"
+            android:orientation="vertical"
+            android:layout_marginTop="23dp">
+
+            <com.flyco.roundview.RoundFrameLayout
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+
+                app:rv_cornerRadius="48dp"
+                app:rv_strokeColor="@color/business_color_e8e8e8"
+                app:rv_strokeWidth="1dp">
+
+                <TextView
+                    android:text="1X"
+                    android:textSize="25sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                     />
+            </com.flyco.roundview.RoundFrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/business_text_color_666666"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="7dp"
+                android:text="倍数" />
+        </LinearLayout>
+
+    </com.flyco.roundview.RoundLinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

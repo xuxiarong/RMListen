@@ -144,7 +144,7 @@ interface MusicPlayerPresenter {
      * @param audios 待播放列表
      * @param index 位置
      */
-    fun updateMusicPlayerData(audios: List<*>, index: Int)
+    fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int)
 
     /**
      * 返回播放器内部工作状态

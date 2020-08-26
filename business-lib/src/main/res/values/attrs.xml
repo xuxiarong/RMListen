@@ -128,4 +128,14 @@
         <attr name="layout_solidColor"/>
         <attr name="layout_noSolid"/>
     </declare-styleable>
+    <!-- 点-->
+    <declare-styleable name="MenuPointView">
+        <attr name="menu_point_width" format="dimension" />
+        <attr name="menu_point_color" format="color|reference" />
+        <attr name="menu_number" format="integer" />
+        <attr name="menu_type" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>

@@ -1,5 +1,7 @@
 package com.rm.module_play.activity
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -7,34 +9,44 @@ import android.widget.TextView
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
+import com.rm.module_play.databinding.ActivityPlayBinding
+import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import kotlinx.android.synthetic.main.activity_play.*
 import kotlinx.android.synthetic.main.music_paly_control_view.*
 import kotlinx.android.synthetic.main.music_play_process_time.*
 import kotlinx.coroutines.*
 
 
 class PlayActivity :
-    BaseVMActivity<com.rm.module_play.databinding.ActivityPlayBinding, PlayViewModel>() {
+    BaseVMActivity<ActivityPlayBinding, PlayViewModel>(),
+    MusicPlayerEventListener {
 
     override fun getLayoutId(): Int = R.layout.activity_play
 
+    val bubbleFl by lazy {
+        TextView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            setBackgroundResource(R.drawable.bubble_bg)
+            setTextColor(-0x1)
+            gravity = Gravity.CENTER
+        }
+    }
+
+    @SuppressLint("ResourceType")
     override fun initView() {
+        setStatusBar(R.color.businessWhite)
         dataBind.viewModel = mViewModel
-        val textView = TextView(this)
-        textView.layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        textView.setBackgroundResource(R.drawable.bubble_bg)
-        textView.text = ""
-        textView.setTextColor(-0x1)
-        textView.gravity = Gravity.CENTER
-        music_play_bubbleSeekBar.addBubbleFL(textView)
+        music_play_bubbleSeekBar.addBubbleFL(bubbleFl)
         music_play_bubbleSeekBar.setOnProgressChangedListener(object :
             BubbleSeekBar.OnProgressChangedListener {
             override fun onProgressChanged(
@@ -42,9 +54,13 @@ class PlayActivity :
                 progress: Float,
                 fromUser: Boolean
             ) {
-                val str = "${progress.toInt()}/${bubbleSeekBar?.getMax()?.toInt()}"
+                val str =
+                    "${formatTimeInMillisToString(progress.toLong())}/${formatTimeInMillisToString(
+                        bubbleSeekBar?.getMax()?.toLong() ?: 0
+                    )}"
                 music_play_bubbleSeekBar.updateThumbText(str)
-                textView.text = str
+                bubbleFl.text = str
+                musicPlayerManger.seekTo(progress.toLong())
             }
 
             override fun onStartTrackingTouch(bubbleSeekBar: BubbleSeekBar?) {
@@ -54,9 +70,20 @@ class PlayActivity :
             }
 
         })
-        music_play_bubbleSeekBar.setProgress(60f)
         music_play_button.setOnClickListener {
             toggleState()
+            musicPlayerManger.playOrPause()
+        }
+        tv_music_left_next.setOnClickListener {
+            //向后退15s
+            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 15)
+        }
+        tv_music_right_next.setOnClickListener {
+            //向前进15s
+            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 15)
+        }
+        music_play_point.setOnClickListener {
+            showMusicPlayMoreDialog()
         }
 
     }
@@ -75,55 +102,58 @@ class PlayActivity :
         }
     }
 
+    val RADIO_URL =
+        "https://webfs.yun.kugou.com/202008261228/2835306f37c4ace90caee0465129e158/G172/M06/15/01/7A0DAF1uBaSAdhqHADkWh9KZFIM871.mp3"
+
     override fun initData() {
 
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
-                MusicPlayerManager.musicPlayerManger.initialize(this@PlayActivity,
+                musicPlayerManger.initialize(this@PlayActivity,
                     MusicInitializeCallBack {})
                 delay(300)
             }
-            MusicPlayerManager.musicPlayerManger.addOnPlayerEventListener(PlayerListener())
+            musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
+            val musicData = arrayListOf<BaseAudioInfo>()
+            musicData.add(BaseAudioInfo(RADIO_URL))
+            musicPlayerManger.updateMusicPlayerData(musicData, 0)
         }
     }
 
-    class PlayerListener : MusicPlayerEventListener {
-        override fun onMusicPlayerState(playerState: Int, message: String?) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onPrepared(totalDurtion: Long) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onBufferingUpdate(percent: Int) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onInfo(event: Int, extra: Int) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onTaskRuntime(
-            totalDurtion: Long,
-            currentDurtion: Long,
-            alarmResidueDurtion: Long,
-            bufferProgress: Int
-        ) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
-            TODO("Not yet implemented")
-        }
+    override fun onMusicPlayerState(playerState: Int, message: String?) {
     }
+
+    override fun onPrepared(totalDurtion: Long) {
+        music_play_bubbleSeekBar.setMax(totalDurtion.toFloat())
+    }
+
+    override fun onBufferingUpdate(percent: Int) {
+    }
+
+    override fun onInfo(event: Int, extra: Int) {
+    }
+
+    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
+    }
+
+    override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
+    }
+
+    override fun onTaskRuntime(
+        totalDurtion: Long,
+        currentDurtion: Long,
+        alarmResidueDurtion: Long,
+        bufferProgress: Int
+    ) {
+        music_play_bubbleSeekBar.setProgress(currentDurtion.toFloat())
+        val str =
+            "${formatTimeInMillisToString(currentDurtion)}/${formatTimeInMillisToString(totalDurtion)}"
+        music_play_bubbleSeekBar.updateThumbText(str)
+        bubbleFl.text = str
+    }
+
+    override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
+    }
+
 
 }

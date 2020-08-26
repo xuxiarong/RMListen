@@ -49,12 +49,12 @@ greendao {
 dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':base-listen-lib')
     api rootProject.ext.dependencies["greendao"]
     api rootProject.ext.dependencies["base_adapter"]
     api rootProject.ext.dependencies["roundview"]
 //    api rootProject.ext.dependencies["cardview"]
+    api rootProject.ext.androidx["fragment_ktx"]
     api rootProject.ext.androidx["xBanner"]
 }
