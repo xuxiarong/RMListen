@@ -4,7 +4,7 @@ import android.view.View
 import androidx.lifecycle.observe
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.mvvm.BaseNetFragment
 import com.rm.baselisten.util.DisplayUtils
 import com.rm.business_lib.binding.paddingBindData
 import com.rm.module_home.R
@@ -13,7 +13,6 @@ import com.rm.module_home.bean.CategoryTabBean
 import com.rm.module_home.databinding.HomeFragmentBoutiqueBinding
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.home_fragment_boutique.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * desc   : 精品Fragment
@@ -21,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * version: 1.0
  */
 class BoutiqueFragment(private val categoryTabBean: CategoryTabBean) :
-    BaseVMFragment<HomeFragmentBoutiqueBinding>(R.layout.home_fragment_boutique) {
+    BaseNetFragment<HomeFragmentBoutiqueBinding, BoutiqueFragmentViewModel>() {
 
     private val headView by lazy {
         View.inflate(activity, R.layout.home_header_banner, null).apply {
@@ -40,30 +39,34 @@ class BoutiqueFragment(private val categoryTabBean: CategoryTabBean) :
         }
     }
 
-    private val boutiqueViewModel by viewModel<BoutiqueFragmentViewModel>()
+//    private val boutiqueViewModel by viewModel<BoutiqueFragmentViewModel>()
+
+    override fun initLayoutId(): Int = R.layout.home_fragment_boutique
 
     override fun initView() {
         super.initView()
-        binding.viewModel = boutiqueViewModel
-        boutiqueViewModel.categoryName = categoryTabBean.name
+        mViewModel.categoryName = categoryTabBean.name
+        dataBind.viewModel = mViewModel
     }
 
     override fun initData() {
-        boutiqueViewModel.getBannerInfo()
-        boutiqueViewModel.getBookInfo()
+        mViewModel.getBannerInfo()
+        mViewModel.getBookInfo()
     }
 
     override fun startObserve() {
-        boutiqueViewModel.bannerInfoList.observe(this) {
+        mViewModel.bannerInfoList.observe(this) {
             headView.findViewById<XBanner>(R.id.home_head_banner).apply {
                 setIsClipChildrenMode(false)
                 paddingBindData(it)
             }
         }
 
-        boutiqueViewModel.bookInfoList.observe(this) {
+        mViewModel.bookInfoList.observe(this) {
             bookAdapter.setNewInstance(it)
             home_boutique_fragment_recycler_view.bindVerticalLayout(bookAdapter)
         }
     }
+
+
 }
