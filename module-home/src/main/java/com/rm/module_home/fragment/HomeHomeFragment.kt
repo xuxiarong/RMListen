@@ -2,7 +2,9 @@ package com.rm.module_home.fragment
 
 import com.rm.baselisten.adapter.BaseMultiAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.model.BaseTitleModel
+import com.rm.baselisten.mvvm.BaseNetFragment
+import com.rm.baselisten.util.ToastUtil
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.boutique.BoutiqueActivity
@@ -17,16 +19,14 @@ import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleRvModel
 import com.rm.module_home.model.home.more.HomeMoreModel
 import com.rm.module_home.model.home.ver.HomeRecommendVerRvModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * desc   :
  * date   : 2020/08/20
  * version: 1.0
  */
-class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_home_fragment) {
+class HomeHomeFragment : BaseNetFragment<HomeHomeFragmentBinding,HomeFragmentViewModel>() {
 
-    private val homeViewModel by viewModel<HomeFragmentViewModel>()
     private lateinit var mHomeAdapter: HomeAdapter
 
     override fun initData() {
@@ -34,26 +34,44 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
     }
 
     override fun initView() {
-        homeViewModel.initBannerInfo()
-        homeViewModel.initCollect({ startBoutique() },
+        val baseTitleModel = BaseTitleModel()
+
+        baseTitleModel.setLeftIcon(R.drawable.base_icon_back)
+            .setTitle("主标题")
+            .setSubTitle("我是副标题")
+            .setLeftIconClick { activity?.finish() }
+            .setLeftText("左边")
+            .setLeftTextClick { ToastUtil.show(activity, "leftTextClick") }
+            .setLeftIcon1(R.drawable.base_icon_back)
+            .setLeftIcon1Click { ToastUtil.show(activity, "leftIcon1Click") }
+            .setRightIcon(R.drawable.base_icon_back)
+            .setRightIconClick { ToastUtil.show(activity, "RightIconClick") }
+            .setRightText("右边")
+            .setRightTextClick { ToastUtil.show(activity, " rightTextClick") }
+            .setRightIcon1(R.drawable.base_icon_back)
+            .setRightIcon1Click { ToastUtil.show(activity, " rightIcon1Click") }
+        mViewModel.baseTitleModel.value = baseTitleModel
+
+        mViewModel.initBannerInfo()
+        mViewModel.initCollect({ startBoutique() },
             { startMenu() },
             { startMenu() },
             { startMenu() })
-        homeViewModel.initSingleList()
-        homeViewModel.initDoubleList()
-        homeViewModel.initGridList()
-        homeViewModel.initVerList()
-        mHomeAdapter = HomeAdapter(homeViewModel, initHomeAdapter(), BR.item)
-        binding.homeRv.bindVerticalLayout(mHomeAdapter)
+        mViewModel.initSingleList()
+        mViewModel.initDoubleList()
+        mViewModel.initGridList()
+        mViewModel.initVerList()
+        mHomeAdapter = HomeAdapter(mViewModel, initHomeAdapter(), BR.item)
+        dataBind.homeRv.bindVerticalLayout(mHomeAdapter)
 
-        binding.run {
-            collectViewModel = homeViewModel
+        dataBind.run {
+            collectViewModel = mViewModel
         }
     }
 
     private fun initHomeAdapter(): List<BaseMultiAdapter.IBindItemType> {
         return listOf(
-            HomeBannerRvModel(homeViewModel.homeBannerInfoList.value),
+            HomeBannerRvModel(mViewModel.homeBannerInfoList.value),
             HomeCollectRvModel(),
             HomeMoreModel("精品推荐Double") { startHorDoubleMore() },
             HomeRecommendHorDoubleRvModel(),
@@ -94,6 +112,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
     }
 
     override fun startObserve() {
+    }
+
+    override fun initLayoutId(): Int {
+        return R.layout.home_home_fragment
     }
 
 }
