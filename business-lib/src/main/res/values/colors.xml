@@ -4,6 +4,7 @@
     <color name="businessColorPrimaryDark">#3700B3</color>
     <color name="businessColorAccent">#03DAC5</color>
     <color name="businessWhite">#ffffff</color>
+    <color name="business_transparent">#00000000</color>
 
     <color name="bottom_drawer_outside_background">#80000000</color>
     <color name="bottom_drawer_handle_view_color">#E0E0E0</color>

@@ -65,6 +65,13 @@ abstract class BaseActivity : AppCompatActivity() {
     /**
      * 设置透明沉浸式
      */
+    protected open fun setD() {
+        immersionBarHelper.defaultInit()
+    }
+
+    /**
+     * 设置透明沉浸式
+     */
     protected open fun setTransparentStatusBar() {
         immersionBarHelper.defaultInit()
     }

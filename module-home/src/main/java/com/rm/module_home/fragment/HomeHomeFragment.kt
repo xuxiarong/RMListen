@@ -34,6 +34,9 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentView
     }
 
     override fun initView() {
+
+        setStatusBar(R.color.base_activity_bg_color)
+
         val baseTitleModel = BaseTitleModel()
 
         baseTitleModel.setLeftIcon(R.drawable.base_icon_back)
