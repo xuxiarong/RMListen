@@ -2,7 +2,7 @@
     package="com.rm.module_main">
 
     <application>
-        <activity android:name=".activity.MainMainDebugActivity">
+        <activity android:name=".activity.MainMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

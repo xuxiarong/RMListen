@@ -38,12 +38,6 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Base
     }
 
     /**
-     * 获取子类布局的ID
-     * @return Int 子类布局的ID
-     */
-    protected abstract fun getLayoutId(): Int
-
-    /**
      * 定义子类的View，用于跟子类的dataBind进行绑定
      */
     private var childView: View? = null
@@ -53,6 +47,11 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Base
      */
     protected lateinit var dataBind: V
 
+    /**
+     * 设置dataBind为true，让父类不要setContentView
+     * @return Boolean
+     */
+    override fun isDataBind() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
