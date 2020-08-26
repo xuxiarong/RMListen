@@ -1,5 +1,10 @@
 package com.rm.module_login
 
+import com.rm.baselisten.net.api.BaseRetrofitClient
+import com.rm.module_login.api.LoginApiService
+import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.viewmodel.LoginByVerifyViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
@@ -9,10 +14,17 @@ import org.koin.dsl.module
  */
 val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
+    viewModel { LoginByVerifyViewModel(get()) }
 }
 
 val repositoryModule = module {
     // 所有的Repository都需要在这里声明
+    single { LoginRepository(get()) }
 }
 
-val loginModules = listOf(viewModelModule, repositoryModule)
+val apiServiceModule = module {
+    // 所有的apiService都需要在这里声明
+    single { BaseRetrofitClient().getService(LoginApiService::class.java) }
+}
+
+val loginModules = listOf(viewModelModule, repositoryModule, apiServiceModule)

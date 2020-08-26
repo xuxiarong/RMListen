@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 输入框样式-->
+<resources>
+    <!-- 编辑框输入样式-->
+    <style name="InputBaseTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColorHint">@color/business_text_color_b1b1b1</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:textSize">@dimen/business_text_size_16sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <!-- 数字输入框样式 -->
+    <style name="NumberInputTextStyle" parent="InputBaseTextStyle">
+        <item name="android:inputType">number</item>
+    </style>
+
+    <!-- 手机号输入框样式 -->
+    <style name="PhoneInputTextStyle" parent="NumberInputTextStyle">
+        <item name="android:maxLength">11</item>
+    </style>
+</resources>

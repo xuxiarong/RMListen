@@ -1,3 +1,4 @@
 <resources>
     <string name="login_app_name">Login</string>
+    <string name="login_input_number_hint">请输入手机号</string>
 </resources>

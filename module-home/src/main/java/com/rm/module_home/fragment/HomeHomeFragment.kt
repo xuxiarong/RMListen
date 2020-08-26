@@ -8,6 +8,7 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.boutique.BoutiqueActivity
+import com.rm.module_home.activity.list.TopListActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
@@ -50,7 +51,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentView
 
         mViewModel.initBannerInfo()
         mViewModel.initCollect({ startBoutique() },
-            { startMenu() },
+            { startRank() },
             { startMenu() },
             { startMenu() })
         mViewModel.initSingleList()
@@ -83,6 +84,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentView
     private fun startBoutique() {
         context?.let {
             BoutiqueActivity.startActivity(it)
+        }
+    }
+
+    private fun startRank(){
+        context?.let {
+            TopListActivity.startActivity(it)
         }
     }
 
