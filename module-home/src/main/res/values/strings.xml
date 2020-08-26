@@ -8,6 +8,9 @@
 
     <string name="home_detail_sub">+订阅</string>
     <string name="home_detail_brief_introduction">内容简介</string>
+    <string name="home_detail_join_membership">开通会员</string>
+    <string name="home_detail_comment">评论</string>
+    <string name="home_detail_more">更多</string>
     <string name="home_top_list_week">周榜</string>
     <string name="home_top_list_month">月榜</string>
     <string name="home_top_list_all">总榜</string>

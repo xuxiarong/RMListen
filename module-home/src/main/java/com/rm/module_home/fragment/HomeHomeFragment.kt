@@ -9,6 +9,7 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.list.TopListActivity
+import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
@@ -53,11 +54,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentView
         mViewModel.initCollect({ startBoutique() },
             { startRank() },
             { startMenu() },
-            { startMenu() })
+            { recommendClick() })
         mViewModel.initSingleList()
         mViewModel.initDoubleList()
         mViewModel.initGridList()
         mViewModel.initVerList()
+
         mHomeAdapter = HomeAdapter(mViewModel, initHomeAdapter(), BR.item)
         dataBind.homeRv.bindVerticalLayout(mHomeAdapter)
 
@@ -107,7 +109,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentView
 
 
     fun recommendClick() {
-
+        HomeDetailActivity.startActivity(context!!)
     }
 
     fun moreClick() {

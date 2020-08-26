@@ -6,6 +6,7 @@ import com.rm.module_home.activity.boutique.BoutiqueViewModel
 import com.rm.module_home.activity.list.TopListViewModel
 import com.rm.module_home.activity.menu.MenuViewModel
 import com.rm.module_home.api.HomeApiService
+import com.rm.module_home.repository.BoutiqueRepository
 import com.rm.module_home.repository.MenuRepository
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.repository.TopListRepository

@@ -5,18 +5,19 @@
 
     <data>
         <variable
-            name="viewModul"
+            name="viewModel"
             type="com.rm.module_home.model.HomeDetailModel"
             />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingTop="@dimen/dp_8"
         android:paddingStart="@dimen/dp_16"
+        android:paddingEnd = "@dimen/dp_16"
         android:id="@+id/detail_top_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:paddingBottom="@dimen/dp_26"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -34,77 +35,76 @@
             android:textColor="@color/businessWhite"
             android:drawableStart="@drawable/home_icon_play_ed"
             app:layout_constraintEnd_toEndOf="@id/detail_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/detail_icon"
             android:layout_marginEnd="@dimen/dp_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-
+        <LinearLayout
+            android:id="@+id/detail_layout_info"
+            android:layout_marginStart="@dimen/dp_12"
+            app:layout_constraintTop_toTopOf="@+id/detail_icon"
+            app:layout_constraintStart_toEndOf="@id/detail_icon"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintStart_toEndOf="@id/detail_icon"
-                android:layout_marginStart="@dimen/dp_12"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="标题两行，且保持省略是否"
-                android:lines="2"
                 android:maxLines="2"
-                android:ellipsize="end"
-                android:textSize="@dimen/business_sp_18"
+                android:text="标题两行"
+                android:lines="2"
+                android:textSize="@dimen/business_text_size_18sp"
                 android:textColor="@color/business_text_color_333333"
                 android:id="@+id/detail_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintTop_toBottomOf="@+id/detail_title"
-                app:layout_constraintStart_toEndOf="@id/detail_icon"
-                android:layout_marginStart="@dimen/dp_12"
                 android:text="作者：曹雪芹"
                 android:lines="1"
-                android:layout_marginTop="@dimen/dp_4"
-                android:layout_marginBottom="@dimen/dp_4"
-                android:textSize="@dimen/business_small_size"
+                android:paddingTop="@dimen/dp_4"
+                android:paddingBottom="@dimen/dp_4"
+                android:textSize="@dimen/business_text_size_12sp"
                 android:textColor="@color/business_text_color_666666"
                 android:id="@+id/detail_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintTop_toBottomOf="@+id/detail_author"
-                app:layout_constraintStart_toEndOf="@id/detail_icon"
-                android:layout_marginStart="@dimen/dp_12"
                 android:text="主播：小丸子的朋友"
                 android:lines="1"
-                android:layout_marginBottom="@dimen/dp_20"
-                android:textSize="@dimen/business_small_size"
+                android:textSize="@dimen/business_text_size_12sp"
                 android:textColor="@color/business_text_color_666666"
                 android:id="@+id/detail_anthor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+        </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    app:layout_constraintTop_toBottomOf="@+id/detail_anthor"
-                    app:layout_constraintStart_toEndOf="@id/detail_icon"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:id="@+id/home_detail_btn_subscribe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/businessWhite"
-                    android:background="@drawable/shape_red_20"
-                    android:text="@string/home_detail_sub" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginTop="@dimen/dp_26"
+            app:layout_constraintTop_toBottomOf="@+id/detail_layout_info"
+            app:layout_constraintStart_toStartOf="@id/detail_layout_info"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_icon"
+            android:id="@+id/home_detail_btn_subscribe"
+            android:layout_width="141dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textColor="@color/businessWhite"
+            android:background="@drawable/shape_red_20"
+            android:text="@string/home_detail_sub" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    app:layout_constraintStart_toEndOf="@id/home_detail_btn_subscribe"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:src="@drawable/home_ic_favorites"
-                    android:background="@drawable/shape_round"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-
+        <androidx.appcompat.widget.AppCompatImageView
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/home_detail_btn_subscribe"
+            app:layout_constraintBottom_toBottomOf="@id/detail_icon"
+            android:layout_marginStart="@dimen/dp_12"
+            android:src="@drawable/home_ic_favorites"
+            android:background="@drawable/shape_round"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_detail_tx_status"
             android:text="已连载12集"
+            android:paddingTop="@dimen/dp_26"
             app:layout_constraintTop_toBottomOf="@id/detail_icon"
             android:textColor="@color/business_text_color_666666"
             android:layout_width="match_parent"
@@ -126,7 +126,7 @@
             android:textColor="@color/business_text_color_333333"
             android:layout_height="wrap_content"/>
 
-        <com.rm.business_lib.wedgit.arrow.ArrowView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_detail_tx_content"
             app:layout_constraintTop_toBottomOf="@id/home_detail_tx_content_title"
             android:text="@string/home_detail_brief_introduction"
@@ -134,5 +134,81 @@
             android:textColor="@color/business_text_color_666666"
             android:layout_height="@dimen/dp_23"/>
 
+        <com.rm.business_lib.wedgit.DashLineView
+            android:id="@+id/detail_lineview"
+            android:layout_marginTop="@dimen/dp_14"
+            android:layout_marginBottom="@dimen/dp_14"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_tx_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="@dimen/dp_14"
+            android:textSize="@dimen/sp_26"
+            android:text="$2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_lineview"
+            android:textColor="@color/business_color_ff5e5e"
+            android:id="@+id/detail_tx_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:text=" / 集"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/business_text_color_333333"
+            app:layout_constraintTop_toTopOf="@id/detail_tx_money"
+            app:layout_constraintBottom_toBottomOf="@id/detail_tx_money"
+            app:layout_constraintStart_toEndOf="@+id/detail_tx_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="@dimen/dp_27"
+            android:text="@string/home_detail_join_membership"
+            android:textColor="@color/business_color_ff5e5e"
+            app:layout_constraintTop_toBottomOf="@+id/detail_lineview"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/shape_round_empty_ff5e5e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:id="@+id/home_detail_layout_anchor"
+            android:layout_marginTop="85dp"
+            app:layout_constraintTop_toBottomOf="@id/detail_lineview"
+            android:background="@drawable/shape_radius_f7f7f7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <androidx.appcompat.widget.AppCompatImageView
+
+                android:layout_width="60dp"
+                android:layout_height="60dp"/>
+        </RelativeLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="@dimen/dp_27"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_detail_layout_anchor"
+            android:text="@string/home_detail_comment"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/business_text_color_333333"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="@dimen/dp_27"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_detail_layout_anchor"
+            android:text="@string/home_detail_more"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/sp_16"
+            android:drawablePadding="@dimen/dp_2"
+            android:id="@+id/detail_comment_more_tx"
+            android:drawableEnd="@drawable/icon_arrow_right"
+            android:textColor="@color/business_text_color_333333"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/dp_64"
+            android:id="@+id/home_detail_comment_recycler"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_layout_anchor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
