@@ -63,11 +63,11 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun startPlayMusic(audios: List<*>?, index: Int) {
-        TODO("Not yet implemented")
+        mBinder?.startPlayMusic(audios,index)
     }
 
     override fun playOrPause() {
-        TODO("Not yet implemented")
+        mBinder?.playOrPause()
     }
 
     override fun pause() {
@@ -75,7 +75,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun play() {
-        TODO("Not yet implemented")
+        mBinder?.play()
     }
 
     override fun setLoop(loop: Boolean) {
@@ -143,20 +143,18 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun getCurDurtion(): Long {
-        return mBinder?.getCurDurtion()?:0
+        return mBinder?.getCurDurtion() ?: 0
     }
 
     override fun setAlarm(times: Int) {
         mBinder?.setAlarm(times)
     }
 
-    override fun updateMusicPlayerData(audios: List<*>, index: Int) {
-
+    override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int) {
+        mBinder?.updateMusicPlayerData(audios, index)
 
     }
 
-    override fun getPlayerState(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getPlayerState(): Int = mBinder?.getPlayerState()?:-1
 
 }

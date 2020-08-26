@@ -83,3 +83,16 @@ https://github.com/xiaohaibin/XBanner
             android:layout_height="15dp"
             tools:ignore="MissingConstraints" />
 ```
+###****MenuPointView****
+### 用途：自定义多点按钮 支持横竖方向
+```
+     <com.rm.business_lib.wedgit.menupoint.MenuPointView
+                    android:id="@+id/music_play_point"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:menu_number="3"
+                    app:menu_point_color="@color/business_text_color_333333"
+                    app:menu_point_width="3dp"
+                    app:menu_type="horizontal"
+                    tools:visibility="visible" />
+                    ```
