@@ -8,18 +8,20 @@ import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.manager.AlarmManger
 import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.util.Util
+import java.util.*
 
 /**
  * desc   :播放器核心类
@@ -31,6 +33,15 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     val UPDATE_PROGRESS_DELAY = 500L
     private val mOnPlayerEventListeners = arrayListOf<MusicPlayerEventListener>()
     private val mEventListener = ExoPlayerEventListener()
+
+    //播放器工作状态
+    private val mMusicPlayerState = MUSIC_PLAYER_STOP
+
+    //当前播放播放器正在处理的对象位置
+    private var mCurrentPlayIndex = 0
+
+    //待播放音频队列池子
+    private val mAudios = ArrayList<Any>()
 
     //是否被动暂停，用来处理音频焦点失去标记
     private var mIsPassive = false
@@ -64,6 +75,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
         }
     }
+
     //音频焦点
     var requestAudioFocus = -1
 
@@ -109,8 +121,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      * 被动暂停播放，仅提供给失去焦点时内部调用
      */
     private fun passivePause() {
-        mExoPlayer.playWhenReady=false
-        this.mIsPassive=true
+        mExoPlayer.playWhenReady = false
+        this.mIsPassive = true
     }
 
     /**MusicPlayerPresenter方法实现*/
@@ -138,7 +150,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             exoLog("未成功获取音频输出焦点")
         }
 
-    override fun startPlayerMusic(index: Int) {
+    override fun startPlayMusic(index: Int) {
         startPlay(BaseAudioInfo())
     }
 
@@ -147,19 +159,43 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun playOrPause() {
-        TODO("Not yet implemented")
+        if (mAudios.size > 0) {
+            when (mMusicPlayerState) {
+                MUSIC_PLAYER_STOP -> {
+                    startPlayMusic(mCurrentPlayIndex)
+                }
+                MUSIC_PLAYER_PREPARE -> {
+
+                }
+                MUSIC_PLAYER_BUFFER -> {
+                }
+                MUSIC_PLAYER_PLAYING -> {
+
+                }
+                MUSIC_PLAYER_PAUSE -> {
+                }
+                MUSIC_PLAYER_ERROR -> {
+
+                }
+                else -> {
+
+                }
+            }
+        }
+
     }
 
     override fun pause() {
         mExoPlayer.playWhenReady = false
         mUpdateProgressHandler.removeMessages(0)
     }
+
     /**
      * 恢复播放
      */
     override fun play() {
-        mExoPlayer.playWhenReady =true
-        this.mIsPassive =false
+        mExoPlayer.playWhenReady = true
+        this.mIsPassive = false
     }
 
     override fun setLoop(loop: Boolean) {
@@ -237,6 +273,15 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun setAlarm(times: Int) {
         AlarmManger(this.applicationContext).setAlarm(times)
     }
+
+    override fun updateMusicPlayerData(audios: List<*>, index: Int) {
+
+        mAudios.clear()
+        mAudios.addAll(listOf(audios))
+        mCurrentPlayIndex = index
+    }
+
+    override fun getPlayerState(): Int = mMusicPlayerState
 
     /**z
      * 更新播放进度

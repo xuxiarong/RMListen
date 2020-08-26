@@ -1,8 +1,9 @@
-package com.rm.business_lib.xbanner
+package com.rm.business_lib.binding
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.DisplayUtils
+import com.rm.business_lib.bean.BannerInfo
 import com.stx.xhb.androidx.XBanner
 
 /**

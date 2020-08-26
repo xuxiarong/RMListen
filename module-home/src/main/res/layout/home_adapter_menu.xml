@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rm.business_lib.shadow.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/padding_width"
-    android:layout_marginTop="@dimen/dp_12"
     android:layout_marginEnd="@dimen/padding_width"
-    android:layout_marginBottom="@dimen/dp_12"
-    app:cardCornerRadius="@dimen/dp_8"
-    app:cardElevation="@dimen/dp_2"
-    app:cardPreventCornerOverlap="true">
+    android:layout_marginBottom="@dimen/dp_12">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,7 +14,11 @@
         android:paddingStart="@dimen/dp_12"
         android:paddingTop="@dimen/dp_12"
         android:paddingEnd="@dimen/dp_12"
-        android:paddingBottom="@dimen/dp_18">
+        android:paddingBottom="@dimen/dp_18"
+        app:layout_shadowRadius="@dimen/dp_6"
+        app:layout_shadowColor="#55b1b1b1"
+        app:layout_noSolid="true"
+        app:layout_roundRadius="@dimen/dp_8">
 
         <TextView
             android:id="@+id/home_menu_adapter_name"
@@ -86,4 +86,4 @@
             android:layout_marginTop="@dimen/dp_14"
             app:layout_constraintTop_toBottomOf="@id/home_menu_adapter_author_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</com.rm.business_lib.shadow.ShadowLayout>

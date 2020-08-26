@@ -2,15 +2,14 @@ package com.rm.module_home.adapter
 
 import android.view.ViewGroup
 import com.rm.baselisten.adapter.BaseMultiAdapter
+import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
+import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.holder.BaseBindHolder
-import com.rm.business_lib.xbanner.bindData
+import com.rm.business_lib.binding.bindData
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.databinding.HomeItemBannerBinding
-import com.rm.module_home.databinding.HomeItemCollectRvBinding
-import com.rm.module_home.databinding.HomeItemRecommendHorDoubleRvBinding
-import com.rm.module_home.databinding.HomeItemRecommendHorSingleRvBinding
+import com.rm.module_home.databinding.*
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
 
 /**
@@ -52,6 +51,20 @@ class HomeAdapter(var homeViewModel : HomeFragmentViewModel,var list : List<IBin
                 if(homeViewModel.homeHorDoubleList.value!=null){
                     val doubleAdapter = CommonMultiAdapter(homeViewModel.homeHorDoubleList.value!!,BR.item)
                     singleRvBinding.homeRvRecommendHorDouble.bindHorizontalLayout(doubleAdapter)
+                }
+            }
+            R.layout.home_item_recommend_grid_rv ->{
+                val gridBanding = holder.binding as HomeItemRecommendGridRvBinding
+                if(homeViewModel.homeGridList.value!=null){
+                    val doubleAdapter = CommonMultiAdapter(homeViewModel.homeGridList.value!!,BR.item)
+                    gridBanding.homeRvRecommendGrid.bindGridLayout(doubleAdapter,3)
+                }
+            }
+            R.layout.home_item_recommend_ver_rv ->{
+                val verBanding = holder.binding as HomeItemRecommendVerRvBinding
+                if(homeViewModel.homeVerList.value!=null){
+                    val verAdapter = CommonMultiAdapter(homeViewModel.homeVerList.value!!,BR.item)
+                    verBanding.homeRvRecommendVer.bindVerticalLayout(verAdapter)
                 }
             }
         }

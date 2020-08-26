@@ -2,8 +2,8 @@ package com.rm.module_home.activity.boutique
 
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.business_lib.bean.BannerInfo
 import com.rm.business_lib.bean.BookBean
-import com.rm.business_lib.xbanner.BannerInfo
 import com.rm.module_home.repository.BoutiqueRepository
 
 /**

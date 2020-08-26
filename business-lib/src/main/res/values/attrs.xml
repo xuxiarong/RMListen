@@ -105,4 +105,47 @@
         <attr name="trackMarginLeft" format="dimension|reference" />
         <attr name="trackMarginRight" format="dimension|reference" />
     </declare-styleable>
+
+
+    <!-- 阴影控件自定属性-->
+    <declare-styleable name="ShadowLayout_Layout">
+        <attr format="dimension|reference" name="layout_shadowX"/>
+        <attr format="dimension|reference" name="layout_shadowY"/>
+        <attr format="dimension|reference" name="layout_shadowRadius"/>
+        <attr format="color|reference" name="layout_shadowColor"/>
+        <attr format="dimension|reference" name="layout_roundRadius"/>
+        <attr format="dimension|reference" name="layout_roundRadiusLT"/>
+        <attr format="dimension|reference" name="layout_roundRadiusRT"/>
+        <attr format="dimension|reference" name="layout_roundRadiusRB"/>
+        <attr format="dimension|reference" name="layout_roundRadiusLB"/>
+        <attr format="color|reference" name="layout_solidColor"/>
+        <attr format="boolean|reference" name="layout_spaceShadow"/>
+        <attr format="boolean|reference" name="layout_noSolid"/>
+    </declare-styleable>
+    <declare-styleable name="ShadowLinearLayout_Layout">
+        <attr name="layout_shadowX"/>
+        <attr name="layout_shadowY"/>
+        <attr name="layout_shadowRadius"/>
+        <attr name="layout_shadowColor"/>
+        <attr name="layout_roundRadius"/>
+        <attr name="layout_roundRadiusLT"/>
+        <attr name="layout_roundRadiusRT"/>
+        <attr name="layout_roundRadiusRB"/>
+        <attr name="layout_roundRadiusLB"/>
+        <attr name="layout_solidColor"/>
+        <attr name="layout_noSolid"/>
+    </declare-styleable>
+    <declare-styleable name="ShadowRelativeLayout_Layout">
+        <attr name="layout_shadowX"/>
+        <attr name="layout_shadowY"/>
+        <attr name="layout_shadowRadius"/>
+        <attr name="layout_shadowColor"/>
+        <attr name="layout_roundRadius"/>
+        <attr name="layout_roundRadiusLT"/>
+        <attr name="layout_roundRadiusRT"/>
+        <attr name="layout_roundRadiusRB"/>
+        <attr name="layout_roundRadiusLB"/>
+        <attr name="layout_solidColor"/>
+        <attr name="layout_noSolid"/>
+    </declare-styleable>
 </resources>

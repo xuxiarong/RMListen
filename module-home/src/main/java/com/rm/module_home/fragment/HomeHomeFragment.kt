@@ -1,85 +1,110 @@
 package com.rm.module_home.fragment
 
 import com.rm.baselisten.adapter.BaseMultiAdapter
-import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.model.BaseTitleModel
+import com.rm.baselisten.mvvm.BaseNetFragment
+import com.rm.baselisten.util.ToastUtil
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.activity.boutique.BoutiqueRecommendActivity
-import com.rm.module_home.activity.detail.DetailActivity
+import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
-import com.rm.module_home.adapter.HomeCollectAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
-import com.rm.module_home.model.HomeCollectModel
-import com.rm.module_home.model.HomeMoreModel
-import com.rm.module_home.model.HomeRecommendModel
+import com.rm.module_home.model.home.banner.HomeBannerRvModel
+import com.rm.module_home.model.home.collect.HomeCollectRvModel
+import com.rm.module_home.model.home.grid.HomeGridRecommendRvModel
+import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleRvModel
+import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleRvModel
+import com.rm.module_home.model.home.more.HomeMoreModel
+import com.rm.module_home.model.home.ver.HomeRecommendVerRvModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * desc   :
  * date   : 2020/08/20
  * version: 1.0
  */
-class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_home_fragment) {
+class HomeHomeFragment : BaseNetFragment<HomeHomeFragmentBinding,HomeFragmentViewModel>() {
 
-    private val homeViewModel by viewModel<HomeFragmentViewModel>()
-
+    private lateinit var mHomeAdapter: HomeAdapter
 
     override fun initData() {
 
     }
 
     override fun initView() {
+        val baseTitleModel = BaseTitleModel()
 
-        val homeCollectAdapter = HomeCollectAdapter(
-            listOf(
-                HomeCollectModel(R.drawable.home_icon_collect_recommend, "精品推荐") { startBoutiqueRecommend() },
-                HomeCollectModel(R.drawable.home_icon_collect_rank, "榜单") { },
-                HomeCollectModel(R.drawable.home_icon_head_reading, "看书") { },
-                HomeCollectModel(R.drawable.home_icon_collect_listen, "听单") { startMenu() }),
-            R.layout.home_item_collect,
-            BR.collectViewModel
-        )
+        baseTitleModel.setLeftIcon(R.drawable.base_icon_back)
+            .setTitle("主标题")
+            .setSubTitle("我是副标题")
+            .setLeftIconClick { activity?.finish() }
+            .setLeftText("左边")
+            .setLeftTextClick { ToastUtil.show(activity, "leftTextClick") }
+            .setLeftIcon1(R.drawable.base_icon_back)
+            .setLeftIcon1Click { ToastUtil.show(activity, "leftIcon1Click") }
+            .setRightIcon(R.drawable.base_icon_back)
+            .setRightIconClick { ToastUtil.show(activity, "RightIconClick") }
+            .setRightText("右边")
+            .setRightTextClick { ToastUtil.show(activity, " rightTextClick") }
+            .setRightIcon1(R.drawable.base_icon_back)
+            .setRightIcon1Click { ToastUtil.show(activity, " rightIcon1Click") }
+        mViewModel.baseTitleModel.value = baseTitleModel
 
-        binding.homeRvCollect.bindHorizontalLayout(homeCollectAdapter)
+        mViewModel.initBannerInfo()
+        mViewModel.initCollect({ startBoutique() },
+            { startMenu() },
+            { startMenu() },
+            { startMenu() })
+        mViewModel.initSingleList()
+        mViewModel.initDoubleList()
+        mViewModel.initGridList()
+        mViewModel.initVerList()
+        mHomeAdapter = HomeAdapter(mViewModel, initHomeAdapter(), BR.item)
+        dataBind.homeRv.bindVerticalLayout(mHomeAdapter)
 
-        val homeAdapter = HomeAdapter(generateHomeTestData(), BR.item)
-        binding.homeRvRecommend.bindVerticalLayout(homeAdapter)
-
-
-        binding.run {
-            collectViewModel = homeViewModel
+        dataBind.run {
+            collectViewModel = mViewModel
         }
     }
 
-    fun generateHomeTestData(): List<BaseMultiAdapter.IBindItemType> {
+    private fun initHomeAdapter(): List<BaseMultiAdapter.IBindItemType> {
         return listOf(
-            HomeMoreModel("精品推荐") { moreClick() },
-            HomeRecommendModel(
-                "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
-                8.0f,
-                "Carolyn Gregory",
-                "小丸子",
-                "Vip"
-            ) { recommendClick() }
+            HomeBannerRvModel(mViewModel.homeBannerInfoList.value),
+            HomeCollectRvModel(),
+            HomeMoreModel("精品推荐Double") { startHorDoubleMore() },
+            HomeRecommendHorDoubleRvModel(),
+            HomeMoreModel("精品推荐Grid") { startHorSingleMore() },
+            HomeGridRecommendRvModel(),
+            HomeMoreModel("精品推荐Single") { startHorSingleMore() },
+            HomeRecommendHorSingleRvModel(),
+            HomeMoreModel("新书推荐") { startHorSingleMore() },
+            HomeRecommendVerRvModel()
         )
     }
 
+    private fun startBoutique() {
+        context?.let {
+            BoutiqueActivity.startActivity(it)
+        }
+    }
 
-    fun startMenu() {
+    private fun startMenu() {
         MenuActivity.startActivity(context!!)
     }
 
-    private fun startBoutiqueRecommend() {
-        BoutiqueRecommendActivity.startActivity(context!!)
+    private fun startHorDoubleMore() {
+
     }
 
+    private fun startHorSingleMore() {
+
+    }
+
+
     fun recommendClick() {
-        //todo:详情
-        DetailActivity.startActivity(context!!)
+
     }
 
     fun moreClick() {
@@ -87,17 +112,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding>(R.layout.home_h
     }
 
     override fun startObserve() {
-//        homeViewModel.bannerInfoList.observe(this, Observer {
-//            homeViewModel.bannerInfoList.value = HomeBannerModel("")
-//        })
     }
 
-    companion object {
-        fun getInstance() {
-//            val transaction: FragmentTransaction = .beginTransaction()
-//            transaction.add(frameId, fragment)
-//            transaction.commit()
-        }
+    override fun initLayoutId(): Int {
+        return R.layout.home_home_fragment
     }
 
 }

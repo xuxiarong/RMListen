@@ -2,7 +2,7 @@ package com.rm.module_home.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.business_lib.bean.BookBean
-import com.rm.business_lib.xbanner.BannerInfo
+import com.rm.business_lib.bean.BannerInfo
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.bean.CategoryTabBean
 

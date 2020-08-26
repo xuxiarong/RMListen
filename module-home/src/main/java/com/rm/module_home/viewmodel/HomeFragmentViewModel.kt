@@ -2,29 +2,30 @@ package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.rm.business_lib.xbanner.BannerInfo
+import com.rm.baselisten.mvvm.BaseNetFragment
+import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.business_lib.bean.BannerInfo
 import com.rm.module_home.R
-import com.rm.module_home.model.HomeBoutiqueModel
 import com.rm.module_home.model.HomeRecommendModel
 import com.rm.module_home.model.home.collect.HomeCollectModel
+import com.rm.module_home.model.home.grid.HomeGridRecommendModel
 import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleModel
 import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleModel
+import com.rm.module_home.model.home.ver.HomeRecommendVerModel
 
 /**
  * desc   :
  * date   : 2020/08/20
  * version: 1.0
  */
-class HomeFragmentViewModel : ViewModel() {
+class HomeFragmentViewModel : BaseNetViewModel() {
 
     var homeBannerInfoList = MutableLiveData<List<BannerInfo>>()
     var homeCollectModel = MutableLiveData<List<HomeCollectModel>>()
     var homeHorSingleList = MutableLiveData<List<HomeRecommendHorSingleModel>>()
     var homeHorDoubleList = MutableLiveData<List<HomeRecommendHorDoubleModel>>()
-
-    var homeBoutiqueModel = MutableLiveData<HomeBoutiqueModel>()
-    var homeRecommendModel = MutableLiveData<HomeRecommendModel>()
-
+    var homeGridList = MutableLiveData<List<HomeGridRecommendModel>>()
+    var homeVerList = MutableLiveData<List<HomeRecommendVerModel>>()
 
     fun initBannerInfo() {
         val bannerList = mutableListOf<BannerInfo>()
@@ -35,57 +36,73 @@ class HomeFragmentViewModel : ViewModel() {
         homeBannerInfoList.value = bannerList
     }
 
-    fun initCollect() {
+    fun initCollect(vararg clickList: () -> Unit) {
 
         homeCollectModel.value = listOf(
             HomeCollectModel(
                 R.drawable.home_icon_collect_recommend,
                 "精品推荐"
-            ) { },
+            ) { clickList[0]() },
             HomeCollectModel(
                 R.drawable.home_icon_collect_rank,
                 "榜单"
-            ) { },
+            ) { clickList[1]() },
             HomeCollectModel(
                 R.drawable.home_icon_head_reading,
                 "看书"
-            ) { },
+            ) { clickList[2]() },
             HomeCollectModel(
                 R.drawable.home_icon_collect_listen,
                 "听单"
-            ) { })
+            ) { clickList[3]() })
     }
 
-    fun initSingleList(){
+    fun initSingleList() {
         val singleList = ArrayList<HomeRecommendHorSingleModel>()
-        singleList.add(HomeRecommendHorSingleModel(HomeRecommendModel(
-            "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
-                8.0f,
-                "1111111",
-                "小丸子11",
-                "Vip")
-        ))
-        singleList.add(HomeRecommendHorSingleModel(HomeRecommendModel(
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
-            8.0f,
-            "222222222",
-            "小丸子22",
-            "Vip")
-        ))
-        singleList.add(HomeRecommendHorSingleModel(HomeRecommendModel(
-            "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
-            8.0f,
-            "3333333333",
-            "小丸子33",
-            "Vip")
-        ))
-        singleList.add(HomeRecommendHorSingleModel(HomeRecommendModel(
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
-            8.0f,
-            "4444444444",
-            "小丸子44",
-            "Vip")
-        ))
+        singleList.add(
+            HomeRecommendHorSingleModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "1111111",
+                    "小丸子11",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeRecommendHorSingleModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "222222222",
+                    "小丸子22",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeRecommendHorSingleModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "3333333333",
+                    "小丸子33",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeRecommendHorSingleModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "4444444444",
+                    "小丸子44",
+                    "Vip"
+                )
+            )
+        )
         this.homeHorSingleList.value = singleList
     }
 
@@ -176,6 +193,117 @@ class HomeFragmentViewModel : ViewModel() {
                 bottom4
             )
         )
-        this.homeHorDoubleList.value =  recommendHorDoubleList
+        this.homeHorDoubleList.value = recommendHorDoubleList
+    }
+
+    fun initGridList() {
+        val singleList = ArrayList<HomeGridRecommendModel>()
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "1111111",
+                    "小丸子11",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "222222222",
+                    "小丸子22",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "3333333333",
+                    "小丸子33",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "4444444444",
+                    "小丸子44",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                    8.0f,
+                    "3333333333",
+                    "小丸子33",
+                    "Vip"
+                )
+            )
+        )
+        singleList.add(
+            HomeGridRecommendModel(
+                HomeRecommendModel(
+                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2843937210,358921993&fm=26&gp=0.jpg",
+                    8.0f,
+                    "4444444444",
+                    "小丸子44",
+                    "Vip"
+                )
+            )
+        )
+        this.homeGridList.value = singleList
+    }
+
+    fun initVerList(){
+        homeVerList.value = listOf(
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            ),
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            ),
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            ),
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            ),
+            HomeRecommendVerModel(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
+                "Vip",
+                "你自己觉得有，别人感觉不",
+                "公司要为员工创造环境，但员工的成长最终是靠自己",
+                "楼芸蓓"
+            )
+        )
     }
 }

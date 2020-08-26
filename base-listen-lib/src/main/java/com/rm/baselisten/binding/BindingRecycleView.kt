@@ -57,7 +57,7 @@ fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>, spanCount: Int
     val layoutManager = GridLayoutManager(context, spanCount)
     setLayoutManager(layoutManager)
     this.adapter = adapter
-    overScrollMode = View.OVER_SCROLL_NEVER
+//    overScrollMode = View.OVER_SCROLL_NEVER
 }
 
 @BindingAdapter("gridItemDecoration")

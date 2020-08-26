@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.rm.module_home.model.home.grid.HomeGridRecommendModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homeItemRecommendHorDoubleTop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="12dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/homeItemRecommendHorDoubleTopIcon"
+            bindUrl="@{item.gridRecommendRvModel.url}"
+            corner="@{item.gridRecommendRvModel.iconCorner}"
+            android:layout_width="106dp"
+            android:layout_height="106dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemRecommendHorDoubleTopTag"
+            bindText="@{item.gridRecommendRvModel.tag}"
+            style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemRecommendHorDoubleTopName"
+            bindText="@{item.gridRecommendRvModel.name}"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/business_color_b3333333"
+            android:textSize="@dimen/business_text_size_14sp"
+            app:layout_constraintStart_toStartOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintTop_toBottomOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            tools:text="Afamefuna Okparo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
+            bindText="@{item.gridRecommendRvModel.author}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/business_color_b1b1b1"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintTop_toBottomOf="@+id/homeItemRecommendHorDoubleTopName"
+            app:layout_constraintStart_toStartOf="@+id/homeItemRecommendHorDoubleTopName"
+            tools:text="小丸子" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
