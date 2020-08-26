@@ -10,5 +10,9 @@
         <activity
             android:name="com.rm.module_home.activity.boutique.BoutiqueActivity"
             android:screenOrientation="portrait" />
+        <!--榜单-->
+        <activity
+            android:name="com.rm.module_home.activity.list.TopListActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

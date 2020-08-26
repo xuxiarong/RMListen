@@ -2,9 +2,12 @@
     <string name="home_app_name">Home</string>
     <string name="home_menu">听单</string>
     <string name="home_listen_list">听单</string>
+    <string name="home_top_list">榜单</string>
     <string name="home_boutique">精品</string>
 
-
+    <string name="home_top_list_week">周榜</string>
+    <string name="home_top_list_month">月榜</string>
+    <string name="home_top_list_all">总榜</string>
 
     <!--format String-->
     <string name="format_total_books" formatted="false">共%d本</string>

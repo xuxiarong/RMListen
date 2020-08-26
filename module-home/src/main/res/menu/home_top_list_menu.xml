@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_top_list_menu_week"
+        android:title="@string/home_top_list_week" />
+    <item
+        android:id="@+id/home_top_list_menu_month"
+        android:title="@string/home_top_list_month" />
+    <item
+        android:id="@+id/home_top_list_menu_all"
+        android:title="@string/home_top_list_all"
+        />
+</menu>
