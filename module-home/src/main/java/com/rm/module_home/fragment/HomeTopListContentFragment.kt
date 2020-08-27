@@ -1,14 +1,13 @@
 package com.rm.module_home.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.annotation.IntDef
 import androidx.lifecycle.observe
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.linearItemDecoration
-import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.ToastUtil
+import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeTopListContentAdapter
 import com.rm.module_home.databinding.HomeFragmentTopListContentBinding
@@ -57,9 +56,10 @@ class HomeTopListContentFragment :
         }
     }
 
-    override fun initLayoutId(): Int {
-        return R.layout.home_fragment_top_list_content
-    }
+    override fun initLayoutId() = R.layout.home_fragment_top_list_content
+
+    override fun initModelBrId(): Int = BR.viewModel
+
 
     override fun initData() {
         mViewModel.getListInfo()
@@ -70,7 +70,7 @@ class HomeTopListContentFragment :
         arguments?.let {
             mType = it.getInt(LIST_TYPE)
         }
-        dataBind.run {
+        mDataBind.run {
             viewModel = mViewModel
         }
 

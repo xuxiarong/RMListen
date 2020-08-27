@@ -29,17 +29,17 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
     /**
      * 初始化base的dataBind对象，并且注册lifecycle
      */
-    private lateinit var baseBinding: BaseFragmentVmBinding
+    private lateinit var mBaseBinding: BaseFragmentVmBinding
 
     /**
      * 定义子类的View，用于跟子类的dataBind进行绑定
      */
-    private var childView: View? = null
+    private var mChildView: View? = null
 
     /**
      * 定义子类的dataBing对象
      */
-    protected lateinit var dataBind: V
+    protected lateinit var mDataBind: V
 
     protected val mViewModel by lazy {
         val clazz = this.javaClass.kotlin.supertypes[0].arguments[1].type?.classifier as KClass<VM>
@@ -47,15 +47,15 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        baseBinding = DataBindingUtil.inflate<BaseFragmentVmBinding>(inflater, R.layout.base_fragment_vm, container, false).apply {
+        mBaseBinding = DataBindingUtil.inflate<BaseFragmentVmBinding>(inflater, R.layout.base_fragment_vm, container, false).apply {
             lifecycleOwner = this@BaseVMFragment
         }
-        return baseBinding.root
+        return mBaseBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        baseBinding.viewModel = mViewModel
+        mBaseBinding.viewModel = mViewModel
         startBaseObserve()
         initChild()
         startObserve()
@@ -68,11 +68,12 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
      * 初始化子类布局
      */
     private fun initChild() {
-        if (!baseBinding.baseChildView.isInflated) {
-            baseBinding.baseChildView.viewStub?.layoutResource = initLayoutId()
-            childView = baseBinding.baseChildView.viewStub?.inflate()
-            if (childView != null) {
-                dataBind = DataBindingUtil.bind(childView!!)!!
+        if (!mBaseBinding.baseChildView.isInflated) {
+            mBaseBinding.baseChildView.viewStub?.layoutResource = initLayoutId()
+            mChildView = mBaseBinding.baseChildView.viewStub?.inflate()
+            if (mChildView != null) {
+                mDataBind = DataBindingUtil.bind(mChildView!!)!!
+                mDataBind.setVariable(initModelBrId(),mViewModel)
             }
         }
     }
@@ -99,28 +100,28 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
     private fun setStatus(statusModel: BaseStatusModel) {
         when (statusModel.netStatus) {
             BaseNetStatus.BASE_SHOW_DATA_EMPTY -> {
-                if (!baseBinding.baseEmpty.isInflated) {
-                    baseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
-                    baseBinding.baseEmpty.viewStub?.inflate()
+                if (!mBaseBinding.baseEmpty.isInflated) {
+                    mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
+                    mBaseBinding.baseEmpty.viewStub?.inflate()
                 }
-                childView?.visibility = View.GONE
+                mChildView?.visibility = View.GONE
             }
             BaseNetStatus.BASE_SHOW_NET_ERROR -> {
-                if (!baseBinding.baseError.isInflated) {
-                    baseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
-                    baseBinding.baseError.viewStub?.inflate()
+                if (!mBaseBinding.baseError.isInflated) {
+                    mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
+                    mBaseBinding.baseError.viewStub?.inflate()
                 }
-                childView?.visibility = View.GONE
+                mChildView?.visibility = View.GONE
             }
             BaseNetStatus.BASE_SHOW_LOADING -> {
-                if (!baseBinding.baseLoad.isInflated) {
-                    baseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
-                    baseBinding.baseLoad.viewStub?.inflate()
+                if (!mBaseBinding.baseLoad.isInflated) {
+                    mBaseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
+                    mBaseBinding.baseLoad.viewStub?.inflate()
                 }
-                childView?.visibility = View.VISIBLE
+                mChildView?.visibility = View.VISIBLE
             }
             BaseNetStatus.BASE_SHOW_CONTENT -> {
-                childView?.visibility = View.VISIBLE
+                mChildView?.visibility = View.VISIBLE
             }
         }
     }
@@ -129,15 +130,21 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
      * 设置标题栏
      */
     private fun setTitle() {
-        if (!baseBinding.baseTitleLayout.isInflated) {
-            baseBinding.baseTitleLayout.viewStub?.inflate()
-            if (childView != null && context!=null) {
-                val layoutParams = childView?.layoutParams as ViewGroup.MarginLayoutParams
+        if (!mBaseBinding.baseTitleLayout.isInflated) {
+            mBaseBinding.baseTitleLayout.viewStub?.inflate()
+            if (mChildView != null && context!=null) {
+                val layoutParams = mChildView?.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.topMargin = dip( 48.0f)
-                childView?.layoutParams = layoutParams
+                mChildView?.layoutParams = layoutParams
             }
         }
     }
+
+    /**
+     *  初始化子类viewModel的BrId
+     * @return Int
+     */
+    abstract fun initModelBrId() : Int
 
     /**
      * 开启子类的LiveData观察者

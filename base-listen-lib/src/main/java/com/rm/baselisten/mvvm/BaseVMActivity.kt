@@ -26,7 +26,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
     /**
      * 初始化base的dataBind对象，并且注册lifecycle
      */
-    private val baseBinding: ActivityBaseVmBinding by lazy {
+    private val mBaseBinding: ActivityBaseVmBinding by lazy {
         DataBindingUtil.setContentView<ActivityBaseVmBinding>(this, R.layout.activity_base_vm)
             .apply {
                 lifecycleOwner = this@BaseVMActivity
@@ -40,12 +40,12 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
     /**
      * 定义子类的View，用于跟子类的dataBind进行绑定
      */
-    private var childView: View? = null
+    private var mChildView: View? = null
 
     /**
      * 定义子类的dataBing对象
      */
-    protected lateinit var dataBind: V
+    protected lateinit var mDataBind: V
 
     /**
      * 设置dataBind为true，让父类不要setContentView
@@ -57,7 +57,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         super.onCreate(savedInstanceState)
         //获取子类初始化的ViewModel
 //        createViewModel()
-        baseBinding.viewModel = mViewModel
+        mBaseBinding.viewModel = mViewModel
         //开启base的liveData的数据变化监听
         startBaseObserve()
         //初始化子类的布局
@@ -74,12 +74,12 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
      * 初始化子类布局
      */
     private fun initChild() {
-        if (!baseBinding.baseChildView.isInflated) {
-            baseBinding.baseChildView.viewStub?.layoutResource = getLayoutId()
-            childView = baseBinding.baseChildView.viewStub?.inflate()
-            if (childView != null) {
-                dataBind = DataBindingUtil.bind(childView!!)!!
-                dataBind.setVariable(initModelBrId(),mViewModel)
+        if (!mBaseBinding.baseChildView.isInflated) {
+            mBaseBinding.baseChildView.viewStub?.layoutResource = getLayoutId()
+            mChildView = mBaseBinding.baseChildView.viewStub?.inflate()
+            if (mChildView != null) {
+                mDataBind = DataBindingUtil.bind(mChildView!!)!!
+                mDataBind.setVariable(initModelBrId(),mViewModel)
             }
         }
     }
@@ -105,28 +105,28 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
     private fun setStatus(statusModel: BaseStatusModel) {
         when (statusModel.netStatus) {
             BaseNetStatus.BASE_SHOW_DATA_EMPTY -> {
-                if (!baseBinding.baseEmpty.isInflated) {
-                    baseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
-                    baseBinding.baseEmpty.viewStub?.inflate()
+                if (!mBaseBinding.baseEmpty.isInflated) {
+                    mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
+                    mBaseBinding.baseEmpty.viewStub?.inflate()
                 }
-                childView?.visibility = View.GONE
+                mChildView?.visibility = View.GONE
             }
             BaseNetStatus.BASE_SHOW_NET_ERROR -> {
-                if (!baseBinding.baseError.isInflated) {
-                    baseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
-                    baseBinding.baseError.viewStub?.inflate()
+                if (!mBaseBinding.baseError.isInflated) {
+                    mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
+                    mBaseBinding.baseError.viewStub?.inflate()
                 }
-                childView?.visibility = View.GONE
+                mChildView?.visibility = View.GONE
             }
             BaseNetStatus.BASE_SHOW_LOADING -> {
-                if (!baseBinding.baseLoad.isInflated) {
-                    baseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
-                    baseBinding.baseLoad.viewStub?.inflate()
+                if (!mBaseBinding.baseLoad.isInflated) {
+                    mBaseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
+                    mBaseBinding.baseLoad.viewStub?.inflate()
                 }
-                childView?.visibility = View.VISIBLE
+                mChildView?.visibility = View.VISIBLE
             }
             BaseNetStatus.BASE_SHOW_CONTENT -> {
-                childView?.visibility = View.VISIBLE
+                mChildView?.visibility = View.VISIBLE
             }
         }
     }
@@ -135,12 +135,12 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
      * 设置标题栏
      */
     private fun setTitle() {
-        if (!baseBinding.baseTitleLayout.isInflated) {
-            baseBinding.baseTitleLayout.viewStub?.inflate()
-            if (childView != null) {
-                val layoutParams = childView?.layoutParams as ViewGroup.MarginLayoutParams
+        if (!mBaseBinding.baseTitleLayout.isInflated) {
+            mBaseBinding.baseTitleLayout.viewStub?.inflate()
+            if (mChildView != null) {
+                val layoutParams = mChildView?.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.topMargin = dip(48.0f)
-                childView?.layoutParams = layoutParams
+                mChildView?.layoutParams = layoutParams
             }
         }
     }

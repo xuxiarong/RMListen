@@ -33,6 +33,9 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
     private lateinit var mHomeAdapter: HomeAdapter
 
+    override fun initLayoutId() = R.layout.home_home_fragment
+
+    override fun initModelBrId(): Int = BR.viewModel
 
     override fun initData() {
 
@@ -61,11 +64,8 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         mViewModel.initVerList()
 
         mHomeAdapter = HomeAdapter(mViewModel, initHomeAdapter(), BR.viewModel, BR.item)
-        dataBind.homeRv.bindVerticalLayout(mHomeAdapter)
+        mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
 
-        dataBind.run {
-            collectViewModel = mViewModel
-        }
     }
 
     fun initCollectClick(model: HomeCollectModel) {
@@ -141,8 +141,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
     }
 
-    override fun initLayoutId(): Int {
-        return R.layout.home_home_fragment
-    }
+
+
 
 }

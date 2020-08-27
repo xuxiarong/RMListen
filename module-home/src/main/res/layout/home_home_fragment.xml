@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="collectViewModel"
+            name="viewModel"
             type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
     </data>
 

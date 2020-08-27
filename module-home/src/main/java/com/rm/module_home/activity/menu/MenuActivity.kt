@@ -54,7 +54,7 @@ class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel
                 finish()
             }
         mViewModel.baseTitleModel.value = baseTitleModel
-        dataBind.run {
+        mDataBind.run {
             viewModel = mViewModel
         }
     }

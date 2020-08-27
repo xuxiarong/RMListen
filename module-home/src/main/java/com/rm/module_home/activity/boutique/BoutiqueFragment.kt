@@ -6,6 +6,7 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.dip
 import com.rm.business_lib.binding.paddingBindData
+import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.BookAdapter
 import com.rm.module_home.bean.CategoryTabBean
@@ -42,10 +43,11 @@ class BoutiqueFragment(private val categoryTabBean: CategoryTabBean) :
 
     override fun initLayoutId(): Int = R.layout.home_fragment_boutique
 
+    override fun initModelBrId(): Int = BR.viewModel
+
     override fun initView() {
         super.initView()
         mViewModel.categoryName = categoryTabBean.name
-        dataBind.viewModel = mViewModel
     }
 
     override fun initData() {

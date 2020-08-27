@@ -36,7 +36,7 @@ class LoginByVerifyCodeActivity :
 
     override fun initView() {
         super.initView()
-        dataBind.run {
+        mDataBind.run {
             viewModel = mViewModel
         }
         mViewModel.context = this
