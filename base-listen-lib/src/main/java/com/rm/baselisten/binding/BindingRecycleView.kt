@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.decoration.GridSpaceItemDecoration
 import com.rm.baselisten.decoration.LinearItemDecoration
-import com.rm.baselisten.util.px2sp
+import com.rm.baselisten.util.dip
 
 /**
  * desc   :
@@ -66,7 +66,7 @@ fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>, spanCount: Int
 fun RecyclerView.gridItemDecoration(span: Float) {
     addItemDecoration(
         GridSpaceItemDecoration(
-            px2sp(span.toInt()).toInt(),
+            dip(span),
             0,
             false,
             GridSpaceItemDecoration.GRIDLAYOUT
