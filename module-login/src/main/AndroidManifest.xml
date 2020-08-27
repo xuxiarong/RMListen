@@ -5,6 +5,12 @@
         <!-- 验证码登陆 -->
         <activity
             android:name=".activity.LoginByVerifyCodeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!-- 手机密码登陆 -->
+        <activity
+            android:name=".activity.LoginByPasswordActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

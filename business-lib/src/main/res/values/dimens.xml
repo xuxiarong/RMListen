@@ -77,6 +77,8 @@
     <dimen name="dp_52">52dp</dimen>
     <dimen name="dp_56">56dp</dimen>
     <dimen name="dp_64">64dp</dimen>
+    <dimen name="dp_65">65dp</dimen>
+    <dimen name="dp_82">82dp</dimen>
     <dimen name="dp_100">100dp</dimen>
     <dimen name="dp_88">88dp</dimen>
     <dimen name="dp_96">96dp</dimen>

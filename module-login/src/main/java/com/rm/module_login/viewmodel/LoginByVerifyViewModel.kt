@@ -1,12 +1,13 @@
 package com.rm.module_login.viewmodel
 
-import android.content.Context
+import android.app.Activity
 import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 import com.rm.module_login.R
+import com.rm.module_login.activity.LoginByPasswordActivity
 import com.rm.module_login.repository.LoginRepository
 
 /**
@@ -15,7 +16,7 @@ import com.rm.module_login.repository.LoginRepository
  * version: 1.0
  */
 class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseNetViewModel() {
-    var context:Context? = null
+    var context:Activity? = null
     // 标识是否输入了文本
     var isInputText = ObservableField<Boolean>()
     //  输入的电话号码值
@@ -39,23 +40,35 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseNetV
      * 获取验证码
      */
     fun getCode(){
-        // TODO 网络通过手机获取验证码
+        // toto 网络通过手机获取验证码
         DLog.i("llj","获取验证码！！！isCheck---->>${isCheck.get()}")
         if(!isCheck.get()!!){
             // 未选中check box
             ToastUtil.show(context,context!!.resources.getString(R.string.login_agree_deal_tips))
             return
         }
-
     }
 
-    // 置空输入框的值
+    /**
+     * 置空输入框的值
+     */
     fun clearInput(){
         phone.set("")
     }
 
+    /**
+     * 密码登陆入口
+     */
     fun loginByPassword(){
-        // todo 跳转密码登陆
-        ToastUtil.show(context,"跳转密码登陆界面")
+        LoginByPasswordActivity.startActivity(context!!)
+        context!!.finish()
     }
+
+    /**
+     * 显示国家列表选择框
+     */
+    fun showCountryList(){
+        // todo
+    }
+
 }
