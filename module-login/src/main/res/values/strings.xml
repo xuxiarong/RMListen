@@ -11,5 +11,6 @@
     <string name="login_verify_code_login">验证码登陆</string>
     <string name="login_password">密码:</string>
     <string name="login_forget_password">忘记密码</string>
-    <string name="login_login">登陆</string>
+    <string name="login_login">登录</string>
+    <string name="login_input_verification_code">请输入验证码</string>
 </resources>

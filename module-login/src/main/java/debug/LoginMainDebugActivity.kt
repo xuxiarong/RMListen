@@ -4,6 +4,7 @@ import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_login.R
 import com.rm.module_login.activity.LoginByPasswordActivity
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
+import com.rm.module_login.activity.VerificationInputActivity
 import kotlinx.android.synthetic.main.login_activity_main.*
 
 /**
@@ -21,6 +22,10 @@ class LoginMainDebugActivity : BaseDebugActivity() {
 
         btnPassword.setOnClickListener {
             LoginByPasswordActivity.startActivity(this)
+        }
+
+        btnVerifyInput.setOnClickListener {
+            VerificationInputActivity.startActivity(this)
         }
     }
 

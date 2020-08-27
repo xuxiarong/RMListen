@@ -5,6 +5,7 @@ import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.LoginByPasswordViewModel
 import com.rm.module_login.viewmodel.LoginByVerifyViewModel
+import com.rm.module_login.viewmodel.VerificationInputViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -19,6 +20,8 @@ val viewModelModule = module {
     viewModel { LoginByVerifyViewModel(get()) }
     // 密码登陆
     viewModel { LoginByPasswordViewModel(get()) }
+    // 输入验证码
+    viewModel { VerificationInputViewModel(get()) }
 }
 
 val repositoryModule = module {
