@@ -15,7 +15,6 @@
         app:rv_cornerRadius_TR="10dp"
         tools:ignore="MissingConstraints">
 
-
         <LinearLayout
             android:id="@+id/music_play_times"
             android:layout_width="wrap_content"
@@ -27,7 +26,6 @@
             <com.flyco.roundview.RoundFrameLayout
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-
                 app:rv_cornerRadius="48dp"
                 app:rv_strokeColor="@color/business_color_e8e8e8"
                 app:rv_strokeWidth="1dp">
@@ -43,10 +41,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="14sp"
-                android:textColor="@color/business_text_color_666666"
                 android:layout_marginTop="7dp"
-                android:text="定时器" />
+                android:text="定时器"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -55,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="62dp"
-            android:orientation="vertical"
-            android:layout_marginTop="23dp">
+            android:layout_marginTop="23dp"
+            android:orientation="vertical">
 
             <com.flyco.roundview.RoundFrameLayout
                 android:layout_width="56dp"
@@ -67,22 +65,21 @@
                 app:rv_strokeWidth="1dp">
 
                 <TextView
-                    android:text="1X"
-                    android:textSize="25sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                     />
+                    android:text="1X"
+                    android:textSize="25sp" />
             </com.flyco.roundview.RoundFrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/business_text_color_666666"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="7dp"
-                android:text="倍数" />
+                android:text="倍数"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="14sp" />
         </LinearLayout>
 
     </com.flyco.roundview.RoundLinearLayout>

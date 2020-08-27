@@ -10,21 +10,22 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.module_play.R
-import kotlinx.android.synthetic.main.music_play_dialog_time_setting.*
+import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.*
 
 /**
  *
- * @des:播放器定时器
- * @data: 8/26/20 6:46 PM
+ * @des:
+ * @data: 8/27/20 11:03 AM
  * @Version: 1.0.0
  */
-fun FragmentActivity.showMusicPlayTimeSettingDialog() {
-    MusicPlayTimeSettingDialog().apply {
+
+fun FragmentActivity.showMusicPlaySpeedDialog() {
+    MusicPlaySpeedDialog().apply {
 
     }.show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
-class MusicPlayTimeSettingDialog : BottomDialogFragment() {
+class MusicPlaySpeedDialog : BottomDialogFragment() {
     private val timeSAdapter by lazy {
         TimeSAdapter(timeList).apply {
 
@@ -44,7 +45,7 @@ class MusicPlayTimeSettingDialog : BottomDialogFragment() {
         }
     }
 
-    override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_time_setting
+    override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_speed_setting
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,11 +57,11 @@ class MusicPlayTimeSettingDialog : BottomDialogFragment() {
 
 
     internal class TimeSAdapter(list: MutableList<String>) :
-        BaseQuickAdapter<String, BaseViewHolder>(R.layout.rv_item_times_page, list) {
+        BaseQuickAdapter<String, BaseViewHolder>(R.layout.rv_item_speed_setting, list) {
         var isCheckPos = -1
 
         override fun convert(holder: BaseViewHolder, item: String) {
-            holder.getView<ImageView>(R.id.music_play_time_setting_check).background =
+            holder.getView<ImageView>(R.id.music_play_speed_setting_check).background =
                 if (isCheckPos == holder.layoutPosition) ContextCompat.getDrawable(
                     context,
                     R.drawable.music_play_item_time_selected_ic_icon_chosen_da

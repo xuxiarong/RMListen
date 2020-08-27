@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:maxHeight="500dp">
+
+    <com.flyco.roundview.RoundLinearLayout
+        android:id="@+id/content_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:rv_backgroundColor="@android:color/white"
+        app:rv_cornerRadius_TL="10dp"
+        app:rv_cornerRadius_TR="10dp"
+        tools:ignore="MissingConstraints">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+
+            <com.flyco.roundview.RoundFrameLayout
+                android:layout_width="50dp"
+                android:layout_height="6dp"
+                android:layout_marginTop="11dp"
+                app:layout_constraintLeft_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:rv_backgroundColor="@color/business_color_b1b1b1"
+                app:rv_cornerRadius="5dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="13dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/music_play_order_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:drawableLeft="@drawable/music_play_ic_icon_single_de"
+                    android:drawablePadding="4dp"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="14sp"
+                    android:text="顺序播放" />
+
+                <ImageView
+                    android:id="@+id/music_play_download_de"
+                    android:layout_toRightOf="@+id/music_play_order_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="108dp"
+                    android:src="@drawable/music_play_ic_icon_download_de" />
+
+                <ImageView
+                    android:layout_toRightOf="@+id/music_play_download_de"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/music_play_ic_icon_sort_de" />
+
+           <LinearLayout
+               android:layout_alignParentRight="true"
+               android:orientation="horizontal"
+               android:layout_marginEnd="@dimen/dp_16"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="共34集"
+                   android:textColor="@color/business_text_color_666666"
+                   android:textSize="14sp" />
+               <com.rm.business_lib.wedgit.arrow.ArrowView
+                   android:layout_width="@dimen/dp_22"
+                   android:layout_height="@dimen/dp_22"
+                   android:layout_marginStart="@dimen/dp_12"
+                   android:paddingStart="@dimen/dp_4"
+                   android:paddingTop="@dimen/dp_7"
+                   android:paddingEnd="@dimen/dp_4"
+                   android:paddingBottom="@dimen/dp_7"
+                   app:arrow_direction="bottom"
+                   app:arrow_line_color="@color/business_text_color_333333" />
+           </LinearLayout>
+
+            </RelativeLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/business_color_e8e8e8" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_music_play_time_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </com.flyco.roundview.RoundLinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

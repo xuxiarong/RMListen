@@ -2,7 +2,7 @@ package com.rm.business_lib.binding
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.util.DisplayUtils
+import com.rm.baselisten.util.dip
 import com.rm.business_lib.bean.BannerInfo
 import com.stx.xhb.androidx.XBanner
 
@@ -41,9 +41,9 @@ fun XBanner.paddingBindData(bannerInfoList: List<BannerInfo>?) {
             bannerInfoList[position].imgUrl
         )
         view.setPadding(
-            DisplayUtils.dip2px(view.context, 16f),
+            view.dip(16f),
             0,
-            DisplayUtils.dip2px(view.context, 16f),
+            view.dip(16f),
             0
         )
     }
