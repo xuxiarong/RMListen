@@ -3,8 +3,9 @@ package com.rm.module_home.activity.detail
 import android.content.Context
 import android.content.Intent
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.dip
+import com.rm.baselisten.util.screenHeight
 import com.rm.business_lib.utils.EllipsizeUtils
-import com.rm.business_lib.utils.ScreenUtil
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeDetailContentBinding
@@ -37,8 +38,8 @@ class HomeDetailActivity : BaseVMActivity<HomeDetailContentBinding,HomeDetailVie
         EllipsizeUtils.ellipsize(detail_title,"测试标题是否真的能够换行，显示省略号")
 
         scroll_down_layout!!.setMinOffset(0)
-        scroll_down_layout!!.setMaxOffset((ScreenUtil.getScreenHeight(this) * 0.5).toInt())
-        scroll_down_layout!!.setExitOffset(ScreenUtil.dip2px(this, 50f))
+        scroll_down_layout!!.setMaxOffset((screenHeight*0.5).toInt())
+        scroll_down_layout!!.setExitOffset(dip(50f))
         scroll_down_layout!!.setIsSupportExit(true)
         scroll_down_layout!!.isAllowHorizontalScroll = true
         scroll_down_layout!!.setToExit()

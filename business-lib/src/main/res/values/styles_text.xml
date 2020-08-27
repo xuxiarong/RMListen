@@ -246,4 +246,13 @@
         <item name="android:lineSpacingExtra">@dimen/dp_2</item>
         <item name="android:ellipsize">end</item>
     </style>
+
+    <!--size = 16sp color = #a9a9a9-->
+    <style name="BusinessTextStyleTips">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_16sp</item>
+        <item name="android:textColor">@color/business_color_a9a9a9</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>

@@ -12,12 +12,15 @@ import com.rm.module_login.repository.LoginRepository
  */
 class VerificationInputViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
     // 发送验证码的手机号码
-    var phone = ObservableField<String>()
+    var phone = ""
+    var phoneStr = ObservableField<String>()
 
-    // 输入的验证码
-    var inputVerifyCode = ObservableField<String>("")
+    // 倒计时时间
+    var countDownTime: Int = 60
+    var countDownTimeStr = ObservableField<String>()
 
-    var code = "0"
+    // 重新获取
+    var reGetCodeStr = ObservableField<String>()
 
     // 监听绑定输入框内容变化
     var completeInput: (String) -> Unit = {
@@ -26,7 +29,15 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
 
     private fun completeInput(content: String) {
         // 验证码输入完成
-        inputVerifyCode.set(content)
-        DLog.i("llj", "完成-----inputVerifyCode---->>>${inputVerifyCode.get()}")
+        // todo 输入验证码完成，网络验证输入验证码是否正确
+        DLog.i("llj", "完成-----inputVerifyCode---->>>${content}")
+    }
+
+    /**
+     * 重新获取验证码
+     */
+    fun reGetVerifyCode(){
+        // todo
+        DLog.i("llj","重新获取验证码")
     }
 }

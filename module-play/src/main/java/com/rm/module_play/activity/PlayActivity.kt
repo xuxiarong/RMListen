@@ -45,6 +45,7 @@ class PlayActivity :
             setBackgroundResource(R.drawable.bubble_bg)
             setTextColor(-0x1)
             gravity = Gravity.CENTER
+
         }
     }
 
@@ -88,11 +89,13 @@ class PlayActivity :
             musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 15)
         }
         music_play_point.setOnClickListener {
-            showMusicPlayMoreDialog {
-                if (it == 0) {
+            showMusicPlayMoreDialog { it1 ->
+                if (it1 == 0) {
                     showMusicPlayTimeSettingDialog()
                 } else {
-                    showMusicPlaySpeedDialog()
+                    showMusicPlaySpeedDialog {
+                        musicPlayerManger.setPlayerMultiple(it)
+                    }
                 }
             }
         }
@@ -118,7 +121,7 @@ class PlayActivity :
     }
 
     val RADIO_URL =
-        "https://webfs.yun.kugou.com/202008261228/2835306f37c4ace90caee0465129e158/G172/M06/15/01/7A0DAF1uBaSAdhqHADkWh9KZFIM871.mp3"
+        "https://webfs.yun.kugou.com/202008271626/08eb2d767ed3c0009cd8c706a769a9bc/G111/M03/12/01/D4cBAFmhufWAdEyfADTbmVX-PgI993.mp3"
 
     override fun initData() {
 
