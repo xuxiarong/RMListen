@@ -1,5 +1,8 @@
 package com.rm.business_lib.wedgit.bottomdrawer
 
+/**
+ * 此组件已被替换,暂时不用
+ */
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray

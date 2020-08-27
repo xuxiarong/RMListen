@@ -6,6 +6,8 @@ package com.rm.music_exoplayer_lib.bean
  * @data: 8/19/20 3:17 PM
  * @Version: 1.0.0
  */
-class BaseAudioInfo {
+data class BaseAudioInfo (val audioPath: String){
+
+
 
 }

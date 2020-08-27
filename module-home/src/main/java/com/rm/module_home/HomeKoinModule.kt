@@ -8,6 +8,7 @@ import com.rm.module_home.activity.menu.MenuViewModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.repository.BoutiqueRepository
 import com.rm.module_home.repository.MenuRepository
+import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.repository.TopListRepository
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,6 +27,7 @@ val viewModelModule = module {
     viewModel { BoutiqueViewModel(get()) }
     viewModel { TopListViewModel(get()) }
     viewModel { BoutiqueFragmentViewModel(get()) }
+    viewModel { HomeDetailViewModel() }
 }
 
 val repositoryModule = module {

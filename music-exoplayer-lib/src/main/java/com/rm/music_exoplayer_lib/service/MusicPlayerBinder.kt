@@ -1,8 +1,10 @@
 package com.rm.music_exoplayer_lib.service
 
 import android.os.Binder
+import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
 /**
  *
@@ -61,5 +63,30 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
      */
     fun setAlarm(times: Int) {
         presenter.setAlarm(times)
+    }
+
+    /**
+     * 更新播放器
+     */
+    fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int) {
+        presenter.updateMusicPlayerData(audios, index)
+    }
+
+    //获取播放状态
+    fun getPlayerState(): Int = presenter.getPlayerState()
+
+    //播放或者暂停
+    fun playOrPause() {
+        presenter.playOrPause()
+    }
+
+    //播放或者暂停
+    fun startPlayMusic(audios: List<*>?, index: Int) {
+        presenter.startPlayMusic(audios, index)
+    }
+
+    //播放
+    fun play() {
+        presenter.play()
     }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.model.HomeDetailModel"
+            />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.rm.business_lib.wedgit.bottomsheet.content.ContentRecyclerView
+                    android:paddingTop="44dp"
+                    android:id="@+id/detail_directory_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white" />
+
+            </RelativeLayout>
+        </com.rm.business_lib.wedgit.bottomsheet.ScrollLayout>
+
+
+
+        <include
+            layout="@layout/home_detail_content"
+            bind:viewModel="@{viewModel}"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

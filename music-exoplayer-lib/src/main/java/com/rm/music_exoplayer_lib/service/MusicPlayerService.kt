@@ -11,6 +11,8 @@ import android.os.Message
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.TrackGroupArray
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -35,7 +37,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private val mEventListener = ExoPlayerEventListener()
 
     //播放器工作状态
-    private val mMusicPlayerState = MUSIC_PLAYER_STOP
+    private var mMusicPlayerState = MUSIC_PLAYER_STOP
 
     //当前播放播放器正在处理的对象位置
     private var mCurrentPlayIndex = 0
@@ -70,7 +72,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         override fun handleMessage(msg: Message) {
             val duration = mExoPlayer.contentDuration
             val currentPosition = mExoPlayer.contentPosition
-            exoLog("duration===>${duration.toInt()}")
             onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
         }
@@ -133,25 +134,27 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         return mPlayerBinder as MusicPlayerBinder
     }
 
-    val RADIO_URL =
-        "https://webfs.yun.kugou.com/202008211909/9887fb4705db0d4413a61ed8448c20c0/G164/M02/19/09/hJQEAF1ou5aAVrTxADlcwhIMwfQ617.mp3"
 
 //    val RADIO_URL = "http://kastos.cdnstream.com/1345_32"
 
     @Synchronized
     private fun startPlay(musicInfo: BaseAudioInfo) =
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
-            mExoPlayer.prepare(
-                ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(RADIO_URL))
-            )
-            mExoPlayer.playWhenReady = true
+            if (musicInfo.audioPath.isNotEmpty()) {
+                mExoPlayer.prepare(
+                    ProgressiveMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(Uri.parse(musicInfo.audioPath))
+                )
+                mExoPlayer.playWhenReady = true
+            } else {
+                exoLog("没有链接")
+            }
         } else {
             exoLog("未成功获取音频输出焦点")
         }
 
     override fun startPlayMusic(index: Int) {
-        startPlay(BaseAudioInfo())
+        startPlay(mAudios.getOrNull(index) as BaseAudioInfo)
     }
 
     override fun startPlayMusic(audios: List<*>?, index: Int) {
@@ -170,9 +173,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 MUSIC_PLAYER_BUFFER -> {
                 }
                 MUSIC_PLAYER_PLAYING -> {
+                    mExoPlayer.playWhenReady = false
 
                 }
                 MUSIC_PLAYER_PAUSE -> {
+                    mIsPassive = false
+                    mExoPlayer.playWhenReady = true
                 }
                 MUSIC_PLAYER_ERROR -> {
 
@@ -274,10 +280,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         AlarmManger(this.applicationContext).setAlarm(times)
     }
 
-    override fun updateMusicPlayerData(audios: List<*>, index: Int) {
-
+    override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int) {
         mAudios.clear()
-        mAudios.addAll(listOf(audios))
+        mAudios.addAll(audios)
         mCurrentPlayIndex = index
     }
 
@@ -298,28 +303,72 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
          * 播放状态改变
          */
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            exoLog("onPlayerStateChanged${playWhenReady}===${playbackState}")
             when (playbackState) {
-                Player.STATE_IDLE, Player.STATE_BUFFERING, Player.STATE_READY -> {
+                Player.STATE_BUFFERING, Player.STATE_READY -> {
                     if (!mUpdateProgressHandler.hasMessages(0)) {
                         mUpdateProgressHandler.sendEmptyMessage(0)
+                        mMusicPlayerState = MUSIC_PLAYER_PLAYING
                     }
+                    mMusicPlayerState =
+                        if (playWhenReady) MUSIC_PLAYER_PLAYING else MUSIC_PLAYER_PAUSE
                 }
+
                 Player.STATE_ENDED -> {
                     mUpdateProgressHandler.removeMessages(0)
                 }
+
             }
         }
 
         override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-            exoLog(mExoPlayer.contentDuration)
+            exoLog("onTimelineChanged")
         }
 
         override fun onLoadingChanged(isLoading: Boolean) {
-            exoLog(mExoPlayer.contentDuration)
+            exoLog("onLoadingChanged")
+
+        }
+
+        override fun onTracksChanged(
+            trackGroups: TrackGroupArray,
+            trackSelections: TrackSelectionArray
+        ) {
+            exoLog("onTracksChanged")
+        }
+
+        override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
+            exoLog("onPlaybackParametersChanged")
+        }
+
+        override fun onPlaybackSuppressionReasonChanged(playbackSuppressionReason: Int) {
+            exoLog("onPlaybackSuppressionReasonChanged")
+        }
+
+        override fun onPlayerError(error: ExoPlaybackException) {
+            exoLog("${error}")
+            mMusicPlayerState=MUSIC_PLAYER_ERROR
+        }
+
+        override fun onSeekProcessed() {
+            exoLog("onSeekProcessed")
+        }
+
+        override fun onPositionDiscontinuity(reason: Int) {
+            exoLog("onPositionDiscontinuity")
+        }
+
+        override fun onRepeatModeChanged(repeatMode: Int) {
+            exoLog("onRepeatModeChanged")
+        }
+
+        override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+            exoLog("onShuffleModeEnabledChanged")
 
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
+            exoLog("onIsPlayingChanged${isPlaying}")
             if (isPlaying) {
                 mOnPlayerEventListeners.forEach {
                     it.onPrepared(getDurtion())

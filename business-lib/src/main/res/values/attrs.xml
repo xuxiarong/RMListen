@@ -12,6 +12,26 @@
     <declare-styleable name="BottomDrawerDialog">
         <attr name="is_cancelable_on_touch_outside" format="boolean" />
     </declare-styleable>
+    /**  **/
+    <declare-styleable name="ScrollLayout">
+
+        <attr name="minOffset" format="dimension" />
+
+        <attr name="maxOffset" format="dimension" />
+
+        <attr name="exitOffset" format="dimension" />
+
+        <attr name="mode">
+            <flag name="open" value="0x0" />
+            <flag name="close" value="0x1" />
+            <flag name="exit" value="0x2" />
+        </attr>
+
+        <attr name="allowHorizontalScroll" format="boolean"/>
+
+        <attr name="isSupportExit" format="boolean"/>
+
+    </declare-styleable>
 
     <declare-styleable name="BendTabLayout">
         <attr name="bendTabIndicatorAnimation" format="boolean" />
@@ -127,5 +147,15 @@
         <attr name="layout_roundRadiusLB"/>
         <attr name="layout_solidColor"/>
         <attr name="layout_noSolid"/>
+    </declare-styleable>
+    <!-- 点-->
+    <declare-styleable name="MenuPointView">
+        <attr name="menu_point_width" format="dimension" />
+        <attr name="menu_point_color" format="color|reference" />
+        <attr name="menu_number" format="integer" />
+        <attr name="menu_type" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
     </declare-styleable>
 </resources>

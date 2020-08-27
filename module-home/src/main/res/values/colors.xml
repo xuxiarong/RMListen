@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="home_detail_sub_color">#ff5e5e</color> <!-- 详情订阅按钮 -->
+    <color name="home_detail_collect">#FFFFFF</color> <!-- 详情收藏按钮 -->
+    <color name="color_f7f7f7">#F7F7F7</color>
 
 </resources>

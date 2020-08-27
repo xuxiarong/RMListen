@@ -42,10 +42,6 @@ class MainMainActivity : BaseActivity() {
 //    }
 
     override fun initView() {
-
-
-//        setStatusBar(R.color.base_activity_bg_color)
-
         navigationController = findViewById<BottomTabView>(R.id.mainTab).custom().run {
 
             addItem(NormalItemView(this@MainMainActivity).apply {

@@ -10,7 +10,7 @@
     <color name="bottom_drawer_handle_view_color">#E0E0E0</color>
 
     <!-- 边框色值-->
-    <color name="stroke_color">#e8e8e8</color>
+    <color name="stroke_color">#e8e8e8</color> <!-- 虚线色值 -->
 
     <!-- 公共色值-->
     <color name="business_text_color_333333">#333333</color><!-- 一级文字 -->
