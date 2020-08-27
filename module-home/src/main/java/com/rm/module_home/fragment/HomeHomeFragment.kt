@@ -1,7 +1,7 @@
 package com.rm.module_home.fragment
 
 import androidx.lifecycle.Observer
-import com.rm.baselisten.adapter.BaseMultiAdapter
+import com.rm.baselisten.adapter.multi.BaseMultiAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMFragment

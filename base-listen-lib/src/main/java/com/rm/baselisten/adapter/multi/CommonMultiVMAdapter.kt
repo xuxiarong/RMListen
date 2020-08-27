@@ -1,4 +1,4 @@
-package com.rm.baselisten.adapter
+package com.rm.baselisten.adapter.multi
 
 import com.rm.baselisten.mvvm.BaseViewModel
 

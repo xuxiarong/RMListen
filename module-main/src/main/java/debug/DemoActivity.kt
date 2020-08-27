@@ -1,0 +1,28 @@
+package debug
+
+import android.content.Intent
+import com.rm.baselisten.mvvm.BaseActivity
+import com.rm.module_main.R
+import kotlinx.android.synthetic.main.activity_demo.*
+
+class DemoActivity : BaseActivity() {
+
+    override fun initData() {
+
+    }
+
+    override fun getLayoutId() = R.layout.activity_demo
+
+    override fun initView() {
+        super.initView()
+        setStatusBar(R.color.base_activity_bg_color)
+
+        demoDataBind.setOnClickListener {
+            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
+        }
+
+    }
+
+
+
+}

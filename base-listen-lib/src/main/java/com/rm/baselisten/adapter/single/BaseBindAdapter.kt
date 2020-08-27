@@ -1,6 +1,5 @@
-package com.rm.baselisten.adapter
+package com.rm.baselisten.adapter.single
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -14,14 +13,12 @@ import com.rm.baselisten.holder.BaseBindHolder
  * date   : 2020/08/21
  * version: 1.0
  */
-open class BaseBindAdapter<T> constructor(var data: List<T>?, var layoutId: Int, var brId: Int) :
+abstract class BaseBindAdapter constructor(var data: List<*>?, var layoutId: Int, private var brId: Int) :
     RecyclerView.Adapter<BaseBindHolder>() {
 
-    protected lateinit var context : Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindHolder {
-        context = parent.context
-        val inflater = LayoutInflater.from(context)
+        val inflater = LayoutInflater.from(parent.context)
         val binding =
             DataBindingUtil.inflate<ViewDataBinding>(inflater, layoutId, parent, false)
         return BaseBindHolder(binding)
@@ -32,6 +29,7 @@ open class BaseBindAdapter<T> constructor(var data: List<T>?, var layoutId: Int,
             return
         }
         holder.binding.setVariable(brId, data!![position])
+        convert(holder,position)
         holder.binding.executePendingBindings()
     }
 
@@ -42,5 +40,7 @@ open class BaseBindAdapter<T> constructor(var data: List<T>?, var layoutId: Int,
             data!!.size
         }
     }
+
+    protected open fun convert(holder: BaseBindHolder, position: Int){}
 
 }

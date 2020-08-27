@@ -1,6 +1,6 @@
 package com.rm.module_home.adapter
 
-import com.rm.baselisten.adapter.BaseBindAdapter
+import com.rm.baselisten.adapter.single.BaseBindAdapter
 import com.rm.module_home.model.home.collect.HomeCollectModel
 
 /**
@@ -14,5 +14,5 @@ class HomeCollectAdapter constructor(
     var itemId: Int,
     var itemBrId: Int
 ) :
-    BaseBindAdapter<HomeCollectModel>(collectList, itemId, itemBrId)
+    BaseBindAdapter(collectList, itemId, itemBrId)
 

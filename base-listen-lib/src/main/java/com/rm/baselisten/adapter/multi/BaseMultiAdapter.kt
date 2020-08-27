@@ -1,4 +1,4 @@
-package com.rm.baselisten.adapter
+package com.rm.baselisten.adapter.multi
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

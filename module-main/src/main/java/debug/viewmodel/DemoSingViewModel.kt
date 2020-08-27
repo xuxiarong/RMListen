@@ -2,6 +2,8 @@ package debug.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 /**
@@ -9,11 +11,9 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  * date   : 2020/08/27
  * version: 1.0
  */
-class DemoViewModel : BaseVMViewModel() {
+class DemoSingViewModel : BaseVMViewModel() {
 
     val userName = ObservableField<String>("")
-
-    var canClick = ObservableField<String>("不能登陆")
 
     var demoData = MutableLiveData<List<String>>()
 
@@ -29,9 +29,9 @@ class DemoViewModel : BaseVMViewModel() {
 
     private fun userNameChange() {
         if (userName.get().isNullOrEmpty()) {
-            canClick.set("不能登陆")
+            ToastUtil.show(BaseApplication.CONTEXT, "")
         } else {
-            canClick.set("点击登陆")
+            ToastUtil.show(BaseApplication.CONTEXT, "$userName")
         }
     }
 

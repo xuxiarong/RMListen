@@ -1,6 +1,6 @@
 package com.rm.module_home.model.home.banner
 
-import com.rm.baselisten.adapter.BaseMultiAdapter
+import com.rm.baselisten.adapter.multi.BaseMultiAdapter
 import com.rm.business_lib.bean.BannerInfo
 import com.rm.module_home.R
 

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="debug.DemoActivity">
+    
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/demoDataBind"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="180dp"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/business_text_color_333333"
+        android:text="数据绑定"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/demoSingleRv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/demoDataBind"
+        android:layout_marginTop="30dp"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/business_text_color_333333"
+        android:text="单ItemType的Rv"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/demoSingleVmRv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/demoSingleRv"
+        android:layout_marginTop="30dp"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/business_text_color_333333"
+        android:text="单ItemType的Rv(带点击)"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/demoMultiRv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/demoSingleVmRv"
+        android:layout_marginTop="30dp"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/business_text_color_333333"
+        android:text="多ItemType的Rv"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/demoMultiVmRv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/demoMultiRv"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/business_text_color_333333"
+        android:text="多ItemType的Rv(带点击)"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

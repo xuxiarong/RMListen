@@ -1,6 +1,6 @@
 package com.rm.module_home.model.home.more
 
-import com.rm.baselisten.adapter.BaseMultiAdapter
+import com.rm.baselisten.adapter.multi.BaseMultiAdapter
 import com.rm.module_home.R
 
 /**

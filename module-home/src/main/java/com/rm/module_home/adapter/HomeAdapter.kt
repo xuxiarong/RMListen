@@ -1,10 +1,10 @@
 package com.rm.module_home.adapter
 
 import android.view.ViewGroup
-import com.rm.baselisten.adapter.BaseMultiAdapter
-import com.rm.baselisten.adapter.BaseMultiVMAdapter
-import com.rm.baselisten.adapter.CommonMultiAdapter
-import com.rm.baselisten.adapter.CommonMultiVMAdapter
+import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
+import com.rm.baselisten.adapter.multi.CommonMultiAdapter
+import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
@@ -42,12 +42,13 @@ class HomeAdapter(
             R.layout.home_item_collect_rv -> {
                 val homeItemBannerBinding = holder.binding as HomeItemCollectRvBinding
                 if (homeViewModel.homeCollectModel.value != null) {
-                    val homeCollectAdapter = CommonMultiVMAdapter(
-                        homeViewModel,
-                        homeViewModel.homeCollectModel.value!!,
-                        BR.viewModel,
-                        BR.item
-                    )
+                    val homeCollectAdapter =
+                        CommonMultiVMAdapter(
+                            homeViewModel,
+                            homeViewModel.homeCollectModel.value!!,
+                            BR.viewModel,
+                            BR.item
+                        )
                     homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayout(homeCollectAdapter)
                 }
             }

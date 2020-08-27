@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="debug.viewmodel.DemoViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="debug.DataBindVmDemoActivity"
+        tools:ignore="MissingDefaultResource">
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/login_by_verify_code_input"
+            style="@style/PhoneInputTextStyle"
+            afterTextChanged="@{viewModel.verifyInput}"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/business_shape_stroke_d6d6d6_22dp"
+            android:hint="请输入用户名"
+            android:padding="8dp"
+            android:paddingStart="@dimen/dp_12"
+            android:paddingEnd="0dp"
+            android:text="@={viewModel.userName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_by_verify_code_input"
+            android:layout_marginTop="40dp"
+            android:text="@={viewModel.canClick}"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
