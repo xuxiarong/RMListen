@@ -10,10 +10,14 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_sheet_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+
+        >
 
         <com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
+            android:id="@+id/scroll_down_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
