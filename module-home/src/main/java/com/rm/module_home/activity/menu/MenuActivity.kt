@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.observe
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.binding.bindData
+import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.MenuListAdapter
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
@@ -31,6 +32,7 @@ class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel
         }
     }
 
+    override fun initModelBrId() = BR.viewModel
 
     override fun getLayoutId(): Int = R.layout.home_activity_listen_menu
 

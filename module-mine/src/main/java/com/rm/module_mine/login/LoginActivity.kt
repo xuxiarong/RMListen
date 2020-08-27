@@ -3,11 +3,12 @@ package com.rm.module_mine.login
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.model.BaseTitleModel
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
+import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.ActivityLoginBinding
 
@@ -19,6 +20,7 @@ import com.rm.module_mine.databinding.ActivityLoginBinding
 class LoginActivity : BaseVMActivity<ActivityLoginBinding, LoginViewModel>() {
 
     override fun getLayoutId(): Int = R.layout.activity_login
+    override fun initModelBrId() = BR.viewModel
 
     override fun initView() {
         val baseTitleModel = BaseTitleModel()
@@ -38,10 +40,6 @@ class LoginActivity : BaseVMActivity<ActivityLoginBinding, LoginViewModel>() {
             .setRightIcon1(R.drawable.base_icon_back)
             .setRightIcon1Click { ToastUtil.show(this, " rightIcon1Click") }
         mViewModel.baseTitleModel.value = baseTitleModel
-
-        dataBind.run {
-            viewModel = mViewModel
-        }
     }
 
     private var count = 0
@@ -85,4 +83,5 @@ class LoginActivity : BaseVMActivity<ActivityLoginBinding, LoginViewModel>() {
             })
         }
     }
+
 }

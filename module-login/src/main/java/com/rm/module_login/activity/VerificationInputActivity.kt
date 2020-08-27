@@ -3,6 +3,7 @@ package com.rm.module_login.activity
 import android.content.Context
 import android.content.Intent
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityVerificationCodeInputBinding
 import com.rm.module_login.viewmodel.VerificationInputViewModel
@@ -27,6 +28,8 @@ class VerificationInputActivity :
     }
 
     override fun initData() {
-        dataBind.viewModel = mViewModel
+//        dataBind.viewModel = mViewModel
     }
+
+    override fun initModelBrId() = BR.viewModel
 }

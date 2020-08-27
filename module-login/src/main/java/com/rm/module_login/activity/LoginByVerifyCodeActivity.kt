@@ -7,6 +7,7 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
+import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByVerifyCodeBinding
 import com.rm.module_login.viewmodel.LoginByVerifyViewModel
@@ -26,6 +27,9 @@ class LoginByVerifyCodeActivity :
     }
 
     override fun getLayoutId(): Int = R.layout.login_activity_login_by_verify_code
+
+    override fun initModelBrId() = BR.viewModel
+
 
     override fun startObserve() {
     }

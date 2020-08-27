@@ -79,6 +79,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             childView = baseBinding.baseChildView.viewStub?.inflate()
             if (childView != null) {
                 dataBind = DataBindingUtil.bind(childView!!)!!
+                dataBind.setVariable(initModelBrId(),mViewModel)
             }
         }
     }
@@ -143,6 +144,12 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             }
         }
     }
+
+    /**
+     *  初始化子类viewModel的BrId
+     * @return Int
+     */
+    abstract fun initModelBrId() : Int
 
     /**
      * 开启子类的LiveData观察者

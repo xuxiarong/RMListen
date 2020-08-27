@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.observe
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.model.BaseTitleModel
+import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.bean.CategoryTabBean
 import com.rm.module_home.databinding.HomeActivityBoutiqueBinding
@@ -27,6 +28,9 @@ class BoutiqueActivity :
 
     override fun getLayoutId(): Int = R.layout.home_activity_boutique
 
+    override fun initModelBrId() = BR.viewModel
+
+
     override fun startObserve() {
         mViewModel.tabList.observe(this) {
             home_boutique_view_pager.adapter = BoutiqueViewPageAdapter(supportFragmentManager, it)
@@ -41,9 +45,6 @@ class BoutiqueActivity :
                 finish()
             }
         mViewModel.baseTitleModel.value = baseTitleModel
-        dataBind.run {
-            viewModel = mViewModel
-        }
     }
 
     override fun initData() {

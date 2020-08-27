@@ -1,13 +1,13 @@
 package com.rm.module_play.activity
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
+import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.databinding.ActivityPlayBinding
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
@@ -33,6 +33,9 @@ class PlayActivity :
 
     override fun getLayoutId(): Int = R.layout.activity_play
 
+    override fun initModelBrId() = BR.viewModel
+
+
     val bubbleFl by lazy {
         TextView(this).apply {
             layoutParams = FrameLayout.LayoutParams(
@@ -48,7 +51,6 @@ class PlayActivity :
     @SuppressLint("ResourceType")
     override fun initView() {
         setStatusBar(R.color.businessWhite)
-        dataBind.viewModel = mViewModel
         music_play_bubbleSeekBar.addBubbleFL(bubbleFl)
         music_play_bubbleSeekBar.setOnProgressChangedListener(object :
             BubbleSeekBar.OnProgressChangedListener {

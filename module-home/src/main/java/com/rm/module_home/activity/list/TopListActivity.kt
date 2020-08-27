@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
@@ -17,6 +16,7 @@ import com.rm.baselisten.binding.divLinearItemDecoration
 import com.rm.baselisten.binding.linearItemDecoration
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeTopListPagerAdapter
 import com.rm.module_home.adapter.HomeTopListPopupAdapter
@@ -41,6 +41,9 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
 
     override fun getLayoutId(): Int = R.layout.home_activity_top_list
 
+    override fun initModelBrId() = BR.viewModel
+
+
     override fun startObserve() {
         mViewModel.tabInfoList.observe(this) {
             configureFragment(it)
@@ -64,13 +67,7 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
                     showPopupWindow()
                 }
             }
-
-
         mViewModel.baseTitleModel.value = baseTitleModel
-        dataBind.run {
-            viewModel = mViewModel
-        }
-
         home_list_recycler_tab.apply {
             bindVerticalLayout(tabAdapter)
             linearItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_14))

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.utils.EllipsizeUtils
+import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeDetailContentBinding
 import com.rm.module_home.viewmodel.HomeDetailViewModel
@@ -23,6 +24,9 @@ class HomeDetailActivity : BaseVMActivity<HomeDetailContentBinding,HomeDetailVie
     }
 
     override fun getLayoutId(): Int = R.layout.home_detail_main
+
+    override fun initModelBrId() = BR.viewModel
+
 
     override fun startObserve() {
 

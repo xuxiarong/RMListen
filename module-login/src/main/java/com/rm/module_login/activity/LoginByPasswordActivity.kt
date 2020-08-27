@@ -7,6 +7,7 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
+import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByPassowrdBinding
 import com.rm.module_login.viewmodel.LoginByPasswordViewModel
@@ -27,14 +28,14 @@ class LoginByPasswordActivity :
 
     override fun getLayoutId(): Int = R.layout.login_activity_login_by_passowrd
 
+    override fun initModelBrId() = BR.viewModel
+
+
     override fun startObserve() {
     }
 
     override fun initView() {
         super.initView()
-        dataBind.run {
-            viewModel = mViewModel
-        }
         mViewModel.context = this
     }
 
