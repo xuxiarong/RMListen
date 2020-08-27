@@ -5,4 +5,6 @@
     <string name="login_login_tips_all">未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策</string>
     <string name="login_login_tips_user">《用户协议》</string>
     <string name="login_login_tips_privacy">《隐私保护协议》</string>
+    <string name="login_agree_deal_tips">请先同意协议</string>
+    <string name="login_password_login">密码登陆</string>
 </resources>

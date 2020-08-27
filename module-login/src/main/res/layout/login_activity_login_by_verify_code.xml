@@ -81,6 +81,15 @@
                 android:src="@drawable/login_ic_cancel" />
         </LinearLayout>
 
+        <TextView
+            style="@style/BusinessTextStyleErrorTips"
+            bindText="@{viewModel.errorTips}"
+            android:layout_marginStart="@dimen/dp_22"
+            android:layout_marginTop="@dimen/dp_6"
+            app:layout_constraintLeft_toLeftOf="@id/login_by_verify_code_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_input_lay"
+            tools:text="手机号有误" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_by_verify_code_get_btn"
             style="@style/ButtonStyle"
@@ -97,24 +106,37 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_marginTop="@dimen/dp_19"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="@id/login_by_verify_code_input_lay"
             app:layout_constraintRight_toRightOf="@id/login_by_verify_code_input_lay"
             app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_get_btn">
+
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/login_selector_check_box_button"
-                android:checked="@={viewModel.isCheck}"/>
+                android:checked="@={viewModel.isCheck}" />
+
             <TextView
                 android:id="@+id/login_by_verify_code_tips"
+                style="@style/BusinessTextStyleSecond_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_6"
-                tools:text="未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策"/>
+                tools:text="未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策" />
         </LinearLayout>
+
+        <TextView
+            style="@style/BusinessTextStyleFirst_3"
+            bindClick="@{viewModel.loginByPassword}"
+            android:layout_marginBottom="@dimen/dp_44"
+            android:padding="@dimen/dp_5"
+            android:text="@string/login_password_login"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

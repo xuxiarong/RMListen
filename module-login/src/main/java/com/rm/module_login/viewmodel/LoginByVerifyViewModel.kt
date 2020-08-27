@@ -1,9 +1,12 @@
 package com.rm.module_login.viewmodel
 
+import android.content.Context
 import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.module_login.R
 import com.rm.module_login.repository.LoginRepository
 
 /**
@@ -12,6 +15,7 @@ import com.rm.module_login.repository.LoginRepository
  * version: 1.0
  */
 class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseNetViewModel() {
+    var context:Context? = null
     // 标识是否输入了文本
     var isInputText = ObservableField<Boolean>()
     //  输入的电话号码值
@@ -20,6 +24,8 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseNetV
     var countryCode = ObservableField<String>()
     // 用户协议和隐私协议是否选择
     var isCheck = ObservableField<Boolean>(false)
+    // 错误提示信息
+    var errorTips = ObservableField<String>("")
 
     // 监听绑定输入框内容变化
     val checkInput: (String) -> Unit = { afterInputChange() }
@@ -34,14 +40,22 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseNetV
      */
     fun getCode(){
         // TODO 网络通过手机获取验证码
+        DLog.i("llj","获取验证码！！！isCheck---->>${isCheck.get()}")
         if(!isCheck.get()!!){
             // 未选中check box
+            ToastUtil.show(context,context!!.resources.getString(R.string.login_agree_deal_tips))
+            return
         }
-        DLog.i("llj","获取验证码！！！isCheck---->>${isCheck.get()}")
+
     }
 
     // 置空输入框的值
     fun clearInput(){
         phone.set("")
+    }
+
+    fun loginByPassword(){
+        // todo 跳转密码登陆
+        ToastUtil.show(context,"跳转密码登陆界面")
     }
 }
