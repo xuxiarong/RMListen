@@ -18,6 +18,7 @@
 
 
     <!-- 公共文本size-->
+    <dimen name="business_text_size_24sp">24sp</dimen> <!-- 最大字号-->
     <dimen name="business_text_size_20sp">20sp</dimen> <!-- 最大字号-->
     <dimen name="business_text_size_18sp">18sp</dimen><!-- 一级字号-->
     <dimen name="business_text_size_16sp">16sp</dimen><!-- 二级字号-->
@@ -75,6 +76,7 @@
     <dimen name="dp_45">45dp</dimen>
     <dimen name="dp_50">50dp</dimen>
     <dimen name="dp_52">52dp</dimen>
+    <dimen name="dp_54">54dp</dimen>
     <dimen name="dp_56">56dp</dimen>
     <dimen name="dp_64">64dp</dimen>
     <dimen name="dp_65">65dp</dimen>

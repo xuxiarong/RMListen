@@ -29,6 +29,18 @@
 
 
     <!-- 公共文本样式-->
+
+    <!-- 特级颜色文本样式 -->
+    <!-- size = 24sp，color = #333333-->
+    <style name="BusinessTextStyleFirst_0">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_24sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
     <!-- 一级颜色文本样式 -->
     <!-- size = 18sp，color = #333333-->
     <style name="BusinessTextStyleFirst_1">
