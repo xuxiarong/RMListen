@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.util.dip
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
-import com.rm.business_lib.utils.ScreenUtil.dip2px
 import com.rm.module_play.R
 import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.*
 

@@ -9,6 +9,12 @@ import androidx.fragment.app.Fragment
  * date   : 2020/08/20
  * version: 1.0
  */
+object DisplayUtils {
+    //提供给JAVA代码调用
+    fun getDip(context: Context,value: Float):Float{
+       return context.dip(value).toFloat()
+    }
+}
 inline fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
 inline fun Context.dip(value: Float): Int = (value * resources.displayMetrics.density).toInt()
@@ -69,3 +75,4 @@ inline val Fragment.screenHeight: Int
 
 inline val Context.density: Float
     get() = resources.displayMetrics.density
+

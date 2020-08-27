@@ -135,8 +135,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
 
-//    val RADIO_URL = "http://kastos.cdnstream.com/1345_32"
-
     @Synchronized
     private fun startPlay(musicInfo: BaseAudioInfo) =
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
