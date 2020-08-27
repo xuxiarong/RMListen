@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 按钮样式-->
+    <style name="ButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:textSize">@dimen/business_text_size_16sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@drawable/business_selector_round_btn</item>
+    </style>
+</resources>

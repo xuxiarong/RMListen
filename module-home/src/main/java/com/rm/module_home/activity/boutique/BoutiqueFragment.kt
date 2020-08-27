@@ -2,10 +2,9 @@ package com.rm.module_home.activity.boutique
 
 import android.view.View
 import androidx.lifecycle.observe
-import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DisplayUtils
+import com.rm.baselisten.util.dip
 import com.rm.business_lib.binding.paddingBindData
 import com.rm.module_home.R
 import com.rm.module_home.adapter.BookAdapter
@@ -26,7 +25,7 @@ class BoutiqueFragment(private val categoryTabBean: CategoryTabBean) :
         View.inflate(activity, R.layout.home_header_banner, null).apply {
             setPadding(
                 paddingLeft,
-                DisplayUtils.dip2px(BaseApplication.CONTEXT, 14f),
+                dip(14f),
                 paddingRight,
                 paddingBottom
             )

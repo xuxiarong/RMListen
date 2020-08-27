@@ -1,71 +1,71 @@
 package com.rm.baselisten.util
 
 import android.content.Context
+import android.view.View
+import androidx.fragment.app.Fragment
 
 /**
  * desc   :
  * date   : 2020/08/20
  * version: 1.0
  */
-object DisplayUtils {
-    /**
-     * 将px值转换为dip或dp值，保证尺寸大小不变
-     *
-     * @param pxValue
-     *
-     * （DisplayMetrics类中属性density）
-     * @return
-     */
-    fun px2dip(context: Context, pxValue: Float): Int {
-        val scale = context.resources.displayMetrics.density
-        return (pxValue / scale + 0.5f).toInt()
-    }
+inline fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
-    /**
-     * 将dip或dp值转换为px值，保证尺寸大小不变
-     *
-     * @param dipValue
-     *
-     * （DisplayMetrics类中属性density）
-     * @return
-     */
-    fun dip2px(context: Context, dipValue: Float): Int {
-        val scale = context.resources.displayMetrics.density
-        return (dipValue * scale + 0.5f).toInt()
-    }
+inline fun Context.dip(value: Float): Int = (value * resources.displayMetrics.density).toInt()
 
-    /**
-     * 将px值转换为sp值，保证文字大小不变
-     *
-     * @param pxValue
-     *
-     * （DisplayMetrics类中属性scaledDensity）
-     * @return
-     */
-    fun px2sp(context: Context, pxValue: Float): Int {
-        val fontScale = context.resources.displayMetrics.scaledDensity
-        return (pxValue / fontScale + 0.5f).toInt()
-    }
+//return sp dimension value in pixels
+inline fun Context.sp(value: Int): Int = (value * resources.displayMetrics.scaledDensity).toInt()
 
-    /**
-     * 将sp值转换为px值，保证文字大小不变
-     *
-     * @param spValue
-     *
-     * （DisplayMetrics类中属性scaledDensity）
-     * @return
-     */
-    fun sp2px(context: Context, spValue: Float): Int {
-        val fontScale = context.resources.displayMetrics.scaledDensity
-        return (spValue * fontScale + 0.5f).toInt()
-    }
+inline fun Context.sp(value: Float): Int = (value * resources.displayMetrics.scaledDensity).toInt()
 
-    fun dp2sp(context: Context, dipValue: Float): Int {
-        val px = dip2px(context, dipValue)
-        return px2sp(context, px.toFloat())
-    }
+//converts px value into dip or sp
+inline fun Context.px2dip(px: Int): Float = (px.toFloat() / resources.displayMetrics.density)
 
-    fun getScreenWidth(context: Context): Int {
-        return context.resources.displayMetrics.widthPixels
-    }
-}
+inline fun Context.px2sp(px: Int): Float = (px.toFloat() / resources.displayMetrics.scaledDensity)
+
+inline fun Context.dimen(resource: Int): Int = resources.getDimensionPixelSize(resource)
+
+inline fun Context.sp2px(spValue: Float): Int = (spValue * resources.displayMetrics.scaledDensity + 0.5f * (if (spValue >= 0.0f) 1 else -1).toFloat()).toInt()
+
+//the same for the views
+inline fun View.dip(value: Int): Int = context.dip(value)
+
+inline fun View.dip(value: Float): Int = context.dip(value)
+inline fun View.sp(value: Int): Int = context.sp(value)
+inline fun View.sp(value: Float): Int = context.sp(value)
+inline fun View.px2dip(px: Int): Float = context.px2dip(px)
+inline fun View.px2sp(px: Int): Float = context.px2sp(px)
+inline fun View.dimen(resource: Int): Int = context.dimen(resource)
+
+//the same for Fragments
+inline fun Fragment.dip(value: Int): Int = activity?.dip(value) ?: 0
+
+inline fun Fragment.dip(value: Float): Int = activity?.dip(value) ?: 0
+inline fun Fragment.sp(value: Int): Int = activity?.sp(value) ?: 0
+inline fun Fragment.sp(value: Float): Int = activity?.sp(value) ?: 0
+inline fun Fragment.px2dip(px: Int): Float = activity?.px2dip(px) ?: 0f
+inline fun Fragment.px2sp(px: Int): Float = activity?.px2sp(px) ?: 0f
+inline fun Fragment.dimen(resource: Int): Int = activity?.dimen(resource) ?: 0
+
+
+/**屏幕的宽高**/
+inline val Context.screenWidth: Int
+    get() = resources.displayMetrics.widthPixels
+
+inline val Context.screenHeight: Int
+    get() = resources.displayMetrics.heightPixels
+
+inline val View.screenWidth: Int
+    get() = resources.displayMetrics.widthPixels
+
+inline val View.screenHeight: Int
+    get() = resources.displayMetrics.heightPixels
+
+inline val Fragment.screenWidth: Int
+    get() = resources.displayMetrics.widthPixels
+
+inline val Fragment.screenHeight: Int
+    get() = resources.displayMetrics.heightPixels
+
+inline val Context.density: Float
+    get() = resources.displayMetrics.density

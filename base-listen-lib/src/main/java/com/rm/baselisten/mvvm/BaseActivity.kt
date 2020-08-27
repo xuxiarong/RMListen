@@ -3,6 +3,7 @@ package com.rm.baselisten.mvvm
 import android.os.Bundle
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.util.DLog
 
@@ -27,6 +28,7 @@ abstract class BaseActivity : AppCompatActivity() {
             //初始化子类的数据
             initData()
         }
+        setStatusBar(R.color.base_activity_bg_color)
         DLog.d(javaClass.simpleName," --- onCreate")
 
     }

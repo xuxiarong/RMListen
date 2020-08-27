@@ -7,7 +7,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.rm.baselisten.util.DisplayUtils
+import com.rm.baselisten.util.dip
 
 /**
  * desc   :
@@ -86,7 +86,7 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String) {
         imageView,
         url,
         0,
-        RoundedCorners(DisplayUtils.dip2px(imageView.context, corner))
+        RoundedCorners(imageView.dip(corner))
     )
 }
 

@@ -78,5 +78,7 @@ dependencies {
     api rootProject.ext.dependencies["autosize"]
 //    implementation project(path: ':business-lib')
 
+//    implementation 'com.dacui.library:spannable-helper:1.0.1'
+
 
 }

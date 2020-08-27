@@ -10,7 +10,7 @@ import com.rm.baselisten.R
 import com.rm.baselisten.databinding.ActivityBaseVmBinding
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
-import com.rm.baselisten.util.DisplayUtils
+import com.rm.baselisten.util.dip
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
@@ -138,7 +138,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseNetViewModel> : Base
             baseBinding.baseTitleLayout.viewStub?.inflate()
             if (childView != null) {
                 val layoutParams = childView?.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParams.topMargin = DisplayUtils.dip2px(this, 48.0f)
+                layoutParams.topMargin = dip(48.0f)
                 childView?.layoutParams = layoutParams
             }
         }

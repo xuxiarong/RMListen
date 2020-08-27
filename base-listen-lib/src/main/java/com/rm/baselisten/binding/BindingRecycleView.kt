@@ -1,13 +1,15 @@
 package com.rm.baselisten.binding
 
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.decoration.GridSpaceItemDecoration
-import com.rm.baselisten.util.DisplayUtils
+import com.rm.baselisten.decoration.LinearItemDecoration
+import com.rm.baselisten.util.px2sp
 
 /**
  * desc   :
@@ -64,10 +66,28 @@ fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>, spanCount: Int
 fun RecyclerView.gridItemDecoration(span: Float) {
     addItemDecoration(
         GridSpaceItemDecoration(
-            DisplayUtils.dip2px(context, span),
+            px2sp(span.toInt()).toInt(),
             0,
             false,
             GridSpaceItemDecoration.GRIDLAYOUT
         )
     )
 }
+
+@BindingAdapter("linearItemDecoration")
+fun RecyclerView.linearItemDecoration(span: Int) {
+    addItemDecoration(
+        LinearItemDecoration().setSpanBottom(span)
+    )
+}
+
+@BindingAdapter("divLinearItemDecoration","divHeight","divColor")
+fun RecyclerView.divLinearItemDecoration(span: Int, divHeight: Int, @ColorInt divColor: Int) {
+    addItemDecoration(
+        LinearItemDecoration()
+            .setSpanBottom(span)
+            .setDivHeight(divHeight)
+            .setDivColor(divColor)
+    )
+}
+

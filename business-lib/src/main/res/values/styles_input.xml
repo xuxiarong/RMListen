@@ -18,6 +18,11 @@
         <item name="android:inputType">number</item>
     </style>
 
+    <!-- 密码输入框样式 -->
+    <style name="PasswordInputTextStyle" parent="InputBaseTextStyle">
+        <item name="android:inputType">textPassword</item>
+    </style>
+
     <!-- 手机号输入框样式 -->
     <style name="PhoneInputTextStyle" parent="NumberInputTextStyle">
         <item name="android:maxLength">11</item>

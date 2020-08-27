@@ -3,8 +3,9 @@ package com.rm.module_login
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.component_comm.base.IApplicationDelegate
-import com.rm.component_comm.listen.ListenService
+import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.ARouterModuleServicePath
+import com.rm.module_login.activity.LoginByVerifyCodeActivity
 
 /**
  * desc   : login module 路由服务实现类
@@ -12,11 +13,16 @@ import com.rm.component_comm.router.ARouterModuleServicePath
  * version: 1.1
  */
 @Route(path = ARouterModuleServicePath.PATH_LOGIN_SERVICE)
-class LoginServiceImpl : ListenService {
+class LoginServiceImpl : LoginService {
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return LoginApplicationDelegate::class.java
     }
 
     override fun init(context: Context?) {
     }
+
+    override fun startLoginActivity(context: Context) {
+        LoginByVerifyCodeActivity.startActivity(context)
+    }
+
 }

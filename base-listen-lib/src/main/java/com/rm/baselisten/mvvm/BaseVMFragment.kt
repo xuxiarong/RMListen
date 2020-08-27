@@ -12,7 +12,7 @@ import com.rm.baselisten.R
 import com.rm.baselisten.databinding.BaseFragmentVmBinding
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
-import com.rm.baselisten.util.DisplayUtils
+import com.rm.baselisten.util.dip
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
@@ -133,7 +133,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseNetViewModel> : Base
             baseBinding.baseTitleLayout.viewStub?.inflate()
             if (childView != null && context!=null) {
                 val layoutParams = childView?.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParams.topMargin = DisplayUtils.dip2px(this.context!!, 48.0f)
+                layoutParams.topMargin = dip( 48.0f)
                 childView?.layoutParams = layoutParams
             }
         }
