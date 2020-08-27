@@ -1,6 +1,7 @@
 package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseNetViewModel
 import com.rm.business_lib.bean.BannerInfo
 import com.rm.module_home.R
@@ -23,6 +24,7 @@ class HomeFragmentViewModel : BaseNetViewModel() {
     var homeHorSingleList = MutableLiveData<List<HomeRecommendHorSingleModel>>()
     var homeHorDoubleList = MutableLiveData<List<HomeRecommendHorDoubleModel>>()
     var homeGridList = MutableLiveData<List<HomeGridRecommendModel>>()
+    var collectItemClickList : ArrayList<(HomeCollectModel)->Unit> = ArrayList()
     var homeVerList = MutableLiveData<List<HomeRecommendVerModel>>()
 
     fun initBannerInfo() {
@@ -34,26 +36,37 @@ class HomeFragmentViewModel : BaseNetViewModel() {
         homeBannerInfoList.value = bannerList
     }
 
-    fun initCollect(vararg clickList: () -> Unit) {
+    fun initCollect() {
 
         homeCollectModel.value = listOf(
             HomeCollectModel(
                 R.drawable.home_icon_collect_recommend,
                 "精品推荐"
-            ) { clickList[0]() },
+            ) ,
             HomeCollectModel(
                 R.drawable.home_icon_collect_rank,
                 "榜单"
-            ) { clickList[1]() },
+            ) ,
             HomeCollectModel(
                 R.drawable.home_icon_head_reading,
                 "看书"
-            ) { clickList[2]() },
+            ) ,
             HomeCollectModel(
                 R.drawable.home_icon_collect_listen,
                 "听单"
-            ) { clickList[3]() })
+            )
+        )
     }
+
+    fun collectClick(model : HomeCollectModel){
+        collectItemClickList[0](model)
+        DLog.d("suolong","model = ${model.collectName} ")
+    }
+
+    fun initCollectClick(vararg clickList: () -> Unit){
+
+    }
+
 
     fun initSingleList() {
         val singleList = ArrayList<HomeRecommendHorSingleModel>()

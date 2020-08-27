@@ -5,6 +5,9 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
 
         <variable
             name="item"
@@ -15,7 +18,7 @@
         android:layout_width="77dp"
         android:layout_height="67dp"
         android:layout_marginEnd="10dp"
-        bindClick="@{item.itemClick}"
+        android:onClick="@{() -> viewModel.collectClick(item)}"
         >
 
         <androidx.appcompat.widget.AppCompatImageView

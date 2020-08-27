@@ -8,7 +8,7 @@ import com.rm.module_home.R
  * date   : 2020/08/20
  * version: 1.0
  */
-data class HomeCollectModel constructor(val imageId : Int, val collectName:String,var itemClick : () -> Unit) : BaseMultiAdapter.IBindItemType {
+data class HomeCollectModel constructor(val imageId : Int, val collectName:String) : BaseMultiAdapter.IBindItemType {
     override fun bindType(): Int {
         return R.layout.home_item_collect
     }

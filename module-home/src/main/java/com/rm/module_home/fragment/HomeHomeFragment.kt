@@ -1,5 +1,6 @@
 package com.rm.module_home.fragment
 
+import androidx.lifecycle.Observer
 import com.rm.baselisten.adapter.BaseMultiAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
@@ -8,12 +9,13 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.boutique.BoutiqueActivity
-import com.rm.module_home.activity.list.TopListActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity
+import com.rm.module_home.activity.list.TopListActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
 import com.rm.module_home.model.home.banner.HomeBannerRvModel
+import com.rm.module_home.model.home.collect.HomeCollectModel
 import com.rm.module_home.model.home.collect.HomeCollectRvModel
 import com.rm.module_home.model.home.grid.HomeGridRecommendRvModel
 import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleRvModel
@@ -27,9 +29,10 @@ import com.rm.module_home.viewmodel.HomeFragmentViewModel
  * date   : 2020/08/20
  * version: 1.0
  */
-class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentViewModel>() {
+class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentViewModel>() {
 
     private lateinit var mHomeAdapter: HomeAdapter
+
 
     override fun initData() {
 
@@ -51,20 +54,34 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentView
         mViewModel.baseTitleModel.value = baseTitleModel
 
         mViewModel.initBannerInfo()
-        mViewModel.initCollect({ startBoutique() },
-            { startRank() },
-            { startMenu() },
-            { recommendClick() })
+        mViewModel.initCollect()
         mViewModel.initSingleList()
         mViewModel.initDoubleList()
         mViewModel.initGridList()
         mViewModel.initVerList()
 
-        mHomeAdapter = HomeAdapter(mViewModel, initHomeAdapter(), BR.item)
+        mHomeAdapter = HomeAdapter(mViewModel, initHomeAdapter(), BR.viewModel, BR.item)
         dataBind.homeRv.bindVerticalLayout(mHomeAdapter)
 
         dataBind.run {
             collectViewModel = mViewModel
+        }
+    }
+
+    fun initCollectClick(model: HomeCollectModel) {
+        when (model.collectName) {
+            "精品推荐" -> {
+                startBoutique()
+            }
+            "榜单" -> {
+                startRank()
+            }
+            "看书" -> {
+                startMenu()
+            }
+            "听单" -> {
+                recommendClick()
+            }
         }
     }
 
@@ -83,13 +100,21 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentView
         )
     }
 
+    override fun startObserve() {
+        mViewModel.homeCollectModel.observe(this, Observer { it ->
+            it.forEach { _ ->
+                mViewModel.collectItemClickList.add { initCollectClick(it) }
+            }
+        })
+    }
+
     private fun startBoutique() {
         context?.let {
             BoutiqueActivity.startActivity(it)
         }
     }
 
-    private fun startRank(){
+    private fun startRank() {
         context?.let {
             TopListActivity.startActivity(it)
         }
@@ -114,9 +139,6 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding,HomeFragmentView
 
     fun moreClick() {
 
-    }
-
-    override fun startObserve() {
     }
 
     override fun initLayoutId(): Int {
