@@ -5,7 +5,7 @@ import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
-import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.R
 import com.rm.module_login.activity.LoginByPasswordActivity
 import com.rm.module_login.repository.LoginRepository
@@ -15,7 +15,7 @@ import com.rm.module_login.repository.LoginRepository
  * date   : 2020/08/26
  * version: 1.0
  */
-class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseNetViewModel() {
+class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
     var context:Activity? = null
     // 标识是否输入了文本
     var isInputText = ObservableField<Boolean>()

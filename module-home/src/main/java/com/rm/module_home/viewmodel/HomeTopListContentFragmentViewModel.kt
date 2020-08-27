@@ -1,16 +1,8 @@
 package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.viewmodel.BaseNetViewModel
-import com.rm.business_lib.bean.BannerInfo
-import com.rm.module_home.R
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_home.bean.TopListBean
-import com.rm.module_home.model.HomeRecommendModel
-import com.rm.module_home.model.home.collect.HomeCollectModel
-import com.rm.module_home.model.home.grid.HomeGridRecommendModel
-import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleModel
-import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleModel
-import com.rm.module_home.model.home.ver.HomeRecommendVerModel
 import com.rm.module_home.repository.TopListRepository
 
 /**
@@ -19,7 +11,7 @@ import com.rm.module_home.repository.TopListRepository
  * version: 1.0
  */
 class HomeTopListContentFragmentViewModel(private val repository: TopListRepository) :
-    BaseNetViewModel() {
+    BaseVMViewModel() {
     // 榜单列表数据
     var dataList = MutableLiveData<MutableList<TopListBean>>()
 

@@ -13,7 +13,7 @@ import com.rm.baselisten.databinding.BaseFragmentVmBinding
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.util.dip
-import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
 
@@ -23,7 +23,7 @@ import kotlin.reflect.KClass
  * version: 1.0
  */
 @Suppress("UNCHECKED_CAST")
-abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseNetViewModel> : BaseFragment() {
+abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseFragment() {
 
 
     /**

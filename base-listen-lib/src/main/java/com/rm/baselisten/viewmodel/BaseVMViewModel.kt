@@ -11,7 +11,7 @@ import com.rm.baselisten.mvvm.BaseViewModel
  * date   : 2020/08/11
  * version: 1.0
  */
-open class BaseNetViewModel : BaseViewModel() {
+open class BaseVMViewModel : BaseViewModel() {
 
     var baseLayoutModel = MutableLiveData<BaseNetLayoutModel>()
 

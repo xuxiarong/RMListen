@@ -8,7 +8,7 @@
         <!-- 声明BaseNetActivity所需要的ViewModel -->
         <variable
             name="viewModel"
-            type="com.rm.baselisten.viewmodel.BaseNetViewModel" />
+            type="com.rm.baselisten.viewmodel.BaseVMViewModel" />
     </data>
 
 

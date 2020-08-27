@@ -11,7 +11,7 @@ import com.rm.baselisten.databinding.ActivityBaseVmBinding
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.util.dip
-import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
 
@@ -21,7 +21,7 @@ import kotlin.reflect.KClass
  * version: 1.0
  */
 @Suppress("UNCHECKED_CAST")
-abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseNetViewModel> : BaseActivity() {
+abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseActivity() {
 
     /**
      * 初始化base的dataBind对象，并且注册lifecycle

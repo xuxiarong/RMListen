@@ -2,7 +2,7 @@ package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.viewmodel.BaseNetViewModel
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BannerInfo
 import com.rm.module_home.R
 import com.rm.module_home.model.HomeRecommendModel
@@ -17,7 +17,7 @@ import com.rm.module_home.model.home.ver.HomeRecommendVerModel
  * date   : 2020/08/20
  * version: 1.0
  */
-class HomeFragmentViewModel : BaseNetViewModel() {
+class HomeFragmentViewModel : BaseVMViewModel() {
 
     var homeBannerInfoList = MutableLiveData<List<BannerInfo>>()
     var homeCollectModel = MutableLiveData<List<HomeCollectModel>>()
