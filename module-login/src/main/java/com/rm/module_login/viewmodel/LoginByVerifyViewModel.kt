@@ -8,6 +8,7 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.R
 import com.rm.module_login.activity.LoginByPasswordActivity
+import com.rm.module_login.activity.VerificationInputActivity
 import com.rm.module_login.repository.LoginRepository
 
 /**
@@ -47,6 +48,11 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
             ToastUtil.show(context,context!!.resources.getString(R.string.login_agree_deal_tips))
             return
         }
+        if(phone.get()!!.length < 7){
+            ToastUtil.show(context,context!!.resources.getString(R.string.login_input_right_number_tips))
+            return
+        }
+        VerificationInputActivity.startActivity(context!!,phone.get().toString())
     }
 
     /**
