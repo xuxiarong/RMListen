@@ -1,5 +1,6 @@
 package com.rm.component_comm.login
 
+import android.content.Context
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -8,4 +9,9 @@ import com.rm.component_comm.router.ApplicationProvider
  * version: 1.0
  */
 interface LoginService : ApplicationProvider {
+    /**
+     * 跳转到登陆界面
+     * @param context Context
+     */
+    fun startLoginActivity(context: Context)
 }
