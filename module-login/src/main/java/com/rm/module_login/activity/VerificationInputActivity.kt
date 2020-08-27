@@ -27,5 +27,6 @@ class VerificationInputActivity :
     }
 
     override fun initData() {
+        dataBind.viewModel = mViewModel
     }
 }

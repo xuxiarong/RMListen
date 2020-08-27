@@ -30,7 +30,7 @@
             tools:text="验证码已发送至+86 134****7856" />
 
         <com.rm.module_login.widget.verification.VerificationCodeView
-            inputTextChange="@{(String) -> viewModel.completeInput(viewModel.code)}"
+            inputTextChange="@{viewModel.completeInput}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_54"
