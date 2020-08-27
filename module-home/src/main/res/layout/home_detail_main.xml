@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.rm.module_home.model.HomeDetailModel"
+            type="com.rm.module_home.model.home.detail.HomeDetailModel"
             />
     </data>
 
