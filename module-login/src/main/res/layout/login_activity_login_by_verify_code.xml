@@ -26,6 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+            android:id="@+id/login_by_verify_code_input_lay"
             android:layout_width="@dimen/dp_315"
             android:layout_height="@dimen/dp_56"
             android:layout_marginTop="@dimen/dp_50"
@@ -63,20 +64,56 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/login_by_verify_code_input"
                 style="@style/PhoneInputTextStyle"
+                afterTextChanged="@{viewModel.checkInput}"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:hint="@string/login_input_number_hint"
                 android:paddingStart="@dimen/dp_12"
                 android:paddingEnd="0dp"
-                android:text="@={viewModel.phone}"
-                afterTextChanged="@{viewModel.phoneNumber}"/>
+                android:text="@={viewModel.phone}" />
 
             <androidx.appcompat.widget.AppCompatImageButton
+                bindClick="@{viewModel.clearInput}"
+                isVisible="@{viewModel.isInputText}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:src="@drawable/login_ic_cancel"
-                isVisible="@{viewModel.isCancelBtnVisible}"/>
+                android:src="@drawable/login_ic_cancel" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/login_by_verify_code_get_btn"
+            style="@style/ButtonStyle"
+            bindClick="@{viewModel.getCode}"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_56"
+            android:layout_marginTop="@dimen/dp_52"
+            android:enabled="@{viewModel.isInputText}"
+            android:text="@string/login_get_verify_code"
+            app:layout_constraintLeft_toLeftOf="@id/login_by_verify_code_input_lay"
+            app:layout_constraintRight_toRightOf="@id/login_by_verify_code_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_input_lay" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_19"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="@id/login_by_verify_code_input_lay"
+            app:layout_constraintRight_toRightOf="@id/login_by_verify_code_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_get_btn">
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/login_selector_check_box_button"
+                android:checked="@={viewModel.isCheck}"/>
+            <TextView
+                android:id="@+id/login_by_verify_code_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_6"
+                tools:text="未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

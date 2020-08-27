@@ -1,4 +1,8 @@
 <resources>
     <string name="login_app_name">Login</string>
     <string name="login_input_number_hint">请输入手机号</string>
+    <string name="login_get_verify_code">获取验证码</string>
+    <string name="login_login_tips_all">未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策</string>
+    <string name="login_login_tips_user">《用户协议》</string>
+    <string name="login_login_tips_privacy">《隐私保护协议》</string>
 </resources>
