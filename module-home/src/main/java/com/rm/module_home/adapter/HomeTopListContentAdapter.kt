@@ -25,6 +25,6 @@ class HomeTopListContentAdapter :
             else->{R.color.business_color_999999}
         }
         val roundTextView = holder.getView<RoundTextView>(R.id.home_top_list_book_adapter_label)
-        roundTextView.delegate.setBackgroundColor(ContextCompat.getColor(context,color))
+        roundTextView.delegate.backgroundColor = ContextCompat.getColor(context,color)
     }
 }

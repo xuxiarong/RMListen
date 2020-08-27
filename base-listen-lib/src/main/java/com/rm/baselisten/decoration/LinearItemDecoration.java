@@ -71,14 +71,14 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
     //设置分割线的颜色
     public LinearItemDecoration setDivColor(@ColorInt int color) {
         this.divColor = color;
-        mPaint.setColor(color);
+        mPaint.setColor(divColor);
         return this;
     }
 
     //设置分割线高度
     public LinearItemDecoration setDivHeight(int divHeight) {
         this.mDivHeight = divHeight;
-        mPaint.setStrokeWidth(divHeight);
+        mPaint.setStrokeWidth(mDivHeight);
         return this;
     }
 
@@ -90,7 +90,7 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
 
     //设置分割线右边的margin
     public LinearItemDecoration setDivMarginRight(int divMarginRight) {
-        this.divMarginRight = divMarginLeft;
+        this.divMarginRight = divMarginRight;
         return this;
     }
 

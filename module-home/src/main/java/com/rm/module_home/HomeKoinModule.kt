@@ -11,6 +11,7 @@ import com.rm.module_home.repository.MenuRepository
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.repository.TopListRepository
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
+import com.rm.module_home.viewmodel.HomeTopListContentFragmentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -28,6 +29,8 @@ val viewModelModule = module {
     viewModel { TopListViewModel(get()) }
     viewModel { BoutiqueFragmentViewModel(get()) }
     viewModel { HomeDetailViewModel() }
+    viewModel { HomeTopListContentFragmentViewModel(get()) }
+
 }
 
 val repositoryModule = module {
