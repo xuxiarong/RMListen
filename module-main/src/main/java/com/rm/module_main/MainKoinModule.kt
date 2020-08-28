@@ -1,5 +1,6 @@
 package com.rm.module_main
 
+import debug.viewmodel.DemoSingClickViewModel
 import debug.viewmodel.DemoViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -11,6 +12,7 @@ import org.koin.dsl.module
  */
 val viewModelModule = module {
     viewModel { DemoViewModel() }
+    viewModel { DemoSingClickViewModel() }
 }
 
 val repositoryModule = module {

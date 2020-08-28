@@ -17,9 +17,25 @@ class DemoActivity : BaseActivity() {
         super.initView()
         setStatusBar(R.color.base_activity_bg_color)
 
-        demoDataBind.setOnClickListener {
+        demoDataBindBtn.setOnClickListener {
             startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
         }
+
+        demoSingleBtn.setOnClickListener {
+            startActivity(Intent(this@DemoActivity,DemoSingleRvActivity::class.java))
+        }
+        demoSingleClickRvBtn.setOnClickListener {
+            startActivity(Intent(this@DemoActivity,DemoSingleClickVmActivity::class.java))
+        }
+//        demoDataBind.setOnClickListener {
+//            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
+//        }
+//        demoDataBind.setOnClickListener {
+//            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
+//        }
+//        demoDataBind.setOnClickListener {
+//            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
+//        }
 
     }
 

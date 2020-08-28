@@ -8,7 +8,7 @@
     tools:context="debug.DemoActivity">
     
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/demoDataBind"
+        android:id="@+id/demoDataBindBtn"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +22,10 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/demoSingleRv"
+        android:id="@+id/demoSingleBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/demoDataBind"
+        app:layout_constraintTop_toBottomOf="@+id/demoDataBindBtn"
         android:layout_marginTop="30dp"
         android:layout_width="240dp"
         android:layout_height="48dp"
@@ -36,10 +36,10 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/demoSingleVmRv"
+        android:id="@+id/demoSingleClickRvBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/demoSingleRv"
+        app:layout_constraintTop_toBottomOf="@+id/demoSingleBtn"
         android:layout_marginTop="30dp"
         android:layout_width="240dp"
         android:layout_height="48dp"
@@ -53,7 +53,7 @@
         android:id="@+id/demoMultiRv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/demoSingleVmRv"
+        app:layout_constraintTop_toBottomOf="@+id/demoSingleClickRvBtn"
         android:layout_marginTop="30dp"
         android:layout_width="240dp"
         android:layout_height="48dp"

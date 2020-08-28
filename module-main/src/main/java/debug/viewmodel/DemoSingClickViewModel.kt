@@ -1,10 +1,10 @@
 package debug.viewmodel
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.BaseApplication
-import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import debug.model.SingleVmClickModel
+import java.util.*
 
 /**
  * desc   :
@@ -13,34 +13,45 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  */
 class DemoSingClickViewModel : BaseVMViewModel() {
 
-    val userName = ObservableField<String>("")
+    var singClickModelList = MutableLiveData<List<SingleVmClickModel>>()
 
-    var demoData = MutableLiveData<List<String>>()
+    var demoItemClick: (SingleVmClickModel) -> Unit = {}
+    var demoNameClick: (SingleVmClickModel) -> Unit = {}
+    var demoAgeClick: (SingleVmClickModel) -> Unit = ::demoAgeClickFun
 
-    val verifyInput: (String) -> Unit = { userNameChange() }
 
-    fun getDemoData() {
-        demoData.value = listOf(
-            "kotlin",
-            "flutter",
-            "java"
+    fun getSingClickModel() {
+        val singData = listOf(
+            SingleVmClickModel("张三", 18),
+            SingleVmClickModel("李四", 19),
+            SingleVmClickModel("王五", 20)
         )
+        singClickModelList.value = singData
     }
 
-    private fun userNameChange() {
-        if (userName.get().isNullOrEmpty()) {
-            ToastUtil.show(BaseApplication.CONTEXT, "")
-        } else {
-            ToastUtil.show(BaseApplication.CONTEXT, "$userName")
-        }
+    fun changeData(){
+
+        val int1 = Random().nextInt(100)
+        val int2 = Random().nextInt(100)
+        val int3 = Random().nextInt(100)
+        val singData = listOf(
+            SingleVmClickModel("张三$int1", int1),
+            SingleVmClickModel("李四$int2", int2),
+            SingleVmClickModel("王五$int3", int3)
+        )
+        singClickModelList.value = singData
     }
 
-    private fun afterInputChange() {
-
+    fun demoItemClickFun(model: SingleVmClickModel) {
+        demoItemClick(model)
     }
 
-    fun checkUserName(content: String) {
+    fun demoNameClickFun(model: SingleVmClickModel) {
+        demoNameClick(model)
+    }
 
+    fun demoAgeClickFun(model: SingleVmClickModel) {
+        DLog.d("suolong", "demoAgeClickFun = ${model.name} --- age = ${model.age}")
     }
 
 }
