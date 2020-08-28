@@ -6,11 +6,8 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.view.contains
-import androidx.core.view.isVisible
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.dip
-import com.rm.business_lib.playview.GlobalplayHelp
+import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -117,10 +114,7 @@ class PlayActivity :
 
     override fun onResume() {
         super.onResume()
-        if (GlobalplayHelp.instance.globalView.parent!=null) {
-            (  GlobalplayHelp.instance.globalView.parent as FrameLayout).removeView(GlobalplayHelp.instance.globalView)
-        }
-        getRootView().addView(GlobalplayHelp.instance.globalView, layoutParams)
+        GlobalplayHelp.instance.addGlobalPlayHelp(getRootView(),layoutParams)
         GlobalplayHelp.instance.globalView.play(R.drawable.business_defualt_img)
         android.os.Handler().postDelayed({
             GlobalplayHelp.instance.globalView.show()

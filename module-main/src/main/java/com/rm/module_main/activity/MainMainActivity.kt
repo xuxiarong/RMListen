@@ -1,9 +1,12 @@
 package com.rm.module_main.activity
 
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleObserver
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.mine.MineService
+import com.rm.component_comm.play.PlayService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_main.R
 import com.rm.module_main.adapter.MyViewPagerAdapter
 import com.rm.module_main.customview.NoTouchViewPager
@@ -91,6 +94,11 @@ class MainMainActivity : BaseActivity() {
         navigationController.setMessageNumber(3,8)
         navigationController.setHasMessage(1,true)
         navigationController.setupWithViewPager(viewPager)
+
+        val playService = RouterHelper.createRouter(PlayService::class.java)
+        playService.addGlobalPlay(getRootView(),layoutParams)
+
+
     }
 
     override fun initData() {

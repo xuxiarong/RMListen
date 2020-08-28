@@ -1,4 +1,4 @@
-package com.rm.business_lib.playview
+package com.rm.module_play.playview
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener

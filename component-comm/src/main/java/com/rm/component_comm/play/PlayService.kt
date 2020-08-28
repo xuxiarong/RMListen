@@ -1,5 +1,7 @@
 package com.rm.component_comm.play
 
+import android.view.View
+import android.widget.FrameLayout
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -8,4 +10,5 @@ import com.rm.component_comm.router.ApplicationProvider
  * version: 1.0
  */
 interface PlayService : ApplicationProvider {
+    fun addGlobalPlay(viewParent: FrameLayout, layoutParams: FrameLayout.LayoutParams)
 }

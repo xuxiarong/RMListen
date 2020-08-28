@@ -91,9 +91,9 @@ abstract class BaseActivity : AppCompatActivity() {
     protected open fun getRootView(): FrameLayout = findViewById(android.R.id.content)
 
     protected open val layoutParams by lazy {
-        FrameLayout.LayoutParams(dip(50), dip(50)).apply {
+        FrameLayout.LayoutParams(dip(40), dip(40)).apply {
             gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+            setMargins(0,0,0,dip(25))
         }
     }
-
 }
