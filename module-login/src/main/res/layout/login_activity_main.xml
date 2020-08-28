@@ -26,4 +26,10 @@
         android:layout_height="wrap_content"
         android:text="输入验证码"
         android:textColor="#000000"/>
+    <Button
+        android:id="@+id/btnForget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘记密码"
+        android:textColor="#000000"/>
 </LinearLayout>

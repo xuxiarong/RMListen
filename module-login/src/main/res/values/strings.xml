@@ -15,6 +15,8 @@
     <string name="login_input_verification_code">请输入验证码</string>
     <string name="login_re_get_verify_code">重新获取</string>
     <string name="login_input_right_number_tips">请输入正确的手机号</string>
+    <string name="login_send_verify_code">发送验证码</string>
+    <string name="login_send_verify_code_tips">发送短信验证码至以下手机</string>
 
 
     <string name="login_format_verification_phone_tips" formatted="false">验证码已发送至%s</string>

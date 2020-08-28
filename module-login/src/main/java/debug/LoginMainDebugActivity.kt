@@ -2,6 +2,7 @@ package debug
 
 import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_login.R
+import com.rm.module_login.activity.ForgetPasswordActivity
 import com.rm.module_login.activity.LoginByPasswordActivity
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
 import com.rm.module_login.activity.VerificationInputActivity
@@ -25,7 +26,11 @@ class LoginMainDebugActivity : BaseDebugActivity() {
         }
 
         btnVerifyInput.setOnClickListener {
-            VerificationInputActivity.startActivity(this,"15139492334")
+            VerificationInputActivity.startActivity(this, "15139492334")
+        }
+
+        btnForget.setOnClickListener {
+            ForgetPasswordActivity.startActivity(this)
         }
     }
 
