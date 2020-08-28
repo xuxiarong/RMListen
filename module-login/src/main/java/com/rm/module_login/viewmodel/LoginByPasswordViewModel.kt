@@ -6,6 +6,7 @@ import androidx.databinding.ObservableField
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.R
+import com.rm.module_login.activity.ForgetPasswordActivity
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
 import com.rm.module_login.repository.LoginRepository
 
@@ -78,12 +79,12 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
     /**
      * 密码显示按钮点击事件
      */
-    fun eyesClick(){
-        if(eyesResId.get() == R.drawable.login_ic_close_eyes){
+    fun eyesClick() {
+        if (eyesResId.get() == R.drawable.login_ic_close_eyes) {
             // 显示密码
             eyesResId.set(R.drawable.login_ic_open_eyes)
             isShowPasswordText.set(true)
-        }else{
+        } else {
             // 隐藏密码
             eyesResId.set(R.drawable.login_ic_close_eyes)
             isShowPasswordText.set(false)
@@ -93,9 +94,8 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
     /**
      * 忘记密码
      */
-    fun forgetPassword(){
-        // todo 忘记密码
-        ToastUtil.show(context,"忘记密码")
+    fun forgetPassword() {
+        ForgetPasswordActivity.startActivity(context!!)
     }
 
     /**

@@ -3,6 +3,7 @@ package com.rm.module_login
 import com.rm.baselisten.net.api.BaseRetrofitClient
 import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.viewmodel.ForgetPasswordViewModel
 import com.rm.module_login.viewmodel.LoginByPasswordViewModel
 import com.rm.module_login.viewmodel.LoginByVerifyViewModel
 import com.rm.module_login.viewmodel.VerificationInputViewModel
@@ -22,6 +23,8 @@ val viewModelModule = module {
     viewModel { LoginByPasswordViewModel(get()) }
     // 输入验证码
     viewModel { VerificationInputViewModel(get()) }
+    // 忘记密码
+    viewModel { ForgetPasswordViewModel(get()) }
 }
 
 val repositoryModule = module {
