@@ -3,10 +3,7 @@ package com.rm.module_login
 import com.rm.baselisten.net.api.BaseRetrofitClient
 import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.repository.LoginRepository
-import com.rm.module_login.viewmodel.ForgetPasswordViewModel
-import com.rm.module_login.viewmodel.LoginByPasswordViewModel
-import com.rm.module_login.viewmodel.LoginByVerifyViewModel
-import com.rm.module_login.viewmodel.VerificationInputViewModel
+import com.rm.module_login.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -25,6 +22,8 @@ val viewModelModule = module {
     viewModel { VerificationInputViewModel(get()) }
     // 忘记密码
     viewModel { ForgetPasswordViewModel(get()) }
+    // 重置密码
+    viewModel { ResetPasswordViewModel(get()) }
 }
 
 val repositoryModule = module {

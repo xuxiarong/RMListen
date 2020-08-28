@@ -29,7 +29,8 @@ import com.rm.baselisten.util.dip
 //}
 
 @BindingAdapter("bindVerticalLayout")
-fun RecyclerView.bindVerticalLayout(adapter: RecyclerView.Adapter<*>) {
+fun RecyclerView.bindVerticalLayout(adapter: RecyclerView.Adapter<*>?) {
+    if (adapter == null) return
     val layoutManager = LinearLayoutManager(context)
     layoutManager.orientation = LinearLayoutManager.VERTICAL
     setLayoutManager(layoutManager)
@@ -40,7 +41,8 @@ fun RecyclerView.bindVerticalLayout(adapter: RecyclerView.Adapter<*>) {
 }
 
 @BindingAdapter("bindHorizontalLayout")
-fun RecyclerView.bindHorizontalLayout(adapter: RecyclerView.Adapter<*>) {
+fun RecyclerView.bindHorizontalLayout(adapter: RecyclerView.Adapter<*>?) {
+    if (adapter == null) return
     val layoutManager = LinearLayoutManager(context)
     layoutManager.orientation = LinearLayoutManager.HORIZONTAL
     setLayoutManager(layoutManager)
@@ -55,7 +57,8 @@ fun RecyclerView.bindText(visible: Int) {
 }
 
 @BindingAdapter("bindGridLayout", "bindCount", requireAll = false)
-fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>, spanCount: Int) {
+fun RecyclerView.bindGridLayout(adapter: RecyclerView.Adapter<*>?, spanCount: Int) {
+    if (adapter == null) return
     val layoutManager = GridLayoutManager(context, spanCount)
     setLayoutManager(layoutManager)
     this.adapter = adapter
@@ -81,7 +84,7 @@ fun RecyclerView.linearItemDecoration(span: Int) {
     )
 }
 
-@BindingAdapter("divLinearItemDecoration","divHeight","divColor")
+@BindingAdapter("divLinearItemDecoration", "divHeight", "divColor")
 fun RecyclerView.divLinearItemDecoration(span: Int, divHeight: Int, @ColorInt divColor: Int) {
     addItemDecoration(
         LinearItemDecoration()

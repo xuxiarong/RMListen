@@ -1,11 +1,16 @@
 package com.rm.module_play.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.core.view.contains
+import androidx.core.view.isVisible
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.dip
+import com.rm.business_lib.playview.GlobalplayHelp
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -82,11 +87,14 @@ class PlayActivity :
         }
         tv_music_left_next.setOnClickListener {
             //向后退15s
-            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 15)
+//            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 15)
+            startActivity(Intent(this,TestActivity::class.java))
+//            GlobalplayHelp.instance.globalView.show()
         }
         tv_music_right_next.setOnClickListener {
             //向前进15s
-            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 15)
+            GlobalplayHelp.instance.globalView.hide()
+//            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 15)
         }
         music_play_point.setOnClickListener {
             showMusicPlayMoreDialog { it1 ->
@@ -104,8 +112,25 @@ class PlayActivity :
             showPlayBookListDialog()
         }
 
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (GlobalplayHelp.instance.globalView.parent!=null) {
+            (  GlobalplayHelp.instance.globalView.parent as FrameLayout).removeView(GlobalplayHelp.instance.globalView)
+        }
+        getRootView().addView(GlobalplayHelp.instance.globalView, layoutParams)
+        GlobalplayHelp.instance.globalView.play(R.drawable.business_defualt_img)
+        android.os.Handler().postDelayed({
+            GlobalplayHelp.instance.globalView.show()
+        },1500)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        GlobalplayHelp.instance.globalView.hide()
+    }
     override fun startObserve() {
     }
 
@@ -120,8 +145,7 @@ class PlayActivity :
         }
     }
 
-    val RADIO_URL =
-        "https://webfs.yun.kugou.com/202008271626/08eb2d767ed3c0009cd8c706a769a9bc/G111/M03/12/01/D4cBAFmhufWAdEyfADTbmVX-PgI993.mp3"
+    val RADIO_URL = "https://webfs.yun.kugou.com/202008271626/08eb2d767ed3c0009cd8c706a769a9bc/G111/M03/12/01/D4cBAFmhufWAdEyfADTbmVX-PgI993.mp3"
 
     override fun initData() {
 

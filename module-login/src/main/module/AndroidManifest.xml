@@ -45,5 +45,11 @@
             android:name=".activity.ForgetPasswordActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <!-- 重置密码界面 -->
+        <activity
+            android:name=".activity.ResetPasswordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
