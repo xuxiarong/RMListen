@@ -6,6 +6,7 @@ import com.rm.module_login.activity.ForgetPasswordActivity
 import com.rm.module_login.activity.LoginByPasswordActivity
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
 import com.rm.module_login.activity.VerificationInputActivity
+import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_LOGIN
 import kotlinx.android.synthetic.main.login_activity_main.*
 
 /**
@@ -26,7 +27,7 @@ class LoginMainDebugActivity : BaseDebugActivity() {
         }
 
         btnVerifyInput.setOnClickListener {
-            VerificationInputActivity.startActivity(this, "15139492334")
+            VerificationInputActivity.startActivity(this, "15139492334", TYPE_LOGIN)
         }
 
         btnForget.setOnClickListener {

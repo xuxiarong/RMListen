@@ -24,12 +24,21 @@ class VerificationInputActivity :
     private val countdownTimeHandler by lazy { CountdownTimeHandler(this) }
 
     companion object {
-        fun startActivity(context: Context, phoneNumber: String) {
+        // 登录类型
+        val TYPE_LOGIN = 0
+
+        // 重置密码类型
+        val TYPE_RESET_PWD = 1
+
+        fun startActivity(context: Context, phoneNumber: String, type: Int) {
             context.startActivity(
                 Intent(
                     context,
                     VerificationInputActivity::class.java
-                ).apply { putExtra("phone", phoneNumber) })
+                ).apply {
+                    putExtra("phone", phoneNumber)
+                    putExtra("type", type)
+                })
         }
     }
 
@@ -44,6 +53,8 @@ class VerificationInputActivity :
                 finish()
             }
         mViewModel.baseTitleModel.value = baseTitleModel
+
+        mViewModel.getCodeType = intent.getIntExtra("type", 0)
     }
 
     override fun initData() {

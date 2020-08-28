@@ -9,6 +9,7 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.R
 import com.rm.module_login.activity.LoginByPasswordActivity
 import com.rm.module_login.activity.VerificationInputActivity
+import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_LOGIN
 import com.rm.module_login.repository.LoginRepository
 
 /**
@@ -52,7 +53,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
             ToastUtil.show(context,context!!.resources.getString(R.string.login_input_right_number_tips))
             return
         }
-        VerificationInputActivity.startActivity(context!!,phone.get().toString())
+        VerificationInputActivity.startActivity(context!!,phone.get().toString(),TYPE_LOGIN)
     }
 
     /**

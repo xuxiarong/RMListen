@@ -7,6 +7,7 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.R
 import com.rm.module_login.activity.VerificationInputActivity
+import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_RESET_PWD
 import com.rm.module_login.repository.LoginRepository
 
 /**
@@ -16,12 +17,16 @@ import com.rm.module_login.repository.LoginRepository
  */
 class ForgetPasswordViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
     var context: Activity? = null
+
     // 标识是否输入了文本
     var isInputText = ObservableField<Boolean>()
+
     //  输入的电话号码值
     var phone = ObservableField<String>()
+
     // 国家代码具体值
     var countryCode = ObservableField<String>()
+
     // 错误提示信息
     var errorTips = ObservableField<String>("")
 
@@ -36,26 +41,29 @@ class ForgetPasswordViewModel(private val repository: LoginRepository) : BaseVMV
     /**
      * 获取验证码
      */
-    fun getCode(){
+    fun getCode() {
         // toto 网络通过手机获取验证码
-        if(phone.get()!!.length < 7){
-            ToastUtil.show(context,context!!.resources.getString(R.string.login_input_right_number_tips))
+        if (phone.get()!!.length < 7) {
+            ToastUtil.show(
+                context,
+                context!!.resources.getString(R.string.login_input_right_number_tips)
+            )
             return
         }
-        VerificationInputActivity.startActivity(context!!,phone.get().toString())
+        VerificationInputActivity.startActivity(context!!, phone.get().toString(), TYPE_RESET_PWD)
     }
 
     /**
      * 置空输入框的值
      */
-    fun clearInput(){
+    fun clearInput() {
         phone.set("")
     }
 
     /**
      * 显示国家列表选择框
      */
-    fun showCountryList(){
+    fun showCountryList() {
         // todo
     }
 }

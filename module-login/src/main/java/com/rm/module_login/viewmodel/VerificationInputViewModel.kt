@@ -11,6 +11,9 @@ import com.rm.module_login.repository.LoginRepository
  * version: 1.0
  */
 class VerificationInputViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
+    // 获取验证码的类型
+    var getCodeType = 0
+
     // 发送验证码的手机号码
     var phone = ""
     var phoneStr = ObservableField<String>()
@@ -31,6 +34,12 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
         // 验证码输入完成
         // todo 输入验证码完成，网络验证输入验证码是否正确
         DLog.i("llj", "完成-----inputVerifyCode---->>>${content}")
+        if(getCodeType == 0){
+            // 登录类型
+        }else if(getCodeType == 1){
+            // 重置密码类型
+        }
+
     }
 
     /**
