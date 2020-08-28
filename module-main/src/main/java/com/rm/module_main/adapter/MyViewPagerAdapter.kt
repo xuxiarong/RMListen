@@ -9,14 +9,13 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_main.TestFragment
 
 class MyViewPagerAdapter(fm: FragmentManager, private val size: Int) :
-    FragmentPagerAdapter(fm) {
+    FragmentPagerAdapter(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
     override fun getItem(position: Int): Fragment {
 
         if (position == 0) {
             val homeService = RouterHelper.createRouter(HomeService::class.java)
-            if (homeService != null) {
-                return homeService.getHomeFragment()
-            }
+            return homeService.getHomeFragment()
         }
 
         return TestFragment()

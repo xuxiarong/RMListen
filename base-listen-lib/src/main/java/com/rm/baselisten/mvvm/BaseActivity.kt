@@ -1,11 +1,14 @@
 package com.rm.baselisten.mvvm
 
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.dip
 
 /**
  * desc   : 基类的MvvmActivity
@@ -21,7 +24,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //不是dataBind的模式，则setContentView
-        if(!isDataBind()){
+        if (!isDataBind()) {
             setContentView(getLayoutId())
             //初始化子类的View
             initView()
@@ -29,16 +32,16 @@ abstract class BaseActivity : AppCompatActivity() {
             initData()
         }
         setStatusBar(R.color.base_activity_bg_color)
-        DLog.d(javaClass.simpleName," --- onCreate")
+        DLog.d(javaClass.simpleName, " --- onCreate")
 
     }
 
-    protected open fun isDataBind() : Boolean{
+    protected open fun isDataBind(): Boolean {
         return false
     }
 
-    protected open fun initView(){
-        
+    protected open fun initView() {
+
     }
 
     protected abstract fun initData()
@@ -81,4 +84,16 @@ abstract class BaseActivity : AppCompatActivity() {
     protected open fun setTransparentStatusBarWhiteFont() {
         immersionBarHelper.defaultInitWhiteFont()
     }
+
+    /**
+     * 获取跟布局
+     */
+    protected open fun getRootView(): FrameLayout = findViewById(android.R.id.content)
+
+    protected open val layoutParams by lazy {
+        FrameLayout.LayoutParams(dip(50), dip(50)).apply {
+            gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.rm.business_lib.wedgit
+package com.rm.business_lib.playview
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
@@ -11,7 +11,6 @@ import android.view.animation.LinearInterpolator
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.rm.baselisten.util.DisplayUtils.getDip
 import com.rm.business_lib.R
@@ -175,7 +174,7 @@ class GlobalPlay @JvmOverloads constructor(
     }
 
     fun hide() {
-        animate().translationY(height.toFloat()).setDuration(300)
+        animate().translationY(height.toFloat()).setDuration(100)
             .withEndAction {
                 visibility = GONE
                 mAnimator?.pause()
