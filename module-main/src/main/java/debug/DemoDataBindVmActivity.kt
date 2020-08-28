@@ -6,7 +6,7 @@ import com.rm.module_main.R
 import com.rm.module_main.databinding.DemoActivityDataBindVmDemoBinding
 import debug.viewmodel.DemoViewModel
 
-class DataBindVmDemoActivity : BaseVMActivity<DemoActivityDataBindVmDemoBinding, DemoViewModel>() {
+class DemoDataBindVmActivity : BaseVMActivity<DemoActivityDataBindVmDemoBinding, DemoViewModel>() {
 
 
     override fun initView() {

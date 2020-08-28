@@ -36,7 +36,6 @@ class DemoViewModel : BaseVMViewModel() {
     }
 
     private fun afterInputChange() {
-
     }
 
     fun checkUserName(content: String) {

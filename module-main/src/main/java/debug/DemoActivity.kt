@@ -18,7 +18,7 @@ class DemoActivity : BaseActivity() {
         setStatusBar(R.color.base_activity_bg_color)
 
         demoDataBindBtn.setOnClickListener {
-            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
+            startActivity(Intent(this@DemoActivity,DemoDataBindVmActivity::class.java))
         }
 
         demoSingleBtn.setOnClickListener {
@@ -27,12 +27,12 @@ class DemoActivity : BaseActivity() {
         demoSingleClickRvBtn.setOnClickListener {
             startActivity(Intent(this@DemoActivity,DemoSingleClickVmActivity::class.java))
         }
-//        demoDataBind.setOnClickListener {
-//            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
-//        }
-//        demoDataBind.setOnClickListener {
-//            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
-//        }
+        demoMultiRvBtn.setOnClickListener {
+            startActivity(Intent(this@DemoActivity,DemoMultiRvActivity::class.java))
+        }
+        demoMultiVmRvBtn.setOnClickListener {
+            startActivity(Intent(this@DemoActivity,DemoMultiClickVmActivity::class.java))
+        }
 //        demoDataBind.setOnClickListener {
 //            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
 //        }

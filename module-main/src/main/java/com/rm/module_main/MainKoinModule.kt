@@ -1,5 +1,7 @@
 package com.rm.module_main
 
+import debug.repository.DemoMultiRepository
+import debug.viewmodel.DemoMultiClickViewModel
 import debug.viewmodel.DemoSingClickViewModel
 import debug.viewmodel.DemoViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -13,10 +15,11 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { DemoViewModel() }
     viewModel { DemoSingClickViewModel() }
+    viewModel { DemoMultiClickViewModel(get()) }
 }
 
 val repositoryModule = module {
-    // 所有的Repository都需要在这里声明
+    single { DemoMultiRepository() }
 }
 
 val mainModules = listOf(viewModelModule, repositoryModule)
