@@ -30,7 +30,6 @@ class LoginByPasswordActivity :
 
     override fun initModelBrId() = BR.viewModel
 
-
     override fun startObserve() {
     }
 

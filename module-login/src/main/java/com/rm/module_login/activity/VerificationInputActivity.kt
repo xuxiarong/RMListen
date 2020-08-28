@@ -25,10 +25,10 @@ class VerificationInputActivity :
 
     companion object {
         // 登录类型
-        val TYPE_LOGIN = 0
+        const val TYPE_LOGIN = 0
 
         // 重置密码类型
-        val TYPE_RESET_PWD = 1
+        const val TYPE_RESET_PWD = 1
 
         fun startActivity(context: Context, phoneNumber: String, type: Int) {
             context.startActivity(
@@ -48,12 +48,7 @@ class VerificationInputActivity :
     }
 
     override fun initView() {
-        val baseTitleModel = BaseTitleModel()
-            .setLeftIconClick {
-                finish()
-            }
-        mViewModel.baseTitleModel.value = baseTitleModel
-
+        mViewModel.baseTitleModel.value = BaseTitleModel().setLeftIconClick { finish() }
         mViewModel.getCodeType = intent.getIntExtra("type", 0)
     }
 

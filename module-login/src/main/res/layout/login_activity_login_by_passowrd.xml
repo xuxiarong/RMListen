@@ -97,17 +97,17 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/BusinessTextStyleFirst_2"
-                bindClick="@{viewModel.showCountryList}"
                 android:text="@string/login_password" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 style="@style/PasswordInputTextStyle"
                 afterTextChanged="@{viewModel.checkInput}"
+                isShowPasswordText="@{viewModel.isShowPasswordText}"
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/dp_40"
                 android:layout_weight="1"
-                isShowPasswordText="@{viewModel.isShowPasswordText}"
                 android:hint="@string/login_input_password_hint"
+                android:maxLength="16"
                 android:paddingStart="@dimen/dp_12"
                 android:paddingEnd="0dp"
                 android:text="@={viewModel.password}" />
