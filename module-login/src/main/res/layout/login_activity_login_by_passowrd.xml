@@ -26,6 +26,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- 手机号码输入框-->
         <include
             layout="@layout/login_include_layout_phone_input"
             android:layout_width="@dimen/dp_315"
@@ -36,46 +37,16 @@
             app:layout_constraintTop_toBottomOf="@id/login_by_password_icon"
             bind:phoneInputViewModel="@{viewModel.phoneInputViewModel}" />
 
-        <LinearLayout
-            android:id="@+id/login_by_password_password_input_lay"
+        <!-- 密码输入框-->
+        <include
+            layout="@layout/login_include_layout_password_input"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_56"
             android:layout_marginTop="@dimen/dp_24"
-            android:background="@drawable/business_shape_stroke_round_e8e8e8"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"
             app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
             app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_include_phone_input_lay">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/BusinessTextStyleFirst_2"
-                android:text="@string/login_password" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                style="@style/PasswordInputTextStyle"
-                afterTextChanged="@{viewModel.checkInput}"
-                isShowPasswordText="@{viewModel.isShowPasswordText}"
-                android:layout_width="0dp"
-                android:layout_marginStart="@dimen/dp_40"
-                android:layout_weight="1"
-                android:hint="@string/login_input_password_hint"
-                android:maxLength="16"
-                android:paddingStart="@dimen/dp_12"
-                android:paddingEnd="0dp"
-                android:text="@={viewModel.password}" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                bindClick="@{viewModel.eyesClick}"
-                bindSrc="@{viewModel.eyesResId}"
-                isVisible="@{viewModel.isPasswordInputOk}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/login_ic_close_eyes" />
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/login_include_phone_input_lay"
+            bind:passwordInputViewModel="@{viewModel.passwordInputViewModel}" />
 
 
         <TextView
@@ -83,8 +54,8 @@
             bindText="@{viewModel.errorTips}"
             android:layout_marginStart="@dimen/dp_22"
             android:layout_marginTop="@dimen/dp_6"
-            app:layout_constraintLeft_toLeftOf="@id/login_by_password_password_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_password_input_lay"
+            app:layout_constraintLeft_toLeftOf="@id/login_include_password_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay"
             tools:text="手机号有误" />
 
         <TextView
@@ -93,8 +64,8 @@
             android:layout_marginEnd="@dimen/dp_22"
             android:padding="@dimen/dp_6"
             android:text="@string/login_forget_password"
-            app:layout_constraintRight_toRightOf="@id/login_by_password_password_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_password_input_lay" />
+            app:layout_constraintRight_toRightOf="@id/login_include_password_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_by_password_login_btn"
@@ -103,11 +74,11 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_56"
             android:layout_marginTop="@dimen/dp_82"
-            android:enabled="@{viewModel.phoneInputViewModel.isInputText&amp;&amp;viewModel.isPasswordInputOk}"
+            android:enabled="@{viewModel.phoneInputViewModel.isInputText&amp;&amp;viewModel.passwordInputViewModel.isPasswordInputOk}"
             android:text="@string/login_login"
             app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
             app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_password_input_lay" />
+            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay" />
 
         <LinearLayout
             android:layout_width="0dp"
