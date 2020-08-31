@@ -37,6 +37,5 @@ class ForgetPasswordActivity :
 
     override fun initData() {
         mViewModel.context = this
-        mViewModel.countryCode.set("+87")
     }
 }

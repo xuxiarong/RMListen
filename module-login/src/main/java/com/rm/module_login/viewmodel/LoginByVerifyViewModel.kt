@@ -18,8 +18,7 @@ import com.rm.module_login.viewmodel.view.PhoneInputViewModel
  * version: 1.0
  */
 class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
-    var phoneInputViewModel =
-        PhoneInputViewModel()
+    var phoneInputViewModel = PhoneInputViewModel()
     var context: Activity? = null
 
     // 用户协议和隐私协议是否选择

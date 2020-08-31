@@ -9,7 +9,7 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/login_by_verify_code_input_lay"
+        android:id="@+id/login_include_phone_input_lay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_56"
         android:background="@drawable/business_shape_stroke_round_e8e8e8"

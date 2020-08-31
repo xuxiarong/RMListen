@@ -9,6 +9,7 @@ import com.rm.module_login.R
 import com.rm.module_login.activity.ForgetPasswordActivity
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
 import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.viewmodel.view.PhoneInputViewModel
 
 /**
  * desc   : 登陆viewModel
@@ -16,28 +17,20 @@ import com.rm.module_login.repository.LoginRepository
  * version: 1.0
  */
 class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
+
+    // 手机输入框的ViewModel
+    var phoneInputViewModel = PhoneInputViewModel()
+
     var context: Activity? = null
-
-    // 标识是否输入了文本
-    var isInputText = ObservableField<Boolean>()
-
-    //  输入的电话号码值
-    var phone = ObservableField<String>()
 
     //  输入的密码值
     var password = ObservableField<String>()
-
-    // 国家代码具体值
-    var countryCode = ObservableField<String>()
 
     // 用户协议和隐私协议是否选择
     var isCheck = ObservableField<Boolean>(false)
 
     // 错误提示信息
     var errorTips = ObservableField<String>("")
-
-    // 手机号码输入是否ok
-    var isPhoneInputOk = ObservableField<Boolean>(false)
 
     // 密码输入是否ok
     var isPasswordInputOk = ObservableField<Boolean>(false)
@@ -53,9 +46,9 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
 
     private fun inputChange() {
         // 设置是否输入了文本
-        isPhoneInputOk.set(!TextUtils.isEmpty(phone.get()))
+//        isPhoneInputOk.set(!TextUtils.isEmpty(phoneInputViewModel.phone.get()))
         isPasswordInputOk.set(!TextUtils.isEmpty(password.get()))
-        isInputText.set(isPhoneInputOk.get()!! && isPasswordInputOk.get()!!)
+//        isInputText.set(isPhoneInputOk.get()!! && isPasswordInputOk.get()!!)
     }
 
     /**
@@ -69,11 +62,6 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
             return
         }
 
-    }
-
-    // 置空输入框的值
-    fun clearInput() {
-        phone.set("")
     }
 
     /**
@@ -104,12 +92,5 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
     fun loginByVerifyCode() {
         LoginByVerifyCodeActivity.startActivity(context!!)
         context!!.finish()
-    }
-
-    /**
-     * 显示国家列表选择框
-     */
-    fun showCountryList() {
-        // todo
     }
 }

@@ -41,8 +41,8 @@
             bindText="@{viewModel.errorTips}"
             android:layout_marginStart="@dimen/dp_22"
             android:layout_marginTop="@dimen/dp_6"
-            app:layout_constraintLeft_toLeftOf="@id/login_by_verify_code_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_input_lay"
+            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_include_phone_input_lay"
             tools:text="手机号有误" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -54,9 +54,9 @@
             android:layout_marginTop="@dimen/dp_52"
             android:enabled="@{viewModel.phoneInputViewModel.isInputText}"
             android:text="@string/login_get_verify_code"
-            app:layout_constraintLeft_toLeftOf="@id/login_by_verify_code_input_lay"
-            app:layout_constraintRight_toRightOf="@id/login_by_verify_code_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_input_lay" />
+            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+            app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_include_phone_input_lay" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -64,8 +64,8 @@
             android:layout_marginTop="@dimen/dp_19"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintLeft_toLeftOf="@id/login_by_verify_code_input_lay"
-            app:layout_constraintRight_toRightOf="@id/login_by_verify_code_input_lay"
+            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+            app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
             app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_get_btn">
 
             <androidx.appcompat.widget.AppCompatCheckBox
