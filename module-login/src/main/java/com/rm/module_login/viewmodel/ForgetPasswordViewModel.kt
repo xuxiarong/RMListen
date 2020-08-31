@@ -18,7 +18,7 @@ import com.rm.module_login.viewmodel.view.PhoneInputViewModel
 class ForgetPasswordViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
 
     // 手机输入框的ViewModel
-    var phoneInputViewModel = PhoneInputViewModel()
+    val phoneInputViewModel = PhoneInputViewModel()
 
 
     var context: Activity? = null

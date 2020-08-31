@@ -1,6 +1,5 @@
 package com.rm.module_login.viewmodel.view
 
-import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.module_login.R
 
@@ -22,12 +21,15 @@ class PasswordInputViewModel {
     // 是否明文显示密码文本
     var isShowPasswordText = ObservableField<Boolean>(false)
 
+    // 密码的正则表达式
+    private val passwordRegex = Regex("^(?![0-9]+\$)(?![a-zA-Z]+\$)[0-9A-Za-z]{6,16}\$")
+
     // 监听绑定输入框内容变化
     val checkInput: (String) -> Unit = { inputChange() }
 
     private fun inputChange() {
-        // 设置是否输入了文本
-        isPasswordInputOk.set(!TextUtils.isEmpty(password.get()))
+        // 输入密码是否ok
+        isPasswordInputOk.set(passwordRegex.matches(password.get()!!))
     }
 
     /**
