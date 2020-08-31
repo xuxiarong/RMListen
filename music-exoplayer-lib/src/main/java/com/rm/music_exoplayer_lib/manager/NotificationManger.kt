@@ -9,9 +9,7 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.rm.music_exoplayer_lib.R
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
-import com.rm.music_exoplayer_lib.constants.CHANNEL_ID
-import com.rm.music_exoplayer_lib.constants.MUSIC_INTENT_ACTION_ROOT_VIEW
-import com.rm.music_exoplayer_lib.constants.MUSIC_KEY_MEDIA_ID
+import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.utils.MusicRomUtil
 
 var NOTIFICATION_ID: Int = 10001
@@ -31,7 +29,7 @@ class NotificationManger constructor(val context: Service) {
     //前台进程默认是开启的,通知交互默认是开启的
     var mForegroundEnable: Boolean = true //前台进程默认是开启的,通知交互默认是开启的
     var mNotificationEnable = true
-    private fun showNotification(
+     fun showNotification(
         notification: Notification?,
         notifiid: Int,
         foregroundEnable: Boolean
@@ -48,7 +46,7 @@ class NotificationManger constructor(val context: Service) {
      * 清除通知，常驻进程依然保留(如果开启)
      * @param notifiid 通知栏ID
      */
-    private fun cleanNotification(notifiid: Int) {
+     fun cleanNotification(notifiid: Int) {
         mNotificationManager.cancel(notifiid)
     }
 
@@ -58,9 +56,11 @@ class NotificationManger constructor(val context: Service) {
      * @param cover 封面
      * @return 通知对象
      */
-    private fun buildNotifyInstance(
+     fun buildNotifyInstance(
         audioInfo: BaseAudioInfo,
-        cover: Bitmap
+        defaultCoustomRemoteView:RemoteViews,
+        bigCoustomRemoteView:RemoteViews
+
     ): Notification? {
         if (null == audioInfo) {
             return null
@@ -83,10 +83,6 @@ class NotificationManger constructor(val context: Service) {
             rootIntent, PendingIntent.FLAG_UPDATE_CURRENT
         )
         val appName: String = context.getString(R.string.music_text_now_play)
-        //默认布局
-        val defaultRemoteViews: RemoteViews = getDefaultCoustomRemoteView(audioInfo, cover, 1)
-        //扩展布局
-        val bigRemoteViews: RemoteViews = getBigCoustomRemoteView(audioInfo, cover,0)
         //构造通知栏
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(context,"001")
         builder.setContentIntent(pendClickIntent)
@@ -94,10 +90,9 @@ class NotificationManger constructor(val context: Service) {
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            .setCustomContentView(defaultRemoteViews)
-            .setCustomBigContentView(bigRemoteViews)
-            .setChannelId(CHANNEL_ID)
-            .setPriority(Notification.PRIORITY_HIGH)
+            .setCustomContentView(defaultCoustomRemoteView)
+            .setCustomBigContentView(bigCoustomRemoteView)
+            .setChannelId(CHANNEL_ID).priority = Notification.PRIORITY_HIGH
         if (MusicRomUtil.instance?.isMiui==true) {
             builder.setFullScreenIntent(pendClickIntent, false) //禁用悬挂
         } else {
@@ -106,34 +101,5 @@ class NotificationManger constructor(val context: Service) {
         return builder.build()
     }
 
-    /**
-     * 生成并绑定点击事件的默认RemoteView
-     * @param audioInfo 音频对象
-     * @param cover 封面
-     * @return RemoteView
-     */
-    private fun getDefaultCoustomRemoteView(
-        audioInfo: BaseAudioInfo,
-        cover: Bitmap,
-        resId: Int
-    ): RemoteViews {
-        return RemoteViews(context.packageName, resId)
-    }
 
-    /**
-     * 生成并绑定大通知栏View点击事件的默认RemoteView
-     * @param audioInfo 音频对象
-     * @param cover 封面
-     * @return RemoteView
-     */
-    private fun getBigCoustomRemoteView(
-        audioInfo: BaseAudioInfo,
-        cover: Bitmap,
-        resId: Int
-    ): RemoteViews {
-        val bigRemoteViews =
-            RemoteViews(context.packageName, resId)
-
-        return bigRemoteViews
-    }
 }

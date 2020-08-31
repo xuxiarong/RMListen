@@ -1,7 +1,7 @@
 package com.rm.music_exoplayer_lib.service
 
 import android.annotation.SuppressLint
-import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -24,6 +24,7 @@ import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.manager.AlarmManger
 import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
+import com.rm.music_exoplayer_lib.manager.NotificationManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import java.util.*
 
@@ -43,12 +44,11 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //当前播放播放器正在处理的对象位置
     private var mCurrentPlayIndex = 0
-
-
-
     //待播放音频队列池子
     private val mAudios = ArrayList<Any>()
-
+    private  val notificationManger by lazy {
+        NotificationManger(this)
+    }
     //是否被动暂停，用来处理音频焦点失去标记
     private var mIsPassive = false
     private val mExoPlayer: SimpleExoPlayer by lazy {
@@ -370,5 +370,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             }
         }
     }
+
 }
 

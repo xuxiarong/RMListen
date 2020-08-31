@@ -1,5 +1,6 @@
 package com.rm.music_exoplayer_lib.manager
 
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -57,6 +58,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         }
 
     }
+    
 
     override fun startPlayMusic(index: Int) {
         mBinder?.startPlayMusic(index)
@@ -156,5 +158,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun getPlayerState(): Int = mBinder?.getPlayerState()?:-1
+
+
 
 }
