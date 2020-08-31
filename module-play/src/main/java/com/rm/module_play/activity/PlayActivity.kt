@@ -92,14 +92,11 @@ class PlayActivity :
         }
         tv_music_left_next.setOnClickListener {
             //向后退15s
-//            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 15)
-            startActivity(Intent(this, TestActivity::class.java))
-//            GlobalplayHelp.instance.globalView.show()
+            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 15)
         }
         tv_music_right_next.setOnClickListener {
             //向前进15s
-            GlobalplayHelp.instance.globalView.hide()
-//            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 15)
+            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 15)
         }
         music_play_point.setOnClickListener {
             showMusicPlayMoreDialog { it1 ->
@@ -123,7 +120,6 @@ class PlayActivity :
     override fun onResume() {
         super.onResume()
         rootViewAddView(GlobalplayHelp.instance.globalView)
-//        GlobalplayHelp.instance.globalView.setImage("https://imagev2.xmcdn.com/group75/M04/10/61/wKgO3V5p1seyG1tXAACwQazaU5g000.jpg!op_type=3&columns=100&rows=100")
         GlobalplayHelp.instance.globalView.play("https://imagev2.xmcdn.com/group75/M04/10/61/wKgO3V5p1seyG1tXAACwQazaU5g000.jpg!op_type=3&columns=100&rows=100")
         GlobalplayHelp.instance.globalView.show()
     }
@@ -199,6 +195,10 @@ class PlayActivity :
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
+    }
+
+    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+
     }
 
 

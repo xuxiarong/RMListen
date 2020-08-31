@@ -117,7 +117,6 @@ class GlobalPlay @JvmOverloads constructor(
         //5.绘制开始播放按钮
         if (mPlayPath != null && mPaint != null) {
             canvas.drawPath(mPlayPath!!, mPaint!!)
-
         }
     }
 

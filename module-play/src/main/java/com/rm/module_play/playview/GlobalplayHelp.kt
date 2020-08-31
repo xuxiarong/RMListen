@@ -7,6 +7,7 @@ import com.rm.module_play.activity.PlayActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 /**
  *
@@ -36,12 +37,9 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         musicPlayerManger.addOnPlayerEventListener(this)
     }
 
-    fun addGlobalPlayHelp(viewParent: FrameLayout, layoutParams: FrameLayout.LayoutParams) {
-        (instance.globalView.parent as FrameLayout).removeView(globalView)
-        viewParent.addView(globalView, layoutParams)
-    }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
+        ExoplayerLogger.exoLog("playerState=${playerState},message=${message}")
     }
 
     override fun onPrepared(totalDurtion: Long) {
@@ -69,6 +67,15 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
+
+    }
+
+    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+        if (!playWhenReady) {
+            globalView.pause()
+        } else {
+            globalView.play("https://imagev2.xmcdn.com/group75/M04/10/61/wKgO3V5p1seyG1tXAACwQazaU5g000.jpg!op_type=3&columns=100&rows=100")
+        }
     }
 
 

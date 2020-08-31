@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="music_text_notice_name">rm Notification bar music playback</string>
+    <string name="music_text_now_play">Playing</string>
+</resources>

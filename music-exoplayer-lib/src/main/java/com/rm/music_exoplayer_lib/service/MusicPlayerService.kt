@@ -1,7 +1,9 @@
 package com.rm.music_exoplayer_lib.service
 
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
 import android.net.Uri
@@ -41,6 +43,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //当前播放播放器正在处理的对象位置
     private var mCurrentPlayIndex = 0
+
+
 
     //待播放音频队列池子
     private val mAudios = ArrayList<Any>()
@@ -189,6 +193,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     }
 
+    //暂停
     override fun pause() {
         mExoPlayer.playWhenReady = false
         mUpdateProgressHandler.removeMessages(0)
@@ -301,7 +306,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
          * 播放状态改变
          */
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            exoLog("onPlayerStateChanged${playWhenReady}===${playbackState}")
+            mOnPlayerEventListeners.forEach {
+                it.onPlayerStateChanged(playWhenReady, playbackState)
+            }
             when (playbackState) {
                 Player.STATE_BUFFERING, Player.STATE_READY -> {
                     if (!mUpdateProgressHandler.hasMessages(0)) {
@@ -320,11 +327,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
         override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-            exoLog("onTimelineChanged")
         }
 
         override fun onLoadingChanged(isLoading: Boolean) {
-            exoLog("onLoadingChanged")
 
         }
 
@@ -332,41 +337,32 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             trackGroups: TrackGroupArray,
             trackSelections: TrackSelectionArray
         ) {
-            exoLog("onTracksChanged")
         }
 
         override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
-            exoLog("onPlaybackParametersChanged")
         }
 
         override fun onPlaybackSuppressionReasonChanged(playbackSuppressionReason: Int) {
-            exoLog("onPlaybackSuppressionReasonChanged")
         }
 
         override fun onPlayerError(error: ExoPlaybackException) {
-            exoLog("${error}")
+            exoLog("$error")
             mMusicPlayerState = MUSIC_PLAYER_ERROR
         }
 
         override fun onSeekProcessed() {
-            exoLog("onSeekProcessed")
         }
 
         override fun onPositionDiscontinuity(reason: Int) {
-            exoLog("onPositionDiscontinuity")
         }
 
         override fun onRepeatModeChanged(repeatMode: Int) {
-            exoLog("onRepeatModeChanged")
         }
 
         override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
-            exoLog("onShuffleModeEnabledChanged")
-
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-            exoLog("onIsPlayingChanged${isPlaying}")
             if (isPlaying) {
                 mOnPlayerEventListeners.forEach {
                     it.onPrepared(getDurtion())
