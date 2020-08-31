@@ -15,7 +15,9 @@ import retrofit2.http.POST
  */
 interface HomeApiService {
 
-
+    companion object {
+        const val BASE_URL = "http://192.168.11.217:3000/mock/154/api/v1_0"
+    }
 
     @FormUrlEncoded
     @POST("/lg/user_article/add/json")
@@ -24,9 +26,13 @@ interface HomeApiService {
     /**
      * 获取听书详情
      */
-    @FormUrlEncoded
+/*    @FormUrlEncoded
     @GET("/api/v1_0/audio/detail")
-    suspend fun HomeDetail(@Field ("id") id:String) :BaseResponse<HomeDetailModel>
+    suspend fun HomeDetail(@Field ("id") id:String) :BaseResponse<HomeDetailModel>*/
+
+    @FormUrlEncoded
+    @GET("/audio/detail")
+    suspend fun HomeDetail() :BaseResponse<HomeDetailModel>
 
     /**
      * 评论列表

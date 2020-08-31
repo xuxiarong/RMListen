@@ -5,5 +5,6 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_home.model.home.detail.HomeDetailModel
 
 class HomeDetailViewModel : BaseVMViewModel(){
-    var detailbean = MutableLiveData<List<HomeDetailModel>>()
+
+    var detailViewModel = MutableLiveData<HomeDetailModel>()
 }

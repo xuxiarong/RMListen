@@ -1,7 +1,7 @@
 package com.rm.module_home.model.home.detail
 
 /**
- * 评论列表
+ * 详情评论列表
  */
 data class HomeCommentViewModel(
     val list: List<CommentList>

@@ -8,8 +8,8 @@
 <!--        <import type = "com.rm.module_home.model.home.detail.List"/>-->
 
         <variable
-            name="Detail_Comment_viewModel"
-            type="com.rm.module_home.model.home.detail.HomeCommentViewModel"
+            name="DetailCommentViewModel"
+            type="com.rm.module_home.viewmodel.HomeDetailCommentViewModel"
             />
     </data>
 

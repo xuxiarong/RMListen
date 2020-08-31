@@ -1,7 +1,7 @@
 package com.rm.module_home.model.home.detail
 
 /**
- * 章节列表
+ * 书籍章节列表
  */
 data class DetailChapterModel(
     val list: List<ChapterList>,
