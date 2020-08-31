@@ -1,6 +1,7 @@
 package com.rm.module_play.activity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.view.Gravity
 import android.view.ViewGroup
@@ -37,6 +38,13 @@ class PlayActivity :
 
     override fun initModelBrId() = BR.viewModel
 
+    companion object {
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, PlayActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            })
+        }
+    }
 
     val bubbleFl by lazy {
         TextView(this).apply {
@@ -85,7 +93,7 @@ class PlayActivity :
         tv_music_left_next.setOnClickListener {
             //向后退15s
 //            musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 15)
-            startActivity(Intent(this,TestActivity::class.java))
+            startActivity(Intent(this, TestActivity::class.java))
 //            GlobalplayHelp.instance.globalView.show()
         }
         tv_music_right_next.setOnClickListener {
@@ -114,17 +122,16 @@ class PlayActivity :
 
     override fun onResume() {
         super.onResume()
-        GlobalplayHelp.instance.addGlobalPlayHelp(getRootView(),layoutParams)
+        rootViewAddView(GlobalplayHelp.instance.globalView)
         GlobalplayHelp.instance.globalView.play(R.drawable.business_defualt_img)
-        android.os.Handler().postDelayed({
-            GlobalplayHelp.instance.globalView.show()
-        },1500)
+        GlobalplayHelp.instance.globalView.show()
     }
 
     override fun onPause() {
         super.onPause()
         GlobalplayHelp.instance.globalView.hide()
     }
+
     override fun startObserve() {
     }
 
@@ -139,7 +146,8 @@ class PlayActivity :
         }
     }
 
-    val RADIO_URL = "https://webfs.yun.kugou.com/202008271626/08eb2d767ed3c0009cd8c706a769a9bc/G111/M03/12/01/D4cBAFmhufWAdEyfADTbmVX-PgI993.mp3"
+    val RADIO_URL =
+        "https://webfs.yun.kugou.com/202008271626/08eb2d767ed3c0009cd8c706a769a9bc/G111/M03/12/01/D4cBAFmhufWAdEyfADTbmVX-PgI993.mp3"
 
     override fun initData() {
 

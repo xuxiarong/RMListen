@@ -3,23 +3,30 @@ package com.rm.module_play.playview
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
+import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
+import androidx.core.view.contains
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.rm.baselisten.util.DisplayUtils.getDip
 import com.rm.business_lib.R
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 
 class GlobalPlay @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet? = null
-) : View(context, attrs), AnimatorUpdateListener {
+) : View(context, attrs), AnimatorUpdateListener, LifecycleEventObserver {
     private var mPaint: Paint? = null
     private var mBpPaint: Paint? = null
     private var mWidth = 0f
@@ -135,10 +142,11 @@ class GlobalPlay @JvmOverloads constructor(
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
+
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     setBitmap(resource)
                     isPlaying = true;
-                    if (mAnimator?.isStarted ==true)
+                    if (mAnimator?.isStarted == true)
                         mAnimator?.resume()
                     else
                         mAnimator?.start()
@@ -163,7 +171,13 @@ class GlobalPlay @JvmOverloads constructor(
         mProgress = progress
         invalidate()
     }
-
+    //首页显示不需要动画
+    fun mainShow(){
+        if (isPlaying) {
+            if (mAnimator?.isStarted == true) mAnimator?.resume() else mAnimator?.start()
+        }
+        visibility = VISIBLE
+    }
     fun show() {
         animate().translationY(0f).setDuration(300).withStartAction {
             if (isPlaying) {
@@ -174,11 +188,13 @@ class GlobalPlay @JvmOverloads constructor(
     }
 
     fun hide() {
-        animate().translationY(height.toFloat()).setDuration(100)
-            .withEndAction {
-                visibility = GONE
-                mAnimator?.pause()
-            }
+//        animate().translationY(height.toFloat()).setDuration(300)
+//            .withEndAction {
+//                visibility = GONE
+//                mAnimator?.pause()
+//            }
+        visibility = GONE
+        mAnimator?.pause()
     }
 
     fun setImage(avatarUrl: String?) {
@@ -189,6 +205,7 @@ class GlobalPlay @JvmOverloads constructor(
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
+
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     setBitmap(resource);
                     invalidate()
@@ -235,5 +252,39 @@ class GlobalPlay @JvmOverloads constructor(
 
     init {
         init()
+    }
+
+    private fun getLifecycleOwner() = (context as? LifecycleOwner)
+        ?: ((context as? ContextWrapper)?.baseContext as? LifecycleOwner)
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        getLifecycleOwner()?.lifecycle?.removeObserver(this)
+        ExoplayerLogger.exoLog(" onDetachedFromWindow")
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        getLifecycleOwner()?.lifecycle?.addObserver(this)
+        ExoplayerLogger.exoLog(" onAttachedToWindow")
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_RESUME -> {
+                //view显示
+                ExoplayerLogger.exoLog(" Lifecycle.Event.ON_RESUME")
+            }
+            Lifecycle.Event.ON_PAUSE -> {
+                //view隐藏
+                ExoplayerLogger.exoLog(" Lifecycle.Event.ON_PAUSE ")
+            }
+            Lifecycle.Event.ON_DESTROY -> {
+                //view销毁
+                ExoplayerLogger.exoLog("Lifecycle.Event.ON_DESTROY ")
+            }
+            else -> {
+            }
+        }
     }
 }

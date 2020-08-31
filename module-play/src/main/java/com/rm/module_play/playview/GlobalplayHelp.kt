@@ -1,9 +1,15 @@
 package com.rm.module_play.playview
 
+import android.app.Activity
+import android.content.Intent
 import android.widget.FrameLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.dip
+import com.rm.module_play.activity.PlayActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
@@ -27,15 +33,16 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         GlobalPlay(Cxt.context).apply {
            setRadius(Cxt.context.dip(19).toFloat())
             setBarWidth(Cxt.context.dip(2).toFloat())
+            setOnClickListener {
+                PlayActivity.startActivity(context)
+            }
 
         }
     }
 
+
     fun addGlobalPlayHelp(viewParent:FrameLayout,layoutParams: FrameLayout.LayoutParams){
-        if (instance.globalView.parent!=null) {
-            ( instance.globalView.parent as FrameLayout).removeView(
-                instance.globalView)
-        }
+        ( instance.globalView.parent as FrameLayout).removeView(globalView)
         viewParent.addView(globalView, layoutParams)
     }
 
@@ -75,5 +82,7 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
         TODO("Not yet implemented")
     }
+
+
 
 }

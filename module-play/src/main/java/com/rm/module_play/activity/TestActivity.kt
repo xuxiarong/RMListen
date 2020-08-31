@@ -14,18 +14,14 @@ class TestActivity : BaseActivity() {
     }
 
     override fun initView() {
-        GlobalplayHelp.instance.addGlobalPlayHelp(getRootView(),layoutParams)
-
+        rootViewAddView(GlobalplayHelp.instance.globalView)
 
     }
 
     override fun onResume() {
         super.onResume()
-
         GlobalplayHelp.instance.globalView.play(R.drawable.business_defualt_img)
-        android.os.Handler().postDelayed({
-            GlobalplayHelp.instance.globalView.show()
-        },1000)
+        GlobalplayHelp.instance.globalView.show()
     }
     override fun onPause() {
         super.onPause()

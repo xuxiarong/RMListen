@@ -1,7 +1,6 @@
 package com.rm.module_main.activity
 
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleObserver
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.wedgit.NoTouchViewPager
 import com.rm.component_comm.home.HomeService
@@ -45,6 +44,7 @@ class MainMainActivity : BaseActivity() {
 //    }
 
     override fun initView() {
+
         navigationController = findViewById<BottomTabView>(R.id.mainTab).custom().run {
 
             addItem(NormalItemView(this@MainMainActivity).apply {
@@ -53,8 +53,18 @@ class MainMainActivity : BaseActivity() {
                     R.drawable.main_ic_home_tab_listen_bar_selected,
                     getString(R.string.main_tab_listen_bar)
                 )
-                setTextCheckedColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_accent))
-                setTextDefaultColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_disable))
+                setTextCheckedColor(
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_accent
+                    )
+                )
+                setTextDefaultColor(
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_disable
+                    )
+                )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
@@ -62,8 +72,18 @@ class MainMainActivity : BaseActivity() {
                     R.drawable.main_ic_home_tab_search_selected,
                     getString(R.string.main_tab_search)
                 )
-                setTextCheckedColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_accent))
-                setTextDefaultColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_disable))
+                setTextCheckedColor(
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_accent
+                    )
+                )
+                setTextDefaultColor(
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_disable
+                    )
+                )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
@@ -71,8 +91,18 @@ class MainMainActivity : BaseActivity() {
                     R.drawable.main_ic_home_tab_my_listen_selected,
                     getString(R.string.main_tab_my_listen)
                 )
-                setTextCheckedColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_accent))
-                setTextDefaultColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_disable))
+                setTextCheckedColor(
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_accent
+                    )
+                )
+                setTextDefaultColor(
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_disable
+                    )
+                )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
@@ -80,8 +110,18 @@ class MainMainActivity : BaseActivity() {
                     R.drawable.main_ic_home_tab_user_selected,
                     getString(R.string.main_tab_user)
                 )
-                setTextCheckedColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_accent))
-                setTextDefaultColor(ContextCompat.getColor(this@MainMainActivity, R.color.main_color_disable))
+                setTextCheckedColor(
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_accent
+                    )
+                )
+                setTextDefaultColor(
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_disable
+                    )
+                )
             })
         }.build()
         navigationController.addPlaceholder(2)
@@ -91,14 +131,18 @@ class MainMainActivity : BaseActivity() {
                 navigationController.itemCount
             )
         }
-        navigationController.setMessageNumber(3,8)
-        navigationController.setHasMessage(1,true)
+        navigationController.setMessageNumber(3, 8)
+        navigationController.setHasMessage(1, true)
         navigationController.setupWithViewPager(viewPager)
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         val playService = RouterHelper.createRouter(PlayService::class.java)
-        playService.addGlobalPlay(getRootView(),layoutParams)
-
-
+        rootViewAddView(playService.getGlobalPlay())
+        playService.showView()
     }
 
     override fun initData() {

@@ -10,5 +10,6 @@ import com.rm.component_comm.router.ApplicationProvider
  * version: 1.0
  */
 interface PlayService : ApplicationProvider {
-    fun addGlobalPlay(viewParent: FrameLayout, layoutParams: FrameLayout.LayoutParams)
+    fun getGlobalPlay():View
+    fun showView()
 }

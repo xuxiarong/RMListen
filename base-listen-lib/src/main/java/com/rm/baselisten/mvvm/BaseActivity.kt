@@ -2,9 +2,11 @@ package com.rm.baselisten.mvvm
 
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.contains
 import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.util.DLog
@@ -88,12 +90,18 @@ abstract class BaseActivity : AppCompatActivity() {
     /**
      * 获取跟布局
      */
-    protected open fun getRootView(): FrameLayout = findViewById(android.R.id.content)
+    protected open fun rootViewAddView(view: View) {
+        val rootView: FrameLayout = findViewById(android.R.id.content)
+        if ((view.parent as? FrameLayout)?.contains(view)==true) {
+            (view.parent as FrameLayout).removeView(view)
+        }
+        rootView.addView(view,layoutParams)
+    }
 
     protected open val layoutParams by lazy {
         FrameLayout.LayoutParams(dip(40), dip(40)).apply {
             gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
-            setMargins(0,0,0,dip(25))
+            setMargins(0, 0, 0, dip(25))
         }
     }
 }
