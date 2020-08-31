@@ -77,10 +77,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                 startRank()
             }
             "看书" -> {
-                startMenu()
+                recommendClick()
             }
             "听单" -> {
-                recommendClick()
+                startMenu()
             }
         }
     }
