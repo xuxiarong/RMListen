@@ -7,4 +7,6 @@ import com.rm.module_home.model.home.detail.HomeDetailModel
 class HomeDetailViewModel : BaseVMViewModel(){
 
     var detailViewModel = MutableLiveData<HomeDetailModel>()
+
+
 }
