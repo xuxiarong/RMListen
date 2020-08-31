@@ -24,8 +24,9 @@ fun ImageView.bindSrc(resourceId: Int?) {
 }
 
 @BindingAdapter("bindVisible")
-fun ImageView.bindVisible(content: String = "") {
-    visibility = if (TextUtils.isEmpty(content)) {
+fun ImageView.bindVisible(content: String? = "") {
+    val text = content ?: ""
+    visibility = if (TextUtils.isEmpty(text)) {
         View.GONE
     } else {
         View.VISIBLE

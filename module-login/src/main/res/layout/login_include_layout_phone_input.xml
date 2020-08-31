@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="phoneInputViewModel"
+            type="com.rm.module_login.model.PhoneInputViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/login_by_verify_code_input_lay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_56"
+        android:background="@drawable/business_shape_stroke_round_e8e8e8"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_icon">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/login_by_verify_code_country_code"
+            style="@style/BusinessTextStyleFirst_2"
+            bindClick="@{phoneInputViewModel.testShow}"
+            android:text="@{phoneInputViewModel.countryCode}" />
+
+        <com.rm.business_lib.wedgit.arrow.ArrowView
+            bindClick="@{phoneInputViewModel.testShow}"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:layout_marginStart="@dimen/dp_12"
+            android:layout_marginEnd="@dimen/dp_12"
+            android:paddingStart="@dimen/dp_4"
+            android:paddingTop="@dimen/dp_7"
+            android:paddingEnd="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_7"
+            app:arrow_direction="bottom"
+            app:arrow_line_color="@color/business_text_color_333333" />
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_30"
+            android:background="@color/business_color_e8e8e8" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/login_by_verify_code_input"
+            style="@style/PhoneInputTextStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:hint="@string/login_input_number_hint"
+            android:paddingStart="@dimen/dp_12"
+            android:paddingEnd="0dp"
+            android:text="@={phoneInputViewModel.phone}" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            bindClick="@{phoneInputViewModel.clearPhoneInput}"
+            bindVisible="@{phoneInputViewModel.phone}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/login_ic_cancel" />
+    </LinearLayout>
+</layout>
