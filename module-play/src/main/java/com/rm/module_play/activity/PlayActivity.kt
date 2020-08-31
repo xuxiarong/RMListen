@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -17,6 +16,7 @@ import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
+import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -123,7 +123,8 @@ class PlayActivity :
     override fun onResume() {
         super.onResume()
         rootViewAddView(GlobalplayHelp.instance.globalView)
-        GlobalplayHelp.instance.globalView.play(R.drawable.business_defualt_img)
+//        GlobalplayHelp.instance.globalView.setImage("https://imagev2.xmcdn.com/group75/M04/10/61/wKgO3V5p1seyG1tXAACwQazaU5g000.jpg!op_type=3&columns=100&rows=100")
+        GlobalplayHelp.instance.globalView.play("https://imagev2.xmcdn.com/group75/M04/10/61/wKgO3V5p1seyG1tXAACwQazaU5g000.jpg!op_type=3&columns=100&rows=100")
         GlobalplayHelp.instance.globalView.show()
     }
 
@@ -147,7 +148,7 @@ class PlayActivity :
     }
 
     val RADIO_URL =
-        "https://webfs.yun.kugou.com/202008271626/08eb2d767ed3c0009cd8c706a769a9bc/G111/M03/12/01/D4cBAFmhufWAdEyfADTbmVX-PgI993.mp3"
+        "https://webfs.yun.kugou.com/202008311218/7c22bd3cefc3cb1043fa58c56c9c57bc/G191/M03/0F/0B/_w0DAF5cASiAZO4YAEcaUEcrcbE873.mp3"
 
     override fun initData() {
 
@@ -160,6 +161,7 @@ class PlayActivity :
             musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
             val musicData = arrayListOf<BaseAudioInfo>()
             musicData.add(BaseAudioInfo(RADIO_URL))
+            GlobalplayHelp.instance.addOnPlayerEventListener()
             musicPlayerManger.updateMusicPlayerData(musicData, 0)
         }
     }

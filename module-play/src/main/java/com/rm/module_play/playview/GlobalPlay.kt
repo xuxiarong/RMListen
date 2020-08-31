@@ -9,9 +9,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
-import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
-import androidx.core.view.contains
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -31,8 +29,8 @@ class GlobalPlay @JvmOverloads constructor(
     private var mBpPaint: Paint? = null
     private var mWidth = 0f
     private var mHeight = 0f
-    private val mUnreachColor = -0x7759595a
-    private val mReachedColor = -0x8fb0
+    private val mUnreachColor = 0x88a6a6a6
+    private val mReachedColor =0xffff7050
     private var mRadius = 0f
     private var mBarWidth = 0f
     private var mBitmap: Bitmap? = null
@@ -84,13 +82,13 @@ class GlobalPlay @JvmOverloads constructor(
         canvas.rotate(-90f)
         //1.画未到达进度条弧形
         mPaint?.style = Paint.Style.STROKE
-        mPaint?.color = mUnreachColor
+        mPaint?.color = mUnreachColor.toInt()
         mPaint?.strokeWidth = mBarWidth
         if (mPaint != null && mRectF != null) {
             canvas.drawArc(mRectF!!, mProgress * 360, (1 - mProgress) * 360, false, mPaint!!)
         }
         //2.画到达进度条弧形
-        mPaint?.color = mReachedColor
+        mPaint?.color = mReachedColor.toInt()
         if (mPaint != null && mRectF != null) {
             canvas.drawArc(mRectF!!, 0f, mProgress * 360, false, mPaint!!)
         }
@@ -98,27 +96,21 @@ class GlobalPlay @JvmOverloads constructor(
         //3.画圆形图片
         mMatrix?.setRotate(
             mDegree.toFloat(),
-            (mBitmap?.width ?: 0).toFloat(),
-            (mBitmap?.height ?: 0).toFloat()
+            (mBitmap?.width?.shr(1) ?: 0).toFloat() ,
+            (mBitmap?.height?.shr(1) ?: 0).toFloat()
         )
-        mMatrix?.postTranslate(
-            (mBitmap?.width ?: 0).toFloat(),
-            (mBitmap?.height ?: 0).toFloat()
-        )
-        val scale = (mRadius - mBarWidth) * 1.0f / (Math.min(
-            mBitmap?.width ?: 0,
-            mBitmap?.height ?: 0
-        ) shr 1)
+        mMatrix?.postTranslate((-(mBitmap?.width?:0).shr(1)).toFloat(),(-(mBitmap?.height?:0).shr(1)).toFloat())
+        val scale = (mRadius - mBarWidth) * 1.0f / ((mBitmap?.width ?: 0).coerceAtMost(mBitmap?.height ?: 0) shr 1)
         mMatrix?.postScale(scale, scale)
         mShader?.setLocalMatrix(mMatrix)
         mBpPaint?.shader = mShader
         mBpPaint?.let { canvas.drawCircle(0f, 0f, mRadius - mBarWidth, it) }
         //4.绘制半透明蒙版
         if (isPlaying) return
-        mPaint?.color = -0x77000001
+        mPaint?.color = 0x88ffffff.toInt()
         mPaint?.style = Paint.Style.FILL
         canvas.drawCircle(0f, 0f, mRadius - mBarWidth, mPaint!!)
-        mPaint?.color = mReachedColor
+        mPaint?.color = mReachedColor.toInt()
         mPaint?.strokeJoin = Paint.Join.ROUND
         mPaint?.pathEffect = mPathEffect
         canvas.translate(mRadius / 2.3f, 0f)
@@ -142,7 +134,6 @@ class GlobalPlay @JvmOverloads constructor(
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
-
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     setBitmap(resource)
                     isPlaying = true;
@@ -152,7 +143,6 @@ class GlobalPlay @JvmOverloads constructor(
                         mAnimator?.start()
                 }
             })
-
     }
 
     fun play(@DrawableRes res: Int) {
@@ -171,13 +161,15 @@ class GlobalPlay @JvmOverloads constructor(
         mProgress = progress
         invalidate()
     }
+
     //首页显示不需要动画
-    fun mainShow(){
+    fun mainShow() {
         if (isPlaying) {
             if (mAnimator?.isStarted == true) mAnimator?.resume() else mAnimator?.start()
         }
         visibility = VISIBLE
     }
+
     fun show() {
         animate().translationY(0f).setDuration(300).withStartAction {
             if (isPlaying) {
@@ -204,6 +196,7 @@ class GlobalPlay @JvmOverloads constructor(
             .placeholder(R.drawable.business_defualt_img)
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
                 override fun onLoadCleared(placeholder: Drawable?) {
+
                 }
 
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
@@ -211,6 +204,7 @@ class GlobalPlay @JvmOverloads constructor(
                     invalidate()
                 }
             })
+
     }
 
     fun setImage(@DrawableRes res: Int) {
@@ -287,4 +281,6 @@ class GlobalPlay @JvmOverloads constructor(
             }
         }
     }
+
+
 }

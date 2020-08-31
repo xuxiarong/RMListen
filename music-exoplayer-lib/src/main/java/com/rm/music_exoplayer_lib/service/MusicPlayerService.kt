@@ -345,7 +345,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
         override fun onPlayerError(error: ExoPlaybackException) {
             exoLog("${error}")
-            mMusicPlayerState=MUSIC_PLAYER_ERROR
+            mMusicPlayerState = MUSIC_PLAYER_ERROR
         }
 
         override fun onSeekProcessed() {

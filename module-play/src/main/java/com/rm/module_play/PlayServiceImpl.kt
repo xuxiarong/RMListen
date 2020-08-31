@@ -21,7 +21,6 @@ class PlayServiceImpl : PlayService {
 
     override fun getGlobalPlay(): View = GlobalplayHelp.instance.globalView
     override fun showView(){
-        GlobalplayHelp.instance.globalView.play(R.drawable.business_defualt_img)
         GlobalplayHelp.instance.globalView.mainShow()
     }
 

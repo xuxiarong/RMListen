@@ -20,9 +20,9 @@ class TestActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        GlobalplayHelp.instance.globalView.play(R.drawable.business_defualt_img)
         GlobalplayHelp.instance.globalView.show()
     }
+
     override fun onPause() {
         super.onPause()
         GlobalplayHelp.instance.globalView.hide()
