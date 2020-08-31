@@ -26,6 +26,7 @@
         android:paddingEnd="@dimen/dp_4"
         android:textColor="@color/businessWhite"
         android:textSize="@dimen/business_text_size_10sp"
+        android:enabled="false"
         app:layout_constraintRight_toRightOf="@id/home_menu_book_adapter_icon"
         app:layout_constraintTop_toTopOf="@id/home_menu_book_adapter_icon"
         app:rv_backgroundColor="@color/business_text_color_333333"

@@ -19,6 +19,7 @@
         android:layout_width="@dimen/dp_22"
         android:gravity="center"
         android:layout_height="@dimen/dp_22"
+        android:enabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:rv_cornerRadius_TL="@dimen/dp_2"

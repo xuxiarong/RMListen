@@ -4,9 +4,11 @@ import com.rm.baselisten.net.api.BaseRetrofitClient
 import com.rm.module_home.activity.boutique.BoutiqueFragmentViewModel
 import com.rm.module_home.activity.boutique.BoutiqueViewModel
 import com.rm.module_home.activity.list.TopListViewModel
+import com.rm.module_home.activity.menu.MenuDetailViewModel
 import com.rm.module_home.activity.menu.MenuViewModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.repository.BoutiqueRepository
+import com.rm.module_home.repository.MenuDetailRepository
 import com.rm.module_home.repository.MenuRepository
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.repository.TopListRepository
@@ -25,6 +27,7 @@ val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
     viewModel { HomeFragmentViewModel() }
     viewModel { MenuViewModel(get()) }
+    viewModel { MenuDetailViewModel(get()) }
     viewModel { BoutiqueViewModel(get()) }
     viewModel { TopListViewModel(get()) }
     viewModel { BoutiqueFragmentViewModel(get()) }
@@ -36,6 +39,7 @@ val viewModelModule = module {
 val repositoryModule = module {
     // 所有的Repository都需要在这里声明
     single { MenuRepository(get()) }
+    single { MenuDetailRepository(get()) }
     single { BoutiqueRepository(get()) }
     single { TopListRepository(get()) }
     single { BaseRetrofitClient().getService(HomeApiService::class.java) }

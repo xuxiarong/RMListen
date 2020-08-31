@@ -102,7 +102,7 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
         }
         home_list_content.apply {
             adapter = HomeTopListPagerAdapter(supportFragmentManager, types)
-            currentItem = 0
+            setCurrentItem(0, false)
         }
     }
 
@@ -115,7 +115,7 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
             mCurPosition = position
             tabAdapter.setSelect(position, view as TextView)
 
-            home_list_content.currentItem = position
+            home_list_content.setCurrentItem(position, false)
         }
     }
 
@@ -170,6 +170,11 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
             }
             elevation = resources.getDimension(R.dimen.dp_4)
             contentView = rootView
+
+            isOutsideTouchable = true
+            isFocusable = true
+            isTouchable = true
+
             setOnDismissListener {
                 baseTitleModel?.rightIcon1 = R.drawable.business_ic_down
                 mViewModel.baseTitleModel.value = baseTitleModel

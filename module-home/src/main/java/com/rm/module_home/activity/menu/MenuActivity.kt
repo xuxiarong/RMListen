@@ -31,6 +31,10 @@ class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel
         mViewModel.bannerInfoList.observe(this) {
             headView.findViewById<XBanner>(R.id.home_head_banner).bindData(it)
             mViewModel.menuAdapter.addHeaderView(headView)
+
+            mViewModel.menuAdapter.setOnItemClickListener { _, _, _ ->
+                MenuDetailActivity.startActivity(this@MenuActivity)
+            }
         }
         mViewModel.menuList.observe(this) {
             mViewModel.menuAdapter.setNewInstance(it)

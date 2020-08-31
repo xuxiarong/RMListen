@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.rm.module_main.customview.NoTouchViewPager
+    <com.rm.business_lib.wedgit.NoTouchViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

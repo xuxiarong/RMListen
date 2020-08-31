@@ -28,6 +28,11 @@
             android:name="com.rm.module_home.activity.menu.MenuActivity"
             android:screenOrientation="portrait" />
 
+        <!--听单详情-->
+        <activity
+            android:name="com.rm.module_home.activity.menu.MenuDetailActivity"
+            android:screenOrientation="portrait" />
+
         <!-- 精品推荐-->
         <activity
             android:name="com.rm.module_home.activity.boutique.BoutiqueActivity"

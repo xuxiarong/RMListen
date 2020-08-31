@@ -2,10 +2,10 @@ package debug
 
 import androidx.core.content.ContextCompat
 import com.rm.baselisten.debug.BaseDebugActivity
+import com.rm.business_lib.wedgit.NoTouchViewPager
 import com.rm.module_main.R
 import com.rm.module_main.adapter.MyViewPagerAdapter
 import com.rm.module_main.customview.bottomtab.NavigationController
-import com.rm.module_main.customview.NoTouchViewPager
 import com.rm.module_main.customview.bottomtab.BottomTabView
 import com.rm.module_main.customview.bottomtab.item.NormalItemView
 

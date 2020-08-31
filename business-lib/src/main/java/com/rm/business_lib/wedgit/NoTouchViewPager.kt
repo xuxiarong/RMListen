@@ -20,7 +20,4 @@ class NoTouchViewPager @JvmOverloads constructor(
         return false
     }
 
-    override fun setCurrentItem(item: Int) {
-        super.setCurrentItem(item,false)
-    }
 }

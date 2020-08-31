@@ -3,13 +3,13 @@ package com.rm.module_main.activity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleObserver
 import com.rm.baselisten.mvvm.BaseActivity
+import com.rm.business_lib.wedgit.NoTouchViewPager
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_main.R
 import com.rm.module_main.adapter.MyViewPagerAdapter
-import com.rm.module_main.customview.NoTouchViewPager
 import com.rm.module_main.customview.bottomtab.BottomTabView
 import com.rm.module_main.customview.bottomtab.NavigationController
 import com.rm.module_main.customview.bottomtab.item.NormalItemView
