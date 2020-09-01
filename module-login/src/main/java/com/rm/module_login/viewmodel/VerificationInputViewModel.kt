@@ -3,6 +3,7 @@ package com.rm.module_login.viewmodel
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.bean.LoginInfo
 import com.rm.module_login.repository.LoginRepository
@@ -44,6 +45,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 repository.loginByVerifyCode(phone, content).checkResult(
                     onSuccess = {
                         loginResultBean.set(it)
+                        "Authorization".putMMKV(it.access)
                         DLog.i("llj", "登陆成功！！access---->>>${it}")
                     },
                     onError = {

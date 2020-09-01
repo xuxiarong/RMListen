@@ -23,10 +23,9 @@ open class BaseRetrofitClient {
 
         @JvmStatic
         val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { BaseRetrofitClient() }
-        const val BASE_URL = "http://10.1.3.12:9602/api/v1_0/"
     }
 
-    private val client: OkHttpClient
+    val client: OkHttpClient
         get() {
             val builder = OkHttpClient.Builder()
             val logging = HttpLoggingInterceptor()
@@ -81,16 +80,6 @@ open class BaseRetrofitClient {
 //                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 //                .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
             .baseUrl(baseUrl)
-            .build().create(serviceClass)
-    }
-
-    fun <S> getService(serviceClass: Class<S>): S {
-        return Retrofit.Builder()
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
-            .baseUrl(BASE_URL)
             .build().create(serviceClass)
     }
 }

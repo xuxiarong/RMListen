@@ -1,6 +1,6 @@
 package com.rm.module_home
 
-import com.rm.baselisten.net.api.BaseRetrofitClient
+import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_home.activity.boutique.BoutiqueFragmentViewModel
 import com.rm.module_home.activity.boutique.BoutiqueViewModel
 import com.rm.module_home.activity.list.TopListViewModel
@@ -10,8 +10,8 @@ import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.repository.BoutiqueRepository
 import com.rm.module_home.repository.MenuDetailRepository
 import com.rm.module_home.repository.MenuRepository
-import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.repository.TopListRepository
+import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
 import com.rm.module_home.viewmodel.HomeTopListContentFragmentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -42,7 +42,7 @@ val repositoryModule = module {
     single { MenuDetailRepository(get()) }
     single { BoutiqueRepository(get()) }
     single { TopListRepository(get()) }
-    single { BaseRetrofitClient().getService(HomeApiService::class.java) }
+    single { BusinessRetrofitClient().getService(HomeApiService::class.java) }
 }
 
 val homeModules = listOf(viewModelModule, repositoryModule)
