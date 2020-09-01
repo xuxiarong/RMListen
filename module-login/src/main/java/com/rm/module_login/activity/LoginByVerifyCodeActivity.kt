@@ -42,6 +42,11 @@ class LoginByVerifyCodeActivity :
 
     override fun onResume() {
         super.onResume()
+        /**
+         *  mViewModel ：与Dialog相关的ViewModel，建议使用该dialog依赖的Activity的ViewModel
+         *  R.layout.login_dialong_login_status ： dialog的布局文件
+         *  BR.viewModel ： 布局文件中使用的viewModel变量的名字
+         */
         CommonMvFragmentDialog(mViewModel,R.layout.login_dialong_login_status,BR.viewModel).showCommonDialog(this)
     }
 
