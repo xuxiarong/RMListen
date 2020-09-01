@@ -1,4 +1,4 @@
-package com.rm.module_mine
+package com.rm.baselisten.net
 
 import com.rm.baselisten.net.api.BaseResult
 import kotlinx.coroutines.Dispatchers

@@ -1,8 +1,10 @@
 package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
+import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.module_login.bean.LoginInfo
 import com.rm.module_login.repository.LoginRepository
 
 /**
@@ -30,13 +32,27 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
         completeInput(it)
     }
 
+    var loginResultBean = ObservableField<LoginInfo>()
+
     private fun completeInput(content: String) {
         // 验证码输入完成
         // todo 输入验证码完成，网络验证输入验证码是否正确
         DLog.i("llj", "完成-----inputVerifyCode---->>>${content}")
-        if(getCodeType == 0){
+        if (getCodeType == 0) {
             // 登录类型
-        }else if(getCodeType == 1){
+            launchOnIO {
+                repository.loginByVerifyCode(phone, content).checkResult(
+                    onSuccess = {
+                        loginResultBean.set(it)
+                        DLog.i("llj", "登陆成功！！access---->>>${it}")
+                    },
+                    onError = {
+                        DLog.e("llj", "登陆失败！！--->>>$it")
+                    })
+            }
+
+
+        } else if (getCodeType == 1) {
             // 重置密码类型
         }
 
@@ -45,8 +61,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
     /**
      * 重新获取验证码
      */
-    fun reGetVerifyCode(){
+    fun reGetVerifyCode() {
         // todo
-        DLog.i("llj","重新获取验证码")
+        DLog.i("llj", "重新获取验证码")
     }
 }
