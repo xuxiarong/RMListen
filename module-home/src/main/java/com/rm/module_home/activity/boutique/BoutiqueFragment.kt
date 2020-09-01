@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.home_fragment_boutique.*
  * version: 1.0
  */
 class BoutiqueFragment(private val categoryTabBean: CategoryTabBean) :
+
     BaseVMFragment<HomeFragmentBoutiqueBinding, BoutiqueFragmentViewModel>() {
 
     private val headView by lazy {

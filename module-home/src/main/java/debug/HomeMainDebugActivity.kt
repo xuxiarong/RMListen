@@ -3,6 +3,7 @@ package debug
 import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_home.R
 import com.rm.module_home.activity.boutique.BoutiqueActivity
+import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.list.TopListActivity
 import com.rm.module_home.activity.menu.MenuActivity
 import kotlinx.android.synthetic.main.home_activity_main.*
@@ -25,6 +26,9 @@ class HomeMainDebugActivity : BaseDebugActivity() {
         }
         btnList.setOnClickListener {
             TopListActivity.startActivity(this)
+        }
+        btnDetail.setOnClickListener{
+            HomeDetailActivity.startActivity(this)
         }
     }
 

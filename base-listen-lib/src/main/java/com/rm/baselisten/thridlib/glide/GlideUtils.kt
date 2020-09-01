@@ -14,7 +14,7 @@ import com.rm.baselisten.util.dip
  * date   : 2020/08/20
  * version: 1.0
  */
-fun loadImage(imageView: ImageView, url: String, @DrawableRes defaultResId: Int) {
+fun loadImage(imageView: ImageView, url: String?, @DrawableRes defaultResId: Int) {
     if (imageView.context == null) return
     val options: RequestOptions = RequestOptions() //图片加载出来前，显示的图片
         .placeholder(defaultResId) //url为空的时候,显示的图片
@@ -27,7 +27,7 @@ fun loadImage(imageView: ImageView, url: String, @DrawableRes defaultResId: Int)
 
 fun loadImageByTransform(
     imageView: ImageView,
-    url: String,
+    url: String?,
     @DrawableRes defaultResId: Int,
     transformation: BitmapTransformation
 ) {
@@ -42,7 +42,7 @@ fun loadImageByTransform(
         .into(imageView)
 }
 
-fun loadImage(imageView: ImageView, url: String) {
+fun loadImage(imageView: ImageView, url: String?) {
     loadImage(
         imageView,
         url,
@@ -59,7 +59,7 @@ fun loadCircleImage(imageView: ImageView, url: String, @DrawableRes defaultResId
     )
 }
 
-fun loadCircleImage(imageView: ImageView, url: String) {
+fun loadCircleImage(imageView: ImageView, url: String?) {
     loadImageByTransform(
         imageView,
         url,
@@ -68,7 +68,7 @@ fun loadCircleImage(imageView: ImageView, url: String) {
     )
 }
 
-fun loadRoundCornersImage(imageView: ImageView, url: String, @DrawableRes defaultResId: Int) {
+fun loadRoundCornersImage(imageView: ImageView, url: String?, @DrawableRes defaultResId: Int) {
     loadImageByTransform(
         imageView,
         url,
@@ -77,7 +77,7 @@ fun loadRoundCornersImage(imageView: ImageView, url: String, @DrawableRes defaul
     )
 }
 
-fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String) {
+fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String?) {
     if (corner <= 0) {
         loadImage(imageView, url)
         return

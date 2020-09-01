@@ -1,3 +1,4 @@
+
 package com.rm.baselisten.binding
 
 import android.view.View
@@ -26,3 +27,6 @@ fun View.bindBackground(drawableId: Int?) {
         setBackgroundResource(drawableId)
     }
 }
+
+
+

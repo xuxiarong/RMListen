@@ -4,6 +4,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.glide.loadCircleImage
 import com.rm.baselisten.thridlib.glide.loadImage
 import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
@@ -44,7 +45,7 @@ fun ImageView.bindVisible(content: String? = "") {
 }
 
 @BindingAdapter("corner", "bindUrl", "isCircle", requireAll = false)
-fun ImageView.bindUrl(corner: Float = 0f, bindUrl: String = "", isCircle: Boolean = false) {
+fun ImageView.bindUrl(corner: Float = 0f, bindUrl: String? = "", isCircle: Boolean = false) {
     when {
         isCircle -> {
             loadCircleImage(this, bindUrl)

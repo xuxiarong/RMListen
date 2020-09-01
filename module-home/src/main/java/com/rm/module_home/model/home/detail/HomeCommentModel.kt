@@ -1,12 +1,14 @@
 package com.rm.module_home.model.home.detail
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 /**
  * 详情评论列表
  */
 data class HomeCommentViewModel(
-    val list: List<CommentList>
+    @SerializedName("list")
+    val List_comment: MutableList<CommentList>
 ): Serializable
 
 data class CommentList(

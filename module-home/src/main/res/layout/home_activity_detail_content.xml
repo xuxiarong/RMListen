@@ -9,10 +9,13 @@
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeDetailViewModel"
             />
+
     </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingTop="@dimen/dp_8"
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd = "@dimen/dp_16"
         android:id="@+id/home_detail_top_bg"
@@ -23,16 +26,19 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:layout_marginTop="@dimen/dp_8"
             android:id="@+id/home_detail_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/temp_detail_icon"
+            tools:src="@drawable/temp_detail_icon"
+            bindUrl="@{viewModel.detailViewModel.detaillist.cover_url}"
             android:scaleType="centerCrop"
             android:layout_width="144dp"
             android:layout_height="144dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:text="14W"
+            tools:text="14W"
+            android:text="@{viewModel.detailViewModel.detaillist.play_count}"
             android:textColor="@color/businessWhite"
             android:drawableStart="@drawable/home_icon_play_ed"
             app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
@@ -50,16 +56,17 @@
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatTextView
                 android:maxLines="2"
-                android:text="标题两行"
+                android:text="@{viewModel.detailViewModel.detaillist.name}"
                 android:lines="2"
+                tools:text="书名"
                 android:textSize="@dimen/business_text_size_18sp"
                 android:textColor="@color/business_text_color_333333"
                 android:id="@+id/detail_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
             <androidx.appcompat.widget.AppCompatTextView
-                android:text="作者：曹雪芹"
+                tools:text="作者：曹雪芹"
+                android:text="@{viewModel.detailViewModel.detaillist.author}"
                 android:lines="1"
                 android:paddingTop="@dimen/dp_4"
                 android:paddingBottom="@dimen/dp_4"
@@ -70,7 +77,8 @@
                 android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:text="主播：小丸子的朋友"
+                tools:text="主播：小丸子的朋友"
+                android:text="@{viewModel.detailViewModel.detaillist.anchor.anchor_name}"
                 android:lines="1"
                 android:textSize="@dimen/business_text_size_12sp"
                 android:textColor="@color/business_text_color_666666"
@@ -93,6 +101,7 @@
             android:text="@string/home_detail_sub" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_detail_conllect_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/home_detail_btn_subscribe"
             app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
@@ -102,9 +111,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_detail_tx_status"
-            android:text="已连载12集"
+            tools:text="已连载12集"
+            android:text="@{viewModel.showStatus}"
             android:paddingTop="@dimen/dp_26"
             app:layout_constraintTop_toBottomOf="@id/home_detail_icon"
             android:textColor="@color/business_text_color_666666"
@@ -116,7 +127,7 @@
             android:id="@+id/home_detail_recyc_style"
             app:layout_constraintTop_toBottomOf="@id/home_detail_tx_status"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="0dp"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_detail_tx_content_title"
             app:layout_constraintTop_toBottomOf="@id/home_detail_recyc_style"
@@ -130,7 +141,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_detail_tx_content"
             app:layout_constraintTop_toBottomOf="@id/home_detail_tx_content_title"
-            android:text="@string/home_detail_brief_introduction"
+            tools:text="@string/home_detail_brief_introduction"
+            android:text="@{viewModel.detailViewModel.detaillist.intro}"
             android:layout_width="match_parent"
             android:textColor="@color/business_text_color_666666"
             android:layout_height="@dimen/dp_23"/>
@@ -180,7 +192,6 @@
             android:layout_height="wrap_content"
             >
             <androidx.appcompat.widget.AppCompatImageView
-
                 android:layout_width="60dp"
                 android:layout_height="60dp"/>
         </RelativeLayout>
@@ -189,6 +200,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/home_detail_layout_anchor"
             android:text="@string/home_detail_comment"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:textSize="@dimen/sp_16"
             android:textColor="@color/business_text_color_333333"
@@ -212,4 +224,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
