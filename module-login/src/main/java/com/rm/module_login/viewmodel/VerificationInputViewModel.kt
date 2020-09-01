@@ -5,6 +5,8 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.ACCESS_TOKEN
+import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.module_login.bean.LoginInfo
 import com.rm.module_login.repository.LoginRepository
 
@@ -45,8 +47,10 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 repository.loginByVerifyCode(phone, content).checkResult(
                     onSuccess = {
                         loginResultBean.set(it)
-                        "Authorization".putMMKV(it.access)
                         DLog.i("llj", "登陆成功！！access---->>>${it}")
+                        // 保存登陆信息到本地
+                        ACCESS_TOKEN.putMMKV(it.access)
+                        REFRESH_TOKEN.putMMKV(it.refresh)
                     },
                     onError = {
                         DLog.e("llj", "登陆失败！！--->>>$it")

@@ -12,10 +12,7 @@ import com.rm.module_login.bean.LoginInfo
  */
 class LoginRepository(private val apiService: LoginApiService) : BaseRepository() {
     suspend fun loginByVerifyCode(phone: String, code: String): BaseResult<LoginInfo> {
-        return apiCall { apiService.loginByVerifyCode(phone, code) }.apply {
-//            isLogin = true
-//            userJson = Gson().toJson(this)
-        }
+        return apiCall { apiService.loginByVerifyCode(phone, code) }
 
     }
 }

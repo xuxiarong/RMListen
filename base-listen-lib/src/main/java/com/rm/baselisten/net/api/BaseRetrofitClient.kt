@@ -1,6 +1,7 @@
 package com.rm.baselisten.net.api
 
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.util.NetWorkUtils
 import okhttp3.Cache
 import okhttp3.CacheControl
@@ -28,17 +29,16 @@ open class BaseRetrofitClient {
     val client: OkHttpClient
         get() {
             val builder = OkHttpClient.Builder()
-            val logging = HttpLoggingInterceptor()
-//            if (BuildConfig.DEBUG) {
-//                logging.level = HttpLoggingInterceptor.Level.BODY
-//            } else {
-//                logging.level = HttpLoggingInterceptor.Level.BASIC
-//            }
-
-            builder.addInterceptor(logging)
                 .connectTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)
-
             handleBuilder(builder)
+            val logging = HttpLoggingInterceptor(HttpLogger())
+            if (BuildConfig.DEBUG) {
+                logging.level = HttpLoggingInterceptor.Level.BODY
+            } else {
+                logging.level = HttpLoggingInterceptor.Level.BASIC
+            }
+            builder.addInterceptor(logging)
+
 
             return builder.build()
         }

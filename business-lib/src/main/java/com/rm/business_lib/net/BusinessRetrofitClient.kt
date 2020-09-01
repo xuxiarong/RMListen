@@ -18,6 +18,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
 
     override fun handleBuilder(builder: OkHttpClient.Builder) {
         super.handleBuilder(builder)
+        builder.addInterceptor(CustomInterceptor())
     }
 
     fun <S> getService(serviceClass: Class<S>): S {
