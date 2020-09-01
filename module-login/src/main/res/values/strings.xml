@@ -12,6 +12,9 @@
     <string name="login_password">密码:</string>
     <string name="login_forget_password">忘记密码</string>
     <string name="login_login">登录</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_failed">登录失败</string>
+
     <string name="login_input_verification_code">请输入验证码</string>
     <string name="login_re_get_verify_code">重新获取</string>
     <string name="login_input_right_number_tips">请输入正确的手机号</string>

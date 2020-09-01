@@ -27,6 +27,8 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
     // 错误提示信息
     var errorTips = ObservableField<String>("")
 
+    var loginStatus = ObservableField(0)
+
     /**
      * 获取验证码
      */
@@ -58,6 +60,13 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
     fun loginByPassword() {
         LoginByPasswordActivity.startActivity(context!!)
         context!!.finish()
+    }
+
+    fun testClick(){
+        var currentStatus = loginStatus.get()!!
+        currentStatus += 1
+        loginStatus.set(currentStatus%3)
+
     }
 
 }

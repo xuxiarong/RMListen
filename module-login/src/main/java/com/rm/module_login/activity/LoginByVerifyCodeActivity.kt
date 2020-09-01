@@ -2,6 +2,7 @@ package com.rm.module_login.activity
 
 import android.content.Context
 import android.content.Intent
+import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
@@ -39,11 +40,9 @@ class LoginByVerifyCodeActivity :
         mViewModel.context = this
     }
 
-    private var count : Int = 0
     override fun onResume() {
         super.onResume()
-
-//        CommonMvFragmentDialog(mViewModel,R.layout.login_dialong_login_status,BR.viewModel).showCommonDialog(this)
+        CommonMvFragmentDialog(mViewModel,R.layout.login_dialong_login_status,BR.viewModel).showCommonDialog(this)
     }
 
     override fun initData() {
