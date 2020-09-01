@@ -1,5 +1,6 @@
 package com.rm.music_exoplayer_lib.iinterface
 
+import android.widget.RemoteViews
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
@@ -151,8 +152,6 @@ interface MusicPlayerPresenter {
      * @return 播放状态，详见MusicConstants常量定义
      */
     fun getPlayerState(): Int
-
-
 
 
 }

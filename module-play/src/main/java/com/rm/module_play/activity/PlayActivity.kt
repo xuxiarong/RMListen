@@ -3,6 +3,7 @@ package com.rm.module_play.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -17,6 +18,7 @@ import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.playview.GlobalplayHelp
+import com.rm.music_exoplayer_lib.notification.NotificationRemoteView
 import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -33,6 +35,10 @@ import kotlinx.coroutines.*
 class PlayActivity :
     BaseVMActivity<ActivityPlayBinding, PlayViewModel>(),
     MusicPlayerEventListener {
+    //封面为空，使用默认
+    //封面为空，使用默认
+
+
 
     override fun getLayoutId(): Int = R.layout.activity_play
 
@@ -144,7 +150,8 @@ class PlayActivity :
     }
 
     val RADIO_URL =
-        "https://webfs.yun.kugou.com/202008311218/7c22bd3cefc3cb1043fa58c56c9c57bc/G191/M03/0F/0B/_w0DAF5cASiAZO4YAEcaUEcrcbE873.mp3"
+        "https://webfs.yun.kugou.com/202009011511/03d86a604bac49baf30a4c987ff1d074/part/0/961492/G187/M09/15/17/W4cBAF5TRwKAaUBhADsisFgWPG0241.mp3"
+    val audioCover="https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
 
     override fun initData() {
 
@@ -156,9 +163,10 @@ class PlayActivity :
             }
             musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
             val musicData = arrayListOf<BaseAudioInfo>()
-            musicData.add(BaseAudioInfo(RADIO_URL))
+            musicData.add(BaseAudioInfo(RADIO_URL,audioCover))
             GlobalplayHelp.instance.addOnPlayerEventListener()
             musicPlayerManger.updateMusicPlayerData(musicData, 0)
+
         }
     }
 

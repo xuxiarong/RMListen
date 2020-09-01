@@ -1,6 +1,7 @@
 package com.rm.music_exoplayer_lib.service
 
 import android.os.Binder
+import android.widget.RemoteViews
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
@@ -89,4 +90,5 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     fun play() {
         presenter.play()
     }
+
 }

@@ -1,15 +1,14 @@
 package com.rm.music_exoplayer_lib.service
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
 import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
+import android.widget.RemoteViews
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -24,7 +23,7 @@ import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.manager.AlarmManger
 import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
-import com.rm.music_exoplayer_lib.manager.NotificationManger
+import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import java.util.*
 
@@ -41,13 +40,17 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //播放器工作状态
     private var mMusicPlayerState = MUSIC_PLAYER_STOP
-
+    var mRemoteView: RemoteViews? = null
     //当前播放播放器正在处理的对象位置
     private var mCurrentPlayIndex = 0
     //待播放音频队列池子
     private val mAudios = ArrayList<Any>()
+
+    //前台进程默认是开启的,通知交互默认是开启的
+    private val mForegroundEnable = true//前台进程默认是开启的,通知交互默认是开启的
+    private val mNotificationEnable = true
     private  val notificationManger by lazy {
-        NotificationManger(this)
+        NotificationManger(this,getCurrentPlayerMusic(),getPlayerState())
     }
     //是否被动暂停，用来处理音频焦点失去标记
     private var mIsPassive = false
@@ -139,7 +142,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
 
-    @Synchronized
     private fun startPlay(musicInfo: BaseAudioInfo) =
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
             if (musicInfo.audioPath.isNotEmpty()) {
@@ -148,6 +150,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                         .createMediaSource(Uri.parse(musicInfo.audioPath))
                 )
                 mExoPlayer.playWhenReady = true
+                //最后更新通知栏
+                notificationManger.showNotification(baseContext)
             } else {
                 exoLog("没有链接")
             }
@@ -243,9 +247,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mExoPlayer.seekTo(currentTime)
     }
 
-    override fun getCurrentPlayerMusic(): BaseAudioInfo {
-        TODO("Not yet implemented")
-    }
+    override fun getCurrentPlayerMusic(): BaseAudioInfo =  mAudios.getOrNull(mCurrentPlayIndex) as BaseAudioInfo
 
     override fun getCurrentPlayList(): List<*> {
         TODO("Not yet implemented")
@@ -370,6 +372,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             }
         }
     }
+
 
 }
 

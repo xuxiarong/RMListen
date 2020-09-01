@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.widget.RemoteViews
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
@@ -58,14 +59,14 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         }
 
     }
-    
+
 
     override fun startPlayMusic(index: Int) {
         mBinder?.startPlayMusic(index)
     }
 
     override fun startPlayMusic(audios: List<*>?, index: Int) {
-        mBinder?.startPlayMusic(audios,index)
+        mBinder?.startPlayMusic(audios, index)
     }
 
     override fun playOrPause() {
@@ -157,8 +158,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     }
 
-    override fun getPlayerState(): Int = mBinder?.getPlayerState()?:-1
-
+    override fun getPlayerState(): Int = mBinder?.getPlayerState() ?: -1
 
 
 }

@@ -1,13 +1,11 @@
-package com.rm.module_play.view
+package com.rm.music_exoplayer_lib.notification
 
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.widget.RemoteViews
-import com.rm.module_play.R
-import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.R
 import com.rm.music_exoplayer_lib.constants.*
 
 /**
@@ -16,7 +14,7 @@ import com.rm.music_exoplayer_lib.constants.*
  * @data: 8/31/20 6:56 PM
  * @Version: 1.0.0
  */
-class NotificationRemoteView constructor(val context: Service) {
+class NotificationRemoteView constructor(val context: Context) {
     /**
      * 生成并绑定点击事件的默认RemoteView
      * @param audioInfo 音频对象
@@ -25,12 +23,10 @@ class NotificationRemoteView constructor(val context: Service) {
      *
      */
 
-    private fun getDefaultCoustomRemoteView(
-        context: Context,
-        audioInfo: BaseAudioInfo,
+     fun getDefaultCoustomRemoteView(
         cover: Bitmap,
         mMusicPlayerState: Int
-    ): RemoteViews? {
+    ): RemoteViews {
         val defaultremoteviews =
             RemoteViews(context.packageName, R.layout.music_notify_default_controller)
         defaultremoteviews.setImageViewBitmap(R.id.music_notice_def_cover, cover)
@@ -92,11 +88,10 @@ class NotificationRemoteView constructor(val context: Service) {
      * @param cover 封面
      * @return RemoteView
      */
-    private fun getBigCoustomRemoteView(
-        audioInfo: BaseAudioInfo,
+     fun getBigCoustomRemoteView(
         cover: Bitmap,
         mMusicPlayerState: Int
-    ): RemoteViews? {
+    ): RemoteViews{
         val bigRemoteViews =
             RemoteViews(context.packageName, R.layout.music_notify_big_controller)
         bigRemoteViews.setImageViewBitmap(R.id.music_notice_def_cover, cover)
