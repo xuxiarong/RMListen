@@ -4,7 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.holder.BaseBindHolder
 
 
@@ -13,8 +14,8 @@ import com.rm.baselisten.holder.BaseBindHolder
  * date   : 2020/08/21
  * version: 1.0
  */
-abstract class BaseMultiAdapter<T : BaseMultiAdapter.IBindItemType> constructor(var data: List<T>, private var brId: Int) :
-    RecyclerView.Adapter<BaseBindHolder>() {
+abstract class BaseMultiAdapter<T : MultiItemEntity > constructor(private var brId: Int) :
+    BaseMultiItemQuickAdapter<T,BaseBindHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -24,22 +25,9 @@ abstract class BaseMultiAdapter<T : BaseMultiAdapter.IBindItemType> constructor(
     }
 
     override fun onBindViewHolder(holder: BaseBindHolder, position: Int) {
-        holder.binding.setVariable(brId, data[position])
-        convert(holder,position)
-        holder.binding.executePendingBindings()
+        DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.setVariable(brId, data[position])
+        convert(holder,data[position])
+        DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.executePendingBindings()
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
-
-    interface IBindItemType{
-        fun bindType() : Int
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return data[position].bindType()
-    }
-
-    abstract fun convert(holder: BaseBindHolder, position: Int)
 }

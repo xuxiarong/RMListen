@@ -5,5 +5,7 @@ package com.rm.baselisten.adapter.single
  * date   : 2020/08/27
  * version: 1.0
  */
-open class CommonBindAdapter constructor(commonData : List<*>,commonItemId : Int,commonBrId : Int) : BaseBindAdapter(commonData,commonItemId,commonBrId)
+open class CommonBindAdapter<T> constructor(commonData : MutableList<T>,commonItemId : Int,commonBrId : Int) : BaseBindAdapter<T>(commonData,commonItemId,commonBrId)
+
+
 

@@ -1,7 +1,8 @@
 package com.rm.module_home.adapter
 
-import android.view.ViewGroup
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
@@ -21,26 +22,27 @@ import com.rm.module_home.viewmodel.HomeFragmentViewModel
  * version: 1.0
  */
 class HomeAdapter(
-    var homeViewModel: HomeFragmentViewModel,
-    var list: List<IBindItemType>,
-    var modelBrId: Int,
+    private var homeViewModel: HomeFragmentViewModel,
+    var list: MutableList<MultiItemEntity>,
+    modelBrId: Int,
     itemBrId: Int
-) : BaseMultiVMAdapter<BaseMultiAdapter.IBindItemType>(homeViewModel, list, modelBrId, itemBrId) {
+) : BaseMultiVMAdapter<MultiItemEntity>(homeViewModel, modelBrId, itemBrId) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindHolder {
-        return super.onCreateViewHolder(parent, viewType)
+    init {
+        setNewInstance(list = list)
     }
-
 
     override fun onBindViewHolder(holder: BaseBindHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         when (getItemViewType(position)) {
             R.layout.home_item_banner -> {
-                val homeItemBannerBinding = holder.binding as HomeItemBannerBinding
-                homeItemBannerBinding.mainBanner.bindData(homeViewModel.homeBannerInfoList.value)
+                val homeItemBannerBinding =
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
+                homeItemBannerBinding.mainBanner.bindData(homeViewModel.homeBannerInfoList.value!!)
             }
             R.layout.home_item_collect_rv -> {
-                val homeItemBannerBinding = holder.binding as HomeItemCollectRvBinding
+                val homeItemBannerBinding =
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemCollectRvBinding
                 if (homeViewModel.homeCollectModel.value != null) {
                     val homeCollectAdapter =
                         CommonMultiVMAdapter(
@@ -53,7 +55,8 @@ class HomeAdapter(
                 }
             }
             R.layout.home_item_recommend_hor_single_rv -> {
-                val singleRvBinding = holder.binding as HomeItemRecommendHorSingleRvBinding
+                val singleRvBinding =
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorSingleRvBinding
                 if (homeViewModel.homeHorSingleList.value != null) {
                     val singleAdapter =
                         CommonMultiAdapter(
@@ -65,7 +68,8 @@ class HomeAdapter(
             }
 
             R.layout.home_item_recommend_hor_double_rv -> {
-                val singleRvBinding = holder.binding as HomeItemRecommendHorDoubleRvBinding
+                val singleRvBinding =
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorDoubleRvBinding
                 if (homeViewModel.homeHorDoubleList.value != null) {
                     val doubleAdapter =
                         CommonMultiAdapter(
@@ -76,7 +80,8 @@ class HomeAdapter(
                 }
             }
             R.layout.home_item_recommend_grid_rv -> {
-                val gridBanding = holder.binding as HomeItemRecommendGridRvBinding
+                val gridBanding =
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendGridRvBinding
                 if (homeViewModel.homeGridList.value != null) {
                     val doubleAdapter =
                         CommonMultiAdapter(
@@ -87,7 +92,8 @@ class HomeAdapter(
                 }
             }
             R.layout.home_item_recommend_ver_rv -> {
-                val verBanding = holder.binding as HomeItemRecommendVerRvBinding
+                val verBanding =
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendVerRvBinding
                 if (homeViewModel.homeVerList.value != null) {
                     val verAdapter =
                         CommonMultiAdapter(

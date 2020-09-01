@@ -1,6 +1,7 @@
 package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BannerInfo
@@ -19,13 +20,13 @@ import com.rm.module_home.model.home.ver.HomeRecommendVerModel
  */
 class HomeFragmentViewModel : BaseVMViewModel() {
 
-    var homeBannerInfoList = MutableLiveData<List<BannerInfo>>()
-    var homeCollectModel = MutableLiveData<List<HomeCollectModel>>()
-    var homeHorSingleList = MutableLiveData<List<HomeRecommendHorSingleModel>>()
-    var homeHorDoubleList = MutableLiveData<List<HomeRecommendHorDoubleModel>>()
-    var homeGridList = MutableLiveData<List<HomeGridRecommendModel>>()
+    var homeBannerInfoList = MutableLiveData<MutableList<BannerInfo>>()
+    var homeCollectModel = MutableLiveData<MutableList<MultiItemEntity>>()
+    var homeHorSingleList = MutableLiveData<MutableList<HomeRecommendHorSingleModel>>()
+    var homeHorDoubleList = MutableLiveData<MutableList<HomeRecommendHorDoubleModel>>()
+    var homeGridList = MutableLiveData<MutableList<HomeGridRecommendModel>>()
     var collectItemClickList : ArrayList<(HomeCollectModel)->Unit> = ArrayList()
-    var homeVerList = MutableLiveData<List<HomeRecommendVerModel>>()
+    var homeVerList = MutableLiveData<MutableList<MultiItemEntity>>()
 
     fun initBannerInfo() {
         val bannerList = mutableListOf<BannerInfo>()
@@ -38,7 +39,7 @@ class HomeFragmentViewModel : BaseVMViewModel() {
 
     fun initCollect() {
 
-        homeCollectModel.value = listOf(
+        homeCollectModel.value = mutableListOf(
             HomeCollectModel(
                 R.drawable.home_icon_collect_recommend,
                 "精品推荐"
@@ -69,7 +70,7 @@ class HomeFragmentViewModel : BaseVMViewModel() {
 
 
     fun initSingleList() {
-        val singleList = ArrayList<HomeRecommendHorSingleModel>()
+        val singleList = mutableListOf<HomeRecommendHorSingleModel>()
         singleList.add(
             HomeRecommendHorSingleModel(
                 HomeRecommendModel(
@@ -279,7 +280,7 @@ class HomeFragmentViewModel : BaseVMViewModel() {
     }
 
     fun initVerList(){
-        homeVerList.value = listOf(
+        homeVerList.value = mutableListOf(
             HomeRecommendVerModel(
                 "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
                 "Vip",

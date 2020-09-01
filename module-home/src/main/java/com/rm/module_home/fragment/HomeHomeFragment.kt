@@ -1,7 +1,7 @@
 package com.rm.module_home.fragment
 
 import androidx.lifecycle.Observer
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMFragment
@@ -85,8 +85,8 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         }
     }
 
-    private fun initHomeAdapter(): List<BaseMultiAdapter.IBindItemType> {
-        return listOf(
+    private fun initHomeAdapter(): MutableList<MultiItemEntity> {
+        return mutableListOf(
             HomeBannerRvModel(mViewModel.homeBannerInfoList.value),
             HomeCollectRvModel(),
             HomeMoreModel("精品推荐Double") { startHorDoubleMore() },

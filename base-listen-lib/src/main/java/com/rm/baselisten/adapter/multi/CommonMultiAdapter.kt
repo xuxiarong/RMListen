@@ -1,5 +1,6 @@
 package com.rm.baselisten.adapter.multi
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.holder.BaseBindHolder
 
 /**
@@ -7,9 +8,11 @@ import com.rm.baselisten.holder.BaseBindHolder
  * date   : 2020/08/24
  * version: 1.0
  */
-class CommonMultiAdapter (list : List<IBindItemType>, bindId : Int)  : BaseMultiAdapter<BaseMultiAdapter.IBindItemType>(list,bindId) {
+class CommonMultiAdapter<T : MultiItemEntity> (var dataList : MutableList<T>,bindId : Int)  : BaseMultiAdapter<T>(bindId) {
+    override fun convert(holder: BaseBindHolder, item: T) {
+    }
 
-    override fun convert(holder: BaseBindHolder, position: Int) {
-
+    init {
+        setNewInstance(dataList)
     }
 }

@@ -19,7 +19,7 @@ class DemoSingleRvActivity : BaseActivity() {
     override fun initView() {
         super.initView()
         setStatusBar(R.color.base_activity_bg_color)
-        val singData = listOf<SingleDemoModel>(
+        val singData = mutableListOf<SingleDemoModel>(
             SingleDemoModel("张三", 18),
             SingleDemoModel("李四", 19),
             SingleDemoModel("王五", 20)

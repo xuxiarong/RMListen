@@ -16,7 +16,7 @@ class DemoSingleClickVmActivity :
     BaseVMActivity<DemoItemSingleNoClickBinding, DemoSingClickViewModel>() {
 
     private val mAdapter by lazy {
-        CommonBindVMAdapter(mViewModel, listOf<SingleVmClickModel>(),R.layout.demo_item_single_vm_click,BR.viewModel,BR.singleClickModel)
+        CommonBindVMAdapter(mViewModel, mutableListOf<SingleVmClickModel>(),R.layout.demo_item_single_vm_click,BR.viewModel,BR.singleClickModel)
     }
 
     override fun initModelBrId() = BR.viewModel
@@ -26,7 +26,7 @@ class DemoSingleClickVmActivity :
     override fun startObserve() {
 
         mViewModel.singClickModelList.observe(this, Observer { list ->
-            mAdapter.data = list
+            mAdapter.setNewInstance(list)
             mAdapter.notifyDataSetChanged()
         })
     }

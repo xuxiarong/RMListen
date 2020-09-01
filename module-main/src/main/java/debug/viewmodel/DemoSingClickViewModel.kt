@@ -13,7 +13,7 @@ import java.util.*
  */
 class DemoSingClickViewModel : BaseVMViewModel() {
 
-    var singClickModelList = MutableLiveData<List<SingleVmClickModel>>()
+    var singClickModelList = MutableLiveData<MutableList<SingleVmClickModel>>()
 
     var demoItemClick: (SingleVmClickModel) -> Unit = {}
     var demoNameClick: (SingleVmClickModel) -> Unit = {}
@@ -21,7 +21,7 @@ class DemoSingClickViewModel : BaseVMViewModel() {
 
 
     fun getSingClickModel() {
-        val singData = listOf(
+        val singData = mutableListOf(
             SingleVmClickModel("张三", 18),
             SingleVmClickModel("李四", 19),
             SingleVmClickModel("王五", 20)
@@ -34,7 +34,7 @@ class DemoSingClickViewModel : BaseVMViewModel() {
         val int1 = Random().nextInt(100)
         val int2 = Random().nextInt(100)
         val int3 = Random().nextInt(100)
-        val singData = listOf(
+        val singData = mutableListOf(
             SingleVmClickModel("张三$int1", int1),
             SingleVmClickModel("李四$int2", int2),
             SingleVmClickModel("王五$int3", int3)

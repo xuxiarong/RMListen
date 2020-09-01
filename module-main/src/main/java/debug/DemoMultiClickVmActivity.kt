@@ -15,7 +15,7 @@ import debug.viewmodel.DemoMultiClickViewModel
 class DemoMultiClickVmActivity : BaseVMActivity<ActivityDemoMultiClickVmBinding, DemoMultiClickViewModel>() {
 
     private val mAdapter by lazy {
-        CommonMultiVMAdapter(mViewModel, listOf<DemoMultiModel1>(),
+        CommonMultiVMAdapter(mViewModel, mutableListOf(),
             BR.viewModel,
             BR.item)
     }
@@ -27,7 +27,7 @@ class DemoMultiClickVmActivity : BaseVMActivity<ActivityDemoMultiClickVmBinding,
     override fun startObserve() {
 
         mViewModel.multiList.observe(this, Observer { list ->
-            mAdapter.data = list
+            mAdapter.setNewInstance(list)
             mAdapter.notifyDataSetChanged()
         })
     }

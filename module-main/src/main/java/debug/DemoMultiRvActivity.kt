@@ -1,6 +1,5 @@
 package debug
 
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseActivity
@@ -17,7 +16,7 @@ class DemoMultiRvActivity : BaseActivity() {
         CommonMultiAdapter(mMultiData,BR.item)
     }
 
-    var mMultiData: List<BaseMultiAdapter.IBindItemType> = listOf(
+    var mMultiData  = mutableListOf(
         DemoMultiModel2("精品推荐", "更多"),
         DemoMultiModel1("张三", 18),
         DemoMultiModel1("李四", 19),

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.rm.baselisten.holder.BaseBindHolder
 
 
@@ -13,8 +13,8 @@ import com.rm.baselisten.holder.BaseBindHolder
  * date   : 2020/08/21
  * version: 1.0
  */
-abstract class BaseBindAdapter constructor(var data: List<*>?, var layoutId: Int, private var brId: Int) :
-    RecyclerView.Adapter<BaseBindHolder>() {
+abstract class BaseBindAdapter<T> constructor(data : MutableList<T>,var layoutId: Int, private var brId: Int) :
+    BaseQuickAdapter<T, BaseBindHolder>(layoutId,data) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindHolder {
@@ -25,22 +25,13 @@ abstract class BaseBindAdapter constructor(var data: List<*>?, var layoutId: Int
     }
 
     override fun onBindViewHolder(holder: BaseBindHolder, position: Int) {
-        if(data == null){
-            return
-        }
-        holder.binding.setVariable(brId, data!![position])
-        convert(holder,position)
-        holder.binding.executePendingBindings()
+        DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.setVariable(brId, data[position])
+        convert(holder,data[position])
+        DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.executePendingBindings()
     }
 
-    override fun getItemCount(): Int {
-        return if (data == null) {
-            0
-        } else {
-            data!!.size
-        }
-    }
+    override fun convert(holder: BaseBindHolder, item: T) {
 
-    protected open fun convert(holder: BaseBindHolder, position: Int){}
+    }
 
 }

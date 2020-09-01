@@ -1,7 +1,7 @@
 package debug.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import debug.model.DemoMultiModel1
@@ -15,12 +15,12 @@ import debug.repository.DemoMultiRepository
  */
 class DemoMultiClickViewModel(val repository: DemoMultiRepository) : BaseVMViewModel() {
 
-    var multiList = MutableLiveData<ArrayList<BaseMultiAdapter.IBindItemType>>()
+    var multiList = MutableLiveData<MutableList<MultiItemEntity>>()
 
-    var readHeader = MutableLiveData<List<DemoMultiModel2>>()
-    var readData = MutableLiveData<List<DemoMultiModel1>>()
-    var findHeader = MutableLiveData<List<DemoMultiModel2>>()
-    var findData = MutableLiveData<List<DemoMultiModel1>>()
+    var readHeader = MutableLiveData<MutableList<DemoMultiModel2>>()
+    var readData = MutableLiveData<MutableList<DemoMultiModel1>>()
+    var findHeader = MutableLiveData<MutableList<DemoMultiModel2>>()
+    var findData = MutableLiveData<MutableList<DemoMultiModel1>>()
 
 
     var demoItem1Click: (DemoMultiModel1) -> Unit = {}
@@ -30,27 +30,27 @@ class DemoMultiClickViewModel(val repository: DemoMultiRepository) : BaseVMViewM
 
 
     fun getMultiData() {
-        readHeader.value = listOf(
+        readHeader.value = mutableListOf(
             DemoMultiModel2("精品推荐", "阅读")
         )
 
-        readData.value = listOf(
+        readData.value = mutableListOf(
             DemoMultiModel1("张三", 18),
             DemoMultiModel1("李四", 19),
             DemoMultiModel1("王五", 20)
         )
 
-        findHeader.value = listOf(
+        findHeader.value = mutableListOf(
             DemoMultiModel2("发现更多", "更多")
         )
 
-        findData.value = listOf(
+        findData.value = mutableListOf(
             DemoMultiModel1("java", 18),
             DemoMultiModel1("kotlin", 19),
             DemoMultiModel1("flutter", 20)
         )
 
-        val allData = ArrayList<BaseMultiAdapter.IBindItemType>()
+        val allData = mutableListOf<MultiItemEntity>()
         allData.addAll(readHeader.value!!)
         allData.addAll(readData.value!!)
         allData.addAll(findHeader.value!!)

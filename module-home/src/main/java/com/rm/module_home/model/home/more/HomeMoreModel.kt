@@ -1,6 +1,6 @@
 package com.rm.module_home.model.home.more
 
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_home.R
 
 /**
@@ -8,8 +8,6 @@ import com.rm.module_home.R
  * date   : 2020/08/20
  * version: 1.0
  */
-data class HomeMoreModel constructor(val title : String, var moreClick : () -> Unit) : BaseMultiAdapter.IBindItemType {
-    override fun bindType(): Int {
-        return R.layout.home_item_more
-    }
+data class HomeMoreModel constructor(val title : String, var moreClick : () -> Unit) :
+    MultiItemEntity { override val itemType = R.layout.home_item_more
 }

@@ -1,5 +1,8 @@
 package com.rm.baselisten.adapter.multi
 
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.baselisten.mvvm.BaseViewModel
 
@@ -9,14 +12,13 @@ import com.rm.baselisten.mvvm.BaseViewModel
  * date   : 2020/08/21
  * version: 1.0
  */
-abstract class BaseMultiVMAdapter<T : BaseMultiAdapter.IBindItemType> constructor(
+abstract class BaseMultiVMAdapter<T : MultiItemEntity> constructor(
     val viewModel: BaseViewModel,
-    vmList: List<T>,
     private val viewModelBrId: Int,
     dataBrId: Int
-) : BaseMultiAdapter<T>(vmList, dataBrId) {
+) : BaseMultiAdapter<T>(dataBrId) {
 
-    override fun convert(holder: BaseBindHolder, position: Int) {
-        holder.binding.setVariable(viewModelBrId,viewModel)
+    override fun convert(holder: BaseBindHolder, item: T) {
+        DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.setVariable(viewModelBrId,viewModel)
     }
 }

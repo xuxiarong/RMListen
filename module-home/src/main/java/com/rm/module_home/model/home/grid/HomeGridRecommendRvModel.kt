@@ -1,6 +1,6 @@
 package com.rm.module_home.model.home.grid
 
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_home.R
 
 /**
@@ -8,9 +8,6 @@ import com.rm.module_home.R
  * date   : 2020/08/25
  * version: 1.0
  */
-class HomeGridRecommendRvModel : BaseMultiAdapter.IBindItemType{
-    override fun bindType(): Int {
-        return R.layout.home_item_recommend_grid_rv
-    }
-
+class HomeGridRecommendRvModel : MultiItemEntity{
+    override val itemType = R.layout.home_item_recommend_grid_rv
 }

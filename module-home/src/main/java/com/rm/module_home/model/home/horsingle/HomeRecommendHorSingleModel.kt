@@ -1,6 +1,6 @@
 package com.rm.module_home.model.home.horsingle
 
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_home.R
 import com.rm.module_home.model.HomeRecommendModel
 
@@ -11,8 +11,6 @@ import com.rm.module_home.model.HomeRecommendModel
  */
 data class HomeRecommendHorSingleModel constructor(
     val singleModel: HomeRecommendModel
-) : BaseMultiAdapter.IBindItemType {
-    override fun bindType(): Int {
-        return R.layout.home_item_recommend_hor_single
-    }
+) : MultiItemEntity {
+    override val itemType = R.layout.home_item_recommend_hor_single
 }

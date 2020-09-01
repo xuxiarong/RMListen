@@ -1,6 +1,6 @@
 package debug.repository
 
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import debug.model.DemoMultiModel1
 import debug.model.DemoMultiModel2
 import java.util.*
@@ -12,7 +12,7 @@ import java.util.*
  */
 class DemoMultiRepository {
 
-    fun getMultiDataFromService() : ArrayList<BaseMultiAdapter.IBindItemType>{
+    fun getMultiDataFromService() : MutableList<MultiItemEntity>{
 
         val int1 = Random().nextInt(100)
         val int2 = Random().nextInt(100)

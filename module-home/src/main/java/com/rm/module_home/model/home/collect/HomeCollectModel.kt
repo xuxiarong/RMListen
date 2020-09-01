@@ -1,6 +1,6 @@
 package com.rm.module_home.model.home.collect
 
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_home.R
 
 /**
@@ -8,8 +8,7 @@ import com.rm.module_home.R
  * date   : 2020/08/20
  * version: 1.0
  */
-data class HomeCollectModel constructor(val imageId : Int, val collectName:String) : BaseMultiAdapter.IBindItemType {
-    override fun bindType(): Int {
-        return R.layout.home_item_collect
-    }
+data class HomeCollectModel constructor(val imageId : Int, val collectName:String) : MultiItemEntity {
+    override val itemType = R.layout.home_item_collect
+
 }

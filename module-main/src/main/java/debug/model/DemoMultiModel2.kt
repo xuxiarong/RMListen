@@ -1,6 +1,6 @@
 package debug.model
 
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_main.R
 
 /**
@@ -10,8 +10,8 @@ import com.rm.module_main.R
  */
 
 data class DemoMultiModel2 constructor(val title: String, val rightText: String) :
-    BaseMultiAdapter.IBindItemType {
-    override fun bindType(): Int {
-        return R.layout.demo_item_multi_no_click_type2
-    }
+    MultiItemEntity {
+    override val itemType =
+        R.layout.demo_item_multi_no_click_type2
+
 }

@@ -70,6 +70,8 @@ dependencies {
     api rootProject.ext.androidx["coroutines_android"]
     api rootProject.ext.androidx["lifecycle_extension"]
     api rootProject.ext.androidx["recyclerview"]
+    api rootProject.ext.dependencies["base_adapter"]
+
 //    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     api rootProject.ext.dependencies["mmkvs"]
