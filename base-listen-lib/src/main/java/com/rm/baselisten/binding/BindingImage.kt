@@ -23,6 +23,16 @@ fun ImageView.bindSrc(resourceId: Int?) {
     }
 }
 
+@BindingAdapter("bindSrc")
+fun ImageView.bindSrc(resourceId: Int) {
+    if (resourceId > 0) {
+        visibility = View.VISIBLE
+        setImageResource(resourceId)
+    } else {
+        visibility = View.GONE
+    }
+}
+
 @BindingAdapter("bindVisible")
 fun ImageView.bindVisible(content: String? = "") {
     val text = content ?: ""

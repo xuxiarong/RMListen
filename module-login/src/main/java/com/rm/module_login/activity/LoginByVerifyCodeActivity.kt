@@ -39,6 +39,13 @@ class LoginByVerifyCodeActivity :
         mViewModel.context = this
     }
 
+    private var count : Int = 0
+    override fun onResume() {
+        super.onResume()
+
+//        CommonMvFragmentDialog(mViewModel,R.layout.login_dialong_login_status,BR.viewModel).showCommonDialog(this)
+    }
+
     override fun initData() {
         mViewModel.countryCode.set("+86")
         // 设置checkbox选择协议相关文本

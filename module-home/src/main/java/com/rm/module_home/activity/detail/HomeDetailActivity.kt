@@ -8,7 +8,7 @@ import com.rm.baselisten.util.screenHeight
 import com.rm.business_lib.utils.EllipsizeUtils
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.databinding.HomeDetailContentBinding
+import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.home_activity_detail_main.*
 /**
  * 书籍详情
  */
-class HomeDetailActivity : BaseVMActivity<HomeDetailContentBinding,HomeDetailViewModel>() {
+class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDetailViewModel>() {
 
     companion object {
         fun startActivity(context: Context) {

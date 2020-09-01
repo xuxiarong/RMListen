@@ -5,8 +5,8 @@ import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.contains
+import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.util.DLog
@@ -17,7 +17,7 @@ import com.rm.baselisten.util.dip
  * date   : 2020/08/05
  * version: 1.0
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : FragmentActivity() {
 
     private val immersionBarHelper: ImmersionBarHelper by lazy {
         ImmersionBarHelper.create(this)

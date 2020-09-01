@@ -53,7 +53,7 @@ abstract class BaseFragment : Fragment() {
     /**
      * 设置透明沉浸式
      */
-    protected open fun setD() {
+    protected open fun setDefault() {
         immersionBarHelper.defaultInit()
     }
 

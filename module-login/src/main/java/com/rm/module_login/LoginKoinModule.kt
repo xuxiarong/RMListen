@@ -24,6 +24,8 @@ val viewModelModule = module {
     viewModel { ForgetPasswordViewModel(get()) }
     // 重置密码
     viewModel { ResetPasswordViewModel(get()) }
+    // 重置密码
+    viewModel { LoginStatusViewModel() }
 }
 
 val repositoryModule = module {
