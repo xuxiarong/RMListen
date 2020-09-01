@@ -39,7 +39,6 @@ class LoginByPasswordActivity :
     }
 
     override fun initData() {
-        mViewModel.countryCode.set("+86")
         // 设置checkbox选择协议相关文本
         SpannableHelper.with(login_by_password_tips,resources.getString(R.string.login_login_tips_all))
             .addChangeItem(ChangeItem(resources.getString(R.string.login_login_tips_user),ChangeItem.Type.COLOR,resources.getColor(R.color.login_high_color),object :TextClickListener{

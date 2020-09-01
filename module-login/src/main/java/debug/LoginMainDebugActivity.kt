@@ -24,7 +24,7 @@ class LoginMainDebugActivity : BaseDebugActivity() {
         }
 
         btnVerifyInput.setOnClickListener {
-            VerificationInputActivity.startActivity(this, "15139492334", TYPE_LOGIN)
+            VerificationInputActivity.startActivity(this, "13510753483", TYPE_LOGIN)
         }
 
         btnForget.setOnClickListener {

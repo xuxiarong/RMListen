@@ -14,4 +14,6 @@ data class MenuItemBean(
     val collectionNumber: String,
     val totalNumber: Int,
     val bookList: MutableList<BookBean>
-)
+){
+    val isAuthorCircle = true
+}

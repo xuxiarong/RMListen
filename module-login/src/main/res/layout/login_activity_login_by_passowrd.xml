@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -25,102 +26,27 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/login_by_password_phone_input_lay"
+        <!-- 手机号码输入框-->
+        <include
+            layout="@layout/login_include_layout_phone_input"
             android:layout_width="@dimen/dp_315"
             android:layout_height="@dimen/dp_56"
             android:layout_marginTop="@dimen/dp_65"
-            android:background="@drawable/business_shape_stroke_round_e8e8e8"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_icon">
+            app:layout_constraintTop_toBottomOf="@id/login_by_password_icon"
+            bind:phoneInputViewModel="@{viewModel.phoneInputViewModel}" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/BusinessTextStyleFirst_2"
-                bindClick="@{viewModel.showCountryList}"
-                android:text="@{viewModel.countryCode}" />
-
-            <com.rm.business_lib.wedgit.arrow.ArrowView
-                bindClick="@{viewModel.showCountryList}"
-                android:layout_width="@dimen/dp_22"
-                android:layout_height="@dimen/dp_22"
-                android:layout_marginStart="@dimen/dp_12"
-                android:layout_marginEnd="@dimen/dp_12"
-                android:paddingStart="@dimen/dp_4"
-                android:paddingTop="@dimen/dp_7"
-                android:paddingEnd="@dimen/dp_4"
-                android:paddingBottom="@dimen/dp_7"
-                app:arrow_direction="bottom"
-                app:arrow_line_color="@color/business_text_color_333333" />
-
-            <View
-                android:layout_width="@dimen/dp_1"
-                android:layout_height="@dimen/dp_30"
-                android:background="@color/business_color_e8e8e8" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                style="@style/PhoneInputTextStyle"
-                afterTextChanged="@{viewModel.checkInput}"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:hint="@string/login_input_number_hint"
-                android:paddingStart="@dimen/dp_12"
-                android:paddingEnd="0dp"
-                android:text="@={viewModel.phone}" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                bindClick="@{viewModel.clearInput}"
-                isVisible="@{viewModel.isPhoneInputOk}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/login_ic_cancel" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/login_by_password_password_input_lay"
+        <!-- 密码输入框-->
+        <include
+            layout="@layout/login_include_layout_password_input"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_56"
             android:layout_marginTop="@dimen/dp_24"
-            android:background="@drawable/business_shape_stroke_round_e8e8e8"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"
-            app:layout_constraintLeft_toLeftOf="@id/login_by_password_phone_input_lay"
-            app:layout_constraintRight_toRightOf="@id/login_by_password_phone_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_phone_input_lay">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/BusinessTextStyleFirst_2"
-                android:text="@string/login_password" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                style="@style/PasswordInputTextStyle"
-                afterTextChanged="@{viewModel.checkInput}"
-                isShowPasswordText="@{viewModel.isShowPasswordText}"
-                android:layout_width="0dp"
-                android:layout_marginStart="@dimen/dp_40"
-                android:layout_weight="1"
-                android:hint="@string/login_input_password_hint"
-                android:maxLength="16"
-                android:paddingStart="@dimen/dp_12"
-                android:paddingEnd="0dp"
-                android:text="@={viewModel.password}" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                bindClick="@{viewModel.eyesClick}"
-                bindSrc="@{viewModel.eyesResId}"
-                isVisible="@{viewModel.isPasswordInputOk}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/login_ic_close_eyes" />
-        </LinearLayout>
+            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+            app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_include_phone_input_lay"
+            bind:passwordInputViewModel="@{viewModel.passwordInputViewModel}" />
 
 
         <TextView
@@ -128,8 +54,8 @@
             bindText="@{viewModel.errorTips}"
             android:layout_marginStart="@dimen/dp_22"
             android:layout_marginTop="@dimen/dp_6"
-            app:layout_constraintLeft_toLeftOf="@id/login_by_password_password_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_password_input_lay"
+            app:layout_constraintLeft_toLeftOf="@id/login_include_password_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay"
             tools:text="手机号有误" />
 
         <TextView
@@ -138,8 +64,8 @@
             android:layout_marginEnd="@dimen/dp_22"
             android:padding="@dimen/dp_6"
             android:text="@string/login_forget_password"
-            app:layout_constraintRight_toRightOf="@id/login_by_password_password_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_password_input_lay" />
+            app:layout_constraintRight_toRightOf="@id/login_include_password_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_by_password_login_btn"
@@ -148,11 +74,11 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_56"
             android:layout_marginTop="@dimen/dp_82"
-            android:enabled="@{viewModel.isInputText}"
+            android:enabled="@{viewModel.phoneInputViewModel.isInputText&amp;&amp;viewModel.passwordInputViewModel.isPasswordInputOk}"
             android:text="@string/login_login"
-            app:layout_constraintLeft_toLeftOf="@id/login_by_password_phone_input_lay"
-            app:layout_constraintRight_toRightOf="@id/login_by_password_phone_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_password_input_lay" />
+            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+            app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
+            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -160,8 +86,8 @@
             android:layout_marginTop="@dimen/dp_19"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintLeft_toLeftOf="@id/login_by_password_phone_input_lay"
-            app:layout_constraintRight_toRightOf="@id/login_by_password_phone_input_lay"
+            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+            app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
             app:layout_constraintTop_toBottomOf="@id/login_by_password_login_btn">
 
             <androidx.appcompat.widget.AppCompatCheckBox

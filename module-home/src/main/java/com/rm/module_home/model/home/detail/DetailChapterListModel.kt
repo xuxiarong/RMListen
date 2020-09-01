@@ -1,12 +1,14 @@
 package com.rm.module_home.model.home.detail
 
+import java.io.Serializable
+
 /**
  * 书籍章节列表
  */
 data class DetailChapterModel(
     val list: List<ChapterList>,
     val total: Int
-)
+):Serializable
 
 data class ChapterList(
     val created_at: Int,
@@ -17,4 +19,4 @@ data class ChapterList(
     val play_count: Int,
     val sequence: Int,
     val size: Int
-)
+):Serializable

@@ -10,6 +10,32 @@ package com.rm.music_exoplayer_lib.constants
 const val ACTION_ALARM_REPLENISH_STOCK = "witmoon.auto.replenish.stock.action"
 const val ACTION_ALARM_SYNCHRONIZE = "witmoon.auto.synchronize.action"
 
+//前台进程通知群组ID
+var CHANNEL_ID = "com.android.rm.music_exoplayer_lib"
+
+/**
+ * 通知交互ACTION
+ */
+//点击通知栏
+val MUSIC_INTENT_ACTION_ROOT_VIEW = "IMUSIC_INTENT_ACTION_CLICK_ROOT_VIEW"
+
+//上一首
+val MUSIC_INTENT_ACTION_CLICK_LAST = "IMUSIC_INTENT_ACTION_CLICK_LAST"
+
+//下一首
+val MUSIC_INTENT_ACTION_CLICK_NEXT = "IMUSIC_INTENT_ACTION_CLICK_NEXT"
+
+//暂停、开始
+val MUSIC_INTENT_ACTION_CLICK_PAUSE = "IMUSIC_INTENT_ACTION_CLICK_PAUSE"
+
+//关闭通知栏
+val MUSIC_INTENT_ACTION_CLICK_CLOSE = "IMUSIC_INTENT_ACTION_CLICK_CLOSE"
+
+//收藏
+val MUSIC_INTENT_ACTION_CLICK_COLLECT = "IMUSIC_INTENT_ACTION_CLICK_COLLECT"
+
+//参数传入
+val MUSIC_KEY_MEDIA_ID = "MUSIC_KEY_MEDIA_ID"
 /**
  * 播放器内部各种状态，替换enum类型
  */

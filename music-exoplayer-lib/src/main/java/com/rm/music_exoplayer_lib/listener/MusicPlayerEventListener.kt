@@ -77,7 +77,10 @@ interface MusicPlayerEventListener {
      */
     fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean)
 
-
+    /**
+     * 播放状态
+     */
+    fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int)
 
 
 }

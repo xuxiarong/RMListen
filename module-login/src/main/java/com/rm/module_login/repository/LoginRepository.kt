@@ -1,7 +1,9 @@
 package com.rm.module_login.repository
 
 import com.rm.baselisten.net.api.BaseRepository
+import com.rm.baselisten.net.api.BaseResult
 import com.rm.module_login.api.LoginApiService
+import com.rm.module_login.bean.LoginInfo
 
 /**
  * desc   : 登陆Repository
@@ -9,4 +11,11 @@ import com.rm.module_login.api.LoginApiService
  * version: 1.0
  */
 class LoginRepository(private val apiService: LoginApiService) : BaseRepository() {
+    suspend fun loginByVerifyCode(phone: String, code: String): BaseResult<LoginInfo> {
+        return apiCall { apiService.loginByVerifyCode(phone, code) }.apply {
+//            isLogin = true
+//            userJson = Gson().toJson(this)
+        }
+
+    }
 }

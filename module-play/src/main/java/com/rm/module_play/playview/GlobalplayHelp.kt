@@ -1,18 +1,13 @@
 package com.rm.module_play.playview
 
-import android.app.Activity
-import android.content.Intent
 import android.widget.FrameLayout
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.dip
 import com.rm.module_play.activity.PlayActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 /**
  *
@@ -26,12 +21,10 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
             GlobalplayHelp()
         }
     }
-    init {
-        musicPlayerManger.addOnPlayerEventListener(this)
-    }
+
     val globalView by lazy {
         GlobalPlay(Cxt.context).apply {
-           setRadius(Cxt.context.dip(19).toFloat())
+            setRadius(Cxt.context.dip(19).toFloat())
             setBarWidth(Cxt.context.dip(2).toFloat())
             setOnClickListener {
                 PlayActivity.startActivity(context)
@@ -40,34 +33,28 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         }
     }
 
-
-    fun addGlobalPlayHelp(viewParent:FrameLayout,layoutParams: FrameLayout.LayoutParams){
-        ( instance.globalView.parent as FrameLayout).removeView(globalView)
-        viewParent.addView(globalView, layoutParams)
+    fun addOnPlayerEventListener() {
+        musicPlayerManger.addOnPlayerEventListener(this)
     }
 
+
     override fun onMusicPlayerState(playerState: Int, message: String?) {
-        TODO("Not yet implemented")
+        ExoplayerLogger.exoLog("playerState=${playerState},message=${message}")
     }
 
     override fun onPrepared(totalDurtion: Long) {
-        TODO("Not yet implemented")
     }
 
     override fun onBufferingUpdate(percent: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onInfo(event: Int, extra: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onTaskRuntime(
@@ -76,13 +63,20 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        TODO("Not yet implemented")
+        globalView.setProgress(currentDurtion.toFloat() / totalDurtion.toFloat())
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
-        TODO("Not yet implemented")
+
     }
 
+    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+        if (!playWhenReady) {
+            globalView.pause()
+        } else {
+            globalView.play("https://imagev2.xmcdn.com/group75/M04/10/61/wKgO3V5p1seyG1tXAACwQazaU5g000.jpg!op_type=3&columns=100&rows=100")
+        }
+    }
 
 
 }

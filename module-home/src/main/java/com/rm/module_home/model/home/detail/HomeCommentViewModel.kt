@@ -1,11 +1,13 @@
 package com.rm.module_home.model.home.detail
 
+import java.io.Serializable
+
 /**
  * 详情评论列表
  */
 data class HomeCommentViewModel(
     val list: List<CommentList>
-)
+): Serializable
 
 data class CommentList(
     val content: String,
@@ -16,10 +18,10 @@ data class CommentList(
     val member: Member,
     val member_id: String,
     val own: Boolean
-)
+):Serializable
 
 data class Member(
     val avatar_url: String,
     val id: String,
     val nickname: String
-)
+):Serializable

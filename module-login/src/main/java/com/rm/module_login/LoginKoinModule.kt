@@ -1,6 +1,6 @@
 package com.rm.module_login
 
-import com.rm.baselisten.net.api.BaseRetrofitClient
+import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.*
@@ -35,7 +35,7 @@ val repositoryModule = module {
 
 val apiServiceModule = module {
     // 所有的apiService都需要在这里声明
-    single { BaseRetrofitClient().getService(LoginApiService::class.java) }
+    single { BusinessRetrofitClient().getService(LoginApiService::class.java) }
 }
 
 val loginModules = listOf(viewModelModule, repositoryModule, apiServiceModule)

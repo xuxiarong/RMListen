@@ -13,6 +13,8 @@ import com.rm.module_home.bean.CategoryTabBean
  */
 class BoutiqueRepository(val service: HomeApiService) : BaseRepository() {
 
+
+
     fun getTabList(): List<CategoryTabBean> {
         val tabList = mutableListOf<CategoryTabBean>()
         tabList.add(CategoryTabBean(1, "武侠"))
@@ -22,7 +24,7 @@ class BoutiqueRepository(val service: HomeApiService) : BaseRepository() {
         tabList.add(CategoryTabBean(5, "科普读物"))
         tabList.add(CategoryTabBean(6, "科幻巨作️"))
         tabList.add(CategoryTabBean(7, "悬疑"))
-        return tabList;
+        return tabList
     }
 
     fun getBanner(): MutableList<BannerInfo> {

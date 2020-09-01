@@ -123,4 +123,8 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
         TODO("Not yet implemented")
     }
 
+    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+
+    }
+
 }

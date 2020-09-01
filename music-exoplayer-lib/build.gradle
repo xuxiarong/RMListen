@@ -8,7 +8,7 @@ android {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.music.versionName
+        versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -27,5 +27,5 @@ dependencies {
     implementation rootProject.ext.androidx["core_ktx"]
     implementation rootProject.ext.androidx["kotlin_stdlib"]
     implementation "com.google.android.exoplayer:exoplayer-core:2.11.4"
-
+    implementation rootProject.ext.dependencies["glide"]
 }
