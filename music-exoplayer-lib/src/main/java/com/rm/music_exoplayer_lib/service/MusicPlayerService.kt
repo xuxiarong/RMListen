@@ -3,6 +3,8 @@ package com.rm.music_exoplayer_lib.service
 import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
+import android.content.IntentFilter
+import android.media.AudioManager
 import android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
 import android.net.Uri
 import android.os.Handler
@@ -24,6 +26,7 @@ import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.manager.AlarmManger
 import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
 import com.rm.music_exoplayer_lib.notification.NotificationManger
+import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import java.util.*
 
@@ -41,17 +44,21 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     //播放器工作状态
     private var mMusicPlayerState = MUSIC_PLAYER_STOP
     var mRemoteView: RemoteViews? = null
+
     //当前播放播放器正在处理的对象位置
     private var mCurrentPlayIndex = 0
+
     //待播放音频队列池子
     private val mAudios = ArrayList<Any>()
 
-    //前台进程默认是开启的,通知交互默认是开启的
-    private val mForegroundEnable = true//前台进程默认是开启的,通知交互默认是开启的
-    private val mNotificationEnable = true
-    private  val notificationManger by lazy {
-        NotificationManger(this,getCurrentPlayerMusic(),getPlayerState())
+    //监听系统事件的广播
+    private var mHeadsetBroadcastReceiver: AlarmBroadcastReceiver? = null
+
+
+    private val notificationManger by lazy {
+        NotificationManger(this, getCurrentPlayerMusic(), getPlayerState())
     }
+
     //是否被动暂停，用来处理音频焦点失去标记
     private var mIsPassive = false
     private val mExoPlayer: SimpleExoPlayer by lazy {
@@ -122,7 +129,25 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                     get() = isPlaying()
             }) ?: -1
 
-
+        registerReceiver()
+    }
+    //注册广播
+    private fun registerReceiver() {
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF)
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON)
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT)
+        intentFilter.addAction(ACTION_ALARM_REPLENISH_STOCK)
+        intentFilter.addAction(ACTION_ALARM_SYNCHRONIZE)
+        intentFilter.addAction(MUSIC_INTENT_ACTION_ROOT_VIEW)
+        intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_LAST)
+        intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_NEXT)
+        intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_PAUSE)
+        intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_CLOSE)
+        intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_COLLECT)
+        mHeadsetBroadcastReceiver = AlarmBroadcastReceiver()
+        registerReceiver(mHeadsetBroadcastReceiver, intentFilter)
     }
 
     /**
@@ -247,7 +272,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mExoPlayer.seekTo(currentTime)
     }
 
-    override fun getCurrentPlayerMusic(): BaseAudioInfo =  mAudios.getOrNull(mCurrentPlayIndex) as BaseAudioInfo
+    override fun getCurrentPlayerMusic(): BaseAudioInfo =
+        mAudios.getOrNull(mCurrentPlayIndex) as BaseAudioInfo
 
     override fun getCurrentPlayList(): List<*> {
         TODO("Not yet implemented")
@@ -373,6 +399,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        mHeadsetBroadcastReceiver?.let {
+            unregisterReceiver(it)
+        }
+        mHeadsetBroadcastReceiver = null
+    }
 }
 

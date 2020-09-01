@@ -35,11 +35,6 @@ import kotlinx.coroutines.*
 class PlayActivity :
     BaseVMActivity<ActivityPlayBinding, PlayViewModel>(),
     MusicPlayerEventListener {
-    //封面为空，使用默认
-    //封面为空，使用默认
-
-
-
     override fun getLayoutId(): Int = R.layout.activity_play
 
     override fun initModelBrId() = BR.viewModel
@@ -149,12 +144,9 @@ class PlayActivity :
         }
     }
 
-    val RADIO_URL =
-        "https://webfs.yun.kugou.com/202009011511/03d86a604bac49baf30a4c987ff1d074/part/0/961492/G187/M09/15/17/W4cBAF5TRwKAaUBhADsisFgWPG0241.mp3"
+    val RADIO_URL = "https://webfs.yun.kugou.com/202009011511/03d86a604bac49baf30a4c987ff1d074/part/0/961492/G187/M09/15/17/W4cBAF5TRwKAaUBhADsisFgWPG0241.mp3"
     val audioCover="https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
-
     override fun initData() {
-
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
                 musicPlayerManger.initialize(this@PlayActivity,

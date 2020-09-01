@@ -43,14 +43,6 @@
             android:orientation="horizontal"
             android:layout_alignParentBottom="true">
             <ImageView
-                android:id="@+id/music_notice_def_btn_collect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:scaleType="center"
-                android:padding="10dp"/>
-            <ImageView
                 android:id="@+id/music_notice_def_btn_last"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -18,8 +18,7 @@ class MyViewPagerAdapter(fm: FragmentManager, private val size: Int) :
             return homeService.getHomeFragment()
         }
 
-        return TestFragment()
-            .apply { arguments = Bundle().apply { putString("title", position.toString()) } }
+        return TestFragment().apply { arguments = Bundle().apply { putString("title", position.toString()) } }
     }
 
     override fun getCount(): Int {

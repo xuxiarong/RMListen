@@ -34,8 +34,8 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     internal class MusicPlayerServiceConnection : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            if ((service as? MusicPlayerBinder) != null) {
-                mBinder = service
+            ( service as? MusicPlayerBinder)?.let {
+                mBinder=service
             }
         }
 

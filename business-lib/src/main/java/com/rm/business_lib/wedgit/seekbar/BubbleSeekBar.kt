@@ -515,15 +515,14 @@ class BubbleSeekBar @JvmOverloads constructor(
                         sBuildProperties = Properties()
                         var fis: FileInputStream? = null
                         try {
-                            fis =
-                                FileInputStream(BUILD_PROP_FILE)
+                            fis = FileInputStream(BUILD_PROP_FILE)
                             sBuildProperties?.load(fis)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         } finally {
-                            if (fis != null) {
+                            fis?.let {
                                 try {
-                                    fis.close()
+                                    it.close()
                                 } catch (e: IOException) {
                                     e.printStackTrace()
                                 }

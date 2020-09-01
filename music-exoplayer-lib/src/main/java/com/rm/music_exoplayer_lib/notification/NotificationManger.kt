@@ -6,11 +6,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.rm.music_exoplayer_lib.R
@@ -44,7 +42,6 @@ class NotificationManger constructor(
     //前台进程默认是开启的,通知交互默认是开启的
     var mForegroundEnable: Boolean = true //前台进程默认是开启的,通知交互默认是开启的
     var mNotificationEnable = true
-    //==========================================通知栏===============================================
     /**
      * 构造一个默认的通知栏并显示
      */
@@ -54,47 +51,44 @@ class NotificationManger constructor(
                 NotificationManagerCompat.from(context)
             val isOpen: Boolean = manager.areNotificationsEnabled()
             if (isOpen) {
-                if (audioInfo.audioPath.startsWith("http:") || audioInfo.audioPath
-                        .startsWith("https:")
-                ) {
-//                    Glide.with(context)
-//                        .asBitmap()
-//                        .load(audioInfo.audioCover)
-//                        .error(R.drawable.ic_music_default_cover)
-//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                        .into(object : SimpleTarget<Bitmap?>(120, 120) {
-//                            override fun onResourceReady(
-//                                resource: Bitmap,
-//                                transition: Transition<in Bitmap?>?
-//                            ) {
-//
-//                                )
-//                            }
-//                        })
-                    val notification = buildNotifyInstance()
-                    showNotificationForeground(
-                        notification,
-                        NOTIFICATION_ID,
-                        mForegroundEnable)
+                if (audioInfo.audioCover.isNotEmpty()) {
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(audioInfo.audioCover)
+                        .error(R.drawable.ic_music_default_cover)
+                        .into(object : SimpleTarget<Bitmap?>(120, 120) {
+                            override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap?>?
+                            ) {
+
+                                val notification = buildNotifyInstance(resource)
+                                showNotificationForeground(
+                                    notification)
+                            }
+                        })
+
                 } else {
                     //File
                     //缓存为空，获取音频文件自身封面
                     //封面为空，使用默认
-                    val notification = buildNotifyInstance()
-                    showNotificationForeground(notification, NOTIFICATION_ID, mForegroundEnable)
+                    val resource = BitmapFactory.decodeResource(
+                        context.resources,
+                        R.drawable.ic_music_default_cover
+                    )
+
+                    val notification = buildNotifyInstance(resource)
+                    showNotificationForeground(notification)
                 }
             }
         }
     }
 
     fun showNotificationForeground(
-        notification: Notification?,
-        notifiid: Int,
-        foregroundEnable: Boolean
+        notification: Notification?
     ) {
-        NOTIFICATION_ID = notifiid
-        this.mForegroundEnable = foregroundEnable
-        mNotificationManager.notify(notifiid, notification)
+        this.mForegroundEnable = mForegroundEnable
+        mNotificationManager.notify(NOTIFICATION_ID, notification)
         if (mForegroundEnable) {
             context.startForeground(NOTIFICATION_ID, notification)
         }
@@ -114,8 +108,7 @@ class NotificationManger constructor(
      * @param cover 封面
      * @return 通知对象
      */
-    fun buildNotifyInstance(): Notification? {
-        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_music_mini_close)
+    fun buildNotifyInstance(cover: Bitmap): Notification? {
         //8.0及以上系统需创建通知通道
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: String = context.getResources().getString(R.string.music_text_notice_name)
@@ -142,8 +135,8 @@ class NotificationManger constructor(
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            .setCustomContentView(notificationView.getDefaultCoustomRemoteView(bitmap, playState))
-            .setCustomBigContentView(notificationView.getBigCoustomRemoteView(bitmap, playState))
+            .setCustomContentView(notificationView.getDefaultCoustomRemoteView(cover, playState))
+            .setCustomBigContentView(notificationView.getBigCoustomRemoteView(cover, playState))
             .setChannelId(CHANNEL_ID).priority = Notification.PRIORITY_HIGH
         if (MusicRomUtil.instance?.isMiui == true) {
             builder.setFullScreenIntent(pendClickIntent, false) //禁用悬挂
