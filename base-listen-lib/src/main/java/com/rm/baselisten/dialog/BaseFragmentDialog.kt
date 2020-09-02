@@ -16,53 +16,56 @@ import com.rm.baselisten.helper.GlobalCloseInputHelper
  * version: 1.0
  */
 abstract class BaseFragmentDialog : DialogFragment() {
-    protected lateinit var rootView: View
-    val gravity = Gravity.BOTTOM
-    var type = 0
+    private lateinit var rootView: View
 
+    /**
+     * Dialog对齐方式
+     */
+    var gravity = Gravity.CENTER
     /**
      * 是否拦截点击EditText 之外，关闭输入法
      * @return false 不做处理
      */
-    open protected fun interceptClickInputClose(): Boolean {
-        return false
-    }
+    var dialogInterceptClickInput= false
 
     /**
      * 触摸dialog之外的屏幕，是否关闭dialog
-     *
-     * @return
      */
-    open protected fun isDialogCanceledOnTouchOutside() : Boolean {
-        return true
-    }
+    var dialogCanceledOnTouchOutside = true
 
     /**
-     * back 键是否关闭dialog
-     *
-     * @return
+     * dialog是否可被取消
      */
-    open protected fun isDialogCancel() : Boolean {
-        return true
-    }
+    var dialogCancel = true
 
     /**
-     * dialog外部是否具有半透明的背景
-     * @return Boolean
+     * dialog是否包含背景颜色
      */
-    open protected fun isDialogHasBackground(): Boolean {
-        return false
-    }
+    var dialogHasBackground = false
 
-    protected fun setBackgroundColor(): Int {
-        return R.color.base_transparent
-    }
+    /**
+     * dialog是否水平方向全屏
+     */
+    var dialogWidthIsMatchParent = false
+    /**
+     * dialog是否竖直方向全屏
+     */
+    var dialogHeightIsMatchParent = false
+    /**
+     * dialog的背景颜色
+     */
+    var dialogBackgroundColor = R.color.base_transparent
 
+    /**
+     * 创建Dialog实例对象
+     * @param savedInstanceState Bundle?
+     * @return Dialog
+     */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return object : Dialog(requireContext(), theme) {
             override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
                 if (ev.action == MotionEvent.ACTION_DOWN) {
-                    if (interceptClickInputClose()) {
+                    if (dialogInterceptClickInput) {
                         GlobalCloseInputHelper.DialogDispatchTouchEvent()
                             .dispatchTouchEventCloseInput(ev, this)
                     }
@@ -72,23 +75,31 @@ abstract class BaseFragmentDialog : DialogFragment() {
         }
     }
 
+    /**
+     * Activity创建时回调
+     * @param savedInstanceState Bundle?
+     */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (dialog != null && dialog?.window != null) {
             dialog!!.window!!.requestFeature(Window.FEATURE_NO_TITLE)
             super.onActivityCreated(savedInstanceState)
             dialog!!.window!!.setGravity(gravity)
-            isCancelable = isDialogCancel()
-            dialog!!.setCanceledOnTouchOutside(isDialogCanceledOnTouchOutside())
-            if(!isDialogHasBackground()){
+            isCancelable = dialogCancel
+            dialog!!.setCanceledOnTouchOutside(dialogCanceledOnTouchOutside)
+            dialog!!.setCancelable(isCancelable)
+            if(!dialogHasBackground){
                 val params: WindowManager.LayoutParams = dialog!!.window!!.attributes
-                params.gravity = Gravity.CENTER
+                params.gravity = gravity
                 //设置Dialog外部透明
                 //设置Dialog外部透明
                 params.dimAmount = 0f
                 dialog!!.window!!.attributes = params
             }else{
-                dialog!!.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
+                    dialog!!.window?.setBackgroundDrawableResource(R.color.base_transparent_80) // 背景透明
             }
+            val layoutWidth = if(dialogWidthIsMatchParent){WindowManager.LayoutParams.MATCH_PARENT}else{WindowManager.LayoutParams.WRAP_CONTENT}
+            val layoutHeight = if(dialogHeightIsMatchParent){WindowManager.LayoutParams.MATCH_PARENT}else{WindowManager.LayoutParams.WRAP_CONTENT}
+            dialog!!.window!!.setLayout(layoutWidth,layoutHeight)
         }
     }
 
@@ -103,12 +114,22 @@ abstract class BaseFragmentDialog : DialogFragment() {
         return rootView
     }
 
+    /**
+     * 显示Dialog
+     * @param fragmentActivity FragmentActivity
+     * @return BaseFragmentDialog
+     */
     fun showDialog(fragmentActivity: FragmentActivity): BaseFragmentDialog {
         show(fragmentActivity.supportFragmentManager, this.javaClass.simpleName)
 
         return this
     }
 
+    /**
+     * 重写父类的show方法，使用反射调用，防止异常场景的崩溃和内存泄漏
+     * @param manager FragmentManager
+     * @param tag String?
+     */
     override fun show(
         manager: FragmentManager,
         tag: String?
@@ -142,6 +163,9 @@ abstract class BaseFragmentDialog : DialogFragment() {
         ft.commitAllowingStateLoss()
     }
 
+    /**
+     * 重写父类的dismiss方法
+     */
     override fun dismiss() {
         try {
             dismissAllowingStateLoss()
@@ -174,10 +198,6 @@ abstract class BaseFragmentDialog : DialogFragment() {
     }
 
     abstract val layoutId: Int
-    fun setType(type: Int): BaseFragmentDialog {
-        this.type = type
-        return this
-    }
 
     protected open fun initView() {}
 }

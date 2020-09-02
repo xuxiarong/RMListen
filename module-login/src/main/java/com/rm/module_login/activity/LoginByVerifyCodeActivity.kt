@@ -2,6 +2,7 @@ package com.rm.module_login.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
@@ -47,7 +48,11 @@ class LoginByVerifyCodeActivity :
          *  R.layout.login_dialong_login_status ： dialog的布局文件
          *  BR.viewModel ： 布局文件中使用的viewModel变量的名字
          */
-        CommonMvFragmentDialog(mViewModel,R.layout.login_dialong_login_status,BR.viewModel).showCommonDialog(this)
+        CommonMvFragmentDialog(mViewModel,R.layout.login_dialong_login_status,BR.viewModel).apply {
+            this.dialogBackgroundColor = R.color.businessColorPrimary
+            this.gravity = Gravity.BOTTOM
+        }
+            .showCommonDialog(this)
     }
 
     override fun initData() {

@@ -19,7 +19,7 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
     /**
      * 定义子类的dataBing对象
      */
-    protected lateinit var mDataBind: ViewDataBinding
+     var mDataBind: ViewDataBinding? = null
 
     /**
      *  初始化子类viewModel的BrId
@@ -42,12 +42,12 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mDataBind =DataBindingUtil.inflate<ViewDataBinding>(inflater, layoutId, container, false)
-        return mDataBind.root
+        return mDataBind?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mDataBind.setVariable(initModelBrId,viewModel)
+        mDataBind?.setVariable(initModelBrId,viewModel)
         initView()
         initModelData()
     }

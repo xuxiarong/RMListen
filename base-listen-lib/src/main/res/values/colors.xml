@@ -2,5 +2,6 @@
 <resources>
     <color name="base_activity_bg_color">#ffffff</color>
     <color name="base_transparent">#00000000</color>
+    <color name="base_transparent_80">#80000000</color>
 
 </resources>

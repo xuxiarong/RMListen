@@ -11,9 +11,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
         android:orientation="vertical"
+        android:background="#fff"
         android:paddingStart="@dimen/dp_22"
         android:paddingEnd="@dimen/dp_22">
 
