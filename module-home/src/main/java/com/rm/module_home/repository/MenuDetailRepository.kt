@@ -28,7 +28,7 @@ class MenuDetailRepository(val service: HomeApiService) : BaseRepository() {
 
     }
 
-   private fun getMenuListInfo(): MutableList<BookBean> {
+        fun getMenuListInfo(): MutableList<BookBean> {
         // 模拟听单列表数据
         val bookList = mutableListOf<BookBean>()
         bookList.add(

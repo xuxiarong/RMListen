@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="dialogItem"
+            type="com.rm.business_lib.bean.BookBean" />
+
+        <variable
+            name="dialogClick"
+            type="com.rm.module_home.activity.menu.MenuDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{(BookBean)->dialogClick.itemClickFun(dialogItem)}">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_menu_detail_book_adapter_icon"
+            bindUrl="@{dialogItem.icon}"
+            corner="@{dialogItem.iconCorner}"
+            android:layout_width="@dimen/dp_106"
+            android:layout_height="@dimen/dp_106"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="#3f00" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_menu_detail_book_adapter_title"
+            style="@style/BusinessTextStyleFirst_2"
+            bindText="@{dialogItem.describe}"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/dp_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="123" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_menu_detail_book_adapter_author"
+            style="@style/BusinessTextStyleThird_4"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/dp_12"
+            android:text="@{dialogItem.author}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"
+            tools:text="124" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
