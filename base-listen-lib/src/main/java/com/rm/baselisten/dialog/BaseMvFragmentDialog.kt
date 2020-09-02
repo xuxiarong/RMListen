@@ -41,7 +41,7 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
     abstract fun startObserve()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mDataBind =DataBindingUtil.inflate<ViewDataBinding>(inflater, layoutId, container, false)
+        mDataBind =DataBindingUtil.inflate(inflater, layoutId, container, false)
         return mDataBind?.root
     }
 
@@ -50,5 +50,9 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
         mDataBind?.setVariable(initModelBrId,viewModel)
         initView()
         initModelData()
+    }
+
+    fun getBind(){
+
     }
 }

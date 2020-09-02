@@ -14,22 +14,31 @@ open class CommonMvFragmentDialog constructor(
     commonViewModelBrId: Int
 ) : BaseMvFragmentDialog() {
 
+    var initDialogViewRef : () -> Unit = {}
+
+    var initDialogDataRef : () -> Unit = {}
+
+
     override val initModelBrId = commonViewModelBrId
 
     override val viewModel = commonViewModel
 
     override val layoutId = commonLayoutId
 
+    override fun initView() {
+        initDialogViewRef()
+    }
 
     override fun initModelData() {
-
+        initDialogDataRef()
     }
 
     override fun startObserve() {
 
     }
 
-    fun showCommonDialog(activity: FragmentActivity) {
+    fun showCommonDialog(activity: FragmentActivity) : CommonMvFragmentDialog{
         showDialog(activity)
+        return this
     }
 }

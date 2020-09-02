@@ -7,11 +7,10 @@ import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.linearItemDecoration
-import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadRoundCornersImage1
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.getStateHeight
+import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.BookBean
 import com.rm.module_home.BR
 import com.rm.module_home.R

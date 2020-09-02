@@ -26,7 +26,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             //屏幕点亮
             Intent.ACTION_SCREEN_ON->{
                 context?.let {
-                    musicPlayerManger.startLockActivity(it)
+                    musicPlayerManger.startLockActivity(it.applicationContext)
                 }
             }
             ACTION_ALARM_REPLENISH_STOCK->{

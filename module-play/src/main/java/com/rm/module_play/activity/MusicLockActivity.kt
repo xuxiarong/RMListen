@@ -2,22 +2,22 @@ package com.rm.module_play.activity
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Build
 import android.os.Handler
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.LinearInterpolator
 import android.widget.RelativeLayout
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.view.updateLayoutParams
 import com.rm.baselisten.mvvm.BaseActivity
-import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.screenWidth
 import com.rm.module_play.R
+
 import com.rm.module_play.helper.MusicClickControler
 import com.rm.module_play.view.MusicSildingLayout.OnSildingFinishListener
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -42,12 +42,8 @@ class MusicLockActivity : BaseActivity(),
     private var discIsPlaying = false
     private var mClickControler: MusicClickControler? = null
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    @SuppressLint("ResourceType")
     override fun initData() {
         //去除锁和在锁屏界面显示此Activity
-        setStatusBar(Color(R.color.business_transparent))
-        setD()
         music_silding_root.setOnSildingFinishListener(object : OnSildingFinishListener {
             override fun onSildingFinish() {
                 finish()
@@ -104,7 +100,7 @@ class MusicLockActivity : BaseActivity(),
         music_lock_date.text = date[1]
         //闹钟模式
         val playerModel = 1 //"MusicPlayerManager.getInstance().getPlayerModel();"
-        music_lock_model.setImageResource(getResToPlayModel(playerModel, false))
+//        music_lock_model.setImageResource(getResToPlayModel(playerModel, false))
         //播放对象、状态
         val audioInfo =
             musicPlayerManger.getCurrentPlayerMusic()
@@ -122,6 +118,25 @@ class MusicLockActivity : BaseActivity(),
         mClickControler?.init(1, 300)
     }
 
+    override fun initView() {
+        //去除锁和在锁屏界面显示此Activity
+        //去除锁和在锁屏界面显示此Activity
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                        or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+            )
+        } else {
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                        or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+            )
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.statusBarColor = Color.TRANSPARENT
+        }
+    }
 
     /**
      * 更新当前处理的对象
@@ -189,6 +204,12 @@ class MusicLockActivity : BaseActivity(),
 
     override fun onResume() {
         super.onResume()
+        //View.SYSTEM_UI_FLAG_FULLSCREEN 状态栏不可见
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_IMMERSIVE)
         //View.SYSTEM_UI_FLAG_FULLSCREEN 状态栏不可见
         jukeBoxResume()
     }

@@ -24,6 +24,8 @@
     <string name="login_reset_password_tips">密码为6&#8211;16位，需要包含数字、字母组合</string>
     <string name="login_reset_password_error_tips">密码必须是包含数字、字母组合</string>
     <string name="login_modify">修改</string>
+    <string name="login_send_success">发送成功</string>
+    <string name="login_send_failed">发送失败</string>
 
 
     <string name="login_format_verification_phone_tips" formatted="false">验证码已发送至%s</string>
