@@ -90,7 +90,7 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String?) {
     )
 }
 
-fun loadRoundCornersImage1( imageView: ImageView, url: String) {
+fun loadBlurImage( imageView: ImageView, url: String) {
     loadImageByTransform(
         imageView,
         url,
