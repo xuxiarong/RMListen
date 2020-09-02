@@ -16,7 +16,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.rm.baselisten.util.DisplayUtils.getDip
+import com.rm.baselisten.utilExt.DisplayUtils.getDip
 import com.rm.business_lib.R
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 

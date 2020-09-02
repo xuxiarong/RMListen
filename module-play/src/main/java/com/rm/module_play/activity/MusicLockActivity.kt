@@ -2,23 +2,23 @@ package com.rm.module_play.activity
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.graphics.Color
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Handler
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
-import android.view.WindowManager
 import android.view.animation.LinearInterpolator
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.updateLayoutParams
 import com.rm.baselisten.mvvm.BaseActivity
-import com.rm.baselisten.util.dip
-import com.rm.baselisten.util.screenWidth
+import com.rm.baselisten.utilExt.Color
+import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.utilExt.screenWidth
 import com.rm.module_play.R
 import com.rm.module_play.helper.MusicClickControler
-import com.rm.module_play.view.MusicSildingLayout
 import com.rm.module_play.view.MusicSildingLayout.OnSildingFinishListener
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.*
@@ -42,17 +42,12 @@ class MusicLockActivity : BaseActivity(),
     private var discIsPlaying = false
     private var mClickControler: MusicClickControler? = null
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    @SuppressLint("ResourceType")
     override fun initData() {
-        val window = window
         //去除锁和在锁屏界面显示此Activity
-        window.addFlags(
-            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                    or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                    or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
-        )
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.statusBarColor = Color.TRANSPARENT
-
+        setStatusBar(Color(R.color.business_transparent))
+        setD()
         music_silding_root.setOnSildingFinishListener(object : OnSildingFinishListener {
             override fun onSildingFinish() {
                 finish()
@@ -63,23 +58,9 @@ class MusicLockActivity : BaseActivity(),
             setMargins(0, navigationBarHeight() + dip(25), 0, 0)
         }
 
-
-//        mMusicTime!!.layoutParams = layoutParams
-//        mMusicDate = findViewById<View>(R.id.music_lock_date) as TextView
-//        mMusicTitle = findViewById<View>(R.id.music_lock_name) as TextView
-//        mMusicAnchor = findViewById<View>(R.id.music_lock_anchor) as TextView
-//        mMusicCover =
-//            findViewById<View>(R.id.music_lock_cover) as ImageView
-//        mMusicPause =
-//            findViewById<View>(R.id.music_lock_pause) as ImageView
-//        mMusicCollect =
-//            findViewById<View>(R.id.music_lock_collect) as ImageView
-//        mMusicModel =
-//            findViewById<View>(R.id.music_lock_model) as ImageView
-//        mCustomTextView = findViewById<View>(R.id.lock_tip) as MusicCustomTextView
         val onClickListener =
             View.OnClickListener { v ->
-                if (mClickControler!!.canTrigger()) {
+                if (mClickControler?.canTrigger()==true) {
                     val id = v.id
                     if (id == R.id.music_lock_pause) {
                         musicPlayerManger.playOrPause()
@@ -209,11 +190,6 @@ class MusicLockActivity : BaseActivity(),
     override fun onResume() {
         super.onResume()
         //View.SYSTEM_UI_FLAG_FULLSCREEN 状态栏不可见
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_IMMERSIVE)
         jukeBoxResume()
     }
 
@@ -232,14 +208,10 @@ class MusicLockActivity : BaseActivity(),
                 return
             }
             discIsPlaying = true
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                if (mDiscObjectAnimator!!.isPaused) {
-                    mDiscObjectAnimator!!.resume()
-                } else {
-                    mDiscObjectAnimator!!.start()
-                }
+            if (mDiscObjectAnimator?.isPaused == true) {
+                mDiscObjectAnimator?.resume()
             } else {
-                mDiscObjectAnimator!!.start()
+                mDiscObjectAnimator?.start()
             }
         }
     }
@@ -249,15 +221,8 @@ class MusicLockActivity : BaseActivity(),
      */
     @Synchronized
     private fun jukeBoxPause() {
-        if (null != mDiscObjectAnimator) {
-            discIsPlaying = false
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                mDiscObjectAnimator!!.pause()
-            } else {
-                mDiscObjectAnimator!!.cancel()
-                music_lock_cover.rotation = 0f
-            }
-        }
+        discIsPlaying = false
+        mDiscObjectAnimator?.pause()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -281,7 +246,7 @@ class MusicLockActivity : BaseActivity(),
         mClickControler = null
         if (null != mDiscObjectAnimator) {
             discIsPlaying = false
-            mDiscObjectAnimator!!.cancel()
+            mDiscObjectAnimator?.cancel()
             mDiscObjectAnimator = null
             music_lock_cover.rotation = 0f
         }
@@ -295,7 +260,7 @@ class MusicLockActivity : BaseActivity(),
      */
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         if (null != mHandler) {
-            mHandler!!.post {
+            mHandler?.post {
                 if (playerState == MUSIC_PLAYER_ERROR && !TextUtils.isEmpty(message)) {
                     Toast.makeText(this@MusicLockActivity, message, Toast.LENGTH_SHORT).show()
                 }
@@ -340,7 +305,7 @@ class MusicLockActivity : BaseActivity(),
         bufferProgress: Int
     ) {
         if (null != mHandler) {
-            mHandler!!.post {
+            mHandler?.post {
                 val simpleDateFormat =
                     SimpleDateFormat("hh:mm-MM月dd日 E", Locale.CHINESE)
                 val date =
@@ -367,6 +332,6 @@ class MusicLockActivity : BaseActivity(),
     ) {
     }
 
-    private  val TAG = "MusicLockActivity"
+    private val TAG = "MusicLockActivity"
 
 }

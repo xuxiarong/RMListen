@@ -14,9 +14,7 @@ object ToastUtil {
     fun show(context: Context?, msg: String?) {
         try {
             if (null != context && !TextUtils.isEmpty(msg)) {
-                if (null != mToast) {
-                    mToast!!.cancel()
-                }
+                mToast?.cancel()
                 mToast = Toast.makeText(context, "", Toast.LENGTH_LONG)
                 mToast?.setText(msg)
                 mToast?.show()

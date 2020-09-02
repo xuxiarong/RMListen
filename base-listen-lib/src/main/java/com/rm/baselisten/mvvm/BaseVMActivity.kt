@@ -10,7 +10,7 @@ import com.rm.baselisten.R
 import com.rm.baselisten.databinding.ActivityBaseVmBinding
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
-import com.rm.baselisten.util.dip
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass

@@ -1,19 +1,17 @@
 package com.rm.baselisten.mvvm
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
-import androidx.annotation.NonNull
 import androidx.core.view.contains
 import androidx.fragment.app.FragmentActivity
 import com.gyf.barlibrary.ImmersionBar
 import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.dip
+import com.rm.baselisten.utilExt.dip
 
 /**
  * desc   : 基类的MvvmActivity
@@ -71,7 +69,7 @@ abstract class BaseActivity : FragmentActivity() {
     ) {
         immersionBarHelper.init(colorId, darkText)
     }
-
+    //获取状态蓝高度
      fun navigationBarHeight() : Int = ImmersionBar.getNavigationBarHeight(this)
 
     /**
