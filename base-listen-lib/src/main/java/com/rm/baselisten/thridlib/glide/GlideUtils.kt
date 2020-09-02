@@ -90,3 +90,12 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String?) {
     )
 }
 
+fun loadRoundCornersImage1( imageView: ImageView, url: String) {
+    loadImageByTransform(
+        imageView,
+        url,
+        0,
+        BlurTransformation(imageView.context,25,4)
+    )
+}
+

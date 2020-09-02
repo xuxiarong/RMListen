@@ -9,5 +9,10 @@ data class MenuDetailBean(
     val authorIcon: String,//作者头像
     val totalNumber: String,//总阅读数
     val brief: String,//描述
+    val isCollected: Boolean = false,//是否收藏
     val detailList: MutableList<BookBean>
-)
+) {
+    companion object {
+        const val CORNER = 14f
+    }
+}

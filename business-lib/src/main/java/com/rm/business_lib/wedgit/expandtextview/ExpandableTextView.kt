@@ -1,12 +1,15 @@
-package com.rm.business_lib.wedgit
+package com.rm.business_lib.wedgit.expandtextview
 
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.sp
@@ -16,7 +19,7 @@ class ExpandableTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : RelativeLayout(context, attrs, defStyleAttr), View.OnClickListener {
+) : ConstraintLayout(context, attrs, defStyleAttr), View.OnClickListener {
 
     private var mMaxCount = 60//最大显示字数
     private var mText: String? = null//当前的文本信息
@@ -26,6 +29,7 @@ class ExpandableTextView @JvmOverloads constructor(
     private var mTextColor = ContextCompat.getColor(context, R.color.business_text_color_333333)
     private var mTextSize = 0
     private var mExpandIcon = R.drawable.business_icon_unfold
+    private var foldClickListener: FoldClickListener? = null
 
     init {
         val ta =
@@ -45,9 +49,11 @@ class ExpandableTextView @JvmOverloads constructor(
 
     private fun initView() {
         mTextView = TextView(context)
+        mTextView.text = mText
         mImageView = ImageView(context)
+        mImageView.visibility = View.GONE
 
-        mTextView.setLineSpacing(dip(4).toFloat(),1f)
+        mTextView.setLineSpacing(dip(4).toFloat(), 1f)
         addView(mTextView)
 
         mTextView.setTextColor(mTextColor)
@@ -56,8 +62,8 @@ class ExpandableTextView @JvmOverloads constructor(
         val textHeight = textHeight()
         mImageView.setImageResource(mExpandIcon)
         val layoutParams = LayoutParams(textHeight, textHeight)
-        layoutParams.addRule(ALIGN_PARENT_RIGHT)
-        layoutParams.addRule(ALIGN_PARENT_BOTTOM)
+        layoutParams.bottomToBottom = ConstraintSet.PARENT_ID
+        layoutParams.endToEnd = ConstraintSet.PARENT_ID
         addView(mImageView, layoutParams)
         mImageView.setOnClickListener(this)
     }
@@ -68,12 +74,21 @@ class ExpandableTextView @JvmOverloads constructor(
         changeState()
     }
 
+    fun setFoldClickListener(foldClickListener: FoldClickListener) {
+        this.foldClickListener = foldClickListener
+    }
 
     //点击展开/收起  对文本进行处理
     private fun changeState() {
+        if (TextUtils.isEmpty(mText)) {
+            return
+        }
+        mImageView.visibility = View.VISIBLE
         val str = if (isExpand) {
+            foldClickListener?.expand(true)
             mText?.substring(0, mMaxCount)
         } else {
+            foldClickListener?.expand(false)
             mText
         }
         mTextView.text = str
@@ -116,6 +131,11 @@ class ExpandableTextView @JvmOverloads constructor(
         val anim = ObjectAnimator.ofFloat(mImageView, "rotation", value[0], value[1])
         anim.duration = 300
         anim.start()
+    }
+
+
+    interface FoldClickListener {
+        fun expand(isExpand: Boolean)
     }
 
 }

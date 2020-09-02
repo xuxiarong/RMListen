@@ -17,14 +17,14 @@ import com.rm.baselisten.helper.GlobalCloseInputHelper
  */
 abstract class BaseFragmentDialog : DialogFragment() {
     protected lateinit var rootView: View
-    val gravity = Gravity.CENTER
+    val gravity = Gravity.BOTTOM
     var type = 0
 
     /**
      * 是否拦截点击EditText 之外，关闭输入法
      * @return false 不做处理
      */
-    protected fun interceptClickInputClose(): Boolean {
+    open protected fun interceptClickInputClose(): Boolean {
         return false
     }
 
@@ -33,7 +33,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
      *
      * @return
      */
-    protected fun isDialogCanceledOnTouchOutside() : Boolean {
+    open protected fun isDialogCanceledOnTouchOutside() : Boolean {
         return true
     }
 
@@ -42,7 +42,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
      *
      * @return
      */
-    protected fun isDialogCancel() : Boolean {
+    open protected fun isDialogCancel() : Boolean {
         return true
     }
 
@@ -50,7 +50,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
      * dialog外部是否具有半透明的背景
      * @return Boolean
      */
-    protected fun isDialogHasBackground(): Boolean {
+    open protected fun isDialogHasBackground(): Boolean {
         return false
     }
 
@@ -86,6 +86,8 @@ abstract class BaseFragmentDialog : DialogFragment() {
                 //设置Dialog外部透明
                 params.dimAmount = 0f
                 dialog!!.window!!.attributes = params
+            }else{
+                dialog!!.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
             }
         }
     }

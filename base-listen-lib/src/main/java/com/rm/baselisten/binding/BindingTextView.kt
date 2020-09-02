@@ -3,7 +3,10 @@ package com.rm.baselisten.binding
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.R
+import com.rm.baselisten.util.DLog
 
 /**
  * desc   :
@@ -20,3 +23,4 @@ fun TextView.bindText(content: String?) {
         View.VISIBLE
     }
 }
+

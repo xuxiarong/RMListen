@@ -45,16 +45,17 @@ fun ImageView.bindVisible(content: String? = "") {
 }
 
 @BindingAdapter("corner", "bindUrl", "isCircle", requireAll = false)
-fun ImageView.bindUrl(corner: Float = 0f, bindUrl: String? = "", isCircle: Boolean = false) {
+fun ImageView.bindUrl(corner: Float = 0f, bindUrl: String?, isCircle: Boolean = false) {
+    val url = bindUrl ?: ""
     when {
         isCircle -> {
-            loadCircleImage(this, bindUrl)
+            loadCircleImage(this, url)
         }
         corner > 0 -> {
-            loadRoundCornersImage(corner, this, bindUrl)
+            loadRoundCornersImage(corner, this, url)
         }
         else -> {
-            loadImage(this, bindUrl)
+            loadImage(this, url)
         }
     }
 }
