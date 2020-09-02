@@ -11,6 +11,7 @@ import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.business_lib.binding.bindData
+import com.rm.business_lib.binding.bindLeftScroll
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.*
@@ -77,6 +78,7 @@ class HomeAdapter(
                             BR.item
                         )
                     singleRvBinding.homeRvRecommendHorDouble.bindHorizontalLayout(doubleAdapter)
+                    singleRvBinding.homeRvRecommendHorDouble.bindLeftScroll { homeViewModel.doubleRvOpenDetail() }
                 }
             }
             R.layout.home_item_recommend_grid_rv -> {

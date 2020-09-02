@@ -26,7 +26,9 @@ class HomeFragmentViewModel : BaseVMViewModel() {
     var homeHorDoubleList = MutableLiveData<MutableList<HomeRecommendHorDoubleModel>>()
     var homeGridList = MutableLiveData<MutableList<HomeGridRecommendModel>>()
     var collectItemClickList : ArrayList<(HomeCollectModel)->Unit> = ArrayList()
+
     var homeVerList = MutableLiveData<MutableList<MultiItemEntity>>()
+    var doubleRvLeftScrollOpenDetail : ()->Unit = {}
 
     fun initBannerInfo() {
         val bannerList = mutableListOf<BannerInfo>()
@@ -66,6 +68,10 @@ class HomeFragmentViewModel : BaseVMViewModel() {
 
     fun initCollectClick(vararg clickList: () -> Unit){
 
+    }
+
+    fun doubleRvOpenDetail(){
+        doubleRvLeftScrollOpenDetail()
     }
 
 
