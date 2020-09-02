@@ -3,6 +3,7 @@ package com.rm.baselisten.util
 import android.content.Context
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.rm.baselisten.R
 
 /**
  * desc   :
@@ -11,10 +12,11 @@ import androidx.fragment.app.Fragment
  */
 object DisplayUtils {
     //提供给JAVA代码调用
-    fun getDip(context: Context,value: Float):Float{
-       return context.dip(value).toFloat()
+    fun getDip(context: Context, value: Float): Float {
+        return context.dip(value).toFloat()
     }
 }
+
 inline fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
 inline fun Context.dip(value: Float): Int = (value * resources.displayMetrics.density).toInt()
@@ -31,7 +33,8 @@ inline fun Context.px2sp(px: Int): Float = (px.toFloat() / resources.displayMetr
 
 inline fun Context.dimen(resource: Int): Int = resources.getDimensionPixelSize(resource)
 
-inline fun Context.sp2px(spValue: Float): Int = (spValue * resources.displayMetrics.scaledDensity + 0.5f * (if (spValue >= 0.0f) 1 else -1).toFloat()).toInt()
+inline fun Context.sp2px(spValue: Float): Int =
+    (spValue * resources.displayMetrics.scaledDensity + 0.5f * (if (spValue >= 0.0f) 1 else -1).toFloat()).toInt()
 
 //the same for the views
 inline fun View.dip(value: Int): Int = context.dip(value)
@@ -52,6 +55,17 @@ inline fun Fragment.sp(value: Float): Int = activity?.sp(value) ?: 0
 inline fun Fragment.px2dip(px: Int): Float = activity?.px2dip(px) ?: 0f
 inline fun Fragment.px2sp(px: Int): Float = activity?.px2sp(px) ?: 0f
 inline fun Fragment.dimen(resource: Int): Int = activity?.dimen(resource) ?: 0
+
+fun Context.getStateHeight(context: Context): Int {
+    val identifier =
+        context.applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
+
+    return if (identifier > 0) {
+        context.applicationContext.resources.getDimensionPixelSize(identifier)
+    } else {
+        px2dip(50).toInt()
+    }
+}
 
 
 /**屏幕的宽高**/

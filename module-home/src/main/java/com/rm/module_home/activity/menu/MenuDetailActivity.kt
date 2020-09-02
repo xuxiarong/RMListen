@@ -2,18 +2,23 @@ package com.rm.module_home.activity.menu
 
 import android.content.Context
 import android.content.Intent
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.observe
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.linearItemDecoration
-import com.rm.baselisten.model.BaseTitleModel
+import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.thridlib.glide.loadCircleImage
-import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
+import com.rm.baselisten.thridlib.glide.loadRoundCornersImage1
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.getStateHeight
+import com.rm.business_lib.bean.BookBean
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.adapter.HomeMenuDetailAdapter
 import com.rm.module_home.databinding.HomeActivityListenMenuDetailBinding
+import dialog.MenuDetailDialog
 import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
+
 
 class MenuDetailActivity :
     BaseVMActivity<HomeActivityListenMenuDetailBinding, MenuDetailViewModel>() {
@@ -23,36 +28,56 @@ class MenuDetailActivity :
         }
     }
 
-    private val mAdapter: HomeMenuDetailAdapter by lazy {
-        HomeMenuDetailAdapter()
+    private val mAdapter by lazy {
+        CommonBindVMAdapter<BookBean>(
+            mViewModel,
+            mutableListOf(),
+            R.layout.home_adapter_menu_detail,
+            BR.click,
+            BR.item
+        )
     }
+
 
     override fun startObserve() {
         mViewModel.data.observe(this) {
-            home_menu_detail_description.text = it.title
-            home_menu_detail_author.text = it.authorName
-            loadCircleImage(home_menu_detail_author_icon, it.authorIcon)
-            home_menu_detail_read_num.text = it.totalNumber
-            home_menu_detail_brief.setText(it.brief)
-            loadRoundCornersImage(14f, home_menu_detail_front_cover, it.frontCover)
+            loadRoundCornersImage1(home_menu_detail_iv_bg, it.frontCover)
 
-            mAdapter.setNewInstance(it.detailList)
+            if (it.isCollected) {
+                home_menu_detail_collected.setBackgroundResource(R.drawable.home_select_menu_collected_unselect)
+                home_menu_detail_collected.text =
+                    resources.getString(R.string.home_menu_detail_collected)
+            } else {
+                home_menu_detail_collected.setBackgroundResource(R.drawable.home_select_menu_collected_select)
+                home_menu_detail_collected.text =
+                    resources.getString(R.string.home_menu_detail_add_collected)
+            }
+
+            mAdapter.setList(it.detailList)
         }
     }
 
     override fun initView() {
         super.initView()
-        val baseTitle = BaseTitleModel().apply {
-            leftIcon = R.drawable.base_icon_back
-            rightIcon = R.drawable.home_icon_share
-            setLeftIconClick { finish() }
+        setD()//设置透明沉浸状态栏
+        val layoutParams = (home_menu_detail_title_cl.layoutParams) as ConstraintLayout.LayoutParams
+        layoutParams.apply {
+            //动态获取状态栏的高度,并设置标题栏的topMargin
+            val stateHeight = getStateHeight(this@MenuDetailActivity)
+            topMargin = stateHeight
         }
-
-        mViewModel.baseTitleModel.value = baseTitle
-
         home_menu_detail_recycler_view.apply {
             bindVerticalLayout(mAdapter)
             linearItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_18))
+        }
+
+
+        mViewModel.itemClick = {
+            DLog.i("------>", "${it.name}")
+        }
+
+        home_menu_detail_collected.setOnClickListener {
+            MenuDetailDialog(mViewModel,BR.viewModel).showCommonDialog(this)
         }
     }
 

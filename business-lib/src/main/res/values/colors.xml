@@ -28,5 +28,7 @@
     <color name="business_color_d6d6d6">#d6d6d6</color>
     <color name="business_color_999999">#999999</color>
     <color name="business_color_a9a9a9">#a9a9a9</color>
+    <color name="business_color_0f000000">#0f000000</color>
+
 
 </resources>
