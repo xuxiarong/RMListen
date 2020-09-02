@@ -52,13 +52,17 @@
         <TextView
             style="@style/BusinessTextStyleErrorTips"
             bindText="@{viewModel.errorTips}"
+            android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_22"
             android:layout_marginTop="@dimen/dp_6"
+            android:singleLine="true"
             app:layout_constraintLeft_toLeftOf="@id/login_include_password_input_lay"
+            app:layout_constraintRight_toLeftOf="@id/login_bu_password_forget_pwd"
             app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay"
             tools:text="手机号有误" />
 
         <TextView
+            android:id="@+id/login_bu_password_forget_pwd"
             style="@style/BusinessTextStyleFirst_3"
             bindClick="@{viewModel.forgetPassword}"
             android:layout_marginEnd="@dimen/dp_22"
