@@ -11,6 +11,7 @@ import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.business_lib.binding.bindData
+import com.rm.business_lib.binding.bindLeftScroll
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.*
@@ -23,14 +24,9 @@ import com.rm.module_home.viewmodel.HomeFragmentViewModel
  */
 class HomeAdapter(
     private var homeViewModel: HomeFragmentViewModel,
-    var list: MutableList<MultiItemEntity>,
     modelBrId: Int,
     itemBrId: Int
 ) : BaseMultiVMAdapter<MultiItemEntity>(homeViewModel, modelBrId, itemBrId) {
-
-    init {
-        setNewInstance(list = list)
-    }
 
     override fun onBindViewHolder(holder: BaseBindHolder, position: Int) {
         super.onBindViewHolder(holder, position)
@@ -77,6 +73,7 @@ class HomeAdapter(
                             BR.item
                         )
                     singleRvBinding.homeRvRecommendHorDouble.bindHorizontalLayout(doubleAdapter)
+                    singleRvBinding.homeRvRecommendHorDouble.bindLeftScroll { homeViewModel.doubleRvOpenDetail() }
                 }
             }
             R.layout.home_item_recommend_grid_rv -> {

@@ -11,8 +11,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import com.rm.baselisten.util.dip
-import com.rm.baselisten.util.sp
+import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.utilExt.sp
 import com.rm.business_lib.R
 
 class ExpandableTextView @JvmOverloads constructor(

@@ -2,7 +2,7 @@ package com.rm.business_lib.binding
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.util.dip
+import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.bean.BannerInfo
 import com.stx.xhb.androidx.XBanner
 

@@ -1,6 +1,5 @@
 package com.rm.module_home.fragment
 
-import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
@@ -31,7 +30,9 @@ import com.rm.module_home.viewmodel.HomeFragmentViewModel
  */
 class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentViewModel>() {
 
-    private lateinit var mHomeAdapter: HomeAdapter
+    private  val mHomeAdapter: HomeAdapter by lazy {
+        HomeAdapter(mViewModel,BR.viewModel,BR.item)
+    }
 
     override fun initLayoutId() = R.layout.home_home_fragment
 
@@ -55,16 +56,16 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             .setRightBackground(R.drawable.business_shape_stroke_rect_b1b1b1)
             .setRightContainerClick { ToastUtil.show(activity, " rightContainerClick ") }
         mViewModel.baseTitleModel.value = baseTitleModel
-
+        mViewModel.collectItemClickList = {initCollectClick(it)}
         mViewModel.initBannerInfo()
         mViewModel.initCollect()
         mViewModel.initSingleList()
         mViewModel.initDoubleList()
         mViewModel.initGridList()
         mViewModel.initVerList()
-
-        mHomeAdapter = HomeAdapter(mViewModel, initHomeAdapter(), BR.viewModel, BR.item)
+        mViewModel.doubleRvLeftScrollOpenDetail = {startBoutique()}
         mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
+        mHomeAdapter.setNewInstance(initHomeAdapter())
 
     }
 
@@ -98,14 +99,11 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             HomeMoreModel("新书推荐") { startHorSingleMore() },
             HomeRecommendVerRvModel()
         )
+
     }
 
     override fun startObserve() {
-        mViewModel.homeCollectModel.observe(this, Observer { it ->
-            it.forEach { _ ->
-                mViewModel.collectItemClickList.add { initCollectClick(it) }
-            }
-        })
+
     }
 
     private fun startBoutique() {

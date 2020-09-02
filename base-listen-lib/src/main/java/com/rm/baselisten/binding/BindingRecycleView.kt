@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.decoration.GridSpaceItemDecoration
 import com.rm.baselisten.decoration.LinearItemDecoration
-import com.rm.baselisten.util.dip
+import com.rm.baselisten.utilExt.dip
 
 /**
  * desc   :

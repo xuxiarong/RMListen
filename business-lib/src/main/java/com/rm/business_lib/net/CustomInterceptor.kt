@@ -4,6 +4,7 @@ import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
 import com.rm.business_lib.ACCESS_TOKEN
+import com.rm.business_lib.utils.DeviceUtils
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -37,7 +38,7 @@ class CustomInterceptor : Interceptor {
         // 随机生成的16位数字符
         val nonce = generateNonce()
         val signSource = StringBuilder().append(timestamp).append(nonce).append(APP_KEY).toString()
-        requestBuilder.addHeader("APP-DEVICE", "")
+        requestBuilder.addHeader("APP-DEVICE", DeviceUtils.uniqueDeviceId)
         requestBuilder.addHeader("APP-PLATFORM", "1")
         requestBuilder.addHeader("APP-TIMESTAMP", "$timestamp")
         requestBuilder.addHeader("APP-NONCE", nonce)
