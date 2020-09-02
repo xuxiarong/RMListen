@@ -1,12 +1,10 @@
 package com.rm.module_login.viewmodel
 
-import android.app.Activity
 import androidx.databinding.ObservableField
-import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.model.BaseNetStatus
+import com.rm.baselisten.model.BaseStatusModel
+import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.module_login.R
-import com.rm.module_login.activity.ForgetPasswordActivity
-import com.rm.module_login.activity.LoginByVerifyCodeActivity
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.view.PasswordInputViewModel
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
@@ -24,23 +22,41 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
     // 密码输入框的ViewModel
     val passwordInputViewModel = PasswordInputViewModel()
 
-    var context: Activity? = null
-
     // 用户协议和隐私协议是否选择
     var isCheck = ObservableField<Boolean>(false)
 
     // 错误提示信息
     var errorTips = ObservableField<String>("")
 
+    // 回调到Activity中的方法块
+    var callBackToActivity: (Int) -> Unit = {}
+
     /**
      * 登陆
      */
     fun login() {
-        // todo 登陆
+        // 登陆
         if (!isCheck.get()!!) {
             // 未选中check box
-            ToastUtil.show(context, context!!.resources.getString(R.string.login_agree_deal_tips))
+            callBackToActivity(0)
             return
+        }
+
+        baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
+        launchOnIO {
+            repository.loginByPassword(
+                "${phoneInputViewModel.countryCode.get()}${phoneInputViewModel.phone.get()}",
+                passwordInputViewModel.password.get()!!
+            ).checkResult(
+                onSuccess = {
+                    baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
+                    callBackToActivity(3)
+                },
+                onError = {
+                    baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
+                    errorTips.set(it)
+                }
+            )
         }
 
     }
@@ -49,14 +65,13 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
      * 忘记密码
      */
     fun forgetPassword() {
-        ForgetPasswordActivity.startActivity(context!!)
+        callBackToActivity(1)
     }
 
     /**
      * 验证码登陆
      */
     fun loginByVerifyCode() {
-        LoginByVerifyCodeActivity.startActivity(context!!)
-        context!!.finish()
+        callBackToActivity(2)
     }
 }

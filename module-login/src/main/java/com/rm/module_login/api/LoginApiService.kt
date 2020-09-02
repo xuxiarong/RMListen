@@ -24,6 +24,17 @@ interface LoginApiService {
     ): BaseResponse<LoginInfo>
 
     /**
+     * 密码登陆
+     * @param account String
+     * @param code String
+     */
+    @POST("auth/token/pwd")
+    suspend fun loginByPassword(
+        @Query("account") account: String,
+        @Query("password") code: String
+    ): BaseResponse<LoginInfo>
+
+    /**
      * 刷新token(令牌)
      * @param account String
      * @param code String

@@ -36,7 +36,7 @@ open class BaseRepository {
         errorBlock: (suspend CoroutineScope.() -> Unit)? = null
     ): BaseResult<T> {
         return coroutineScope {
-            if (response.code == -1) {
+            if (response.code != 0) {
                 errorBlock?.let { it() }
                 BaseResult.Error(IOException(response.msg))
             } else {

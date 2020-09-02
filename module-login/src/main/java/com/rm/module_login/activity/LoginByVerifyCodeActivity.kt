@@ -41,7 +41,7 @@ class LoginByVerifyCodeActivity :
 
     override fun initView() {
         super.initView()
-        mViewModel.callBackStatus = { callBackStatus(it) }
+        mViewModel.callBackToActivity = { callBackFromViewModel(it) }
     }
 
     override fun startObserve() {
@@ -127,14 +127,16 @@ class LoginByVerifyCodeActivity :
      * 所有需要ViewModel回调到界面处理的地方
      * @param status Int
      */
-    private fun callBackStatus(status: Int) {
+    private fun callBackFromViewModel(status: Int) {
         when (status) {
             0 -> ToastUtil.show(
                 this@LoginByVerifyCodeActivity, String(R.string.login_agree_deal_tips)
             )
+
             1 -> ToastUtil.show(
                 this@LoginByVerifyCodeActivity, String(R.string.login_input_right_number_tips)
             )
+
             2 -> {
                 // 获取验证码成功
                 ToastUtil.show(
@@ -147,12 +149,8 @@ class LoginByVerifyCodeActivity :
                     TYPE_LOGIN
                 )
             }
-            3 ->
-                // 获取验证码失败
-                ToastUtil.show(
-                    this@LoginByVerifyCodeActivity, String(R.string.login_send_failed)
-                )
-            4 -> {
+
+            3 -> {
                 // 密码登陆
                 LoginByPasswordActivity.startActivity(this)
                 finish()

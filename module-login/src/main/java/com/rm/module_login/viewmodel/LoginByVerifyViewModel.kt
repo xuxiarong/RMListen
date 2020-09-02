@@ -1,13 +1,10 @@
 package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
-import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.module_login.R
 import com.rm.module_login.bean.LoginDialogModel
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
@@ -29,7 +26,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
     var loginStatus = ObservableField(0)
 
     // 回调到Activity中的方法块
-    var callBackStatus: (Int) -> Unit = {}
+    var callBackToActivity: (Int) -> Unit = {}
 
     var testDialogData = ObservableField<MutableList<LoginDialogModel>>(mutableListOf())
 
@@ -40,11 +37,11 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
         // 网络通过手机获取验证码
         if (!isCheck.get()!!) {
             // 未选中check box
-            callBackStatus(0)
+            callBackToActivity(0)
             return
         }
         if (phoneInputViewModel.phone.get()!!.length < 7) {
-            callBackStatus(1)
+            callBackToActivity(1)
             return
         }
 
@@ -56,16 +53,12 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
                 phoneInputViewModel.phone.get()!!
             ).checkResult(
                 onSuccess = {
-                    ToastUtil.show(
-                        BaseApplication.CONTEXT,
-                        BaseApplication.CONTEXT.resources.getString(R.string.login_input_right_number_tips)
-                    )
-                    callBackStatus(2)
                     baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
+                    callBackToActivity(2)
                 },
                 onError = {
-                    callBackStatus(3)
                     baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
+                    errorTips.set(it)
                 }
             )
         }
@@ -77,7 +70,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
      * 密码登陆入口
      */
     fun loginByPassword() {
-        callBackStatus(4)
+        callBackToActivity(3)
     }
 
     fun testClick() {
