@@ -25,7 +25,7 @@ class HomeFragmentViewModel : BaseVMViewModel() {
     var homeHorSingleList = MutableLiveData<MutableList<HomeRecommendHorSingleModel>>()
     var homeHorDoubleList = MutableLiveData<MutableList<HomeRecommendHorDoubleModel>>()
     var homeGridList = MutableLiveData<MutableList<HomeGridRecommendModel>>()
-    var collectItemClickList : ArrayList<(HomeCollectModel)->Unit> = ArrayList()
+    var collectItemClickList :(HomeCollectModel)->Unit ={}
 
     var homeVerList = MutableLiveData<MutableList<MultiItemEntity>>()
     var doubleRvLeftScrollOpenDetail : ()->Unit = {}
@@ -62,7 +62,7 @@ class HomeFragmentViewModel : BaseVMViewModel() {
     }
 
     fun collectClick(model : HomeCollectModel){
-        collectItemClickList[0](model)
+        collectItemClickList(model)
         DLog.d("suolong","model = ${model.collectName} ")
     }
 
