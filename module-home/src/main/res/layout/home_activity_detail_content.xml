@@ -9,12 +9,10 @@
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeDetailViewModel"
             />
-
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd = "@dimen/dp_16"
@@ -23,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_marginTop="@dimen/dp_8"

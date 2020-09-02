@@ -5,4 +5,5 @@
         <item>@string/home_top_list_month</item>
         <item>@string/home_top_list_all</item>
     </string-array>
+
 </resources>
