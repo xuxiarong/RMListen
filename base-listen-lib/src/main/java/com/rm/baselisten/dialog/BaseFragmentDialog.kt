@@ -22,11 +22,12 @@ abstract class BaseFragmentDialog : DialogFragment() {
      * Dialog对齐方式
      */
     var gravity = Gravity.CENTER
+
     /**
      * 是否拦截点击EditText 之外，关闭输入法
      * @return false 不做处理
      */
-    var dialogInterceptClickInput= false
+    var dialogInterceptClickInput = false
 
     /**
      * 触摸dialog之外的屏幕，是否关闭dialog
@@ -47,14 +48,26 @@ abstract class BaseFragmentDialog : DialogFragment() {
      * dialog是否水平方向全屏
      */
     var dialogWidthIsMatchParent = false
+
     /**
      * dialog是否竖直方向全屏
      */
     var dialogHeightIsMatchParent = false
+
     /**
      * dialog的背景颜色
      */
     var dialogBackgroundColor = R.color.base_transparent
+
+    /**
+     * dialog的宽度
+     */
+    var dialogWidth = 0;
+
+    /**
+     * dialog的高度
+     */
+    var dialogHeight = 0
 
     /**
      * 创建Dialog实例对象
@@ -87,19 +100,36 @@ abstract class BaseFragmentDialog : DialogFragment() {
             isCancelable = dialogCancel
             dialog!!.setCanceledOnTouchOutside(dialogCanceledOnTouchOutside)
             dialog!!.setCancelable(isCancelable)
-            if(!dialogHasBackground){
+            if (!dialogHasBackground) {
                 val params: WindowManager.LayoutParams = dialog!!.window!!.attributes
                 params.gravity = gravity
                 //设置Dialog外部透明
                 //设置Dialog外部透明
                 params.dimAmount = 0f
                 dialog!!.window!!.attributes = params
-            }else{
-                    dialog!!.window?.setBackgroundDrawableResource(R.color.base_transparent_80) // 背景透明
+            } else {
+                dialog!!.window?.setBackgroundDrawableResource(R.color.base_transparent_80) // 背景透明
             }
-            val layoutWidth = if(dialogWidthIsMatchParent){WindowManager.LayoutParams.MATCH_PARENT}else{WindowManager.LayoutParams.WRAP_CONTENT}
-            val layoutHeight = if(dialogHeightIsMatchParent){WindowManager.LayoutParams.MATCH_PARENT}else{WindowManager.LayoutParams.WRAP_CONTENT}
-            dialog!!.window!!.setLayout(layoutWidth,layoutHeight)
+
+            val layoutWidth = if (dialogWidth > 0) {
+                dialogWidth
+            } else {
+                if (dialogWidthIsMatchParent) {
+                    WindowManager.LayoutParams.MATCH_PARENT
+                } else {
+                    WindowManager.LayoutParams.WRAP_CONTENT
+                }
+            }
+            val layoutHeight = if (dialogHeight > 0) {
+                dialogHeight
+            } else {
+                if (dialogHeightIsMatchParent) {
+                    WindowManager.LayoutParams.MATCH_PARENT
+                } else {
+                    WindowManager.LayoutParams.WRAP_CONTENT
+                }
+            }
+            dialog!!.window!!.setLayout(layoutWidth, layoutHeight)
         }
     }
 
