@@ -23,6 +23,12 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             ACTION_ALARM_SYNCHRONIZE -> {
                 doSynchronizeAction(context)
             }
+            //屏幕点亮
+            Intent.ACTION_SCREEN_ON->{
+                context?.let {
+                    musicPlayerManger.startLockActivity(it)
+                }
+            }
             ACTION_ALARM_REPLENISH_STOCK->{
                 doReplenishStockAction(context)
             }

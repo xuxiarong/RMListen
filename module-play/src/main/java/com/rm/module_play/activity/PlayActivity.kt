@@ -3,7 +3,6 @@ package com.rm.module_play.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -18,7 +17,6 @@ import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.playview.GlobalplayHelp
-import com.rm.music_exoplayer_lib.notification.NotificationRemoteView
 import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -144,8 +142,9 @@ class PlayActivity :
         }
     }
 
-    val RADIO_URL = "https://webfs.yun.kugou.com/202009011511/03d86a604bac49baf30a4c987ff1d074/part/0/961492/G187/M09/15/17/W4cBAF5TRwKAaUBhADsisFgWPG0241.mp3"
-    val audioCover="https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
+    val RADIO_URL =
+        "https://webfs.yun.kugou.com/202009011511/03d86a604bac49baf30a4c987ff1d074/part/0/961492/G187/M09/15/17/W4cBAF5TRwKAaUBhADsisFgWPG0241.mp3"
+    val audioCover = "https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
     override fun initData() {
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
@@ -155,9 +154,14 @@ class PlayActivity :
             }
             musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
             val musicData = arrayListOf<BaseAudioInfo>()
-            musicData.add(BaseAudioInfo(RADIO_URL,audioCover))
+            musicData.add(BaseAudioInfo(RADIO_URL, audioCover))
             GlobalplayHelp.instance.addOnPlayerEventListener()
             musicPlayerManger.updateMusicPlayerData(musicData, 0)
+            MusicLockActivity::class.java.canonicalName?.let {
+                musicPlayerManger.setLockActivityName(
+                    it
+                )
+            }
 
         }
     }

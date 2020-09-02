@@ -1,8 +1,7 @@
 package com.rm.module_play.playview
 
-import android.widget.FrameLayout
 import com.rm.baselisten.util.Cxt
-import com.rm.baselisten.util.dip
+import com.rm.baselisten.utilExt.dip
 import com.rm.module_play.activity.PlayActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener

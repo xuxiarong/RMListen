@@ -1,7 +1,6 @@
 package com.rm.music_exoplayer_lib.service
 
 import android.os.Binder
-import android.widget.RemoteViews
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
@@ -90,5 +89,14 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     fun play() {
         presenter.play()
     }
+    //当前播放
+    fun getCurrentPlayerMusic(): BaseAudioInfo? = presenter.getCurrentPlayerMusic()
+    //锁屏对象
+    fun setLockActivityName(className: String) {
+        presenter.setLockActivityName(className)
+    }
+    //等待播放队列
+    fun getCurrentPlayList(): List<*>? = presenter.getCurrentPlayList()
 
+    fun isPlaying(): Boolean = presenter.isPlaying()
 }

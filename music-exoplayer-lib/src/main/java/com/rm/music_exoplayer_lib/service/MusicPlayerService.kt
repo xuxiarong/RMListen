@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
-import android.widget.RemoteViews
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -25,6 +24,7 @@ import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.manager.AlarmManger
 import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
@@ -43,8 +43,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //播放器工作状态
     private var mMusicPlayerState = MUSIC_PLAYER_STOP
-    var mRemoteView: RemoteViews? = null
 
+    //播放器绝对路径、锁屏绝对路径
+    private var mLockActivityClass: String? = null
     //当前播放播放器正在处理的对象位置
     private var mCurrentPlayIndex = 0
 
@@ -318,6 +319,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun getPlayerState(): Int = mMusicPlayerState
+    override fun setLockActivityName(className: String): MusicPlayerManager? {
+        mLockActivityClass = className
+        return null
+    }
 
     /**z
      * 更新播放进度

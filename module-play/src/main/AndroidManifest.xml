@@ -22,6 +22,15 @@
             android:name=".activity.PlayActivity"
             android:launchMode="singleTask">
         </activity>
+        <!--锁屏-->
+        <activity android:name=".activity.MusicLockActivity"
+            android:theme="@style/MusicLockScreenTheme"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.rm.module_play"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true">
+        </activity>
     </application>
 
 </manifest>
