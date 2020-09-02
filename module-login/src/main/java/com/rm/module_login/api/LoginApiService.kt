@@ -22,4 +22,29 @@ interface LoginApiService {
         @Query("account") account: String,
         @Query("code") code: String
     ): BaseResponse<LoginInfo>
+
+    /**
+     * 刷新token(令牌)
+     * @param account String
+     * @param code String
+     */
+    @POST("auth/refresh")
+    suspend fun refreshToken(
+        @Query("refresh_token") refreshToken: String
+    ): BaseResponse<LoginInfo>
+
+
+    /**
+     * 发送短信验证码
+     * @param type String  发送短信类型，"login" = 登陆，"forget_pwd" = 忘记密码,"rebind_phone" = 重新绑定手机
+     * @param area_code String 手机所在区号(例：+86)
+     * @param phone String 接收短信验证码的手机号码
+     * @return BaseResponse<*>
+     */
+    @POST("sms/code")
+    suspend fun sendMessage(
+        @Query("type") type: String,
+        @Query("area_code") area_code: String,
+        @Query("phone") phone: String
+    ): BaseResponse<Any>
 }
