@@ -143,7 +143,7 @@ class PlayActivity :
     }
 
     val RADIO_URL =
-        "https://webfs.yun.kugou.com/202009011511/03d86a604bac49baf30a4c987ff1d074/part/0/961492/G187/M09/15/17/W4cBAF5TRwKAaUBhADsisFgWPG0241.mp3"
+        "https://webfs.yun.kugou.com/202009021521/6f8e40d6bed8fa800b68525463bb695a/G149/M00/1B/01/1Q0DAFwdVTiAJgy0AEQPCE4Z5w0122.mp3"
     val audioCover = "https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
     override fun initData() {
         GlobalScope.launch {
