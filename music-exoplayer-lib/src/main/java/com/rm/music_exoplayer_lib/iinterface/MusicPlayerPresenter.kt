@@ -1,9 +1,9 @@
 package com.rm.music_exoplayer_lib.iinterface
 
-import android.widget.RemoteViews
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
 /**
  *
@@ -89,13 +89,13 @@ interface MusicPlayerPresenter {
      * 返回正在播放的音频对象
      * @return 音频对象
      */
-    fun getCurrentPlayerMusic(): BaseAudioInfo
+    fun getCurrentPlayerMusic(): BaseAudioInfo?
 
     /**
      * 返回内部播放器正在播放的队列
      * @return 播放器持有的播放数据集
      */
-    fun getCurrentPlayList(): List<*>
+    fun getCurrentPlayList(): List<*>?
 
     /**
      * 设置播放对象监听
@@ -153,5 +153,11 @@ interface MusicPlayerPresenter {
      */
     fun getPlayerState(): Int
 
+    /**
+     * 设置锁屏界面
+     * @param className Activity绝对路径
+     * @return MusicPlayerManager
+     */
+    fun setLockActivityName(className: String): MusicPlayerManager?
 
 }

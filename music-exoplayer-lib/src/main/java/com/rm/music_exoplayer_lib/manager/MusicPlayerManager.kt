@@ -1,19 +1,20 @@
 package com.rm.music_exoplayer_lib.manager
 
-import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import android.widget.RemoteViews
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.constants.MUSIC_PLAYER_PLAYING
+import com.rm.music_exoplayer_lib.constants.MUSIC_PLAYER_PREPARE
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.service.MusicPlayerBinder
 import com.rm.music_exoplayer_lib.service.MusicPlayerService
+import org.jetbrains.annotations.NotNull
 
 /**
  *
@@ -29,13 +30,30 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         }
         private var mBinder: MusicPlayerBinder? = null
         private var mConnection: ServiceConnection? = null
+
+        //播放器界面路径、锁屏界面路径、主界面路径
+        private var mActivityLockClassName: String? = null //播放器界面路径、锁屏界面路径、主界面路径
+
     }
 
+    //跳转到锁洁面
+    fun startLockActivity(@NotNull context: Context) {
+        mActivityLockClassName?.let {
+            val playerState: Int = getPlayerState()
+            if (playerState == MUSIC_PLAYER_PREPARE || playerState == MUSIC_PLAYER_PLAYING) {
+                val startIntent = Intent()
+                startIntent.setClassName(context, it)
+                startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                context.startActivity(startIntent)
+            }
+        }
+    }
 
     internal class MusicPlayerServiceConnection : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            ( service as? MusicPlayerBinder)?.let {
-                mBinder=service
+            (service as? MusicPlayerBinder)?.let {
+                mBinder = service
             }
         }
 
@@ -97,10 +115,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         TODO("Not yet implemented")
     }
 
-    override fun isPlaying(): Boolean {
-        TODO("Not yet implemented")
-    }
-
+    override fun isPlaying(): Boolean = mBinder?.isPlaying() == true
     override fun getDurtion(): Long {
         return mBinder?.getDurtion() ?: 0
     }
@@ -113,12 +128,12 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mBinder?.seekTo(currentTime)
     }
 
-    override fun getCurrentPlayerMusic(): BaseAudioInfo {
-        TODO("Not yet implemented")
+    override fun getCurrentPlayerMusic(): BaseAudioInfo? {
+        return mBinder?.getCurrentPlayerMusic()
     }
 
-    override fun getCurrentPlayList(): List<*> {
-        TODO("Not yet implemented")
+    override fun getCurrentPlayList(): List<*>? {
+        return mBinder?.getCurrentPlayList()
     }
 
     override fun setPlayInfoListener(listener: MusicPlayerInfoListener) {
@@ -159,6 +174,11 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun getPlayerState(): Int = mBinder?.getPlayerState() ?: -1
+    override fun setLockActivityName(activityClassName: String): MusicPlayerManager {
+        mActivityLockClassName = activityClassName;
+        mBinder?.setLockActivityName(mActivityLockClassName ?: "")
+        return this
+    }
 
 
 }

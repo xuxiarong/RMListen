@@ -1,12 +1,15 @@
 package com.rm.baselisten.mvvm
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
+import androidx.annotation.NonNull
 import androidx.core.view.contains
 import androidx.fragment.app.FragmentActivity
+import com.gyf.barlibrary.ImmersionBar
 import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.util.DLog
@@ -69,6 +72,8 @@ abstract class BaseActivity : FragmentActivity() {
         immersionBarHelper.init(colorId, darkText)
     }
 
+     fun navigationBarHeight() : Int = ImmersionBar.getNavigationBarHeight(this)
+
     /**
      * 设置透明沉浸式
      */
@@ -92,10 +97,10 @@ abstract class BaseActivity : FragmentActivity() {
      */
     protected open fun rootViewAddView(view: View) {
         val rootView: FrameLayout = findViewById(android.R.id.content)
-        if ((view.parent as? FrameLayout)?.contains(view)==true) {
+        if ((view.parent as? FrameLayout)?.contains(view) == true) {
             (view.parent as FrameLayout).removeView(view)
         }
-        rootView.addView(view,layoutParams)
+        rootView.addView(view, layoutParams)
     }
 
     protected open val layoutParams by lazy {
