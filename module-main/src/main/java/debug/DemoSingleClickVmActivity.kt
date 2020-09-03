@@ -26,7 +26,7 @@ class DemoSingleClickVmActivity :
     override fun startObserve() {
 
         mViewModel.singClickModelList.observe(this, Observer { list ->
-            mAdapter.setNewInstance(list)
+            mAdapter.setList(list)
             mAdapter.notifyDataSetChanged()
         })
     }

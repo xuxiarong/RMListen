@@ -52,7 +52,7 @@ class HomeTopListContentFragment :
 
     override fun startObserve() {
         mViewModel.dataList.observe(this) {
-            listAdapter.setNewInstance(it)
+            listAdapter.setList(it)
         }
     }
 

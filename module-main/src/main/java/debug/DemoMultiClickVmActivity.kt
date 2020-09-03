@@ -27,7 +27,7 @@ class DemoMultiClickVmActivity : BaseVMActivity<ActivityDemoMultiClickVmBinding,
     override fun startObserve() {
 
         mViewModel.multiList.observe(this, Observer { list ->
-            mAdapter.setNewInstance(list)
+            mAdapter.setList(list)
             mAdapter.notifyDataSetChanged()
         })
     }

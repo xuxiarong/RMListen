@@ -65,7 +65,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         mViewModel.initVerList()
         mViewModel.doubleRvLeftScrollOpenDetail = {startBoutique()}
         mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
-        mHomeAdapter.setNewInstance(initHomeAdapter())
+        mHomeAdapter.setList(initHomeAdapter())
 
     }
 

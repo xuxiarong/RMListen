@@ -47,7 +47,7 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
     override fun startObserve() {
         mViewModel.tabInfoList.observe(this) {
             configureFragment(it)
-            tabAdapter.setNewInstance(it)
+            tabAdapter.setList(it)
         }
     }
 
