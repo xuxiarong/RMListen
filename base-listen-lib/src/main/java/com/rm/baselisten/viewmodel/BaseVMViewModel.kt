@@ -29,6 +29,10 @@ open class BaseVMViewModel : BaseViewModel() {
         baseIntentModel.postValue(BaseIntentModel(clazz))
     }
 
+    fun startActivity(clazz: Class<*>,bundle: Bundle){
+        baseIntentModel.postValue(BaseIntentModel(clazz,bundle))
+    }
+
     fun startActivityForResult(clazz: Class<*>, requestCode : Int){
         baseIntentModel.postValue(BaseIntentModel(clazz, Bundle(), requestCode))
     }
