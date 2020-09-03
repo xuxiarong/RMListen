@@ -1,7 +1,11 @@
 package com.rm.module_play
 
+import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
+import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
+import kotlinx.coroutines.*
 import org.koin.core.context.loadKoinModules
 
 /**
@@ -13,6 +17,15 @@ class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG,"Module Play onCreate()!!!")
         loadKoinModules(playModules)
+
+        GlobalScope.launch {
+            withContext(Dispatchers.Default) {
+                MusicPlayerManager.musicPlayerManger.initialize(
+                    Cxt.context,
+                    MusicInitializeCallBack {})
+                delay(300)
+            }
+        }
     }
 
     override fun onTerminate() {

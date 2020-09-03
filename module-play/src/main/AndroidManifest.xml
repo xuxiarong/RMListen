@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.rm.module_play">
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!--android 9.0上使用前台服务，需要添加权限-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-    <application>
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:resizeableActivity="true"
+        android:maxAspectRatio="2.4"
+        >
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
         <activity android:name=".activity.TestActivity" />
         <!-- ui适配设置 -->
         <meta-data
@@ -26,8 +35,8 @@
         <activity android:name=".activity.MusicLockActivity"
             android:theme="@style/MusicLockScreenTheme"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:taskAffinity="com.rm.module_play"
-            android:excludeFromRecents="true"
             android:exported="false"
             android:noHistory="true">
         </activity>

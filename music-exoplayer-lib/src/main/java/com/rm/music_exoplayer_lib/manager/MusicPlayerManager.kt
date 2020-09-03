@@ -42,10 +42,11 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
             val playerState: Int = getPlayerState()
             if (playerState == MUSIC_PLAYER_PREPARE || playerState == MUSIC_PLAYER_PLAYING) {
                 val startIntent = Intent()
-                startIntent.setClassName(context, it)
+                startIntent.setClassName(context.packageName, it)
                 startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-                context.startActivity(startIntent)
+                startIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
+                context.applicationContext .startActivity(startIntent)
             }
         }
     }

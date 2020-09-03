@@ -2,9 +2,11 @@ package com.rm.module_play.activity
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.graphics.Color
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Handler
+import android.os.PowerManager
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
@@ -36,7 +38,6 @@ import java.util.*
 class MusicLockActivity : BaseActivity(),
     MusicPlayerEventListener {
     private var mDiscObjectAnimator: ObjectAnimator? = null
-
     override fun getLayoutId(): Int = R.layout.music_activity_lock
     private var mHandler: Handler? = null
     private var discIsPlaying = false
@@ -47,9 +48,10 @@ class MusicLockActivity : BaseActivity(),
         music_silding_root.setOnSildingFinishListener(object : OnSildingFinishListener {
             override fun onSildingFinish() {
                 finish()
+
             }
         })
-        music_silding_root.setTouchView(getWindow().decorView)
+        music_silding_root.setTouchView(window.decorView)
         music_lock_time.updateLayoutParams<RelativeLayout.LayoutParams> {
             setMargins(0, navigationBarHeight() + dip(25), 0, 0)
         }
@@ -87,8 +89,8 @@ class MusicLockActivity : BaseActivity(),
                     }
                 }
             }
-        findViewById<View>(R.id.music_lock_last).setOnClickListener(onClickListener)
-        findViewById<View>(R.id.music_lock_next).setOnClickListener(onClickListener)
+        music_lock_last.setOnClickListener(onClickListener)
+        music_lock_next.setOnClickListener(onClickListener)
         music_lock_collect.setOnClickListener(onClickListener)
         music_lock_collect.setOnClickListener(onClickListener)
         music_lock_model.setOnClickListener(onClickListener)
@@ -120,24 +122,19 @@ class MusicLockActivity : BaseActivity(),
 
     override fun initView() {
         //去除锁和在锁屏界面显示此Activity
-        //去除锁和在锁屏界面显示此Activity
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        }else{
             window.addFlags(
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                         or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-            )
-        } else {
-            window.addFlags(
-                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                        or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
-            )
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = Color.TRANSPARENT
-        }
-    }
 
+            )
+        }
+
+
+    }
     /**
      * 更新当前处理的对象
      * @param audioInfo
@@ -204,13 +201,7 @@ class MusicLockActivity : BaseActivity(),
 
     override fun onResume() {
         super.onResume()
-        //View.SYSTEM_UI_FLAG_FULLSCREEN 状态栏不可见
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_IMMERSIVE)
-        //View.SYSTEM_UI_FLAG_FULLSCREEN 状态栏不可见
+       setStatusBar(R.color.color_FF8D006A)
         jukeBoxResume()
     }
 
@@ -353,6 +344,5 @@ class MusicLockActivity : BaseActivity(),
     ) {
     }
 
-    private val TAG = "MusicLockActivity"
 
 }

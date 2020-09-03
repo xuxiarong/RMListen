@@ -143,27 +143,15 @@ class PlayActivity :
     }
 
     val RADIO_URL =
-        "https://webfs.yun.kugou.com/202009021521/6f8e40d6bed8fa800b68525463bb695a/G149/M00/1B/01/1Q0DAFwdVTiAJgy0AEQPCE4Z5w0122.mp3"
+        "https://webfs.yun.kugou.com/202009031556/2c5ecf4a6613d2d97e4421151a12b017/part/0/961074/G203/M01/01/01/Cw4DAF52iliAAoChAD4QE6gg03M430.mp3"
     val audioCover = "https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
     override fun initData() {
-        GlobalScope.launch {
-            withContext(Dispatchers.Default) {
-                musicPlayerManger.initialize(this@PlayActivity,
-                    MusicInitializeCallBack {})
-                delay(300)
-            }
-            musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
-            val musicData = arrayListOf<BaseAudioInfo>()
-            musicData.add(BaseAudioInfo(RADIO_URL, audioCover))
-            GlobalplayHelp.instance.addOnPlayerEventListener()
-            musicPlayerManger.updateMusicPlayerData(musicData, 0)
-            MusicLockActivity::class.java.canonicalName?.let {
-                musicPlayerManger.setLockActivityName(
-                    it
-                )
-            }
 
-        }
+        musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
+        val musicData = arrayListOf<BaseAudioInfo>()
+        musicData.add(BaseAudioInfo(RADIO_URL, audioCover))
+        GlobalplayHelp.instance.addOnPlayerEventListener()
+        musicPlayerManger.updateMusicPlayerData(musicData, 0)
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
