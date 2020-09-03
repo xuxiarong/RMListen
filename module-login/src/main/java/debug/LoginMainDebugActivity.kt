@@ -3,7 +3,7 @@ package debug
 import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_login.R
 import com.rm.module_login.activity.*
-import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_LOGIN
+import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_RESET_PWD
 import kotlinx.android.synthetic.main.login_activity_main.*
 
 /**
@@ -24,7 +24,7 @@ class LoginMainDebugActivity : BaseDebugActivity() {
         }
 
         btnVerifyInput.setOnClickListener {
-            VerificationInputActivity.startActivity(this, "13510753483", TYPE_LOGIN)
+            VerificationInputActivity.startActivity(this, "+86", "13510753483", TYPE_RESET_PWD)
         }
 
         btnForget.setOnClickListener {
@@ -32,7 +32,7 @@ class LoginMainDebugActivity : BaseDebugActivity() {
         }
 
         btnReset.setOnClickListener {
-            ResetPasswordActivity.startActivity(this)
+            ResetPasswordActivity.startActivity(this,"123456","13766669999")
         }
     }
 

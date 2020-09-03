@@ -36,7 +36,6 @@
             app:layout_constraintTop_toBottomOf="@+id/loginDialogIcon"
             tools:text="登陆成功"
             bindLoginText="@{viewModel.loginStatus}"
-            bindClick="@{viewModel.testClick}"
             style="@style/BusinessTextStyleFirst_1"
             />
         <androidx.recyclerview.widget.RecyclerView

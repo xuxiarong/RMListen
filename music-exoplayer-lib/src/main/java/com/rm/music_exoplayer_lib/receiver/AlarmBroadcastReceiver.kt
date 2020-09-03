@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY
+import android.os.PowerManager
 import android.widget.Toast
 import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
+
 
 /**
  *
@@ -24,9 +26,9 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                 doSynchronizeAction(context)
             }
             //屏幕点亮
-            Intent.ACTION_SCREEN_ON->{
+            Intent.ACTION_SCREEN_OFF->{
                 context?.let {
-                    musicPlayerManger.startLockActivity(it.applicationContext)
+//                    musicPlayerManger.startLockActivity(it)
                 }
             }
             ACTION_ALARM_REPLENISH_STOCK->{

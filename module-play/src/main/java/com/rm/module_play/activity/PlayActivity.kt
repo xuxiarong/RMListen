@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.Cxt
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -17,12 +18,14 @@ import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.playview.GlobalplayHelp
+import com.rm.module_play.test.TestActivity
 import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_play.*
 import kotlinx.android.synthetic.main.music_paly_control_view.*
@@ -112,7 +115,9 @@ class PlayActivity :
             //调整播放列表
             showPlayBookListDialog()
         }
-
+        bt_get_book_list.setOnClickListener {
+            TestActivity.startActivity(this)
+        }
 
     }
 
@@ -143,27 +148,22 @@ class PlayActivity :
     }
 
     val RADIO_URL =
-        "https://webfs.yun.kugou.com/202009021521/6f8e40d6bed8fa800b68525463bb695a/G149/M00/1B/01/1Q0DAFwdVTiAJgy0AEQPCE4Z5w0122.mp3"
+        "https://webfs.yun.kugou.com/202009031556/2c5ecf4a6613d2d97e4421151a12b017/part/0/961074/G203/M01/01/01/Cw4DAF52iliAAoChAD4QE6gg03M430.mp3"
     val audioCover = "https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
     override fun initData() {
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
-                musicPlayerManger.initialize(this@PlayActivity,
+                musicPlayerManger.initialize(
+                    Cxt.context,
                     MusicInitializeCallBack {})
                 delay(300)
             }
-            musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
-            val musicData = arrayListOf<BaseAudioInfo>()
-            musicData.add(BaseAudioInfo(RADIO_URL, audioCover))
-            GlobalplayHelp.instance.addOnPlayerEventListener()
-            musicPlayerManger.updateMusicPlayerData(musicData, 0)
-            MusicLockActivity::class.java.canonicalName?.let {
-                musicPlayerManger.setLockActivityName(
-                    it
-                )
-            }
-
         }
+        musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
+        val musicData = arrayListOf<BaseAudioInfo>()
+        musicData.add(BaseAudioInfo(RADIO_URL, audioCover))
+        GlobalplayHelp.instance.addOnPlayerEventListener()
+        musicPlayerManger.updateMusicPlayerData(musicData, 0)
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {

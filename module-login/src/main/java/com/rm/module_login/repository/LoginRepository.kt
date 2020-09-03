@@ -7,6 +7,7 @@ import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.utils.aes.AESUtil
 import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.bean.LoginInfo
+import com.rm.module_login.bean.ValidateCodeBean
 
 /**
  * desc   : 登陆Repository
@@ -14,6 +15,12 @@ import com.rm.module_login.bean.LoginInfo
  * version: 1.0
  */
 class LoginRepository(private val apiService: LoginApiService) : BaseRepository() {
+
+    // 密码加密所需key
+    private val KEY = "a48435c7e0930cd2c5f2a0c8a3ec29fe"
+
+    // 密码加密所需iv
+    private val IV = "140fa03a972cdb3c"
 
     /**
      * 发送登陆短信验证码
@@ -53,15 +60,32 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
     }
 
     /**
+     * 校验忘记密码验证码是否正确
+     * @param phone String
+     * @param code String
+     * @return BaseResult<LoginInfo>
+     */
+    suspend fun validateForgetPasswordVerifyCode(
+        area_code: String,
+        phone: String,
+        code: String
+    ): BaseResult<ValidateCodeBean> {
+        return apiCall { apiService.validateCode("forget_pwd", area_code, phone, code) }
+    }
+
+    /**
      * 密码登陆
      * @param phone String
      * @param password String
      * @return BaseResult<LoginInfo>
      */
     suspend fun loginByPassword(phone: String, password: String): BaseResult<LoginInfo> {
-        // 加密密码
-        val encryptPassword = AESUtil.encryptString2Base64(password,"a48435c7e0930cd2c5f2a0c8a3ec29fe","140fa03a972cdb3c")
-        return apiCall { apiService.loginByPassword(phone, encryptPassword) }
+        return apiCall {
+            apiService.loginByPassword(
+                phone,
+                AESUtil.encryptString2Base64(password, KEY, IV)
+            )
+        }
     }
 
     /**
@@ -71,6 +95,46 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      */
     suspend fun refreshToken(refreshToken: String): BaseResult<LoginInfo> {
         return apiCall { apiService.refreshToken(REFRESH_TOKEN.getStringMMKV()) }
+    }
+
+
+    /**
+     * 通过验证码重设密码
+     * @param phone String
+     * @param code String
+     * @param password String
+     * @return BaseResult<Any>
+     */
+    suspend fun resetPasswordByVerifyCode(
+        phone: String,
+        code: String,
+        password: String
+    ): BaseResult<Any> {
+        return apiCall {
+            apiService.resetPasswordByVerifyCode(
+                phone,
+                code,
+                AESUtil.encryptString2Base64(password, KEY, IV)
+            )
+        }
+    }
+
+    /**
+     * 通过旧密码重设密码
+     * @param password String
+     * @param newPassword String
+     * @return BaseResult<Any>
+     */
+    suspend fun resetPasswordByVerifyCode(
+        password: String,
+        newPassword: String
+    ): BaseResult<Any> {
+        return apiCall {
+            apiService.resetPasswordByOldPassword(
+                AESUtil.encryptString2Base64(password, KEY, IV),
+                AESUtil.encryptString2Base64(newPassword, KEY, IV)
+            )
+        }
     }
 
 }
