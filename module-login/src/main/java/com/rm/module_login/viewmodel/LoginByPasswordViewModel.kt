@@ -1,10 +1,11 @@
 package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
-import com.rm.baselisten.model.BaseNetStatus
-import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.module_login.R
+import com.rm.module_login.activity.ForgetPasswordActivity
+import com.rm.module_login.activity.LoginByVerifyCodeActivity
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.view.PasswordInputViewModel
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
@@ -28,8 +29,8 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
     // 错误提示信息
     var errorTips = ObservableField<String>("")
 
-    // 回调到Activity中的方法块
-    var callBackToActivity: (Int) -> Unit = {}
+//    // 回调到Activity中的方法块
+//    var callBackToActivity: (Int) -> Unit = {}
 
     /**
      * 登陆
@@ -38,22 +39,23 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
         // 登陆
         if (!isCheck.get()!!) {
             // 未选中check box
-            callBackToActivity(0)
+            showToast(R.string.login_agree_deal_tips)
             return
         }
 
-        baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
+        showLoading()
         launchOnIO {
             repository.loginByPassword(
                 "${phoneInputViewModel.countryCode.get()}${phoneInputViewModel.phone.get()}",
                 passwordInputViewModel.password.get()!!
             ).checkResult(
                 onSuccess = {
-                    baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
-                    callBackToActivity(3)
+                    showContentView()
+                    showToast(R.string.login_success)
+                    finish()
                 },
                 onError = {
-                    baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
+                    showContentView()
                     errorTips.set(it)
                 }
             )
@@ -65,13 +67,14 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
      * 忘记密码
      */
     fun forgetPassword() {
-        callBackToActivity(1)
+        startActivity(ForgetPasswordActivity::class.java)
     }
 
     /**
      * 验证码登陆
      */
     fun loginByVerifyCode() {
-        callBackToActivity(2)
+        startActivity(LoginByVerifyCodeActivity::class.java)
+        finish()
     }
 }

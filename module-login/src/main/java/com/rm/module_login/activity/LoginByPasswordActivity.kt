@@ -7,7 +7,6 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
-import com.rm.baselisten.utilExt.String
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByPassowrdBinding
@@ -32,11 +31,6 @@ class LoginByPasswordActivity :
     override fun initModelBrId() = BR.viewModel
 
     override fun startObserve() {
-    }
-
-    override fun initView() {
-        super.initView()
-        mViewModel.callBackToActivity = { callBackFromViewModel(it) }
     }
 
     override fun initData() {
@@ -67,26 +61,5 @@ class LoginByPasswordActivity :
                         }
                     })
             ).build()
-    }
-
-    private fun callBackFromViewModel(flag: Int, params: String = "") {
-        when (flag) {
-            0 -> ToastUtil.show(this, String(R.string.login_agree_deal_tips)) // 未同意协议
-
-            1 -> ForgetPasswordActivity.startActivity(this) // 忘记密码
-
-            2 -> {
-                // 验证码登陆
-                LoginByVerifyCodeActivity.startActivity(this)
-                finish()
-            }
-
-            3 -> {
-                // 登陆成功
-                ToastUtil.show(this, String(R.string.login_success))
-                finish()
-            }
-
-        }
     }
 }

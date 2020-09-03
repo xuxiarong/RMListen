@@ -17,8 +17,18 @@ import com.rm.module_login.viewmodel.ResetPasswordViewModel
 class ResetPasswordActivity :
     BaseVMActivity<LoginActivityResetPasswordBinding, ResetPasswordViewModel>() {
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, ResetPasswordActivity::class.java))
+        fun startActivity(context: Context, verifyCode: String, phone: String) {
+            context.startActivity(Intent(context, ResetPasswordActivity::class.java).apply {
+                putExtra("verifyCode", verifyCode)
+                putExtra("phone", phone)
+            })
+        }
+
+        fun getIntent(verifyCode: String, phone: String): HashMap<String, Any> {
+            return hashMapOf(
+                Pair("verifyCode", verifyCode),
+                Pair("phone", phone)
+            )
         }
     }
 
@@ -32,6 +42,8 @@ class ResetPasswordActivity :
     override fun initView() {
         super.initView()
         mViewModel.baseTitleModel.value = BaseTitleModel().setLeftIconClick { finish() }
+        mViewModel.verifyCode = intent.getStringExtra("verifyCode")
+        mViewModel.phone = intent.getStringExtra("phone")
     }
 
 

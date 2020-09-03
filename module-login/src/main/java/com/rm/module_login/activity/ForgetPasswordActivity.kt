@@ -36,6 +36,5 @@ class ForgetPasswordActivity :
     }
 
     override fun initData() {
-        mViewModel.context = this
     }
 }

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
+import androidx.databinding.Observable
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_login.BR
@@ -30,26 +32,43 @@ class VerificationInputActivity :
         // 重置密码类型
         const val TYPE_RESET_PWD = 1
 
-        fun startActivity(context: Context, phoneNumber: String, type: Int) {
-            context.startActivity(
-                Intent(
-                    context,
-                    VerificationInputActivity::class.java
-                ).apply {
-                    putExtra("phone", phoneNumber)
-                    putExtra("type", type)
-                })
+        fun getIntent(countryCode: String, phoneNumber: String, type: Int): HashMap<String, Any> {
+            return hashMapOf(
+                Pair("countryCode", countryCode),
+                Pair("phone", phoneNumber),
+                Pair("type", type)
+            )
+        }
+
+        fun startActivity(context: Context,countryCode: String, phoneNumber: String, type: Int){
+            context.startActivity(Intent(context,VerificationInputActivity::class.java).apply {
+                putExtra("countryCode",countryCode)
+                putExtra("phone",phoneNumber)
+                putExtra("type",type)
+            })
         }
     }
 
     override fun getLayoutId(): Int = R.layout.login_activity_verification_code_input
 
+    override fun initModelBrId() = BR.viewModel
+
     override fun startObserve() {
+        mViewModel.reGetCodeStr.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if (TextUtils.isEmpty(mViewModel.reGetCodeStr.get())) {
+                    // "重新获取" 字符为空，表明又重新开始倒计时
+                    countdownTimeHandler.sendEmptyMessage(0)
+                }
+            }
+        })
     }
 
     override fun initView() {
         mViewModel.baseTitleModel.value = BaseTitleModel().setLeftIconClick { finish() }
         mViewModel.getCodeType = intent.getIntExtra("type", 0)
+        mViewModel.countryCode = intent.getStringExtra("countryCode")
     }
 
     override fun initData() {
@@ -64,7 +83,10 @@ class VerificationInputActivity :
         countdownTimeHandler.sendEmptyMessageDelayed(0, 1000)
     }
 
-    override fun initModelBrId() = BR.viewModel
+    override fun onDestroy() {
+        super.onDestroy()
+        countdownTimeHandler.removeMessages(0)
+    }
 
 
     /**

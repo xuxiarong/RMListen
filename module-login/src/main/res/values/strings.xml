@@ -14,6 +14,8 @@
     <string name="login_login">登录</string>
     <string name="login_success">登录成功</string>
     <string name="login_failed">登录失败</string>
+    <string name="login_modify_success">修改成功</string>
+    <string name="login_verify_wrong">验证码不正确</string>
 
     <string name="login_input_verification_code">请输入验证码</string>
     <string name="login_re_get_verify_code">重新获取</string>
@@ -24,8 +26,8 @@
     <string name="login_reset_password_tips">密码为6&#8211;16位，需要包含数字、字母组合</string>
     <string name="login_reset_password_error_tips">密码必须是包含数字、字母组合</string>
     <string name="login_modify">修改</string>
-    <string name="login_send_success">发送成功</string>
-    <string name="login_send_failed">发送失败</string>
+    <string name="login_send_success">已发送验证码</string>
+    <string name="login_send_failed">发送验证码失败</string>
 
 
     <string name="login_format_verification_phone_tips" formatted="false">验证码已发送至%s</string>

@@ -2,10 +2,12 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.model.BaseNetStatus
-import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.module_login.R
+import com.rm.module_login.activity.LoginByPasswordActivity
+import com.rm.module_login.activity.VerificationInputActivity
+import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_LOGIN
 import com.rm.module_login.bean.LoginDialogModel
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
@@ -26,8 +28,8 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
 
     var loginStatus = ObservableField(0)
 
-    // 回调到Activity中的方法块
-    var callBackToActivity: (Int) -> Unit = {}
+//    // 回调到Activity中的方法块
+//    var callBackToActivity: (Int) -> Unit = {}
 
     var testDialogData = MutableLiveData<MutableList<LoginDialogModel>>(mutableListOf())
 
@@ -36,18 +38,20 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
      */
     fun getCode() {
 
+        showToast(R.string.login_agree_deal_tips)
+
         // 网络通过手机获取验证码
         if (!isCheck.get()!!) {
             // 未选中check box
-            callBackToActivity(0)
+            showToast(R.string.login_agree_deal_tips)
             return
         }
         if (phoneInputViewModel.phone.get()!!.length < 7) {
-            callBackToActivity(1)
+            showToast(R.string.login_input_right_number_tips)
             return
         }
 
-        baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
+        showLoading()
         // 发送登陆短信验证码
         launchOnIO {
             repository.sendLoginVerifyCode(
@@ -55,11 +59,20 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
                 phoneInputViewModel.phone.get()!!
             ).checkResult(
                 onSuccess = {
-                    baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
-                    callBackToActivity(2)
+                    showContentView()
+                    showToast(R.string.login_send_success)
+                    // 跳转到登陆验证码输入界面
+                    startActivity(
+                        VerificationInputActivity::class.java,
+                        VerificationInputActivity.getIntent(
+                            phoneInputViewModel.countryCode.get()!!,
+                            phoneInputViewModel.phone.get()!!,
+                            TYPE_LOGIN
+                        )
+                    )
                 },
                 onError = {
-                    baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
+                    showContentView()
                     errorTips.set(it)
                 }
             )
@@ -70,7 +83,9 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
      * 密码登陆入口
      */
     fun loginByPassword() {
-        callBackToActivity(3)
+        // 密码登陆
+        startActivity(LoginByPasswordActivity::class.java)
+        finish()
     }
 
     fun testClick() {
@@ -84,13 +99,13 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
 
     }
 
-    fun getDialogData() {
-        testDialogData.value =
-            mutableListOf(
-                LoginDialogModel("张三"),
-                LoginDialogModel("李四"),
-                LoginDialogModel("王五")
-            )
-    }
+//    fun getDialogData() {
+//        testDialogData.value =
+//            mutableListOf(
+//                LoginDialogModel("张三"),
+//                LoginDialogModel("李四"),
+//                LoginDialogModel("王五")
+//            )
+//    }
 
 }
