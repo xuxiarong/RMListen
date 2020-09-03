@@ -1,6 +1,7 @@
 package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.net.checkResult
@@ -28,7 +29,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
     // 回调到Activity中的方法块
     var callBackToActivity: (Int) -> Unit = {}
 
-    var testDialogData = ObservableField<MutableList<LoginDialogModel>>(mutableListOf())
+    var testDialogData = MutableLiveData<MutableList<LoginDialogModel>>(mutableListOf())
 
     /**
      * 获取验证码
@@ -78,16 +79,19 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
         currentStatus += 1
         loginStatus.set(currentStatus % 3)
 
-    }
+        val newData = testDialogData.value
+        newData?.add(LoginDialogModel("张三$currentStatus"))
+        testDialogData.value = newData
+
+       }
 
     fun getDialogData() {
-        testDialogData.set(
+        testDialogData.value =
             mutableListOf(
                 LoginDialogModel("张三"),
                 LoginDialogModel("李四"),
                 LoginDialogModel("王五")
             )
-        )
     }
 
 }

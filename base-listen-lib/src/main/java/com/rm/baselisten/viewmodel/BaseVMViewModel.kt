@@ -19,4 +19,7 @@ open class BaseVMViewModel : BaseViewModel() {
 
     var baseStatusModel = MutableLiveData<BaseStatusModel>()
 
+    var baseToast = MutableLiveData<String>()
+
+
 }

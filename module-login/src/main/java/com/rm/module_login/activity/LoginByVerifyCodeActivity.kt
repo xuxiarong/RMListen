@@ -3,7 +3,7 @@ package com.rm.module_login.activity
 import android.content.Context
 import android.content.Intent
 import android.view.Gravity
-import androidx.databinding.Observable
+import androidx.lifecycle.Observer
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.dialog.CommonFragmentDialog
@@ -46,11 +46,8 @@ class LoginByVerifyCodeActivity :
     }
 
     override fun startObserve() {
-        mViewModel.testDialogData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                dialogAdapter.setList(mViewModel.testDialogData.get()!!)
-            }
+        mViewModel.testDialogData.observe(this, Observer {
+            dialogAdapter.setList(mViewModel.testDialogData.value!!)
         })
     }
 
@@ -72,27 +69,27 @@ class LoginByVerifyCodeActivity :
          *  R.layout.login_dialong_login_status ： dialog的布局文件
          *  BR.viewModel ： 布局文件中使用的viewModel变量的名字
          */
-//        loginDialog = CommonMvFragmentDialog(
-//            mViewModel,
-//            R.layout.login_dialong_login_status,
-//            BR.viewModel
-//        ).apply {
-//            this.dialogBackgroundColor = R.color.businessColorPrimary
-//            this.gravity = Gravity.BOTTOM
-//            this.dialogHasBackground = true
-//            this.dialogWidthIsMatchParent = true
-//            this.initDialogDataRef = {
-//                initDialogView()
-//            }
-//        }.showCommonDialog(this)
-
-        commonDialog = CommonFragmentDialog(R.layout.login_dialong_login_common).
-        apply {
+        loginDialog = CommonMvFragmentDialog(
+            mViewModel,
+            R.layout.login_dialong_login_status,
+            BR.viewModel
+        ).apply {
+            this.dialogBackgroundColor = R.color.businessColorPrimary
             this.gravity = Gravity.BOTTOM
             this.dialogHasBackground = true
             this.dialogWidthIsMatchParent = true
+            this.initDialogDataRef = {
+                initDialogView()
             }
-        commonDialog.showCommonDialog(this)
+        }.showCommonDialog(this)
+
+//        commonDialog = CommonFragmentDialog(R.layout.login_dialong_login_common).
+//        apply {
+//            this.gravity = Gravity.BOTTOM
+//            this.dialogHasBackground = true
+//            this.dialogWidthIsMatchParent = true
+//            }
+//        commonDialog.showCommonDialog(this)
 
     }
 

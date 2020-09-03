@@ -18,7 +18,6 @@ open class CommonMvFragmentDialog constructor(
 
     var initDialogDataRef : () -> Unit = {}
 
-
     override val initModelBrId = commonViewModelBrId
 
     override val viewModel = commonViewModel
