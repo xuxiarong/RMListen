@@ -29,4 +29,7 @@ public interface ARouterModuleServicePath {
 
     // pay
     String PATH_PAY_SERVICE = "/module_pay/service";
+
+    //download
+    String PATH_DOWNLOAD_SERVICE = "/module_download/service";
 }
