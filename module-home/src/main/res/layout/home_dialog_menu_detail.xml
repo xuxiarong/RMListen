@@ -25,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_dialog_menu_create_book_list"
             style="@style/BusinessTextStyleFirst_3"
             android:text="@string/home_menu_detail_create_book_list"
             android:textColor="@color/business_color_ff5e5e"
@@ -40,12 +41,14 @@
             android:background="@color/business_color_0f000000"
             app:layout_constraintTop_toBottomOf="@id/home_dialog_menu_text" />
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_dialog_menu_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_14"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_dialog_menu_line" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

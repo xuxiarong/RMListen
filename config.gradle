@@ -9,6 +9,7 @@ ext {
     isMineApp = false // 个人模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isLoginApp = true // 登陆模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isPayApp = false // 支付模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isDownloadApp = false // 下载模块开关，false = 作为lib组件存在，true = 作为App独立存在
 
     android = [
             compileSdkVersion: 29,
