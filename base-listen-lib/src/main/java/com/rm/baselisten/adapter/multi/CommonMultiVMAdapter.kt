@@ -4,7 +4,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.mvvm.BaseViewModel
 
 /**
- * desc   : 通用的多个Item的Adapter
+ * desc   : MVVM通用的多Item的Adapter
  * date   : 2020/08/24
  * version: 1.0
  */

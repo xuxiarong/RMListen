@@ -4,7 +4,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.holder.BaseBindHolder
 
 /**
- * desc   : 通用的多个Item的Adapter
+ * desc   : 通用的纯展示的多Item的Adapter
  * date   : 2020/08/24
  * version: 1.0
  */

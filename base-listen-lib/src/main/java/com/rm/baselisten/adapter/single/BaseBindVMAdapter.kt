@@ -7,7 +7,7 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 
 /**
- * desc   :
+ * desc   : MVVM模式抽象的单Item基类BaseAdapter
  * date   : 2020/08/21
  * version: 1.0
  */

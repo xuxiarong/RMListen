@@ -9,7 +9,7 @@ import com.rm.baselisten.holder.BaseBindHolder
 
 
 /**
- * desc   :
+ * desc   : dataBinding模式抽象的单Item基类BaseAdapter
  * date   : 2020/08/21
  * version: 1.0
  */
