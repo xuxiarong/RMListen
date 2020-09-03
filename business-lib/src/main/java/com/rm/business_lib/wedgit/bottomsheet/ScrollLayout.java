@@ -564,20 +564,6 @@ public class ScrollLayout extends FrameLayout {
         updateRecyclerViewScrollState(recyclerView);
     }
 
-    private void updateListViewScrollState(AbsListView listView) {
-        if (listView.getChildCount() == 0) {
-            setDraggable(true);
-        } else {
-            if (listView.getFirstVisiblePosition() == 0) {
-                View firstChild = listView.getChildAt(0);
-                if (firstChild.getTop() == listView.getPaddingTop()) {
-                    setDraggable(true);
-                    return;
-                }
-            }
-            setDraggable(false);
-        }
-    }
 
     private void updateRecyclerViewScrollState(RecyclerView recyclerView) {
         if (recyclerView.getChildCount() == 0) {

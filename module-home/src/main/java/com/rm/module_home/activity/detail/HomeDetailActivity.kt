@@ -3,6 +3,7 @@ package com.rm.module_home.activity.detail
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.view.View
 import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import com.rm.baselisten.adapter.single.CommonBindAdapter
@@ -26,7 +27,8 @@ import kotlinx.android.synthetic.main.home_activity_detail_main.*
  */
 class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDetailViewModel>() {
 
-    private val homedetailtagsadapter by lazy { CommonBindAdapter(mutableListOf<Tags>(),R.layout.home_item_book_label,BR.Tags) }
+    private val homedetailtagsadapter by lazy { CommonBindAdapter(mutableListOf<Tags>(),
+        R.layout.home_item_book_label,BR.Tags) }
 
     private val homeDetailCommentAdapter by lazy { CommonBindAdapter(mutableListOf<CommentList>()
         ,R.layout.home_detail_item_comment, BR.comment_list) }
@@ -98,13 +100,18 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
             }
         }
 
+    private val Chapter_headView by lazy {
+        View.inflate(this, R.layout.home_detail_chapter_headerview, null)
+    }
+
     override fun initData() {
+
         EllipsizeUtils.ellipsize(detail_title,"测试标题是否真的能够换行，显示省略号")
 
         scroll_down_layout!!.setMinOffset(0)
         scroll_down_layout!!.setMaxOffset((screenHeight*0.5).toInt())
         scroll_down_layout!!.setExitOffset(dip(100))
-        scroll_down_layout!!.setAllowHorizontalScroll(true)
+        scroll_down_layout!!.isAllowHorizontalScroll = true
         scroll_down_layout!!.setIsSupportExit(true)
         scroll_down_layout!!.setToOpen()
 
@@ -113,11 +120,12 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
         //scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
 
         mViewModel.intDetailInfo()
-
+        homechapterAdater.addHeaderView(Chapter_headView)
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)
 
         detail_directory_recycler.bindVerticalLayout(homechapterAdater)
+
 
     }
 
