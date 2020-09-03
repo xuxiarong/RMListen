@@ -18,14 +18,6 @@ class PlayApplicationDelegate : IApplicationDelegate {
         DLog.d(TAG,"Module Play onCreate()!!!")
         loadKoinModules(playModules)
 
-        GlobalScope.launch {
-            withContext(Dispatchers.Default) {
-                MusicPlayerManager.musicPlayerManger.initialize(
-                    Cxt.context,
-                    MusicInitializeCallBack {})
-                delay(300)
-            }
-        }
     }
 
     override fun onTerminate() {
