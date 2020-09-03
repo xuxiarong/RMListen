@@ -2,7 +2,7 @@ package com.rm.baselisten.adapter.single
 
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.rm.baselisten.holder.BaseBindHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 
@@ -14,7 +14,8 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 abstract class BaseBindVMAdapter<T> constructor(var viewModel : BaseVMViewModel, vmData: MutableList<T>, vmLayoutId: Int, private var viewModelBrId : Int, vmDataBrId: Int) :
     BaseBindAdapter<T>(vmData,vmLayoutId,vmDataBrId) {
 
-     override fun convert(holder: BaseBindHolder, item: T){
+     override fun convert(holder: BaseViewHolder, item: T){
+
          DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.setVariable(viewModelBrId,viewModel)
      }
 }

@@ -2,9 +2,7 @@ package com.rm.module_home.fragment
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.ToastUtil
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.boutique.BoutiqueActivity
@@ -46,16 +44,6 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
         setStatusBar(R.color.base_activity_bg_color)
 
-        val baseTitleModel = BaseTitleModel()
-
-        baseTitleModel.setLeftIcon(R.drawable.base_icon_back)
-            .setTitle("主标题")
-            .setLeftIconClick { activity?.finish() }
-            .setRightText("周榜")
-            .setRightIcon1(R.drawable.base_icon_back)
-            .setRightBackground(R.drawable.business_shape_stroke_rect_b1b1b1)
-            .setRightContainerClick { ToastUtil.show(activity, " rightContainerClick ") }
-        mViewModel.baseTitleModel.value = baseTitleModel
         mViewModel.collectItemClickList = {initCollectClick(it)}
         mViewModel.initBannerInfo()
         mViewModel.initCollect()

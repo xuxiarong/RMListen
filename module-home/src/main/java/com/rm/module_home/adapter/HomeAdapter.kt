@@ -3,13 +3,13 @@ package com.rm.module_home.adapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.business_lib.binding.bindData
 import com.rm.business_lib.binding.bindLeftScroll
 import com.rm.module_home.BR
@@ -28,7 +28,7 @@ class HomeAdapter(
     itemBrId: Int
 ) : BaseMultiVMAdapter<MultiItemEntity>(homeViewModel, modelBrId, itemBrId) {
 
-    override fun onBindViewHolder(holder: BaseBindHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         when (getItemViewType(position)) {
             R.layout.home_item_banner -> {
