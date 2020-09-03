@@ -6,8 +6,6 @@ import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.module_login.R
-import com.rm.module_login.activity.ForgetPasswordActivity
 import com.rm.module_login.bean.LoginDialogModel
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
@@ -38,10 +36,6 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
      */
     fun getCode() {
 
-        showToast(R.string.login_agree_deal_tips)
-
-        startActivity(ForgetPasswordActivity::class.java)
-
         // 网络通过手机获取验证码
         if (!isCheck.get()!!) {
             // 未选中check box
@@ -70,8 +64,6 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
                 }
             )
         }
-
-
     }
 
     /**
@@ -90,7 +82,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
         newData?.add(LoginDialogModel("张三$currentStatus"))
         testDialogData.value = newData
 
-       }
+    }
 
     fun getDialogData() {
         testDialogData.value =

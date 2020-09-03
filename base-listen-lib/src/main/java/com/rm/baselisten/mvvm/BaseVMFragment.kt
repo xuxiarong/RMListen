@@ -1,6 +1,7 @@
 package com.rm.baselisten.mvvm
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,11 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.rm.baselisten.R
 import com.rm.baselisten.databinding.BaseFragmentVmBinding
+import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -91,6 +95,39 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
         mViewModel.baseTitleModel.observe(this@BaseVMFragment, Observer {
             setTitle()
         })
+
+        mViewModel.baseToastModel.observe(this, Observer {
+            if(it.contentId>0){
+                ToastUtil.show(this@BaseVMFragment.activity,getString(it.contentId))
+            }else{
+                ToastUtil.show(this@BaseVMFragment.activity,it.content)
+            }
+        })
+
+
+        mViewModel.baseIntentModel.observe(this, Observer {
+            val startIntent = Intent(this@BaseVMFragment.activity,it.clazz)
+            if(it.dataMap!=null && it.dataMap.size>0){
+                it.dataMap.forEach { (key, value) ->
+                    startIntent.putAnyExtras(key,value)
+                }
+            }
+            startActivityForResult(startIntent,it.requestCode)
+        })
+        mViewModel.baseFinishModel.observe(this, Observer {
+            if(it.finish){
+                if(it.dataMap!=null && it.dataMap.size>0){
+                    val finishIntent = Intent()
+                    it.dataMap.forEach { (key, value) ->
+                        finishIntent.putAnyExtras(key,value)
+                    }
+                    this@BaseVMFragment.activity?.setResult(it.resultCode,finishIntent)
+                }else{
+                    this@BaseVMFragment.activity?.setResult(it.resultCode)
+                }
+                this@BaseVMFragment.activity?.finish()
+            }
+        })
     }
 
     /**
@@ -122,6 +159,9 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
             }
             BaseNetStatus.BASE_SHOW_CONTENT -> {
                 mChildView?.visibility = View.VISIBLE
+            }
+            else -> {
+                DLog.d("suolong"," netStatus = ${statusModel.netStatus}")
             }
         }
     }

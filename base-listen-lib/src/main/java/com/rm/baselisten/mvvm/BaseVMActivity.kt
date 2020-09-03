@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.rm.baselisten.R
 import com.rm.baselisten.databinding.ActivityBaseVmBinding
+import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
 import com.rm.baselisten.util.ToastUtil
@@ -98,16 +99,36 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         mViewModel.baseTitleModel.observe(this, Observer {
             setTitle()
         })
-        mViewModel.baseToastStr.observe(this, Observer {
-            ToastUtil.show(this@BaseVMActivity,it)
+        mViewModel.baseToastModel.observe(this, Observer {
+            if(it.contentId>0){
+                ToastUtil.show(this@BaseVMActivity,getString(it.contentId))
+            }else{
+                ToastUtil.show(this@BaseVMActivity,it.content)
+            }
         })
-        mViewModel.baseToastInt.observe(this, Observer {
-            ToastUtil.show(this@BaseVMActivity,getString(it))
-        })
-        mViewModel.baseIntentModel.observe(this, Observer {
 
-            val intent = Intent(this@BaseVMActivity,it.clazz)
-            startActivityForResult(intent,it.requestCode)
+        mViewModel.baseIntentModel.observe(this, Observer {
+            val startIntent = Intent(this@BaseVMActivity,it.clazz)
+            if(it.dataMap!=null && it.dataMap.size>0){
+                it.dataMap.forEach { (key, value) ->
+                    startIntent.putAnyExtras(key,value)
+                }
+            }
+            startActivityForResult(startIntent,it.requestCode)
+        })
+        mViewModel.baseFinishModel.observe(this, Observer {
+            if(it.finish){
+                if(it.dataMap!=null && it.dataMap.size>0){
+                    val finishIntent = Intent()
+                    it.dataMap.forEach { (key, value) ->
+                        finishIntent.putAnyExtras(key,value)
+                    }
+                    setResult(it.resultCode,finishIntent)
+                }else{
+                    setResult(it.resultCode)
+                }
+                finish()
+            }
         })
     }
 

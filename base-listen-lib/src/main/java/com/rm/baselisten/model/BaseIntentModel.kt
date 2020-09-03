@@ -1,7 +1,5 @@
 package com.rm.baselisten.model
 
-import android.os.Bundle
-
 /**
  * desc   :
  * date   : 2020/09/03
@@ -9,6 +7,6 @@ import android.os.Bundle
  */
 data class BaseIntentModel constructor(
     val clazz: Class<*>,
-    val bundle: Bundle = Bundle(),
+    val dataMap: HashMap<String,Any>? = null,
     val requestCode : Int = -1
 )
