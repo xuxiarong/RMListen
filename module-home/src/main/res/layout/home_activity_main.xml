@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,15 +23,23 @@
         android:text="跳转听单" />
 
     <Button
+        android:id="@+id/btnMenuDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="听单详情" />
+
+    <Button
         android:id="@+id/btnBoutique"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="精品推荐" />
+
     <Button
         android:id="@+id/btnList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="榜单" />
+
     <Button
         android:id="@+id/btnDetail"
         android:layout_width="wrap_content"

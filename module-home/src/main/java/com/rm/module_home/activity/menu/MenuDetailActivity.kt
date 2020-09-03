@@ -93,6 +93,7 @@ class MenuDetailActivity :
 
         home_menu_detail_collected.setOnClickListener {
             if (menuDialog == null) {
+                val height = resources.getDimensionPixelSize(R.dimen.dp_390)
                 menuDialog = CommonMvFragmentDialog(
                     mViewModel,
                     R.layout.home_dialog_menu_detail,
@@ -100,7 +101,7 @@ class MenuDetailActivity :
                 ).apply {
                     gravity = Gravity.BOTTOM
                     dialogWidthIsMatchParent = true
-
+                    dialogHeight = height
                     dialogHasBackground = true
                     initDialogDataRef = {
                         val homeDialogMenuDetailBinding =
@@ -115,7 +116,6 @@ class MenuDetailActivity :
                 }
             }
             menuDialog?.showCommonDialog(this)
-
         }
     }
 
