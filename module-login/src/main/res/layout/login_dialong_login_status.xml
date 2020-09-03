@@ -46,7 +46,7 @@
             app:layout_constraintTop_toBottomOf="@+id/loginText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-
+            android:maxHeight="300dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

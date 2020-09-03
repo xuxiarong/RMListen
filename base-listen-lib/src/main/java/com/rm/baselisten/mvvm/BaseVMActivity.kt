@@ -1,5 +1,6 @@
 package com.rm.baselisten.mvvm
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -97,8 +98,16 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         mViewModel.baseTitleModel.observe(this, Observer {
             setTitle()
         })
-        mViewModel.baseToast.observe(this, Observer {
+        mViewModel.baseToastStr.observe(this, Observer {
             ToastUtil.show(this@BaseVMActivity,it)
+        })
+        mViewModel.baseToastInt.observe(this, Observer {
+            ToastUtil.show(this@BaseVMActivity,getString(it))
+        })
+        mViewModel.baseIntentModel.observe(this, Observer {
+
+            val intent = Intent(this@BaseVMActivity,it.clazz)
+            startActivityForResult(intent,it.requestCode)
         })
     }
 
