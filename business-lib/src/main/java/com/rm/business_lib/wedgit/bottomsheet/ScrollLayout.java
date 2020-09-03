@@ -39,11 +39,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.rm.business_lib.R;
-import com.rm.business_lib.wedgit.bottomsheet.content.ContentScrollView;
 
 
 /**
- *可以向下滚动到最大偏移量并可以通过* OnScrollProgressListener告知滚动进度的布局。
+ * Layout that can scroll down to a max offset and can tell the scroll progress by
+ * OnScrollProgressListener.
  */
 public class ScrollLayout extends FrameLayout {
     private static final int MAX_SCROLL_DURATION = 400;
@@ -80,19 +80,6 @@ public class ScrollLayout extends FrameLayout {
                 }
             };
 
-    private final AbsListView.OnScrollListener associatedListViewListener =
-            new AbsListView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                    updateListViewScrollState(view);
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                                     int totalItemCount) {
-                    updateListViewScrollState(view);
-                }
-            };
     private final RecyclerView.OnScrollListener associatedRecyclerViewListener =
             new RecyclerView.OnScrollListener() {
                 @Override
@@ -126,7 +113,6 @@ public class ScrollLayout extends FrameLayout {
     public int minOffset = 0;
     private int exitOffset = 0;
     private OnScrollChangedListener onScrollChangedListener;
-    private ContentScrollView mScrollView;
 
     public ScrollLayout(Context context) {
         super(context);
@@ -192,23 +178,8 @@ public class ScrollLayout extends FrameLayout {
         a.recycle();
     }
 
-
-    private ContentScrollView.OnScrollChangedListener mOnScrollChangedListener = new ContentScrollView.OnScrollChangedListener() {
-        @Override
-        public void onScrollChanged(int l, int t, int oldL, int oldT) {
-            if (null == mScrollView) return;
-            if (null != onScrollChangedListener)
-                onScrollChangedListener.onChildScroll(oldT);
-            if (mScrollView.getScrollY() == 0) {
-                setDraggable(true);
-            } else {
-                setDraggable(false);
-            }
-        }
-    };
-
     /**
-     * 设置视图的滚动位置. This will cause a call to
+     * Set the scrolled position of your view. This will cause a call to
      * {@link #onScrollChanged(int, int, int, int)} and the view will be
      * invalidated.
      *
@@ -581,16 +552,6 @@ public class ScrollLayout extends FrameLayout {
         }
     }
 
-    /**
-     * Set associated list view, then this layout will only be able to drag down when the list
-     * view is scrolled to top.
-     *
-     * @param listView
-     */
-    public void setAssociatedListView(AbsListView listView) {
-        listView.setOnScrollListener(associatedListViewListener);
-        updateListViewScrollState(listView);
-    }
 
     /**
      * Set associated list view, then this layout will only be able to drag down when the list
@@ -639,12 +600,6 @@ public class ScrollLayout extends FrameLayout {
             }
             setDraggable(false);
         }
-    }
-
-    public void setAssociatedScrollView(ContentScrollView scrollView) {
-        this.mScrollView = scrollView;
-        this.mScrollView.setScrollbarFadingEnabled(false);
-        this.mScrollView.setOnScrollChangeListener(mOnScrollChangedListener);
     }
 
     private enum InnerStatus {

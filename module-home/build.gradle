@@ -76,7 +76,7 @@ dependencies {
     implementation project(path: ':business-lib')
     implementation project(path: ':component-comm')
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    implementation rootProject.ext.dependencies["scrolllayout"]
+    //implementation rootProject.ext.dependencies["scrolllayout"]
     kapt rootProject.ext.dependencies["router_compiler"]
 
 }

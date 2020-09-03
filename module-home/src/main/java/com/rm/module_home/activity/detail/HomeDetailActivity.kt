@@ -72,13 +72,11 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
         object : ScrollLayout.OnScrollChangedListener {
             override fun onScrollProgressChanged(currentProgress: Float) {
                 Log.e("currentProgress",""+currentProgress);
-
                 if(currentProgress==0f){
                     //tx_ff?.setText("wwwwwww")
                 }else{
                     //tx_ff?.setText("")
                 }
-
                 if (currentProgress >= 0) {
                     var precent = 255 * currentProgress
                     if (precent > 255) {
@@ -86,13 +84,8 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
                     } else if (precent < 0) {
                         precent = 0f
                     }
-
                     //mScrollLayout!!.background.alpha = 255 - precent.toInt()
-
                 }
-//                if (text_foot!!.visibility == View.VISIBLE) {
-//                    text_foot!!.visibility = View.GONE
-//                }
             }
             override fun onScrollFinished(currentStatus: ScrollLayout.Status) {
                 if (currentStatus == ScrollLayout.Status.EXIT) {
@@ -110,17 +103,20 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
 
         scroll_down_layout!!.setMinOffset(0)
         scroll_down_layout!!.setMaxOffset((screenHeight*0.5).toInt())
-        scroll_down_layout!!.setExitOffset(dip(50f))
+        scroll_down_layout!!.setExitOffset(dip(100))
+        scroll_down_layout!!.setAllowHorizontalScroll(true)
         scroll_down_layout!!.setIsSupportExit(true)
-        scroll_down_layout!!.isAllowHorizontalScroll = true
-        scroll_down_layout!!.setToExit()
-        scroll_down_layout!!.background.alpha = 1
-        scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
+        scroll_down_layout!!.setToOpen()
+
+        //scroll_down_layout!!.background.alpha = 1
+
+        //scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
 
         mViewModel.intDetailInfo()
-        //home_detail_recyc_style.adapter = homedetailtagsadapter
+
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)
+
         detail_directory_recycler.bindVerticalLayout(homechapterAdater)
 
     }

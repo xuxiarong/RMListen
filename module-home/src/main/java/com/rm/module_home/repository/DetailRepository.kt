@@ -30,7 +30,7 @@ class DetailRepository(val service: HomeApiService) : BaseRepository(){
 
         val homecomment = mutableListOf<CommentList>()
 
-        for(i in 0..10){
+        for(i in 0..50){
             homecomment.add(i,commentlist)
         }
         return HomeCommentViewModel(homecomment)
@@ -42,7 +42,7 @@ class DetailRepository(val service: HomeApiService) : BaseRepository(){
             0 ,"www.baidu.com",100,1,"100M")
         val chapter = mutableListOf<ChapterList>()
 
-        for(i in 0..10){
+        for(i in 0..50){
             chapter.add(i ,chapterlist)
         }
 

@@ -11,11 +11,10 @@
             />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/bottom_sheet_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         >
         <include
             layout="@layout/home_activity_detail_content"
@@ -23,21 +22,21 @@
             />
         <com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
             android:layout_marginTop="44dp"
-            android:background="@color/business_text_color_666666"
             android:id="@+id/scroll_down_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <com.rm.business_lib.wedgit.bottomsheet.content.ContentRecyclerView
+                <com.rm.business_lib.wedgit.bottomsheet.ContentRecyclerView
                     android:id="@+id/detail_directory_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/white" />
+                    android:background="@android:color/holo_blue_bright" />
 
             </RelativeLayout>
         </com.rm.business_lib.wedgit.bottomsheet.ScrollLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>
