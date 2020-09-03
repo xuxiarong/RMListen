@@ -13,6 +13,6 @@ class CommonMultiAdapter<T : MultiItemEntity> (var dataList : MutableList<T>,bin
     }
 
     init {
-        setList(dataList)
+        setNewInstance(dataList)
     }
 }

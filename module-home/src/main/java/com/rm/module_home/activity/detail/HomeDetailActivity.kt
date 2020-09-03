@@ -16,9 +16,7 @@ import com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
-import com.rm.module_home.model.home.detail.ChapterList
-import com.rm.module_home.model.home.detail.CommentList
-import com.rm.module_home.model.home.detail.Tags
+import com.rm.module_home.model.home.detail.*
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
@@ -50,20 +48,20 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
     override fun startObserve() {
         mViewModel.detailViewModel.addOnPropertyChangedCallback( object : OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                homedetailtagsadapter.setList(mViewModel.detailViewModel.get()!!.detaillist.tags)
+                homedetailtagsadapter.setNewInstance(mViewModel.detailViewModel.get()!!.detaillist.tags)
                 homedetailtagsadapter.notifyDataSetChanged()
             }
         })
         mViewModel.detailCommentViewModel.addOnPropertyChangedCallback( object : OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                homeDetailCommentAdapter.setList(mViewModel.detailCommentViewModel.get()!!.List_comment)
+                homeDetailCommentAdapter.setNewInstance(mViewModel.detailCommentViewModel.get()!!.List_comment)
                 homeDetailCommentAdapter.notifyDataSetChanged()
             }
         })
 
         mViewModel.detailChapterViewModel.addOnPropertyChangedCallback( object : OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                homechapterAdater.setList(mViewModel.detailChapterViewModel.get()!!.chapterList)
+                homechapterAdater.setNewInstance(mViewModel.detailChapterViewModel.get()!!.chapterList)
 
                 homechapterAdater.notifyDataSetChanged()
             }

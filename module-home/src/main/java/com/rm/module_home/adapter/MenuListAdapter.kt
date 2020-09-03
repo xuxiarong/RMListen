@@ -27,7 +27,7 @@ class MenuListAdapter(val viewModel: MenuViewModel) :
 //        DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
 //            ?.setVariable(BR.viewModel, viewModel)
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
-            bindGridLayout(MenuBookAdapter().apply { setList(item.bookList) }, 3)
+            bindGridLayout(MenuBookAdapter().apply { setNewInstance(item.bookList) }, 3)
             gridItemDecoration(8f)
         }
     }

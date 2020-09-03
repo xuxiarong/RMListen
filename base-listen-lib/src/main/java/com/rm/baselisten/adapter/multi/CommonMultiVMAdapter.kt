@@ -11,7 +11,7 @@ import com.rm.baselisten.mvvm.BaseViewModel
 class CommonMultiVMAdapter(commonModel : BaseViewModel, var list : MutableList<MultiItemEntity>, commonModelBrId : Int, bindId : Int)  : BaseMultiVMAdapter<MultiItemEntity>(commonModel,commonModelBrId,bindId) {
 
     init {
-        this.setList(list = list)
+        this.setNewInstance(list = list)
     }
 }
 

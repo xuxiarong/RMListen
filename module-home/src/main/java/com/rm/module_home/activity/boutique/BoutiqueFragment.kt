@@ -65,7 +65,7 @@ class BoutiqueFragment(private val categoryTabBean: CategoryTabBean) :
         }
 
         mViewModel.bookInfoList.observe(this) {
-            bookAdapter.setList(it)
+            bookAdapter.setNewInstance(it)
             home_boutique_fragment_recycler_view.bindVerticalLayout(bookAdapter)
         }
     }
