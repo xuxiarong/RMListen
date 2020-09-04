@@ -88,24 +88,24 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
         finish()
     }
 
-//    fun testClick() {
-//        var currentStatus = loginStatus.get()!!
-//        currentStatus += 1
-//        loginStatus.set(currentStatus % 3)
-//
-//        val newData = testDialogData.value
-//        newData?.add(LoginDialogModel("张三$currentStatus"))
-//        testDialogData.value = newData
-//
-//    }
+    fun testClick() {
+        var currentStatus = loginStatus.get()!!
+        currentStatus += 1
+        loginStatus.set(currentStatus % 3)
 
-//    fun getDialogData() {
-//        testDialogData.value =
-//            mutableListOf(
-//                LoginDialogModel("张三"),
-//                LoginDialogModel("李四"),
-//                LoginDialogModel("王五")
-//            )
-//    }
+        val newData = testDialogData.value
+        newData?.add(LoginDialogModel("张三$currentStatus"))
+        testDialogData.value = newData
+
+    }
+
+    fun getDialogData() {
+        testDialogData.value =
+            mutableListOf(
+                LoginDialogModel("张三"),
+                LoginDialogModel("李四"),
+                LoginDialogModel("王五")
+            )
+    }
 
 }

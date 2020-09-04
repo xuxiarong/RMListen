@@ -1,18 +1,24 @@
 package com.rm.baselisten.dialog
 
+import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.fragment.FragmentFactory
 
 /**
  * desc   :
  * date   : 2020/09/01
  * version: 1.0
  */
-open class CommonFragmentDialog constructor(commonLayoutId: Int) : BaseFragmentDialog() {
+open class CommonFragmentDialog  : BaseFragmentDialog() {
 
-    override val layoutId = commonLayoutId
 
-    fun showCommonDialog(activity: FragmentActivity) {
-        showDialog(activity)
+    fun showCommonDialog(activity: FragmentActivity,layoutId : Int) {
+
+        val bundle = Bundle()
+        bundle.putInt("layoutId", layoutId)
+
+        FragmentFactory.create(CommonFragmentDialog::class.java, bundle)
+            .getFragment<CommonFragmentDialog>().showDialog<CommonFragmentDialog>(activity)
     }
 
 }

@@ -1,43 +1,27 @@
 package com.rm.baselisten.dialog
 
+import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import com.rm.baselisten.mvvm.BaseViewModel
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 /**
  * desc   :
  * date   : 2020/09/01
  * version: 1.0
  */
-open class CommonMvFragmentDialog constructor(
-    commonViewModel: BaseViewModel,
-    commonLayoutId: Int,
-    commonViewModelBrId: Int
-) : BaseMvFragmentDialog() {
-
-    var initDialogViewRef : () -> Unit = {}
-
-    var initDialogDataRef : () -> Unit = {}
-
-    override val initModelBrId = commonViewModelBrId
-
-    override val viewModel = commonViewModel
-
-    override val layoutId = commonLayoutId
-
-    override fun initView() {
-        initDialogViewRef()
-    }
-
-    override fun initModelData() {
-        initDialogDataRef()
-    }
+open class CommonMvFragmentDialog : BaseMvFragmentDialog() {
 
     override fun startObserve() {
 
     }
 
-    fun showCommonDialog(activity: FragmentActivity) : CommonMvFragmentDialog{
-        showDialog(activity)
+    fun showCommonDialog(activity: FragmentActivity,layoutId : Int,viewModel : BaseVMViewModel,viewModelBrId : Int) : CommonMvFragmentDialog{
+        val bundle  = Bundle()
+        bundle.putInt("layoutId",layoutId)
+        bundle.putParcelable("viewModel",viewModel)
+        bundle.putInt("viewModelBrId",viewModelBrId)
+        arguments = bundle
+        showDialog<CommonMvFragmentDialog>(activity)
         return this
     }
 }

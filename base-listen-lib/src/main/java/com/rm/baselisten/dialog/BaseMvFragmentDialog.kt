@@ -16,24 +16,17 @@ import com.rm.baselisten.mvvm.BaseViewModel
 @Suppress("UNCHECKED_CAST")
 abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
 
+    companion object{
+        const val VIEW_MODEL_BR_ID = "viewModelBrId"
+        const val VIEW_MODEL = "viewModel"
+    }
+
     /**
      * 定义子类的dataBing对象
      */
      var mDataBind: ViewDataBinding? = null
 
-    /**
-     *  初始化子类viewModel的BrId
-     * @return Int
-     */
-    abstract val initModelBrId : Int
-
-    abstract val  viewModel: BaseViewModel
-
-    /**
-     *  初始化子类viewModel的BrId
-     * @return Int
-     */
-    abstract fun initModelData()
+    var initDialog : (() -> Unit) = {}
 
     /**
      * 开启子类的LiveData观察者
@@ -41,18 +34,14 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
     abstract fun startObserve()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val layoutId = arguments?.getInt(LAYOUT_ID, 0)?:0
         mDataBind =DataBindingUtil.inflate(inflater, layoutId, container, false)
+        val viewModelBrId = arguments?.getInt(VIEW_MODEL_BR_ID, 0)?:0
+        val viewModel :  BaseViewModel? = arguments?.getParcelable(VIEW_MODEL)
+        if(viewModelBrId>0 && viewModel!=null){
+            mDataBind?.setVariable(viewModelBrId,viewModel)
+        }
+        initDialog()
         return mDataBind?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mDataBind?.setVariable(initModelBrId,viewModel)
-        initView()
-        initModelData()
-    }
-
-    fun getBind(){
-
     }
 }
