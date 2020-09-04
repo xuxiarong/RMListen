@@ -22,6 +22,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         const val BASE_URL = "http://10.1.3.12:9602/api/v1_0/"
         const val  NEW_URL="http://mobilecdn.kugou.com/api/v3"
         const val OLD_HOST="http://10.1.3.12:9602"
+        const val PLAY_PAHT="http://www.kugou.com/yy/index.php"
 
     }
 
@@ -37,7 +38,12 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
                 override fun getNewUrl(baseUrlName: String?, request: Request?): HttpUrl? {
                     if (baseUrlName.equals("baidu")) {
                         val oldUrl = request?.url.toString()
-                        val newUrl = NEW_URL+oldUrl.drop(OLD_HOST.length)
+                        val newUrl =oldUrl.replace(OLD_HOST,NEW_URL)
+                        return newUrl.toHttpUrl()
+                    }
+                    if (baseUrlName.equals("play")) {
+                        val oldUrl = request?.url.toString()
+                        val newUrl =oldUrl.replace(OLD_HOST,PLAY_PAHT)
                         return newUrl.toHttpUrl()
                     }
                     return null

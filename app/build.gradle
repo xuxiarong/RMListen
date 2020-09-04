@@ -80,6 +80,6 @@ dependencies {
 
     implementation project(path: ':component-comm')
 //    implementation project(path: ':base-listen-lib')
-    kapt rootProject.ext.dependencies["router_compiler"]
+    annotationProcessor rootProject.ext.dependencies["router_compiler"]
 //    implementation project(path: ':business-lib')
 }
