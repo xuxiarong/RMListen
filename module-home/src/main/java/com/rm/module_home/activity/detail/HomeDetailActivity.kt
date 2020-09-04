@@ -4,13 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.utils.EllipsizeUtils
 import com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
@@ -21,6 +28,7 @@ import com.rm.module_home.model.home.detail.*
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
+import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
 
 /**
  * 书籍详情
@@ -41,17 +49,30 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
             context.startActivity(Intent(context, HomeDetailActivity::class.java))
         }
     }
-
+    private var stateHeight :Int = 0
+    override fun initView() {
+        super.initView()
+        setD()
+        val layoutParams = (home_detail_title_cl.layoutParams) as ConstraintLayout.LayoutParams
+        layoutParams.apply {
+            //动态获取状态栏的高度,并设置标题栏的topMargin
+            stateHeight = getStateHeight(this@HomeDetailActivity)
+            topMargin = stateHeight
+        }
+    }
     override fun getLayoutId(): Int = R.layout.home_activity_detail_main
 
     override fun initModelBrId() = BR.viewModel
 
-
     override fun startObserve() {
+
         mViewModel.detailViewModel.addOnPropertyChangedCallback( object : OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                loadBlurImage(img_glide,mViewModel.detailViewModel.get()!!.detaillist.cover_url)
+
                 homedetailtagsadapter.setNewInstance(mViewModel.detailViewModel.get()!!.detaillist.tags)
                 homedetailtagsadapter.notifyDataSetChanged()
+
             }
         })
         mViewModel.detailCommentViewModel.addOnPropertyChangedCallback( object : OnPropertyChangedCallback(){
@@ -68,6 +89,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
                 homechapterAdater.notifyDataSetChanged()
             }
         })
+
     }
 
     private val mOnScrollChangedListener: ScrollLayout.OnScrollChangedListener =
@@ -75,28 +97,18 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
             override fun onScrollProgressChanged(currentProgress: Float) {
                 Log.e("currentProgress",""+currentProgress);
                 if(currentProgress==0f){
-                    //tx_ff?.setText("wwwwwww")
+                    home_detail_title.visibility = View.VISIBLE
                 }else{
-                    //tx_ff?.setText("")
-                }
-                if (currentProgress >= 0) {
-                    var precent = 255 * currentProgress
-                    if (precent > 255) {
-                        precent = 255f
-                    } else if (precent < 0) {
-                        precent = 0f
-                    }
-                    //mScrollLayout!!.background.alpha = 255 - precent.toInt()
+                    home_detail_title.visibility = View.GONE
                 }
             }
             override fun onScrollFinished(currentStatus: ScrollLayout.Status) {
-                if (currentStatus == ScrollLayout.Status.EXIT) {
-//                    text_foot?.setVisibility(View.VISIBLE)
-                }
+//                if (currentStatus == ScrollLayout.Status.EXIT)
+                Log.e("onScrollFinished",""+currentStatus);
             }
 
             override fun onChildScroll(top: Int) {
-
+                Log.e("onChildScroll",""+top);
             }
         }
 
@@ -104,23 +116,24 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
         View.inflate(this, R.layout.home_detail_chapter_headerview, null)
     }
 
+
     override fun initData() {
 
-        EllipsizeUtils.ellipsize(detail_title,"测试标题是否真的能够换行，显示省略号")
-
         scroll_down_layout!!.setMinOffset(0)
-        scroll_down_layout!!.setMaxOffset((screenHeight*0.5).toInt())
-        scroll_down_layout!!.setExitOffset(dip(100))
+        scroll_down_layout!!.setMaxOffset((screenHeight*0.7).toInt())
+        scroll_down_layout!!.setExitOffset(dip(101))
         scroll_down_layout!!.isAllowHorizontalScroll = true
         scroll_down_layout!!.setIsSupportExit(true)
         scroll_down_layout!!.setToOpen()
-
+        val LayoutMargin = scroll_down_layout.layoutParams as ViewGroup.MarginLayoutParams
+        LayoutMargin.topMargin = stateHeight + dip(44)
+        scroll_down_layout.layoutParams = LayoutMargin
         //scroll_down_layout!!.background.alpha = 1
 
-        //scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
+        scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
 
         mViewModel.intDetailInfo()
-        homechapterAdater.addHeaderView(Chapter_headView)
+
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)
 
