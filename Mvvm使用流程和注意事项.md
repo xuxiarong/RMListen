@@ -6,7 +6,7 @@
 
 - 与传统的Mvc，Mvp架构模式类似，Mvvm也采用三层结构：Model，View，ViewModel，其中ViewModel的功能跟Mvp中的Presenter非常接近
 
-  ![image-20200831105346161](/Users/lm162/Library/Application Support/typora-user-images/image-20200831105346161.png)
+  ![](./z_images/mvvm_introduce.png)
 
 ​	**Databinding**：
 
@@ -113,15 +113,15 @@
 
   - 新建一个Activity，并且将Activity对应的布局文件按照提示修改为databinding类型的,
 
-    ![image-20200905115731564](/Users/lm162/Library/Application Support/typora-user-images/image-20200905115731564.png)
+    ![](./z_images/databind_layout.png)
 
   - 定义该Activity对应的ViewModel(类似MVP模式中的Presenter，可以认为是对数据的操作者，包含获取，修改，删除等等)，该ViewModel中所有声明的数据类型和方法，大部分都会跟Activity中的xml文件绑定，ViewModel的作用就是声明对应View层所需的数据类型，然后通过和repository(可以为是数据的存储仓库，例如网络接口，数据库集合，本地缓存等等)的交互，对页面上的数据进行一系列操作，然后通过数据绑定，将变化后的数据直接显示在界面上。
 
-    ![image-20200905120701865](/Users/lm162/Library/Application Support/typora-user-images/image-20200905120701865.png)
+    ![](./z_images/viewModel.png)
 
   
 
-  ​		![image-20200905120850864](/Users/lm162/Library/Application Support/typora-user-images/image-20200905120850864.png)
+  ![](./z_images/xml_bind_viewmodel.png)
 
   - 让该Activity继承BaseVMActivity，并指定相应的泛型类，实现抽象的方法
 
@@ -179,7 +179,7 @@
 
   
 
-  ​		![image-20200905143428914](/Users/lm162/Library/Application Support/typora-user-images/image-20200905143428914.png)
+  ![](./z_images/br.png)		
 
   - DataBinding框架提供了@BindAdapter注解给开发者使用，可以根据业务需求扩展View的功能，举个例子，我们需要对View的onClickListener做扩展，先使用@BindAdapter声明属性名字和具体方法执行的逻辑，然后在xml中直接使用该属性，如果xml文件与viewModel中的属性是单向绑定，使用@{}，如果是双向绑定，请使用@={}，例如EditText输入用户手机号码
 
@@ -198,7 +198,7 @@
     }
     ```
 
-    ![image-20200905144453428](/Users/lm162/Library/Application Support/typora-user-images/image-20200905144453428.png)
+    ![](./z_images/bind_adapter.png)
 
   
 
@@ -216,13 +216,13 @@
 
    下载项目后，分支切到develop_1.0,按照下图操作即可运行demo
 
-  ![image-20200905152131121](/Users/lm162/Library/Application Support/typora-user-images/image-20200905152131121.png)
+  ![](./z_images/run_demo.png)
 
 
 
 ​		Demo页面
 
-​		![image-20200905152320953](/Users/lm162/Library/Application Support/typora-user-images/image-20200905152320953.png)
+​		![](./z_images/demo_phone.png)
 
 
 
