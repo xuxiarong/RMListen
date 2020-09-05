@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_brief"
+            tools:background="#3f00"
+            app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,92 +55,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/home_menu_detail_front_cover"
-            bindUrl="@{viewModel.data.frontCover}"
-            corner="@{viewModel.data.CORNER}"
-            android:layout_width="@dimen/dp_144"
-            android:layout_height="@dimen/dp_144"
-            android:layout_marginStart="@dimen/dp_16"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_title_cl"
-            tools:src="#3f00" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_menu_detail_description"
-            style="@style/BusinessTextStyleFirst_1"
-            android:layout_width="0dp"
-            android:layout_marginStart="@dimen/dp_12"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:text="@{viewModel.data.title}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover"
-            app:layout_constraintTop_toTopOf="@id/home_menu_detail_front_cover"
-            tools:text="描述信息" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/home_menu_detail_author_icon"
-            bindUrl="@{viewModel.data.authorIcon}"
-            corner="@{viewModel.data.CORNER}"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
-            android:layout_marginStart="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_8"
-            app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover"
-            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_description" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_menu_detail_author"
-            style="@style/BusinessTextStyleSecond_4"
-            android:layout_width="0dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:text="@{viewModel.data.authorName}"
-            app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_author_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_menu_detail_author_icon"
-            app:layout_constraintTop_toTopOf="@id/home_menu_detail_author_icon"
-            tools:text="作者" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_menu_detail_read_num"
-            style="@style/BusinessTextStyleSecond_4"
-            android:layout_width="0dp"
-            android:layout_marginStart="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:drawableStart="@drawable/home_icon_book_ee"
-            android:text="@{viewModel.data.totalNumber}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover"
-            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_author_icon"
-            tools:text="3.3w" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_menu_detail_collected"
-            style="@style/BusinessTextStyleFourth_3"
-            android:layout_marginStart="@dimen/dp_12"
-            android:background="@drawable/shape_red_20"
-            android:text="@string/home_menu_detail_add_collected"
-            app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_front_cover"
-            app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover" />
-
-        <com.rm.business_lib.wedgit.expandtextview.ExpandableTextView
-            android:id="@+id/home_menu_detail_brief"
-            style="@style/BusinessTextStyleSecond_3"
-            expandText="@{viewModel.data.brief}"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_24"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:paddingBottom="@dimen/dp_12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_front_cover" />
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_menu_detail_recycler_view"
             android:layout_width="match_parent"
@@ -148,7 +63,7 @@
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_brief" />
+            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_title_cl" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

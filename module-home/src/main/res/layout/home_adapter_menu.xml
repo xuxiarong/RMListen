@@ -7,7 +7,7 @@
 
         <variable
             name="menuItemBean"
-            type="com.rm.module_home.bean.MenuItemBean" />
+            type="com.rm.business_lib.bean.SheetBean" />
     </data>
 
     <com.rm.business_lib.shadow.ShadowLayout
@@ -34,7 +34,7 @@
                 style="@style/TextViewHeadStyle"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="@{menuItemBean.name}"
+                android:text="@{menuItemBean.sheet_name}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="幻海航行 | 领略科幻的海洋" />
@@ -53,7 +53,7 @@
             <!-- 作者信息部分-->
             <ImageView
                 android:id="@+id/home_menu_adapter_author_icon"
-                bindUrl="@{menuItemBean.authorIcon}"
+                bindUrl="@{menuItemBean.avatar_url}"
                 isCircle="@{menuItemBean.isAuthorCircle}"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
@@ -66,7 +66,7 @@
                 android:id="@+id/home_menu_adapter_author_name"
                 style="@style/TextViewSmallStyle"
                 android:layout_marginStart="@dimen/dp_6"
-                android:text="@{menuItemBean.authorName}"
+                android:text="@{menuItemBean.nickname}"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_author_icon"
                 app:layout_constraintLeft_toRightOf="@id/home_menu_adapter_author_icon"
                 app:layout_constraintTop_toTopOf="@id/home_menu_adapter_author_icon"
@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_14"
-                android:src="@drawable/home_ic_favorites"
+                android:src="@drawable/business_icon_favorites"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_author_name"
                 app:layout_constraintLeft_toRightOf="@id/home_menu_adapter_author_name"
                 app:layout_constraintTop_toTopOf="@id/home_menu_adapter_author_name" />
@@ -86,7 +86,7 @@
                 android:id="@+id/home_menu_adapter_collection_number"
                 style="@style/TextViewSmallStyle"
                 android:layout_marginStart="@dimen/dp_2"
-                android:text="@{menuItemBean.collectionNumber}"
+                bindText="@{menuItemBean.num_favor}"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_collection_number_img"
                 app:layout_constraintLeft_toRightOf="@id/home_menu_adapter_collection_number_img"
                 app:layout_constraintTop_toTopOf="@id/home_menu_adapter_collection_number_img"

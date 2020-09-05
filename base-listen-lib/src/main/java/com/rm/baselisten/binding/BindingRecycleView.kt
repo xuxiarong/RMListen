@@ -78,9 +78,17 @@ fun RecyclerView.gridItemDecoration(span: Float) {
 }
 
 @BindingAdapter("linearItemDecoration")
-fun RecyclerView.linearItemDecoration(span: Int) {
+fun RecyclerView.linearBottomItemDecoration(span: Int) {
     addItemDecoration(
         LinearItemDecoration().setSpanBottom(span)
+    )
+}
+
+
+@BindingAdapter("linearItemDecoration")
+fun RecyclerView.linearRightItemDecoration(span: Int) {
+    addItemDecoration(
+        LinearItemDecoration().setSpanRight(span)
     )
 }
 

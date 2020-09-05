@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.annotation.IntDef
 import androidx.lifecycle.observe
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.binding.linearItemDecoration
+import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.ToastUtil
 import com.rm.module_home.BR
@@ -76,7 +76,7 @@ class HomeTopListContentFragment :
 
         home_list_recycler_content.apply {
             bindVerticalLayout(listAdapter)
-            linearItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_14))
+            linearBottomItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_14))
         }
         listAdapter.setOnItemClickListener { adapter, view, position ->
             ToastUtil.show(context, "item_$position")

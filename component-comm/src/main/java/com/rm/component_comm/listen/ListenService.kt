@@ -1,5 +1,6 @@
 package com.rm.component_comm.listen
 
+import androidx.fragment.app.Fragment
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -8,4 +9,6 @@ import com.rm.component_comm.router.ApplicationProvider
  * version: 1.0
  */
 interface ListenService : ApplicationProvider {
+
+    fun getListenFragment():Fragment
 }

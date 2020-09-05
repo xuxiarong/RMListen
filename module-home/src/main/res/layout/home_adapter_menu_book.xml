@@ -7,7 +7,7 @@
 
         <variable
             name="bookBean"
-            type="com.rm.business_lib.bean.BookBean" />
+            type="com.rm.business_lib.bean.AudioBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
 
         <ImageView
             android:id="@+id/home_menu_book_adapter_icon"
-            bindUrl="@{bookBean.icon}"
+            bindUrl="@{bookBean.author}"
             corner="@{bookBean.iconCorner}"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -36,7 +36,7 @@
             android:gravity="center"
             android:paddingStart="@dimen/dp_4"
             android:paddingEnd="@dimen/dp_4"
-            android:text="@{bookBean.tips}"
+            android:text="@{bookBean.intro}"
             android:textColor="@color/businessWhite"
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintRight_toRightOf="@id/home_menu_book_adapter_icon"

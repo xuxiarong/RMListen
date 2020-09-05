@@ -13,7 +13,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.divLinearItemDecoration
-import com.rm.baselisten.binding.linearItemDecoration
+import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_home.BR
@@ -70,7 +70,7 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
         mViewModel.baseTitleModel.value = baseTitleModel
         home_list_recycler_tab.apply {
             bindVerticalLayout(tabAdapter)
-            linearItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_14))
+            linearBottomItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_14))
         }
         itemClick()
     }

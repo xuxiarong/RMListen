@@ -7,9 +7,16 @@ import com.stx.xhb.androidx.entity.BaseBannerInfo
  * date   : 2020/08/20
  * version: 1.0
  */
-class BannerInfo(val imgUrl: String) : BaseBannerInfo {
+data class BannerInfoBean (
+    var id: Int,
+    var img: String,
+    var img_url: String,
+    var jump: String,
+    var page_id: Int,
+    var seq: Int
+) : BaseBannerInfo {
     override fun getXBannerUrl(): Any {
-        return imgUrl
+        return img_url
     }
 
     override fun getXBannerTitle(): String {

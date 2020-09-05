@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.rm.business_lib.bean.SheetBean" />
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_listen.viewmodel.ListenSheetMyListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{(SheetBean)->viewModel.itemClickFun(item)}">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/listen_sheet_adapter_icon"
+            bindUrl="@{item.avatar_url}"
+            corner="@{item.MIN_CORNER}"
+            android:layout_width="@dimen/dp_106"
+            android:layout_height="@dimen/dp_106"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="#3f00" />
+
+        <View
+            android:id="@+id/listen_sheet_adapter_view"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:background="@drawable/listen_shape_sheet_color_bdbdbd"
+            app:layout_constraintBottom_toBottomOf="@id/listen_sheet_adapter_icon"
+            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/listen_sheet_adapter_title"
+            style="@style/BusinessTextStyleFirst_2"
+            bindText="@{item.nickname}"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/dp_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_icon"
+            app:layout_constraintTop_toTopOf="@id/listen_sheet_adapter_view"
+            tools:text="123" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/listen_sheet_adapter_create"
+            style="@style/BusinessTextStyleSecond_4"
+            bindText="@{item.created_at}"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:drawablePadding="@dimen/dp_2"
+            android:drawableStart="@drawable/business_icon_day"
+            app:layout_constraintBottom_toBottomOf="@id/listen_sheet_adapter_view"
+            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_icon"
+            tools:text="2020/8/2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/listen_sheet_adapter_book_num"
+            style="@style/BusinessTextStyleSecond_4"
+            bindText="@{item.num_favor}"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:drawablePadding="@dimen/dp_2"
+            android:drawableStart="@drawable/business_icon_book_num"
+            app:layout_constraintBottom_toBottomOf="@id/listen_sheet_adapter_view"
+            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_create"
+            tools:text="124" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/listen_sheet_adapter_collected"
+            style="@style/BusinessTextStyleSecond_4"
+            bindText="@{item.num_favor}"
+            android:layout_width="wrap_content"
+            android:drawablePadding="@dimen/dp_2"
+            android:layout_marginStart="@dimen/dp_12"
+            android:drawableStart="@drawable/business_icon_favorites"
+            app:layout_constraintBottom_toBottomOf="@id/listen_sheet_adapter_view"
+            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_book_num"
+            tools:text="124" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
