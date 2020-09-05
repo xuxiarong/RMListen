@@ -60,9 +60,6 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
             topMargin = stateHeight
         }
     }
-    override fun getLayoutId(): Int = R.layout.home_activity_detail_main
-
-    override fun initModelBrId() = BR.viewModel
 
     override fun startObserve() {
 
@@ -85,7 +82,6 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
         mViewModel.detailChapterViewModel.addOnPropertyChangedCallback( object : OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 homechapterAdater.setNewInstance(mViewModel.detailChapterViewModel.get()!!.chapterList)
-
                 homechapterAdater.notifyDataSetChanged()
             }
         })
@@ -95,7 +91,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
     private val mOnScrollChangedListener: ScrollLayout.OnScrollChangedListener =
         object : ScrollLayout.OnScrollChangedListener {
             override fun onScrollProgressChanged(currentProgress: Float) {
-                Log.e("currentProgress",""+currentProgress);
+                //Log.e("currentProgress",""+currentProgress)
                 if(currentProgress==0f){
                     home_detail_title.visibility = View.VISIBLE
                 }else{
@@ -104,11 +100,11 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
             }
             override fun onScrollFinished(currentStatus: ScrollLayout.Status) {
 //                if (currentStatus == ScrollLayout.Status.EXIT)
-                Log.e("onScrollFinished",""+currentStatus);
+                //Log.e("onScrollFinished",""+currentStatus)
             }
 
             override fun onChildScroll(top: Int) {
-                Log.e("onChildScroll",""+top);
+                //Log.e("onChildScroll",""+top)
             }
         }
 
@@ -120,7 +116,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
     override fun initData() {
 
         scroll_down_layout!!.setMinOffset(0)
-        scroll_down_layout!!.setMaxOffset((screenHeight*0.7).toInt())
+        scroll_down_layout!!.setMaxOffset((screenHeight*0.75).toInt())
         scroll_down_layout!!.setExitOffset(dip(101))
         scroll_down_layout!!.isAllowHorizontalScroll = true
         scroll_down_layout!!.setIsSupportExit(true)
@@ -142,4 +138,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding,HomeDeta
 
     }
 
+    override fun getLayoutId(): Int = R.layout.home_activity_detail_main
+
+    override fun initModelBrId() = BR.viewModel
 }
