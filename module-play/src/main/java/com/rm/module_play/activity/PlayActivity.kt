@@ -7,17 +7,23 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.Cxt
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
+import com.rm.component_comm.navigateToForResult
+import com.rm.component_comm.navigateWithToForResult
 import com.rm.module_play.BR
 import com.rm.module_play.R
+import com.rm.module_play.common.ARouterPath
+import com.rm.module_play.common.ARouterPath.Companion.testPath
 import com.rm.module_play.databinding.ActivityPlayBinding
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.playview.GlobalplayHelp
+import com.rm.module_play.test.SearchResultInfo
 import com.rm.module_play.test.TestActivity
 import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
@@ -116,9 +122,17 @@ class PlayActivity :
             showPlayBookListDialog()
         }
         bt_get_book_list.setOnClickListener {
-            TestActivity.startActivity(this)
+            navigateToForResult(testPath, 100)
         }
 
+    }
+
+    private var searchResultInfo: List<SearchResultInfo>? = null
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 100) {
+            searchResultInfo = data?.getParcelableArrayListExtra<SearchResultInfo>("books")
+        }
     }
 
     override fun onResume() {

@@ -4,7 +4,6 @@ import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_play.repository.BookPlayRepository
-import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 import java.util.*
 
 /**
@@ -15,24 +14,23 @@ import java.util.*
  */
 class TestViewModel(private val repository: BookPlayRepository) : BaseVMViewModel() {
 
-    var text = ObservableField<String>("")
-
+    var text = ObservableField("")
+    var books = ObservableField<ArrayList<SearchResultInfo>>()
     fun getBookList() {
-        val params: MutableMap<String, String> =
-            HashMap()
+        val params: MutableMap<String, String> = HashMap()
         params["format"] = "json"
         params["page"] = "1"
         params["pagesize"] = "20"
         params["showtype"] = "1"
         launchOnUI {
             text.get()?.let {
-                params["keyword"] = text.get()?:""
+                params["keyword"] = text.get() ?: ""
                 repository.getBookList(params).checkResult(
                     onSuccess = {
-                        ExoplayerLogger.exoLog(it)
+                        books.set(it.info as ArrayList<SearchResultInfo>?)
                     },
                     onError = {
-                        ExoplayerLogger.exoLog(it+"")
+
                     }
                 )
             }
@@ -40,4 +38,5 @@ class TestViewModel(private val repository: BookPlayRepository) : BaseVMViewMode
 
     }
 
-}
+
+    }

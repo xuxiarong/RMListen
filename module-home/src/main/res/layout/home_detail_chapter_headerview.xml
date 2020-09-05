@@ -1,36 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingStart="@dimen/dp_16"
-    android:paddingEnd="@dimen/dp_16"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/home_detail_shape_shadow">
-    <com.rm.business_lib.wedgit.DashLineView
-        android:layout_marginTop="@dimen/dp_21"
-        android:background="@color/business_color_b1b1b1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/dp_50"
-        android:layout_height="@dimen/dp_6"/>
-    <androidx.appcompat.widget.AppCompatImageView
-        android:paddingTop="@dimen/dp_36"
-        android:src="@drawable/home_detail_icon_all_play"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/home_detail_chapter_play_all_img"
-        android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:clickable="true"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-    <androidx.appcompat.widget.AppCompatTextView
-        android:paddingTop="@dimen/dp_36"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="11111111111111111"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@drawable/home_detail_shape_shadow">
+
+        <com.rm.business_lib.wedgit.DashLineView
+            android:layout_marginTop="@dimen/dp_21"
+            android:background="@color/business_color_b1b1b1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_6" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_marginTop="@dimen/dp_36"
+            android:src="@drawable/home_detail_icon_all_play"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/home_detail_play_all_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_detail_play_all_tx"
+            app:layout_constraintTop_toTopOf="@id/home_detail_play_all_img"
+            app:layout_constraintBottom_toBottomOf="@id/home_detail_play_all_img"
+            android:layout_marginStart="@dimen/dp_4"
+            app:layout_constraintStart_toEndOf="@id/home_detail_play_all_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全部播放" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_detail_play_show"
+            android:layout_marginStart="108dp"
+            android:src="@drawable/home_ic_icon_unfold_de"
+            app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_detail_chapter_count"
+            app:layout_constraintEnd_toStartOf="@id/home_detail_play_show"
+            app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx"
+            android:text="共134集"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_detail_play_download"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:src="@drawable/home_icon_chapter_download"
+            app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx"
+            app:layout_constraintEnd_toStartOf="@id/home_detail_chapter_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_detail_play_sort"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:src="@drawable/home_icon_chapter_sort"
+            app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx"
+            app:layout_constraintEnd_toStartOf="@id/home_detail_play_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
