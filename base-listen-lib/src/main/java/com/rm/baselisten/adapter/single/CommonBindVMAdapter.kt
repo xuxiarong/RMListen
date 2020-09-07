@@ -10,8 +10,8 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 open class CommonBindVMAdapter<T> constructor(
     viewModel: BaseVMViewModel,
     commonData: MutableList<T>,
-    commonItemId: Int,
+    commonItemLayoutId: Int,
     commonViewModelId : Int,
     commonDataBrId: Int
-) : BaseBindVMAdapter<T>(viewModel,commonData, commonItemId, commonViewModelId,commonDataBrId)
+) : BaseBindVMAdapter<T>(viewModel,commonData, commonItemLayoutId, commonViewModelId,commonDataBrId)
 

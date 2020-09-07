@@ -1,13 +1,13 @@
 // 全局总配置
 ext {
 
-    isMainApp = false // 主模块开关，false = 作为lib组件存在，true = 作为App独立存在
-    isHomeApp = false // 主页模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isMainApp = true // 主模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isHomeApp = true // 主页模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isSearchApp = false // 搜索模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isPlayApp = false // 播放模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isListenApp = false // 我听模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isMineApp = false // 个人模块开关，false = 作为lib组件存在，true = 作为App独立存在
-    isLoginApp = false // 登陆模块开关，false = 作为lib组件存在，true = 作为App独立存在
+    isLoginApp = true // 登陆模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isPayApp = false // 支付模块开关，false = 作为lib组件存在，true = 作为App独立存在
     isDownloadApp = false // 下载模块开关，false = 作为lib组件存在，true = 作为App独立存在
 

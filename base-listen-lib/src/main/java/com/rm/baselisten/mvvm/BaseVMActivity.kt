@@ -77,6 +77,11 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         initData()
     }
 
+
+    fun showCommonDialog(){
+
+    }
+
     /**
      * 初始化子类布局
      */

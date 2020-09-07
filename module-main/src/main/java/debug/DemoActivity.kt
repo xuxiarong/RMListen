@@ -33,9 +33,9 @@ class DemoActivity : BaseActivity() {
         demoMultiVmRvBtn.setOnClickListener {
             startActivity(Intent(this@DemoActivity,DemoMultiClickVmActivity::class.java))
         }
-//        demoDataBind.setOnClickListener {
-//            startActivity(Intent(this@DemoActivity,DataBindVmDemoActivity::class.java))
-//        }
+        demoSwipeBtn.setOnClickListener {
+            startActivity(Intent(this@DemoActivity,SwipeColseActivity::class.java))
+        }
 
     }
 
