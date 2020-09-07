@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.rm.business_lib.bean.SheetBean" />
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_listen.viewmodel.ListenSheetCollectedListViewModel" />
+    </data>
+
+    <com.rm.business_lib.shadow.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_width"
+        android:layout_marginEnd="@dimen/padding_width"
+
+        android:layout_marginBottom="@dimen/dp_12">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_12"
+            android:paddingTop="@dimen/dp_12"
+            android:paddingEnd="@dimen/dp_12"
+            android:paddingBottom="@dimen/dp_18"
+            app:layout_noSolid="true"
+            app:layout_roundRadius="@dimen/dp_8"
+            app:layout_shadowColor="#55b1b1b1"
+            app:layout_shadowRadius="@dimen/dp_6">
+
+            <TextView
+                android:id="@+id/listen_sheet_collected_adapter_name"
+                style="@style/TextViewHeadStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@{item.sheet_intro}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="幻海航行 | 领略科幻的海洋" />
+
+            <TextView
+                android:id="@+id/listen_sheet_collected_adapter_total_books_number"
+                style="@style/TextViewSecondStyle"
+                android:drawableEnd="@drawable/business_ic_next"
+                android:drawablePadding="@dimen/dp_2"
+                app:layout_constraintBottom_toBottomOf="@id/listen_sheet_collected_adapter_name"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/listen_sheet_collected_adapter_name"
+                tools:text="共30本" />
+
+
+            <!-- 作者信息部分-->
+            <ImageView
+                android:id="@+id/listen_sheet_collected_adapter_author_icon"
+                bindUrl="@{item.avatar}"
+                isCircle="@{true}"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_9"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/listen_sheet_collected_adapter_name"
+                tools:src="#00ff00" />
+
+            <TextView
+                android:id="@+id/listen_sheet_collected_adapter_author_name"
+                style="@style/TextViewSmallStyle"
+                android:layout_marginStart="@dimen/dp_6"
+                android:text="@{item.nickname}"
+                app:layout_constraintBottom_toBottomOf="@id/listen_sheet_collected_adapter_author_icon"
+                app:layout_constraintLeft_toRightOf="@id/listen_sheet_collected_adapter_author_icon"
+                app:layout_constraintTop_toTopOf="@id/listen_sheet_collected_adapter_author_icon"
+                tools:text="小丸子" />
+
+            <ImageView
+                android:id="@+id/listen_sheet_collected_adapter_collection_number_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_14"
+                android:src="@drawable/business_icon_favorites"
+                app:layout_constraintBottom_toBottomOf="@id/listen_sheet_collected_adapter_author_name"
+                app:layout_constraintLeft_toRightOf="@id/listen_sheet_collected_adapter_author_name"
+                app:layout_constraintTop_toTopOf="@id/listen_sheet_collected_adapter_author_name" />
+
+            <TextView
+                android:id="@+id/listen_sheet_collected_adapter_collection_number"
+                style="@style/TextViewSmallStyle"
+                bindText="@{item.num_favor}"
+                android:layout_marginStart="@dimen/dp_2"
+                app:layout_constraintBottom_toBottomOf="@id/listen_sheet_collected_adapter_collection_number_img"
+                app:layout_constraintLeft_toRightOf="@id/listen_sheet_collected_adapter_collection_number_img"
+                app:layout_constraintTop_toTopOf="@id/listen_sheet_collected_adapter_collection_number_img"
+                tools:text="3.4W" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listen_sheet_collected_adapter_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                app:layout_constraintTop_toBottomOf="@id/listen_sheet_collected_adapter_author_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.rm.business_lib.shadow.ShadowLayout>
+
+</layout>

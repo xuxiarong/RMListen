@@ -21,9 +21,6 @@ class HomeMainDebugActivity : BaseDebugActivity() {
         btnMenu.setOnClickListener {
             MenuActivity.startActivity(this)
         }
-        btnMenuDetail.setOnClickListener {
-            MenuDetailActivity.startActivity(this)
-        }
 
         btnBoutique.setOnClickListener {
             BoutiqueActivity.startActivity(this)

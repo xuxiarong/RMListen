@@ -1,9 +1,11 @@
 package com.rm.module_home.activity.menu
 
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.BannerInfo
-import com.rm.module_home.bean.MenuItemBean
+import com.rm.business_lib.bean.BannerInfoBean
+import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.repository.MenuRepository
 
 /**
@@ -12,16 +14,29 @@ import com.rm.module_home.repository.MenuRepository
  * version: 1.0
  */
 class MenuViewModel(private val repository: MenuRepository) : BaseVMViewModel() {
-    var bannerInfoList = MutableLiveData<List<BannerInfo>>()
-
     // 听单列表数据
-    var menuList = MutableLiveData<MutableList<MenuItemBean>>()
+    var menuList = MutableLiveData<MenuSheetBean>()
 
-    fun getMenuBanner() {
-        bannerInfoList.value = repository.getMenuBanner()
-    }
 
     fun getMenuListInfo() {
-        menuList.value = repository.getMenuListInfo()
+        /*  launchOnIO {
+              repository.sheet().checkResult(
+                  onSuccess = {
+                      menuList.value = it
+                  },
+                  onError = {
+                      DLog.i("------>", "$it")
+                  }
+              )
+          }*/
+
+        menuList.value = getData()
+    }
+
+    private fun getData(): MenuSheetBean {
+//        val bannerInfoBean = MutableList<BannerInfoBean>()
+        val data = MenuSheetBean(null,null,null,null,1,"")
+
+        return data
     }
 }

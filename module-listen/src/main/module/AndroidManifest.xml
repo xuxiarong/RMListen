@@ -22,5 +22,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".player.TestPalyerActivity"></activity>
+
+        <!--已购-->
+        <activity
+            android:name=".activity.ListenBoughtActivity"
+            android:screenOrientation="portrait" />
+
+        <!--订阅-->
+        <activity
+            android:name=".activity.ListenSubscriptionActivity"
+            android:screenOrientation="portrait" />
+
+        <!--听单-->
+        <activity
+            android:name=".activity.ListenSheetListActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

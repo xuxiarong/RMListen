@@ -2,7 +2,7 @@ package com.rm.module_home.activity.boutique
 
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.BannerInfo
+import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.bean.BookBean
 import com.rm.module_home.repository.BoutiqueRepository
 
@@ -15,7 +15,7 @@ class BoutiqueFragmentViewModel(private val repository: BoutiqueRepository) : Ba
     var categoryName = ""
 
     // banner数据列表
-    val bannerInfoList = MutableLiveData<List<BannerInfo>>()
+    val bannerInfoList = MutableLiveData<List<BannerInfoBean>>()
 
     // 列表数据集合
     val bookInfoList = MutableLiveData<MutableList<BookBean>>()

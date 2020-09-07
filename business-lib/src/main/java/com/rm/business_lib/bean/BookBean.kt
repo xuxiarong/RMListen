@@ -12,6 +12,4 @@ data class BookBean(
     val tips: String = "",
     val describe: String = "",
     val author: String = ""
-){
-    var iconCorner = 4f
-}
+)

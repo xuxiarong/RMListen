@@ -3,7 +3,7 @@ package com.rm.business_lib.binding
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.utilExt.dip
-import com.rm.business_lib.bean.BannerInfo
+import com.rm.business_lib.bean.BannerInfoBean
 import com.stx.xhb.androidx.XBanner
 
 /**
@@ -12,7 +12,7 @@ import com.stx.xhb.androidx.XBanner
  * version: 1.0
  */
 @BindingAdapter("bindData")
-fun XBanner.bindData(bannerInfoList: List<BannerInfo>?) {
+fun XBanner.bindData(bannerInfoList: List<BannerInfoBean>?) {
     if (bannerInfoList == null) {
         return
     }
@@ -22,13 +22,13 @@ fun XBanner.bindData(bannerInfoList: List<BannerInfo>?) {
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
             view as ImageView,
-            bannerInfoList[position].imgUrl
+            bannerInfoList[position].banner_img
         )
     }
 }
 
 @BindingAdapter("paddingBindData")
-fun XBanner.paddingBindData(bannerInfoList: List<BannerInfo>?) {
+fun XBanner.paddingBindData(bannerInfoList: List<BannerInfoBean>?) {
     if (bannerInfoList == null) {
         return
     }
@@ -38,7 +38,7 @@ fun XBanner.paddingBindData(bannerInfoList: List<BannerInfo>?) {
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
             view as ImageView,
-            bannerInfoList[position].imgUrl
+            bannerInfoList[position].banner_img
         )
         view.setPadding(
             view.dip(16f),

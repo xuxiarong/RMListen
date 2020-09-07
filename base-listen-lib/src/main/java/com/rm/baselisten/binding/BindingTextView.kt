@@ -14,12 +14,12 @@ import com.rm.baselisten.util.DLog
  * version: 1.0
  */
 @BindingAdapter("bindText")
-fun TextView.bindText(content: String?) {
+fun TextView.bindText(content: Any?) {
 
-    visibility = if (TextUtils.isEmpty(content)) {
+    visibility = if (TextUtils.isEmpty(content.toString())) {
         View.GONE
     } else {
-        text = content
+        text = content.toString()
         View.VISIBLE
     }
 }

@@ -15,10 +15,10 @@
     <string name="home_top_list_month">月榜</string>
     <string name="home_top_list_all">总榜</string>
 
-    <string name="home_menu_detail_add_collected">加入听书单</string>
+    <string name="home_menu_detail_add_collected">收藏听单</string>
+    <string name="home_menu_detail_collected">已收藏</string>
     <string name="home_menu_detail_add_to_book_list">添加到书单</string>
     <string name="home_menu_detail_create_book_list">+新建书单</string>
-    <string name="home_menu_detail_collected">已收藏</string>
 
     <string name="str_str">""</string>
 

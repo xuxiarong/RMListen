@@ -6,11 +6,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.gridItemDecoration
-import com.rm.business_lib.bean.BookBean
+import com.rm.business_lib.bean.AudioBean
+import com.rm.business_lib.bean.SheetBean
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.menu.MenuViewModel
-import com.rm.module_home.bean.MenuItemBean
 import com.rm.module_home.databinding.HomeAdapterMenuBinding
 import com.rm.module_home.databinding.HomeAdapterMenuBookBinding
 
@@ -20,22 +20,23 @@ import com.rm.module_home.databinding.HomeAdapterMenuBookBinding
  * version: 1.0
  */
 class MenuListAdapter(val viewModel: MenuViewModel) :
-    BaseQuickAdapter<MenuItemBean, BaseViewHolder>(layoutResId = R.layout.home_adapter_menu) {
-    override fun convert(holder: BaseViewHolder, item: MenuItemBean) {
+    BaseQuickAdapter<SheetBean, BaseViewHolder>(layoutResId = R.layout.home_adapter_menu) {
+    override fun convert(holder: BaseViewHolder, item: SheetBean) {
         DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
             ?.setVariable(BR.menuItemBean, item)
-//        DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
-//            ?.setVariable(BR.viewModel, viewModel)
+
+        DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
+            ?.setVariable(BR.viewModel, viewModel)
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
-            bindGridLayout(MenuBookAdapter().apply { setNewInstance(item.bookList) }, 3)
+            bindGridLayout(MenuBookAdapter().apply { setList(item.audio_list?.list) }, 3)
             gridItemDecoration(8f)
         }
     }
 }
 
 class MenuBookAdapter :
-    BaseQuickAdapter<BookBean, BaseViewHolder>(R.layout.home_adapter_menu_book) {
-    override fun convert(holder: BaseViewHolder, item: BookBean) {
+    BaseQuickAdapter<AudioBean, BaseViewHolder>(R.layout.home_adapter_menu_book) {
+    override fun convert(holder: BaseViewHolder, item: AudioBean) {
         DataBindingUtil.bind<HomeAdapterMenuBookBinding>(holder.itemView)
             ?.setVariable(BR.bookBean, item)
     }

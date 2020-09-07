@@ -8,9 +8,11 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.binding.bindData
+import com.rm.business_lib.binding.paddingBindData
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.MenuListAdapter
+import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.home_activity_listen_menu.*
@@ -32,11 +34,10 @@ class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel
     override fun getLayoutId(): Int = R.layout.home_activity_listen_menu
 
     override fun startObserve() {
-        mViewModel.bannerInfoList.observe(this) {
-            headView.findViewById<XBanner>(R.id.home_head_banner).bindData(it)
-        }
+
         mViewModel.menuList.observe(this) {
-            menuAdapter.setNewInstance(it)
+            menuAdapter.setList(it.sheet_list?.list)
+            headView.findViewById<XBanner>(R.id.home_head_banner).paddingBindData(it.banner_list)
         }
     }
 
@@ -49,16 +50,20 @@ class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel
         mViewModel.baseTitleModel.value = baseTitleModel
 
         home_menu_recycler_view.bindVerticalLayout(menuAdapter)
-        menuAdapter.setOnItemClickListener { _, _, _ ->
-            MenuDetailActivity.startActivity(this@MenuActivity)
+        menuAdapter.setOnItemClickListener { _, _, position ->
+            val sheetBean: MenuSheetBean? = mViewModel.menuList.value
+            val pageId = sheetBean?.page_id ?: 0
+            val sheetId = (sheetBean?.sheet_list?.list?.get(position)?.sheet_id) ?: 0L
+            MenuDetailActivity.startActivity(
+                this@MenuActivity,
+                "$sheetId", pageId
+            )
         }
         menuAdapter.addHeaderView(headView)
     }
 
     override fun initData() {
-
-        mViewModel.getMenuBanner()
-
         mViewModel.getMenuListInfo()
+
     }
 }
