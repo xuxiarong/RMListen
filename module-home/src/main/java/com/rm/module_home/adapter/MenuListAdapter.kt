@@ -24,12 +24,13 @@ class MenuListAdapter(val viewModel: MenuViewModel) :
     override fun convert(holder: BaseViewHolder, item: SheetBean) {
         DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
             ?.setVariable(BR.menuItemBean, item)
-//        DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
-//            ?.setVariable(BR.viewModel, viewModel)
-//        holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
-//            bindGridLayout(MenuBookAdapter().apply { setList(item.audio_list?.list) }, 3)
-//            gridItemDecoration(8f)
-//        }
+
+        DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
+            ?.setVariable(BR.viewModel, viewModel)
+        holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
+            bindGridLayout(MenuBookAdapter().apply { setList(item.audio_list) }, 3)
+            gridItemDecoration(8f)
+        }
     }
 }
 

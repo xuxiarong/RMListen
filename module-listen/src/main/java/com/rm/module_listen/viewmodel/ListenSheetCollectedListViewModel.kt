@@ -144,7 +144,7 @@ class ListenSheetCollectedListViewModel : BaseVMViewModel() {
                 "",
                 "",
                 "",
-                "",
+                "文案",
                 "",
                 "小丸子",
                 "",

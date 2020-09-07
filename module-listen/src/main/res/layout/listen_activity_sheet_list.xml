@@ -7,26 +7,28 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/listen_sheet_list_back"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_48"
         android:layout_marginStart="@dimen/dp_16"
         android:src="@drawable/base_icon_back"
-        app:layout_constraintBottom_toBottomOf="@id/listen_sheet_list_tab"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/listen_sheet_list_tab" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/listen_sheet_list_tab"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_48"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.rm.business_lib.wedgit.RadioTabLayout
+        android:id="@+id/listen_sheet_list_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/listen_sheet_list_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/listen_sheet_list_back" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/listen_sheet_list_view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_14"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listen_sheet_list_tab" />
+        app:layout_constraintTop_toBottomOf="@id/listen_sheet_list_back" />
 </androidx.constraintlayout.widget.ConstraintLayout>

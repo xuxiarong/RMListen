@@ -18,8 +18,8 @@
             <flag name="close" value="0x1" />
             <flag name="exit" value="0x2" />
         </attr>
-        <attr name="allowHorizontalScroll" format="boolean"/>
-        <attr name="isSupportExit" format="boolean"/>
+        <attr name="allowHorizontalScroll" format="boolean" />
+        <attr name="isSupportExit" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BendTabLayout">
@@ -154,5 +154,23 @@
         <attr name="expand_text_color" format="color|reference" />
         <attr name="expand_iv_icon" format="reference" />
         <attr name="expand_text_max_line" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="RadioTabLayout">
+        <attr name="radioSelectBackground" format="reference" />
+        <attr name="radioDefaultBackground" format="reference" />
+        <attr name="radioSelectTexSize" format="dimension|reference" />
+        <attr name="radioDefaultTexSize" format="dimension|reference" />
+        <attr name="radioSelectTextColor" format="color|reference" />
+        <attr name="radioDefaultTextColor" format="color|reference" />
+        <attr name="radioHeight" format="dimension|reference" />
+        <attr name="radioSelectTypeface" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+        </attr>
+        <attr name="radioDefaultTypeface" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+        </attr>
     </declare-styleable>
 </resources>
