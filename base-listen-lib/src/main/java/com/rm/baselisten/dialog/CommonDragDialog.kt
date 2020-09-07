@@ -7,18 +7,13 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.view.DragCloseLayout
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 /**
- * desc   : 可以拖拽并且有逻辑关系的Dialog
+ * desc   : 可以拖拽并且是纯展示的Dialog
  * date   : 2020/09/01
  * version: 1.0
  */
-open class CommonDragMvDialog : BaseMvFragmentDialog() {
-
-    override fun startObserve() {
-
-    }
+open class CommonDragDialog : BaseFragmentDialog() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
@@ -30,13 +25,11 @@ open class CommonDragMvDialog : BaseMvFragmentDialog() {
         return draggableView
     }
 
-    fun showCommonDialog(activity: FragmentActivity,layoutId : Int,viewModel : BaseVMViewModel,viewModelBrId : Int) : CommonDragMvDialog{
+    fun showCommonDialog(activity: FragmentActivity,layoutId : Int) : CommonDragDialog{
         val bundle  = Bundle()
         bundle.putInt("layoutId",layoutId)
-        bundle.putParcelable("viewModel",viewModel)
-        bundle.putInt("viewModelBrId",viewModelBrId)
         arguments = bundle
-        showDialog<CommonDragMvDialog>(activity)
+        showDialog<CommonDragDialog>(activity)
         return this
     }
 }
