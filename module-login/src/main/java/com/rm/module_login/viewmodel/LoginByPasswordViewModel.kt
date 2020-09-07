@@ -2,7 +2,12 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.ACCESS_TOKEN
+import com.rm.business_lib.LOGIN_USER_INFO
+import com.rm.business_lib.REFRESH_TOKEN
+import com.rm.module_login.LoginConstants
 import com.rm.module_login.R
 import com.rm.module_login.activity.ForgetPasswordActivity
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
@@ -28,10 +33,6 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
 
     // 错误提示信息
     var errorTips = ObservableField<String>("")
-
-//    // 回调到Activity中的方法块
-//    var callBackToActivity: (Int) -> Unit = {}
-
     /**
      * 登陆
      */
@@ -50,6 +51,15 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
                 passwordInputViewModel.password.get()!!
             ).checkResult(
                 onSuccess = {
+                    // 保存登陆信息到本地
+                    ACCESS_TOKEN.putMMKV(it.access)
+                    REFRESH_TOKEN.putMMKV(it.refresh)
+                    LOGIN_USER_INFO.putMMKV(it.member)
+
+                    // 改变当前是否用户登陆状态 和 登陆的用户信息
+                    LoginConstants.isLogin.value = true
+                    LoginConstants.loginUser.value = it.member
+
                     showContentView()
                     showToast(R.string.login_success)
                     finish()

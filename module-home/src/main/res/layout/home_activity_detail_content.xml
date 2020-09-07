@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
-
     <data>
-
         <variable
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
     </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_detail_top_bg"
@@ -259,7 +260,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp" />
             </RelativeLayout>
-
+    <!-- 滑动recyclerview 评论标题置顶 -->
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
                 app:layout_constraintStart_toStartOf="@id/home_detail_icon"
@@ -293,4 +294,5 @@
                 app:layout_constraintEnd_toEndOf="@id/home_detail_collect_icon"
                 app:layout_constraintTop_toBottomOf="@id/home_detail_layout_anchor" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

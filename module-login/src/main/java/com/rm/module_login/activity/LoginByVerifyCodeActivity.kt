@@ -2,10 +2,8 @@ package com.rm.module_login.activity
 
 import android.content.Context
 import android.content.Intent
-import android.view.Gravity
 import androidx.lifecycle.Observer
 import com.rm.baselisten.adapter.single.CommonBindAdapter
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.dialog.CommonFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
@@ -14,10 +12,10 @@ import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.module_login.BR
+import com.rm.module_login.LoginConstants
 import com.rm.module_login.R
 import com.rm.module_login.bean.LoginDialogModel
 import com.rm.module_login.databinding.LoginActivityLoginByVerifyCodeBinding
-import com.rm.module_login.databinding.LoginDialongLoginStatusBinding
 import com.rm.module_login.viewmodel.LoginByVerifyViewModel
 import kotlinx.android.synthetic.main.login_activity_login_by_verify_code.*
 
@@ -42,6 +40,14 @@ class LoginByVerifyCodeActivity :
         mViewModel.testDialogData.observe(this, Observer {
             dialogAdapter.setList(mViewModel.testDialogData.value!!)
         })
+
+        // 监听登陆状态
+        LoginConstants.isLogin.observe(this, Observer {
+            if(it){
+                // 登陆成功，关闭当前界面
+                finish()
+            }
+        })
     }
 
     private val dialogAdapter by lazy {
@@ -55,31 +61,31 @@ class LoginByVerifyCodeActivity :
     private lateinit var loginDialog: CommonDragMvDialog
     private lateinit var commonDialog: CommonFragmentDialog
 
-    override fun onResume() {
-        super.onResume()
-        /**
-         *  mViewModel ：与Dialog相关的ViewModel，建议使用该dialog依赖的Activity的ViewModel
-         *  R.layout.login_dialong_login_status ： dialog的布局文件
-         *  BR.viewModel ： 布局文件中使用的viewModel变量的名字
-         */
-        loginDialog = CommonDragMvDialog().apply {
-            this.dialogBackgroundColor = R.color.businessColorPrimary
-            this.gravity = Gravity.BOTTOM
-            this.dialogHasBackground = true
-            this.dialogWidthIsMatchParent = true
-            this.initDialog = {initDialogView()}
-        }
-
-
-        loginDialog.showCommonDialog(this,R.layout.login_dialong_login_status,mViewModel,BR.viewModel)
-
-    }
-
-    fun initDialogView() {
-        val bind = loginDialog.mDataBind as LoginDialongLoginStatusBinding?
-        bind?.loginDialogRv?.bindVerticalLayout(dialogAdapter)
-        mViewModel.getDialogData()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        /**
+//         *  mViewModel ：与Dialog相关的ViewModel，建议使用该dialog依赖的Activity的ViewModel
+//         *  R.layout.login_dialong_login_status ： dialog的布局文件
+//         *  BR.viewModel ： 布局文件中使用的viewModel变量的名字
+//         */
+//        loginDialog = CommonMvFragmentDialog().apply {
+//            this.dialogBackgroundColor = R.color.businessColorPrimary
+//            this.gravity = Gravity.BOTTOM
+//            this.dialogHasBackground = true
+//            this.dialogWidthIsMatchParent = true
+//            this.initDialog = {initDialogView()}
+//        }
+//
+//
+//        loginDialog.showCommonDialog(this,R.layout.login_dialong_login_status,mViewModel,BR.viewModel)
+//
+//    }
+//
+//    fun initDialogView() {
+//        val bind = loginDialog.mDataBind as LoginDialongLoginStatusBinding?
+//        bind?.loginDialogRv?.bindVerticalLayout(dialogAdapter)
+//        mViewModel.getDialogData()
+//    }
 
     override fun initData() {
         // 设置checkbox选择协议相关文本

@@ -2,10 +2,15 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.ACCESS_TOKEN
+import com.rm.business_lib.LOGIN_USER_INFO
 import com.rm.business_lib.REFRESH_TOKEN
+import com.rm.component_comm.login.bean.LoginUserBean
+import com.rm.module_login.LoginConstants
 import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
 import com.rm.module_login.repository.LoginRepository
@@ -49,6 +54,11 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                         // 保存登陆信息到本地
                         ACCESS_TOKEN.putMMKV(it.access)
                         REFRESH_TOKEN.putMMKV(it.refresh)
+                        LOGIN_USER_INFO.putMMKV(it.member)
+
+                        // 改变当前是否用户登陆状态 和 登陆的用户信息
+                        LoginConstants.isLogin.value = true
+                        LoginConstants.loginUser.value = it.member
                         // 登陆成功
                         showToast(R.string.login_success)
                         showContentView()
@@ -71,7 +81,10 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                             showContentView()
                             if (it.result) {
                                 // 验证码校验正确
-                                startActivity(ResetPasswordActivity::class.java,ResetPasswordActivity.getIntent(content,phone))
+                                startActivity(
+                                    ResetPasswordActivity::class.java,
+                                    ResetPasswordActivity.getIntent(content, phone)
+                                )
                                 finish()
                             } else {
                                 // 验证码错误

@@ -2,6 +2,8 @@ package com.rm.module_home.viewmodel
 
 import androidx.databinding.ObservableField
 import com.bumptech.glide.Glide
+import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.net.checkSuccess
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_home.model.home.detail.DetailChapterModel
 import com.rm.module_home.model.home.detail.HomeCommentViewModel
@@ -18,11 +20,23 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var showStatus = ObservableField<String>()
     var TimeStamp = ObservableField<String>()
 
+    // 错误提示信息
+    var errorTips = ObservableField<String>("")
     /**
      * 获取书籍详情信息
      */
     fun intDetailInfo(){
-        detailViewModel.set(repository.getDetailInfo())
+        launchOnUI {
+            repository.getDetailInfo("1").checkResult(
+                onSuccess = {
+                    showContentView()
+                    detailViewModel.set(it)
+                },onError = {
+                    showContentView()
+                    errorTips.set(it)
+                }
+            )
+        }
         showStatus()
         detailCommentViewModel.set(repository.getCommentInfo())
 
