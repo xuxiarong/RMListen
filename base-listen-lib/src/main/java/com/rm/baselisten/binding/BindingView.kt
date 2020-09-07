@@ -1,4 +1,3 @@
-
 package com.rm.baselisten.binding
 
 import android.view.View
@@ -19,6 +18,16 @@ import androidx.databinding.BindingAdapter
 fun View.bindClick(action: (() -> Unit)?) {
     if (action != null) {
         setOnClickListener { action() }
+    }
+}
+
+@BindingAdapter("bindLongClick")
+fun View.bindLongClick(action: (() -> Unit)?) {
+    if (action != null) {
+        setOnLongClickListener {
+            action()
+            true
+        }
     }
 }
 

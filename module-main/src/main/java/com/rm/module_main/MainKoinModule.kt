@@ -3,6 +3,7 @@ package com.rm.module_main
 import debug.repository.DemoMultiRepository
 import debug.viewmodel.DemoMultiClickViewModel
 import debug.viewmodel.DemoSingClickViewModel
+import debug.viewmodel.DemoSwipeViewModel
 import debug.viewmodel.DemoViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -16,6 +17,7 @@ val viewModelModule = module {
     viewModel { DemoViewModel() }
     viewModel { DemoSingClickViewModel() }
     viewModel { DemoMultiClickViewModel(get()) }
+    viewModel { DemoSwipeViewModel() }
 }
 
 val repositoryModule = module {
