@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/padding_width"
         android:layout_marginEnd="@dimen/padding_width"
+
         android:layout_marginBottom="@dimen/dp_12">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +39,7 @@
                 style="@style/TextViewHeadStyle"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="@{item.sheet_name}"
+                android:text="@{item.sheet_intro}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="幻海航行 | 领略科幻的海洋" />
@@ -57,8 +58,8 @@
             <!-- 作者信息部分-->
             <ImageView
                 android:id="@+id/listen_sheet_collected_adapter_author_icon"
-                bindUrl="@{item.avatar_url}"
-                isCircle="@{item.isAuthorCircle}"
+                bindUrl="@{item.avatar}"
+                isCircle="@{true}"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_9"

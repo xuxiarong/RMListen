@@ -30,9 +30,8 @@ class ListenSheetCollectedListAdapter(
         super.convert(holder, item)
         holder.getView<RecyclerView>(R.id.listen_sheet_collected_adapter_recycler_view).apply {
             bindHorizontalLayout(mItemAdapter)
-            linearRightItemDecoration(dimen(R.dimen.dp_14))
         }
-        mItemAdapter.setList(item.audio_list)
+        mItemAdapter.setList(item.audio_list?.list)
     }
 
     private val mItemAdapter by lazy {

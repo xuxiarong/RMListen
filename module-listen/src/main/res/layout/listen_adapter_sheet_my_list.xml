@@ -22,8 +22,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_adapter_icon"
-            bindUrl="@{item.avatar_url}"
-            corner="@{item.MIN_CORNER}"
+            bindUrl="@{item.sheet_cover}"
+            corner="@{@dimen/dp_4}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"

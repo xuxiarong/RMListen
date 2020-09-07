@@ -2,6 +2,7 @@ package com.rm.module_listen.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.module_listen.R
@@ -34,8 +35,8 @@ class ListenSheetListActivity : BaseActivity() {
     override fun initView() {
         super.initView()
         listen_sheet_list_back.setOnClickListener { finish() }
-        configTab()
         listen_sheet_list_view_pager.adapter = mAdapter
+        configTab()
     }
 
     private fun configTab() {
@@ -43,7 +44,8 @@ class ListenSheetListActivity : BaseActivity() {
             listen_sheet_list_tab.addTab(it)
         }
         listen_sheet_list_tab.bindViewPager2(listen_sheet_list_view_pager)
-        listen_sheet_list_tab.setSelect(0)
+        listen_sheet_list_view_pager.setCurrentItem(1,false)
+        listen_sheet_list_tab.setRedPointVisibility(1, View.VISIBLE)
     }
 
     override fun initData() {

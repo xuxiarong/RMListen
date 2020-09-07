@@ -19,15 +19,24 @@ class MenuViewModel(private val repository: MenuRepository) : BaseVMViewModel() 
 
 
     fun getMenuListInfo() {
-        launchOnIO {
-            repository.sheet().checkResult(
-                onSuccess = {
-                    menuList.value = it
-                },
-                onError = {
-                    DLog.i("------>", "$it")
-                }
-            )
-        }
+        /*  launchOnIO {
+              repository.sheet().checkResult(
+                  onSuccess = {
+                      menuList.value = it
+                  },
+                  onError = {
+                      DLog.i("------>", "$it")
+                  }
+              )
+          }*/
+
+        menuList.value = getData()
+    }
+
+    private fun getData(): MenuSheetBean {
+//        val bannerInfoBean = MutableList<BannerInfoBean>()
+        val data = MenuSheetBean(null,null,null,null,1,"")
+
+        return data
     }
 }

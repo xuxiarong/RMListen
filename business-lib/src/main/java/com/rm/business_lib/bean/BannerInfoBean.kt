@@ -8,15 +8,14 @@ import com.stx.xhb.androidx.entity.BaseBannerInfo
  * version: 1.0
  */
 data class BannerInfoBean (
-    var id: Int,
-    var img: String,
-    var img_url: String,
-    var jump: String,
-    var page_id: Int,
-    var seq: Int
+    var banner_id: Int,
+    var banner_img: String,
+    var banner_jump: String,
+    var banner_seq: Int,
+    var page_id: Int
 ) : BaseBannerInfo {
     override fun getXBannerUrl(): Any {
-        return img_url
+        return banner_img
     }
 
     override fun getXBannerTitle(): String {

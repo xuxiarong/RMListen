@@ -1,21 +1,35 @@
-package com.rm.business_lib.wedgit;
+package com.rm.business_lib.wedgit.radiotab;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.annotation.IntDef;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
+
 import com.rm.business_lib.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RadioTabLayout extends RadioGroup implements View.OnClickListener {
+public class RadioTabLayout extends LinearLayout implements View.OnClickListener {
+
+    @IntDef({VISIBLE, INVISIBLE, GONE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Visibility {
+    }
 
     private int selectDrawable;//选中背景
     private int defaultDrawable;//默认背景
@@ -35,8 +49,9 @@ public class RadioTabLayout extends RadioGroup implements View.OnClickListener {
     private ViewPager2 mViewPager2;
     private ViewPager mViewPager;
 
-    private List<RadioButton> buttonList = new ArrayList<>();
-    private RadioButton mCurButton;//当前选中的radioButton
+    private List<TextView> buttonList = new ArrayList<>();
+    private List<View> pointList = new ArrayList<>();
+    private TextView mCurButton;//当前选中的radioButton
 
     public RadioTabLayout(Context context) {
         this(context, null);
@@ -67,13 +82,15 @@ public class RadioTabLayout extends RadioGroup implements View.OnClickListener {
         mDefaultTypeface = ta.getInt(R.styleable.RadioTabLayout_radioSelectTypeface, 0);
         radioHeight = ta.getDimensionPixelOffset(R.styleable.RadioTabLayout_radioHeight, getResources().getDimensionPixelOffset(R.dimen.dp_34));
         ta.recycle();
-
     }
 
     /**
      * 注册ViewPager2 滑动监听
      */
     private void registerPageChanger() {
+        if (mViewPager2 == null) {
+            return;
+        }
         mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -95,6 +112,9 @@ public class RadioTabLayout extends RadioGroup implements View.OnClickListener {
 
 
     private void addPagerChangeListener() {
+        if (mViewPager == null) {
+            return;
+        }
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -120,9 +140,8 @@ public class RadioTabLayout extends RadioGroup implements View.OnClickListener {
      * @return CustomTabLayout
      */
     public RadioTabLayout addTab(CharSequence text) {
-        RadioButton radioButton = createButton(text);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, radioHeight);
-        addView(radioButton, layoutParams);
+        addView(createButton(text), layoutParams);
         return this;
     }
 
@@ -141,21 +160,28 @@ public class RadioTabLayout extends RadioGroup implements View.OnClickListener {
         addPagerChangeListener();
     }
 
+
     /**
      * 设置当前选中tab
      *
-     * @param position tab下标
+     * @param index tab下标
      */
-    public void setSelect(int position) {
-        RadioButton button = buttonList.get(position);
+    private void setSelect(int index) {
+        if (index >= buttonList.size() || index < 0) {
+            return;
+        }
+
+        TextView button = buttonList.get(index);
         if (mCurButton == button) {
             return;
         }
         if (mCurButton != null) {
             setState(false, mCurButton);
         }
+
         setState(true, button);
     }
+
 
     /**
      * 修改选中后状态
@@ -163,16 +189,16 @@ public class RadioTabLayout extends RadioGroup implements View.OnClickListener {
      * @param isSelect    是否选择
      * @param radioButton 选中的对象
      */
-    private void setState(boolean isSelect, RadioButton radioButton) {
+    private void setState(boolean isSelect, TextView radioButton) {
         if (isSelect) {
-            radioButton.setBackgroundResource(selectDrawable);
+            ((ViewGroup) radioButton.getParent()).setBackgroundResource(selectDrawable);
             radioButton.setTextColor(selectTextColor);
             radioButton.setTextSize(selectTextSize);
             radioButton.setTypeface(mSelectTypeface == 0 ? Typeface.defaultFromStyle(Typeface.NORMAL) : Typeface.defaultFromStyle(Typeface.BOLD));
             mCurButton = radioButton;
         } else {
             radioButton.setTextColor(defaultTextColor);
-            radioButton.setBackgroundResource(defaultDrawable);
+            ((ViewGroup) radioButton.getParent()).setBackgroundResource(defaultDrawable);
             radioButton.setTextSize(defaultTextSize);
             radioButton.setTypeface(mDefaultTypeface == 0 ? Typeface.defaultFromStyle(Typeface.NORMAL) : Typeface.defaultFromStyle(Typeface.BOLD));
         }
@@ -181,19 +207,37 @@ public class RadioTabLayout extends RadioGroup implements View.OnClickListener {
     /**
      * 动态创建添加tab button对象
      */
-    private RadioButton createButton(CharSequence text) {
-        RadioButton radioButton = new RadioButton(getContext());
-        radioButton.setText(text);
-        setState(false, radioButton);
-        radioButton.setButtonDrawable(null);
-        radioButton.setOnClickListener(this);
-        buttonList.add(radioButton);
-        return radioButton;
+    private View createButton(CharSequence text) {
+        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.radio_tab_layout, this, false);
+        TextView textView = rootView.findViewById(R.id.radio_tab_text);
+        textView.setText(text);
+        setState(false, textView);
+        buttonList.add(textView);
+        textView.setOnClickListener(this);
+
+        View point = rootView.findViewById(R.id.radio_tab_point);
+        pointList.add(point);
+        return rootView;
+    }
+
+    public void setRedPointVisibility(int index, @Visibility int visibility) {
+        if (index >= pointList.size() || index < 0) {
+            return;
+        }
+        pointList.get(index).setVisibility(visibility);
+        TextView textView = buttonList.get(index);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
+        if (visibility == GONE) {
+            params.rightMargin = 0;
+            params.topMargin = 0;
+        } else {
+            params.rightMargin = getResources().getDimensionPixelOffset(R.dimen.dp_6);
+        }
     }
 
     @Override
     public void onClick(View v) {
-        if (v instanceof RadioButton) {
+        if (v instanceof TextView) {
             int index = buttonList.indexOf(v);
             if (index != -1) {
                 setSelect(index);
