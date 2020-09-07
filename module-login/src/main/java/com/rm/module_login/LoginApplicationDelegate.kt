@@ -36,13 +36,13 @@ class LoginApplicationDelegate : IApplicationDelegate {
      * 初始化登陆相关信息
      */
     private fun initLogin() {
-//        val loginUserInfo = LOGIN_USER_INFO.getObjectMMKV(LoginUserBean::class.java, null)
-//        if (loginUserInfo == null) {
-//            // 没有登陆
-//            LoginConstants.isLogin.value = false
-//        } else {
-//            LoginConstants.isLogin.value = true
-//            LoginConstants.loginUser.value = loginUserInfo
-//        }
+        val loginUserInfo = LOGIN_USER_INFO.getObjectMMKV(LoginUserBean::class.java, null)
+        if (loginUserInfo == null) {
+            // 没有登陆
+            LoginConstants.isLogin.value = false
+        } else {
+            LoginConstants.isLogin.value = true
+            LoginConstants.loginUser.value = loginUserInfo
+        }
     }
 }
