@@ -18,55 +18,38 @@
 
 
 
-
-
 #### 新技术或开源库的优缺点： 
 
 - Mvvm
 
-  ​	优点：
-
-  ​			 双向绑定技术，当Model变化时，View-Model会自动更新，View也会自动变化
-
-  ​	缺点：
-
-​				   数据绑定使得 Bug 很难被调试
-
-​				   项目偏大时，ViewModel层类会增多
-
-​				   数据双向绑定不利于代码重用
+  - 优点
+  - 双向绑定技术，当Model变化时，View-Model会自动更新，View也会自动变化
+  
+- 缺点
+    - 数据绑定使得 Bug 很难被调试
+    - 项目偏大时，ViewModel层类会增多
+    - 数据双向绑定不利于代码重用
 
 - LiveData
 
-  ​	优点：
-
-  ​			UI和实时数据保持一致，
-
-​			       自动管理数据的更新机制，不需要再解决生命周期带来的问题
-
-​				   减少日常开发中因为数据持有View对象导致内存泄漏的问题
-
-​				   解决Configuration Change问题，在屏幕发生旋转或者被回收再次启动，立刻就能收到最新的数据
-
-​    		缺点：
-
-​					需要对正常使用的数据进行一层包装，设置数据时，稍稍要注意下线程问题(postValue和直接.value)
+  - 优点
+  - UI和实时数据保持一致
+    - 自动管理数据的更新机制，不需要再解决生命周期带来的问题
+    - 减少日常开发中因为数据持有View对象导致内存泄漏的问题
+    - 解决Configuration Change问题，在屏幕发生旋转或者被回收再次启动，立刻就能收到最新的数据
+  
+  - 缺点
+    - 需要对正常使用的数据进行一层包装，设置数据时，稍稍要注意下线程问题(postValue和直接.value)
 
 - DataBinding
 
-  ​	优点：
-
-  ​			数据与界面可以双向绑定，减少日常开发中的各种View的设置属性，监听等等代码的编写
-
-​			       View的功能进一步的强化，具有控制的部分功能
-
-​				  减少View层和Model层的部分操作View属性的逻辑代码，再也不必为View层臃肿的代码而烦恼
-
-​			缺点：
-
-​				因为xml文件中引入了部分简单逻辑，出现语法错误有可能检测不出，导致编译或者运行出错，调试代码				难度偏大。
-
-
+  - 优点
+  - 数据与界面可以双向绑定，减少日常开发中的各种View的设置属性，监听等等代码的编写
+    - View的功能进一步的强化，具有控制的部分功能
+    - 减少View层和Model层的部分操作View属性的逻辑代码，再也不必为View层臃肿的代码而烦恼
+  
+  - 缺点
+    - 因为xml文件中引入了部分简单逻辑，出现语法错误有可能检测不出，导致编译或者运行出错，调试代码，难度偏大。
 
 
 
@@ -91,12 +74,6 @@
     androidx.lifecycle:lifecycle-extensions:2.2.0
     ```
 
-  - 
-
-  - 
-
-    
-
 - 定义基类
 
   例如BaseMvvmActivity,BaseMvvmFragment,BaseVmViewMoel,简化具体业务类的公共逻辑
@@ -113,15 +90,15 @@
 
   - 新建一个Activity，并且将Activity对应的布局文件按照提示修改为databinding类型的,
 
-    ![](./z_images/databind_layout.png)
+    <img src="./z_images/databind_layout.png" style="zoom:67%;" />
 
   - 定义该Activity对应的ViewModel(类似MVP模式中的Presenter，可以认为是对数据的操作者，包含获取，修改，删除等等)，该ViewModel中所有声明的数据类型和方法，大部分都会跟Activity中的xml文件绑定，ViewModel的作用就是声明对应View层所需的数据类型，然后通过和repository(可以为是数据的存储仓库，例如网络接口，数据库集合，本地缓存等等)的交互，对页面上的数据进行一系列操作，然后通过数据绑定，将变化后的数据直接显示在界面上。
 
-    ![](./z_images/viewModel.png)
+    <img src="./z_images/viewModel.png" style="zoom: 50%;" />
 
   
 
-  ![](./z_images/xml_bind_viewmodel.png)
+  <img src="./z_images/xml_bind_viewmodel.png" style="zoom: 50%;" />
 
   - 让该Activity继承BaseVMActivity，并指定相应的泛型类，实现抽象的方法
 
@@ -179,7 +156,7 @@
 
   
 
-  ![](./z_images/br.png)		
+  <img src="./z_images/br.png" style="zoom:67%;" />		
 
   - DataBinding框架提供了@BindAdapter注解给开发者使用，可以根据业务需求扩展View的功能，举个例子，我们需要对View的onClickListener做扩展，先使用@BindAdapter声明属性名字和具体方法执行的逻辑，然后在xml中直接使用该属性，如果xml文件与viewModel中的属性是单向绑定，使用@{}，如果是双向绑定，请使用@={}，例如EditText输入用户手机号码
 
@@ -198,7 +175,7 @@
     }
     ```
 
-    ![](./z_images/bind_adapter.png)
+    <img src="./z_images/bind_adapter.png" style="zoom:67%;" />
 
   
 
@@ -212,17 +189,13 @@
 
 - 示例Demo
 
-  地址：http://192.168.11.214:8087/listen_book/android/tree/develop_v1.0
+  - 地址：http://192.168.11.214:8087/listen_book/android/tree/develop_v1.0
+- 下载项目后，分支切到develop_1.0,按照下图操作即可运行demo
+  - <img src="./z_images/run_demo.png" style="zoom:67%;" />
+- Demo页面
+  - <img src="./z_images/demo_phone.png" style="zoom:50%;" />
 
-   下载项目后，分支切到develop_1.0,按照下图操作即可运行demo
-
-  ![](./z_images/run_demo.png)
-
-
-
-​		Demo页面
-
-​		![](./z_images/demo_phone.png)
+​		
 
 
 

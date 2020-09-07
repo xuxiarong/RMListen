@@ -6,8 +6,8 @@ import android.view.Gravity
 import androidx.lifecycle.Observer
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.dialog.CommonFragmentDialog
-import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
@@ -52,7 +52,7 @@ class LoginByVerifyCodeActivity :
         )
     }
 
-    private lateinit var loginDialog: CommonMvFragmentDialog
+    private lateinit var loginDialog: CommonDragMvDialog
     private lateinit var commonDialog: CommonFragmentDialog
 
     override fun onResume() {
@@ -62,7 +62,7 @@ class LoginByVerifyCodeActivity :
          *  R.layout.login_dialong_login_status ： dialog的布局文件
          *  BR.viewModel ： 布局文件中使用的viewModel变量的名字
          */
-        loginDialog = CommonMvFragmentDialog().apply {
+        loginDialog = CommonDragMvDialog().apply {
             this.dialogBackgroundColor = R.color.businessColorPrimary
             this.gravity = Gravity.BOTTOM
             this.dialogHasBackground = true
