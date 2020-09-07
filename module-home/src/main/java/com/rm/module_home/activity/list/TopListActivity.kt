@@ -31,6 +31,7 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
     private val tabAdapter by lazy { HomeTopListTabAdapter() }
     private val types = mutableListOf<Int>()
     private var mCurPosition = 0
+
     private var baseTitleModel: BaseTitleModel? = null
 
     companion object {

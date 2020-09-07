@@ -15,10 +15,6 @@ import retrofit2.http.*
  */
 interface HomeApiService {
 
-    companion object {
-        const val BASE_URL = "http://10.1.3.12:9602/"
-    }
-
     @FormUrlEncoded
     @POST("/lg/user_article/add/json")
     suspend fun test(
@@ -29,15 +25,14 @@ interface HomeApiService {
     /**
      * 获取听书详情
      */
-    @FormUrlEncoded
-    @GET("/api/v1_0/audio/detail")
-    suspend fun HomeDetail(@Field("id") id: String): BaseResponse<HomeDetailModel>
+    @GET("audio/detail")
+    suspend fun HomeDetail(@Query ("id") id:String) :BaseResponse<HomeDetailModel>
 
 
     /**
      * 评论列表
      */
-    @FormUrlEncoded
+
     @GET("/api/v1_0/comment/audio-comments")
     suspend fun HomeDetail_Comment(
         @Field("audio_id") audio_id: String,
@@ -48,7 +43,6 @@ interface HomeApiService {
     /**
      * 章节列表
      */
-    @FormUrlEncoded
     @GET("/api/v1_0/chapter/list")
     suspend fun HomeChapter(
         @Field("page") page: Int,
@@ -58,7 +52,6 @@ interface HomeApiService {
     /**
      * 下载音频章节
      */
-    @FormUrlEncoded
     @POST("/api/v1_0/audio/chapter/download")
     suspend fun HomeChapterDown(
         @Field("audio_id") audio_id: Int,

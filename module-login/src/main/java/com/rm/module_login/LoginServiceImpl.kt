@@ -1,9 +1,11 @@
 package com.rm.module_login
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.login.bean.LoginUserBean
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
 
@@ -23,6 +25,14 @@ class LoginServiceImpl : LoginService {
 
     override fun startLoginActivity(context: Context) {
         LoginByVerifyCodeActivity.startActivity(context)
+    }
+
+    override fun getLoginStatusBean(): MutableLiveData<Boolean> {
+        return LoginConstants.isLogin
+    }
+
+    override fun getLoginUserBean(): MutableLiveData<LoginUserBean> {
+        return LoginConstants.loginUser
     }
 
 }

@@ -11,17 +11,6 @@ import java.io.IOException
  * version: 1.0
  */
 open class BaseRepository {
-//    suspend fun <T : Any> apiCall(
-//        call: suspend () -> BaseResult<T>,
-//        errorMessage: String
-//    ): BaseResult<T> {
-//        return try {
-//            call()
-//        } catch (e: Exception) {
-//            // An exception was thrown when calling the API so we're converting this to an IOException
-//            BaseResult.Error(IOException(errorMessage, e))
-//        }
-//    }
 
     suspend fun <T : Any> apiCall(call: suspend () -> BaseResponse<T>): BaseResult<T> {
         return try {
