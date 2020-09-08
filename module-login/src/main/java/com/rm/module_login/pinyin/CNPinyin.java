@@ -1,5 +1,7 @@
 package com.rm.module_login.pinyin;
 
+import com.rm.baselisten.util.DLog;
+
 import java.io.Serializable;
 
 import static com.rm.module_login.pinyin.CNPinyinFactory.DEF_CHAR;
@@ -64,6 +66,10 @@ public class CNPinyin<T extends CN> implements Serializable, Comparable<CNPinyin
             return chinese1.compareTo(chinese2);
         }
         return compare;
+    }
+
+    public void onItemClickLister(){
+        DLog.INSTANCE.i("llj","点击事件！！！！---->>"+data.chinese());
     }
 
 }

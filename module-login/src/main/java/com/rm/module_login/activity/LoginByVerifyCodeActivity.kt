@@ -38,6 +38,30 @@ import kotlinx.coroutines.launch
 class LoginByVerifyCodeActivity :
     BaseVMActivity<LoginActivityLoginByVerifyCodeBinding, LoginByVerifyViewModel>() {
 
+    companion object {
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, LoginByVerifyCodeActivity::class.java))
+        }
+    }
+    /**
+     * 国家地区的列表Adapter
+     */
+    private val countryListAdapter by lazy {
+        val adapter = CountryListAdapter()
+
+        if (CountryDataManager.pinyinCountryList.isEmpty()) {
+            GlobalScope.launch(Dispatchers.Main) {
+                val countryList = GlobalScope.async {
+                    CountryDataManager.getCountryList()
+                }
+                adapter.setList(countryList.await())
+                adapter.setLetter()
+                adapter.notifyDataSetChanged()
+            }
+        }
+        adapter
+    }
+
     // 选择国家的dialog
     private val countryChoiceDialog by lazy {
         CommonDragMvDialog().apply {
@@ -62,12 +86,6 @@ class LoginByVerifyCodeActivity :
         }
     }
 
-    companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, LoginByVerifyCodeActivity::class.java))
-        }
-    }
-
     override fun getLayoutId(): Int = R.layout.login_activity_login_by_verify_code
 
     override fun initModelBrId() = BR.viewModel
@@ -84,26 +102,6 @@ class LoginByVerifyCodeActivity :
                 finish()
             }
         })
-    }
-
-    /**
-     * 国家地区的列表Adapter
-     */
-    private val countryListAdapter by lazy {
-        val adapter = CountryListAdapter()
-
-        if (CountryDataManager.pinyinCountryList.isEmpty()) {
-            GlobalScope.launch(Dispatchers.Main) {
-                val countryList = GlobalScope.async {
-                    CountryDataManager.getCountryList()
-                }
-                adapter.setList(countryList.await())
-                adapter.setLetter()
-                adapter.notifyDataSetChanged()
-            }
-        }
-
-        adapter
     }
 
     override fun initView() {
