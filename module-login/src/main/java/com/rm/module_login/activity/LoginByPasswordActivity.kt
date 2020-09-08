@@ -80,6 +80,10 @@ class LoginByPasswordActivity :
                         dialogBinding.loginDialogCountryIndexBar.setDrawData(event.y, tag, position)
                     }
                 }
+                countryListAdapter.setOnItemClickListener { _, _, position: Int ->
+                    mViewModel.phoneInputViewModel.countryCode.set("+${countryListAdapter.data[position].data.phone_code}")
+                    dismiss()
+                }
             }
         }
     }
