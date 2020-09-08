@@ -56,6 +56,11 @@
             app:rv_backgroundColor="@color/business_text_color_333333"
             app:rv_cornerRadius="8dp"
             tools:ignore="MissingConstraints">
+            <ImageView
+                android:id="@+id/iv_img_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
 
         </com.flyco.roundview.RoundFrameLayout>
 

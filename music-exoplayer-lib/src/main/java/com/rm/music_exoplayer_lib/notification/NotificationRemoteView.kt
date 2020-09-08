@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.widget.RemoteViews
 import com.rm.music_exoplayer_lib.R
+import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.*
 
 /**
@@ -23,25 +24,39 @@ class NotificationRemoteView constructor(val context: Context) {
      *
      */
 
-     fun getDefaultCoustomRemoteView(
+    fun getDefaultCoustomRemoteView(
         cover: Bitmap,
         mMusicPlayerState: Int
+        , musicInfo: BaseAudioInfo
     ): RemoteViews {
         val defaultremoteviews =
             RemoteViews(context.packageName, R.layout.music_notify_default_controller)
         defaultremoteviews.setImageViewBitmap(R.id.music_notice_def_cover, cover)
-        defaultremoteviews.setImageViewResource(R.id.music_notice_def_btn_pause, getPauseIcon(mMusicPlayerState))
-        defaultremoteviews.setTextViewText(R.id.music_notice_def_title, "audioInfo.getAudioName()")
-        defaultremoteviews.setTextViewText(R.id.music_notice_def_subtitle, "audioInfo.getNickname()")
+        defaultremoteviews.setImageViewResource(
+            R.id.music_notice_def_btn_pause,
+            getPauseIcon(mMusicPlayerState)
+        )
+        defaultremoteviews.setTextViewText(R.id.music_notice_def_title, musicInfo.audioName)
+        defaultremoteviews.setTextViewText(R.id.music_notice_def_subtitle, musicInfo.filename)
         //上一首
-        defaultremoteviews.setOnClickPendingIntent(R.id.music_notice_def_btn_last, getClickPending(MUSIC_INTENT_ACTION_CLICK_LAST)
+        defaultremoteviews.setOnClickPendingIntent(
+            R.id.music_notice_def_btn_last, getClickPending(MUSIC_INTENT_ACTION_CLICK_LAST)
         )
         //下一首
-        defaultremoteviews.setOnClickPendingIntent(R.id.music_notice_def_btn_next, getClickPending(MUSIC_INTENT_ACTION_CLICK_NEXT))
+        defaultremoteviews.setOnClickPendingIntent(
+            R.id.music_notice_def_btn_next,
+            getClickPending(MUSIC_INTENT_ACTION_CLICK_NEXT)
+        )
         //暂停、开始
-        defaultremoteviews.setOnClickPendingIntent(R.id.music_notice_def_btn_pause, getClickPending(MUSIC_INTENT_ACTION_CLICK_PAUSE))
+        defaultremoteviews.setOnClickPendingIntent(
+            R.id.music_notice_def_btn_pause,
+            getClickPending(MUSIC_INTENT_ACTION_CLICK_PAUSE)
+        )
         //关闭
-        defaultremoteviews.setOnClickPendingIntent(R.id.music_notice_def_btn_close, getClickPending(MUSIC_INTENT_ACTION_CLICK_CLOSE))
+        defaultremoteviews.setOnClickPendingIntent(
+            R.id.music_notice_def_btn_close,
+            getClickPending(MUSIC_INTENT_ACTION_CLICK_CLOSE)
+        )
         return defaultremoteviews
     }
 
@@ -58,7 +73,8 @@ class NotificationRemoteView constructor(val context: Context) {
         return R.drawable.ic_music_mini_play_noimal
     }
 
-    private fun getClickPending(action: String): PendingIntent = PendingIntent.getBroadcast(context, 1, Intent(action), PendingIntent.FLAG_UPDATE_CURRENT)
+    private fun getClickPending(action: String): PendingIntent =
+        PendingIntent.getBroadcast(context, 1, Intent(action), PendingIntent.FLAG_UPDATE_CURRENT)
 
     /**
      * 生成并绑定大通知栏View点击事件的默认RemoteView
@@ -66,24 +82,40 @@ class NotificationRemoteView constructor(val context: Context) {
      * @param cover 封面
      * @return RemoteView
      */
-     fun getBigCoustomRemoteView(
+    fun getBigCoustomRemoteView(
         cover: Bitmap,
-        mMusicPlayerState: Int
-    ): RemoteViews{
+        mMusicPlayerState: Int,
+        musicInfo: BaseAudioInfo
+    ): RemoteViews {
         val bigRemoteViews =
             RemoteViews(context.packageName, R.layout.music_notify_big_controller)
         bigRemoteViews.setImageViewBitmap(R.id.music_notice_def_cover, cover)
-        bigRemoteViews.setImageViewResource(R.id.music_notice_def_btn_pause, getPauseIcon(mMusicPlayerState))
-        bigRemoteViews.setTextViewText(R.id.music_notice_def_title, "audioInfo.getAudioName()")
-        bigRemoteViews.setTextViewText(R.id.music_notice_def_subtitle, "audioInfo.getNickname()")
+        bigRemoteViews.setImageViewResource(
+            R.id.music_notice_def_btn_pause,
+            getPauseIcon(mMusicPlayerState)
+        )
+        bigRemoteViews.setTextViewText(R.id.music_notice_def_title, musicInfo.audioName)
+        bigRemoteViews.setTextViewText(R.id.music_notice_def_subtitle, musicInfo.filename)
         //上一首
-        bigRemoteViews.setOnClickPendingIntent(R.id.music_notice_def_btn_last, getClickPending(MUSIC_INTENT_ACTION_CLICK_LAST))
+        bigRemoteViews.setOnClickPendingIntent(
+            R.id.music_notice_def_btn_last,
+            getClickPending(MUSIC_INTENT_ACTION_CLICK_LAST)
+        )
         //下一首
-        bigRemoteViews.setOnClickPendingIntent(R.id.music_notice_def_btn_next, getClickPending(MUSIC_INTENT_ACTION_CLICK_NEXT))
+        bigRemoteViews.setOnClickPendingIntent(
+            R.id.music_notice_def_btn_next,
+            getClickPending(MUSIC_INTENT_ACTION_CLICK_NEXT)
+        )
         //暂停、开始
-        bigRemoteViews.setOnClickPendingIntent(R.id.music_notice_def_btn_pause, getClickPending(MUSIC_INTENT_ACTION_CLICK_PAUSE))
+        bigRemoteViews.setOnClickPendingIntent(
+            R.id.music_notice_def_btn_pause,
+            getClickPending(MUSIC_INTENT_ACTION_CLICK_PAUSE)
+        )
         //关闭
-        bigRemoteViews.setOnClickPendingIntent(R.id.music_notice_def_btn_close, getClickPending(MUSIC_INTENT_ACTION_CLICK_CLOSE))
+        bigRemoteViews.setOnClickPendingIntent(
+            R.id.music_notice_def_btn_close,
+            getClickPending(MUSIC_INTENT_ACTION_CLICK_CLOSE)
+        )
 
         return bigRemoteViews
     }

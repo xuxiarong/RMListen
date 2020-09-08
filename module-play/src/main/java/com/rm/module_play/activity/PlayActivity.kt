@@ -11,8 +11,10 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.coroutinepermissions.InlineRequestPermissionException
 import com.rm.business_lib.coroutinepermissions.requestPermissionsForResult
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
@@ -208,6 +210,8 @@ class PlayActivity :
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
+        loadRoundCornersImage(dip(8).toFloat(),iv_img_layout, musicPlayerManger.getCurrentPlayerMusic()?.audioCover)
+
     }
 
     override fun onPrepared(totalDurtion: Long) {
@@ -221,6 +225,8 @@ class PlayActivity :
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
+//        iv_img_layout
+        loadRoundCornersImage(dip(8).toFloat(),iv_img_layout,musicInfo.audioCover)
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {

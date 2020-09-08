@@ -221,7 +221,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 )
                 mExoPlayer.playWhenReady = true
                 //最后更新通知栏
-                notificationManger.showNotification(baseContext)
+                notificationManger.showNotification(baseContext,musicInfo)
             } else {
                 exoLog("没有链接")
             }

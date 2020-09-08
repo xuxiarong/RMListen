@@ -42,42 +42,27 @@ class NotificationManger constructor(
     //前台进程默认是开启的,通知交互默认是开启的
     var mForegroundEnable: Boolean = true //前台进程默认是开启的,通知交互默认是开启的
     var mNotificationEnable = true
+
     /**
      * 构造一个默认的通知栏并显示
      */
-    fun showNotification(context: Context) {
+    fun showNotification(context: Context, musicInfo: BaseAudioInfo) {
         if (mNotificationEnable) {
             val manager: NotificationManagerCompat =
                 NotificationManagerCompat.from(context)
             val isOpen: Boolean = manager.areNotificationsEnabled()
             if (isOpen) {
                 if (audioInfo.audioCover.isNotEmpty()) {
-                    Glide.with(context)
-                        .asBitmap()
-                        .load(audioInfo.audioCover)
-                        .error(R.drawable.ic_music_default_cover)
-                        .into(object : SimpleTarget<Bitmap?>(120, 120) {
-                            override fun onResourceReady(
-                                resource: Bitmap,
-                                transition: Transition<in Bitmap?>?
-                            ) {
 
-                                val notification = buildNotifyInstance(resource)
-                                showNotificationForeground(
-                                    notification)
-                            }
-                        })
-
+                    val notification = buildNotifyInstance(musicInfo)
+                    showNotificationForeground(
+                        notification
+                    )
                 } else {
                     //File
                     //缓存为空，获取音频文件自身封面
                     //封面为空，使用默认
-                    val resource = BitmapFactory.decodeResource(
-                        context.resources,
-                        R.drawable.ic_music_default_cover
-                    )
-
-                    val notification = buildNotifyInstance(resource)
+                    val notification = buildNotifyInstance(musicInfo)
                     showNotificationForeground(notification)
                 }
             }
@@ -108,7 +93,7 @@ class NotificationManger constructor(
      * @param cover 封面
      * @return 通知对象
      */
-    fun buildNotifyInstance(cover: Bitmap): Notification? {
+    fun buildNotifyInstance(musicInfo: BaseAudioInfo): Notification? {
         //8.0及以上系统需创建通知通道
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: String = context.getResources().getString(R.string.music_text_notice_name)
@@ -129,14 +114,36 @@ class NotificationManger constructor(
         val appName: String = context.getString(R.string.music_text_now_play)
         //构造通知栏
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "001")
+        Glide.with(context)
+            .asBitmap()
+            .load(audioInfo.audioCover)
+            .error(R.drawable.ic_music_default_cover)
+            .into(object : SimpleTarget<Bitmap?>(120, 120) {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap?>?
+                ) {
+                    builder.setCustomContentView(
+                        notificationView.getDefaultCoustomRemoteView(
+                            resource,
+                            playState,
+                            musicInfo
+                        )
+                    ).setCustomBigContentView(
+                        notificationView.getBigCoustomRemoteView(
+                            resource,
+                            playState,
+                            musicInfo
+                        )
+                    )
+                }
+            })
         builder.setContentIntent(pendClickIntent)
             .setTicker(appName)
             .setSmallIcon(R.drawable.ic_music_mini_close)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            .setCustomContentView(notificationView.getDefaultCoustomRemoteView(cover, playState))
-            .setCustomBigContentView(notificationView.getBigCoustomRemoteView(cover, playState))
             .setChannelId(CHANNEL_ID).priority = Notification.PRIORITY_HIGH
         if (MusicRomUtil.instance?.isMiui == true) {
             builder.setFullScreenIntent(pendClickIntent, false) //禁用悬挂
