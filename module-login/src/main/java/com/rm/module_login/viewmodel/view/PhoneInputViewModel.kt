@@ -30,11 +30,4 @@ class PhoneInputViewModel {
     fun clearInput() {
         phone.set("")
     }
-
-    /**
-     * 显示国家列表选择框
-     */
-    fun showCountryList() {
-        // todo
-    }
 }

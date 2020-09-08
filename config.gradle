@@ -102,6 +102,8 @@ ext {
             cardview                  : "com.android.support:cardview-v7:${version.cardview}",
             // 今日头条优化后的适配方案
             autosize                  : "me.jessyan:autosize:${version.autosize}",
+            //tinypinyin
+            "tinypinyin"                   : "com.github.promeg:tinypinyin:2.0.3"
 
             //scrolllayout : "com.yinglan.scrolllayout:scrolllayout:${version.scrolllayout}"
     ]

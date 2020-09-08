@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="phoneInputViewModel"
             type="com.rm.module_login.viewmodel.view.PhoneInputViewModel" />
@@ -19,16 +20,16 @@
         android:paddingEnd="@dimen/dp_20">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/login_by_verify_code_country_code"
+            android:id="@+id/login_include_phone_input_country_code"
             style="@style/BusinessTextStyleFirst_2"
-            bindClick="@{phoneInputViewModel.showCountryList}"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/dp_12"
             android:text="@{phoneInputViewModel.countryCode}" />
 
         <com.rm.business_lib.wedgit.arrow.ArrowView
-            bindClick="@{phoneInputViewModel.showCountryList}"
+            android:id="@+id/login_include_phone_input_arrow_view"
             android:layout_width="@dimen/dp_22"
             android:layout_height="@dimen/dp_22"
-            android:layout_marginStart="@dimen/dp_12"
             android:layout_marginEnd="@dimen/dp_12"
             android:paddingStart="@dimen/dp_4"
             android:paddingTop="@dimen/dp_7"

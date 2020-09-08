@@ -1,2 +1,10 @@
 <resources>
+    <!-- 右边导航字母自定义属性-->
+    <declare-styleable name="LetterBar">
+        <attr name="text_width" format="dimension" />
+        <attr name="text_margin_top" format="dimension"/>
+        <attr name="text_size" format="dimension"/>/>
+        <attr name="text_color" format="reference"/>/>
+        <attr name="text_press_color" format="reference"/>/>
+    </declare-styleable>
 </resources>
