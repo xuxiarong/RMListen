@@ -43,6 +43,7 @@ class LoginByVerifyCodeActivity :
             context.startActivity(Intent(context, LoginByVerifyCodeActivity::class.java))
         }
     }
+
     /**
      * 国家地区的列表Adapter
      */
@@ -81,6 +82,11 @@ class LoginByVerifyCodeActivity :
                         )
                         dialogBinding.loginDialogCountryIndexBar.setDrawData(event.y, tag, position)
                     }
+                }
+
+                countryListAdapter.setOnItemClickListener { _, _, position: Int ->
+                    mViewModel.phoneInputViewModel.countryCode.set("+${countryListAdapter.data[position].data.phone_code}")
+                    dismiss()
                 }
             }
         }
