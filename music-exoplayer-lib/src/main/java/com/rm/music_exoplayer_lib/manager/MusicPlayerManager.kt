@@ -1,5 +1,6 @@
 package com.rm.music_exoplayer_lib.manager
 
+import android.app.Notification
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -46,7 +47,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
                 startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
                 startIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
-                context.applicationContext .startActivity(startIntent)
+                context.applicationContext.startActivity(startIntent)
             }
         }
     }
@@ -109,10 +110,18 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun playLastMusic() {
-        TODO("Not yet implemented")
+        mBinder?.playLastMusic()
     }
 
     override fun playNextMusic() {
+        mBinder?.playNextMusic()
+    }
+
+    override fun playLastIndex(): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun playNextIndex(): Int {
         TODO("Not yet implemented")
     }
 
@@ -179,6 +188,50 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mActivityLockClassName = activityClassName;
         mBinder?.setLockActivityName(mActivityLockClassName ?: "")
         return this
+    }
+
+    override fun setDefaultAlarmModel(defaultAlarmModel: Int) {
+        mBinder?.setDefaultAlarmModel(defaultAlarmModel)
+    }
+
+    override fun setDefaultPlayModel(defaultPlayModel: Int) {
+        mBinder?.setDefaultPlayModel(defaultPlayModel)
+    }
+
+    override fun startServiceForeground() {
+        TODO("Not yet implemented")
+    }
+
+    override fun startServiceForeground(notification: Notification?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun startServiceForeground(notification: Notification?, notifiid: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun stopServiceForeground() {
+        TODO("Not yet implemented")
+    }
+
+    override fun startNotification() {
+        TODO("Not yet implemented")
+    }
+
+    override fun startNotification(notification: Notification?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun startNotification(notification: Notification?, notifiid: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateNotification() {
+        TODO("Not yet implemented")
+    }
+
+    override fun cleanNotification() {
+        TODO("Not yet implemented")
     }
 
 

@@ -49,3 +49,23 @@ const val MUSIC_PLAYER_BUFFER = 2 //缓冲中
 const val MUSIC_PLAYER_PLAYING = 3 //播放中
 const val MUSIC_PLAYER_PAUSE = 4 //暂停
 const val MUSIC_PLAYER_ERROR = 5 //错误
+
+/**
+ * 定时闹钟档次，替换enum类型
+ */
+const val MUSIC_ALARM_MODEL_10 = 1 //10分钟后
+
+const val MUSIC_ALARM_MODEL_15 = 2
+const val MUSIC_ALARM_MODEL_30 = 3
+const val MUSIC_ALARM_MODEL_60 = 4
+const val MUSIC_ALARM_MODEL_CURRENT = 5 //当前歌曲播放完成立即结束
+const val MUSIC_ALARM_MODEL_0 = 0 //无限期
+
+/**
+ * 播放模式，替换enum类型
+ */
+
+const val MUSIC_MODEL_SINGLE = 1 //单曲模式
+
+const val MUSIC_MODEL_ORDER = 2 //顺序播放
+

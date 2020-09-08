@@ -1,5 +1,6 @@
 package com.rm.music_exoplayer_lib.service
 
+import android.app.Notification
 import android.os.Binder
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
@@ -65,6 +66,14 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
         presenter.setAlarm(times)
     }
 
+    fun playLastMusic() {
+        presenter.playLastMusic()
+    }
+
+    fun playNextMusic() {
+        presenter.playNextMusic()
+    }
+
     /**
      * 更新播放器
      */
@@ -89,14 +98,62 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     fun play() {
         presenter.play()
     }
+
     //当前播放
     fun getCurrentPlayerMusic(): BaseAudioInfo? = presenter.getCurrentPlayerMusic()
+
     //锁屏对象
     fun setLockActivityName(className: String) {
         presenter.setLockActivityName(className)
     }
+
     //等待播放队列
     fun getCurrentPlayList(): List<*>? = presenter.getCurrentPlayList()
 
     fun isPlaying(): Boolean = presenter.isPlaying()
+
+    fun setDefaultAlarmModel(defaultAlarmModel: Int) {
+        presenter.setDefaultAlarmModel(defaultAlarmModel)
+    }
+
+    fun setDefaultPlayModel(defaultPlayModel: Int) {
+        presenter.setDefaultPlayModel(defaultPlayModel)
+    }
+
+
+    fun startServiceForeground() {
+        TODO("Not yet implemented")
+    }
+
+    fun startServiceForeground(notification: Notification?) {
+        TODO("Not yet implemented")
+    }
+
+    fun startServiceForeground(notification: Notification?, notifiid: Int) {
+        TODO("Not yet implemented")
+    }
+
+    fun stopServiceForeground() {
+        TODO("Not yet implemented")
+    }
+
+    fun startNotification() {
+        TODO("Not yet implemented")
+    }
+
+    fun startNotification(notification: Notification?) {
+        TODO("Not yet implemented")
+    }
+
+    fun startNotification(notification: Notification?, notifiid: Int) {
+        TODO("Not yet implemented")
+    }
+
+    fun updateNotification() {
+        TODO("Not yet implemented")
+    }
+
+    fun cleanNotification() {
+        TODO("Not yet implemented")
+    }
 }

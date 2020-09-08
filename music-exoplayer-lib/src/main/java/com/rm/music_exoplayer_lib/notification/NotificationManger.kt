@@ -35,7 +35,7 @@ class NotificationManger constructor(
     private val notificationView by lazy {
         NotificationRemoteView(context)
     }
-    private val mNotificationManager by lazy {
+    val mNotificationManager by lazy {
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 

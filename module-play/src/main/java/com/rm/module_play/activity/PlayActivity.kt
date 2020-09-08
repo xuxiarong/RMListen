@@ -7,9 +7,11 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.databinding.Observable
 import com.alibaba.android.arouter.launcher.ARouter
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.Cxt
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.component_comm.navigateToForResult
 import com.rm.component_comm.navigateWithToForResult
@@ -33,6 +35,7 @@ import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 import kotlinx.android.synthetic.main.activity_play.*
 import kotlinx.android.synthetic.main.music_paly_control_view.*
 import kotlinx.android.synthetic.main.music_play_process_time.*
@@ -124,6 +127,14 @@ class PlayActivity :
         bt_get_book_list.setOnClickListener {
             navigateToForResult(testPath, 100)
         }
+        //上一首
+        iv_music_play_left.setOnClickListener {
+            musicPlayerManger.playLastMusic()
+        }
+        //下一首
+        iv_music_play_right.setOnClickListener {
+            musicPlayerManger.playNextMusic()
+        }
 
     }
 
@@ -131,7 +142,8 @@ class PlayActivity :
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == 100) {
-            searchResultInfo = data?.getParcelableArrayListExtra<SearchResultInfo>("books")
+            searchResultInfo = data?.getParcelableArrayListExtra("books")
+            searchResultInfo?.let { mViewModel.zipPlayPath(it) }
         }
     }
 
@@ -148,6 +160,19 @@ class PlayActivity :
     }
 
     override fun startObserve() {
+        mViewModel.playPath.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if (mViewModel.playPath.get()?.size == 20) {
+                    mViewModel.playPath.get()?.let {
+                        musicPlayerManger.updateMusicPlayerData(it, 2)
+                        musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
+
+                    }
+
+                }
+            }
+        })
     }
 
     private fun toggleState() {
@@ -161,9 +186,7 @@ class PlayActivity :
         }
     }
 
-    val RADIO_URL =
-        "https://webfs.yun.kugou.com/202009031556/2c5ecf4a6613d2d97e4421151a12b017/part/0/961074/G203/M01/01/01/Cw4DAF52iliAAoChAD4QE6gg03M430.mp3"
-    val audioCover = "https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
+
     override fun initData() {
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
@@ -173,11 +196,7 @@ class PlayActivity :
                 delay(300)
             }
         }
-        musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
-        val musicData = arrayListOf<BaseAudioInfo>()
-        musicData.add(BaseAudioInfo(RADIO_URL, audioCover))
         GlobalplayHelp.instance.addOnPlayerEventListener()
-        musicPlayerManger.updateMusicPlayerData(musicData, 0)
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
@@ -205,9 +224,8 @@ class PlayActivity :
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        music_play_bubbleSeekBar.setProgress(currentDurtion.toFloat())
-        val str =
-            "${formatTimeInMillisToString(currentDurtion)}/${formatTimeInMillisToString(totalDurtion)}"
+        music_play_bubbleSeekBar.setNoListenerProgress(currentDurtion.toFloat())
+        val str = "${formatTimeInMillisToString(currentDurtion)}/${formatTimeInMillisToString(totalDurtion)}"
         music_play_bubbleSeekBar.updateThumbText(str)
         bubbleFl.text = str
     }
