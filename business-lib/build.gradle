@@ -56,4 +56,5 @@ dependencies {
 //    api rootProject.ext.dependencies["cardview"]
     api rootProject.ext.androidx["fragment_ktx"]
     api rootProject.ext.androidx["xBanner"]
+    implementation rootProject.ext.dependencies["easypermissions"]
 }

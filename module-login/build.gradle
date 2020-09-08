@@ -79,5 +79,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':component-comm')
     implementation project(path: ':business-lib')
+    implementation rootProject.ext.dependencies["tinypinyin"]
     kapt rootProject.ext.dependencies["router_compiler"]
 }

@@ -1,22 +1,33 @@
 package com.rm.music_exoplayer_lib.service
 
 import android.annotation.SuppressLint
+import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
 import android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
+import androidx.annotation.RequiresApi
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.extractor.ExtractorsFactory
+import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.trackselection.*
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.util.Util
+import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.util.Util.getUserAgent
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
@@ -25,10 +36,13 @@ import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.manager.AlarmManger
 import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
+import com.rm.music_exoplayer_lib.notification.NOTIFICATION_ID
 import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
+import java.io.File
 import java.util.*
+
 
 /**
  * desc   :播放器核心类
@@ -46,6 +60,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //播放器绝对路径、锁屏绝对路径
     private var mLockActivityClass: String? = null
+
     //当前播放播放器正在处理的对象位置
     private var mCurrentPlayIndex = 0
 
@@ -55,10 +70,19 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     //监听系统事件的广播
     private var mHeadsetBroadcastReceiver: AlarmBroadcastReceiver? = null
 
+    //用户设定的内部播放器播放模式，默认顺序
+    private val mPlayModel = MUSIC_MODEL_ORDER
 
-    private val notificationManger by lazy {
+    //用户设定的闹钟模式,默认:MusicAlarmModel.MUSIC_ALARM_MODEL_0
+    private val mMusicAlarmModel = MUSIC_ALARM_MODEL_0
+
+    //循环模式
+    private val mLoop = false
+
+    val notificationManger by lazy {
         NotificationManger(this, getCurrentPlayerMusic(), getPlayerState())
     }
+    val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory()
 
     //是否被动暂停，用来处理音频焦点失去标记
     private var mIsPassive = false
@@ -70,11 +94,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 .build()
             addListener(mEventListener)
         }
-
     }
-    private val dataSourceFactory: DefaultDataSourceFactory by lazy {
+    private var cachedDataSourceFactory: CacheDataSourceFactory? = null
+    private val dataSourceFactory: DataSource.Factory by lazy {
         DefaultDataSourceFactory(
-            this, Util.getUserAgent(this, packageName), null
+            this,
+            getUserAgent(this, this.packageName)
         )
     }
 
@@ -83,14 +108,17 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //进度条消息
     @SuppressLint("HandlerLeak")
-    private val mUpdateProgressHandler = object : Handler() {
-        override fun handleMessage(msg: Message) {
+    private val mUpdateProgressHandler = object :Handler(){
+
+        override fun handleMessage( msg: Message) {
             val duration = mExoPlayer.contentDuration
             val currentPosition = mExoPlayer.contentPosition
             onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
         }
     }
+
+
 
     //音频焦点
     var requestAudioFocus = -1
@@ -100,6 +128,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     override fun onCreate() {
         super.onCreate()
+        buildMediaSource()
         mAudioFocusManager = MusicAudioFocusManager(this.applicationContext)
         requestAudioFocus = mAudioFocusManager?.requestAudioFocus(
             object : MusicAudioFocusManager.OnAudioFocusListener {
@@ -132,6 +161,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
         registerReceiver()
     }
+
     //注册广播
     private fun registerReceiver() {
         val intentFilter = IntentFilter()
@@ -167,17 +197,31 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         return mPlayerBinder as MusicPlayerBinder
     }
 
+    private var mTrackSelector: TrackSelector? = null
+
+    private fun buildMediaSource() {
+        val cacheFile =
+            File(baseContext.externalCacheDir?.absolutePath, "video") // 本地最多保存512M, 按照LRU原则删除老数据
+        val simpleCache = SimpleCache(cacheFile, LeastRecentlyUsedCacheEvictor(512 * 1024 * 1024))
+        val bandwidthMeter = DefaultBandwidthMeter()
+        val videoTrackSelectionFactory: TrackSelection.Factory =
+            AdaptiveTrackSelection.Factory(bandwidthMeter)
+        mTrackSelector = DefaultTrackSelector(videoTrackSelectionFactory)
+        cachedDataSourceFactory = CacheDataSourceFactory(simpleCache, dataSourceFactory)
+    }
 
     private fun startPlay(musicInfo: BaseAudioInfo) =
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
             if (musicInfo.audioPath.isNotEmpty()) {
+//                val source = ExtractorMediaSource(Uri.parse(musicInfo.audioPath),cachedDataSourceFactory,extractorsFactory,null, null)
+                val source = ProgressiveMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.parse(musicInfo.audioPath))
                 mExoPlayer.prepare(
-                    ProgressiveMediaSource.Factory(dataSourceFactory)
-                        .createMediaSource(Uri.parse(musicInfo.audioPath))
+                    source
                 )
                 mExoPlayer.playWhenReady = true
                 //最后更新通知栏
-                notificationManger.showNotification(baseContext)
+                notificationManger.showNotification(baseContext,musicInfo)
             } else {
                 exoLog("没有链接")
             }
@@ -249,10 +293,49 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun playLastMusic() {
+        when (mPlayModel) {
+            //顺序播放
+            MUSIC_MODEL_ORDER -> {
+                if (mCurrentPlayIndex > 0) {
+                    mCurrentPlayIndex--
+                }
+                postViewHandlerCurrentPosition(mCurrentPlayIndex)
+                startPlayMusic(mCurrentPlayIndex)
+            }
+            //单曲循环
+            MUSIC_MODEL_SINGLE -> {
+
+            }
+            else -> {
+            }
+        }
+    }
+
+    //切换到下一首
+    override fun playNextMusic() {
+        when (mPlayModel) {
+            //顺序播放
+            MUSIC_MODEL_ORDER -> {
+                if ((mAudios.size - 1) > mCurrentPlayIndex) {
+                    mCurrentPlayIndex++
+                }
+                postViewHandlerCurrentPosition(mCurrentPlayIndex)
+                startPlayMusic(mCurrentPlayIndex)
+            }
+            //单曲循环
+            MUSIC_MODEL_SINGLE -> {
+
+            }
+            else -> {
+            }
+        }
+    }
+
+    override fun playLastIndex(): Int {
         TODO("Not yet implemented")
     }
 
-    override fun playNextMusic() {
+    override fun playNextIndex(): Int {
         TODO("Not yet implemented")
     }
 
@@ -318,17 +401,92 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mCurrentPlayIndex = index
     }
 
+    /**
+     * 上报给UI组件，当前内部自动正在处理的对象位置
+     * @param currentPlayIndex 数据源中的Index
+     */
+    private fun postViewHandlerCurrentPosition(currentPlayIndex: Int) {
+        if (mAudios.size > currentPlayIndex) {
+            mOnPlayerEventListeners.forEach {
+                it.onPlayMusiconInfo(
+                    (mAudios[currentPlayIndex] as BaseAudioInfo), currentPlayIndex
+                )
+            }
+        }
+
+    }
+
     override fun getPlayerState(): Int = mMusicPlayerState
     override fun setLockActivityName(className: String): MusicPlayerManager? {
         mLockActivityClass = className
         return null
     }
 
-    /**z
+    override fun setDefaultAlarmModel(defaultAlarmModel: Int) {
+
+    }
+
+    override fun setDefaultPlayModel(defaultPlayModel: Int) {
+    }
+
+    override fun startServiceForeground() {
+        TODO("Not yet implemented")
+    }
+
+    override fun startServiceForeground(notification: Notification?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun startServiceForeground(notification: Notification?, notifiid: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun stopServiceForeground() {
+        TODO("Not yet implemented")
+    }
+
+    override fun startNotification() {
+        TODO("Not yet implemented")
+    }
+
+    override fun startNotification(notification: Notification?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun startNotification(notification: Notification?, notifiid: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateNotification() {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * 清除通知，常驻进程依然保留(如果开启)
+     * @param notifiid 通知栏ID
+     */
+    private fun cleanNotification(notifiid: Int) {
+        notificationManger.mNotificationManager.cancel(notifiid)
+    }
+
+    @SuppressLint("WrongConstant")
+    override fun cleanNotification() {
+        cleanNotification(NOTIFICATION_ID)
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                stopForeground(NOTIFICATION_ID)
+            } else {
+                stopForeground(true)
+            }
+        } catch (e: RuntimeException) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
      * 更新播放进度
      */
     private fun onUpdateProgress(currentPosition: Long, duration: Long) {
-
         mOnPlayerEventListeners.forEach {
             it.onTaskRuntime(duration, currentPosition, 0, 0)
         }
@@ -345,7 +503,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             when (playbackState) {
                 Player.STATE_BUFFERING, Player.STATE_READY -> {
                     if (!mUpdateProgressHandler.hasMessages(0)) {
-                        mUpdateProgressHandler.sendEmptyMessage(0)
+                        mUpdateProgressHandler.sendEmptyMessageDelayed(0,UPDATE_PROGRESS_DELAY)
                         mMusicPlayerState = MUSIC_PLAYER_PLAYING
                     }
                     mMusicPlayerState =
@@ -356,6 +514,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                     mUpdateProgressHandler.removeMessages(0)
                 }
 
+                Player.STATE_IDLE -> {
+
+                }
             }
         }
 
@@ -411,5 +572,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
         mHeadsetBroadcastReceiver = null
     }
+
+
 }
 

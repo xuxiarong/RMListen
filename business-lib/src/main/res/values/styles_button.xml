@@ -10,4 +10,11 @@
         <item name="android:singleLine">true</item>
         <item name="android:background">@drawable/business_selector_round_btn</item>
     </style>
+
+    <!-- dialog 顶部拖拽横条样式-->
+    <style name="BusinessTopDragLine">
+        <item name="android:layout_width">@dimen/dp_50</item>
+        <item name="android:layout_height">@dimen/dp_6</item>
+        <item name="android:background">@drawable/business_shape_top_drag_line</item>
+    </style>
 </resources>

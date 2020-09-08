@@ -73,7 +73,7 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         if (!playWhenReady) {
             globalView.pause()
         } else {
-            globalView.play("https://imagev2.xmcdn.com/group75/M04/10/61/wKgO3V5p1seyG1tXAACwQazaU5g000.jpg!op_type=3&columns=100&rows=100")
+            globalView.play(musicPlayerManger.getCurrentPlayerMusic()?.audioCover)
         }
     }
 

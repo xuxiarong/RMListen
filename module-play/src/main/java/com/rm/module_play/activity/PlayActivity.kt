@@ -1,21 +1,26 @@
 package com.rm.module_play.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.provider.MediaStore
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import com.alibaba.android.arouter.launcher.ARouter
+import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
 import com.rm.baselisten.util.Cxt
+import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.utilExt.dip
+import com.rm.business_lib.coroutinepermissions.InlineRequestPermissionException
+import com.rm.business_lib.coroutinepermissions.requestPermissionsForResult
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.component_comm.navigateToForResult
-import com.rm.component_comm.navigateWithToForResult
 import com.rm.module_play.BR
 import com.rm.module_play.R
-import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.common.ARouterPath.Companion.testPath
 import com.rm.module_play.databinding.ActivityPlayBinding
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
@@ -24,14 +29,12 @@ import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.test.SearchResultInfo
-import com.rm.module_play.test.TestActivity
 import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_play.*
 import kotlinx.android.synthetic.main.music_paly_control_view.*
@@ -45,7 +48,7 @@ class PlayActivity :
     override fun getLayoutId(): Int = R.layout.activity_play
 
     override fun initModelBrId() = BR.viewModel
-
+    private val permsSd = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
     companion object {
         fun startActivity(context: Context) {
             context.startActivity(Intent(context, PlayActivity::class.java).apply {
@@ -67,6 +70,7 @@ class PlayActivity :
         }
     }
 
+    @InternalCoroutinesApi
     @SuppressLint("ResourceType")
     override fun initView() {
         setStatusBar(R.color.businessWhite)
@@ -124,6 +128,23 @@ class PlayActivity :
         bt_get_book_list.setOnClickListener {
             navigateToForResult(testPath, 100)
         }
+        //上一首
+        iv_music_play_left.setOnClickListener {
+            musicPlayerManger.playLastMusic()
+        }
+        //下一首
+        iv_music_play_right.setOnClickListener {
+            musicPlayerManger.playNextMusic()
+        }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                requestPermissionsForResult(*permsSd, rationale = "为了更好的提供服务，需要获取存储空间权限")
+
+            } catch (e: InlineRequestPermissionException) {
+                ToastUtil.show(this@PlayActivity,"获取权限失败")
+            }
+        }
 
     }
 
@@ -131,14 +152,15 @@ class PlayActivity :
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == 100) {
-            searchResultInfo = data?.getParcelableArrayListExtra<SearchResultInfo>("books")
+            searchResultInfo = data?.getParcelableArrayListExtra("books")
+            searchResultInfo?.let { mViewModel.zipPlayPath(it) }
         }
     }
 
     override fun onResume() {
         super.onResume()
         rootViewAddView(GlobalplayHelp.instance.globalView)
-        GlobalplayHelp.instance.globalView.play("https://imagev2.xmcdn.com/group75/M04/10/61/wKgO3V5p1seyG1tXAACwQazaU5g000.jpg!op_type=3&columns=100&rows=100")
+
         GlobalplayHelp.instance.globalView.show()
     }
 
@@ -148,6 +170,19 @@ class PlayActivity :
     }
 
     override fun startObserve() {
+        mViewModel.playPath.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if (mViewModel.playPath.get()?.size == 20) {
+                    mViewModel.playPath.get()?.let {
+                        musicPlayerManger.updateMusicPlayerData(it, 2)
+                        musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
+                        GlobalplayHelp.instance.addOnPlayerEventListener()
+                    }
+
+                }
+            }
+        })
     }
 
     private fun toggleState() {
@@ -161,9 +196,7 @@ class PlayActivity :
         }
     }
 
-    val RADIO_URL =
-        "https://webfs.yun.kugou.com/202009031556/2c5ecf4a6613d2d97e4421151a12b017/part/0/961074/G203/M01/01/01/Cw4DAF52iliAAoChAD4QE6gg03M430.mp3"
-    val audioCover = "https://imge.kugou.com/stdmusic/20161221/20161221204122593096.jpg"
+
     override fun initData() {
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
@@ -173,14 +206,12 @@ class PlayActivity :
                 delay(300)
             }
         }
-        musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
-        val musicData = arrayListOf<BaseAudioInfo>()
-        musicData.add(BaseAudioInfo(RADIO_URL, audioCover))
-        GlobalplayHelp.instance.addOnPlayerEventListener()
-        musicPlayerManger.updateMusicPlayerData(musicData, 0)
+
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
+        loadRoundCornersImage(dip(8).toFloat(),iv_img_layout, musicPlayerManger.getCurrentPlayerMusic()?.audioCover)
+
     }
 
     override fun onPrepared(totalDurtion: Long) {
@@ -194,6 +225,8 @@ class PlayActivity :
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
+//        iv_img_layout
+        loadRoundCornersImage(dip(8).toFloat(),iv_img_layout,musicInfo.audioCover)
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -205,9 +238,8 @@ class PlayActivity :
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        music_play_bubbleSeekBar.setProgress(currentDurtion.toFloat())
-        val str =
-            "${formatTimeInMillisToString(currentDurtion)}/${formatTimeInMillisToString(totalDurtion)}"
+        music_play_bubbleSeekBar.setNoListenerProgress(currentDurtion.toFloat())
+        val str = "${formatTimeInMillisToString(currentDurtion)}/${formatTimeInMillisToString(totalDurtion)}"
         music_play_bubbleSeekBar.updateThumbText(str)
         bubbleFl.text = str
     }

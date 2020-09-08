@@ -113,7 +113,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
                 params.dimAmount = 0f
                 dialog!!.window!!.attributes = params
             } else {
-                dialog!!.window?.setBackgroundDrawableResource(R.color.base_transparent_80) // 背景透明
+                dialog!!.window?.setBackgroundDrawableResource(R.color.base_transparent) // 背景透明
             }
 
             val layoutWidth = if (dialogWidth > 0) {

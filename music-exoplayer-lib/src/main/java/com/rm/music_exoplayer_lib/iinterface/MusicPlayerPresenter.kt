@@ -1,5 +1,6 @@
 package com.rm.music_exoplayer_lib.iinterface
 
+import android.app.Notification
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
@@ -61,6 +62,17 @@ interface MusicPlayerPresenter {
      */
     fun playNextMusic()
 
+    /**
+     * 试探上一首的位置，不会启动播放任务
+     * @return 上一首的位置
+     */
+    fun playLastIndex(): Int
+
+    /**
+     * 试探下一首的位置，不会启动播放任务
+     * @return 下一首的位置
+     */
+    fun playNextIndex(): Int
     /**
      * 播放器内部播放状态
      * @return 为true正在播放
@@ -128,7 +140,7 @@ interface MusicPlayerPresenter {
     /**
      * 播放倍数
      */
-    fun setPlayerMultiple(p:Float)
+    fun setPlayerMultiple(p: Float)
 
     /**
      * 返回当前时长
@@ -138,7 +150,7 @@ interface MusicPlayerPresenter {
     /**
      * 设置定时关闭
      */
-    fun setAlarm(times:Int)
+    fun setAlarm(times: Int)
 
     /**
      * 更新内部播放器的数据集合位置，此方法适合在外部列表已经改变了，需同步至内部播放器
@@ -160,4 +172,68 @@ interface MusicPlayerPresenter {
      */
     fun setLockActivityName(className: String): MusicPlayerManager?
 
+    /**
+     * 设置闹钟模式
+     */
+    fun setDefaultAlarmModel(defaultAlarmModel: Int)
+
+    /**
+     * 设置播放模式
+     */
+    fun setDefaultPlayModel(defaultPlayModel: Int)
+
+
+    /**
+     * 打开常驻进程，在通知栏创建一个守护通知
+     */
+    fun startServiceForeground()
+
+    /**
+     * 打开常驻进程
+     * @param notification 通知对象
+     */
+    fun startServiceForeground(notification: Notification?)
+
+    /**
+     * 打开常驻进程
+     * @param notification 通知对象
+     * @param notifiid 通知ID
+     */
+    fun startServiceForeground(
+        notification: Notification?,
+        notifiid: Int
+    )
+
+    /**
+     * 结束常驻进程并清除默认通知
+     */
+    fun stopServiceForeground()
+
+    /**
+     * 打开常驻进程，在通知栏创建一个守护通知
+     */
+    fun startNotification()
+
+    /**
+     * 打开常驻进程
+     * @param notification 通知对象
+     */
+    fun startNotification(notification: Notification?)
+
+    /**
+     * 打开常驻进程
+     * @param notification 通知对象
+     * @param notifiid 通知ID
+     */
+    fun startNotification(notification: Notification?, notifiid: Int)
+
+    /**
+     * 更新通知栏，一般在使用内部默认的通知栏时，收藏了音频后调用
+     */
+    fun updateNotification()
+
+    /**
+     * 结束常驻进程并清除默认通知
+     */
+    fun cleanNotification()
 }

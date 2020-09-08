@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY
-import android.os.PowerManager
 import android.widget.Toast
 import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
@@ -21,48 +20,47 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         var action = intent?.action
         //定时通知
-        when(action){
+        when (action) {
             ACTION_ALARM_SYNCHRONIZE -> {
                 doSynchronizeAction(context)
             }
             //屏幕点亮
-            Intent.ACTION_SCREEN_OFF->{
+            Intent.ACTION_SCREEN_OFF -> {
                 context?.let {
 //                    musicPlayerManger.startLockActivity(it)
                 }
             }
-            ACTION_ALARM_REPLENISH_STOCK->{
+            ACTION_ALARM_REPLENISH_STOCK -> {
                 doReplenishStockAction(context)
             }
             //通知栏操作
-                //耳机拔出
-            ACTION_AUDIO_BECOMING_NOISY->{
-                    ExoplayerLogger.exoLog("耳机拔出")
+            //耳机拔出
+            ACTION_AUDIO_BECOMING_NOISY -> {
+                ExoplayerLogger.exoLog("耳机拔出")
             }
             //前台进程-通知栏根点击事件
-            MUSIC_INTENT_ACTION_ROOT_VIEW->{
+            MUSIC_INTENT_ACTION_ROOT_VIEW -> {
                 ExoplayerLogger.exoLog("通知栏根点击事件")
             }
             //前台进程上一首
-            MUSIC_INTENT_ACTION_CLICK_LAST->{
-                ExoplayerLogger.exoLog("前台进程上一首")
+            MUSIC_INTENT_ACTION_CLICK_LAST -> {
+                musicPlayerManger.playLastMusic()
             }
             //前台进程 下一首
-            MUSIC_INTENT_ACTION_CLICK_NEXT->{
-                ExoplayerLogger.exoLog("前台进程 下一首")
+            MUSIC_INTENT_ACTION_CLICK_NEXT -> {
+                musicPlayerManger.playNextMusic()
             }
             //前台进程-暂停、开始
-            MUSIC_INTENT_ACTION_CLICK_PAUSE->{
-                ExoplayerLogger.exoLog("前台进程-暂停、开始")
+            MUSIC_INTENT_ACTION_CLICK_PAUSE -> {
+              musicPlayerManger.playOrPause()
             }
             //前台进程关闭进程
-            MUSIC_INTENT_ACTION_CLICK_CLOSE->{
-                ExoplayerLogger.exoLog("前台进程关闭进程")
+            MUSIC_INTENT_ACTION_CLICK_CLOSE -> {
+
             }
-            else->{}
+            else -> {
+            }
         }
-
-
 
 
     }

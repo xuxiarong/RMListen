@@ -2,14 +2,11 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.ACCESS_TOKEN
 import com.rm.business_lib.LOGIN_USER_INFO
 import com.rm.business_lib.REFRESH_TOKEN
-import com.rm.component_comm.login.bean.LoginUserBean
 import com.rm.module_login.LoginConstants
 import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
@@ -33,10 +30,10 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
 
     // 倒计时时间
     var countDownTime: Int = 60
-    var countDownTimeStr = ObservableField<String>()
+    var countDownTimeStr = ObservableField<String>("")
 
     // 重新获取
-    var reGetCodeStr = ObservableField<String>()
+    var reGetCodeStr = ObservableField<String>("")
 
     // 监听绑定输入框内容变化
     var completeInput: (String) -> Unit = {

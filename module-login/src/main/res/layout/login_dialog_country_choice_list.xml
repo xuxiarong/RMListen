@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.baselisten.viewmodel.BaseVMViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/business_shape_white_top_radius_12dp"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_10">
+
+        <View
+            android:id="@+id/login_dialog_country_top_drag_line"
+            style="@style/BusinessTopDragLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/login_dialog_country_cancel_btn"
+            style="@style/BusinessTextStyleFirst_2"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/business_cancel"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_dialog_country_top_drag_line" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/login_dialog_country_title"
+            style="@style/BusinessTextStyleFirst_1"
+            android:gravity="center"
+            android:text="@string/login_choice_country"
+            android:textColor="@color/business_color_0f0f0f"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/login_dialog_country_cancel_btn"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_dialog_country_top_drag_line" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/login_dialog_country_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="@dimen/dp_30"
+            app:layout_constraintTop_toBottomOf="@id/login_dialog_country_title" />
+
+        <com.rm.module_login.widget.sidebar.IndexBar
+            android:id="@+id/login_dialog_country_index_bar"
+            android:layout_width="@dimen/dp_144"
+            android:layout_height="match_parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@android:color/transparent">
+            <com.rm.module_login.widget.sidebar.LetterBar
+                android:id="@+id/login_dialog_country_letter_bar"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="match_parent"
+                app:text_color="@color/business_text_color_666666"
+                app:text_size="@dimen/business_text_size_10sp"
+                app:text_margin_top="@dimen/dp_8"/>
+        </com.rm.module_login.widget.sidebar.IndexBar>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -399,7 +399,10 @@ class BubbleSeekBar @JvmOverloads constructor(
         mOnProgressChangedListener?.onProgressChanged(this, mProgress, false)
         postInvalidate()
     }
-
+    fun setNoListenerProgress(progress: Float) {
+        mProgress = progress
+        postInvalidate()
+    }
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         mThumbOffset = (mTrackLength * (mProgress - mMin) / (mMax - mMin)).toInt()

@@ -2,24 +2,19 @@ package com.rm.module_home.activity.detail
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginTop
-import androidx.core.view.updateLayoutParams
 import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
-import com.rm.business_lib.utils.EllipsizeUtils
 import com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
 import com.rm.module_home.BR
 import com.rm.module_home.R
