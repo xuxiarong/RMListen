@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author ：zhongwu
- * @Date ： 2019-12-21
- * @Description :
+ * desc   :
+ * date   : 2020/09/08
+ * version: 1.0
  */
 public class CNPinyinFactory {
 

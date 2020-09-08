@@ -5,8 +5,9 @@ import java.io.Serializable;
 import static com.rm.module_login.pinyin.CNPinyinFactory.DEF_CHAR;
 
 /**
- *
- * @param <T>
+ * desc   :
+ * date   : 2020/09/08
+ * version: 1.0
  */
 public class CNPinyin<T extends CN> implements Serializable, Comparable<CNPinyin<T>> {
 
