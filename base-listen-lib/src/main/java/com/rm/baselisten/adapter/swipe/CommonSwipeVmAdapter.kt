@@ -1,6 +1,12 @@
 package com.rm.baselisten.adapter.swipe
 
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.view.swipe.SwipeLayout
+import com.rm.baselisten.view.swipe.implments.SwipeItemMangerImpl
+import com.rm.baselisten.view.swipe.interfaces.SwipeAdapterInterface
+import com.rm.baselisten.view.swipe.interfaces.SwipeItemMangerInterface
+import com.rm.baselisten.view.swipe.util.Attributes
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 /**
@@ -10,8 +16,9 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  */
 class CommonSwipeVmAdapter<T> constructor(
     swipeDataViewModel: BaseVMViewModel,
-    swipeData: MutableList<T>,
+    var swipeData: MutableList<T>,
     swipeItemLayoutId: Int,
+    var swipeLayoutId : Int,
     swipeViewModelId: Int,
     swipeDataBrId: Int
 ) : CommonBindVMAdapter<T>(
@@ -20,5 +27,67 @@ class CommonSwipeVmAdapter<T> constructor(
     swipeItemLayoutId,
     swipeViewModelId,
     swipeDataBrId
-)
+), SwipeItemMangerInterface, SwipeAdapterInterface {
+
+    var mItemManger : SwipeItemMangerImpl = SwipeItemMangerImpl(this)
+
+    init {
+        mode = Attributes.Mode.Single
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+        mItemManger.bind(holder.itemView, position)
+
+    }
+
+    override fun notifyDatasetChanged() {
+        super.notifyDataSetChanged()
+    }
+
+    override fun getSwipeLayoutResourceId(position: Int): Int {
+        return swipeLayoutId
+    }
+
+    override fun openItem(position: Int) {
+        mItemManger.openItem(position)
+    }
+
+    override fun closeItem(position: Int) {
+        mItemManger.closeItem(position)
+    }
+
+    override fun closeAllExcept(layout: SwipeLayout?) {
+        mItemManger.closeAllExcept(layout)
+    }
+
+    override fun closeAllItems() {
+        mItemManger.closeAllItems()
+    }
+
+    override fun getOpenItems(): List<Int?>? {
+        return mItemManger.openItems
+    }
+
+    override fun getOpenLayouts(): List<SwipeLayout?>? {
+        return mItemManger.openLayouts
+    }
+
+    override fun removeShownLayouts(layout: SwipeLayout?) {
+        mItemManger.removeShownLayouts(layout)
+    }
+
+    override fun isOpen(position: Int): Boolean {
+        return mItemManger.isOpen(position)
+    }
+
+    override fun getMode(): Attributes.Mode? {
+        return mItemManger.mode
+    }
+
+    override fun setMode(mode: Attributes.Mode?) {
+        mItemManger.mode = mode
+    }
+
+}
 

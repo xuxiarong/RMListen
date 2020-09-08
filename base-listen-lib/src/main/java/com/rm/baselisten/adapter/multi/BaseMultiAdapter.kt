@@ -26,9 +26,10 @@ abstract class BaseMultiAdapter<T : MultiItemEntity > constructor(private var br
             }
             else -> {
                 val inflater = LayoutInflater.from(parent.context)
-                val binding =
-                    DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
-                return BaseBindHolder(binding)
+                val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, viewType, parent, false)
+                val baseBindHolder = BaseBindHolder(binding)
+                bindViewClickListener(baseBindHolder,viewType)
+                return baseBindHolder
             }
         }
     }

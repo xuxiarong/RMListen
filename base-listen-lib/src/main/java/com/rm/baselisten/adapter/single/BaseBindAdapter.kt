@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.baselisten.holder.BaseBindHolder
 
 
 /**
@@ -25,9 +24,10 @@ abstract class BaseBindAdapter<T> constructor(data : MutableList<T>,var layoutId
             }
             else -> {
                 val inflater = LayoutInflater.from(parent.context)
-                val binding =
-                    DataBindingUtil.inflate<ViewDataBinding>(inflater, layoutId, parent, false)
-                return BaseBindHolder(binding)
+                val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, layoutId, parent, false)
+                val baseViewHolder = BaseViewHolder(binding.root)
+                bindViewClickListener(baseViewHolder, viewType)
+                return baseViewHolder
             }
         }
     }
@@ -39,7 +39,6 @@ abstract class BaseBindAdapter<T> constructor(data : MutableList<T>,var layoutId
                 super.onBindViewHolder(holder, position)
             }
             else ->{
-//                DLog.d("suolong","type = ${getItemViewType(position)}")
                 DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.setVariable(brId, data[position - headerLayoutCount ])
                 convert(holder,data[position - headerLayoutCount])
                 DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.executePendingBindings()

@@ -15,3 +15,7 @@ open class CommonBindVMAdapter<T> constructor(
     commonDataBrId: Int
 ) : BaseBindVMAdapter<T>(viewModel,commonData, commonItemLayoutId, commonViewModelId,commonDataBrId)
 
+
+
+
+

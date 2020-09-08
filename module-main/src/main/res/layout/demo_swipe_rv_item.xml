@@ -16,12 +16,11 @@
 
     </data>
 
-        <com.rm.baselisten.view.SwipeLayout
-            android:id="@+id/sw"
+        <com.rm.baselisten.view.swipe.SwipeLayout
+            android:id="@+id/demoRvSwipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="MissingDefaultResource"
-            bindSwipeOpen = "@{item.needClose}"
             swipe:leftEdgeSwipeOffset="0dp"
             swipe:rightEdgeSwipeOffset="0dp">
 
@@ -82,7 +81,7 @@
             </RelativeLayout>
 
 
-        </com.rm.baselisten.view.SwipeLayout>
+        </com.rm.baselisten.view.swipe.SwipeLayout>
 
 </layout>
 

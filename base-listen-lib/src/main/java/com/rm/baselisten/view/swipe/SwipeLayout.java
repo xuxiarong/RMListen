@@ -1,4 +1,4 @@
-package com.rm.baselisten.view;
+package com.rm.baselisten.view.swipe;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -146,7 +146,7 @@ public class SwipeLayout extends FrameLayout {
          * Called in onInterceptTouchEvent Determines if this swipe event should
          * be denied Implement this interface if you are using views with swipe
          * gestures As a child of SwipeLayout
-         * 
+         *
          * @return true deny false allow
          */
         boolean shouldDenySwipe(MotionEvent ev);

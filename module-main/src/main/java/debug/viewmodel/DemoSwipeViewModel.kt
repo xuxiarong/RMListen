@@ -1,7 +1,11 @@
 package debug.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.adapter.swipe.CommonSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.module_main.BR
+import com.rm.module_main.R
 import debug.model.DemoSwipeModel
 
 /**
@@ -12,7 +16,17 @@ import debug.model.DemoSwipeModel
 class DemoSwipeViewModel : BaseVMViewModel() {
 
     var swipeData = MutableLiveData<ArrayList<DemoSwipeModel>>()
+    var openItem = MutableLiveData<DemoSwipeModel>()
+
     var closeSwipe : ()-> Unit = {}
+
+    val mSwipeAdapter : CommonBindVMAdapter<DemoSwipeModel> by lazy {
+        CommonSwipeVmAdapter(this, mutableListOf<DemoSwipeModel>(),
+            R.layout.demo_swipe_rv_item,
+            R.id.demoRvSwipe,
+            BR.viewModel,
+            BR.item)
+    }
 
     fun testSwipeData() {
 
@@ -42,7 +56,7 @@ class DemoSwipeViewModel : BaseVMViewModel() {
                     iterator.remove()
                 }
             }
-            item.needClose = true
+            openItem.value = null
             tempValue.add(0,item)
         }
         swipeData.value = tempValue
@@ -60,6 +74,8 @@ class DemoSwipeViewModel : BaseVMViewModel() {
                 }
             }
         }
+//        mSwipeAdapter.clo
+        openItem.value = null
         swipeData.value = tempValue
         showToast("${item.content}被阅读")
     }
@@ -76,7 +92,12 @@ class DemoSwipeViewModel : BaseVMViewModel() {
                 }
             }
         }
-        item.needClose = true
+        openItem.value = null
         swipeData.value = tempValue
     }
+
+    fun bindSwipeItem(swipeModel:DemoSwipeModel?){
+        openItem.value = swipeModel
+    }
+
 }
