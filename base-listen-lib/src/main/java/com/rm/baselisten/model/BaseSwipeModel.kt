@@ -5,4 +5,4 @@ package com.rm.baselisten.model
  * date   : 2020/09/07
  * version: 1.0
  */
-open class BaseSwipeModel constructor(var close: Boolean)
+open class BaseSwipeModel constructor(var position: Int)
