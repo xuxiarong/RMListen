@@ -1,11 +1,14 @@
 package com.rm.module_listen.fragment
 
+import android.view.View
+import androidx.fragment.app.Fragment
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenBoughtActivity
 import com.rm.module_listen.activity.ListenSheetListActivity
 import com.rm.module_listen.activity.ListenSubscriptionActivity
+import com.rm.module_listen.adapter.ListenMyListenPagerAdapter
 import com.rm.module_listen.databinding.ListenFragmentMyListenBinding
 import com.rm.module_listen.viewmodel.ListenMyListenViewModel
 import kotlinx.android.synthetic.main.listen_fragment_my_listen.*
@@ -16,18 +19,32 @@ import kotlinx.android.synthetic.main.listen_fragment_my_listen.*
  * version: 1.0
  */
 class ListenMyListenFragment : BaseVMFragment<ListenFragmentMyListenBinding,ListenMyListenViewModel>() {
+
+    private val mAdapter by lazy {
+        ListenMyListenPagerAdapter(this.activity!!, mMyListenFragmentList)
+    }
+
+    private val mMyListenFragmentList = mutableListOf<Fragment>(ListenRecentListenFragment.newInstance(),
+        ListenSubscriptionUpdateFragment.newInstance())
+
     override fun initModelBrId()= BR.viewModel
     override fun initLayoutId()= R.layout.listen_fragment_my_listen
+
     override fun initView() {
         super.initView()
-        boughView.setOnClickListener{
+
+        listenMyListenVp.adapter = mAdapter
+
+
+        configTab()
+        listenBuyCl.setOnClickListener{
             ListenBoughtActivity.startActivity(it.context)
         }
-        subscription.setOnClickListener{
+        listenSubCl.setOnClickListener{
             ListenSubscriptionActivity.startActivity(it.context)
         }
 
-        sheetList.setOnClickListener{
+        listenListCl.setOnClickListener{
             ListenSheetListActivity.startActivity(it.context)
         }
     }
@@ -36,5 +53,13 @@ class ListenMyListenFragment : BaseVMFragment<ListenFragmentMyListenBinding,List
     }
 
     override fun initData() {
+    }
+
+    private fun configTab() {
+        listenMyListenRtl.addTab(getString(R.string.listen_tab_recent_listen))
+        listenMyListenRtl.addTab(getString(R.string.listen_tab_subscription_update))
+        listenMyListenRtl.bindViewPager2(listenMyListenVp)
+        listenMyListenVp.setCurrentItem(1,false)
+        listenMyListenRtl.setRedPointVisibility(1, View.VISIBLE)
     }
 }

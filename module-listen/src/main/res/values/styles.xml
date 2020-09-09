@@ -1,4 +1,29 @@
 <resources>
 
+    <style name="ListenTopIcon">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+    </style>
+
+    <style name="ListenTopBgView">
+        <item name="android:layout_width">58dp</item>
+        <item name="android:layout_height">58dp</item>
+        <item name="android:background">@drawable/business_shape_round_f7f7f7_24dp</item>
+    </style>
+
+    <style name="ListenTopCl">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">83dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="ListenTopText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 
 </resources>

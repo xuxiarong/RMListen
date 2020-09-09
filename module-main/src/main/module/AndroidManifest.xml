@@ -7,12 +7,14 @@
         android:icon="@mipmap/main_ic_launcher"
         android:label="@string/main_app_name"
         android:theme="@style/BusinessAppTheme">
-        <activity android:name="debug.DemoMultiClickVmActivity"></activity>
+        <activity android:name="debug.viewmodel.DemoShowDialogActivity"></activity>
+        <activity android:name="debug.DemoMultiClickVmActivity" />
         <activity android:name="debug.DemoMultiRvActivity" />
         <activity android:name="debug.DemoSingleClickVmActivity" />
         <activity android:name="debug.DemoSingleRvActivity" />
         <activity android:name="debug.DemoDataBindVmActivity" /> <!-- ui适配设置 -->
-        <activity android:name="debug.SwipeColseActivity"/>
+        <activity android:name="debug.SwipeColseActivity" />
+
         <meta-data
             android:name="design_width_in_dp"
             android:value="375" />
