@@ -28,6 +28,43 @@ class LoginQuicklyDialogHelper(
     val mViewModel: LoginQuicklyViewModel,
     val fragmentActivity: FragmentActivity
 ) {
+
+    // 手机号码输入界面显示动画
+    private val phoneShowAnimation by lazy {
+        TranslateAnimation(
+            Animation.RELATIVE_TO_SELF, -1f,
+            Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+            0f, Animation.RELATIVE_TO_SELF, 0f
+        ).apply { duration = 200 }
+    }
+
+    // 手机号码输入界面隐藏动画
+    private val phoneHideAnimation by lazy {
+        TranslateAnimation(
+            Animation.RELATIVE_TO_SELF, 0f,
+            Animation.RELATIVE_TO_SELF, -1f, Animation.RELATIVE_TO_SELF,
+            0f, Animation.RELATIVE_TO_SELF, 0f
+        ).apply { duration = 200 }
+    }
+
+    // 验证码输入界面显示动画
+    private val verifyCodeShowAnimation by lazy {
+        TranslateAnimation(
+            Animation.RELATIVE_TO_SELF, 1f,
+            Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+            0f, Animation.RELATIVE_TO_SELF, 0f
+        ).apply { duration = 200 }
+    }
+
+    // 验证码输入界面隐藏动画
+    private val verifyCodeHideAnimation by lazy {
+        TranslateAnimation(
+            Animation.RELATIVE_TO_SELF, 0f,
+            Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF,
+            0f, Animation.RELATIVE_TO_SELF, 0f
+        ).apply { duration = 200 }
+    }
+
     /**
      * 快速登陆dialog
      */
@@ -58,53 +95,29 @@ class LoginQuicklyDialogHelper(
                             dialogBinding.loginQuicklyInputVerifyCode.startAnimation(
                                 verifyCodeHideAnimation
                             )
+                            // 电话输入框请求输入法的焦点
+                            dialogBinding.loginQuicklyPhoneInputLay.loginByVerifyCodeInput.requestFocus()
                         } else {
                             // 显示验证码输入界面
                             dialogBinding.loginQuicklyInputPhone.startAnimation(phoneHideAnimation)
                             dialogBinding.loginQuicklyInputVerifyCode.startAnimation(
                                 verifyCodeShowAnimation
                             )
+                            // 验证码输入框请求输入法的焦点
+                            dialogBinding.loginQuicklyVerifyCodeInputEt.requestFocus()
                         }
                     }
                 })
 
                 mViewModel.isLoginSuccess.observe(fragmentActivity) {
                     if (it) {
-                        // 登陆成功
+                        // 登陆成功,弹窗消失
                         this.dismiss()
                     }
                 }
             }
         }
     }
-
-    // 手机号码输入界面显示动画
-    private val phoneShowAnimation = TranslateAnimation(
-        Animation.RELATIVE_TO_SELF, -1f,
-        Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-        0f, Animation.RELATIVE_TO_SELF, 0f
-    ).apply { duration = 200 }
-
-    // 手机号码输入界面隐藏动画
-    private val phoneHideAnimation = TranslateAnimation(
-        Animation.RELATIVE_TO_SELF, 0f,
-        Animation.RELATIVE_TO_SELF, -1f, Animation.RELATIVE_TO_SELF,
-        0f, Animation.RELATIVE_TO_SELF, 0f
-    ).apply { duration = 200 }
-
-    // 验证码输入界面显示动画
-    private val verifyCodeShowAnimation = TranslateAnimation(
-        Animation.RELATIVE_TO_SELF, 1f,
-        Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-        0f, Animation.RELATIVE_TO_SELF, 0f
-    ).apply { duration = 200 }
-
-    // 验证码输入界面隐藏动画
-    private val verifyCodeHideAnimation = TranslateAnimation(
-        Animation.RELATIVE_TO_SELF, 0f,
-        Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF,
-        0f, Animation.RELATIVE_TO_SELF, 0f
-    ).apply { duration = 200 }
 
     fun show() {
         mViewModel.clear()
