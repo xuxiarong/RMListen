@@ -2,16 +2,12 @@ package com.rm.module_login.viewmodel.dialog
 
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.ACCESS_TOKEN
-import com.rm.business_lib.LOGIN_USER_INFO
-import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.net.BusinessRetrofitClient
-import com.rm.module_login.LoginConstants
 import com.rm.module_login.R
 import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.utils.loginIn
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -60,7 +56,6 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
      * 获取验证码
      */
     fun getCode() {
-        showToast(R.string.login_agree_deal_tips)
         // 网络通过手机获取验证码
         if (!isCheck.get()!!) {
             // 未选中check box
@@ -99,8 +94,9 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
     }
 
     fun back() {
-        // TODO 切换回获取验证码界面
+        // 切换回获取验证码界面
         isShowPhoneInputLay.set(true)
+        countDownTime.set(0)
     }
 
 
@@ -112,6 +108,7 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
         phoneInputViewModel.phone.set("")
         isCheck.set(false)
         countDownTime.set(0)
+        errorTips.set("")
     }
 
 
@@ -122,14 +119,9 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
         launchOnIO {
             repository.loginByVerifyCode(phoneInputViewModel.phone.get()!!, content).checkResult(
                 onSuccess = {
-                    // 保存登陆信息到本地
-                    ACCESS_TOKEN.putMMKV(it.access)
-                    REFRESH_TOKEN.putMMKV(it.refresh)
-                    LOGIN_USER_INFO.putMMKV(it.member)
+                    // 设置登陆成功数据
+                    loginIn(it)
 
-                    // 改变当前是否用户登陆状态 和 登陆的用户信息
-                    LoginConstants.isLogin.value = true
-                    LoginConstants.loginUser.value = it.member
                     // 登陆成功
                     showToast(R.string.login_success)
                     showContentView()
@@ -177,7 +169,9 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
         countDownTime.set(60)
         launchOnUI {
             countDown().collect {
-                countDownTime.set(it - 1)
+                if (it >= 0) {
+                    countDownTime.set(it - 1)
+                }
             }
         }
     }

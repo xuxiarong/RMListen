@@ -26,11 +26,11 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      * 去掉 "+"
      * @param area_code String
      */
-    private fun subPlusChar(area_code: String):String{
-        if(!area_code.startsWith("+")){
+    private fun subPlusChar(area_code: String): String {
+        if (!area_code.startsWith("+")) {
             return area_code
         }
-        return area_code.substring(0,1)
+        return area_code.substring(1, area_code.length)
     }
 
     /**
@@ -82,7 +82,14 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
         phone: String,
         code: String
     ): BaseResult<ValidateCodeBean> {
-        return apiCall { apiService.validateCode("forget_pwd", subPlusChar(area_code), phone, code) }
+        return apiCall {
+            apiService.validateCode(
+                "forget_pwd",
+                subPlusChar(area_code),
+                phone,
+                code
+            )
+        }
     }
 
     /**

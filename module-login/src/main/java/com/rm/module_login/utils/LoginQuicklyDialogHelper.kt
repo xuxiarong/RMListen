@@ -2,7 +2,10 @@ package com.rm.module_login.utils
 
 import android.view.Gravity
 import android.view.MotionEvent
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
+import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.baselisten.binding.bindVerticalLayout
@@ -74,9 +77,57 @@ class LoginQuicklyDialogHelper(
                 dialogBinding.loginQuicklyPhoneInputLay.loginIncludePhoneInputArrowView.setOnClickListener {
                     showCountryListDialog()
                 }
+
+                // 输入号码界面/输入验证界面 显示或隐藏的监听
+                mViewModel.isShowPhoneInputLay.addOnPropertyChangedCallback(object :
+                    Observable.OnPropertyChangedCallback() {
+                    override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                        if (mViewModel.isShowPhoneInputLay.get()!!) {
+                            // 显示手机号码输入界面
+                            dialogBinding.loginQuicklyInputPhone.startAnimation(phoneShowAnimation)
+                            dialogBinding.loginQuicklyInputVerifyCode.startAnimation(
+                                verifyCodeHideAnimation
+                            )
+                        } else {
+                            // 显示验证码输入界面
+                            dialogBinding.loginQuicklyInputPhone.startAnimation(phoneHideAnimation)
+                            dialogBinding.loginQuicklyInputVerifyCode.startAnimation(
+                                verifyCodeShowAnimation
+                            )
+                        }
+                    }
+                })
             }
         }
     }
+
+    // 手机号码输入界面显示动画
+    private val phoneShowAnimation = TranslateAnimation(
+        Animation.RELATIVE_TO_SELF, -1f,
+        Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+        0f, Animation.RELATIVE_TO_SELF, 0f
+    ).apply { duration = 200 }
+
+    // 手机号码输入界面隐藏动画
+    private val phoneHideAnimation = TranslateAnimation(
+        Animation.RELATIVE_TO_SELF, 0f,
+        Animation.RELATIVE_TO_SELF, -1f, Animation.RELATIVE_TO_SELF,
+        0f, Animation.RELATIVE_TO_SELF, 0f
+    ).apply { duration = 200 }
+
+    // 验证码输入界面显示动画
+    private val verifyCodeShowAnimation = TranslateAnimation(
+        Animation.RELATIVE_TO_SELF, 1f,
+        Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+        0f, Animation.RELATIVE_TO_SELF, 0f
+    ).apply { duration = 200 }
+
+    // 验证码输入界面隐藏动画
+    private val verifyCodeHideAnimation = TranslateAnimation(
+        Animation.RELATIVE_TO_SELF, 0f,
+        Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF,
+        0f, Animation.RELATIVE_TO_SELF, 0f
+    ).apply { duration = 200 }
 
     fun show() {
         mViewModel.clear()

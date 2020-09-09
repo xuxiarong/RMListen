@@ -17,12 +17,11 @@
         android:background="@drawable/business_shape_white_top_radius_24dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/login_quickly_input_phone"
             isVisible="@{viewModel.isShowPhoneInputLay}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dp_16"
-            android:paddingBottom="@dimen/dp_28"
-            tools:visibility="gone">
+            android:layout_height="@dimen/dp_289"
+            android:paddingTop="@dimen/dp_16">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/login_quickly_top_tips"
@@ -59,8 +58,8 @@
                 bindClick="@{viewModel.getCode}"
                 bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_56"
-                android:layout_marginTop="@dimen/dp_52"
+                android:layout_height="@dimen/dp_52"
+                android:layout_marginTop="@dimen/dp_40"
                 android:text="@string/login_get_verify_code"
                 app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
                 app:layout_constraintRight_toRightOf="@id/login_quickly_phone_input_lay"
@@ -69,7 +68,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_19"
+                android:layout_marginTop="@dimen/dp_13"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
@@ -93,13 +92,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/login_quickly_input_verify_code"
             isVisible="@{!viewModel.isShowPhoneInputLay}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_289"
             android:paddingStart="@dimen/dp_16"
             android:paddingTop="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
-            android:paddingBottom="@dimen/dp_28">
+            tools:visibility="gone">
 
             <com.rm.business_lib.wedgit.arrow.ArrowView
                 android:id="@+id/login_quickly_back_btn"
@@ -158,9 +158,9 @@
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/BusinessTextStyleTips"
                 bindText="@{viewModel.countDownTime + @string/login_count_down_tips}"
+                isVisible="@{viewModel.countDownTime > 0}"
                 android:layout_marginTop="@dimen/dp_20"
                 android:gravity="center"
-                isVisible="@{viewModel.countDownTime > 0}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_input_et"
@@ -169,11 +169,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/BusinessTextStyleFirst_2"
                 bindClick="@{viewModel.reGetVerifyCode}"
+                isVisible="@{viewModel.countDownTime == 0}"
                 android:layout_marginTop="@dimen/dp_15"
                 android:gravity="center"
                 android:padding="@dimen/dp_5"
                 android:text="@string/login_re_get_verify_code"
-                isVisible="@{viewModel.countDownTime == 0}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_input_et" />

@@ -2,15 +2,11 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.ACCESS_TOKEN
-import com.rm.business_lib.LOGIN_USER_INFO
-import com.rm.business_lib.REFRESH_TOKEN
-import com.rm.module_login.LoginConstants
 import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
 import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.utils.loginIn
 
 /**
  * desc   : 验证码输入ViewModel
@@ -48,14 +44,9 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
             launchOnIO {
                 repository.loginByVerifyCode(phone, content).checkResult(
                     onSuccess = {
-                        // 保存登陆信息到本地
-                        ACCESS_TOKEN.putMMKV(it.access)
-                        REFRESH_TOKEN.putMMKV(it.refresh)
-                        LOGIN_USER_INFO.putMMKV(it.member)
+                        // 设置登陆成功数据
+                        loginIn(it)
 
-                        // 改变当前是否用户登陆状态 和 登陆的用户信息
-                        LoginConstants.isLogin.value = true
-                        LoginConstants.loginUser.value = it.member
                         // 登陆成功
                         showToast(R.string.login_success)
                         showContentView()
