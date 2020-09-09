@@ -1,9 +1,13 @@
 package com.rm.module_play.viewmodel
 
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.bean.BannerInfoBean
+import com.rm.module_play.model.*
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResultInfo
@@ -25,6 +29,14 @@ import kotlin.system.measureTimeMillis
 class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
     val playPath = ObservableField<List<BaseAudioInfo>>()
     val pathList = ArrayList<BaseAudioInfo>()
+
+    var playControModel = MutableLiveData<MutableList<PlayControlModel>>()
+    var playControlSubModel = MutableLiveData<MutableList<PlayControlSubModel>>()
+    var playCOntrolRecommentModel = MutableLiveData<MutableList<PlayControlRecommentModel>>()
+    var playControlHotModel = MutableLiveData<MutableList<PlayControlHotModel>>()
+    var playControlCommentTitleModel = MutableLiveData<MutableList<PlayControlCommentTitleModel>>()
+    var playControlCommentListModel = MutableLiveData<MutableList<PlayControlCommentListModel>>()
+
     fun getPlayPath(hashKey: String) {
         val params: MutableMap<String, String> = HashMap()
         params["r"] = "play/getdata"
@@ -33,7 +45,14 @@ class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
             repository.getPlayPath(params).checkResult(
                 onSuccess = {
                     if (it.play_url.orEmpty().isNotEmpty() && it.img.orEmpty().isNotEmpty()) {
-                        pathList.add(BaseAudioInfo(it.play_url, it.img,it.audio_name,it.author_name))
+                        pathList.add(
+                            BaseAudioInfo(
+                                it.play_url,
+                                it.img,
+                                it.audio_name,
+                                it.author_name
+                            )
+                        )
                         playPath.notifyChange()
                         playPath.set(pathList)
                     }
@@ -53,6 +72,18 @@ class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
 
             }
         }
+
+    }
+
+    fun initPlayerAdapterModel(): MutableList<MultiItemEntity> {
+        return mutableListOf(
+            PlayControlModel(),
+            PlayControlSubModel(),
+            PlayControlRecommentModel(),
+            PlayControlHotModel(),
+            PlayControlCommentTitleModel(),
+            PlayControlCommentListModel()
+        )
 
     }
 }
