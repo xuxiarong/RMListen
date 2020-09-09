@@ -6,6 +6,7 @@ import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.observe
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
@@ -66,6 +67,13 @@ class LoginQuicklyDialogHelper(
                         }
                     }
                 })
+
+                mViewModel.isLoginSuccess.observe(fragmentActivity) {
+                    if (it) {
+                        // 登陆成功
+                        this.dismiss()
+                    }
+                }
             }
         }
     }

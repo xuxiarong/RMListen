@@ -1,6 +1,7 @@
 package com.rm.module_login.viewmodel.dialog
 
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
@@ -51,6 +52,9 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
     var completeInput: (String) -> Unit = {
         completeInput(it)
     }
+
+    // 是否登陆成功的标识
+    var isLoginSuccess = MutableLiveData<Boolean>(false)
 
     /**
      * 获取验证码
@@ -109,6 +113,7 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
         isCheck.set(false)
         countDownTime.set(0)
         errorTips.set("")
+        isLoginSuccess.value = false
     }
 
 
@@ -129,7 +134,7 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
                     // 登陆成功
                     showToast(R.string.login_success)
                     showContentView()
-                    finish()
+                    isLoginSuccess.value = true
 
                 },
                 onError = {
