@@ -63,12 +63,17 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
 
     /**
      * 短信验证码登陆
+     * @param area_code String
      * @param phone String
      * @param code String
      * @return BaseResult<LoginInfo>
      */
-    suspend fun loginByVerifyCode(phone: String, code: String): BaseResult<LoginInfo> {
-        return apiCall { apiService.loginByVerifyCode(phone, code) }
+    suspend fun loginByVerifyCode(
+        area_code: String,
+        phone: String,
+        code: String
+    ): BaseResult<LoginInfo> {
+        return apiCall { apiService.loginByVerifyCode(subPlusChar(area_code), phone, code) }
     }
 
     /**
@@ -94,13 +99,19 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
 
     /**
      * 密码登陆
+     * @param area_code String
      * @param phone String
      * @param password String
      * @return BaseResult<LoginInfo>
      */
-    suspend fun loginByPassword(phone: String, password: String): BaseResult<LoginInfo> {
+    suspend fun loginByPassword(
+        area_code: String,
+        phone: String,
+        password: String
+    ): BaseResult<LoginInfo> {
         return apiCall {
             apiService.loginByPassword(
+                subPlusChar(area_code),
                 phone,
                 AESUtil.encryptString2Base64(password, KEY, IV)
             )
@@ -119,18 +130,21 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
 
     /**
      * 通过验证码重设密码
+     * @param area_code String
      * @param phone String
      * @param code String
      * @param password String
      * @return BaseResult<Any>
      */
     suspend fun resetPasswordByVerifyCode(
+        area_code: String,
         phone: String,
         code: String,
         password: String
     ): BaseResult<Any> {
         return apiCall {
             apiService.resetPasswordByVerifyCode(
+                subPlusChar(area_code),
                 phone,
                 code,
                 AESUtil.encryptString2Base64(password, KEY, IV)

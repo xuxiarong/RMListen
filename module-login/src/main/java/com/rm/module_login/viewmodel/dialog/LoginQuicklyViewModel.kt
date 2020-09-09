@@ -117,7 +117,11 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
         showLoading()
         // 登录类型,验证码登陆
         launchOnIO {
-            repository.loginByVerifyCode(phoneInputViewModel.phone.get()!!, content).checkResult(
+            repository.loginByVerifyCode(
+                phoneInputViewModel.countryCode.get()!!,
+                phoneInputViewModel.phone.get()!!,
+                content
+            ).checkResult(
                 onSuccess = {
                     // 设置登陆成功数据
                     loginIn(it)

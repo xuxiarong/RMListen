@@ -14,6 +14,7 @@ import com.rm.module_login.viewmodel.view.PasswordInputViewModel
  */
 class ResetPasswordViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
     var verifyCode = ""
+    var countryCode = ""
     var phone = ""
 
     // 密码输入框的ViewModel
@@ -30,6 +31,7 @@ class ResetPasswordViewModel(private val repository: LoginRepository) : BaseVMVi
         showLoading()
         launchOnIO {
             repository.resetPasswordByVerifyCode(
+                countryCode,
                 phone,
                 verifyCode,
                 passwordInputViewModel.password.get()!!

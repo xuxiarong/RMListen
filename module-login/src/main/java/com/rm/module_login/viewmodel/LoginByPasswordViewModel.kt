@@ -29,6 +29,7 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
 
     // 错误提示信息
     var errorTips = ObservableField<String>("")
+
     /**
      * 登陆
      */
@@ -43,7 +44,8 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
         showLoading()
         launchOnIO {
             repository.loginByPassword(
-                "${phoneInputViewModel.countryCode.get()}${phoneInputViewModel.phone.get()}",
+                phoneInputViewModel.countryCode.get()!!,
+                phoneInputViewModel.phone.get()!!,
                 passwordInputViewModel.password.get()!!
             ).checkResult(
                 onSuccess = {

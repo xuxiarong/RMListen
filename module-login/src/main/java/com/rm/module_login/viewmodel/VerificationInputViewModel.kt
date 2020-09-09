@@ -42,7 +42,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
         if (getCodeType == 0) {
             // 登录类型,验证码登陆
             launchOnIO {
-                repository.loginByVerifyCode(phone, content).checkResult(
+                repository.loginByVerifyCode(countryCode, phone, content).checkResult(
                     onSuccess = {
                         // 设置登陆成功数据
                         loginIn(it)
@@ -71,7 +71,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                                 // 验证码校验正确
                                 startActivity(
                                     ResetPasswordActivity::class.java,
-                                    ResetPasswordActivity.getIntent(content, phone)
+                                    ResetPasswordActivity.getIntent(content, countryCode, phone)
                                 )
                                 finish()
                             } else {
