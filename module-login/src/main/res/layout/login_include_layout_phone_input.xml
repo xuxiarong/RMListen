@@ -46,7 +46,6 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/login_by_verify_code_input"
             style="@style/PhoneInputTextStyle"
-            afterTextChanged="@{phoneInputViewModel.checkInput}"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:hint="@string/login_input_number_hint"

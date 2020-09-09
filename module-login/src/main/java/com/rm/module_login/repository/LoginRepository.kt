@@ -23,13 +23,25 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
     private val IV = "140fa03a972cdb3c"
 
     /**
+     * 去掉 "+"
+     * @param area_code String
+     */
+    private fun subPlusChar(area_code: String):String{
+        if(!area_code.startsWith("+")){
+            return area_code
+        }
+        return area_code.substring(0,1)
+    }
+
+    /**
      * 发送登陆短信验证码
      * @param area_code String
      * @param phone String
      */
     suspend fun sendLoginVerifyCode(area_code: String, phone: String): BaseResult<Any> {
-        return apiCall { apiService.sendMessage("login", area_code, phone) }
+        return apiCall { apiService.sendMessage("login", subPlusChar(area_code), phone) }
     }
+
 
     /**
      * 发送忘记密码短信验证码
@@ -37,7 +49,7 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      * @param phone String
      */
     suspend fun sendForgetPasswordVerifyCode(area_code: String, phone: String): BaseResult<Any> {
-        return apiCall { apiService.sendMessage("forget_pwd", area_code, phone) }
+        return apiCall { apiService.sendMessage("forget_pwd", subPlusChar(area_code), phone) }
     }
 
     /**
@@ -46,7 +58,7 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      * @param phone String
      */
     suspend fun sendRebindVerifyCode(area_code: String, phone: String): BaseResult<Any> {
-        return apiCall { apiService.sendMessage("rebind_phone", area_code, phone) }
+        return apiCall { apiService.sendMessage("rebind_phone", subPlusChar(area_code), phone) }
     }
 
     /**
@@ -70,7 +82,7 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
         phone: String,
         code: String
     ): BaseResult<ValidateCodeBean> {
-        return apiCall { apiService.validateCode("forget_pwd", area_code, phone, code) }
+        return apiCall { apiService.validateCode("forget_pwd", subPlusChar(area_code), phone, code) }
     }
 
     /**

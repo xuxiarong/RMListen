@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_56"
             android:layout_marginTop="@dimen/dp_52"
-            android:enabled="@{viewModel.phoneInputViewModel.isInputText}"
+            bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
             android:text="@string/login_get_verify_code"
             app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
             app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"

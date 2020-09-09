@@ -32,7 +32,11 @@ class LoginMainDebugActivity : BaseDebugActivity() {
         }
 
         btnReset.setOnClickListener {
-            ResetPasswordActivity.startActivity(this,"123456","13766669999")
+            ResetPasswordActivity.startActivity(this, "123456", "13766669999")
+        }
+
+        btnVMActivity.setOnClickListener {
+            LoginDebugActivity.startActivity(this)
         }
     }
 
