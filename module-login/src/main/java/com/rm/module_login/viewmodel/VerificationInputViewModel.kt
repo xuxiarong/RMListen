@@ -7,6 +7,10 @@ import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.utils.loginIn
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 
 /**
  * desc   : 验证码输入ViewModel
@@ -25,11 +29,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
     var countryCode = "+86"
 
     // 倒计时时间
-    var countDownTime: Int = 60
-    var countDownTimeStr = ObservableField<String>("")
-
-    // 重新获取
-    var reGetCodeStr = ObservableField<String>("")
+    var countDownTime = ObservableField(-1)
 
     // 监听绑定输入框内容变化
     var completeInput: (String) -> Unit = {
@@ -100,8 +100,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 repository.sendLoginVerifyCode(countryCode, phone).checkResult(
                     onSuccess = {
                         showToast(R.string.login_send_success)
-                        countDownTime = 60
-                        reGetCodeStr.set("")
+                        // 开始倒计时
+                        startCountDown()
                         showContentView()
                     },
                     onError = {
@@ -116,8 +116,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 repository.sendForgetPasswordVerifyCode(countryCode, phone).checkResult(
                     onSuccess = {
                         showToast(R.string.login_send_success)
-                        countDownTime = 60
-                        reGetCodeStr.set("")
+                        // 开始倒计时
+                        startCountDown()
                         showContentView()
                     },
                     onError = {
@@ -126,6 +126,27 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     }
                 )
             }
+        }
+    }
+
+
+    /**
+     * 开始倒计时
+     */
+    fun startCountDown() {
+        countDownTime.set(60)
+        launchOnUI {
+            countDown().collect {
+                if (it >= 0) {
+                    countDownTime.set(it - 1)
+                }
+            }
+        }
+    }
+    private fun countDown(): Flow<Int> = flow {
+        while (countDownTime.get()!! > 0) {
+            delay(1000)
+            emit(countDownTime.get()!!)
         }
     }
 }
