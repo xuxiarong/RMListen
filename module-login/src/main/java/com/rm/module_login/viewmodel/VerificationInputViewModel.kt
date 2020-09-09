@@ -2,15 +2,15 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.ACCESS_TOKEN
-import com.rm.business_lib.LOGIN_USER_INFO
-import com.rm.business_lib.REFRESH_TOKEN
-import com.rm.module_login.LoginConstants
 import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
 import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.utils.loginIn
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 
 /**
  * desc   : 验证码输入ViewModel
@@ -29,11 +29,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
     var countryCode = "+86"
 
     // 倒计时时间
-    var countDownTime: Int = 60
-    var countDownTimeStr = ObservableField<String>("")
-
-    // 重新获取
-    var reGetCodeStr = ObservableField<String>("")
+    var countDownTime = ObservableField(-1)
 
     // 监听绑定输入框内容变化
     var completeInput: (String) -> Unit = {
@@ -46,16 +42,11 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
         if (getCodeType == 0) {
             // 登录类型,验证码登陆
             launchOnIO {
-                repository.loginByVerifyCode(phone, content).checkResult(
+                repository.loginByVerifyCode(countryCode, phone, content).checkResult(
                     onSuccess = {
-                        // 保存登陆信息到本地
-                        ACCESS_TOKEN.putMMKV(it.access)
-                        REFRESH_TOKEN.putMMKV(it.refresh)
-                        LOGIN_USER_INFO.putMMKV(it.member)
+                        // 设置登陆成功数据
+                        loginIn(it)
 
-                        // 改变当前是否用户登陆状态 和 登陆的用户信息
-                        LoginConstants.isLogin.value = true
-                        LoginConstants.loginUser.value = it.member
                         // 登陆成功
                         showToast(R.string.login_success)
                         showContentView()
@@ -80,7 +71,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                                 // 验证码校验正确
                                 startActivity(
                                     ResetPasswordActivity::class.java,
-                                    ResetPasswordActivity.getIntent(content, phone)
+                                    ResetPasswordActivity.getIntent(content, countryCode, phone)
                                 )
                                 finish()
                             } else {
@@ -109,8 +100,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 repository.sendLoginVerifyCode(countryCode, phone).checkResult(
                     onSuccess = {
                         showToast(R.string.login_send_success)
-                        countDownTime = 60
-                        reGetCodeStr.set("")
+                        // 开始倒计时
+                        startCountDown()
                         showContentView()
                     },
                     onError = {
@@ -125,8 +116,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 repository.sendForgetPasswordVerifyCode(countryCode, phone).checkResult(
                     onSuccess = {
                         showToast(R.string.login_send_success)
-                        countDownTime = 60
-                        reGetCodeStr.set("")
+                        // 开始倒计时
+                        startCountDown()
                         showContentView()
                     },
                     onError = {
@@ -135,6 +126,27 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     }
                 )
             }
+        }
+    }
+
+
+    /**
+     * 开始倒计时
+     */
+    fun startCountDown() {
+        countDownTime.set(60)
+        launchOnUI {
+            countDown().collect {
+                if (it >= 0) {
+                    countDownTime.set(it - 1)
+                }
+            }
+        }
+    }
+    private fun countDown(): Flow<Int> = flow {
+        while (countDownTime.get()!! > 0) {
+            delay(1000)
+            emit(countDownTime.get()!!)
         }
     }
 }

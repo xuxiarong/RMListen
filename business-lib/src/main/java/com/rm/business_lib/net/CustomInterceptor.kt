@@ -1,5 +1,6 @@
 package com.rm.business_lib.net
 
+import android.os.Build
 import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
@@ -39,6 +40,7 @@ class CustomInterceptor : Interceptor {
         val nonce = generateNonce()
         val signSource = StringBuilder().append(timestamp).append(nonce).append(APP_KEY).toString()
         requestBuilder.addHeader("APP-DEVICE", DeviceUtils.uniqueDeviceId)
+        requestBuilder.addHeader("APP-DEVICE-MODEL", Build.MODEL)
         requestBuilder.addHeader("APP-PLATFORM", "1")
         requestBuilder.addHeader("APP-TIMESTAMP", "$timestamp")
         requestBuilder.addHeader("APP-NONCE", nonce)

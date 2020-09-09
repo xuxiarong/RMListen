@@ -15,11 +15,13 @@ import retrofit2.http.Query
 interface LoginApiService {
     /**
      * 验证码登陆
+     * @param area_code String
      * @param account String
      * @param code String
      */
     @POST("auth/token/sms")
     suspend fun loginByVerifyCode(
+        @Query("area_code") area_code: String,
         @Query("account") account: String,
         @Query("code") code: String
     ): BaseResponse<LoginInfo>
@@ -28,9 +30,11 @@ interface LoginApiService {
      * 密码登陆
      * @param account String
      * @param code String
+     * @param area_code String  手机所在国家代码 不用传 "+"
      */
     @POST("auth/token/pwd")
     suspend fun loginByPassword(
+        @Query("area_code") area_code: String,
         @Query("account") account: String,
         @Query("password") code: String
     ): BaseResponse<LoginInfo>
@@ -78,6 +82,7 @@ interface LoginApiService {
 
     /**
      * 根据验证码重设密码
+     * @param area_code String
      * @param phone String
      * @param code String
      * @param password String
@@ -85,10 +90,11 @@ interface LoginApiService {
      */
     @POST("member/forget-password")
     suspend fun resetPasswordByVerifyCode(
+        @Query("area_code") area_code: String,
         @Query("account") phone: String,
         @Query("code") code: String,
         @Query("password") password: String
-    ):BaseResponse<Any>
+    ): BaseResponse<Any>
 
     /**
      * 根据旧密码重设密码
@@ -100,5 +106,5 @@ interface LoginApiService {
     suspend fun resetPasswordByOldPassword(
         @Query("password") password: String,
         @Query("new_password") new_password: String
-    ):BaseResponse<Any>
+    ): BaseResponse<Any>
 }

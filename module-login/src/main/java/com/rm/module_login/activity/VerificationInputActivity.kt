@@ -1,19 +1,13 @@
 package com.rm.module_login.activity
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.Message
-import android.text.TextUtils
-import androidx.databinding.Observable
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityVerificationCodeInputBinding
 import com.rm.module_login.viewmodel.VerificationInputViewModel
-import java.lang.ref.WeakReference
 
 /**
  * desc   : 验证码输入界面
@@ -22,8 +16,6 @@ import java.lang.ref.WeakReference
  */
 class VerificationInputActivity :
     BaseVMActivity<LoginActivityVerificationCodeInputBinding, VerificationInputViewModel>() {
-
-    private val countdownTimeHandler by lazy { CountdownTimeHandler(this) }
 
     companion object {
         // 登录类型
@@ -40,11 +32,11 @@ class VerificationInputActivity :
             )
         }
 
-        fun startActivity(context: Context,countryCode: String, phoneNumber: String, type: Int){
-            context.startActivity(Intent(context,VerificationInputActivity::class.java).apply {
-                putExtra("countryCode",countryCode)
-                putExtra("phone",phoneNumber)
-                putExtra("type",type)
+        fun startActivity(context: Context, countryCode: String, phoneNumber: String, type: Int) {
+            context.startActivity(Intent(context, VerificationInputActivity::class.java).apply {
+                putExtra("countryCode", countryCode)
+                putExtra("phone", phoneNumber)
+                putExtra("type", type)
             })
         }
     }
@@ -54,15 +46,6 @@ class VerificationInputActivity :
     override fun initModelBrId() = BR.viewModel
 
     override fun startObserve() {
-        mViewModel.reGetCodeStr.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (TextUtils.isEmpty(mViewModel.reGetCodeStr.get())) {
-                    // "重新获取" 字符为空，表明又重新开始倒计时
-                    countdownTimeHandler.sendEmptyMessage(0)
-                }
-            }
-        })
     }
 
     override fun initView() {
@@ -76,54 +59,22 @@ class VerificationInputActivity :
         mViewModel.phoneStr.set(
             resources.getString(
                 R.string.login_format_verification_phone_tips,
-                mViewModel.phone.replace(mViewModel.phone.substring(3, 7), "****")
+                mViewModel.countryCode + " " + mViewModel.phone.replace(
+                    mViewModel.phone.substring(
+                        3,
+                        7
+                    ), "****"
+                )
             )
         )
 
-        countdownTimeHandler.sendEmptyMessageDelayed(0, 1000)
+        // 开始倒计时
+        mViewModel.startCountDown()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        countdownTimeHandler.removeMessages(0)
-    }
-
-
-    /**
-     * 倒计时handler 内部类
-     * @property mWeakReference WeakReference<VerificationInputActivity?>
-     * @constructor
-     */
-    @SuppressLint("HandlerLeak")
-    inner class CountdownTimeHandler internal constructor(activity: VerificationInputActivity?) :
-        Handler() {
-        private val mWeakReference: WeakReference<VerificationInputActivity?> =
-            WeakReference(activity)
-
-        // 子类必须重写此方法，接收数据
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            //获取MainActivity
-            if (msg.what == 0) {
-                // 倒计时数量 -1
-                mViewModel.countDownTime--
-                if (mViewModel.countDownTime > 0) {
-                    // 继续倒计时
-                    sendEmptyMessageDelayed(0, 1000)
-                    mViewModel.countDownTimeStr.set(
-                        resources.getString(
-                            R.string.login_format_verification_count_down_tips,
-                            "${mViewModel.countDownTime}s"
-                        )
-                    )
-                } else {
-                    // 倒计时完成
-                    mViewModel.countDownTimeStr.set("")
-                    mViewModel.reGetCodeStr.set(resources.getString(R.string.login_re_get_verify_code))
-                }
-            }
-        }
-
+        mViewModel.countDownTime.set(0)
     }
 }
 

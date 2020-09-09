@@ -29,6 +29,9 @@
     <string name="login_send_success">已发送验证码</string>
     <string name="login_send_failed">发送验证码失败</string>
     <string name="login_choice_country">选择国家地区</string>
+    <string name="login_quickly_tips">登录后有新天地，快来探索吧！</string>
+    <string name="login_count_down_tips">s后重新获取</string>
+    <string name="login_verify_send_code_tips">验证码已发送至</string>
 
 
     <string name="login_format_verification_phone_tips" formatted="false">验证码已发送至%s</string>
