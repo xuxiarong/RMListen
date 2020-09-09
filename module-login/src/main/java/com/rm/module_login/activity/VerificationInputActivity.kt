@@ -40,11 +40,11 @@ class VerificationInputActivity :
             )
         }
 
-        fun startActivity(context: Context,countryCode: String, phoneNumber: String, type: Int){
-            context.startActivity(Intent(context,VerificationInputActivity::class.java).apply {
-                putExtra("countryCode",countryCode)
-                putExtra("phone",phoneNumber)
-                putExtra("type",type)
+        fun startActivity(context: Context, countryCode: String, phoneNumber: String, type: Int) {
+            context.startActivity(Intent(context, VerificationInputActivity::class.java).apply {
+                putExtra("countryCode", countryCode)
+                putExtra("phone", phoneNumber)
+                putExtra("type", type)
             })
         }
     }
@@ -76,7 +76,12 @@ class VerificationInputActivity :
         mViewModel.phoneStr.set(
             resources.getString(
                 R.string.login_format_verification_phone_tips,
-                mViewModel.phone.replace(mViewModel.phone.substring(3, 7), "****")
+                mViewModel.countryCode + " " + mViewModel.phone.replace(
+                    mViewModel.phone.substring(
+                        3,
+                        7
+                    ), "****"
+                )
             )
         )
 
