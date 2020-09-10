@@ -4,8 +4,9 @@
 
     <data>
         <variable
-            name="itemModel"
+            name="itemViewModel"
             type="com.rm.module_play.model.PlayControlRecommentModel" />
+
     </data>
     <RelativeLayout
         android:layout_width="match_parent"

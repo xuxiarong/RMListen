@@ -36,21 +36,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         private var mActivityLockClassName: String? = null //播放器界面路径、锁屏界面路径、主界面路径
 
     }
-
-    //跳转到锁洁面
-    fun startLockActivity(@NotNull context: Context) {
-        mActivityLockClassName?.let {
-            val playerState: Int = getPlayerState()
-            if (playerState == MUSIC_PLAYER_PREPARE || playerState == MUSIC_PLAYER_PLAYING) {
-                val startIntent = Intent()
-                startIntent.setClassName(context.packageName, it)
-                startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-                startIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
-                context.applicationContext.startActivity(startIntent)
-            }
-        }
-    }
+    
 
     internal class MusicPlayerServiceConnection : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
