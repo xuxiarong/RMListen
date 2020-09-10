@@ -18,7 +18,6 @@ class LoginApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG, "Module Login onCreate()!!!")
         loadKoinModules(loginModules)
-        DLog.i("llj","LoginApplicationDelegate onCreate()")
         // 初始化登陆相关信息
         initLogin()
     }
