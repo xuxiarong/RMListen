@@ -8,18 +8,17 @@ import com.rm.module_home.fragment.HomeTopListContentFragment
 
 class HomeTopListPagerAdapter(
     @NonNull fm: FragmentManager,
-    data: MutableList<Int>
+    data: MutableList<HomeTopListContentFragment>
 ) : FragmentPagerAdapter(
     fm,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) {
-    private val mData: MutableList<Int> by lazy {
+    private val mData: MutableList<HomeTopListContentFragment> by lazy {
         data
     }
 
     override fun getItem(position: Int): Fragment {
-        val type = mData[position]
-        return HomeTopListContentFragment.newInstance(type)
+        return mData[position]
     }
 
     override fun getCount(): Int {

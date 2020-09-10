@@ -8,7 +8,7 @@
 
         <variable
             name="header"
-            type="com.rm.module_home.activity.menu.MenuDetailViewModel" />
+            type="com.rm.module_home.viewmodel.MenuDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

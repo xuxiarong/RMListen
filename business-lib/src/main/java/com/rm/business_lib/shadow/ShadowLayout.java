@@ -41,10 +41,10 @@ public class ShadowLayout extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-//        for (int i = 0; i < getChildCount(); i++) {
-//            View child = getChildAt(i);
-//            clearChildShadow(child);
-//        }
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            clearChildShadow(child);
+        }
     }
 
     @Override

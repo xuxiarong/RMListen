@@ -1,86 +1,102 @@
 package com.rm.module_listen.viewmodel
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.dialog.CommBottomDialog
+import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BookBean
+import com.rm.module_home.repository.ListenSubscriptionRepository
+import com.rm.module_listen.bean.SubscriptionListBean
 
-class ListenSubscriptionViewModel : BaseVMViewModel() {
-    val data = MutableLiveData<MutableList<BookBean>>()
+class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepository) :
+    BaseVMViewModel() {
 
-    var itemClick: (BookBean) -> Unit = {}
+    val mDialog by lazy {
+        CommBottomDialog()
+    }
 
-    fun itemClickFun(bookBean: BookBean) {
+    val data = MutableLiveData<MutableList<SubscriptionListBean>>()
+    var itemClick: (SubscriptionListBean) -> Unit = {}
+    var itemChildMoreClick: (SubscriptionListBean) -> Unit = {}
+    private var audioId: Long? = null
+
+    fun itemClickFun(bookBean: SubscriptionListBean) {
         itemClick(bookBean)
     }
 
-    fun getData() {
-        data.postValue(get())
+    fun itemChildMoreClickFun(bookBean: SubscriptionListBean) {
+        audioId = bookBean.audio_id
+        itemChildMoreClick(bookBean)
     }
 
-    private fun get(): MutableList<BookBean> {
-        val list = mutableListOf<BookBean>()
-        list.add(
-            BookBean(
-                0,
-                "小丸子",
-                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
-                "空间打开借记卡健康的卡夫卡",
-                "幻海航行 | 领略科幻的海洋",
-                "小丸子"
+    fun getData() {
+        launchOnIO {
+            repository.getSubscriptionList().checkResult(
+                onSuccess = {
+                    data.value = it
+                },
+                onError = {
+                    DLog.i("------->", "$it")
+                }
             )
-        )
-        list.add(
-            BookBean(
-                0,
-                "小丸子",
-                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
-                "空间打开借记卡健康的卡夫卡",
-                "幻海航行 | 领略科幻的海洋",
-                "小丸子"
-            )
-        )
-        list.add(
-            BookBean(
-                0,
-                "小丸子",
-                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
-                "空间打开借记卡健康的卡夫卡",
-                "幻海航行 | 领略科幻的海洋",
-                "小丸子"
-            )
-        )
+        }
+    }
 
-        list.add(
-            BookBean(
-                0,
-                "小丸子",
-                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
-                "空间打开借记卡健康的卡夫卡",
-                "幻海航行 | 领略科幻的海洋",
-                "小丸子"
+    /**
+     * dialog 取消
+     */
+    fun dialogCancelFun() {
+        mDialog.dismiss()
+    }
+
+    /**
+     * dialog 置顶
+     */
+    fun dialogSetTopFun() {
+        mDialog.dismiss()
+        launchOnIO {
+            repository.setTop(audioId.toString()).checkResult(
+                onSuccess = {
+                    DLog.i("------>", "置顶成功")
+                },
+                onError = {
+                    DLog.i("------>", "置顶失败   $it")
+                }
             )
-        )
-        list.add(
-            BookBean(
-                0,
-                "小丸子",
-                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
-                "空间打开借记卡健康的卡夫卡",
-                "幻海航行 | 领略科幻的海洋",
-                "小丸子"
+        }
+    }
+
+    /**
+     * dialog 分享
+     */
+    fun dialogShareFun() {
+        mDialog.dismiss()
+    }
+
+    /**
+     * dialog 找相似
+     */
+    fun dialogFindSimilarFun() {
+        mDialog.dismiss()
+    }
+
+    /**
+     * dialog 取消订阅
+     */
+    fun dialogUnsubscribeFun() {
+        mDialog.dismiss()
+        launchOnIO {
+            repository.unsubscribe(audioId.toString()).checkResult(
+                onSuccess = {
+                    DLog.i("------>", "取消订阅成功")
+                },
+                onError = {
+                    DLog.i("------>", "取消订阅失败   $it")
+                }
             )
-        )
-        list.add(
-            BookBean(
-                0,
-                "小丸子",
-                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
-                "空间打开借记卡健康的卡夫卡",
-                "幻海航行 | 领略科幻的海洋",
-                "小丸子"
-            )
-        )
-        return list
+        }
     }
 
 }

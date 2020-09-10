@@ -44,7 +44,7 @@
 
         <!--榜单-->
         <activity
-            android:name="com.rm.module_home.activity.list.TopListActivity"
+            android:name="com.rm.module_home.activity.TopListActivity"
             android:screenOrientation="portrait" />
 
         <!-- 书籍详情 -->

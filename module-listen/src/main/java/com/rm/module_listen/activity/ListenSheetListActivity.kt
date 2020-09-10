@@ -22,10 +22,12 @@ class ListenSheetListActivity : BaseActivity() {
         ListenSheetListPagerAdapter(this, mListTabFragment)
     }
 
-    private val mListTabFragment = mutableListOf<Fragment>(ListenSheetMyListFragment.newInstance(),
-        ListenSheetCollectedListFragment.newInstance())
+    private val mListTabFragment = mutableListOf<Fragment>(
+        ListenSheetMyListFragment.newInstance(),
+        ListenSheetCollectedListFragment.newInstance()
+    )
 
-    private val mListTabText = mutableListOf("我的听单","收藏听单")
+    private val mListTabText = mutableListOf("我的听单", "收藏听单")
 
 
     override fun getLayoutId(): Int {
@@ -35,6 +37,7 @@ class ListenSheetListActivity : BaseActivity() {
     override fun initView() {
         super.initView()
         listen_sheet_list_back.setOnClickListener { finish() }
+        listen_sheet_list_view_pager.offscreenPageLimit = 2
         listen_sheet_list_view_pager.adapter = mAdapter
         configTab()
     }
@@ -44,8 +47,6 @@ class ListenSheetListActivity : BaseActivity() {
             listen_sheet_list_tab.addTab(it)
         }
         listen_sheet_list_tab.bindViewPager2(listen_sheet_list_view_pager)
-        listen_sheet_list_view_pager.setCurrentItem(1,false)
-        listen_sheet_list_tab.setRedPointVisibility(1, View.VISIBLE)
     }
 
     override fun initData() {

@@ -7,7 +7,7 @@
 
         <variable
             name="bookBean"
-            type="com.rm.business_lib.bean.AudioBean" />
+            type="com.rm.module_listen.bean.ListenAudioBean" />
         <variable
             name="viewModel"
             type="com.rm.module_listen.viewmodel.ListenSheetCollectedListViewModel" />
@@ -19,9 +19,9 @@
         android:layout_marginEnd="@dimen/dp_14"
         android:orientation="vertical">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_collected_book_adapter_icon"
-            bindUrl="@{bookBean.anchor}"
+            bindUrl="@{bookBean.audio_cover}"
             corner="@{@dimen/dp_4}"
             android:layout_width="@dimen/dp_88"
             android:layout_height="0dp"
@@ -40,7 +40,7 @@
             android:gravity="center"
             android:paddingStart="@dimen/dp_4"
             android:paddingEnd="@dimen/dp_4"
-            bindText="@{bookBean.audio_intro}"
+            bindText="@{bookBean.audio_label}"
             android:textColor="@color/businessWhite"
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintRight_toRightOf="@id/listen_sheet_collected_book_adapter_icon"

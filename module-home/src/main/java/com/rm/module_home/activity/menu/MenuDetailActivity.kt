@@ -23,6 +23,7 @@ import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.databinding.HomeActivityListenMenuDetailBinding
 import com.rm.module_home.databinding.HomeDialogMenuDetailBinding
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
+import com.rm.module_home.viewmodel.MenuDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
 
 
@@ -30,10 +31,10 @@ class MenuDetailActivity :
     BaseVMActivity<HomeActivityListenMenuDetailBinding, MenuDetailViewModel>(),
     View.OnClickListener {
     companion object {
-        fun startActivity(context: Context, sheetId: String?, pageId: Int?) {
+        fun startActivity(context: Context, pageId: Int, sheetId: String) {
             context.startActivity(Intent(context, MenuDetailActivity::class.java).apply {
-                putExtra("sheetId", sheetId)
                 putExtra("pageId", pageId)
+                putExtra("sheetId", sheetId)
             })
         }
     }
@@ -51,15 +52,15 @@ class MenuDetailActivity :
         }
     }
 
-    private val mDialogAdapter by lazy {
-        CommonBindVMAdapter<BookBean>(
-            mViewModel,
-            mutableListOf(),
-            R.layout.home_adapter_dialog_book_list,
-            BR.dialogClick,
-            BR.dialogItem
-        )
-    }
+//    private val mDialogAdapter by lazy {
+//        CommonBindVMAdapter<BookBean>(
+//            mViewModel,
+//            mutableListOf(),
+//            R.layout.home_adapter_dialog_book_list,
+//            BR.dialogClick,
+//            BR.dialogItem
+//        )
+//    }
     private val dataBinding by lazy {
         DataBindingUtil.inflate<HomeHeaderMenuDetailBinding>(
             LayoutInflater.from(this@MenuDetailActivity),
@@ -73,7 +74,7 @@ class MenuDetailActivity :
     override fun startObserve() {
         mViewModel.data.observe(this) {
 //            dataBinding?.setVariable(BR.header, it)
-            loadBlurImage(home_menu_detail_iv_bg, it.cover)
+//            loadBlurImage(home_menu_detail_iv_bg, it.cover)
 
 //            if (it.isCollected) {
 //                home_menu_detail_collected.apply {
@@ -123,8 +124,8 @@ class MenuDetailActivity :
 
     override fun initData() {
         val pageId = intent.getIntExtra("pageId", 0)
-        val sheetId = intent.getStringExtra("sheetId")
-        mViewModel.getData("$pageId", sheetId ?: "", "")
+        val sheetId = intent.getStringExtra("sheetId") ?: ""
+        mViewModel.getData("$pageId", sheetId, "0")
     }
 
     override fun getLayoutId(): Int {
@@ -162,17 +163,19 @@ class MenuDetailActivity :
                     val homeDialogMenuDetailBinding =
                         (menuDialog?.mDataBind) as HomeDialogMenuDetailBinding?
 
-                    homeDialogMenuDetailBinding?.homeDialogMenuRecyclerView?.let {
-                        it.bindVerticalLayout(mDialogAdapter)
-                        it.linearBottomItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_14))
-                    }
+//                    homeDialogMenuDetailBinding?.homeDialogMenuRecyclerView?.let {
+//                        it.bindVerticalLayout(mDialogAdapter)
+//                        it.linearBottomItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_14))
+//                    }
                 }
             }
         }
-        menuDialog?.showCommonDialog(this,
+        menuDialog?.showCommonDialog(
+            this,
             R.layout.home_dialog_menu_detail,
             mViewModel,
-            BR.viewModel)
+            BR.viewModel
+        )
     }
 
     //分享

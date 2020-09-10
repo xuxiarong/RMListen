@@ -9,4 +9,12 @@
     <string name="listen_my_listen_list">听单</string>
 
 
+    <string name="listen_set_top">置顶</string>
+    <string name="listen_cancel_top">取消置顶</string>
+    <string name="listen_share">分享</string>
+    <string name="listen_find_similar">找相似</string>
+    <string name="listen_unsubscribe">取消订阅</string>
+    <string name="listen_delete">删除</string>
+    <string name="listen_edit_sheet">编辑听单</string>
+    <string name="listen_subscription_depict">%1s %2s</string>
 </resources>
