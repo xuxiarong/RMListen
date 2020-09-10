@@ -17,5 +17,10 @@ interface LoginService : ApplicationProvider {
      */
     fun startLoginActivity(context: Context)
 
+    /**
+     * 快捷登陆dialog
+     * @param baseViewModel BaseVMViewModel
+     * @param fragmentActivity FragmentActivity
+     */
     fun quicklyLogin(baseViewModel: BaseVMViewModel,fragmentActivity: FragmentActivity)
 }
