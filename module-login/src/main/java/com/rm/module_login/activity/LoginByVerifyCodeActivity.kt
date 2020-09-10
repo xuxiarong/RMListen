@@ -9,8 +9,8 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
+import com.rm.component_comm.isLogin
 import com.rm.module_login.BR
-import com.rm.module_login.LoginConstants
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByVerifyCodeBinding
 import com.rm.module_login.utils.CountryListDialogHelper
@@ -42,7 +42,7 @@ class LoginByVerifyCodeActivity :
         })
 
         // 监听登陆状态
-        LoginConstants.isLogin.observe(this, Observer {
+        isLogin.observe(this, Observer {
             if (it) {
                 // 登陆成功，关闭当前界面
                 finish()

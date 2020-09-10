@@ -4,7 +4,9 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.business_lib.LOGIN_USER_INFO
 import com.rm.component_comm.base.IApplicationDelegate
+import com.rm.component_comm.isLogin
 import com.rm.component_comm.login.bean.LoginUserBean
+import com.rm.component_comm.loginUser
 import org.koin.core.context.loadKoinModules
 
 /**
@@ -16,8 +18,9 @@ class LoginApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG, "Module Login onCreate()!!!")
         loadKoinModules(loginModules)
+        DLog.i("llj","LoginApplicationDelegate onCreate()")
         // 初始化登陆相关信息
-//        initLogin()
+        initLogin()
     }
 
     override fun onTerminate() {
@@ -37,12 +40,7 @@ class LoginApplicationDelegate : IApplicationDelegate {
      */
     private fun initLogin() {
         val loginUserInfo = LOGIN_USER_INFO.getObjectMMKV(LoginUserBean::class.java, null)
-        if (loginUserInfo == null) {
-            // 没有登陆
-            LoginConstants.isLogin.value = false
-        } else {
-            LoginConstants.isLogin.value = true
-            LoginConstants.loginUser.value = loginUserInfo
-        }
+        isLogin.value = loginUserInfo != null
+        loginUser.value = loginUserInfo
     }
 }

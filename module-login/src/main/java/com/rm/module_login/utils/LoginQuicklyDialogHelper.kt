@@ -14,6 +14,7 @@ import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.String
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginDialogQuicklyLoginBinding
@@ -25,9 +26,13 @@ import com.rm.module_login.viewmodel.dialog.LoginQuicklyViewModel
  * version: 1.0
  */
 class LoginQuicklyDialogHelper(
-    val mViewModel: LoginQuicklyViewModel,
-    val fragmentActivity: FragmentActivity
+    private val baseViewModel: BaseVMViewModel,
+    private val fragmentActivity: FragmentActivity
 ) {
+
+    private val loginQuicklyModel by lazy {
+        LoginQuicklyViewModel(baseViewModel)
+    }
 
     // 手机号码输入界面显示动画
     private val phoneShowAnimation by lazy {
@@ -86,10 +91,10 @@ class LoginQuicklyDialogHelper(
                 }
 
                 // 输入号码界面/输入验证界面 显示或隐藏的监听
-                mViewModel.isShowPhoneInputLay.addOnPropertyChangedCallback(object :
+                loginQuicklyModel.isShowPhoneInputLay.addOnPropertyChangedCallback(object :
                     Observable.OnPropertyChangedCallback() {
                     override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                        if (mViewModel.isShowPhoneInputLay.get()!!) {
+                        if (loginQuicklyModel.isShowPhoneInputLay.get()!!) {
                             // 显示手机号码输入界面
                             dialogBinding.loginQuicklyInputPhone.startAnimation(phoneShowAnimation)
                             dialogBinding.loginQuicklyInputVerifyCode.startAnimation(
@@ -109,7 +114,7 @@ class LoginQuicklyDialogHelper(
                     }
                 })
 
-                mViewModel.isLoginSuccess.observe(fragmentActivity) {
+                loginQuicklyModel.isLoginSuccess.observe(fragmentActivity) {
                     if (it) {
                         // 登陆成功,弹窗消失
                         this.dismiss()
@@ -120,12 +125,12 @@ class LoginQuicklyDialogHelper(
     }
 
     fun show() {
-        mViewModel.clear()
+        loginQuicklyModel.clear()
 
         quicklyLoginDialog.showCommonDialog(
             fragmentActivity,
             R.layout.login_dialog_quickly_login,
-            mViewModel,
+            loginQuicklyModel,
             BR.viewModel
         )
     }
@@ -134,7 +139,11 @@ class LoginQuicklyDialogHelper(
      * 显示列表国家列表
      */
     private fun showCountryListDialog() {
-        CountryListDialogHelper.show(fragmentActivity, mViewModel, mViewModel.phoneInputViewModel)
+        CountryListDialogHelper.show(
+            fragmentActivity,
+            loginQuicklyModel,
+            loginQuicklyModel.phoneInputViewModel
+        )
     }
 
 

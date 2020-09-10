@@ -1,13 +1,14 @@
 package com.rm.module_login
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.FragmentActivity
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.login.LoginService
-import com.rm.component_comm.login.bean.LoginUserBean
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
+import com.rm.module_login.utils.LoginQuicklyDialogHelper
 
 /**
  * desc   : login module 路由服务实现类
@@ -27,12 +28,8 @@ class LoginServiceImpl : LoginService {
         LoginByVerifyCodeActivity.startActivity(context)
     }
 
-    override fun getLoginStatusBean(): MutableLiveData<Boolean> {
-        return LoginConstants.isLogin
-    }
-
-    override fun getLoginUserBean(): MutableLiveData<LoginUserBean> {
-        return LoginConstants.loginUser
+    override fun quicklyLogin(baseViewModel: BaseVMViewModel, fragmentActivity: FragmentActivity) {
+        LoginQuicklyDialogHelper(baseViewModel,fragmentActivity).show()
     }
 
 }

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.flow
  * date   : 2020/08/26
  * version: 1.0
  */
-open class LoginQuicklyViewModel : BaseVMViewModel() {
+class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel() {
     private val repository: LoginRepository = LoginRepository(
         BusinessRetrofitClient().getService(
             LoginApiService::class.java
@@ -63,22 +63,22 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
         // 网络通过手机获取验证码
         if (!isCheck.get()!!) {
             // 未选中check box
-            showToast(R.string.login_agree_deal_tips)
+            mViewModel.showToast(R.string.login_agree_deal_tips)
             return
         }
         if (phoneInputViewModel.phone.get()!!.length < 7) {
-            showToast(R.string.login_input_right_number_tips)
+            mViewModel.showToast(R.string.login_input_right_number_tips)
             return
         }
 
         // 发送登陆短信验证码
-        launchOnIO {
+        mViewModel.launchOnIO {
             repository.sendLoginVerifyCode(
                 phoneInputViewModel.countryCode.get()!!,
                 phoneInputViewModel.phone.get()!!
             ).checkResult(
                 onSuccess = {
-                    showToast(R.string.login_send_success)
+                    mViewModel.showToast(R.string.login_send_success)
                     formatPhone.set(
                         "${phoneInputViewModel.countryCode.get()!!} ${
                             phoneInputViewModel.phone.get()!!
@@ -90,7 +90,7 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
                     startCountDown()
                 },
                 onError = {
-                    showContentView()
+                    mViewModel.showContentView()
                     errorTips.set(it)
                 }
             )
@@ -119,9 +119,9 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
 
     private fun completeInput(content: String) {
         // 验证码输入完成
-        showLoading()
+        mViewModel.showLoading()
         // 登录类型,验证码登陆
-        launchOnIO {
+        mViewModel.launchOnIO {
             repository.loginByVerifyCode(
                 phoneInputViewModel.countryCode.get()!!,
                 phoneInputViewModel.phone.get()!!,
@@ -132,14 +132,14 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
                     loginIn(it)
 
                     // 登陆成功
-                    showToast(R.string.login_success)
-                    showContentView()
+                    mViewModel.showToast(R.string.login_success)
+                    mViewModel.showContentView()
                     isLoginSuccess.value = true
 
                 },
                 onError = {
-                    showContentView()
-                    it?.let { showToast(it) }
+                    mViewModel.showContentView()
+                    it?.let { mViewModel.showToast(it) }
                 })
         }
 
@@ -149,22 +149,22 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
      * 重新获取验证码
      */
     fun reGetVerifyCode() {
-        showLoading()
+        mViewModel.showLoading()
         // 重新获取登陆验证码
-        launchOnIO {
+        mViewModel.launchOnIO {
             repository.sendLoginVerifyCode(
                 phoneInputViewModel.countryCode.get()!!,
                 phoneInputViewModel.phone.get()!!
             )
                 .checkResult(
                     onSuccess = {
-                        showToast(R.string.login_send_success)
+                        mViewModel.showToast(R.string.login_send_success)
                         startCountDown()
-                        showContentView()
+                        mViewModel.showContentView()
                     },
                     onError = {
-                        showToast(R.string.login_send_failed)
-                        showContentView()
+                        mViewModel.showToast(R.string.login_send_failed)
+                        mViewModel.showContentView()
                     }
                 )
         }
@@ -176,7 +176,7 @@ open class LoginQuicklyViewModel : BaseVMViewModel() {
      */
     private fun startCountDown() {
         countDownTime.set(60)
-        launchOnUI {
+        mViewModel.launchOnUI {
             countDown().collect {
                 if (it >= 0) {
                     countDownTime.set(it - 1)

@@ -22,9 +22,9 @@ open class ComponentApplication : BaseApplication() {
             androidLogger(Level.DEBUG)
             androidContext(this@ComponentApplication)
         }
+        Cxt.context=CONTEXT
         initARouter(this)
         initApplications()
-        Cxt.context=CONTEXT
     }
 
     override fun onTrimMemory(level: Int) {
