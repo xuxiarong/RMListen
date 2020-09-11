@@ -48,6 +48,12 @@
         android:id="@+id/btnTipsDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="内容弹窗"
+        android:text="纯内容弹窗"
+        android:textColor="#000000"/>
+    <Button
+        android:id="@+id/btnCustomTipsDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加自定义视图弹窗"
         android:textColor="#000000"/>
 </LinearLayout>
