@@ -1,6 +1,5 @@
 package com.rm.module_listen.viewmodel
 
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
@@ -9,24 +8,17 @@ import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.model.ListenRecentDateModel
 import com.rm.module_listen.model.ListenRecentListenModel
-import com.rm.module_listen.model.ListenSubsDateModel
 
 /**
  * desc   :
  * date   : 2020/09/02
  * version: 1.0
  */
-class ListenMyListenViewModel : BaseVMViewModel() {
+class ListenRecentListenViewModel : BaseVMViewModel() {
 
-    var recentListenData = MutableLiveData<MutableList<MultiItemEntity>>()
     var todayListenData = MutableLiveData<MutableList<MultiItemEntity>>()
     var lastMonthListenData = MutableLiveData<MutableList<MultiItemEntity>>()
     var earlyListenData = MutableLiveData<MutableList<MultiItemEntity>>()
-
-
-
-    var subsDateVisible = ObservableBoolean(false)
-    var subsDateListDate = MutableLiveData<MutableList<ListenSubsDateModel>>()
 
     val mSwipeAdapter : CommonMultiSwipeVmAdapter by lazy {
         CommonMultiSwipeVmAdapter(this, mutableListOf(),
@@ -106,21 +98,6 @@ class ListenMyListenViewModel : BaseVMViewModel() {
                 "34:12",
                 "已听90%"
             )
-        )
-    }
-
-    fun getSubsDataFromService(){
-        subsDateListDate.value = mutableListOf(
-            ListenSubsDateModel("今天",false),
-            ListenSubsDateModel("昨天",false),
-            ListenSubsDateModel("8-29",false),
-            ListenSubsDateModel("8-28",true),
-            ListenSubsDateModel("8-27",false),
-            ListenSubsDateModel("8-26",false),
-            ListenSubsDateModel("8-25",false),
-            ListenSubsDateModel("8-24",false),
-            ListenSubsDateModel("8-23",false),
-            ListenSubsDateModel("8-22",false)
         )
     }
 

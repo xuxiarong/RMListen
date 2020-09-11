@@ -22,7 +22,8 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         const val BASE_URL = "http://10.1.3.12:9602/api/v1_0/"
         const val  NEW_URL="http://mobilecdn.kugou.com/api/v3"
         const val OLD_HOST="http://10.1.3.12:9602"
-        const val PLAY_PAHT="http://www.kugou.com/yy/index.php"
+        const val PLAY_PATH="http://www.kugou.com/yy/index.php"
+        const val LISTEN_PATH="http://192.168.11.217:3000/mock/154/api/v1_0/"
 
     }
 
@@ -43,7 +44,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
                     }
                     if (baseUrlName.equals("play")) {
                         val oldUrl = request?.url.toString()
-                        val newUrl =oldUrl.replace(OLD_HOST,PLAY_PAHT)
+                        val newUrl =oldUrl.replace(OLD_HOST,PLAY_PATH)
                         return newUrl.toHttpUrl()
                     }
                     return null

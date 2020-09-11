@@ -1,7 +1,8 @@
 package com.rm.baselisten.adapter.swipe
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.view.swipe.SwipeLayout
 import com.rm.baselisten.view.swipe.implments.SwipeItemMangerImpl
 import com.rm.baselisten.view.swipe.interfaces.SwipeAdapterInterface
@@ -14,17 +15,16 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  * date   : 2020/09/07
  * version: 1.0
  */
-class CommonSwipeVmAdapter<T> constructor(
+class CommonMultiSwipeVmAdapter constructor(
     swipeDataViewModel: BaseVMViewModel,
-    var swipeData: MutableList<T>,
-    swipeItemLayoutId: Int,
-    var swipeLayoutId : Int,
+    var swipeData: MutableList<MultiItemEntity>,
+    var swipeItemLayoutId: Int,
+    var swipeId : Int,
     swipeViewModelId: Int,
     swipeDataBrId: Int
-) : CommonBindVMAdapter<T>(
+) : CommonMultiVMAdapter(
     swipeDataViewModel,
     swipeData,
-    swipeItemLayoutId,
     swipeViewModelId,
     swipeDataBrId
 ), SwipeItemMangerInterface, SwipeAdapterInterface {
@@ -37,7 +37,7 @@ class CommonSwipeVmAdapter<T> constructor(
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        if(getItemViewType(position) == swipeLayoutId){
+        if(getItemViewType(position) == swipeItemLayoutId){
             mItemManger.bind(holder.itemView, position)
         }
 
@@ -48,7 +48,7 @@ class CommonSwipeVmAdapter<T> constructor(
     }
 
     override fun getSwipeLayoutResourceId(position: Int): Int {
-        return swipeLayoutId
+        return swipeId
     }
 
     override fun openItem(position: Int) {

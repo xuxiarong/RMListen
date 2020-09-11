@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.rm.module_listen.viewmodel.ListenMyListenViewModel" />
+            type="com.rm.module_listen.viewmodel.ListenRecentListenViewModel" />
         <variable
             name="item"
             type="com.rm.module_listen.model.ListenRecentDateModel" />
@@ -19,6 +19,8 @@
         android:layout_marginTop="22dp"
         android:layout_marginBottom="22dp"
         >
+
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemMoreTitle"

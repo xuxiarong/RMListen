@@ -1,18 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.rm.module_listen.viewmodel.ListenMyListenViewModel" />
+            type="com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/listenSubscriptionRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16" />
+        android:paddingEnd="@dimen/dp_16">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listenSubsDataRv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            isVisible="@{viewModel.subsDateVisible}"
+            android:layout_width="match_parent"
+            android:layout_height="44dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listenSubscriptionRv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/listenSubsDataRv"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

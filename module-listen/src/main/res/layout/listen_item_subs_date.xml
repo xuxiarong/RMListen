@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.module_listen.model.ListenSubsDateModel" />
+    </data>
+
+
+    <TextView
+        android:id="@+id/home_book_adapter_name"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/business_color_b1b1b1"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:singleLine="true"
+        android:text="@{item.date}"
+        bindDateTextColor="@{item.selected}"
+        tools:text="心要大，脚要实" />
+
+</layout>

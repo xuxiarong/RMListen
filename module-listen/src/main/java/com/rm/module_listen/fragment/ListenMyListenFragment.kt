@@ -20,9 +20,11 @@ import kotlinx.android.synthetic.main.listen_fragment_my_listen.*
  */
 class ListenMyListenFragment : BaseVMFragment<ListenFragmentMyListenBinding,ListenMyListenViewModel>() {
 
-    private val mAdapter by lazy {
+    private val mViewPagerAdapter by lazy {
         ListenMyListenPagerAdapter(this.activity!!, mMyListenFragmentList)
     }
+
+
 
     private val mMyListenFragmentList = mutableListOf<Fragment>(ListenRecentListenFragment.newInstance(),
         ListenSubscriptionUpdateFragment.newInstance())
@@ -33,7 +35,7 @@ class ListenMyListenFragment : BaseVMFragment<ListenFragmentMyListenBinding,List
     override fun initView() {
         super.initView()
 
-        listenMyListenVp.adapter = mAdapter
+        listenMyListenVp.adapter = mViewPagerAdapter
 
 
         configTab()
@@ -47,13 +49,17 @@ class ListenMyListenFragment : BaseVMFragment<ListenFragmentMyListenBinding,List
         listenListCl.setOnClickListener{
             ListenSheetListActivity.startActivity(it.context)
         }
+
     }
     override fun startObserve() {
 
     }
 
     override fun initData() {
+        mViewModel.getSubsDataFromService()
     }
+
+
 
     private fun configTab() {
         listenMyListenRtl.addTab(getString(R.string.listen_tab_recent_listen))

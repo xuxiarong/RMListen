@@ -44,7 +44,7 @@
             android:layout_height="40dp"
             tools:text="18"
             bindText="@{String.valueOf(item.age)}"
-            android:onClick="@{()->viewModel.demoAgeClickFun(item)}"
+            android:onClick="@{()->viewModel.demoItem1ClickFun(item)}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
