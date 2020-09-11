@@ -91,7 +91,7 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String?) {
 }
 
 fun loadBlurImage(imageView: ImageView, url: String) {
-    imageView.alpha = 0.1f
+    imageView.alpha = 0.2f
     loadImageByTransform(
         imageView,
         url,

@@ -160,8 +160,8 @@ class PlayActivity :
     override fun onResume() {
         super.onResume()
         rootViewAddView(GlobalplayHelp.instance.globalView)
-
         GlobalplayHelp.instance.globalView.show()
+
     }
 
     override fun onPause() {

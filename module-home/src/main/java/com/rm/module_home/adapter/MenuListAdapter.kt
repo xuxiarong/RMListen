@@ -10,7 +10,7 @@ import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.bean.SheetBean
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.activity.menu.MenuViewModel
+import com.rm.module_home.viewmodel.MenuViewModel
 import com.rm.module_home.databinding.HomeAdapterMenuBinding
 import com.rm.module_home.databinding.HomeAdapterMenuBookBinding
 
@@ -28,8 +28,11 @@ class MenuListAdapter(val viewModel: MenuViewModel) :
         DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
             ?.setVariable(BR.viewModel, viewModel)
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
-            bindGridLayout(MenuBookAdapter().apply { setList(item.audio_list?.list) }, 3)
-            gridItemDecoration(8f)
+            if (tag != true) {
+                tag = true
+                bindGridLayout(MenuBookAdapter().apply { setList(item.audio_list?.list) }, 3)
+                gridItemDecoration(8f)
+            }
         }
     }
 }

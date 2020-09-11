@@ -6,9 +6,10 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.dimen
-import com.rm.business_lib.bean.SheetBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.activity.ListenSheetDetailActivity
+import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.databinding.ListenFragmentSheetMyListBinding
 import com.rm.module_listen.viewmodel.ListenSheetMyListViewModel
 import kotlinx.android.synthetic.main.listen_fragment_sheet_my_list.*
@@ -23,7 +24,7 @@ class ListenSheetMyListFragment :
     }
 
     private val mAdapter by lazy {
-        CommonBindVMAdapter<SheetBean>(
+        CommonBindVMAdapter<ListenSheetBean>(
             mViewModel,
             mutableListOf(),
             R.layout.listen_adapter_sheet_my_list,
@@ -42,11 +43,12 @@ class ListenSheetMyListFragment :
             bindVerticalLayout(mAdapter)
             linearBottomItemDecoration(dimen(R.dimen.dp_14))
         }
+        mViewModel.itemClick = { startDetail(it) }
     }
 
     override fun startObserve() {
         mViewModel.data.observe(this) {
-            mAdapter.setList(it)
+            mAdapter.setList(it.list)
         }
     }
 
@@ -56,5 +58,11 @@ class ListenSheetMyListFragment :
 
     override fun initData() {
         mViewModel.getData()
+    }
+
+    private fun startDetail(bean: ListenSheetBean) {
+        context?.let {
+            ListenSheetDetailActivity.startActivity(it,bean)
+        }
     }
 }

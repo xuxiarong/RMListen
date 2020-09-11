@@ -1,22 +1,26 @@
 package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.module_home.bean.TopListBean
+import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.repository.TopListRepository
 
-/**
- * desc   :
- * date   : 2020/08/20
- * version: 1.0
- */
-class HomeTopListContentFragmentViewModel(private val repository: TopListRepository) :
-    BaseVMViewModel() {
+class HomeTopListContentFragmentViewModel(private val repository: TopListRepository): BaseVMViewModel() {
     // 榜单列表数据
-    var dataList = MutableLiveData<MutableList<TopListBean>>()
-
-    fun getListInfo() {
-        dataList.value = repository.getDataList()
+    val dataList = MutableLiveData<HomeTopListBean>()
+    fun getListInfo(rankType: String, rankSeg: String, page: Int, pageSize: Int) {
+        launchOnIO {
+            repository.getTopList(rankType, rankSeg, page, pageSize).checkResult(
+                onSuccess = {
+                    dataList.value = it
+                },
+                onError = {
+                    DLog.i("-------->", "$it")
+                }
+            )
+        }
     }
 
 }

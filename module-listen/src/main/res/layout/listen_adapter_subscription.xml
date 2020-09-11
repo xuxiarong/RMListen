@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.rm.business_lib.bean.BookBean" />
+            type="com.rm.module_listen.bean.SubscriptionListBean" />
 
         <variable
             name="click"
@@ -18,12 +18,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{(BookBean)->click.itemClickFun(item)}">
+        android:onClick="@{(SubscriptionListBean)->click.itemClickFun(item)}">
 
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_subscription_adapter_icon"
-            bindUrl="@{item.icon}"
+            bindUrl="@{item.audio_cover}"
             corner="@{@dimen/dp_4}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
@@ -32,40 +32,56 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
 
+        <com.flyco.roundview.RoundTextView
+            bindText="@{item.audio_label}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_4"
+            android:textColor="@color/businessWhite"
+            android:textSize="@dimen/business_text_size_10sp"
+            app:layout_constraintEnd_toEndOf="@id/listen_subscription_adapter_icon"
+            app:layout_constraintTop_toTopOf="@id/listen_subscription_adapter_icon"
+            app:rv_backgroundColor="@color/business_text_color_333333"
+            app:rv_cornerRadius_BL="@dimen/dp_4"
+            app:rv_cornerRadius_TR="@dimen/dp_4"
+            tools:text="文案" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_num"
             style="@style/BusinessTextStyleFourth_3"
+            bindText="@{item.getUnreadStr()}"
             android:layout_width="@dimen/dp_18"
             android:layout_height="@dimen/dp_18"
             android:background="@drawable/business_shape_circle_ff5e5e"
             android:gravity="center"
-            android:text="9"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@id/listen_subscription_adapter_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/listen_subscription_adapter_title"
             tools:text="99" />
 
-        <com.rm.business_lib.wedgit.menupoint.MenuPointView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/listen_subscription_adapter_more"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:onClick="@{(SubscriptionListBean)->click.itemChildMoreClickFun(item)}"
+            android:src="@drawable/business_icon_more"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@id/listen_subscription_adapter_icon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:menu_number="3"
-            app:menu_point_color="@color/business_color_0f000000"
-            app:menu_point_width="@dimen/dp_2"
-            app:menu_type="horizontal" />
+            app:layout_constraintTop_toBottomOf="@id/listen_subscription_adapter_num" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_title"
             style="@style/BusinessTextStyleFirst_2"
-            bindText="@{item.describe}"
+            bindText="@{item.audio_name}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:singleLine="true"
-            app:layout_constraintEnd_toStartOf="@id/listen_subscription_adapter_num"
+            app:layout_constraintEnd_toStartOf="@id/listen_subscription_adapter_more"
             app:layout_constraintStart_toEndOf="@id/listen_subscription_adapter_icon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="123" />
@@ -74,25 +90,25 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_content"
             style="@style/BusinessTextStyleSecond_4"
+            bindText="@{@string/listen_subscription_depict(item.chapter_name,item.getProgressStr())}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_12"
-            android:text="@{item.tips}"
-            app:layout_constraintEnd_toStartOf="@id/listen_subscription_adapter_num"
+            app:layout_constraintEnd_toStartOf="@id/listen_subscription_adapter_more"
             app:layout_constraintStart_toEndOf="@id/listen_subscription_adapter_icon"
             app:layout_constraintTop_toBottomOf="@id/listen_subscription_adapter_title"
             tools:text="124" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/listen_subscription_adapter_author"
+            android:id="@+id/listen_subscription_adapter_create"
             style="@style/BusinessTextStyleSecond_4"
+            bindText="@{item.created_at}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_day"
             android:drawablePadding="@dimen/dp_2"
-            android:text="@{item.author}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/listen_subscription_adapter_num"
+            app:layout_constraintEnd_toStartOf="@id/listen_subscription_adapter_more"
             app:layout_constraintStart_toEndOf="@id/listen_subscription_adapter_icon"
             tools:text="2020/08/20" />
 

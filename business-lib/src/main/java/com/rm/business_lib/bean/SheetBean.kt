@@ -2,7 +2,7 @@ package com.rm.business_lib.bean
 
 data class SheetBean(
     var audio_list: AudioListBean?,
-    var avatar: String,
+    var avatar_url: String,
     var created_at: String,
     var created_from: Int,
     var member_id: String,

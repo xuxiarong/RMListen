@@ -196,12 +196,20 @@ class BubbleSeekBar @JvmOverloads constructor(
      * @param view
      */
     fun addBubbleFL(view: View?) {
+        view?.let {
+            view.parent?.let {
+                (it as? FrameLayout)?.let {
+                    it.removeView(view)
+                }
+            }
+        }
         mBubbleFL?.addView(view)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mWindowManager.removeViewImmediate(mBubbleFL)
+//        mWindowManager
+//        mWindowManager.removeViewImmediate(mBubbleFL)
     }
 
     /**

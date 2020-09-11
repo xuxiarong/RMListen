@@ -4,7 +4,8 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.ACCESS_TOKEN
 import com.rm.business_lib.LOGIN_USER_INFO
 import com.rm.business_lib.REFRESH_TOKEN
-import com.rm.module_login.LoginConstants
+import com.rm.component_comm.isLogin
+import com.rm.component_comm.loginUser
 import com.rm.module_login.bean.LoginInfo
 
 /**
@@ -24,8 +25,8 @@ fun loginIn(loginInfo: LoginInfo) {
         LOGIN_USER_INFO.putMMKV(it.member)
 
         // 改变当前是否用户登陆状态 和 登陆的用户信息
-        LoginConstants.isLogin.value = true
-        LoginConstants.loginUser.value = it.member
+        isLogin.value = true
+        loginUser.value = it.member
     }
 }
 
@@ -39,6 +40,6 @@ fun loginOut() {
     LOGIN_USER_INFO.putMMKV("")
 
     // 改变当前是否用户登陆状态 和 登陆的用户信息
-    LoginConstants.isLogin.value = false
-    LoginConstants.loginUser.value = null
+    isLogin.value = false
+    loginUser.value = null
 }

@@ -1,4 +1,4 @@
-package com.rm.module_home.activity.list
+package com.rm.module_home.activity
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
@@ -22,17 +24,19 @@ import com.rm.module_home.adapter.HomeTopListPagerAdapter
 import com.rm.module_home.adapter.HomeTopListPopupAdapter
 import com.rm.module_home.adapter.HomeTopListTabAdapter
 import com.rm.module_home.bean.CategoryTabBean
+import com.rm.module_home.bean.HomeRankSegBean
 import com.rm.module_home.databinding.HomeActivityTopListBinding
 import com.rm.module_home.fragment.HomeTopListContentFragment
+import com.rm.module_home.viewmodel.TopListViewModel
 import kotlinx.android.synthetic.main.home_activity_top_list.*
+import java.util.*
 
 class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewModel>() {
     private var mPopupWindow: PopupWindow? = null
     private val tabAdapter by lazy { HomeTopListTabAdapter() }
-    private val types = mutableListOf<Int>()
+    private val popupAdapter by lazy { HomeTopListPopupAdapter() }
+    private val fragments = mutableListOf<HomeTopListContentFragment>()
     private var mCurPosition = 0
-
-    private var baseTitleModel: BaseTitleModel? = null
 
     companion object {
         fun startActivity(context: Context) {
@@ -48,27 +52,18 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
     override fun startObserve() {
         mViewModel.tabInfoList.observe(this) {
             configureFragment(it)
-            tabAdapter.setNewInstance(it)
+            tabAdapter.setList(it)
+        }
+
+        mViewModel.rankSegList.observe(this) {
+            popupAdapter.setList(it)
         }
     }
 
     override fun initView() {
-        baseTitleModel = BaseTitleModel()
-            .setTitle(resources.getString(R.string.home_top_list))
-            .setRightText(resources.getString(R.string.home_top_list_week))
-            .setRightIcon1(R.drawable.business_ic_down)
-            .setRightBackground(R.drawable.business_shape_stroke_e8e8e8_18dp)
-            .setLeftIconClick {
-                finish()
-            }
-            .setRightContainerClick {
-                if (mPopupWindow?.isShowing == true) {
-                    mPopupWindow?.dismiss()
-                } else {
-                    showPopupWindow()
-                }
-            }
-        mViewModel.baseTitleModel.value = baseTitleModel
+        home_top_list_back.setOnClickListener { finish() }
+        home_top_list_title.setOnClickListener { showPopupWindow() }
+        home_top_list_title_icon.setOnClickListener { showPopupWindow() }
         home_list_recycler_tab.apply {
             bindVerticalLayout(tabAdapter)
             linearBottomItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_14))
@@ -81,28 +76,28 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
         data.forEach { bean ->
             val type = when (bean.name) {
                 "热门榜" -> {
-                    HomeTopListContentFragment.POPULAR_LIST
+                    HomeTopListContentFragment.RANK_TYPE_POPULAR
                 }
                 "热销榜" -> {
-                    HomeTopListContentFragment.HOT_LIST
+                    HomeTopListContentFragment.RANK_TYPE_HOT
                 }
                 "新书榜" -> {
-                    HomeTopListContentFragment.NEW_BOOK_LIST
+                    HomeTopListContentFragment.RANK_TYPE_NEW_BOOK
                 }
                 "搜索榜" -> {
-                    HomeTopListContentFragment.SEARCH_LIST
+                    HomeTopListContentFragment.RANK_TYPE_SEARCH
                 }
                 "好评榜" -> {
-                    HomeTopListContentFragment.PRAISE_LIST
+                    HomeTopListContentFragment.RANK_TYPE_PRAISE
                 }
                 else -> {
-                    HomeTopListContentFragment.POPULAR_LIST
+                    HomeTopListContentFragment.RANK_TYPE_POPULAR
                 }
             }
-            types.add(type)
+            fragments.add(HomeTopListContentFragment.newInstance(type))
         }
         home_list_content.apply {
-            adapter = HomeTopListPagerAdapter(supportFragmentManager, types)
+            adapter = HomeTopListPagerAdapter(supportFragmentManager, fragments)
             setCurrentItem(0, false)
         }
     }
@@ -120,20 +115,18 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
         }
     }
 
-    //弹出popupwindow
+    //弹出popupWindow
     private fun showPopupWindow() {
-        val showView = (findViewById<View>(R.id.base_tv_right).parent.parent) as View;
         if (mPopupWindow == null) {
             createPopupWindow()
         }
         val location = IntArray(2)
-        showView.getLocationInWindow(location)
-        val y = location[1] + showView.height
-        mPopupWindow?.showAtLocation(showView, Gravity.CENTER_HORIZONTAL or Gravity.TOP, 0, y)
+        home_top_list_title_cl.getLocationInWindow(location)
+        val y = location[1] + home_top_list_title_cl.height
+        mPopupWindow?.showAtLocation(home_top_list_title_cl, Gravity.CENTER_HORIZONTAL or Gravity.TOP, 0, y)
 
         //改变标题栏中的图标
-        baseTitleModel?.rightIcon1 = R.drawable.business_ic_up
-        mViewModel.baseTitleModel.value = baseTitleModel
+        home_top_list_title_icon.setImageResource(R.drawable.business_ic_up)
     }
 
     //创建popupWindow
@@ -148,13 +141,9 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
                 .inflate(R.layout.home_popup_list_top, home_list_recycler_tab, false)
             val popupRv = rootView.findViewById<RecyclerView>(R.id.home_popup_rv)
 
-            //popupwindow数据的填充
+            //popupWindow数据的填充
             popupRv.apply {
-                val stringArray: Array<String> =
-                    resources.getStringArray(R.array.home_top_list_popup_array)
-                val adapter = HomeTopListPopupAdapter(stringArray.asList() as MutableList<String>)
-
-                bindVerticalLayout(adapter)
+                bindVerticalLayout(popupAdapter)
 
                 divLinearItemDecoration(
                     0,
@@ -162,10 +151,13 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
                     ContextCompat.getColor(context, R.color.business_color_e8e8e8)
                 )
 
-                adapter.setOnItemClickListener { _, view, position ->
-                    adapter.setSelectTv(position, view as TextView)
-                    baseTitleModel?.rightText = stringArray[position]
-                    mViewModel.baseTitleModel.value = baseTitleModel
+                popupAdapter.setOnItemClickListener { _, view, position ->
+                    popupAdapter.setSelectTv(position, view as TextView)
+                    mViewModel.rankSegList.value?.let {
+                        home_top_list_title.text = it[position].name
+                        observerRankSeg(it[position])
+                    }
+
                     dismiss()
                 }
             }
@@ -177,14 +169,21 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
             isTouchable = true
 
             setOnDismissListener {
-                baseTitleModel?.rightIcon1 = R.drawable.business_ic_down
-                mViewModel.baseTitleModel.value = baseTitleModel
+                home_top_list_title_icon.setImageResource( R.drawable.business_ic_down)
             }
         }
-
     }
 
     override fun initData() {
-        mViewModel.getTabInfo()
+        mViewModel.getData()
+    }
+
+    /**
+     * 通知页面更新数据
+     */
+    private fun observerRankSeg(rankSegBean: HomeRankSegBean) {
+        fragments.forEach {
+            it.changRankSeg(rankSegBean.type)
+        }
     }
 }

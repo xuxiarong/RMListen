@@ -15,7 +15,7 @@ open class CommonFragmentDialog  : BaseFragmentDialog() {
     fun showCommonDialog(activity: FragmentActivity,layoutId : Int) {
 
         val bundle = Bundle()
-        bundle.putInt("layoutId", layoutId)
+        bundle.putInt(LAYOUT_ID, layoutId)
 
         FragmentFactory.create(CommonFragmentDialog::class.java, bundle)
             .getFragment<CommonFragmentDialog>().showDialog<CommonFragmentDialog>(activity)

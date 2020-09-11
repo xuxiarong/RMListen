@@ -2,6 +2,7 @@ package com.rm.module_home.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.SheetListBean
+import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.bean.MenuSheetInfoBean
 import com.rm.module_home.model.home.detail.HomeDetailModel
@@ -26,7 +27,7 @@ interface HomeApiService {
      * 获取听书详情
      */
     @GET("audio/detail")
-    suspend fun HomeDetail(@Query ("id") id:String) :BaseResponse<HomeDetailModel>
+    suspend fun HomeDetail(@Query("id") id: String): BaseResponse<HomeDetailModel>
 
 
     /**
@@ -68,6 +69,16 @@ interface HomeApiService {
     suspend fun homeSheet(): BaseResponse<MenuSheetBean>
 
     /**
+     * 听单列表
+     */
+    @GET("/api/v1_0/content/sheet/list")
+    suspend fun homeSheetList(
+        @Query("page_id") page_id: String,
+        @Query("page") page: Int,
+        @Query("page_size") pageSize: Int
+    ): BaseResponse<SheetListBean>
+
+    /**
      * 听单详情
      */
     @GET("/api/v1_0/content/sheet/info")
@@ -76,6 +87,17 @@ interface HomeApiService {
         @Query("sheet_id") sheet_id: String,
         @Query("member_id") member_id: String
     ): BaseResponse<MenuSheetInfoBean>
+
+    /**
+     * 榜单
+     */
+    @GET("/api/v1_0/content/rank/list")
+    suspend fun homeTopList(
+        @Query("rank_type") rankType: String,
+        @Query("rank_seg") rankSeg: String,
+        @Query("page") page: Int,
+        @Query("page_size") pageSize: Int
+    ): BaseResponse<HomeTopListBean>
 
 
 }

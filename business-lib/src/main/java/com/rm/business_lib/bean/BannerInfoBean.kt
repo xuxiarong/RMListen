@@ -12,10 +12,11 @@ data class BannerInfoBean (
     var banner_img: String,
     var banner_jump: String,
     var banner_seq: Int,
-    var page_id: Int
+    var page_id: Int,
+    var img_url: String
 ) : BaseBannerInfo {
     override fun getXBannerUrl(): Any {
-        return banner_img
+        return img_url
     }
 
     override fun getXBannerTitle(): String {

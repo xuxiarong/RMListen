@@ -92,6 +92,16 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <!-- size = 10sp，color = #333333-->
+    <style name="BusinessTextStyleFirst_6">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/business_text_size_20sp</item>
+        <item name="android:textColor">@color/business_text_color_333333</item>
+        <item name="android:lineSpacingExtra">@dimen/dp_2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 
     <!-- 二级级颜色文本样式 -->
     <!-- size = 18sp，color = #666666-->

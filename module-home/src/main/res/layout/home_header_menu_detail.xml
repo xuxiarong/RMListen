@@ -8,7 +8,7 @@
 
         <variable
             name="header"
-            type="com.rm.module_home.activity.menu.MenuDetailViewModel" />
+            type="com.rm.module_home.bean.MenuSheetInfoBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,10 +17,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_menu_detail_front_cover"
-            bindUrl="@{header.data.cover}"
+            bindUrl="@{header.test()}"
+            corner="@{@dimen/dp_8}"
+            android:scaleType="fitXY"
             android:layout_width="@dimen/dp_144"
             android:layout_height="@dimen/dp_144"
-            android:layout_marginStart="@dimen/dp_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
@@ -30,8 +31,7 @@
             style="@style/BusinessTextStyleFirst_1"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:text="@{header.data.name}"
+            android:text="@{header.sheet_name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover"
             app:layout_constraintTop_toTopOf="@id/home_menu_detail_front_cover"
@@ -39,7 +39,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_menu_detail_author_icon"
-            bindUrl="@{header.data.cover}"
+            bindUrl="@{header.avatar_url}"
+            isCircle="@{true}"
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
             android:layout_marginStart="@dimen/dp_12"
@@ -52,8 +53,7 @@
             style="@style/BusinessTextStyleSecond_4"
             android:layout_width="0dp"
             android:layout_marginStart="6dp"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:text="@{header.data.nickname}"
+            android:text="@{header.nickname}"
             app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_author_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_author_icon"
@@ -64,11 +64,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_read_num"
             style="@style/BusinessTextStyleSecond_4"
-            bindText="@{header.data.num_favor}"
+            bindText="@{header.num_favor}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_16"
             android:drawableStart="@drawable/business_icon_book_num"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover"
@@ -88,12 +87,10 @@
         <com.rm.business_lib.wedgit.expandtextview.ExpandableTextView
             android:id="@+id/home_menu_detail_brief"
             style="@style/BusinessTextStyleSecond_3"
-            expandText="@{header.data.description}"
+            expandText="@{header.sheet_intro}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_24"
-            android:layout_marginEnd="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_menu_detail_front_cover" />

@@ -2,6 +2,7 @@ package com.rm.module_play.playview
 
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.utilExt.dip
+import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.activity.PlayActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
@@ -26,7 +27,7 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
             setRadius(Cxt.context.dip(19).toFloat())
             setBarWidth(Cxt.context.dip(2).toFloat())
             setOnClickListener {
-                PlayActivity.startActivity(context)
+                BookPlayerActivity.startActivity(context)
             }
 
         }

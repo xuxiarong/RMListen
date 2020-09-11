@@ -1,12 +1,11 @@
 package com.rm.module_home
 
-import com.rm.baselisten.net.api.BaseRetrofitClient
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_home.activity.boutique.BoutiqueFragmentViewModel
 import com.rm.module_home.activity.boutique.BoutiqueViewModel
-import com.rm.module_home.activity.list.TopListViewModel
-import com.rm.module_home.activity.menu.MenuDetailViewModel
-import com.rm.module_home.activity.menu.MenuViewModel
+import com.rm.module_home.viewmodel.TopListViewModel
+import com.rm.module_home.viewmodel.MenuDetailViewModel
+import com.rm.module_home.viewmodel.MenuViewModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.repository.*
 import com.rm.module_home.viewmodel.HomeDetailViewModel
@@ -31,7 +30,7 @@ val viewModelModule = module {
     viewModel { MenuViewModel(get()) }
     viewModel { MenuDetailViewModel(get()) }
     viewModel { BoutiqueViewModel(get()) }
-    viewModel { TopListViewModel(get()) }
+    viewModel { TopListViewModel() }
     viewModel { BoutiqueFragmentViewModel(get()) }
     viewModel { HomeDetailViewModel(get()) }
     viewModel { HomeTopListContentFragmentViewModel(get()) }

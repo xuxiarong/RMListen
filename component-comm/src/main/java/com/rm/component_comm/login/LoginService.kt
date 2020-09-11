@@ -1,8 +1,8 @@
 package com.rm.component_comm.login
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
-import com.rm.component_comm.login.bean.LoginUserBean
+import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -18,14 +18,9 @@ interface LoginService : ApplicationProvider {
     fun startLoginActivity(context: Context)
 
     /**
-     * 获取此对象通过MutableLiveData方式可监听登陆状态的变化
-     * @return MutableLiveData<Boolean>
+     * 快捷登陆dialog
+     * @param baseViewModel BaseVMViewModel
+     * @param fragmentActivity FragmentActivity
      */
-    fun getLoginStatusBean():MutableLiveData<Boolean>
-
-    /**
-     * 获取登陆用户的信息，也可通过次对象监听登陆用户信息状态的变化
-     * @return MutableLiveData<LoginUserBean>
-     */
-    fun getLoginUserBean():MutableLiveData<LoginUserBean>
+    fun quicklyLogin(baseViewModel: BaseVMViewModel,fragmentActivity: FragmentActivity)
 }

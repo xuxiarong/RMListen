@@ -4,9 +4,8 @@ import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_home.R
 import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity
-import com.rm.module_home.activity.list.TopListActivity
+import com.rm.module_home.activity.TopListActivity
 import com.rm.module_home.activity.menu.MenuActivity
-import com.rm.module_home.activity.menu.MenuDetailActivity
 import kotlinx.android.synthetic.main.home_activity_main.*
 
 /**

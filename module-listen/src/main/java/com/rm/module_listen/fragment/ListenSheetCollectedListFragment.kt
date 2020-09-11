@@ -38,7 +38,7 @@ class ListenSheetCollectedListFragment :
 
     override fun startObserve() {
         mViewModel.data.observe(this) {
-            mAdapter.setList(it)
+            mAdapter.setList(it.list)
         }
     }
 

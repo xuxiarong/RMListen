@@ -9,24 +9,25 @@ import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dimen
-import com.rm.business_lib.bean.BookBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.bean.SubscriptionListBean
 import com.rm.module_listen.databinding.ListenActivitySubscriptionBinding
+import com.rm.module_listen.databinding.ListenDialogBottomSubscriptionBinding
 import com.rm.module_listen.viewmodel.ListenSubscriptionViewModel
 import kotlinx.android.synthetic.main.listen_activity_subscription.*
 
 class ListenSubscriptionActivity :
     BaseVMActivity<ListenActivitySubscriptionBinding, ListenSubscriptionViewModel>() {
-    companion object{
+    companion object {
 
-        fun startActivity(context: Context){
-            context.startActivity(Intent(context,ListenSubscriptionActivity::class.java))
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, ListenSubscriptionActivity::class.java))
         }
     }
 
     private val mAdapter by lazy {
-        CommonBindVMAdapter<BookBean>(
+        CommonBindVMAdapter<SubscriptionListBean>(
             mViewModel,
             mutableListOf(),
             R.layout.listen_adapter_subscription,
@@ -51,7 +52,11 @@ class ListenSubscriptionActivity :
             linearBottomItemDecoration(dimen(R.dimen.dp_14))
         }
 
+        mViewModel.itemChildMoreClick = { itemChildClick(it) }
+    }
 
+    private fun itemChildClick(bean: SubscriptionListBean) {
+        showBottomDialog(bean.is_top)
     }
 
     override fun initData() {
@@ -64,9 +69,26 @@ class ListenSubscriptionActivity :
 
 
     override fun startObserve() {
-        mViewModel.data.observe(this){
+        mViewModel.data.observe(this) {
             mAdapter.setList(it)
         }
     }
 
+    private fun showBottomDialog(isTop: Int?) {
+        mViewModel.mDialog.initDialog = {
+            val subscriptionBinding =
+                mViewModel.mDialog.mDataBind as ListenDialogBottomSubscriptionBinding
+            subscriptionBinding.listenDialogBottomSubscriptionTop.text = if (isTop == 1) {
+                getString(R.string.listen_set_top)
+            } else {
+                getString(R.string.listen_cancel_top)
+            }
+        }
+        mViewModel.mDialog.showCommonDialog(
+            this,
+            R.layout.listen_dialog_bottom_subscription,
+            mViewModel,
+            BR.viewModel
+        )
+    }
 }

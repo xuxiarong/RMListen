@@ -51,8 +51,7 @@ class HomeAdapter(
                 }
             }
             R.layout.home_item_recommend_hor_single_rv -> {
-                val singleRvBinding =
-                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorSingleRvBinding
+                val singleRvBinding = DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorSingleRvBinding
                 if (homeViewModel.homeHorSingleList.value != null) {
                     val singleAdapter =
                         CommonMultiAdapter(

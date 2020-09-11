@@ -46,23 +46,16 @@
         </RelativeLayout>
 
 
-        <com.flyco.roundview.RoundFrameLayout
-            android:id="@+id/fl_music_playe_bg"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="280dp"
             android:layout_marginLeft="48dp"
             android:layout_marginRight="48dp"
+            android:scaleType="fitXY"
             app:layout_constraintTop_toBottomOf="@+id/rl_music_playe_title"
-            app:rv_backgroundColor="@color/business_text_color_333333"
-            app:rv_cornerRadius="8dp"
-            tools:ignore="MissingConstraints">
-            <ImageView
-                android:id="@+id/iv_img_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            android:id="@+id/iv_img_layout"
+            />
 
-
-        </com.flyco.roundview.RoundFrameLayout>
 
         <TextView
             android:id="@+id/fl_music_playe_page"
@@ -74,7 +67,7 @@
             android:textSize="18sp"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fl_music_playe_bg"
+            app:layout_constraintTop_toBottomOf="@+id/iv_img_layout"
             tools:ignore="MissingConstraints" />
 
         <RelativeLayout
@@ -164,6 +157,7 @@
             </LinearLayout>
         </LinearLayout>
         <Button
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/bt_get_book_list"
             android:layout_width="100dip"

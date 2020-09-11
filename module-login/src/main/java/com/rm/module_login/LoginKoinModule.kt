@@ -5,6 +5,7 @@ import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.*
 import com.rm.module_login.viewmodel.dialog.CountryChoiceViewModel
+import com.rm.module_login.viewmodel.dialog.LoginQuicklyViewModel
 import debug.LoginDebugViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -30,6 +31,8 @@ val viewModelModule = module {
     viewModel { CountryChoiceViewModel() }
     // 测试所需debug viewModel
     viewModel { LoginDebugViewModel() }
+    // 快速登陆dialog viewModel
+    viewModel { LoginQuicklyViewModel(get()) }
 }
 
 val repositoryModule = module {
