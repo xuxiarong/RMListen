@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.binding.bindText
 import com.rm.baselisten.dialog.BaseFragmentDialog
 import com.rm.baselisten.utilExt.Color
 import com.rm.business_lib.R
@@ -54,16 +55,9 @@ class TipsFragmentDialog : BaseFragmentDialog() {
         // 设置dialog有自己的背景
         dialogHasBackground = true
         // 设置标题显示
-        rootView?.findViewById<TextView>(R.id.business_tips_dialog_title)?.let {
-            if (TextUtils.isEmpty(titleText)) {
-                it.visibility = View.GONE
-            } else {
-                it.visibility = View.VISIBLE
-                it.text = titleText
-            }
-        }
+        rootView?.findViewById<TextView>(R.id.business_tips_dialog_title)?.bindText(titleText)
         // 设置内容显示
-        rootView?.findViewById<TextView>(R.id.business_tips_dialog_content)?.text = contentText
+        rootView?.findViewById<TextView>(R.id.business_tips_dialog_content)?.bindText(contentText)
 
         // 设置左边按钮
         rootView?.findViewById<TextView>(R.id.business_tips_dialog_left_btn)?.apply {

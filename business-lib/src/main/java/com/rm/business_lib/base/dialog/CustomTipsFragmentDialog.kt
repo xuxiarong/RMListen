@@ -13,7 +13,7 @@ import com.rm.baselisten.utilExt.Color
 import com.rm.business_lib.R
 
 /**
- * desc   : 纯文本内容提示框
+ * desc   : 可添加自定义视图的提示dialog
  * date   : 2020/09/10
  * version: 1.0
  */
@@ -59,18 +59,9 @@ class CustomTipsFragmentDialog : BaseFragmentDialog() {
         // 设置dialog有自己的背景
         dialogHasBackground = true
         // 设置标题显示
-//        rootView?.findViewById<TextView>(R.id.business_tips_dialog_title)?.let {
-//            if (TextUtils.isEmpty(titleText)) {
-//                it.visibility = View.GONE
-//            } else {
-//                it.visibility = View.VISIBLE
-//                it.text = titleText
-//            }
-//        }
         rootView?.findViewById<TextView>(R.id.business_tips_dialog_title)?.bindText(titleText)
         // 设置内容显示
         rootView?.findViewById<TextView>(R.id.business_tips_dialog_content)?.bindText(contentText)
-//        rootView?.findViewById<TextView>(R.id.business_tips_dialog_content)?.text = contentText
 
         // 设置左边按钮
         rootView?.findViewById<TextView>(R.id.business_tips_dialog_left_btn)?.apply {

@@ -32,10 +32,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/business_tips_dialog_content"
         style="@style/BusinessTextStyleFirst_2"
-        android:paddingStart="@dimen/dp_8"
-        android:paddingTop="@dimen/dp_8"
-        android:paddingEnd="@dimen/dp_8"
-        android:paddingBottom="@dimen/dp_24"
+        android:padding="@dimen/dp_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/business_tips_dialog_title_lay"
@@ -59,6 +56,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_58"
         android:background="@color/stroke_color"
         app:layout_constraintBottom_toBottomOf="parent"
