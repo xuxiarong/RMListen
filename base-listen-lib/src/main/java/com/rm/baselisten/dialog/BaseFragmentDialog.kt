@@ -18,11 +18,11 @@ import com.rm.baselisten.helper.GlobalCloseInputHelper
 @Suppress("UNCHECKED_CAST")
 abstract class BaseFragmentDialog : DialogFragment() {
 
-    companion object{
+    companion object {
         const val LAYOUT_ID = "layoutId"
     }
 
-    private lateinit var rootView: View
+    var rootView: View? = null
 
     /**
      * Dialog对齐方式
@@ -74,6 +74,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
      * dialog的高度
      */
     var dialogHeight = 0
+
     /**
      * 创建Dialog实例对象
      * @param savedInstanceState Bundle?
@@ -144,7 +145,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val layoutId = arguments?.getInt(LAYOUT_ID, 0)?:0
+        val layoutId = arguments?.getInt(LAYOUT_ID, 0) ?: 0
         rootView = inflater.inflate(layoutId, container, false)
         initView()
         return rootView
@@ -155,10 +156,10 @@ abstract class BaseFragmentDialog : DialogFragment() {
      * @param fragmentActivity FragmentActivity
      * @return BaseFragmentDialog
      */
-    fun <T: BaseFragmentDialog> showDialog(fragmentActivity: FragmentActivity): T {
+    fun <T : BaseFragmentDialog> showDialog(fragmentActivity: FragmentActivity): T {
         show(fragmentActivity.supportFragmentManager, this.javaClass.simpleName)
 
-        return this as  T
+        return this as T
     }
 
     /**
