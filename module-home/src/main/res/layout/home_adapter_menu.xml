@@ -34,7 +34,7 @@
                 style="@style/TextViewHeadStyle"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="@{menuItemBean.sheet_intro}"
+                android:text="@{menuItemBean.sheet_name}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="幻海航行 | 领略科幻的海洋" />
@@ -53,7 +53,7 @@
             <!-- 作者信息部分-->
             <ImageView
                 android:id="@+id/home_menu_adapter_author_icon"
-                bindUrl="@{menuItemBean.avatar}"
+                bindUrl="@{menuItemBean.avatar_url}"
                 isCircle="@{true}"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"

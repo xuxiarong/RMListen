@@ -78,8 +78,10 @@ class ExpandableTextView @JvmOverloads constructor(
     //点击展开/收起  对文本进行处理
     private fun changeState() {
         if (TextUtils.isEmpty(mText)) {
+            visibility = View.GONE
             return
         }
+        visibility = View.VISIBLE
         mImageView.visibility = View.VISIBLE
         val str = if (isExpand) {
             mText?.substring(0, mMaxCount)
@@ -88,7 +90,7 @@ class ExpandableTextView @JvmOverloads constructor(
         }
         mTextView.text = str
         mTextView.post {
-            DLog.i("-------->","expand   post")
+            DLog.i("-------->", "expand   post")
             val layout = mTextView.layout
             val lineCount = layout.lineCount//获取当前TextView总行数
             val lineStart = layout.getLineStart(lineCount - 1)

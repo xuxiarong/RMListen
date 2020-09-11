@@ -6,24 +6,23 @@
     <data>
 
         <variable
-            name="item"
-            type="com.rm.business_lib.bean.AudioBean" />
+            name="dialogItem"
+            type="com.rm.module_listen.bean.ListenSheetBean" />
 
         <variable
-            name="click"
-            type="com.rm.module_home.viewmodel.MenuDetailViewModel" />
+            name="dialogClick"
+            type="com.rm.module_listen.viewmodel.ListenDialogSheetViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{(AudioBean)->click.itemClickFun(item)}">
+        android:onClick="@{(ListenSheetBean)->dialogClick.itemClickFun(dialogItem)}">
 
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_menu_detail_book_adapter_icon"
-            bindUrl="@{item.cover_url}"
-            corner="@{@dimen/dp_4}"
+            bindUrl="@{dialogItem.sheet_cover}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"
@@ -35,7 +34,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_book_adapter_title"
             style="@style/BusinessTextStyleFirst_2"
-            bindText="@{item.audio_name}"
+            bindText="@{dialogItem.sheet_name}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,23 +43,13 @@
             tools:text="123" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_menu_detail_book_adapter_content"
-            style="@style/BusinessTextStyleSecond_3"
-            android:layout_width="0dp"
-            android:layout_marginStart="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_12"
-            android:text="@{item.audio_intro}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"
-            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_book_adapter_title"
-            tools:text="124" />
-
-        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_book_adapter_author"
             style="@style/BusinessTextStyleThird_4"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
-            android:text="@{item.author}"
+            bindText="@{dialogItem.num_audio}"
+            android:drawablePadding="@dimen/dp_2"
+            android:drawableStart="@drawable/business_icon_book_num"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"

@@ -43,7 +43,7 @@ class MenuViewModel(private val repository: MenuRepository) : BaseVMViewModel() 
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597921071741&di=f7334148be90918832df8165a435eab5&imgtype=0&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D3807836035%2C2971917368%26fm%3D214%26gp%3D0.jpg",
             "",
             0,
-            0
+            0,""
         )
     }
 
@@ -116,7 +116,7 @@ class MenuViewModel(private val repository: MenuRepository) : BaseVMViewModel() 
             "文案",
             "",
             "",
-            "小丸子", 1, 1, 1, "", 1
+            "小丸子", "1", 1, 1, 1, "1",1
         )
     }
 

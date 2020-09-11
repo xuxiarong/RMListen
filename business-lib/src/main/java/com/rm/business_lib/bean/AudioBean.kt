@@ -12,6 +12,7 @@ data class AudioBean(
     var author: String,
     var author_intro: String,
     var chapter_updated_at: String,
+    var cover_url: String,
     var created_at: String,
     var original_name: String,
     var play_count: Int,

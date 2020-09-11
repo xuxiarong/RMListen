@@ -12,7 +12,6 @@ import com.rm.module_home.repository.MenuDetailRepository
 
 class MenuDetailViewModel(private var repository: MenuDetailRepository) : BaseVMViewModel() {
     val data = MutableLiveData<MenuSheetInfoBean>()
-
     var itemClick: (AudioBean) -> Unit = {}
 
     fun getData(pageId: String, sheetId: String, memberId: String) {

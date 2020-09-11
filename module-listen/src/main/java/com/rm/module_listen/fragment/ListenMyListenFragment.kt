@@ -24,9 +24,7 @@ import kotlinx.android.synthetic.main.listen_fragment_my_listen.*
 class ListenMyListenFragment :
     BaseVMFragment<ListenFragmentMyListenBinding, ListenMyListenViewModel>() {
 
-    private val mAdapter by lazy {
-        ListenMyListenPagerAdapter(this.activity!!, mMyListenFragmentList)
-    }
+    private var mAdapter: ListenMyListenPagerAdapter? = null
 
     private val mMyListenFragmentList = mutableListOf<Fragment>(
         ListenRecentListenFragment.newInstance(),
@@ -39,6 +37,8 @@ class ListenMyListenFragment :
     override fun initView() {
         super.initView()
         setClick()
+        //用懒加载的方式切换fragment的时候会报错
+        mAdapter = ListenMyListenPagerAdapter(this.activity!!, mMyListenFragmentList)
         listenMyListenVp.adapter = mAdapter
         configTab()
 
