@@ -13,15 +13,16 @@ import com.rm.business_lib.bean.BookBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenActivityBoughtBinding
+import com.rm.module_listen.utils.ListenDialogSheetHelper
 import com.rm.module_listen.viewmodel.ListenBoughtViewModel
 import kotlinx.android.synthetic.main.listen_activity_bought.*
 
 class ListenBoughtActivity :
     BaseVMActivity<ListenActivityBoughtBinding, ListenBoughtViewModel>() {
-    companion object{
+    companion object {
 
-        fun startActivity(context: Context){
-            context.startActivity(Intent(context,ListenBoughtActivity::class.java))
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, ListenBoughtActivity::class.java))
         }
     }
 
@@ -43,7 +44,9 @@ class ListenBoughtActivity :
         super.initView()
         val baseTitleModel = BaseTitleModel().setTitle("已购")
             .setLeftIcon(R.drawable.base_icon_back)
-            .setLeftIconClick { finish() }
+            .setLeftIconClick {
+                finish()
+            }
         mViewModel.baseTitleModel.value = baseTitleModel
 
         listen_bought_recycler_view.apply {
@@ -64,7 +67,7 @@ class ListenBoughtActivity :
 
 
     override fun startObserve() {
-        mViewModel.data.observe(this){
+        mViewModel.data.observe(this) {
             mAdapter.setList(it)
         }
     }

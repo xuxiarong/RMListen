@@ -1,6 +1,7 @@
 package com.rm.component_comm.listen
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -11,4 +12,10 @@ import com.rm.component_comm.router.ApplicationProvider
 interface ListenService : ApplicationProvider {
 
     fun getListenFragment():Fragment
+
+    /**
+     * 弹出我的听单弹窗
+     *  @param activity
+     */
+    fun showMySheetListDialog(activity: FragmentActivity)
 }

@@ -2,28 +2,33 @@ package com.rm.module_listen.utils
 
 import android.view.Gravity
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.observe
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
-import com.rm.business_lib.bean.BookBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.databinding.ListenDialogSheetListBinding
 import com.rm.module_listen.viewmodel.ListenDialogSheetViewModel
 
 class ListenDialogSheetHelper(private val mActivity: FragmentActivity) {
-
+    /**
+     * viewModel对象
+     */
     private val mViewModel by lazy {
         ListenDialogSheetViewModel()
     }
 
     private val mAdapter by lazy {
-        CommonBindVMAdapter<BookBean>(
+        CommonBindVMAdapter<ListenSheetBean>(
             mViewModel,
             mutableListOf(),
             R.layout.listen_adapter_dialog_book_list,
-            BR.dialogItem,
-            BR.dialogClick
+            BR.dialogClick,
+            BR.dialogItem
         )
     }
 
@@ -35,14 +40,23 @@ class ListenDialogSheetHelper(private val mActivity: FragmentActivity) {
             dialogHeight = height
             dialogHasBackground = true
             initDialog = {
-//                val homeDialogMenuDetailBinding =
-//                    (menuDialog?.mDataBind) as ListenDialogSheetListBinding?
-//
-//                homeDialogMenuDetailBinding?.homeDialogMenuRecyclerView?.let {
-//                    it.bindVerticalLayout(mDialogAdapter)
-//                    it.linearBottomItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_14))
-//                }
+                val homeDialogMenuDetailBinding =
+                    mDataBind as ListenDialogSheetListBinding?
+
+                homeDialogMenuDetailBinding?.homeDialogMenuRecyclerView?.let {
+                    it.bindVerticalLayout(mAdapter)
+                    it.linearBottomItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_14))
+                }
+                startObserveData()
+                mViewModel.getData()
             }
+        }
+    }
+
+
+    private fun startObserveData() {
+        mViewModel.data.observe(mActivity) {
+            mAdapter.setList(it.list)
         }
     }
 

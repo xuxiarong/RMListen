@@ -23,8 +23,11 @@ open class CommonDragMvDialog : BaseMvFragmentDialog() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         val draggableView = DragCloseLayout(this.activity)
-        draggableView.addView(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT
-        )
+        if (dialogHeightIsMatchParent){
+            draggableView.addView(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+        }else{
+            draggableView.addView(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        }
         draggableView.setDialog(dialog)
         draggableView.seDragCloseListener(::dismiss)
         return draggableView

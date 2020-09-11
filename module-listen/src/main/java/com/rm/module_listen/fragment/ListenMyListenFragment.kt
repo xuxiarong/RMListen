@@ -64,11 +64,11 @@ class ListenMyListenFragment :
 
         listenBuyCl.setOnClickListener {
             if (isLogin.value == false) {
-                router.quicklyLogin(mViewModel, activity!!)
+                activity?.let {
+                    router.quicklyLogin(mViewModel, it)
+                }
             } else {
                 ListenBoughtActivity.startActivity(it.context)
-                ListenSubscriptionActivity.startActivity(it.context)
-                ListenSheetListActivity.startActivity(it.context)
             }
         }
 

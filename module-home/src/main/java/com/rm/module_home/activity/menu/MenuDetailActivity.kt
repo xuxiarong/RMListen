@@ -21,6 +21,8 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.AudioBean
+import com.rm.component_comm.listen.ListenService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
@@ -63,26 +65,16 @@ class MenuDetailActivity :
             home_menu_detail_recycler_view,
             false
         )
+        dataBinding?.homeMenuDetailCollected?.setOnClickListener(this)
+
         adapter.addHeaderView(dataBinding!!.root)
     }
 
-//    private val mDialogAdapter by lazy {
-//        CommonBindVMAdapter<BookBean>(
-//            mViewModel,
-//            mutableListOf(),
-//            R.layout.home_adapter_dialog_book_list,
-//            BR.dialogClick,
-//            BR.dialogItem
-//        )
-//    }
     private var dataBinding: HomeHeaderMenuDetailBinding? = null
-
-    private var menuDialog: CommonMvFragmentDialog? = null
 
     override fun startObserve() {
         mViewModel.data.observe(this) {
-            mAdapter.setList(it.getList())
-//            mAdapter.setList(it.audio_list.list)
+            mAdapter.setList(it.audio_list.list)
             dataBinding?.setVariable(BR.header, it)
             loadBlurImage(home_menu_detail_iv_bg, it.test())
             home_menu_detail_title.text = it.sheet_name
@@ -101,9 +93,6 @@ class MenuDetailActivity :
             }
         }
 
-//        mViewModel.dialogData.observe(this) {
-//            mDialogAdapter.setList(it)
-//        }
     }
 
     override fun initView() {
@@ -127,7 +116,6 @@ class MenuDetailActivity :
         mViewModel.itemClick = {
             HomeDetailActivity.startActivity(this)
         }
-//        home_menu_detail_collected.setOnClickListener(this)
         home_menu_detail_back.setOnClickListener(this)
         home_menu_detail_share.setOnClickListener(this)
 
@@ -163,8 +151,7 @@ class MenuDetailActivity :
 
     //加入书单弹窗
     private fun showCollectedDialog() {
-
-
+        RouterHelper.createRouter(ListenService::class.java).showMySheetListDialog(this)
     }
 
     //分享
