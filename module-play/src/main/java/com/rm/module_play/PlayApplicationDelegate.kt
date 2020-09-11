@@ -1,5 +1,6 @@
 package com.rm.module_play
 
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
@@ -17,6 +18,9 @@ class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG,"Module Play onCreate()!!!")
         loadKoinModules(playModules)
+        MusicPlayerManager.musicPlayerManger.initialize(
+            CONTEXT,
+            MusicInitializeCallBack {})
 
     }
 

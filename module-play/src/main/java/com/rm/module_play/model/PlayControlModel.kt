@@ -12,4 +12,10 @@ import com.rm.module_play.adapter.BookPlayerAdapter
 
 class PlayControlModel(override val itemType: Int= BookPlayerAdapter.ITEM_TYPE_PLAYER) :
     MultiItemEntity {
+
+    companion object{
+
+    }
+
+
 }
