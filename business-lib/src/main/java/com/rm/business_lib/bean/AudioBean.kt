@@ -44,3 +44,4 @@ data class AudioBean(
     var chapter_updated_at: String,     // 章节更新时间，格式：YYYY-mm-dd HH:ii:ss
     var author: String                  // 主播昵称
 )
+
