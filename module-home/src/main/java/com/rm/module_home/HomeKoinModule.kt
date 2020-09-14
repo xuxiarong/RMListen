@@ -3,18 +3,10 @@ package com.rm.module_home
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_home.activity.boutique.BoutiqueFragmentViewModel
 import com.rm.module_home.activity.boutique.BoutiqueViewModel
-import com.rm.module_home.viewmodel.TopListViewModel
-import com.rm.module_home.viewmodel.MenuDetailViewModel
-import com.rm.module_home.viewmodel.MenuViewModel
+import com.rm.module_home.activity.topic.HomeTopicListViewModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.repository.*
-import com.rm.module_home.viewmodel.HomeDetailViewModel
-import com.rm.module_home.repository.BoutiqueRepository
-import com.rm.module_home.repository.MenuDetailRepository
-import com.rm.module_home.repository.MenuRepository
-import com.rm.module_home.repository.TopListRepository
-import com.rm.module_home.viewmodel.HomeFragmentViewModel
-import com.rm.module_home.viewmodel.HomeTopListContentFragmentViewModel
+import com.rm.module_home.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -35,6 +27,9 @@ val viewModelModule = module {
     viewModel { HomeDetailViewModel(get()) }
     viewModel { HomeTopListContentFragmentViewModel(get()) }
 
+    // 专题列表ViewModel
+    viewModel { HomeTopicListViewModel(get()) }
+
 }
 
 val repositoryModule = module {
@@ -44,6 +39,8 @@ val repositoryModule = module {
     single { BoutiqueRepository(get()) }
     single { TopListRepository(get()) }
     single { DetailRepository(get()) }
+    // 专题列表Repository
+    single { HomeTopicRepository(get()) }
     single { BusinessRetrofitClient().getService(HomeApiService::class.java) }
 }
 

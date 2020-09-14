@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="audioItem"
+            type="com.rm.business_lib.bean.AudioBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_18"
+        android:paddingEnd="@dimen/dp_16">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_book_adapter_icon"
+            android:layout_width="@dimen/dp_106"
+            android:layout_height="@dimen/dp_106"
+            corner="@{4.0f}"
+            bindUrl="@{audioItem.cover_url}"
+            android:scaleType="fitXY"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="#00ff00" />
+
+        <TextView
+            android:id="@+id/home_book_adapter_tips"
+            style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+            app:layout_constraintRight_toRightOf="@id/home_book_adapter_icon"
+            app:layout_constraintTop_toTopOf="@id/home_book_adapter_icon"
+            bindText="@{audioItem.audio_label}"
+            tools:text="文案" />
+
+        <TextView
+            android:id="@+id/home_book_adapter_name"
+            style="@style/BusinessTextStyleFirst_2"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/dp_12"
+            android:singleLine="true"
+            android:text="@{audioItem.audio_name}"
+            app:layout_constraintLeft_toRightOf="@id/home_book_adapter_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/home_book_adapter_icon"
+            tools:text="你自己觉得有，别人感觉" />
+
+        <TextView
+            android:id="@+id/home_book_adapter_describe"
+            style="@style/BusinessTextStyleSecond_3"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/dp_8"
+            android:maxLines="2"
+            android:text="@{audioItem.short_intro}"
+            app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_book_adapter_name"
+            tools:text="公司要为员工创造环境，但员工的成长最终是靠自己" />
+
+        <TextView
+            android:id="@+id/home_book_adapter_author"
+            style="@style/BusinessTextStyleThird_4"
+            app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_icon"
+            app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
+            android:text="@{audioItem.anchor}"
+            tools:text="楼芸蓓" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -5,10 +5,11 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.activity.TopListActivity
 import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity
-import com.rm.module_home.activity.TopListActivity
 import com.rm.module_home.activity.menu.MenuActivity
+import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
 import com.rm.module_home.model.home.banner.HomeBannerRvModel
@@ -111,11 +112,11 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     }
 
     private fun startHorDoubleMore() {
-
+        this.context?.let { HomeTopicListActivity.startActivity(it,1,1,1,"精品推荐Double") }
     }
 
     private fun startHorSingleMore() {
-
+        this.context?.let { HomeTopicListActivity.startActivity(it,1,1,1,"精品推荐Grid") }
     }
 
 

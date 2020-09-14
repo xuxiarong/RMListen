@@ -1,6 +1,7 @@
 package com.rm.module_home.api
 
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetListBean
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
@@ -99,5 +100,23 @@ interface HomeApiService {
         @Query("page_size") pageSize: Int
     ): BaseResponse<HomeTopListBean>
 
+
+    /**
+     * 获取专题列表
+     * @param page_id Int
+     * @param block_id Int
+     * @param topic_id Int
+     * @param page Int
+     * @param page_size Int
+     * @return BaseResponse<AudioListBean>
+     */
+    @GET("content/topic/audio-list")
+    suspend fun getTopicList(
+        @Query("page_id") page_id: Int,
+        @Query("block_id") block_id: Int,
+        @Query("topic_id") topic_id: Int,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int = 10
+    ):BaseResponse<AudioListBean>
 
 }
