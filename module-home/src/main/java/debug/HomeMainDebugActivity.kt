@@ -2,10 +2,11 @@ package debug
 
 import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_home.R
+import com.rm.module_home.activity.TopListActivity
 import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity
-import com.rm.module_home.activity.TopListActivity
 import com.rm.module_home.activity.menu.MenuActivity
+import com.rm.module_home.activity.topic.HomeTopicListActivity
 import kotlinx.android.synthetic.main.home_activity_main.*
 
 /**
@@ -29,6 +30,9 @@ class HomeMainDebugActivity : BaseDebugActivity() {
         }
         btnDetail.setOnClickListener {
             HomeDetailActivity.startActivity(this)
+        }
+        btnTopicList.setOnClickListener {
+            HomeTopicListActivity.startActivity(this,1,1,1,"精品推荐")
         }
     }
 
