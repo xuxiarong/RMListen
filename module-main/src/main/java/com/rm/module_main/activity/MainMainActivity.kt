@@ -4,6 +4,7 @@ import androidx.core.content.ContextCompat
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.wedgit.NoTouchViewPager
 import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
@@ -146,5 +147,6 @@ class MainMainActivity : BaseActivity() {
     }
 
     override fun initData() {
+
     }
 }

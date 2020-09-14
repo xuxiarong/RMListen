@@ -1,47 +1,49 @@
 package com.rm.module_listen.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * desc   :
  * date   : 2020/09/11
  * version: 1.0
  */
+@Parcelize
 data class ListenSubsModel(
-    val code: Int,
-    val `data`: Data,
-    val msg: String
-)
-
-data class Data(
-    val early: List<Early>,
+    val listenSubsEarly: List<ListenSubsEarly>,
     val last_unread: Int,
-    val today: List<Today>,
+    val listenSubsToday: List<ListenSubsToday>,
     val total_unread: Int,
-    val yesterday: List<Yesterday>
-)
+    val listenSubsYesterday: List<ListenSubsYesterday>
+) : Parcelable
 
-data class Early(
+@Parcelize
+data class ListenSubsEarly(
     val audio_cover: String,
     val audio_id: String,
     val audio_name: String,
-    val chapter_list: List<Chapter>,
+    val listenSubsChapter_list: List<ListenSubsChapter>,
     val upgrade_time: String
-)
+) : Parcelable
 
-data class Today(
+@Parcelize
+data class ListenSubsToday(
     val audio_cover: String,
     val audio_id: String,
     val audio_name: String,
-    val chapter_list: List<Chapter>
-)
+    val listenSubsChapter_list: List<ListenSubsChapter>
+) : Parcelable
 
-data class Yesterday(
+@Parcelize
+data class ListenSubsYesterday(
     val audio_cover: String,
     val audio_id: String,
     val audio_name: String,
-    val chapter_list: List<Chapter>
-)
+    val listenSubsChapter_list: List<ListenSubsChapter>
+) : Parcelable
 
-data class Chapter(
+@Parcelize
+data class ListenSubsChapter(
     val chapter_id: String,
     val chapter_name: String,
     val duration: String,
@@ -50,5 +52,5 @@ data class Chapter(
     val sequence: String,
     val size: String,
     val upgrade_time: String
-)
+) : Parcelable
 

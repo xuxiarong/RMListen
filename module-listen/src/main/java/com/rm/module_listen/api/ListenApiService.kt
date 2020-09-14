@@ -5,6 +5,7 @@ import com.rm.module_listen.bean.ListenSheetCollectedBean
 import com.rm.module_listen.bean.ListenSheetDetailBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.bean.SubscriptionListBean
+import com.rm.module_listen.model.ListenSubsModel
 import retrofit2.http.*
 
 interface ListenApiService {
@@ -51,7 +52,7 @@ interface ListenApiService {
      * 最新更新
      */
     @GET("/api/v1_0/listen/upgrade")
-    suspend fun listenUpgrade(): BaseResponse<String>
+    suspend fun listenUpgrade(): BaseResponse<ListenSubsModel>
 
     /**
      * 最近收听
