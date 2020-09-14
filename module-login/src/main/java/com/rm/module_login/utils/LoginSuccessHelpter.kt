@@ -20,8 +20,8 @@ import com.rm.module_login.bean.LoginInfo
 fun loginIn(loginInfo: LoginInfo) {
     loginInfo.let {
         // 保存登陆信息到本地
-        ACCESS_TOKEN.putMMKV(it.access)
-        REFRESH_TOKEN.putMMKV(it.refresh)
+        ACCESS_TOKEN.putMMKV("Bearer $it.access")
+        REFRESH_TOKEN.putMMKV("Bearer $it.refresh")
         LOGIN_USER_INFO.putMMKV(it.member)
 
         // 改变当前是否用户登陆状态 和 登陆的用户信息
