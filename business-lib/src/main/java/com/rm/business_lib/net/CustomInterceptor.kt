@@ -3,7 +3,9 @@ package com.rm.business_lib.net
 import android.os.Build
 import com.google.gson.Gson
 import com.rm.baselisten.BuildConfig
+import com.rm.baselisten.net.api.BaseResult
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
@@ -11,15 +13,14 @@ import com.rm.business_lib.ACCESS_TOKEN
 import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.bean.RefreshTokenBean
 import com.rm.business_lib.utils.DeviceUtils
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.io.IOException
 
 /**
  * desc   : 业务网络拦截器
@@ -46,10 +47,10 @@ class CustomInterceptor : Interceptor {
         val original = chain.request()
         val request: Request = getRequestHeaderBuilder(original.newBuilder()).build()
         val originalResponse = arrayOf(chain.proceed(request))
-        return originalResponse[0]
-//        // 返回参数拦截处理
-//        responseIntercept(originalResponse, chain)
 //        return originalResponse[0]
+        // 返回参数拦截处理
+        responseIntercept(originalResponse, chain)
+        return originalResponse[0]
     }
 
 
@@ -104,33 +105,68 @@ class CustomInterceptor : Interceptor {
         if (flag == 0) {
             flag++
             // token 过期，需要刷新token
-            GlobalScope.launch {
-                val refreshResponse = GlobalScope.async {
-                    apiService.refreshToken(REFRESH_TOKEN.getStringMMKV(""))
-                }
-                if (refreshResponse.await().code != 0) {
-                    // 刷新成功,再次去请求之前的接口
-                    DLog.i("llj", "刷新成功,再次去请求之前的接口")
-                    val request: Request.Builder =
-                        getRequestHeaderBuilder(chain.request().newBuilder())
-                    try {
-                        originalResponse[0] = chain.proceed(request.build())
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+            DLog.i("llj", "再次去请求之前的接口")
+//            val request: Request.Builder =
+//                getRequestHeaderBuilder(chain.request().newBuilder())
+//            try {
+//                originalResponse[0] = chain.proceed(request.build())
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+            GlobalScope.launch(Dispatchers.IO) {
+                delay(200)
+                apiCall { apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")) }.checkResult(
+                    onSuccess = {
+                        DLog.i("llj", "刷新token成功")
+                    },
+                    onError = {
+                        DLog.e("llj", "刷新token失败")
+                        val request: Request.Builder =
+                            getRequestHeaderBuilder(chain.request().newBuilder())
+                        try {
+                            originalResponse[0] = chain.proceed(request.build())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
-
-                } else {
-                    // 刷新失败，退出登陆
-                    DLog.e("llj", "刷新token失败！！")
-                    originalResponse[0] = originalResponse[0].newBuilder().code(200).body(
-                        responseStr?.let {
-                            ResponseBody.create(
-                                contentType,
-                                it
-                            )
-                        }).build()
-                }
+                )
             }
+
+//            val request: Request.Builder = getRequestHeaderBuilder(chain.request().newBuilder())
+//            try {
+//                originalResponse[0] = chain.proceed(request.build())
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//            GlobalScope.launch {
+//                val refreshResponse = GlobalScope.async {
+//                    apiService.refreshToken(REFRESH_TOKEN.getStringMMKV(""))
+//                }
+//                if (refreshResponse.await().code != 0) {
+//                    // 刷新成功,再次去请求之前的接口
+//                    DLog.i("llj", "刷新成功,再次去请求之前的接口")
+//                    withContext(Dispatchers.IO){
+//                        val request: Request.Builder =
+//                            getRequestHeaderBuilder(chain.request().newBuilder())
+//                        try {
+//                            originalResponse[0] = chain.proceed(request.build())
+//                        } catch (e: Exception) {
+//                            e.printStackTrace()
+//                        }
+//                    }
+//
+//                } else {
+//                    // 刷新失败，退出登陆
+//                    DLog.e("llj", "刷新token失败！！")
+//                    originalResponse[0] = originalResponse[0].newBuilder().code(200).body(
+//                        responseStr?.let {
+//                            ResponseBody.create(
+//                                contentType,
+//                                it
+//                            )
+//                        }).build()
+//                }
+//            }
 
         } else {
             DLog.i("llj", "返回码------>>>${baseResponse.code}")
@@ -153,4 +189,27 @@ interface RefreshApiService {
     suspend fun refreshToken(
         @Query("refresh_token") refreshToken: String
     ): BaseResponse<RefreshTokenBean>
+}
+
+suspend fun <T : Any> apiCall(call: suspend () -> BaseResponse<T>): BaseResult<T> {
+    return try {
+        return executeResponse(call())
+    } catch (e: Exception) {
+        BaseResult.Error(e)
+    }
+}
+
+private suspend fun <T : Any> executeResponse(
+    response: BaseResponse<T>, successBlock: (suspend CoroutineScope.() -> Unit)? = null,
+    errorBlock: (suspend CoroutineScope.() -> Unit)? = null
+): BaseResult<T> {
+    return coroutineScope {
+        if (response.code != 0) {
+            errorBlock?.let { it() }
+            BaseResult.Error(IOException(response.msg))
+        } else {
+            successBlock?.let { it() }
+            BaseResult.Success(response.data)
+        }
+    }
 }
