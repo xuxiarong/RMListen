@@ -35,7 +35,7 @@ interface HomeApiService {
      * 评论列表
      */
 
-    @GET("/api/v1_0/comment/audio-comments")
+    @GET("comment/audio-comments")
     suspend fun HomeDetail_Comment(
         @Field("audio_id") audio_id: String,
         @Field("page") page: Int,
@@ -45,7 +45,7 @@ interface HomeApiService {
     /**
      * 章节列表
      */
-    @GET("/api/v1_0/chapter/list")
+    @GET("chapter/list")
     suspend fun HomeChapter(
         @Field("page") page: Int,
         @Field("page_size") page_size: Int
@@ -54,7 +54,7 @@ interface HomeApiService {
     /**
      * 下载音频章节
      */
-    @POST("/api/v1_0/audio/chapter/download")
+    @POST("audio/chapter/download")
     suspend fun HomeChapterDown(
         @Field("audio_id") audio_id: Int,
         @Field("start_sequence") start_sequence: Int,
@@ -66,13 +66,13 @@ interface HomeApiService {
     /**
      * 首页-听单
      */
-    @GET("/api/v1_0/content/page/sheet")
+    @GET("content/page/sheet")
     suspend fun homeSheet(): BaseResponse<MenuSheetBean>
 
     /**
      * 听单列表
      */
-    @GET("/api/v1_0/content/sheet/list")
+    @GET("content/sheet/list")
     suspend fun homeSheetList(
         @Query("page_id") page_id: String,
         @Query("page") page: Int,
@@ -82,7 +82,7 @@ interface HomeApiService {
     /**
      * 听单详情
      */
-    @GET("/api/v1_0/content/sheet/info")
+    @GET("content/sheet/info")
     suspend fun homeSheetInfo(
         @Query("page_id") page_id: String,
         @Query("sheet_id") sheet_id: String,
@@ -92,7 +92,7 @@ interface HomeApiService {
     /**
      * 榜单
      */
-    @GET("/api/v1_0/content/rank/list")
+    @GET("content/rank/list")
     suspend fun homeTopList(
         @Query("rank_type") rankType: String,
         @Query("rank_seg") rankSeg: String,
