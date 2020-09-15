@@ -3,24 +3,22 @@ package com.rm.business_lib.net
 import android.os.Build
 import com.google.gson.Gson
 import com.rm.baselisten.BuildConfig
-import com.rm.baselisten.net.api.BaseResult
 import com.rm.baselisten.net.bean.BaseResponse
-import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.ACCESS_TOKEN
 import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.bean.RefreshTokenBean
 import com.rm.business_lib.utils.DeviceUtils
-import kotlinx.coroutines.*
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.Call
 import retrofit2.http.POST
 import retrofit2.http.Query
-import java.io.IOException
 
 /**
  * desc   : 业务网络拦截器
@@ -29,12 +27,13 @@ import java.io.IOException
  */
 class CustomInterceptor : Interceptor {
 
+    private val TAG = "CustomInterceptor"
+
     // 服务器固定的 Android端app_key
     private val APP_KEY = "5d25eb5bf85ef867e78172d0d0df5ef0"
 
-    companion object {
-        var flag = 0
-    }
+    // 需要刷新token服务器返回的code
+    private val REFRESH_TOKEN_CODE = 1004
 
     private val apiService by lazy {
         BusinessRetrofitClient().getService(
@@ -43,14 +42,58 @@ class CustomInterceptor : Interceptor {
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        DLog.i("llj", "当前线程----->>>${Thread.currentThread().name}")
         val original = chain.request()
         val request: Request = getRequestHeaderBuilder(original.newBuilder()).build()
         val originalResponse = arrayOf(chain.proceed(request))
-//        return originalResponse[0]
         // 返回参数拦截处理
         responseIntercept(originalResponse, chain)
         return originalResponse[0]
+    }
+
+    /**
+     * 拦截返回数据，判断是否需要刷新token等操作
+     * @param originalResponse Response
+     * @return Response
+     */
+    private fun responseIntercept(originalResponse: Array<Response>, chain: Interceptor.Chain) {
+        //保存body的相关信息，用于后续构造新的Response
+        val responseBody = originalResponse[0].body ?: return
+        val contentType = responseBody.contentType()
+        val responseStr = responseBody.string()
+        responseBody.close()
+        val baseResponse = Gson().fromJson(responseStr, BaseResponse::class.java)
+        if (baseResponse.code == REFRESH_TOKEN_CODE) {
+            // 当前token过期，需要刷新token
+            DLog.d(TAG, "token过期，刷新token")
+            // 注意，一定要在当前线程同步请求刷新接口，否则再重新请求之前的接口会抛异常
+            val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
+            if (result?.code == 0) {
+                // 刷新token成功，保存最新token
+                ACCESS_TOKEN.putMMKV(result.data.access)
+                REFRESH_TOKEN.putMMKV(result.data.refresh)
+                // 将之前拦截的接口重新请求并下发
+                val request: Request.Builder = getRequestHeaderBuilder(chain.request().newBuilder())
+                try {
+                    originalResponse[0] = chain.proceed(request.build())
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    // 再次请求之前拦截的接口失败，就下发之前请求到的数据到具体位置
+                    originalResponse[0] = originalResponse[0].newBuilder().code(200)
+                        .body(responseStr.toResponseBody(contentType)).build()
+                }
+            } else {
+                // 刷新token失败，强制退出当前登陆
+                // TODO 是否需要请求接口,并更新当前登陆的用户信息？？？
+
+                // 如果刷新token失败，将之前请求的数据同样下发到具体位置
+                originalResponse[0] = originalResponse[0].newBuilder().code(200)
+                    .body(responseStr.toResponseBody(contentType)).build()
+            }
+        } else {
+            // 正常请求,下发数据到具体请求位置
+            originalResponse[0] = originalResponse[0].newBuilder().code(200)
+                .body(responseStr.toResponseBody(contentType)).build()
+        }
     }
 
 
@@ -85,99 +128,6 @@ class CustomInterceptor : Interceptor {
         val nonceItem: (Int) -> Char = { nonceScope[(nonceScope.length * Math.random()).toInt()] }
         return Array(16, nonceItem).joinToString("")
     }
-
-
-    /**
-     * 拦截返回数据，判断是否需要刷新token
-     * @param response Response
-     * @return Response
-     */
-    private fun responseIntercept(originalResponse: Array<Response>, chain: Interceptor.Chain) {
-
-        //保存body的相关信息，用于后续构造新的Response
-        val responseBody = originalResponse[0].body
-        val contentType = responseBody?.contentType()
-        val responseStr = responseBody?.string()
-        responseBody?.close()
-        val baseResponse = Gson().fromJson(responseStr, BaseResponse::class.java)
-
-//        if (baseResponse.code == 0) {
-        if (flag == 0) {
-            flag++
-            // token 过期，需要刷新token
-            DLog.i("llj", "再次去请求之前的接口")
-//            val request: Request.Builder =
-//                getRequestHeaderBuilder(chain.request().newBuilder())
-//            try {
-//                originalResponse[0] = chain.proceed(request.build())
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-            GlobalScope.launch(Dispatchers.IO) {
-                delay(200)
-                apiCall { apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")) }.checkResult(
-                    onSuccess = {
-                        DLog.i("llj", "刷新token成功")
-                    },
-                    onError = {
-                        DLog.e("llj", "刷新token失败")
-                        val request: Request.Builder =
-                            getRequestHeaderBuilder(chain.request().newBuilder())
-                        try {
-                            originalResponse[0] = chain.proceed(request.build())
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                )
-            }
-
-//            val request: Request.Builder = getRequestHeaderBuilder(chain.request().newBuilder())
-//            try {
-//                originalResponse[0] = chain.proceed(request.build())
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//            GlobalScope.launch {
-//                val refreshResponse = GlobalScope.async {
-//                    apiService.refreshToken(REFRESH_TOKEN.getStringMMKV(""))
-//                }
-//                if (refreshResponse.await().code != 0) {
-//                    // 刷新成功,再次去请求之前的接口
-//                    DLog.i("llj", "刷新成功,再次去请求之前的接口")
-//                    withContext(Dispatchers.IO){
-//                        val request: Request.Builder =
-//                            getRequestHeaderBuilder(chain.request().newBuilder())
-//                        try {
-//                            originalResponse[0] = chain.proceed(request.build())
-//                        } catch (e: Exception) {
-//                            e.printStackTrace()
-//                        }
-//                    }
-//
-//                } else {
-//                    // 刷新失败，退出登陆
-//                    DLog.e("llj", "刷新token失败！！")
-//                    originalResponse[0] = originalResponse[0].newBuilder().code(200).body(
-//                        responseStr?.let {
-//                            ResponseBody.create(
-//                                contentType,
-//                                it
-//                            )
-//                        }).build()
-//                }
-//            }
-
-        } else {
-            DLog.i("llj", "返回码------>>>${baseResponse.code}")
-            originalResponse[0] = originalResponse[0].newBuilder().code(200).body(responseStr?.let {
-                ResponseBody.create(
-                    contentType,
-                    it
-                )
-            }).build()
-        }
-    }
 }
 
 interface RefreshApiService {
@@ -186,30 +136,7 @@ interface RefreshApiService {
      * @param refreshToken String
      */
     @POST("auth/refresh")
-    suspend fun refreshToken(
+    fun refreshToken(
         @Query("refresh_token") refreshToken: String
-    ): BaseResponse<RefreshTokenBean>
-}
-
-suspend fun <T : Any> apiCall(call: suspend () -> BaseResponse<T>): BaseResult<T> {
-    return try {
-        return executeResponse(call())
-    } catch (e: Exception) {
-        BaseResult.Error(e)
-    }
-}
-
-private suspend fun <T : Any> executeResponse(
-    response: BaseResponse<T>, successBlock: (suspend CoroutineScope.() -> Unit)? = null,
-    errorBlock: (suspend CoroutineScope.() -> Unit)? = null
-): BaseResult<T> {
-    return coroutineScope {
-        if (response.code != 0) {
-            errorBlock?.let { it() }
-            BaseResult.Error(IOException(response.msg))
-        } else {
-            successBlock?.let { it() }
-            BaseResult.Success(response.data)
-        }
-    }
+    ): Call<BaseResponse<RefreshTokenBean>>
 }
