@@ -1,6 +1,7 @@
 package com.rm.module_listen.fragment
 
 import androidx.lifecycle.Observer
+import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
@@ -25,7 +26,14 @@ class ListenSubscriptionUpdateFragment :
             BR.item)
     }
 
-
+    private val mSubsAudioAdapter : CommonMultiVMAdapter by lazy {
+        CommonMultiVMAdapter(
+            mViewModel,
+            mutableListOf(),
+            BR.viewModel,
+            BR.item
+        )
+    }
 
     override fun initModelBrId() = BR.viewModel
 
