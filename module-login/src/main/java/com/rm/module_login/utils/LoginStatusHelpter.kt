@@ -1,11 +1,7 @@
 package com.rm.module_login.utils
 
 import com.rm.baselisten.util.putMMKV
-import com.rm.business_lib.ACCESS_TOKEN
-import com.rm.business_lib.LOGIN_USER_INFO
-import com.rm.business_lib.REFRESH_TOKEN
-import com.rm.component_comm.isLogin
-import com.rm.component_comm.loginUser
+import com.rm.business_lib.*
 import com.rm.module_login.bean.LoginInfo
 
 /**

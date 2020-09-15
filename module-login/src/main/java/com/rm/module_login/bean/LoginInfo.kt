@@ -1,6 +1,6 @@
 package com.rm.module_login.bean
 
-import com.rm.component_comm.login.bean.LoginUserBean
+import com.rm.business_lib.bean.LoginUserBean
 
 /**
  * desc   : 登录信息

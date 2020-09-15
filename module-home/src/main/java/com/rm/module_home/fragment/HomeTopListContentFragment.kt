@@ -6,9 +6,7 @@ import androidx.lifecycle.observe
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
-import com.rm.component_comm.isLogin
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeTopListContentAdapter

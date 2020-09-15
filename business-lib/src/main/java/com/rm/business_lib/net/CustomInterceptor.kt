@@ -8,8 +8,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
 import com.rm.baselisten.util.putMMKV
-import com.rm.business_lib.ACCESS_TOKEN
-import com.rm.business_lib.REFRESH_TOKEN
+import com.rm.business_lib.*
 import com.rm.business_lib.bean.RefreshTokenBean
 import com.rm.business_lib.utils.DeviceUtils
 import okhttp3.Interceptor
@@ -33,7 +32,9 @@ class CustomInterceptor : Interceptor {
     private val APP_KEY = "5d25eb5bf85ef867e78172d0d0df5ef0"
 
     // 需要刷新token服务器返回的code
-    private val REFRESH_TOKEN_CODE = 1004
+    private val CODE_REFRESH_TOKEN = 1004
+    // 被强制登出了(被挤下线了)
+    private val CODE_LOGIN_OUT = 1204
 
     private val apiService by lazy {
         BusinessRetrofitClient().getService(
@@ -62,7 +63,7 @@ class CustomInterceptor : Interceptor {
         val responseStr = responseBody.string()
         responseBody.close()
         val baseResponse = Gson().fromJson(responseStr, BaseResponse::class.java)
-        if (baseResponse.code == REFRESH_TOKEN_CODE) {
+        if (baseResponse.code == CODE_REFRESH_TOKEN) {
             // 当前token过期，需要刷新token
             DLog.d(TAG, "token过期，刷新token")
             // 注意，一定要在当前线程同步请求刷新接口，否则再重新请求之前的接口会抛异常
@@ -83,13 +84,15 @@ class CustomInterceptor : Interceptor {
                 }
             } else {
                 // 刷新token失败，强制退出当前登陆
-                // TODO 是否需要请求接口,并更新当前登陆的用户信息？？？
-
-                // 如果刷新token失败，将之前请求的数据同样下发到具体位置
+                loginOut()
+                // TODO 如果刷新token失败，将之前请求的数据同样下发到具体位置，不过是否需要自己组一个账户已退出的消息数据进行下发？？？
                 originalResponse[0] = originalResponse[0].newBuilder().code(200)
                     .body(responseStr.toResponseBody(contentType)).build()
             }
-        } else {
+        }else if(baseResponse.code == CODE_LOGIN_OUT){
+            // 被挤下线，强制退出了
+            loginOut()
+        }else {
             // 正常请求,下发数据到具体请求位置
             originalResponse[0] = originalResponse[0].newBuilder().code(200)
                 .body(responseStr.toResponseBody(contentType)).build()
@@ -129,6 +132,21 @@ class CustomInterceptor : Interceptor {
         return Array(16, nonceItem).joinToString("")
     }
 }
+
+/**
+ * 登出
+ */
+fun loginOut() {
+    // 保存登陆信息到本地
+    ACCESS_TOKEN.putMMKV("")
+    REFRESH_TOKEN.putMMKV("")
+    LOGIN_USER_INFO.putMMKV("")
+
+    // 改变当前是否用户登陆状态 和 登陆的用户信息
+    isLogin.value = false
+    loginUser.value = null
+}
+
 
 interface RefreshApiService {
     /**
