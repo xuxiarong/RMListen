@@ -92,6 +92,8 @@ class CustomInterceptor : Interceptor {
         }else if(baseResponse.code == CODE_LOGIN_OUT){
             // 被挤下线，强制退出了
             loginOut()
+            originalResponse[0] = originalResponse[0].newBuilder().code(200)
+                .body(responseStr.toResponseBody(contentType)).build()
         }else {
             // 正常请求,下发数据到具体请求位置
             originalResponse[0] = originalResponse[0].newBuilder().code(200)
