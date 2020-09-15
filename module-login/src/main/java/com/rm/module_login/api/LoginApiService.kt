@@ -41,8 +41,7 @@ interface LoginApiService {
 
     /**
      * 刷新token(令牌)
-     * @param account String
-     * @param code String
+     * @param refreshToken String
      */
     @POST("auth/refresh")
     suspend fun refreshToken(
