@@ -38,6 +38,10 @@ class ListenSubscriptionUpdateFragment :
     override fun initLayoutId() = R.layout.listen_fragment_subscription_update
 
     override fun initData() {
+    }
+
+    override fun onResume() {
+        super.onResume()
         mViewModel.getSubsDataFromService()
     }
 

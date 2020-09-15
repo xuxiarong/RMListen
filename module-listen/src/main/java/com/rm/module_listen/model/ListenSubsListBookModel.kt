@@ -9,5 +9,5 @@ import com.rm.module_listen.R
  * version: 1.0
  */
 data class ListenSubsListBookModel constructor(val date: String):MultiItemEntity{
-    override val itemType = R.layout.listen_item_subs_list_book
+    override val itemType = R.layout.listen_item_subs_list_audio
 }

@@ -19,20 +19,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+
+        <LinearLayout
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/homeRvRecommendGrid"
             android:layout_width="100dp"
             android:layout_height="32dp"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:background="@drawable/business_shape_stroke_d6d6d6_22dp"
-            android:text="@string/business_change_other"
-            android:textSize="@dimen/business_text_size_12sp"
-            android:textColor="@color/business_text_color_999999"
-            android:drawableLeft="@drawable/base_icon_back"
-            />
+            >
+            
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/home_icon_random_change"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/business_change_other"
+                android:textSize="@dimen/business_text_size_12sp"
+                android:textColor="@color/business_text_color_999999"
+                />
+        </LinearLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

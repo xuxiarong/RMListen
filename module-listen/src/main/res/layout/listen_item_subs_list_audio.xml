@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.module_listen.model.ListenAudioModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_book_adapter_name"
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/listenSubsBookTitle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="@dimen/dp_36"
+            bindUrl="@{item.audioCover}"
+            corner="@{8}"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/listenSubsBookTitle"
+            android:layout_marginStart="@dimen/dp_12"
+            style="@style/BusinessTextStyleFirst_2"
+            android:text="@{item.audioName}"
+            tools:text="刘慈欣—三体"/>
+        
+        <androidx.appcompat.widget.AppCompatImageView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_24"
+            android:src="@drawable/business_ic_next"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -56,8 +56,8 @@ class ListenMyListenFragment :
 
     override fun initData() {
 
-//        val loginService = RouterHelper.createRouter(LoginService::class.java)
-//        loginService.quicklyLogin(mViewModel,activity!!)
+        val loginService = RouterHelper.createRouter(LoginService::class.java)
+        loginService.quicklyLogin(mViewModel,activity!!)
 
         mViewModel.getSubsDataFromService()
     }

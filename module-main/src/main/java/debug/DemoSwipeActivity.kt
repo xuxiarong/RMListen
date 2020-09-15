@@ -11,7 +11,7 @@ import com.rm.module_main.databinding.DemoSwipeCloseBinding
 import debug.viewmodel.DemoSwipeViewModel
 import kotlinx.android.synthetic.main.demo_swipe_close.*
 
-class SwipeColseActivity : BaseVMActivity<DemoSwipeCloseBinding,DemoSwipeViewModel>() {
+class DemoSwipeActivity : BaseVMActivity<DemoSwipeCloseBinding,DemoSwipeViewModel>() {
 
 
 
@@ -20,15 +20,15 @@ class SwipeColseActivity : BaseVMActivity<DemoSwipeCloseBinding,DemoSwipeViewMod
         super.onCreate(savedInstanceState)
 
         rl_swipe.setOnClickListener {
-            ToastUtil.show(this@SwipeColseActivity,"我是点击事件")
+            ToastUtil.show(this@DemoSwipeActivity,"我是点击事件")
         }
 
         rl_swipe.setOnLongClickListener {
-            ToastUtil.show(this@SwipeColseActivity,"我是长按事件")
+            ToastUtil.show(this@DemoSwipeActivity,"我是长按事件")
             true
         }
         to_top.setOnClickListener {
-            ToastUtil.show(this@SwipeColseActivity,"我是置顶点击事件")
+            ToastUtil.show(this@DemoSwipeActivity,"我是置顶点击事件")
             sw.close()
         }
 
