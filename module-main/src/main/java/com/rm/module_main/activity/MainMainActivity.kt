@@ -4,7 +4,6 @@ import androidx.core.content.ContextCompat
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.wedgit.NoTouchViewPager
 import com.rm.component_comm.home.HomeService
-import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
@@ -132,6 +131,7 @@ class MainMainActivity : BaseActivity() {
                 navigationController.itemCount
             )
         }
+        viewPager.offscreenPageLimit = 5
         navigationController.setMessageNumber(3, 8)
         navigationController.setHasMessage(1, true)
         navigationController.setupWithViewPager(viewPager)
