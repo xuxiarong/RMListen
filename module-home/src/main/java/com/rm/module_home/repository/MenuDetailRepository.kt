@@ -13,7 +13,26 @@ import com.rm.module_home.bean.MenuSheetInfoBean
  */
 class MenuDetailRepository(private val service: HomeApiService) : BaseRepository() {
 
+    /**
+     * 获取听单详情
+     */
     suspend fun getData(pageId: String, sheetId: String, memberId: String): BaseResult<MenuSheetInfoBean> {
         return apiCall { service.homeSheetInfo(pageId, sheetId, memberId) }
+    }
+
+    /**
+     * 收藏听单
+     * @param sheetId String
+     */
+    suspend fun favoritesSheet(sheetId: String):BaseResult<Any>{
+      return apiCall { service.homeFavoritesSheet(sheetId) }
+    }
+
+    /**
+     * 取消收藏
+     * @param sheetId String
+     */
+    suspend fun unFavoritesSheet(sheetId: String):BaseResult<Any>{
+      return apiCall { service.homeFavoritesSheet(sheetId) }
     }
 }

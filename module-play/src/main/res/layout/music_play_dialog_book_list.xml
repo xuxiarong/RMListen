@@ -43,11 +43,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:drawableLeft="@drawable/music_play_ic_icon_single_de"
                     android:drawablePadding="4dp"
                     android:textColor="@color/business_text_color_666666"
                     android:textSize="14sp"
-                    android:text="顺序播放" />
+                    tools:text="顺序播放" />
 
                 <ImageView
                     android:id="@+id/music_play_download_de"

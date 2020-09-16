@@ -22,7 +22,7 @@ class ListenSheetMyListViewModel(private val repository: ListenSheetMyListReposi
         launchOnIO {
             repository.getMyList().checkResult(
                 onSuccess = {
-                    data.value = it
+                    data.postValue(it)
                 },
                 onError = {
                     DLog.i("------->", "$it")

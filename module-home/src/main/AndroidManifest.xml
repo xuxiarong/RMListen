@@ -4,11 +4,11 @@
     <application>
         <!-- 听单-->
         <activity
-            android:name="com.rm.module_home.activity.menu.MenuActivity"
+            android:name="com.rm.module_home.activity.menu.HomeMenuActivity"
             android:screenOrientation="portrait" />
         <!--听单详情-->
         <activity
-            android:name="com.rm.module_home.activity.menu.MenuDetailActivity"
+            android:name="com.rm.module_home.activity.menu.HomeMenuDetailActivity"
             android:screenOrientation="portrait" />
         <!-- 精品推荐-->
         <activity
@@ -16,7 +16,7 @@
             android:screenOrientation="portrait" />
         <!--榜单-->
         <activity
-            android:name="com.rm.module_home.activity.TopListActivity"
+            android:name="com.rm.module_home.activity.HomeTopListActivity"
             android:screenOrientation="portrait" />
         <!-- 书籍详情 -->
         <activity

@@ -47,9 +47,9 @@
 
             <com.rm.module_play.view.PlayButtonView
                 android:id="@+id/music_play_button"
-                bindClick="@{viewModel.playManger.playOrPause}"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                bindDingtoggleState="@{viewModel.playOrPause}"
+                android:layout_width="46dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:background="?selectableItemBackgroundBorderless"
                 app:pauseButtonTint="@color/business_text_color_ffffff"

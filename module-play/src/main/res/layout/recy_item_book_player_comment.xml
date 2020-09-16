@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+
         <variable
             name="itemModel"
             type="com.rm.module_play.model.PlayControlCommentListModel" />
@@ -11,15 +16,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="16dp">
 
         <ImageView
             android:id="@+id/img_comment_book_play"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/ic_music_next_noimal"
+            android:background="@drawable/business_defualt_img"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -48,30 +53,45 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:drawableRight="@drawable/music_play_ic_icon_like_dc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:gravity="center"
             android:layout_marginTop="9dp"
+            android:drawableRight="@drawable/music_play_ic_icon_like_dc"
+            android:gravity="center"
+            android:onClick="@{()->viewModel.playLikeBook(itemModel)}"
+            android:paddingRight="16dp"
             android:text="123"
             android:textColor="@color/business_text_color_333333"
             android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
+
         <TextView
-            app:layout_constraintLeft_toRightOf="@+id/img_comment_book_play"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date_comment_book_play"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_play_music_comment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
             android:layout_marginTop="8dp"
+            android:paddingRight="16dp"
             android:text="根据对比来思考并不会让人逻辑混乱，因为即使是对比也可以联结称一个和谐的整体。有些概念只有通过它的对立面才能成为现实，比如“上”连着“下”，“水平”连着“垂直”，等等"
             android:textColor="@color/business_text_color_333333"
             android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@+id/img_comment_book_play"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date_comment_book_play"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="14dp"
+            android:background="@color/business_color_e8e8e8"
+            app:layout_constraintLeft_toRightOf="@+id/img_comment_book_play"
+            app:layout_constraintTop_toBottomOf="@+id/tv_play_music_comment"
             tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

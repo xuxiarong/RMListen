@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_home.viewmodel.MenuDetailViewModel" />
@@ -18,9 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            app:layout_constraintDimensionRatio="w,1:1"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:background="#3f00" />
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_menu_detail_title_cl"
@@ -57,9 +57,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:singleLine="true"
-                android:visibility="gone"
                 android:textColor="@color/business_color_0f0f0f"
                 android:textSize="@dimen/business_text_size_18sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/home_menu_detail_share"
                 app:layout_constraintStart_toEndOf="@id/home_menu_detail_back" />
 

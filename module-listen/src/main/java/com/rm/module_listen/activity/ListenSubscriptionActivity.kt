@@ -17,6 +17,9 @@ import com.rm.module_listen.databinding.ListenDialogBottomSubscriptionBinding
 import com.rm.module_listen.viewmodel.ListenSubscriptionViewModel
 import kotlinx.android.synthetic.main.listen_activity_subscription.*
 
+/**
+ * 订阅界面
+ */
 class ListenSubscriptionActivity :
     BaseVMActivity<ListenActivitySubscriptionBinding, ListenSubscriptionViewModel>() {
     companion object {
@@ -56,7 +59,7 @@ class ListenSubscriptionActivity :
     }
 
     private fun itemChildClick(bean: SubscriptionListBean) {
-        showBottomDialog(bean.is_top)
+        showBottomDialog(bean)
     }
 
     override fun initData() {
@@ -74,11 +77,12 @@ class ListenSubscriptionActivity :
         }
     }
 
-    private fun showBottomDialog(isTop: Int?) {
+    private fun showBottomDialog(bean: SubscriptionListBean) {
         mViewModel.mDialog.initDialog = {
             val subscriptionBinding =
                 mViewModel.mDialog.mDataBind as ListenDialogBottomSubscriptionBinding
-            subscriptionBinding.listenDialogBottomSubscriptionTop.text = if (isTop == 1) {
+
+            subscriptionBinding.listenDialogBottomSubscriptionTop.text = if (bean.is_top == 0) {
                 getString(R.string.listen_set_top)
             } else {
                 getString(R.string.listen_cancel_top)

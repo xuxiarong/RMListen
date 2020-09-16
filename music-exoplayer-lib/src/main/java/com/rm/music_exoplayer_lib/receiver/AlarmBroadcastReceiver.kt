@@ -25,11 +25,11 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
                 doSynchronizeAction(context)
             }
             //屏幕点亮
-            Intent.ACTION_SCREEN_OFF -> {
-                context?.let {
-//                    musicPlayerManger.startLockActivity(it)
-                }
-            }
+//            Intent.ACTION_SCREEN_OFF -> {
+//                context?.let {
+////                    musicPlayerManger.startLockActivity(it)
+//                }
+//            }
             ACTION_ALARM_REPLENISH_STOCK -> {
                 doReplenishStockAction(context)
             }
@@ -73,7 +73,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
      * 执行补充库存动作, 即下单/定货
      */
     private fun doReplenishStockAction(context: Context?) {
-        ExoplayerLogger.exoLog("广比")
+        ExoplayerLogger.exoLog("关闭音乐播放器")
+//        Toast.makeText(context, "关闭音乐播放", Toast.LENGTH_SHORT).show()
         musicPlayerManger.pause()
     }
 }

@@ -40,7 +40,7 @@
 
         <!--听单详情-->
         <activity
-            android:name=".activity.ListenSheetDetailActivity"
+            android:name=".activity.ListenMySheetDetailActivity"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

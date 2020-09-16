@@ -26,6 +26,13 @@ class ListenSubscriptionRepository(private val service: ListenApiService) : Base
     }
 
     /**
+     * 取消置顶
+     */
+    suspend fun cancelTop(audioId: String):BaseResult<Any>{
+        return apiCall { service.listenSubscriptionTCancelTop(audioId) }
+    }
+
+    /**
      * 取消订阅
      */
     suspend fun unsubscribe(audioId: String): BaseResult<Any> {

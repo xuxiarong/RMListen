@@ -1,4 +1,4 @@
-package com.rm.component_comm.login.bean
+package com.rm.business_lib.bean
 
 /**
  * desc   : 登陆用户个人基本信息

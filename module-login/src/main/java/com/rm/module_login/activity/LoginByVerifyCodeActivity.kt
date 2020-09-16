@@ -9,7 +9,7 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
-import com.rm.component_comm.isLogin
+import com.rm.business_lib.isLogin
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByVerifyCodeBinding

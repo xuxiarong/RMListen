@@ -1,7 +1,10 @@
 package com.rm.module_play.model
 
+import androidx.databinding.ObservableField
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_play.adapter.BookPlayerAdapter
+import com.rm.module_play.test.SearchResultInfo
+import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 
 /**
  *播放控制器
@@ -10,12 +13,14 @@ import com.rm.module_play.adapter.BookPlayerAdapter
  * @Version: 1.0.0
  */
 
-class PlayControlModel(override val itemType: Int= BookPlayerAdapter.ITEM_TYPE_PLAYER) :
+data class PlayControlModel(
+    var baseAudioInfo: BaseAudioInfo,
+    override val itemType: Int = BookPlayerAdapter.ITEM_TYPE_PLAYER,
+     val state:Int=0
+
+) :
     MultiItemEntity {
 
-    companion object{
-
-    }
 
 
 }

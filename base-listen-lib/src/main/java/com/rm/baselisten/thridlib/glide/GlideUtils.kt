@@ -96,7 +96,7 @@ fun loadBlurImage(imageView: ImageView, url: String) {
         imageView,
         url,
         0,
-        BlurTransformation(imageView.context, 25, 6)
+        BlurTransformation(imageView.context, 25, 4)
     )
 }
 

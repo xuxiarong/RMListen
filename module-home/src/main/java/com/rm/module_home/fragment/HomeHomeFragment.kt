@@ -5,10 +5,10 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.activity.TopListActivity
+import com.rm.module_home.activity.HomeTopListActivity
 import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity
-import com.rm.module_home.activity.menu.MenuActivity
+import com.rm.module_home.activity.menu.HomeMenuActivity
 import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
@@ -103,12 +103,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
     private fun startRank() {
         context?.let {
-            TopListActivity.startActivity(it)
+            HomeTopListActivity.startActivity(it)
         }
     }
 
     private fun startMenu() {
-        MenuActivity.startActivity(context!!)
+        HomeMenuActivity.startActivity(context!!)
     }
 
     private fun startHorDoubleMore() {

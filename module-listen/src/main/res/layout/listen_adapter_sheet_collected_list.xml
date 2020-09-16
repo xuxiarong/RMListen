@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/padding_width"
         android:layout_marginEnd="@dimen/padding_width"
-
-        android:layout_marginBottom="@dimen/dp_12">
+        android:layout_marginBottom="@dimen/dp_12"
+        android:onClick="@{(ListenSheetCollectedDataBean)->viewModel.itemClickFun(item)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,9 +37,9 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_sheet_collected_adapter_name"
                 style="@style/TextViewHeadStyle"
+                bindText="@{item.sheet_name}"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                bindText="@{item.sheet_name}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="幻海航行 | 领略科幻的海洋" />
@@ -47,9 +47,9 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_sheet_collected_adapter_total_books_number"
                 style="@style/TextViewSecondStyle"
+                bindText="@{item.audio_total}"
                 android:drawableEnd="@drawable/business_ic_next"
                 android:drawablePadding="@dimen/dp_2"
-                bindText="@{item.audio_total}"
                 app:layout_constraintBottom_toBottomOf="@id/listen_sheet_collected_adapter_name"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/listen_sheet_collected_adapter_name"

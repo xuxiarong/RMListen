@@ -47,7 +47,7 @@ greendao {
     targetGenDir 'src/main/java'
 }
 dependencies {
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':base-listen-lib')
@@ -57,4 +57,6 @@ dependencies {
     api rootProject.ext.androidx["fragment_ktx"]
     api rootProject.ext.androidx["xBanner"]
     implementation rootProject.ext.dependencies["easypermissions"]
+    api rootProject.ext.dependencies["lottie"]
+
 }

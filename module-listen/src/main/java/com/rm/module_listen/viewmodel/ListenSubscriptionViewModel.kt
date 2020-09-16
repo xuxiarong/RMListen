@@ -1,12 +1,10 @@
 package com.rm.module_listen.viewmodel
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.BookBean
 import com.rm.module_home.repository.ListenSubscriptionRepository
 import com.rm.module_listen.bean.SubscriptionListBean
 
@@ -17,27 +15,44 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
         CommBottomDialog()
     }
 
+    //订阅数据源
     val data = MutableLiveData<MutableList<SubscriptionListBean>>()
-    var itemClick: (SubscriptionListBean) -> Unit = {}
-    var itemChildMoreClick: (SubscriptionListBean) -> Unit = {}
-    private var audioId: Long? = null
 
+    //item点击事件闭包，提供外部调用
+    var itemClick: (SubscriptionListBean) -> Unit = {}
+
+    //更多按钮闭包
+    var itemChildMoreClick: (SubscriptionListBean) -> Unit = {}
+
+
+
+    /**
+     * item点击事件
+     */
     fun itemClickFun(bookBean: SubscriptionListBean) {
         itemClick(bookBean)
     }
 
+    /**
+     * 更多点击事件
+     */
     fun itemChildMoreClickFun(bookBean: SubscriptionListBean) {
-        audioId = bookBean.audio_id
         itemChildMoreClick(bookBean)
     }
 
+    /**
+     * 发送请求获取数据
+     */
     fun getData() {
+        showLoading()
         launchOnIO {
             repository.getSubscriptionList().checkResult(
                 onSuccess = {
+                    showContentView()
                     data.value = it
                 },
                 onError = {
+                    showContentView()
                     DLog.i("------->", "$it")
                 }
             )
@@ -56,17 +71,14 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
      */
     fun dialogSetTopFun() {
         mDialog.dismiss()
-        launchOnIO {
-            repository.setTop(audioId.toString()).checkResult(
-                onSuccess = {
-                    DLog.i("------>", "置顶成功")
-                },
-                onError = {
-                    DLog.i("------>", "置顶失败   $it")
-                }
-            )
-        }
+//        if (bean.is_top == 1) {
+//            cancelTop(bean.audio_id)
+//        } else {
+//            setTop(bean.audio_id)
+//        }
+
     }
+
 
     /**
      * dialog 分享
@@ -86,17 +98,61 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
      * dialog 取消订阅
      */
     fun dialogUnsubscribeFun() {
-        mDialog.dismiss()
+//        showLoading()
+//        launchOnIO {
+//            repository.unsubscribe(bean.audio_id.toString()).checkResult(
+//                onSuccess = {
+//                    showContentView()
+//                    mDialog.dismiss()
+//                    DLog.i("------>", "取消订阅成功")
+//                },
+//                onError = {
+//                    showContentView()
+//                    DLog.i("------>", "取消订阅失败   $it")
+//                }
+//            )
+//        }
+    }
+
+    /**
+     * 置顶
+     */
+    private fun setTop(audioId: Long?) {
+        showLoading()
         launchOnIO {
-            repository.unsubscribe(audioId.toString()).checkResult(
+            repository.setTop(audioId.toString()).checkResult(
                 onSuccess = {
-                    DLog.i("------>", "取消订阅成功")
+                    mDialog.dismiss()
+                    showContentView()
+                    DLog.i("------>", "置顶成功")
                 },
                 onError = {
-                    DLog.i("------>", "取消订阅失败   $it")
+                    showContentView()
+                    DLog.i("------>", "置顶失败   $it")
                 }
             )
         }
     }
+
+    /**
+     * 取消置顶
+     */
+    private fun cancelTop(audioId: Long?) {
+        showLoading()
+        launchOnIO {
+            repository.cancelTop(audioId.toString()).checkResult(
+                onSuccess = {
+                    mDialog.dismiss()
+                    showContentView()
+                    DLog.i("------>", "置顶成功")
+                },
+                onError = {
+                    showContentView()
+                    DLog.i("------>", "置顶失败   $it")
+                }
+            )
+        }
+    }
+
 
 }

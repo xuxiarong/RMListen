@@ -18,4 +18,11 @@ class ListenDialogSheetRepository(private val service: ListenApiService) : BaseR
     suspend fun getData(): BaseResult<ListenSheetMyListBean> {
         return apiCall { service.listenSheetMyList() }
     }
+
+    /**
+     * 添加到听单列表
+     */
+    suspend fun addSheetList(sheet_id: String, audio_id: String): BaseResult<Any> {
+        return apiCall { service.listenAddSheetList(sheet_id, audio_id) }
+    }
 }

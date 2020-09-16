@@ -188,10 +188,10 @@ class PlayActivity :
     private fun toggleState() {
         when (music_play_button.buttonState) {
             PlayButtonView.STATE_PLAY -> music_play_button.setButtonState(
-                PlayButtonView.STATE_PAUSE, false
+                PlayButtonView.STATE_PAUSE, true
             )
             PlayButtonView.STATE_PAUSE -> music_play_button.setButtonState(
-                PlayButtonView.STATE_PLAY, false
+                PlayButtonView.STATE_PLAY, true
             )
         }
     }

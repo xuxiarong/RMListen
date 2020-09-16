@@ -6,6 +6,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
+import com.rm.music_exoplayer_lib.utils.CacheUtils
 import kotlinx.coroutines.*
 import org.koin.core.context.loadKoinModules
 
@@ -16,23 +17,24 @@ import org.koin.core.context.loadKoinModules
  */
 class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
-        DLog.d(TAG,"Module Play onCreate()!!!")
+        DLog.d(TAG, "Module Play onCreate()!!!")
         loadKoinModules(playModules)
         MusicPlayerManager.musicPlayerManger.initialize(
             CONTEXT,
             MusicInitializeCallBack {})
+        CacheUtils.instance.initSharedPreferencesConfig(CONTEXT)
 
     }
 
     override fun onTerminate() {
-        DLog.d(TAG,"Module Play onTerminate()!!!")
+        DLog.d(TAG, "Module Play onTerminate()!!!")
     }
 
     override fun onLowMemory() {
-        DLog.d(TAG,"Module Play onLowMemory()!!!")
+        DLog.d(TAG, "Module Play onLowMemory()!!!")
     }
 
     override fun onTrimMemory(level: Int) {
-        DLog.d(TAG,"Module Play onTrimMemory(),---level--->>>$level")
+        DLog.d(TAG, "Module Play onTrimMemory(),---level--->>>$level")
     }
 }

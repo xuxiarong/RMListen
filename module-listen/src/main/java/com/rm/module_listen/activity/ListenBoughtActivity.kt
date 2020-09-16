@@ -17,6 +17,10 @@ import com.rm.module_listen.utils.ListenDialogSheetHelper
 import com.rm.module_listen.viewmodel.ListenBoughtViewModel
 import kotlinx.android.synthetic.main.listen_activity_bought.*
 
+
+/**
+ * 已购界面
+ */
 class ListenBoughtActivity :
     BaseVMActivity<ListenActivityBoughtBinding, ListenBoughtViewModel>() {
     companion object {

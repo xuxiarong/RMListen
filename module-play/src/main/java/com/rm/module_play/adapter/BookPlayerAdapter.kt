@@ -50,16 +50,7 @@ internal class BookPlayerAdapter(
             ITEM_TYPE_BOUTIQUE -> {
                 val recommendedBookPlayBinding = DataBindingUtil.getBinding<RecyItemRecommendedBookPlayBinding>(holder.itemView)
                 playViewModel.playControlRecommentListModel.value?.let {
-                    recommendedBookPlayBinding?.recyItemBookPlayRecommended?.bindHorizontalLayout(
-                        CommonBindVMAdapter(
-                            playViewModel,
-                            it,
-                            R.layout.recy_item_book_player_recomment,
-                            BR.viewModel,
-                            BR.itemModel
-                        )
-                    )
-
+                    recommendedBookPlayBinding?.recyItemBookPlayRecommended?.bindHorizontalLayout(CommonBindVMAdapter(playViewModel, it, R.layout.recy_item_book_player_recomment, BR.viewModel, BR.itemModel))
                 }
 
             }
