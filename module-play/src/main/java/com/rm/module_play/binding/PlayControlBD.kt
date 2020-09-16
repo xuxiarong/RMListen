@@ -1,10 +1,17 @@
 package com.rm.module_play.binding
 
+import android.widget.Adapter
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
+import com.rm.module_play.model.PlayControlModel
+import com.rm.module_play.view.PlayButtonView
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
+import kotlinx.android.synthetic.main.music_paly_control_view.*
 
 /**
  *
@@ -41,8 +48,6 @@ fun BubbleSeekBar.progressChangedListener(pos: Int) {
 }
 
 
-
-
 @BindingAdapter("setProgress")
 fun BubbleSeekBar.setProgress(pos: Float) {
     setNoListenerProgress(pos)
@@ -60,6 +65,21 @@ fun BubbleSeekBar.addBubbleFL(text: TextView) {
 }
 
 @BindingAdapter("updateThumbText")
-fun BubbleSeekBar.updateThumbText(str:String) {
+fun BubbleSeekBar.updateThumbText(str: String) {
     updateThumbText(str)
+}
+
+@BindingAdapter("bindDingtoggleState")
+fun PlayButtonView.bindDingtoggleState(action: (() -> Unit)) {
+    setOnClickListener {
+        when (buttonState) {
+            PlayButtonView.STATE_PLAY -> setButtonState(
+                PlayButtonView.STATE_PAUSE, true
+            )
+            PlayButtonView.STATE_PAUSE -> setButtonState(
+                PlayButtonView.STATE_PLAY, true
+            )
+        }
+        action()
+    }
 }

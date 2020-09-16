@@ -9,7 +9,11 @@ package com.rm.music_exoplayer_lib.constants
 
 const val ACTION_ALARM_REPLENISH_STOCK = "witmoon.auto.replenish.stock.action"
 const val ACTION_ALARM_SYNCHRONIZE = "witmoon.auto.synchronize.action"
-
+//播放模式
+val PLAY_MODEL="PLAY_MODEL"
+//播放闹钟设置
+val SP_KEY_ALARM_MODEL = "SP_ALARM_MODEL"
+val SP_KEY_ALARM_MODEL_TIME="SP_KEY_ALARM_MODEL_TIME"
 //前台进程通知群组ID
 var CHANNEL_ID = "com.android.rm.music_exoplayer_lib"
 
@@ -53,13 +57,15 @@ const val MUSIC_PLAYER_ERROR = 5 //错误
 /**
  * 定时闹钟档次，替换enum类型
  */
-const val MUSIC_ALARM_MODEL_10 = 1 //10分钟后
+const val MUSIC_ALARM_MODEL_10 = 10 //10分钟后
 
-const val MUSIC_ALARM_MODEL_15 = 2
-const val MUSIC_ALARM_MODEL_30 = 3
-const val MUSIC_ALARM_MODEL_60 = 4
-const val MUSIC_ALARM_MODEL_CURRENT = 5 //当前歌曲播放完成立即结束
+const val MUSIC_ALARM_MODEL_20 = 20
+const val MUSIC_ALARM_MODEL_30 = 30
+const val MUSIC_ALARM_MODEL_40 = 40
+const val MUSIC_ALARM_MODEL_60 = 60
 const val MUSIC_ALARM_MODEL_0 = 0 //无限期
+const val MUSIC_ALARM_MODEL_CURRENT = 5 //当前歌曲播放完成立即结束
+
 
 /**
  * 播放模式，替换enum类型

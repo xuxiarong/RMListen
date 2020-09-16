@@ -156,4 +156,16 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     fun cleanNotification() {
         TODO("Not yet implemented")
     }
+
+    fun setPlayerModel(model: Int): Int {
+        presenter.setPlayerModel(model)
+        return model
+    }
+
+    fun getPlayerModel(): Int = presenter.getPlayerModel()
+    //设置定时任务
+     fun setPlayerAlarmModel(model: Int) {
+        presenter.setPlayerAlarmModel(model)
+    }
+
 }

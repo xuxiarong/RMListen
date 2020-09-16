@@ -36,7 +36,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         private var mActivityLockClassName: String? = null //播放器界面路径、锁屏界面路径、主界面路径
 
     }
-    
+
 
     internal class MusicPlayerServiceConnection : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -218,6 +218,17 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun cleanNotification() {
         TODO("Not yet implemented")
+    }
+
+    override fun setPlayerModel(model: Int): Int {
+        mBinder?.setPlayerModel(model)
+        return model
+    }
+
+    override fun getPlayerModel(): Int = mBinder?.getPlayerModel() ?: 0
+
+    override fun setPlayerAlarmModel(model: Int) {
+        mBinder?.setPlayerAlarmModel(model)
     }
 
 

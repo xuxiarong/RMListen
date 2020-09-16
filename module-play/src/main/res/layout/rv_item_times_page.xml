@@ -5,13 +5,25 @@
     android:layout_height="44dp">
 
     <TextView
+        android:id="@+id/tv_music_play_time_play"
         android:layout_marginLeft="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:textColor="@color/business_text_color_333333"
         android:textSize="14sp"
-        android:text="10分钟" />
+        tools:text="10分钟" />
+    <TextView
+        android:id="@+id/tv_music_play_time_down"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textColor="@color/business_color_b1b1b1"
+        android:textSize="14sp"
+        tools:text="10分钟" />
 
     <ImageView
         android:id="@+id/music_play_time_setting_check"
