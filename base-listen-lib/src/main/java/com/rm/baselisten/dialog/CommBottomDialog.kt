@@ -4,7 +4,7 @@ import android.view.Gravity
 
 class CommBottomDialog : CommonMvFragmentDialog() {
     init {
-//        gravity = Gravity.BOTTOM
+        gravity = Gravity.BOTTOM
         dialogHasBackground = true
         dialogWidthIsMatchParent = true
         dialogHeightIsMatchParent=true

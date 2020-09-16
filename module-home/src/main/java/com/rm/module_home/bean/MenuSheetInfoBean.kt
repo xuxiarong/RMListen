@@ -1,5 +1,6 @@
 package com.rm.module_home.bean
 
+import android.text.TextUtils
 import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.bean.AudioListBean
 
@@ -20,20 +21,4 @@ data class MenuSheetInfoBean(
     var sheet_intro: String,
     var sheet_name: String,
     var status: Int
-){
-    fun test():String{
-        return "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3984473917,238095211&fm=26&gp=0.jpg"
-    }
-
-    fun getList():MutableList<AudioBean>{
-        val data= mutableListOf<AudioBean>()
-        val list = audio_list.list
-
-        if (list != null) {
-            data.addAll(list)
-            data.addAll(list)
-            data.addAll(list)
-        }
-        return data
-    }
-}
+)

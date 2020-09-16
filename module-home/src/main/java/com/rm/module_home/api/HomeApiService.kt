@@ -111,12 +111,27 @@ interface HomeApiService {
      * @return BaseResponse<AudioListBean>
      */
     @GET("content/topic/audio-list")
-    suspend fun getTopicList(
+    suspend fun homeTopicList(
         @Query("page_id") page_id: Int,
         @Query("block_id") block_id: Int,
         @Query("topic_id") topic_id: Int,
         @Query("page") page: Int,
         @Query("page_size") page_size: Int = 10
-    ):BaseResponse<AudioListBean>
+    ): BaseResponse<AudioListBean>
+
+    /**
+     * 收藏听单
+     * @param sheet_id 听单Id
+     */
+    @FormUrlEncoded
+    @POST("/api/v1_0/sheet/my-favorite")
+    suspend fun homeFavoritesSheet(@Field("sheet_id") sheet_id: String): BaseResponse<Any>
+
+    /**
+     * 取消收藏
+     *  @param sheet_id 听单Id
+     */
+    @DELETE("/api/v1_0/sheet/my-favorite")
+    suspend fun homeUnFavoriteSheet(@Field("sheet_id") sheet_id: String): BaseResponse<Any>
 
 }

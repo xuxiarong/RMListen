@@ -54,7 +54,7 @@ class HomeTopListContentFragment :
 
     override fun startObserve() {
         mViewModel.dataList.observe(this) {
-            listAdapter.setNewInstance(it.list)
+            listAdapter.setList(it.list)
         }
     }
 
@@ -74,7 +74,7 @@ class HomeTopListContentFragment :
     override fun initView() {
         super.initView()
         arguments?.let {
-            rankType = it.getInt(RANK_TYPE) ?: RANK_TYPE_POPULAR
+            rankType = it.getInt(RANK_TYPE)
         }
         home_list_recycler_content.apply {
             bindVerticalLayout(listAdapter)

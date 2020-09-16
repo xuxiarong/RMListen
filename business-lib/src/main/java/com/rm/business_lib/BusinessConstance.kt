@@ -22,3 +22,9 @@ var isLogin = MutableLiveData<Boolean>(false)
 
 // 当前登陆的用户信息
 var loginUser = MutableLiveData<LoginUserBean>()
+
+//是否是第首次收藏
+const val IS_FIRST_FAVORITES = "is_first_favorites"
+
+//是否是首次添加听单
+const val IS_FIRST_ADD_SHEET = "is_first_add_sheet"

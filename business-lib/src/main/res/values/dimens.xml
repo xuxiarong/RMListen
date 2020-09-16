@@ -27,6 +27,7 @@
     <dimen name="business_text_size_12sp">12sp</dimen><!-- 四级字号-->
     <dimen name="business_text_size_10sp">10sp</dimen><!-- 五级字号-->
     <dimen name="business_text_size_8sp">8sp</dimen>
+    <dimen name="business_text_size_26sp">26sp</dimen>
 
 
 

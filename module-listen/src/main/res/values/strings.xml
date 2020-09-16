@@ -20,5 +20,9 @@
     <string name="listen_add_to_book_list">添加到书单</string>
     <string name="listen_create_book_list">+新建书单</string>
 
+    <string name="listen_create_sheet_list">新建听单</string>
+    <string name="listen_title_text">标题：</string>
+    <string name="listen_input_title">请输入标题</string>
+
     <string name="listen_subscription_depict">%1s %2s</string>
 </resources>

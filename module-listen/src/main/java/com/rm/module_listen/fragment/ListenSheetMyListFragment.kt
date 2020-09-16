@@ -1,5 +1,6 @@
 package com.rm.module_listen.fragment
 
+import android.content.Intent
 import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
@@ -8,7 +9,10 @@ import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.dimen
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.activity.ListenSheetDetailActivity
+import com.rm.module_listen.activity.ListenMySheetDetailActivity
+import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_DELETE
+import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_EDIT
+import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_REQUEST_CODE
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.databinding.ListenFragmentSheetMyListBinding
 import com.rm.module_listen.viewmodel.ListenSheetMyListViewModel
@@ -61,8 +65,23 @@ class ListenSheetMyListFragment :
     }
 
     private fun startDetail(bean: ListenSheetBean) {
-        context?.let {
-            ListenSheetDetailActivity.startActivity(it,bean)
+        activity?.let {
+            ListenMySheetDetailActivity.startActivity(it, bean)
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LISTEN_SHEET_DETAIL_REQUEST_CODE) {
+            when (resultCode) {
+                //删除
+                LISTEN_SHEET_DETAIL_DELETE,LISTEN_SHEET_DETAIL_EDIT -> {
+                    mViewModel.getData()
+                }
+                else -> {
+                }
+            }
         }
     }
 }

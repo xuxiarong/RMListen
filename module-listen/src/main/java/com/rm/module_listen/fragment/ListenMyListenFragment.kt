@@ -3,6 +3,7 @@ package com.rm.module_listen.fragment
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.component_comm.annotation.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
@@ -43,11 +44,6 @@ class ListenMyListenFragment :
         setClick()
         listenMyListenVp.adapter = mViewPagerAdapter
         configTab()
-
-        listenListCl.setOnClickListener{
-            ListenSheetListActivity.startActivity(it.context)
-        }
-
     }
 
     override fun startObserve() {
@@ -57,7 +53,7 @@ class ListenMyListenFragment :
     override fun initData() {
 
         val loginService = RouterHelper.createRouter(LoginService::class.java)
-        loginService.quicklyLogin(mViewModel,activity!!)
+//        loginService.quicklyLogin(mViewModel,activity!!)
 
         mViewModel.getSubsDataFromService()
     }
@@ -97,7 +93,9 @@ class ListenMyListenFragment :
             if (isLogin.value == false) {
                 router.quicklyLogin(mViewModel, activity!!)
             } else {
-                ListenSheetListActivity.startActivity(it.context)
+                ListenSheetListActivity.startActivity(it.context,
+                    LISTEN_SHEET_LIST_MY_LIST
+                )
             }
         }
     }

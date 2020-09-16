@@ -4,19 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.divLinearItemDecoration
 import com.rm.baselisten.binding.linearBottomItemDecoration
-import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -29,9 +25,8 @@ import com.rm.module_home.databinding.HomeActivityTopListBinding
 import com.rm.module_home.fragment.HomeTopListContentFragment
 import com.rm.module_home.viewmodel.TopListViewModel
 import kotlinx.android.synthetic.main.home_activity_top_list.*
-import java.util.*
 
-class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewModel>() {
+class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewModel>() {
     private var mPopupWindow: PopupWindow? = null
     private val tabAdapter by lazy { HomeTopListTabAdapter() }
     private val popupAdapter by lazy { HomeTopListPopupAdapter() }
@@ -40,7 +35,7 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
 
     companion object {
         fun startActivity(context: Context) {
-            context.startActivity(Intent(context, TopListActivity::class.java))
+            context.startActivity(Intent(context, HomeTopListActivity::class.java))
         }
     }
 
@@ -137,7 +132,7 @@ class TopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewMo
             height = ViewGroup.LayoutParams.WRAP_CONTENT
             width = resources.getDimensionPixelOffset(R.dimen.dp_360)
 
-            val rootView = LayoutInflater.from(this@TopListActivity)
+            val rootView = LayoutInflater.from(this@HomeTopListActivity)
                 .inflate(R.layout.home_popup_list_top, home_list_recycler_tab, false)
             val popupRv = rootView.findViewById<RecyclerView>(R.id.home_popup_rv)
 

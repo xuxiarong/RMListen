@@ -223,7 +223,7 @@
                 android:layout_marginTop="@dimen/dp_14"
                 android:text="$2"
                 android:textColor="@color/business_color_ff5e5e"
-                android:textSize="@dimen/sp_26"
+                android:textSize="@dimen/business_text_size_26sp"
                 app:layout_constraintTop_toBottomOf="@+id/detail_lineview" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -231,7 +231,7 @@
                 android:layout_height="wrap_content"
                 android:text=" / 集"
                 android:textColor="@color/business_text_color_333333"
-                android:textSize="@dimen/sp_16"
+                android:textSize="@dimen/business_text_size_16sp"
                 app:layout_constraintBottom_toBottomOf="@id/detail_tx_money"
                 app:layout_constraintStart_toEndOf="@+id/detail_tx_money"
                 app:layout_constraintTop_toTopOf="@id/detail_tx_money" />
@@ -268,7 +268,7 @@
                 android:layout_marginTop="@dimen/dp_27"
                 android:text="@string/home_detail_comment"
                 android:textColor="@color/business_text_color_333333"
-                android:textSize="@dimen/sp_16"
+                android:textSize="@dimen/business_text_size_16sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/home_detail_layout_anchor" />
 
@@ -281,7 +281,7 @@
                 android:drawablePadding="@dimen/dp_2"
                 android:text="@string/home_detail_more"
                 android:textColor="@color/business_text_color_333333"
-                android:textSize="@dimen/sp_16"
+                android:textSize="@dimen/business_text_size_16sp"
                 app:layout_constraintEnd_toEndOf="@id/home_detail_collect_icon"
                 app:layout_constraintTop_toBottomOf="@+id/home_detail_layout_anchor" />
 

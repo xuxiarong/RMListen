@@ -28,6 +28,6 @@ class HomeTopicRepository(private val apiService: HomeApiService) : BaseReposito
         page: Int,
         page_size: Int
     ): BaseResult<AudioListBean> {
-        return apiCall { apiService.getTopicList(page_id, block_id, topic_id, page, page_size) }
+        return apiCall { apiService.homeTopicList(page_id, block_id, topic_id, page, page_size) }
     }
 }

@@ -17,7 +17,7 @@ import com.rm.module_home.viewmodel.MenuViewModel
 import com.stx.xhb.androidx.XBanner
 import kotlinx.android.synthetic.main.home_activity_listen_menu.*
 
-class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel>() {
+class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel>() {
     private val headView by lazy {
         View.inflate(this, R.layout.home_header_banner, null)
     }
@@ -25,7 +25,7 @@ class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel
 
     companion object {
         fun startActivity(context: Context) {
-            context.startActivity(Intent(context, MenuActivity::class.java))
+            context.startActivity(Intent(context, HomeMenuActivity::class.java))
         }
     }
 
@@ -54,8 +54,8 @@ class MenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, MenuViewModel
             val sheetBean: MenuSheetBean? = mViewModel.menuList.value
             val pageId = sheetBean?.page_id ?: 0
             val sheetId = (sheetBean?.sheet_list?.list?.get(position)?.sheet_id) ?: ""
-            MenuDetailActivity.startActivity(
-                this@MenuActivity,
+            HomeMenuDetailActivity.startActivity(
+                this@HomeMenuActivity,
                 pageId,
                 sheetId
             )

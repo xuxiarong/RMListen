@@ -18,10 +18,6 @@
     <string name="home_menu_detail_add_collected">收藏听单</string>
     <string name="home_menu_detail_collected">已收藏</string>
 
-    <string name="home_create_sheet_list">新建听单</string>
-    <string name="home_title_text">标题：</string>
-    <string name="home_input_title">请输入标题</string>
-
     <string name="str_str">""</string>
 
     <string name="home_sequence">已连载</string>

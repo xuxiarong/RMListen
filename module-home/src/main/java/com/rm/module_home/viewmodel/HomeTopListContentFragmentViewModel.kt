@@ -11,12 +11,15 @@ class HomeTopListContentFragmentViewModel(private val repository: TopListReposit
     // 榜单列表数据
     val dataList = MutableLiveData<HomeTopListBean>()
     fun getListInfo(rankType: String, rankSeg: String, page: Int, pageSize: Int) {
+        showLoading()
         launchOnIO {
             repository.getTopList(rankType, rankSeg, page, pageSize).checkResult(
                 onSuccess = {
+                    showContentView()
                     dataList.value = it
                 },
                 onError = {
+                    showContentView()
                     DLog.i("-------->", "$it")
                 }
             )

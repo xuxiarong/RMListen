@@ -82,9 +82,17 @@ class ExpandableTextView @JvmOverloads constructor(
             return
         }
         visibility = View.VISIBLE
-        mImageView.visibility = View.VISIBLE
+
         val str = if (isExpand) {
-            mText?.substring(0, mMaxCount)
+            //如果当前字数小于限制的字数则显示当前的文本
+            val end = if (mText!!.length > mMaxCount) {
+                mImageView.visibility = View.VISIBLE
+                mMaxCount
+            } else {
+                mImageView.visibility = View.GONE
+                mText!!.length
+            }
+            mText?.substring(0,end)
         } else {
             mText
         }

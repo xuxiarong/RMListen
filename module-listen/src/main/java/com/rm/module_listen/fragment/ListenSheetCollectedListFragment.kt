@@ -5,6 +5,8 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.dimen
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.adapter.ListenSheetCollectedListAdapter
@@ -55,6 +57,10 @@ class ListenSheetCollectedListFragment :
         listen_sheet_collected_list_recycler_view.apply {
             bindVerticalLayout(mAdapter)
             linearBottomItemDecoration(dimen(R.dimen.dp_18))
+        }
+
+        mViewModel.itemClick={
+            RouterHelper.createRouter(HomeService::class.java).startHomeSheetDetailActivity(context!!,it.sheet_id.toString(),100)
         }
     }
 }
