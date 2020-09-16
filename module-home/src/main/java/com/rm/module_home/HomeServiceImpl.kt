@@ -7,6 +7,7 @@ import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_home.activity.menu.HomeMenuActivity
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity
+import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.fragment.HomeHomeFragment
 
 /**
@@ -32,6 +33,10 @@ class HomeServiceImpl : HomeService {
      */
     override fun startHomeSheetDetailActivity(context: Context,sheetId:String,pageId:Int) {
         HomeMenuDetailActivity.startActivity(context,pageId,sheetId )
+    }
+
+    override fun toDetailActivity(context: Context, audioID: Int) {
+        HomeDetailActivity.startActivity(context,audioID)
     }
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {

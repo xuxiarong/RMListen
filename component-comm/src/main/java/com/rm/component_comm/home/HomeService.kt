@@ -25,4 +25,9 @@ interface HomeService : ApplicationProvider {
 
     // 获取主页Fragment
     fun getHomeFragment(): Fragment
+
+    /**
+     * 跳转详情页
+     */
+    fun toDetailActivity(context: Context,audioID:Int)
 }

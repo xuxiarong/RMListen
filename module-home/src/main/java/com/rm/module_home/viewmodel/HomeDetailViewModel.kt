@@ -20,14 +20,16 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var showStatus = ObservableField<String>()
     var TimeStamp = ObservableField<String>()
 
+    val action=ObservableField<String>()
+
     // 错误提示信息
     var errorTips = ObservableField<String>("")
     /**
      * 获取书籍详情信息
      */
-    fun intDetailInfo(){
+    fun intDetailInfo(audioID:Int){
         launchOnUI {
-            repository.getDetailInfo("1").checkResult(
+            repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
                     showContentView()
                     detailViewModel.set(it)
@@ -43,7 +45,13 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
         detailChapterViewModel.set(repository.getChapterInfo())
     }
 
-
+    /**
+     * 跳转到播放器页面
+     */
+    fun toPlayPage(){
+        action.set("toPlayPage")
+        action.notifyChange()
+    }
     /**
      * 书籍状态
      */
