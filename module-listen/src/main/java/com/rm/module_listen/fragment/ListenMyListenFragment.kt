@@ -68,7 +68,8 @@ class ListenMyListenFragment :
         listenMyListenRtl.addTab(getString(R.string.listen_tab_recent_listen))
         listenMyListenRtl.addTab(getString(R.string.listen_tab_subscription_update))
         listenMyListenRtl.bindViewPager2(listenMyListenVp)
-        listenMyListenVp.setCurrentItem(1, false)
+        listenMyListenVp.setCurrentItem(0, false)
+        listenMyListenVp.isUserInputEnabled = false
         listenMyListenRtl.setRedPointVisibility(1, View.VISIBLE)
     }
 

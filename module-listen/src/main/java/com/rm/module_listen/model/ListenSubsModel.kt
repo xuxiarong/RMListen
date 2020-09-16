@@ -1,6 +1,9 @@
 package com.rm.module_listen.model
 
 import android.os.Parcelable
+import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.module_listen.R
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -10,37 +13,12 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class ListenSubsModel(
-    val early: List<ListenSubsEarly>,
+    val early: List<ListenAudioModel>,
     val last_unread: Int,
-    val today: List<ListenSubsToday>,
+    val today: List<ListenAudioModel>,
     val total_unread: Int,
-    val yesterday: List<ListenSubsYesterday>
+    val yesterday: List<ListenAudioModel>
 ) : Parcelable
-
-@Parcelize
-data class ListenSubsEarly(
-    val audio_cover: String,
-    val audio_id: String,
-    val audio_name: String,
-    val chapter_list: List<ListenSubsChapter>,
-    val upgrade_time: String
-) : Parcelable,ListenAudioModel(audio_cover,audio_id,audio_name,chapter_list,upgrade_time)
-
-@Parcelize
-data class ListenSubsToday(
-    val audio_cover: String,
-    val audio_id: String,
-    val audio_name: String,
-    val chapter_list: List<ListenSubsChapter>
-) : Parcelable,ListenAudioModel(audio_cover,audio_id,audio_name,chapter_list,"今天")
-
-@Parcelize
-data class ListenSubsYesterday(
-    val audio_cover: String,
-    val audio_id: String,
-    val audio_name: String,
-    val chapter_list: List<ListenSubsChapter>
-) : Parcelable,ListenAudioModel(audio_cover,audio_id,audio_name,chapter_list,"昨天")
 
 @Parcelize
 data class ListenSubsChapter(
@@ -52,13 +30,25 @@ data class ListenSubsChapter(
     val sequence: String,
     val size: String,
     val upgrade_time: String
-) : Parcelable
+) : Parcelable,MultiItemEntity{
+    @IgnoredOnParcel
+    override var itemType = R.layout.listen_item_subs_list_chapter
+}
 @Parcelize
-open class ListenAudioModel(
-    val audioCover: String,
-    val audioId: String,
-    val audioName: String,
-    val chapterList: List<ListenSubsChapter>,
-    val audioUpdateTime : String
-) : Parcelable
-
+data class ListenAudioModel(
+    val audio_cover: String,
+    val audio_id: String,
+    val audio_name: String,
+    val chapter_list: List<ListenSubsChapter>,
+    var upgrade_time: String
+) : Parcelable,MultiItemEntity{
+    override var itemType = R.layout.listen_item_subs_list_audio
+}
+@Parcelize
+data class ListenAudioDateModel constructor(
+    val date: String,
+    val isSelected : Boolean
+) : Parcelable,MultiItemEntity{
+    @IgnoredOnParcel
+    override var itemType = R.layout.listen_item_subs_list_audio_date
+}

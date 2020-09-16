@@ -9,7 +9,7 @@ import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.model.ListenRecentDateModel
 import com.rm.module_listen.model.ListenRecentListenModel
-import com.rm.module_listen.model.ListenSubsDateModel
+import com.rm.module_listen.model.ListenAudioDateModel
 
 /**
  * desc   :
@@ -26,7 +26,7 @@ class ListenMyListenViewModel : BaseVMViewModel() {
 
 
     var subsDateVisible = ObservableBoolean(false)
-    var subsDateListDate = MutableLiveData<MutableList<ListenSubsDateModel>>()
+    var subsDateListDate = MutableLiveData<MutableList<ListenAudioDateModel>>()
 
     val mSwipeAdapter : CommonMultiSwipeVmAdapter by lazy {
         CommonMultiSwipeVmAdapter(this, mutableListOf(),
@@ -111,16 +111,16 @@ class ListenMyListenViewModel : BaseVMViewModel() {
 
     fun getSubsDataFromService(){
         subsDateListDate.value = mutableListOf(
-            ListenSubsDateModel("今天",false),
-            ListenSubsDateModel("昨天",false),
-            ListenSubsDateModel("8-29",false),
-            ListenSubsDateModel("8-28",true),
-            ListenSubsDateModel("8-27",false),
-            ListenSubsDateModel("8-26",false),
-            ListenSubsDateModel("8-25",false),
-            ListenSubsDateModel("8-24",false),
-            ListenSubsDateModel("8-23",false),
-            ListenSubsDateModel("8-22",false)
+            ListenAudioDateModel("今天",false),
+            ListenAudioDateModel("昨天",false),
+            ListenAudioDateModel("8-29",false),
+            ListenAudioDateModel("8-28",true),
+            ListenAudioDateModel("8-27",false),
+            ListenAudioDateModel("8-26",false),
+            ListenAudioDateModel("8-25",false),
+            ListenAudioDateModel("8-24",false),
+            ListenAudioDateModel("8-23",false),
+            ListenAudioDateModel("8-22",false)
         )
     }
 

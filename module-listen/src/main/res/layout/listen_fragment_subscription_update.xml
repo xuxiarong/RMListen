@@ -12,9 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listenSubsDataRv"
@@ -27,10 +25,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listenSubscriptionRv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/listenSubsDataRv"
-            android:paddingStart="@dimen/dp_16"
-            android:paddingEnd="@dimen/dp_16" />
+            android:layout_marginBottom="70dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

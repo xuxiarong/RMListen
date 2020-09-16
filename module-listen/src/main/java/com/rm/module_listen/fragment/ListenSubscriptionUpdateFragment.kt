@@ -1,14 +1,15 @@
 package com.rm.module_listen.fragment
 
 import androidx.lifecycle.Observer
-import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
+import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.adapter.ListenAudioAdapter
 import com.rm.module_listen.databinding.ListenFragmentSubscriptionUpdateBinding
-import com.rm.module_listen.model.ListenSubsDateModel
+import com.rm.module_listen.model.ListenAudioDateModel
 import com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel
 
 /**
@@ -19,17 +20,16 @@ import com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel
 class ListenSubscriptionUpdateFragment :
     BaseVMFragment<ListenFragmentSubscriptionUpdateBinding, ListenSubsUpdateViewModel>() {
 
-    private val mSubsDateAdapter : CommonBindVMAdapter<ListenSubsDateModel> by lazy {
-        CommonBindVMAdapter(mViewModel, mutableListOf<ListenSubsDateModel>(),
+    private val mSubsDateAdapter : CommonBindVMAdapter<ListenAudioDateModel> by lazy {
+        CommonBindVMAdapter(mViewModel, mutableListOf<ListenAudioDateModel>(),
             R.layout.listen_item_subs_date,
             BR.viewModel,
             BR.item)
     }
 
-    private val mSubsAudioAdapter : CommonMultiVMAdapter by lazy {
-        CommonMultiVMAdapter(
+    private val mListenAudioAdapter : ListenAudioAdapter by lazy {
+        ListenAudioAdapter(
             mViewModel,
-            mutableListOf(),
             BR.viewModel,
             BR.item
         )
@@ -41,6 +41,10 @@ class ListenSubscriptionUpdateFragment :
         mViewModel.subsDateListDate.observe(this, Observer {
             mSubsDateAdapter.setList(it)
         })
+        mViewModel.allUpdateList.observe(this, Observer {
+            mListenAudioAdapter.setList(it)
+        })
+
     }
 
     override fun initLayoutId() = R.layout.listen_fragment_subscription_update
@@ -56,6 +60,7 @@ class ListenSubscriptionUpdateFragment :
     override fun initView() {
         super.initView()
         mDataBind.listenSubsDataRv.bindHorizontalLayout(mSubsDateAdapter)
+        mDataBind.listenSubscriptionRv.bindVerticalLayout(mListenAudioAdapter)
 
     }
 

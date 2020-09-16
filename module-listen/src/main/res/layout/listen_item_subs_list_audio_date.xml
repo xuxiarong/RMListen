@@ -18,15 +18,14 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="22dp"
         android:gravity="center_vertical"
         android:textColor="@color/business_color_b1b1b1"
-        android:layout_marginEnd="@dimen/dp_26"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginBottom="14dp"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_14"
         android:singleLine="true"
         android:text="@{item.date}"
-        bindDateTextColor="@{item.selected}"
         tools:text="心要大，脚要实" />
 
 </layout>

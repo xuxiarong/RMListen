@@ -12,7 +12,7 @@
 
         <variable
             name="item"
-            type="com.rm.module_listen.model.ListenSubsDateModel" />
+            type="com.rm.module_listen.model.ListenAudioDateModel" />
     </data>
 
 

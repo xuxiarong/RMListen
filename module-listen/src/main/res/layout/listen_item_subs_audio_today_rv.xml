@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel" />
+
+    </data>
+
+
+    <com.rm.business_lib.shadow.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_width"
+        android:layout_marginEnd="@dimen/padding_width">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listenItemTodayRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_noSolid="true"
+            app:layout_roundRadius="@dimen/dp_8"
+            app:layout_shadowColor="#55b1b1b1"
+            app:layout_shadowRadius="@dimen/dp_6" />
+
+
+    </com.rm.business_lib.shadow.ShadowLayout>
+</layout>

@@ -29,7 +29,7 @@
             android:layout_marginStart="16dp"
             android:layout_width="@dimen/dp_36"
             android:layout_height="@dimen/dp_36"
-            bindUrl="@{item.audioCover}"
+            bindUrl="@{item.audio_cover}"
             corner="@{8}"
             />
         <androidx.appcompat.widget.AppCompatTextView
@@ -38,13 +38,14 @@
             app:layout_constraintStart_toEndOf="@+id/listenSubsBookTitle"
             android:layout_marginStart="@dimen/dp_12"
             style="@style/BusinessTextStyleFirst_2"
-            android:text="@{item.audioName}"
+            android:text="@{item.audio_name}"
             tools:text="刘慈欣—三体"/>
         
         <androidx.appcompat.widget.AppCompatImageView
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/dp_16"
             android:layout_width="@dimen/dp_14"
             android:layout_height="@dimen/dp_24"
             android:src="@drawable/business_ic_next"
