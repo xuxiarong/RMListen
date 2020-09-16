@@ -4,11 +4,15 @@
 
     <data>
         <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+        <variable
             name="itemModel"
             type="com.rm.module_play.model.PlayControlCommentTitleModel" />
     </data>
 
     <RelativeLayout
+        android:layout_marginTop="35dp"
         android:layout_width="wrap_content"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -25,7 +29,8 @@
             android:textColor="@color/business_text_color_333333"
             android:textSize="16sp"
             android:text="更多"
-            android:layout_marginRight="20dp"
+            android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_MORE_COMMENT)}"
+            android:paddingRight="20dp"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

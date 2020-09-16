@@ -73,6 +73,7 @@ interface MusicPlayerPresenter {
      * @return 下一首的位置
      */
     fun playNextIndex(): Int
+
     /**
      * 播放器内部播放状态
      * @return 为true正在播放
@@ -236,4 +237,16 @@ interface MusicPlayerPresenter {
      * 结束常驻进程并清除默认通知
      */
     fun cleanNotification()
+
+    /**
+     * 设置播放模式
+     * @param model 播放模式，参考MusicConstants定义
+     * @return 成功设置的播放模式
+     */
+    fun setPlayerModel(model: Int): Int
+
+    //获取播放模式
+    fun getPlayerModel(): Int
+    //设置定时模式
+    fun setPlayerAlarmModel(model: Int)
 }

@@ -11,4 +11,6 @@ import com.rm.module_play.adapter.BookPlayerAdapter
  */
 class PlayControlSubModel(override val itemType: Int= BookPlayerAdapter.ITEM_TYPE_ANCHOR) :
     MultiItemEntity {
+
+
 }

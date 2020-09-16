@@ -12,12 +12,11 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
-import androidx.annotation.RequiresApi
+import com.example.music_exoplayer_lib.manager.BookAlarmManger
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.extractor.ExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.*
@@ -33,12 +32,12 @@ import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
-import com.rm.music_exoplayer_lib.manager.AlarmManger
 import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.notification.NOTIFICATION_ID
 import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
+import com.rm.music_exoplayer_lib.utils.CacheUtils
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import java.io.File
 import java.util.*
@@ -71,16 +70,22 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private var mHeadsetBroadcastReceiver: AlarmBroadcastReceiver? = null
 
     //用户设定的内部播放器播放模式，默认顺序
-    private val mPlayModel = MUSIC_MODEL_ORDER
+    private var mPlayModel = MUSIC_MODEL_ORDER
 
     //用户设定的闹钟模式,默认:MusicAlarmModel.MUSIC_ALARM_MODEL_0
-    private val mMusicAlarmModel = MUSIC_ALARM_MODEL_0
+    private var mMusicAlarmModel = MUSIC_ALARM_MODEL_0
+
+    //自动停止播放器的剩余时间
+    private var TIMER_DURTION = Long.MAX_VALUE
 
     //循环模式
     private val mLoop = false
 
     val notificationManger by lazy {
         NotificationManger(this, getCurrentPlayerMusic(), getPlayerState())
+    }
+    val alarmManger by lazy {
+        BookAlarmManger(this)
     }
     val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory()
 
@@ -108,16 +113,15 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //进度条消息
     @SuppressLint("HandlerLeak")
-    private val mUpdateProgressHandler = object :Handler(){
+    private val mUpdateProgressHandler = object : Handler() {
 
-        override fun handleMessage( msg: Message) {
+        override fun handleMessage(msg: Message) {
             val duration = mExoPlayer.contentDuration
             val currentPosition = mExoPlayer.contentPosition
             onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
         }
     }
-
 
 
     //音频焦点
@@ -150,7 +154,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 override fun onFocusOut() {
                     passivePause()
                 }
-
                 /**
                  * 返回播放器是否正在播放
                  * @return 为true正在播放
@@ -160,15 +163,17 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             }) ?: -1
 
         registerReceiver()
+        initPlayerConfig()
+        initAlarmConfig()
     }
 
     //注册广播
     private fun registerReceiver() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF)
-        intentFilter.addAction(Intent.ACTION_SCREEN_ON)
-        intentFilter.addAction(Intent.ACTION_USER_PRESENT)
+//        intentFilter.addAction(Intent.ACTION_SCREEN_OFF)
+//        intentFilter.addAction(Intent.ACTION_SCREEN_ON)
+//        intentFilter.addAction(Intent.ACTION_USER_PRESENT)
         intentFilter.addAction(ACTION_ALARM_REPLENISH_STOCK)
         intentFilter.addAction(ACTION_ALARM_SYNCHRONIZE)
         intentFilter.addAction(MUSIC_INTENT_ACTION_ROOT_VIEW)
@@ -221,7 +226,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 )
                 mExoPlayer.playWhenReady = true
                 //最后更新通知栏
-                notificationManger.showNotification(baseContext,musicInfo)
+                notificationManger.showNotification(baseContext, musicInfo)
             } else {
                 exoLog("没有链接")
             }
@@ -392,13 +397,37 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun setAlarm(times: Int) {
-        AlarmManger(this.applicationContext).setAlarm(times)
+        if (times > 0) {
+
+        }
     }
 
     override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int) {
         mAudios.clear()
         mAudios.addAll(audios)
         mCurrentPlayIndex = index
+    }
+
+    /**
+     * 播放完成
+     */
+    private fun onCompletionPlay() {
+        when (mPlayModel) {
+            //顺序播放
+            MUSIC_MODEL_ORDER -> {
+                if (mAudios.size - 1 > mCurrentPlayIndex) {
+                    mCurrentPlayIndex++
+                    postViewHandlerCurrentPosition(mCurrentPlayIndex)
+                    startPlayMusic(mCurrentPlayIndex)
+                }
+            }
+            //单曲播放
+            MUSIC_MODEL_SINGLE -> {
+                startPlayMusic(mCurrentPlayIndex)
+            }
+
+        }
+
     }
 
     /**
@@ -483,6 +512,71 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
     }
 
+    override fun setPlayerModel(model: Int): Int {
+        this.mPlayModel = model
+        CacheUtils.instance.putInt(PLAY_MODEL, model)
+        return mPlayModel
+
+    }
+
+    override fun getPlayerModel(): Int = mPlayModel
+
+    //初始化闹钟
+    fun initAlarmConfig() {
+        if (CacheUtils.instance.getLong(SP_KEY_ALARM_MODEL_TIME) > System.currentTimeMillis()) {
+            alarmManger.setAlarm(CacheUtils.instance.getLong(SP_KEY_ALARM_MODEL_TIME))
+        }
+    }
+
+    override fun setPlayerAlarmModel(model: Int) {
+        mMusicAlarmModel = model
+        CacheUtils.instance.putInt(SP_KEY_ALARM_MODEL, model)
+
+        mMusicAlarmModel = model
+        when (model) {
+            MUSIC_ALARM_MODEL_10 -> {
+                TIMER_DURTION = 10 * 60.toLong()
+            }
+            MUSIC_ALARM_MODEL_20 -> {
+                TIMER_DURTION = 20 * 60.toLong()
+
+            }
+            MUSIC_ALARM_MODEL_30 -> {
+                TIMER_DURTION = 30 * 60.toLong()
+
+            }
+            MUSIC_ALARM_MODEL_40 -> {
+                TIMER_DURTION = 40 * 60.toLong()
+
+            }
+            MUSIC_ALARM_MODEL_60 -> {
+                TIMER_DURTION = 60 * 60.toLong()
+            }
+            MUSIC_ALARM_MODEL_0 -> {
+                TIMER_DURTION = Long.MAX_VALUE
+
+            }
+            MUSIC_ALARM_MODEL_CURRENT -> {
+
+            }
+        }
+        val times = System.currentTimeMillis() + TIMER_DURTION * 1000
+        CacheUtils.instance.putLong(
+            SP_KEY_ALARM_MODEL_TIME,
+            times
+        )
+        alarmManger.setAlarm(times)
+
+    }
+
+    /**
+     * 播放器设计模式
+     */
+    fun initPlayerConfig() {
+        this.mPlayModel = CacheUtils.instance.getInt(PLAY_MODEL, MUSIC_MODEL_ORDER)
+
+    }
+
     /**
      * 更新播放进度
      */
@@ -503,7 +597,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             when (playbackState) {
                 Player.STATE_BUFFERING, Player.STATE_READY -> {
                     if (!mUpdateProgressHandler.hasMessages(0)) {
-                        mUpdateProgressHandler.sendEmptyMessageDelayed(0,UPDATE_PROGRESS_DELAY)
+                        mUpdateProgressHandler.sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
                         mMusicPlayerState = MUSIC_PLAYER_PLAYING
                     }
                     mMusicPlayerState =
@@ -512,6 +606,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
                 Player.STATE_ENDED -> {
                     mUpdateProgressHandler.removeMessages(0)
+                    onCompletionPlay()
                 }
 
                 Player.STATE_IDLE -> {

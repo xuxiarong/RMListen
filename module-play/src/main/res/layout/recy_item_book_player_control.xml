@@ -49,23 +49,25 @@
 
 
         <ImageView
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:id="@+id/iv_img_layout"
+            bindUrl="@{viewModel.playControlModel.baseAudioInfo.audioCover}"
+            corner="@{@dimen/dp_4}"
             android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_GET_PLAYINFO_LIST)}"
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
             android:scaleType="fitXY"
             app:layout_constraintTop_toBottomOf="@+id/rl_music_playe_title"
-            android:id="@+id/iv_img_layout"
-            />
-
+            tools:layout_editor_absoluteX="48dp" />
 
         <TextView
             android:id="@+id/fl_music_playe_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:text="《与罗摩相遇》第一章"
+            tools:text="《与罗摩相遇》第一章"
+            android:text="@{viewModel.playControlModel.baseAudioInfo.audioName}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="18sp"
             app:layout_constraintLeft_toRightOf="parent"
@@ -87,16 +89,18 @@
                 android:id="@+id/tv_music_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="与罗摩相遇 >"
+                android:text="@{viewModel.playControlModel.baseAudioInfo.filename}"
+                tools:text="与罗摩相遇 >"
                 android:textColor="@color/business_text_color_666666" />
 
             <com.flyco.roundview.RoundTextView
                 android:layout_width="80dp"
                 android:layout_height="26dp"
-                android:layout_marginLeft="32dp"
-                android:layout_toRightOf="@+id/tv_music_title"
+                android:layout_marginStart="32dp"
+                android:layout_toEndOf="@+id/tv_music_title"
                 android:gravity="center"
                 android:text="加入听单"
+                android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_JOIN_LISTEN)}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="12sp"
                 app:rv_cornerRadius="18dp"

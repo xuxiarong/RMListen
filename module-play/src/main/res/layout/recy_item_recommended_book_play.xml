@@ -4,11 +4,15 @@
 
     <data>
         <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+        <variable
             name="itemViewModel"
             type="com.rm.module_play.model.PlayControlRecommentModel" />
 
     </data>
     <RelativeLayout
+        android:layout_marginTop="35dp"
         android:layout_width="match_parent"
         android:paddingLeft="16dp"
         android:layout_height="wrap_content">

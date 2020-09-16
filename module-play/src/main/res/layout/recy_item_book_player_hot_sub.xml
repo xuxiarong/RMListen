@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+
         <variable
             name="itemModel"
             type="com.rm.module_play.model.PlayControlHotModel" />
@@ -21,49 +26,50 @@
 
         <ImageView
             android:id="@+id/iv_book_play_hot_recommended"
-            android:background="@drawable/ic_music_model_loop_noimal"
             android:layout_width="60dp"
-            android:layout_height="60dp" />
+            android:layout_height="60dp"
+            android:background="@drawable/business_defualt_img"/>
 
         <TextView
-            android:layout_toRightOf="@+id/iv_book_play_hot_recommended"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/iv_book_play_hot_recommended"
             android:text="我是黄花菜"
             android:textColor="@color/business_text_color_333333"
             android:textSize="16sp" />
 
 
         <LinearLayout
-            android:layout_toRightOf="@+id/iv_book_play_hot_recommended"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp">
+            android:layout_marginBottom="14dp"
+            android:layout_toRightOf="@+id/iv_book_play_hot_recommended">
 
             <com.flyco.roundview.RoundTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
                 android:text="热门主播"
+                android:textColor="@color/business_color_ffba56"
                 android:textSize="8sp"
                 app:rv_cornerRadius="2dp"
-                android:padding="2dp"
                 app:rv_strokeColor="@color/business_color_ffba56"
-                app:rv_strokeWidth="1dp"
-                android:textColor="@color/business_color_ffba56"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                app:rv_strokeWidth="1dp" />
         </LinearLayout>
 
 
         <TextView
-            android:drawableLeft="@drawable/music_play_ic_icon_attention_ec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
+            android:drawableLeft="@drawable/music_play_ic_icon_attention_ec"
             android:gravity="center"
+            android:onClick="@{()->viewModel.playFollowAction(itemModel)}"
             android:text="关注"
             android:textColor="@color/business_text_color_333333"
             android:textSize="14sp" />
