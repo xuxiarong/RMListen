@@ -8,8 +8,10 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
 import com.rm.baselisten.util.putMMKV
-import com.rm.business_lib.*
+import com.rm.business_lib.ACCESS_TOKEN
+import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.bean.RefreshTokenBean
+import com.rm.business_lib.helpter.loginOut
 import com.rm.business_lib.utils.DeviceUtils
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -134,21 +136,6 @@ class CustomInterceptor : Interceptor {
         val nonceItem: (Int) -> Char = { nonceScope[(nonceScope.length * Math.random()).toInt()] }
         return Array(16, nonceItem).joinToString("")
     }
-}
-
-/**
- * 登出
- */
-fun loginOut(): Boolean {
-    // 保存登陆信息到本地
-    ACCESS_TOKEN.putMMKV("")
-    REFRESH_TOKEN.putMMKV("")
-    LOGIN_USER_INFO.putMMKV("")
-
-    // 改变当前是否用户登陆状态 和 登陆的用户信息
-    isLogin.postValue(false)
-    loginUser.postValue(null)
-    return true
 }
 
 

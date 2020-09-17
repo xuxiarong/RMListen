@@ -4,11 +4,11 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.helpter.loginIn
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_login.R
 import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.repository.LoginRepository
-import com.rm.module_login.utils.loginIn
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -129,7 +129,7 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
             ).checkResult(
                 onSuccess = {
                     // 设置登陆成功数据
-                    loginIn(it)
+                    loginIn(it.access, it.refresh, it.member)
 
                     // 登陆成功
                     mViewModel.showToast(R.string.login_success)
