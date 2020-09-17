@@ -21,8 +21,8 @@ fun loginIn(loginInfo: LoginInfo) {
         LOGIN_USER_INFO.putMMKV(it.member)
 
         // 改变当前是否用户登陆状态 和 登陆的用户信息
-        isLogin.value = true
-        loginUser.value = it.member
+        isLogin.postValue(true)
+        loginUser.postValue(it.member)
     }
 }
 
@@ -36,6 +36,6 @@ fun loginOut() {
     LOGIN_USER_INFO.putMMKV("")
 
     // 改变当前是否用户登陆状态 和 登陆的用户信息
-    isLogin.value = false
-    loginUser.value = null
+    isLogin.postValue(false)
+    loginUser.postValue(null)
 }

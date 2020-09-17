@@ -33,6 +33,7 @@ class CustomInterceptor : Interceptor {
 
     // 需要刷新token服务器返回的code
     private val CODE_REFRESH_TOKEN = 1004
+
     // 被强制登出了(被挤下线了)
     private val CODE_LOGIN_OUT = 1204
 
@@ -89,12 +90,12 @@ class CustomInterceptor : Interceptor {
                 originalResponse[0] = originalResponse[0].newBuilder().code(200)
                     .body(responseStr.toResponseBody(contentType)).build()
             }
-        }else if(baseResponse.code == CODE_LOGIN_OUT){
+        } else if (baseResponse.code == CODE_LOGIN_OUT) {
             // 被挤下线，强制退出了
             loginOut()
             originalResponse[0] = originalResponse[0].newBuilder().code(200)
                 .body(responseStr.toResponseBody(contentType)).build()
-        }else {
+        } else {
             // 正常请求,下发数据到具体请求位置
             originalResponse[0] = originalResponse[0].newBuilder().code(200)
                 .body(responseStr.toResponseBody(contentType)).build()
@@ -138,15 +139,16 @@ class CustomInterceptor : Interceptor {
 /**
  * 登出
  */
-fun loginOut() {
+fun loginOut(): Boolean {
     // 保存登陆信息到本地
     ACCESS_TOKEN.putMMKV("")
     REFRESH_TOKEN.putMMKV("")
     LOGIN_USER_INFO.putMMKV("")
 
     // 改变当前是否用户登陆状态 和 登陆的用户信息
-    isLogin.value = false
-    loginUser.value = null
+    isLogin.postValue(false)
+    loginUser.postValue(null)
+    return true
 }
 
 
