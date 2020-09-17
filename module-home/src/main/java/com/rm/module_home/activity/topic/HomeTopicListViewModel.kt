@@ -45,11 +45,16 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
      */
     fun getTopicList() {
         launchOnIO {
+            if(page == 1){
+                showLoading()
+            }
             repository.getTopicList(pageId, blockId, topicId, page, pageSize).checkResult(
                 onSuccess = {
                     mAdapter.data.addAll(it.list)
                     mAdapter.notifyDataSetChanged()
-                    if (page > 1) {
+                    if(page == 1){
+                        showContentView()
+                    }else{
                         // 加载更多
                         refreshStatusModel.finishLoadMore(true)
                     }
