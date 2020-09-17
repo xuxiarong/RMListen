@@ -1,6 +1,7 @@
 package com.rm.business_lib.net
 
 import android.os.Build
+import android.text.TextUtils
 import com.google.gson.Gson
 import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.net.bean.BaseResponse
@@ -65,6 +66,12 @@ class CustomInterceptor : Interceptor {
         val contentType = responseBody.contentType()
         val responseStr = responseBody.string()
         responseBody.close()
+        if(TextUtils.isEmpty(responseStr)){
+            // 没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
+            originalResponse[0] = originalResponse[0].newBuilder().code(originalResponse[0].code)
+                .body(responseStr.toResponseBody(contentType)).build()
+            return
+        }
         val baseResponse = Gson().fromJson(responseStr, BaseResponse::class.java)
         if (baseResponse.code == CODE_REFRESH_TOKEN) {
             // 当前token过期，需要刷新token
