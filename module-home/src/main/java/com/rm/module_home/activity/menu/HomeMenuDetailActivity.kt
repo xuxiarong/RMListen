@@ -123,7 +123,7 @@ class HomeMenuDetailActivity :
 
         //item点击事件
         mViewModel.itemClick = {
-            HomeDetailActivity.startActivity(this)
+            HomeDetailActivity.startActivity(this,1)
         }
         home_menu_detail_back.setOnClickListener(this)
         home_menu_detail_share.setOnClickListener(this)

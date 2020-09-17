@@ -29,7 +29,7 @@ class HomeMainDebugActivity : BaseDebugActivity() {
             HomeTopListActivity.startActivity(this)
         }
         btnDetail.setOnClickListener {
-            HomeDetailActivity.startActivity(this)
+            HomeDetailActivity.startActivity(this,1)
         }
         btnTopicList.setOnClickListener {
             HomeTopicListActivity.startActivity(this,1,1,1,"精品推荐")

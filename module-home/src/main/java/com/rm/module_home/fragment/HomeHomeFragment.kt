@@ -121,7 +121,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
 
     fun recommendClick() {
-        HomeDetailActivity.startActivity(context!!)
+        HomeDetailActivity.startActivity(context!!,1)
     }
 
     fun moreClick() {
