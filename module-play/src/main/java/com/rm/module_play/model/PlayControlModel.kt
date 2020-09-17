@@ -14,13 +14,12 @@ import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
  */
 
 data class PlayControlModel(
-    var baseAudioInfo: BaseAudioInfo,
+    val baseAudioInfo: BaseAudioInfo = BaseAudioInfo(),
     override val itemType: Int = BookPlayerAdapter.ITEM_TYPE_PLAYER,
-     val state:Int=0
+    val state: Boolean = false
 
 ) :
     MultiItemEntity {
-
 
 
 }

@@ -25,4 +25,22 @@ interface PlayApiService {
     )//静态替换
     @GET("/")
     suspend fun getPlayPath(@QueryMap map: Map<String, String>): BaseResponse<SearchMusicData>
+
+    /**
+     * 用户评论列表
+     */
+    @GET("comment/member-comments")
+    suspend fun getMemberComments(
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<Any>
+
+    /**
+     * 评论点赞和取消点赞
+     */
+    @POST("comment/like")
+    suspend fun likeComment(
+        @Field("comment_id") comment_id: Int
+    ): BaseResponse<Any>
+
 }

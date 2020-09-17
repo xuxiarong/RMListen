@@ -23,12 +23,12 @@
 
         <ImageView
             android:id="@+id/iv_music_play_left"
-            app:bindClick="@{viewModel.playManger.playLastMusic}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="10dp"
             android:src="@drawable/music_play_ic_icon_bf"
+            app:bindClick="@{viewModel.playManger.playLastMusic}"
             tools:ignore="MissingConstraints" />
 
         <FrameLayout
@@ -45,17 +45,24 @@
                 android:indeterminate="false"
                 android:indeterminateDrawable="@drawable/music_play_progressbar" />
 
-            <com.rm.module_play.view.PlayButtonView
-                android:id="@+id/music_play_button"
-                bindDingtoggleState="@{viewModel.playOrPause}"
-                android:layout_width="46dp"
-                android:layout_height="45dp"
+
+            <com.flyco.roundview.RoundFrameLayout
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_gravity="center"
-                android:background="?selectableItemBackgroundBorderless"
-                app:pauseButtonTint="@color/business_text_color_ffffff"
-                app:playButtonTint="@color/business_text_color_ffffff"
-                app:progressTrackColor="@color/business_color_ff5e5e"
-                app:showProgressTrack="true" />
+                app:rv_backgroundColor="@color/business_color_ff5e5e"
+                app:rv_cornerRadius="40dp">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    playStart="@{viewModel.playControlModel.state}"
+                    playAction="@{viewModel.playFun}"
+                    android:layout_gravity="center"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                   />
+            </com.flyco.roundview.RoundFrameLayout>
+
         </FrameLayout>
 
         <ImageView

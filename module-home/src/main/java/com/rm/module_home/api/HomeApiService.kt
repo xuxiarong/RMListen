@@ -28,7 +28,7 @@ interface HomeApiService {
      * 获取听书详情
      */
     @GET("audio/detail")
-    suspend fun HomeDetail(@Query("id") id: String): BaseResponse<HomeDetailModel>
+    suspend fun homeDetail(@Query("id") id: Int): BaseResponse<HomeDetailModel>
 
 
     /**

@@ -27,7 +27,7 @@ import java.util.HashMap
  * @data: 8/24/20 10:44 AM
  * @Version: 1.0.0
  */
-class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
+open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
     val playPath = ObservableField<List<BaseAudioInfo>>()
     val pathList = ArrayList<BaseAudioInfo>()
     val process = ObservableField<Float>()//进度条
@@ -97,6 +97,21 @@ class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
 
     }
 
+    /**
+     * 获取评论列表
+     */
+    fun getCommentList() {
+        launchOnIO {
+
+        }
+    }
+
+    /**
+     * 点赞或者取消评论
+     */
+    fun likeComment() {
+
+    }
 
     /**
      * 初始化数据
@@ -131,11 +146,14 @@ class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
 
     }
 
+
     /**
      * 播放或者暂停
      */
-    fun playOrPause() {
+    fun playFun() {
         playManger.playOrPause()
+        playControlModel.set(PlayControlModel(state = (!(playControlModel.get()?.state == true))))
+        playControlModel.notifyChange()
     }
 
 

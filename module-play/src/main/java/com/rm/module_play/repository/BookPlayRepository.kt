@@ -14,18 +14,27 @@ import com.rm.module_play.test.SearchResultInfo
  * @data: 9/3/20 5:47 PM
  * @Version: 1.0.0
  */
-class BookPlayRepository(val playApi:PlayApiService) : BaseRepository() {
+class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
 
     /**
      * 发送忘记密码短信验证码
      * @param area_code String
      * @param phone String
      */
-    suspend fun getBookList(params:Map<String,String>): BaseResult<SearchResult> {
+    suspend fun getBookList(params: Map<String, String>): BaseResult<SearchResult> {
         return apiCall { playApi.getBookList(params) }
     }
 
-    suspend fun getPlayPath(params:Map<String,String>): BaseResult<SearchMusicData> {
+    suspend fun getPlayPath(params: Map<String, String>): BaseResult<SearchMusicData> {
         return apiCall { playApi.getPlayPath(params) }
     }
+    //获取用户评论列表
+    suspend fun getMemberComments(page: Int, pageSize: Int): BaseResult<Any> {
+        return apiCall { playApi.getMemberComments(page, pageSize) }
+    }
+    //点赞和取消点赞
+    suspend fun likeComment(commentID:Int): BaseResult<Any> {
+        return apiCall { playApi.likeComment(commentID) }
+    }
+
 }

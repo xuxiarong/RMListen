@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
+import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.playview.GlobalplayHelp
 
 /**
@@ -20,9 +21,14 @@ class PlayServiceImpl : PlayService {
 
 
     override fun getGlobalPlay(): View = GlobalplayHelp.instance.globalView
-    override fun showView(){
+    override fun showView() {
         GlobalplayHelp.instance.globalView.mainShow()
     }
+
+    override fun toPlayPage(context: Context) {
+        BookPlayerActivity.startActivity(context)
+    }
+
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return PlayApplicationDelegate::class.java

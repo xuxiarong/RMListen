@@ -48,7 +48,11 @@ class PlayActivity :
     override fun getLayoutId(): Int = R.layout.activity_play
 
     override fun initModelBrId() = BR.viewModel
-    private val permsSd = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+    private val permsSd = arrayOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
     companion object {
         fun startActivity(context: Context) {
             context.startActivity(Intent(context, PlayActivity::class.java).apply {
@@ -98,10 +102,10 @@ class PlayActivity :
             }
 
         })
-        music_play_button.setOnClickListener {
-            toggleState()
-            musicPlayerManger.playOrPause()
-        }
+//        music_play_button.setOnClickListener {
+//            toggleState()
+//            musicPlayerManger.playOrPause()
+//        }
         tv_music_left_next.setOnClickListener {
             //向后退15s
             musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 15)
@@ -142,7 +146,7 @@ class PlayActivity :
                 requestPermissionsForResult(*permsSd, rationale = "为了更好的提供服务，需要获取存储空间权限")
 
             } catch (e: InlineRequestPermissionException) {
-                ToastUtil.show(this@PlayActivity,"获取权限失败")
+                ToastUtil.show(this@PlayActivity, "获取权限失败")
             }
         }
 
@@ -186,14 +190,14 @@ class PlayActivity :
     }
 
     private fun toggleState() {
-        when (music_play_button.buttonState) {
-            PlayButtonView.STATE_PLAY -> music_play_button.setButtonState(
-                PlayButtonView.STATE_PAUSE, true
-            )
-            PlayButtonView.STATE_PAUSE -> music_play_button.setButtonState(
-                PlayButtonView.STATE_PLAY, true
-            )
-        }
+//        when (music_play_button.buttonState) {
+//            PlayButtonView.STATE_PLAY -> music_play_button.setButtonState(
+//                PlayButtonView.STATE_PAUSE, true
+//            )
+//            PlayButtonView.STATE_PAUSE -> music_play_button.setButtonState(
+//                PlayButtonView.STATE_PLAY, true
+//            )
+//        }
     }
 
 
@@ -210,7 +214,11 @@ class PlayActivity :
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
-        loadRoundCornersImage(dip(8).toFloat(),iv_img_layout, musicPlayerManger.getCurrentPlayerMusic()?.audioCover)
+        loadRoundCornersImage(
+            dip(8).toFloat(),
+            iv_img_layout,
+            musicPlayerManger.getCurrentPlayerMusic()?.audioCover
+        )
 
     }
 
@@ -226,7 +234,7 @@ class PlayActivity :
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
 //        iv_img_layout
-        loadRoundCornersImage(dip(8).toFloat(),iv_img_layout,musicInfo.audioCover)
+        loadRoundCornersImage(dip(8).toFloat(), iv_img_layout, musicInfo.audioCover)
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -239,7 +247,8 @@ class PlayActivity :
         bufferProgress: Int
     ) {
         music_play_bubbleSeekBar.setNoListenerProgress(currentDurtion.toFloat())
-        val str = "${formatTimeInMillisToString(currentDurtion)}/${formatTimeInMillisToString(totalDurtion)}"
+        val str =
+            "${formatTimeInMillisToString(currentDurtion)}/${formatTimeInMillisToString(totalDurtion)}"
         music_play_bubbleSeekBar.updateThumbText(str)
         bubbleFl.text = str
     }
