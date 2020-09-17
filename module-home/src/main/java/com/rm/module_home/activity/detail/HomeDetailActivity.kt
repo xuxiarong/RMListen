@@ -16,18 +16,17 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
-import com.rm.component_comm.login.LoginService
-import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
-import com.rm.module_home.model.home.detail.*
+import com.rm.module_home.model.home.detail.ChapterList
+import com.rm.module_home.model.home.detail.CommentList
+import com.rm.module_home.model.home.detail.Tags
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
-import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
 
 /**
  * 书籍详情
@@ -57,7 +56,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
     companion object {
         val mAudioID = "audioID"
-        fun startActivity(context: Context, audioID: Int) {
+        fun startActivity(context: Context, audioID: String) {
             val intent = Intent(context, HomeDetailActivity::class.java)
             intent.putExtra(mAudioID, audioID)
             context.startActivity(Intent(context, HomeDetailActivity::class.java))

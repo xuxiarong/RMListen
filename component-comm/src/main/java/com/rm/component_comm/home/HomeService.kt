@@ -29,5 +29,5 @@ interface HomeService : ApplicationProvider {
     /**
      * 跳转详情页
      */
-    fun toDetailActivity(context: Context,audioID:Int)
+    fun toDetailActivity(context: Context,audioID:String)
 }

@@ -35,7 +35,7 @@ class HomeServiceImpl : HomeService {
         HomeMenuDetailActivity.startActivity(context,pageId,sheetId )
     }
 
-    override fun toDetailActivity(context: Context, audioID: Int) {
+    override fun toDetailActivity(context: Context, audioID: String) {
         HomeDetailActivity.startActivity(context,audioID)
     }
 

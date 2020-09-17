@@ -33,6 +33,12 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     var earlyUpdateList = MutableLiveData<MutableList<MultiItemEntity>>()
     var allUpdateList = MutableLiveData<MutableList<MultiItemEntity>>()
 
+    var onAudioClick : (String)->Unit = {}
+
+    fun onAudioClickFun(audio : ListenAudioModel){
+        onAudioClick(audio.audio_id)
+    }
+
     fun getSubsDataFromService(){
 
         launchOnIO {

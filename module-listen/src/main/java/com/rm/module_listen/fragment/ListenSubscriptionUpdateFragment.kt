@@ -5,6 +5,8 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.adapter.ListenAudioAdapter
@@ -58,7 +60,13 @@ class ListenSubscriptionUpdateFragment :
     override fun initLayoutId() = R.layout.listen_fragment_subscription_update
 
     override fun initData() {
+        mViewModel.onAudioClick = {startDetail(it)}
         mViewModel.getSubsDataFromService()
+    }
+
+    fun startDetail(audioId :String){
+        val homeService = RouterHelper.createRouter(HomeService::class.java)
+        homeService.toDetailActivity(context!!,audioId)
     }
 
     override fun initView() {

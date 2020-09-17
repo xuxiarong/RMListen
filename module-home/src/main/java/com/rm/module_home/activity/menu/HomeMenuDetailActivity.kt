@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
-import android.webkit.PermissionRequest
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -123,7 +122,7 @@ class HomeMenuDetailActivity :
 
         //item点击事件
         mViewModel.itemClick = {
-            HomeDetailActivity.startActivity(this,1)
+            HomeDetailActivity.startActivity(this,"1")
         }
         home_menu_detail_back.setOnClickListener(this)
         home_menu_detail_share.setOnClickListener(this)
