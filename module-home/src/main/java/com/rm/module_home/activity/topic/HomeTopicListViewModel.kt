@@ -20,7 +20,7 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
     var blockId = -1
     var topicId = -1
     var page = 1
-    val pageSize = 20
+    val pageSize = 10
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -52,9 +52,9 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
                     if (page > 1) {
                         // 加载更多
                         refreshStatusModel.finishLoadMore(true)
-                        // 设置是否还有下一页数据
-                        refreshStatusModel.setHasMore(it.list.size > 0)
                     }
+                    // 设置是否还有下一页数据
+                    refreshStatusModel.setHasMore(it.list.size > 0)
                     page++
                 },
                 onError = {

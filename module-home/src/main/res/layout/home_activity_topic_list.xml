@@ -16,9 +16,7 @@
         bindOnLoadMoreListener="@{viewModel.getTopicList}"
         bindOnRefreshListener="@{viewModel.refresh}"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srlEnableFooterFollowWhenLoadFinished="true"
-        app:srlEnableLoadMoreWhenContentNotFull="false">
+        android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             bindVerticalLayout="@{viewModel.mAdapter}"
