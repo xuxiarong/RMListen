@@ -44,16 +44,20 @@ class ListenSubscriptionUpdateFragment :
         mViewModel.allUpdateList.observe(this, Observer {
             mListenAudioAdapter.setList(it)
         })
-
+        mViewModel.todayUpdateList.observe(this, Observer {
+            mListenAudioAdapter.notifyDataSetChanged()
+        })
+        mViewModel.earlyUpdateList.observe(this, Observer {
+            mListenAudioAdapter.notifyDataSetChanged()
+        })
+        mViewModel.yesterdayUpdateList.observe(this, Observer {
+            mListenAudioAdapter.notifyDataSetChanged()
+        })
     }
 
     override fun initLayoutId() = R.layout.listen_fragment_subscription_update
 
     override fun initData() {
-    }
-
-    override fun onResume() {
-        super.onResume()
         mViewModel.getSubsDataFromService()
     }
 

@@ -63,6 +63,11 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     fun dealServiceData(it: ListenSubsModel) {
 
+        allUpdateList.value?.clear()
+        todayUpdateList.value?.clear()
+        yesterdayUpdateList.value?.clear()
+        earlyUpdateList.value?.clear()
+
         val tempAllData = ArrayList<MultiItemEntity>()
         val serviceToday = ArrayList<MultiItemEntity>()
         val serviceYes = ArrayList<MultiItemEntity>()
@@ -94,10 +99,11 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             }
         }
         if(it.early.isNotEmpty()){
-            tempAllData.add(ListenAudioDateModel("更早",false))
-            tempAllData.add(ListenAudioEarlyRvModel())
-            allUpdateList.value = tempAllData
+
             it.early.forEach { subsEarly ->
+                tempAllData.add(ListenAudioDateModel(subsEarly.upgrade_time,false))
+                tempAllData.add(ListenAudioEarlyRvModel())
+                allUpdateList.value = tempAllData
                 subsEarly.itemType = R.layout.listen_item_subs_list_audio
                 subsEarly.chapter_list.forEach { chapter ->
                     chapter.itemType = R.layout.listen_item_subs_list_chapter
