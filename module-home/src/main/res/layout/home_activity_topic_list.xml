@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_home.activity.topic.HomeTopicListViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
+        bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
+        bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess}"
+        bindOnLoadMoreListener="@{viewModel.getTopicList}"
+        bindOnRefreshListener="@{viewModel.refresh}"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        bindVerticalLayout="@{viewModel.mAdapter}"/>
+        android:layout_height="wrap_content"
+        app:srlEnableFooterFollowWhenLoadFinished="true"
+        app:srlEnableLoadMoreWhenContentNotFull="false">
+
+        <androidx.recyclerview.widget.RecyclerView
+            bindVerticalLayout="@{viewModel.mAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

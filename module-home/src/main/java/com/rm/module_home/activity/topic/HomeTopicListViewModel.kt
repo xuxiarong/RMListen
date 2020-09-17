@@ -6,6 +6,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.BR
 import com.rm.business_lib.bean.AudioBean
+import com.rm.component_comm.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.R
 import com.rm.module_home.repository.HomeTopicRepository
 
@@ -19,7 +20,10 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
     var blockId = -1
     var topicId = -1
     var page = 1
-    val pageSize = 10
+    val pageSize = 20
+
+    // 下拉刷新和加载更多控件状态控制Model
+    val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
     val mAdapter by lazy {
         CommonBindAdapter<AudioBean>(
@@ -43,18 +47,50 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
         launchOnIO {
             repository.getTopicList(pageId, blockId, topicId, page, pageSize).checkResult(
                 onSuccess = {
-                    it.list?.let { it1 -> mAdapter.data.addAll(it1) }
+                    mAdapter.data.addAll(it.list)
                     mAdapter.notifyDataSetChanged()
-                    page ++
+                    if (page > 1) {
+                        // 加载更多
+                        refreshStatusModel.finishLoadMore(true)
+                        // 设置是否还有下一页数据
+                        refreshStatusModel.setHasMore(it.list.size > 0)
+                    }
+                    page++
                 },
                 onError = {
-                    if(page == 1){
+                    if (page == 1) {
                         // 获取第一页数据就失败
                         // 显示错误视图
                         showNetError()
-                    }else{
-                        // TODO 获取下一页失败，显示列表加载失败的视图
+                    } else {
+                        // 获取下一页失败，显示列表加载失败的视图
+                        refreshStatusModel.finishLoadMore(false)
                     }
+                }
+            )
+        }
+    }
+
+    /**
+     * 下拉刷新时调用
+     */
+    fun refresh() {
+        launchOnIO {
+            page = 1
+            repository.getTopicList(pageId, blockId, topicId, page, pageSize).checkResult(
+                onSuccess = {
+                    // 清空所有数据
+                    mAdapter.data.clear()
+                    it.list.let { it1 -> mAdapter.data.addAll(it1) }
+                    mAdapter.notifyDataSetChanged()
+                    page++
+                    refreshStatusModel.finishRefresh(true)
+                    // 设置是否还有下一页数据
+                    refreshStatusModel.setHasMore(it.list.size > 0)
+                },
+                onError = {
+                    // 下拉刷新失败
+                    refreshStatusModel.finishRefresh(false)
                 }
             )
         }

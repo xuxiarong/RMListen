@@ -108,6 +108,8 @@ ext {
             easypermissions           : "pub.devrel:easypermissions:${version.easypermissions}",
             //tinypinyin
             "tinypinyin"              : "com.github.promeg:tinypinyin:2.0.3",
+            // 下拉刷新控件
+            "smartRefreshLayout"      : "com.scwang.smart:refresh-layout-kernel:2.0.1",
 
             //scrolllayout : "com.yinglan.scrolllayout:scrolllayout:${version.scrolllayout}"
             "lottie"                  : "com.airbnb.android:lottie:${version.lottieVersion}"
