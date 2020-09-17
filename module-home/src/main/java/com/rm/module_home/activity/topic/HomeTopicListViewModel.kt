@@ -44,10 +44,10 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
      * 获取专题列表
      */
     fun getTopicList() {
+        if(page == 1){
+            showLoading()
+        }
         launchOnIO {
-            if(page == 1){
-                showLoading()
-            }
             repository.getTopicList(pageId, blockId, topicId, page, pageSize).checkResult(
                 onSuccess = {
                     mAdapter.data.addAll(it.list)
