@@ -23,7 +23,7 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.model.home.detail.ChapterList
 import com.rm.module_home.model.home.detail.CommentList
-import com.rm.module_home.model.home.detail.Tags
+import com.rm.component_comm.home.Tags
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
@@ -59,7 +59,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         fun startActivity(context: Context, audioID: String) {
             val intent = Intent(context, HomeDetailActivity::class.java)
             intent.putExtra(mAudioID, audioID)
-            context.startActivity(Intent(context, HomeDetailActivity::class.java))
+            context.startActivity(intent)
         }
     }
 
@@ -80,11 +80,12 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         mViewModel.detailViewModel.addOnPropertyChangedCallback(object :
             OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                loadBlurImage(img_glide, mViewModel.detailViewModel.get()!!.detaillist.cover_url)
-
-                homedetailtagsadapter.setNewInstance(mViewModel.detailViewModel.get()!!.detaillist.tags)
+                loadBlurImage(
+                    img_glide,
+                    mViewModel.detailViewModel.get()?.detaillist?.cover_url ?: ""
+                )
+                homedetailtagsadapter.setNewInstance(mViewModel.detailViewModel.get()?.detaillist?.tags)
                 homedetailtagsadapter.notifyDataSetChanged()
-
             }
         })
         mViewModel.detailCommentViewModel.addOnPropertyChangedCallback(object :
@@ -104,11 +105,16 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         })
         mViewModel.action.addOnPropertyChangedCallback(object : OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val router = RouterHelper.createRouter(PlayService::class.java)
-                router.toPlayPage(this@HomeDetailActivity)
+                mViewModel.detailViewModel.get()?.let {
+                    val router = RouterHelper.createRouter(PlayService::class.java)
+
+                    router.toPlayPage(this@HomeDetailActivity, it, mViewModel.audioList.get()!!)
+                }
+
             }
 
         })
+
 
     }
 
@@ -150,9 +156,10 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         LayoutMargin.topMargin = stateHeight + dip(44)
         scroll_down_layout.layoutParams = LayoutMargin
         scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
-        val audioIDs = intent.getIntExtra(mAudioID, -1)
-        if (audioIDs > 0) {
+        val audioIDs = intent.getStringExtra(mAudioID)
+        if (audioIDs.orEmpty().isNotEmpty()) {
             mViewModel.intDetailInfo(audioIDs)
+            mViewModel.chapterList(audioIDs)
         }
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)

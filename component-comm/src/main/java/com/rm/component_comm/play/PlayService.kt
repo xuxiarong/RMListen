@@ -3,6 +3,8 @@ package com.rm.component_comm.play
 import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
+import com.rm.component_comm.home.AudioChapterListModel
+import com.rm.component_comm.home.HomeDetailModel
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -16,5 +18,5 @@ interface PlayService : ApplicationProvider {
     //显示播放器按钮
     fun showView()
     //跳著到播放器页面
-    fun toPlayPage(context: Context)
+    fun toPlayPage(context: Context,bean: HomeDetailModel,detailModel: AudioChapterListModel)
 }

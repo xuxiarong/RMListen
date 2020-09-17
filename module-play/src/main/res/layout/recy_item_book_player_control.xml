@@ -49,17 +49,17 @@
 
 
         <ImageView
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
             android:id="@+id/iv_img_layout"
-            bindUrl="@{viewModel.playControlModel.baseAudioInfo.audioCover}"
+            bindUrl="@{itemModel.homeDetailModel.detaillist.anchor.anchor_avatar}"
             corner="@{@dimen/dp_4}"
-            android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_GET_PLAYINFO_LIST)}"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_width="match_parent"
             android:layout_height="280dp"
+            android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_GET_PLAYINFO_LIST)}"
             android:scaleType="fitXY"
             app:layout_constraintTop_toBottomOf="@+id/rl_music_playe_title"
-            tools:layout_editor_absoluteX="48dp" />
+            tools:layout_editor_absoluteX="49dp" />
 
         <TextView
             android:id="@+id/fl_music_playe_page"

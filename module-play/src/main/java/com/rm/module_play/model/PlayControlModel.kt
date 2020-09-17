@@ -2,6 +2,7 @@ package com.rm.module_play.model
 
 import androidx.databinding.ObservableField
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.component_comm.home.HomeDetailModel
 import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.module_play.test.SearchResultInfo
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -15,11 +16,13 @@ import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 
 data class PlayControlModel(
     val baseAudioInfo: BaseAudioInfo = BaseAudioInfo(),
+    val homeDetailModel: HomeDetailModel?=null,
     override val itemType: Int = BookPlayerAdapter.ITEM_TYPE_PLAYER,
     val state: Boolean = false
 
 ) :
     MultiItemEntity {
+
 
 
 }

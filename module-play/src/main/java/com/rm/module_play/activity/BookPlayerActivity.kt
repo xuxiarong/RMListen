@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.databinding.Observable
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
+import com.rm.component_comm.home.AudioChapterListModel
+import com.rm.component_comm.home.HomeDetailModel
 import com.rm.component_comm.navigateToForResult
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -36,6 +40,7 @@ import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 
+@Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
     MusicPlayerEventListener {
 
@@ -44,8 +49,24 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     companion object {
+        val homeDetailModel = "homeDetailModel"
+        val audioChapterListModel = "AudioChapterListModel"
+        fun startActivity(
+            context: Context,
+            homeDetailBean: HomeDetailModel,
+            detailModel: AudioChapterListModel
+        ) {
+            val intent = Intent(context, BookPlayerActivity::class.java)
+            intent.putExtra(homeDetailModel, homeDetailBean)
+            intent.putExtra(audioChapterListModel, detailModel)
+            context.startActivity(intent.apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            })
+        }
+
         fun startActivity(context: Context) {
-            context.startActivity(Intent(context, BookPlayerActivity::class.java).apply {
+            val intent = Intent(context, BookPlayerActivity::class.java)
+            context.startActivity(intent.apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             })
         }
@@ -75,24 +96,17 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun startObserve() {
-        mViewModel.playPath.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (mViewModel.playPath.get()?.size == 20) {
-                    mViewModel.playPath.get()?.let {
-                        musicPlayerManger.updateMusicPlayerData(it, 2)
-                        musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
-                        GlobalplayHelp.instance.addOnPlayerEventListener()
-                    }
-
-                }
+        mViewModel.playPath.observe(this, Observer {
+            it?.let {
+                musicPlayerManger.updateMusicPlayerData(it, 2)
+                musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
+                GlobalplayHelp.instance.addOnPlayerEventListener()
             }
         })
         mViewModel.playControlAction.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 when (mViewModel.playControlAction.get()) {
-
                     ACTION_PLAY_QUEUE -> {
                         //调整播放列表
                         showPlayBookListDialog()
@@ -103,7 +117,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                 showMusicPlayTimeSettingDialog()
                             } else {
                                 showMusicPlaySpeedDialog {
-                                    MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it)
+                                    musicPlayerManger.setPlayerMultiple(it)
                                 }
                             }
                         }
@@ -114,9 +128,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     ACTION_JOIN_LISTEN -> {
                         ToastUtil.show(this@BookPlayerActivity, "加入听单")
                     }
-                    ACTION_MORE_COMMENT->{
+                    ACTION_MORE_COMMENT -> {
                         ToastUtil.show(this@BookPlayerActivity, "更多评论")
-
                     }
                     else -> {
 
@@ -133,17 +146,28 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         mViewModel.initPlayerAdapterModel()
         mDataBind.rvMusicPlay.bindVerticalLayout(mBookPlayerAdapter)
-
-    }
-
-    private var searchResultInfo: List<SearchResultInfo>? = null
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == 100) {
-            searchResultInfo = data?.getParcelableArrayListExtra("books")
-            searchResultInfo?.let { mViewModel.zipPlayPath(it) }
+        val homeDetailBean = intent.getSerializableExtra(homeDetailModel) as? HomeDetailModel
+        val audioChapterListModel = intent.getSerializableExtra(audioChapterListModel) as? AudioChapterListModel
+        audioChapterListModel?.let {
+            mViewModel.zipPlayPath(it)
         }
+        homeDetailBean?.let {
+            val listValue = mViewModel.mutableList.value
+            listValue?.set(0, PlayControlModel(homeDetailModel = it))
+            mViewModel.mutableList.postValue(listValue)
+            mBookPlayerAdapter.notifyDataSetChanged()
+        }
+
     }
+
+//    private var searchResultInfo: List<SearchResultInfo>? = null
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == 100) {
+//            searchResultInfo = data?.getParcelableArrayListExtra("books")
+//            searchResultInfo?.let { mViewModel.zipPlayPath(it) }
+//        }
+//    }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
 
@@ -151,7 +175,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onPrepared(totalDurtion: Long) {
         mViewModel.maxProcess.set(totalDurtion.toFloat())
-        mViewModel.playControlModel.set(
+        mViewModel.playControlModel.postValue(
             PlayControlModel(
                 musicPlayerManger.getCurrentPlayerMusic() ?: BaseAudioInfo()
             )

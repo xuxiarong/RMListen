@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-<!--        <import type = "com.rm.module_home.model.home.detail.Tags"/>-->
+<!--        <import type = "com.rm.component_comm.home.Tags"/>-->
 <!--        <import type = "com.rm.module_home.model.home.detail.List"/>-->
 
         <variable
