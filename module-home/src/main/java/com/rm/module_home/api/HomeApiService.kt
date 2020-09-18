@@ -3,11 +3,12 @@ package com.rm.module_home.api
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetListBean
+import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.bean.MenuSheetInfoBean
 import com.rm.module_home.model.home.HomeModel
-import com.rm.module_home.model.home.detail.HomeDetailModel
+import com.rm.business_lib.bean.HomeDetailModel
 import retrofit2.http.*
 
 
@@ -36,7 +37,7 @@ interface HomeApiService {
      * 获取听书详情
      */
     @GET("audio/detail")
-    suspend fun homeDetail(@Query("id") id: Int): BaseResponse<HomeDetailModel>
+    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailModel>
 
 
     /**
@@ -53,11 +54,13 @@ interface HomeApiService {
     /**
      * 章节列表
      */
-    @GET("chapter/list")
-    suspend fun HomeChapter(
-        @Field("page") page: Int,
-        @Field("page_size") page_size: Int
-    ): BaseResponse<String>
+    @GET("audio/chapter/list")
+    suspend fun chapterList(
+        @Query("audio_id") audioId:String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int,
+        @Query("sort") sort:String
+    ): BaseResponse<AudioChapterListModel>
 
     /**
      * 下载音频章节

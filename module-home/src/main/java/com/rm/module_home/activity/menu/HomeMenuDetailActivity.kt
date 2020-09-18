@@ -21,10 +21,10 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.IS_FIRST_FAVORITES
+import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.isLogin
-import com.rm.component_comm.annotation.LISTEN_SHEET_LIST_COLLECTED_LIST
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
@@ -122,7 +122,7 @@ class HomeMenuDetailActivity :
 
         //item点击事件
         mViewModel.itemClick = {
-            HomeDetailActivity.startActivity(this,"1")
+            HomeDetailActivity.startActivity(this,it.audio_id)
         }
         home_menu_detail_back.setOnClickListener(this)
         home_menu_detail_share.setOnClickListener(this)

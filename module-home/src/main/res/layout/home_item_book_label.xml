@@ -6,7 +6,7 @@
     <data>
         <variable
             name="Tags"
-            type="com.rm.module_home.model.home.detail.Tags"
+            type="com.rm.business_lib.bean.Tags"
             />
     </data>
 

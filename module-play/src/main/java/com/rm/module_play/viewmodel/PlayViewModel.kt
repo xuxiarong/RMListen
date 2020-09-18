@@ -8,14 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_play.model.*
 import com.rm.module_play.repository.BookPlayRepository
-import com.rm.module_play.test.SearchResultInfo
-import com.rm.module_play.view.PlayButtonView
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import kotlinx.android.synthetic.main.music_paly_control_view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,14 +27,15 @@ import java.util.HashMap
  * @Version: 1.0.0
  */
 open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
-    val playPath = ObservableField<List<BaseAudioInfo>>()
+    val playPath = MutableLiveData<List<BaseAudioInfo>>()
     val pathList = ArrayList<BaseAudioInfo>()
     val process = ObservableField<Float>()//进度条
     val maxProcess = ObservableField<Float>()//最大进度
     val updateThumbText = ObservableField<String>()//更改文字
-    var playControlModel = ObservableField<PlayControlModel>()
+    var playControlModel = MutableLiveData<PlayControlModel>()
     var playControlAction = ObservableField<String>()
     var playControlSubModel = MutableLiveData<PlayControlSubModel>()
+    val homeDetailModel = MutableLiveData<HomeDetailModel>()
     var playControlRecommentListModel =
         MutableLiveData<MutableList<PlayControlRecommentListModel>>()
     val mutableList = MutableLiveData<MutableList<MultiItemEntity>>()
@@ -75,8 +75,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                                 it.author_name
                             )
                         )
-                        playPath.notifyChange()
-                        playPath.set(pathList)
+                        playPath.postValue(pathList)
                     }
                 },
                 onError = {
@@ -85,12 +84,20 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         }
     }
 
-    fun zipPlayPath(searchResultInfo: List<SearchResultInfo>) {
+    fun zipPlayPath(searchResultInfo: AudioChapterListModel) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                searchResultInfo.forEach {
-                    getPlayPath(it.hash)
+                searchResultInfo.list.forEach {
+                    pathList.add(
+                        BaseAudioInfo(
+                            it.path_url,
+                            it.path,
+                            it.chapter_name,
+                            it.created_at
+                        )
+                    )
                 }
+                playPath.postValue(pathList)
 
             }
         }
@@ -124,7 +131,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         }
         playControlRecommentListModel.value = recommentListModel
         mutableList.value = mutableListOf(
-            playControlModel.get() ?: PlayControlModel(BaseAudioInfo()),
+            playControlModel.value ?: PlayControlModel(),
             playControlSubModel.value ?: PlayControlSubModel(),
             PlayControlRecommentModel(),
             PlayControlHotModel(),
@@ -152,8 +159,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      */
     fun playFun() {
         playManger.playOrPause()
-        playControlModel.set(PlayControlModel(state = (!(playControlModel.get()?.state == true))))
-        playControlModel.notifyChange()
+        playControlModel.postValue(PlayControlModel(state = (!(playControlModel.value?.state == true))))
     }
 
 

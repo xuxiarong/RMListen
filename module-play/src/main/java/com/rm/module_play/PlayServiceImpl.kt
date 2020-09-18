@@ -2,10 +2,10 @@ package com.rm.module_play
 
 import android.content.Context
 import android.view.View
-import android.widget.FrameLayout
-import androidx.core.view.contains
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.component_comm.base.IApplicationDelegate
+import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
@@ -25,8 +25,13 @@ class PlayServiceImpl : PlayService {
         GlobalplayHelp.instance.globalView.mainShow()
     }
 
-    override fun toPlayPage(context: Context) {
-        BookPlayerActivity.startActivity(context)
+    override fun toPlayPage(
+        context: Context,
+        bean: HomeDetailModel,
+        detailModel: AudioChapterListModel
+    ) {
+        BookPlayerActivity.startActivity(context,bean,detailModel)
+
     }
 
 

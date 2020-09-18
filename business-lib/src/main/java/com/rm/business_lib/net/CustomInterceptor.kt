@@ -1,15 +1,17 @@
 package com.rm.business_lib.net
 
 import android.os.Build
+import android.text.TextUtils
 import com.google.gson.Gson
 import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.net.bean.BaseResponse
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.encodeMD5
-import com.rm.baselisten.util.getStringMMKV
-import com.rm.baselisten.util.putMMKV
-import com.rm.business_lib.*
+import com.rm.baselisten.util.*
+import com.rm.business_lib.ACCESS_TOKEN
+import com.rm.business_lib.ACCESS_TOKEN_INVALID_TIMESTAMP
+import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.bean.RefreshTokenBean
+import com.rm.business_lib.helpter.loginOut
+import com.rm.business_lib.helpter.parseToken
 import com.rm.business_lib.utils.DeviceUtils
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -33,6 +35,7 @@ class CustomInterceptor : Interceptor {
 
     // 需要刷新token服务器返回的code
     private val CODE_REFRESH_TOKEN = 1004
+
     // 被强制登出了(被挤下线了)
     private val CODE_LOGIN_OUT = 1204
 
@@ -43,12 +46,49 @@ class CustomInterceptor : Interceptor {
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val original = chain.request()
-        val request: Request = getRequestHeaderBuilder(original.newBuilder()).build()
-        val originalResponse = arrayOf(chain.proceed(request))
+        // 请求拦截处理
+        val originalResponse = requestIntercept(chain)
         // 返回参数拦截处理
         responseIntercept(originalResponse, chain)
         return originalResponse[0]
+    }
+
+    /**
+     * 拦截请求数据，判断访问token是否已过期
+     * @return Boolean
+     */
+    private fun requestIntercept(chain: Interceptor.Chain): Array<Response> {
+        if (TextUtils.isEmpty(ACCESS_TOKEN.getStringMMKV())
+            || ACCESS_TOKEN_INVALID_TIMESTAMP.getLongMMKV(0) > System.currentTimeMillis()/1000
+            || chain.request().url.toUri().path.contains("auth/refresh")
+        ) {
+            // 证明未登陆 或者 访问令牌token还未过期 或者 是刷新token的接口， 则不去判断token是否过期了,直接请求
+            return buildRequestResponse(chain)
+        }
+
+        DLog.d(TAG, "请求时，验证token已过期，刷新token")
+        // 到这里，说明刷新token已经过期了，则去刷新接口
+        // 注意，一定要在当前线程同步请求刷新接口，否则再重新请求之前的接口会抛异常
+        val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
+        return if (result?.code == 0) {
+            // 刷新token成功，保存最新token
+            updateLocalToken(result.data.access, result.data.refresh)
+            // 再去构造真正用户需要请求的接口请求信息
+            buildRequestResponse(chain)
+        } else {
+            // 刷新token失败，则还是让用户去请求，提示他token过期
+            buildRequestResponse(chain)
+        }
+    }
+
+    /**
+     * 构建之前的请求
+     * @param chain Chain
+     * @return Array<Response>
+     */
+    private fun buildRequestResponse(chain: Interceptor.Chain): Array<Response> {
+        val request: Request = getRequestHeaderBuilder(chain.request().newBuilder()).build()
+        return arrayOf(chain.proceed(request))
     }
 
     /**
@@ -62,16 +102,21 @@ class CustomInterceptor : Interceptor {
         val contentType = responseBody.contentType()
         val responseStr = responseBody.string()
         responseBody.close()
+        if (TextUtils.isEmpty(responseStr)) {
+            // 没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
+            originalResponse[0] = originalResponse[0].newBuilder().code(originalResponse[0].code)
+                .body(responseStr.toResponseBody(contentType)).build()
+            return
+        }
         val baseResponse = Gson().fromJson(responseStr, BaseResponse::class.java)
         if (baseResponse.code == CODE_REFRESH_TOKEN) {
             // 当前token过期，需要刷新token
-            DLog.d(TAG, "token过期，刷新token")
+            DLog.d(TAG, "响应时，token已过期，刷新token")
             // 注意，一定要在当前线程同步请求刷新接口，否则再重新请求之前的接口会抛异常
             val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
             if (result?.code == 0) {
                 // 刷新token成功，保存最新token
-                ACCESS_TOKEN.putMMKV(result.data.access)
-                REFRESH_TOKEN.putMMKV(result.data.refresh)
+                updateLocalToken(result.data.access, result.data.refresh)
                 // 将之前拦截的接口重新请求并下发
                 val request: Request.Builder = getRequestHeaderBuilder(chain.request().newBuilder())
                 try {
@@ -89,16 +134,29 @@ class CustomInterceptor : Interceptor {
                 originalResponse[0] = originalResponse[0].newBuilder().code(200)
                     .body(responseStr.toResponseBody(contentType)).build()
             }
-        }else if(baseResponse.code == CODE_LOGIN_OUT){
+        } else if (baseResponse.code == CODE_LOGIN_OUT) {
             // 被挤下线，强制退出了
             loginOut()
             originalResponse[0] = originalResponse[0].newBuilder().code(200)
                 .body(responseStr.toResponseBody(contentType)).build()
-        }else {
+        } else {
             // 正常请求,下发数据到具体请求位置
             originalResponse[0] = originalResponse[0].newBuilder().code(200)
                 .body(responseStr.toResponseBody(contentType)).build()
         }
+    }
+
+
+    /**
+     * 更新本地token相关信息
+     * @param access String
+     * @param refresh String
+     */
+    private fun updateLocalToken(access: String, refresh: String) {
+        ACCESS_TOKEN.putMMKV(access)
+        REFRESH_TOKEN.putMMKV(refresh)
+        // 更新访问token的过期时间
+        ACCESS_TOKEN_INVALID_TIMESTAMP.putMMKV(parseToken(access))
     }
 
 
@@ -133,20 +191,6 @@ class CustomInterceptor : Interceptor {
         val nonceItem: (Int) -> Char = { nonceScope[(nonceScope.length * Math.random()).toInt()] }
         return Array(16, nonceItem).joinToString("")
     }
-}
-
-/**
- * 登出
- */
-fun loginOut() {
-    // 保存登陆信息到本地
-    ACCESS_TOKEN.putMMKV("")
-    REFRESH_TOKEN.putMMKV("")
-    LOGIN_USER_INFO.putMMKV("")
-
-    // 改变当前是否用户登陆状态 和 登陆的用户信息
-    isLogin.value = false
-    loginUser.value = null
 }
 
 

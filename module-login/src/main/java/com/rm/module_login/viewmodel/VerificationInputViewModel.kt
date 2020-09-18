@@ -3,10 +3,10 @@ package com.rm.module_login.viewmodel
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.helpter.loginIn
 import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
 import com.rm.module_login.repository.LoginRepository
-import com.rm.module_login.utils.loginIn
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -45,7 +45,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 repository.loginByVerifyCode(countryCode, phone, content).checkResult(
                     onSuccess = {
                         // 设置登陆成功数据
-                        loginIn(it)
+                        loginIn(it.access,it.refresh,it.member)
 
                         // 登陆成功
                         showToast(R.string.login_success)

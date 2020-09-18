@@ -2,6 +2,8 @@ package com.rm.module_home.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.model.home.detail.*
 
@@ -18,7 +20,7 @@ class DetailRepository(val homeservice: HomeApiService) : BaseRepository() {
         return HomeDetailModel(detailinfo)
     }*/
 
-    suspend fun getDetailInfo(id: Int): BaseResult<HomeDetailModel> {
+    suspend fun getDetailInfo(id: String): BaseResult<HomeDetailModel> {
         return apiCall { homeservice.homeDetail(id) }
     }
 
@@ -54,5 +56,12 @@ class DetailRepository(val homeservice: HomeApiService) : BaseRepository() {
 
         return DetailChapterModel(chapter, 10)
 
+    }
+
+    /**
+     * 章节列表
+     */
+    suspend fun chapterList(id: String): BaseResult<AudioChapterListModel> {
+        return apiCall { homeservice.chapterList(id, 1, 20, "asc") }
     }
 }

@@ -3,11 +3,11 @@ package com.rm.module_login.viewmodel
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.helpter.loginIn
 import com.rm.module_login.R
 import com.rm.module_login.activity.ForgetPasswordActivity
 import com.rm.module_login.activity.LoginByVerifyCodeActivity
 import com.rm.module_login.repository.LoginRepository
-import com.rm.module_login.utils.loginIn
 import com.rm.module_login.viewmodel.view.PasswordInputViewModel
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
 
@@ -50,7 +50,7 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
             ).checkResult(
                 onSuccess = {
                     // 设置登陆成功数据
-                    loginIn(it)
+                    loginIn(it.access,it.refresh,it.member)
 
                     showContentView()
                     showToast(R.string.login_success)

@@ -128,11 +128,11 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     }
 
     private fun startHorDoubleMore() {
-        this.context?.let { HomeTopicListActivity.startActivity(it,1,1,1,"精品推荐Double") }
+        this.context?.let { HomeTopicListActivity.startActivity(it,1,1,2,"精品推荐Double") }
     }
 
     private fun startHorSingleMore() {
-        this.context?.let { HomeTopicListActivity.startActivity(it,1,1,1,"精品推荐Grid") }
+        this.context?.let { HomeTopicListActivity.startActivity(it,1,1,2,"精品推荐Grid") }
     }
 
 

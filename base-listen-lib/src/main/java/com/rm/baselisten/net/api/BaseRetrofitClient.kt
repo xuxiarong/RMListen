@@ -52,7 +52,9 @@ open class BaseRetrofitClient {
                 var request = chain.request()
                 if (!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
                     request = request.newBuilder()
-                        .cacheControl(CacheControl.FORCE_CACHE)
+                        // CacheControl.FORCE_CACHE:强制使用缓存,如果没有缓存数据,则抛出504(only-if-cached)
+                        // CacheControl.FORCE_NETWORK:强制使用网络,不使用任何缓存.
+                        .cacheControl(CacheControl.FORCE_NETWORK)
                         .build()
                 }
                 val response = chain.proceed(request)

@@ -153,13 +153,13 @@ class PlayActivity :
     }
 
     private var searchResultInfo: List<SearchResultInfo>? = null
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == 100) {
-            searchResultInfo = data?.getParcelableArrayListExtra("books")
-            searchResultInfo?.let { mViewModel.zipPlayPath(it) }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == 100) {
+//            searchResultInfo = data?.getParcelableArrayListExtra("books")
+//            searchResultInfo?.let { mViewModel.zipPlayPath(it) }
+//        }
+//    }
 
     override fun onResume() {
         super.onResume()
@@ -174,19 +174,19 @@ class PlayActivity :
     }
 
     override fun startObserve() {
-        mViewModel.playPath.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (mViewModel.playPath.get()?.size == 20) {
-                    mViewModel.playPath.get()?.let {
-                        musicPlayerManger.updateMusicPlayerData(it, 2)
-                        musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
-                        GlobalplayHelp.instance.addOnPlayerEventListener()
-                    }
-
-                }
-            }
-        })
+//        mViewModel.playPath.addOnPropertyChangedCallback(object :
+//            Observable.OnPropertyChangedCallback() {
+//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+//                if (mViewModel.playPath.get()?.size == 20) {
+//                    mViewModel.playPath.get()?.let {
+//                        musicPlayerManger.updateMusicPlayerData(it, 2)
+//                        musicPlayerManger.addOnPlayerEventListener(this@PlayActivity)
+//                        GlobalplayHelp.instance.addOnPlayerEventListener()
+//                    }
+//
+//                }
+//            }
+//        })
     }
 
     private fun toggleState() {

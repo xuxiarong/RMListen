@@ -1,4 +1,4 @@
-package com.rm.module_home.model.home.detail
+package com.rm.business_lib.bean
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -16,7 +16,7 @@ data class HomeDetailModel(
 
 data class DetailArticle(
     val anchor: Anchor,
-    val anchor_id: Int,
+    val anchor_id: String,
     val audio_id: Long,
     val author: String,
     val author_intro: String,
@@ -24,7 +24,7 @@ data class DetailArticle(
     val intro: String,
     val last_sequence: Int,
     val name: String,
-    val play_count: String ,
+    val play_count: String,
     val progress: Int,
     val tags: MutableList<Tags>,
     val type: Int
@@ -34,7 +34,7 @@ data class Anchor(
     val anchor_name: String,
     val anchor_follows: Int,
     val anchor_avatar: String,
-    val status: Int
+    val status: Boolean
 ):Serializable
 
 data class Tags(
