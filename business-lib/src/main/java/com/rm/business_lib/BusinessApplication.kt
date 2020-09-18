@@ -2,7 +2,10 @@ package com.rm.business_lib
 
 import android.text.TextUtils
 import com.rm.baselisten.BaseApplication
-import com.rm.baselisten.util.*
+import com.rm.baselisten.util.Cxt
+import com.rm.baselisten.util.getLongMMKV
+import com.rm.baselisten.util.getStringMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.helpter.parseToken
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.net.api.BusinessApiService
@@ -66,16 +69,13 @@ open class BusinessApplication : BaseApplication() {
         if (TextUtils.isEmpty(ACCESS_TOKEN.getStringMMKV())
             || TextUtils.isEmpty(REFRESH_TOKEN.getStringMMKV(""))
             || ACCESS_TOKEN_INVALID_TIMESTAMP.getLongMMKV(0) > System.currentTimeMillis() / 1000
-        ) {
-            // 证明未登陆 或者 访问令牌token还未过期
-            return
-        }
+        ) return // 证明未登陆 或者 访问令牌token还未过期
+
 
         // 到这里，说明刷新token已经过期了，则去刷新接口
         GlobalScope.launch(Dispatchers.IO) {
             apiService.refreshToken2(REFRESH_TOKEN.getStringMMKV("")).let {
-                DLog.i("llj","刷新token结果！！！--code--->>>${it.code}")
-                if(it.code != 0) return@launch // 刷新不成功，直接返回，不处理了
+                if (it.code != 0) return@launch // 刷新不成功，直接返回，不处理了
                 ACCESS_TOKEN.putMMKV(it.data.access)
                 REFRESH_TOKEN.putMMKV(it.data.refresh)
                 // 更新访问token的过期时间
