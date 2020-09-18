@@ -5,6 +5,7 @@ import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.baselisten.util.DLog
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.business_lib.helpter.parseToken
 import com.rm.module_login.R
 import com.rm.module_login.activity.*
 import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_RESET_PWD
@@ -81,6 +82,10 @@ class LoginMainDebugActivity : BaseDebugActivity() {
                 customView =
                     ImageView(this@LoginMainDebugActivity).apply { setImageResource(R.mipmap.login_ic_launcher) }
             }.show(this)
+        }
+
+        btnParseToken.setOnClickListener {
+            parseToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MDAzMzA4NDEsIm5iZiI6MTYwMDMzMDg0MSwiZXhwIjoxNjAyNzUwMDQxLCJqdGkiOiIxNzE4MDhlZGNiMTZmNjMzZWRjZDc2NzI0OWM1YTczNyIsInR5cCI6InJlZnJlc2giLCJ1aWQiOiIxNjUwOTY3ODQwMDYzMDc4NDAifQ.kubohSBhEzOK-SjRjLFf8DjDJIgjsSh2Rd7OaN5cIkM")
         }
     }
 

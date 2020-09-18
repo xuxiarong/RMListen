@@ -14,6 +14,9 @@ const val ACCESS_TOKEN = "accessToken"
 // 刷新令牌(token)
 const val REFRESH_TOKEN = "refreshToken"
 
+// 当前访问token失效时间
+const val ACCESS_TOKEN_INVALID_TIMESTAMP = "accessTokenInvalidTimestamp"
+
 // 当前登陆用户信息
 const val LOGIN_USER_INFO = "loginUserInfo"
 
