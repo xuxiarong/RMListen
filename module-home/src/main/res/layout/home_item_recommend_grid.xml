@@ -22,8 +22,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
-            bindUrl="@{item.gridRecommendRvModel.url}"
-            corner="@{item.gridRecommendRvModel.iconCorner}"
+            bindUrl="@{item.gridRecommendRvModel.cover_url}"
+            corner="@{8}"
             android:layout_width="106dp"
             android:layout_height="106dp"
             android:scaleType="fitXY"
@@ -32,14 +32,14 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
-            bindText="@{item.gridRecommendRvModel.tag}"
+            bindText="@{item.gridRecommendRvModel.audio_label}"
             style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
             app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopName"
-            bindText="@{item.gridRecommendRvModel.name}"
+            bindText="@{item.gridRecommendRvModel.audio_name}"
             android:layout_width="106dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

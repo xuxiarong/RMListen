@@ -46,12 +46,6 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         setStatusBar(R.color.base_activity_bg_color)
 
         mViewModel.collectItemClickList = {initCollectClick(it)}
-//        mViewModel.initBannerInfo()
-//        mViewModel.initCollect()
-//        mViewModel.initSingleList()
-//        mViewModel.initDoubleList()
-//        mViewModel.initGridList()
-//        mViewModel.initVerList()
         mViewModel.doubleRvLeftScrollOpenDetail = {startBoutique()}
         mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
 
@@ -91,9 +85,6 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     override fun startObserve() {
         mViewModel.homeAllData.observe(this, Observer {
             mHomeAdapter.setList(it)
-        })
-        mViewModel.homeHorDoubleList.observe(this, Observer {
-            mHomeAdapter.notifyDataSetChanged()
         })
     }
 

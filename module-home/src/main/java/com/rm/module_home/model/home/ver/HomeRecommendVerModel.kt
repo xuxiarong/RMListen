@@ -2,6 +2,7 @@ package com.rm.module_home.model.home.ver
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_home.R
+import com.rm.module_home.model.home.HomeAudioModel
 
 /**
  * desc   :
@@ -9,11 +10,7 @@ import com.rm.module_home.R
  * version: 1.0
  */
 data class HomeRecommendVerModel constructor(
-    var imageUrl: String,
-    val tag: String,
-    val title: String,
-    val content: String,
-    val author: String
+    var verModel: HomeAudioModel
 ) : MultiItemEntity {
     override val itemType = R.layout.home_item_recommend_ver
 }

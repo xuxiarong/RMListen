@@ -23,15 +23,15 @@
             android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bindUrl="@{item.imageUrl}"
-            tools:src="#00ff00" />
+            bindUrl="@{item.verModel.cover_url}"
+            corner="@{8}" />
 
         <TextView
             android:id="@+id/home_book_adapter_tips"
             style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
             app:layout_constraintRight_toRightOf="@id/home_book_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/home_book_adapter_icon"
-            android:text="@{item.tag}"
+            android:text="@{item.verModel.audio_label}"
             tools:text="文案" />
 
         <TextView
@@ -43,7 +43,7 @@
             app:layout_constraintLeft_toRightOf="@id/home_book_adapter_icon"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/home_book_adapter_icon"
-            android:text="@{item.title}"
+            android:text="@{item.verModel.audio_name}"
             tools:text="你自己觉得有，别人感觉" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_8"
             android:maxLines="2"
-            android:text="@{item.content}"
+            android:text="@{item.verModel.audio_intro}"
             app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_book_adapter_name"
@@ -61,7 +61,7 @@
         <TextView
             android:id="@+id/home_book_adapter_author"
             style="@style/BusinessTextStyleThird_4"
-            android:text="@{item.author}"
+            android:text="@{item.verModel.audio_name}"
             app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_icon"
             app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
             tools:text="楼芸蓓" />
