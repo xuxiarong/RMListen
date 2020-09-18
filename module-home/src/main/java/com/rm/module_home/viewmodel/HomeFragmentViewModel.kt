@@ -7,6 +7,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.module_home.R
+import com.rm.module_home.model.home.HomeAudioModel
 import com.rm.module_home.model.home.HomeBlockModel
 import com.rm.module_home.model.home.HomeMenuModel
 import com.rm.module_home.model.home.HomeModel
@@ -14,6 +15,7 @@ import com.rm.module_home.model.home.banner.HomeBannerRvModel
 import com.rm.module_home.model.home.collect.HomeCollectRvModel
 import com.rm.module_home.model.home.grid.HomeGridRecommendModel
 import com.rm.module_home.model.home.grid.HomeGridRecommendRvModel
+import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleModel
 import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleRvModel
 import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleModel
 import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleRvModel
@@ -82,18 +84,29 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     fun setBlockData(allData: ArrayList<MultiItemEntity>, block: HomeBlockModel) {
         when (block.block_type_id) {
             1 -> {
-                var doubleHorList = ArrayList<MultiItemEntity>()
-                block.audio_list.list.forEach {
-                    it.itemType = R.layout.home_item_recommend_hor_double
+                val doubleHorList = ArrayList<MultiItemEntity>()
+                val bottomList = ArrayList<HomeAudioModel>()
+                val topList = ArrayList<HomeAudioModel>()
+
+                for (i in 0 until block.audio_list.list.size) {
+                    if(i%2==0){
+                        topList.add(block.audio_list.list[i])
+                    }else{
+                        bottomList.add(block.audio_list.list[i])
+                    }
                 }
-                for (i in 0..block.audio_list.list.size/2) {
 
+                var doubleModel : HomeRecommendHorDoubleModel
+                for(i in 0 until  topList.size) {
+                    if (i == topList.size-1) {
+                        doubleModel = HomeRecommendHorDoubleModel(topList[i], topList[i], false)
+                    } else {
+                        doubleModel = HomeRecommendHorDoubleModel(topList[i], bottomList[i])
+                    }
+                    doubleHorList.add(doubleModel)
                 }
-
-
                 homeHorDoubleList.value = doubleHorList
-
-                allData.add(HomeMoreModel(block.block_name,{}))
+                allData.add(HomeMoreModel(block.block_name, {}))
                 allData.add(HomeRecommendHorDoubleRvModel())
             }
             2 -> {

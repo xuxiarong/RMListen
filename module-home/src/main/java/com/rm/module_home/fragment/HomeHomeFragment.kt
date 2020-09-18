@@ -4,8 +4,6 @@ import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
-import com.rm.business_lib.isLogin
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity
@@ -94,22 +92,11 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         mViewModel.homeAllData.observe(this, Observer {
             mHomeAdapter.setList(it)
         })
-
-        isLogin.observe(this, Observer {
-            DLog.d("suolong","isLogin = $it")
+        mViewModel.homeHorDoubleList.observe(this, Observer {
+            mHomeAdapter.notifyDataSetChanged()
         })
     }
 
-
-    var count = 0
-    override fun onResume() {
-        super.onResume()
-        isLogin.value = (!isLogin.value!!)
-        count++
-        mViewModel.homeAllData.value = mutableListOf(
-            HomeMoreModel("标题$count",{}))
-
-    }
 
     private fun startBoutique() {
         context?.let {

@@ -11,7 +11,8 @@ import com.rm.module_home.model.home.HomeAudioModel
  */
 data class HomeRecommendHorDoubleModel(
     val topRecommendModel: HomeAudioModel,
-    val bottomRecommendModel: HomeAudioModel
+    val bottomRecommendModel: HomeAudioModel,
+    var needShowBottom : Boolean = true
 ) : MultiItemEntity {
     override val itemType = R.layout.home_item_recommend_hor_double
 }

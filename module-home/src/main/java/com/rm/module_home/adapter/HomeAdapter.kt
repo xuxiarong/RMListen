@@ -2,8 +2,8 @@ package com.rm.module_home.adapter
 
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.baselisten.adapter.multi.BaseMultiAdapter
 import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
@@ -26,7 +26,7 @@ class HomeAdapter(
     private var homeViewModel: HomeFragmentViewModel,
     modelBrId: Int,
     itemBrId: Int
-) : BaseMultiVMAdapter<BaseMultiAdapter.BaseMultiItemEntity>(homeViewModel, modelBrId, itemBrId) {
+) : BaseMultiVMAdapter<MultiItemEntity>(homeViewModel, modelBrId, itemBrId) {
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
