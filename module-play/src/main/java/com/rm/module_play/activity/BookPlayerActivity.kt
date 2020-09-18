@@ -143,13 +143,15 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.initPlayerAdapterModel()
         mDataBind.rvMusicPlay.bindVerticalLayout(mBookPlayerAdapter)
         val homeDetailBean = intent.getSerializableExtra(homeDetailModel) as? HomeDetailModel
-        val audioChapterListModel = intent.getSerializableExtra(audioChapterListModel) as? AudioChapterListModel
+        val audioChapterListModel =
+            intent.getSerializableExtra(audioChapterListModel) as? AudioChapterListModel
         audioChapterListModel?.let {
             mViewModel.zipPlayPath(it)
         }
         homeDetailBean?.let {
             val listValue = mViewModel.mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
+            mViewModel.commentAudioComments("${it.detaillist.audio_id}", 1, 20)
             mViewModel.mutableList.postValue(listValue)
             mBookPlayerAdapter.notifyDataSetChanged()
         }

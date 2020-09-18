@@ -1,6 +1,7 @@
 package com.rm.module_play.api
 
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.test.ResultData
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
@@ -42,5 +43,16 @@ interface PlayApiService {
     suspend fun likeComment(
         @Field("comment_id") comment_id: Int
     ): BaseResponse<Any>
+
+    /**
+     * 用户评论列表
+     */
+    @GET("comment/audio-comments")
+    suspend fun commentAudioComments(
+        @Query("audio_id") audioId: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<AudioCommentsModel>
+
 
 }
