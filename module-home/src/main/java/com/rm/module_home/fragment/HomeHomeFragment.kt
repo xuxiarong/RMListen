@@ -3,13 +3,13 @@ package com.rm.module_home.fragment
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity
 import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuActivity
+import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
 import com.rm.module_home.model.home.HomeAudioModel
@@ -24,8 +24,8 @@ import com.rm.module_home.viewmodel.HomeFragmentViewModel
  */
 class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentViewModel>() {
 
-    private  val mHomeAdapter: HomeAdapter by lazy {
-        HomeAdapter(mViewModel,BR.viewModel,BR.item)
+    private val mHomeAdapter: HomeAdapter by lazy {
+        HomeAdapter(mViewModel, BR.viewModel, BR.item)
     }
 
     override fun initLayoutId() = R.layout.home_home_fragment
@@ -40,10 +40,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
         setStatusBar(R.color.base_activity_bg_color)
 
-        mViewModel.collectItemClickList = {initCollectClick(it)}
-        mViewModel.doubleRvLeftScrollOpenDetail = {startBoutique()}
-        mViewModel.audioClick = {onAudioClick(it)}
-        mViewModel.blockClick = {onBlockClick(it)}
+        mViewModel.collectItemClickList = { initCollectClick(it) }
+        mViewModel.doubleRvLeftScrollOpenDetail = { startBoutique() }
+        mViewModel.audioClick = { onAudioClick(it) }
+        mViewModel.blockClick = { onBlockClick(it) }
         mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
 
     }
@@ -62,40 +62,63 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         }
     }
 
+    /**
+     * 数据监听
+     */
     override fun startObserve() {
         mViewModel.homeAllData.observe(this, Observer {
             mHomeAdapter.setList(it)
         })
     }
 
-    //跳转精品
+    /**
+     * 跳转精品
+     */
     private fun startBoutique() {
         context?.let {
             BoutiqueActivity.startActivity(it)
         }
     }
-    //跳转排行
+
+    /**
+     * 跳转排行
+     */
     private fun startRank() {
         context?.let {
             HomeTopListActivity.startActivity(it)
         }
     }
 
-    //跳转听单
+    /**
+     * 跳转听单
+     */
     private fun startMenu() {
         context?.let {
             HomeMenuActivity.startActivity(it)
         }
     }
 
-    //不同模版的音频Item的点击事件
-    private fun onAudioClick(audioModel: HomeAudioModel){
-        HomeDetailActivity.startActivity(activity!!,audioModel.audio_id)
-    }
-    //板块的点击事件
-    private fun onBlockClick(blockModel: HomeBlockModel){
-        DLog.d("suolong", blockModel.block_name)
+    /**
+     * 不同模版的音频Item的点击事件
+     * @param audioModel HomeAudioModel
+     */
+    private fun onAudioClick(audioModel: HomeAudioModel) {
+        HomeDetailActivity.startActivity(activity!!, audioModel.audio_id)
     }
 
+
+    /**
+     * 首页板块的点击事件
+     * @param blockModel HomeBlockModel
+     */
+    private fun onBlockClick(blockModel: HomeBlockModel) {
+        HomeTopicListActivity.startActivity(
+            activity!!,
+            blockModel.page_id,
+            blockModel.block_id,
+            blockModel.topic_id,
+            blockModel.block_name
+        )
+    }
 
 }
