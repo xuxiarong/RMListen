@@ -7,6 +7,10 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+
+        <variable
             name="item"
             type="com.rm.module_home.model.home.more.HomeMoreModel" />
     </data>
@@ -20,7 +24,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemMoreTitle"
-            bindText="@{item.title}"
+            bindText="@{item.block.block_name}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_28"
             android:gravity="center_vertical"
@@ -34,7 +38,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemMoreText"
-            bindClick="@{item.moreClick}"
+            bindClick="@{()->viewModel.onBlockClick(item.block)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"

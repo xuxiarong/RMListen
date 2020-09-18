@@ -1,9 +1,9 @@
 package com.rm.module_home.fragment
 
 import androidx.lifecycle.Observer
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.util.DLog
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity
@@ -13,13 +13,9 @@ import com.rm.module_home.activity.menu.HomeMenuActivity
 import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
+import com.rm.module_home.model.home.HomeAudioModel
+import com.rm.module_home.model.home.HomeBlockModel
 import com.rm.module_home.model.home.HomeMenuModel
-import com.rm.module_home.model.home.banner.HomeBannerRvModel
-import com.rm.module_home.model.home.grid.HomeGridRecommendRvModel
-import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleRvModel
-import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleRvModel
-import com.rm.module_home.model.home.more.HomeMoreModel
-import com.rm.module_home.model.home.ver.HomeRecommendVerRvModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
 
 /**
@@ -47,6 +43,8 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
         mViewModel.collectItemClickList = {initCollectClick(it)}
         mViewModel.doubleRvLeftScrollOpenDetail = {startBoutique()}
+        mViewModel.audioClick = {onAudioClick(it)}
+        mViewModel.blockClick = {onBlockClick(it)}
         mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
 
     }
@@ -66,20 +64,6 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                 startMenu()
             }
         }
-    }
-
-    private fun initHomeAdapter(): MutableList<MultiItemEntity> {
-        return mutableListOf(
-            HomeBannerRvModel(mViewModel.homeBannerInfoList.value),
-            HomeMoreModel("精品推荐Double") { startHorDoubleMore() },
-            HomeRecommendHorDoubleRvModel(),
-            HomeMoreModel("精品推荐Grid") { startHorSingleMore() },
-            HomeGridRecommendRvModel(),
-            HomeMoreModel("精品推荐Single") { startHorSingleMore() },
-            HomeRecommendHorSingleRvModel(),
-            HomeMoreModel("新书推荐") { startHorSingleMore() },
-            HomeRecommendVerRvModel()
-        )
     }
 
     override fun startObserve() {
@@ -122,7 +106,13 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
     }
 
+    fun onAudioClick(audioModel: HomeAudioModel){
+        HomeDetailActivity.startActivity(activity!!,audioModel.audio_id)
+    }
 
+    fun onBlockClick(blockModel: HomeBlockModel){
+        DLog.d("suolong", blockModel.block_name)
+    }
 
 
 }

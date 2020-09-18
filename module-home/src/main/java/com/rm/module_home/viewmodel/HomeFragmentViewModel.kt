@@ -45,6 +45,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
 
     var homeAllData = MutableLiveData<MutableList<MultiItemEntity>>()
 
+    var audioClick : (HomeAudioModel)->Unit = {}
+    var blockClick : (HomeBlockModel)->Unit = {}
 
     fun getHomeDataFromService() {
         launchOnIO {
@@ -111,7 +113,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     doubleHorList.add(doubleModel)
                 }
                 homeHorDoubleList.value = doubleHorList
-                allData.add(HomeMoreModel(block.block_name, {}))
+                allData.add(HomeMoreModel(block))
                 allData.add(HomeRecommendHorDoubleRvModel())
             }
             2 -> {
@@ -120,7 +122,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     gridList.add(HomeGridRecommendModel(it))
                 }
                 homeGridList.value = gridList
-                allData.add(HomeMoreModel(block.block_name,{}))
+                allData.add(HomeMoreModel(block))
                 allData.add(HomeGridRecommendRvModel())
             }
             3 -> {
@@ -129,7 +131,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     horSingList.add(HomeRecommendHorSingleModel(it))
                 }
                 homeHorSingleList.value = horSingList
-                allData.add(HomeMoreModel(block.block_name,{}))
+                allData.add(HomeMoreModel(block))
                 allData.add(HomeRecommendHorSingleRvModel())
             }
             4 -> {
@@ -138,7 +140,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     verSingList.add(HomeRecommendVerModel(it))
                 }
                 homeVerList.value = verSingList
-                allData.add(HomeMoreModel(block.block_name,{}))
+                allData.add(HomeMoreModel(block))
                 allData.add(HomeRecommendVerRvModel())
             }
             else -> {
@@ -153,8 +155,12 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         DLog.d("suolong", "model = ${model.menu_name} ")
     }
 
-    fun initCollectClick(vararg clickList: () -> Unit) {
+    fun onAudioClick(audioModel: HomeAudioModel){
+        audioClick(audioModel)
+    }
 
+    fun onBlockClick(block: HomeBlockModel){
+        blockClick(block)
     }
 
     fun doubleRvOpenDetail() {
