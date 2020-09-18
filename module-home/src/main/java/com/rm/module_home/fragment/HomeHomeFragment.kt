@@ -10,7 +10,6 @@ import com.rm.module_home.activity.HomeTopListActivity
 import com.rm.module_home.activity.boutique.BoutiqueActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuActivity
-import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
 import com.rm.module_home.model.home.HomeAudioModel
@@ -51,16 +50,13 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
     private fun initCollectClick(model: HomeMenuModel) {
         when (model.menu_name) {
-            "精品推荐" -> {
+            getString(R.string.home_boutique) -> {
                 startBoutique()
             }
-            "榜单" -> {
+            getString(R.string.home_rank) -> {
                 startRank()
             }
-            "看书" -> {
-                recommendClick()
-            }
-            "听单" -> {
+            getString(R.string.home_listen_list) -> {
                 startMenu()
             }
         }
@@ -72,37 +68,31 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         })
     }
 
-
+    //跳转精品
     private fun startBoutique() {
         context?.let {
             BoutiqueActivity.startActivity(it)
         }
     }
-
+    //跳转排行
     private fun startRank() {
         context?.let {
             HomeTopListActivity.startActivity(it)
         }
     }
 
+    //跳转听单
     private fun startMenu() {
         context?.let {
             HomeMenuActivity.startActivity(it)
         }
     }
 
-    private fun startHorDoubleMore() {
-        this.context?.let { HomeTopicListActivity.startActivity(it,1,1,2,"精品推荐Double") }
-    }
-
-    private fun recommendClick() {
-        HomeDetailActivity.startActivity(context!!,"1")
-    }
-
+    //不同模版的音频Item的点击事件
     private fun onAudioClick(audioModel: HomeAudioModel){
         HomeDetailActivity.startActivity(activity!!,audioModel.audio_id)
     }
-
+    //板块的点击事件
     private fun onBlockClick(blockModel: HomeBlockModel){
         DLog.d("suolong", blockModel.block_name)
     }

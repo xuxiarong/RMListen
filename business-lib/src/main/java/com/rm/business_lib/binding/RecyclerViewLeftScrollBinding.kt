@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
 
     var isSlidingToLeft = false
+    var isStopSwipe = true
 
     if (action == null) {
         return
@@ -40,6 +41,7 @@ fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
+            isStopSwipe = false
             isSlidingToLeft = dx>10
         }
     })
