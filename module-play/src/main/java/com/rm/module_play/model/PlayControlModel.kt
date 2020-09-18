@@ -1,10 +1,8 @@
 package com.rm.module_play.model
 
-import androidx.databinding.ObservableField
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.rm.component_comm.home.HomeDetailModel
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_play.adapter.BookPlayerAdapter
-import com.rm.module_play.test.SearchResultInfo
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 
 /**

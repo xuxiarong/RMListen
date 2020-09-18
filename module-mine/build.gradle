@@ -77,7 +77,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(path: ':business-lib')
     implementation project(path: ':component-comm')
     implementation rootProject.ext.dependencies["material"]
     kapt rootProject.ext.dependencies["router_compiler"]

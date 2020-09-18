@@ -2,8 +2,8 @@ package com.rm.module_home.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
-import com.rm.component_comm.home.AudioChapterListModel
-import com.rm.component_comm.home.HomeDetailModel
+import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.model.home.detail.*
 

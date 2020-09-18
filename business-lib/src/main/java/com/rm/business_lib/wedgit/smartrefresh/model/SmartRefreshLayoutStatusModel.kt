@@ -1,4 +1,4 @@
-package com.rm.component_comm.smartrefresh.model
+package com.rm.business_lib.wedgit.smartrefresh.model
 
 import androidx.databinding.ObservableField
 

@@ -1,4 +1,4 @@
-package com.rm.business_lib.shadow;
+package com.rm.business_lib.wedgit.shadow;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

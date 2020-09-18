@@ -4,12 +4,11 @@ import android.util.Log
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.component_comm.home.AudioChapterListModel
+import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.module_home.model.home.detail.DetailChapterModel
 import com.rm.module_home.model.home.detail.HomeCommentViewModel
-import com.rm.component_comm.home.HomeDetailModel
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_home.repository.DetailRepository
-import retrofit2.http.Field
 
 
 class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMViewModel() {

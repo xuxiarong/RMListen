@@ -3,11 +3,11 @@ package com.rm.module_home.api
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetListBean
-import com.rm.component_comm.home.AudioChapterListModel
+import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.bean.MenuSheetInfoBean
-import com.rm.component_comm.home.HomeDetailModel
+import com.rm.business_lib.bean.HomeDetailModel
 import retrofit2.http.*
 
 

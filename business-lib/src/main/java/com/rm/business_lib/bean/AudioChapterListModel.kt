@@ -1,6 +1,5 @@
-package com.rm.component_comm.home
+package com.rm.business_lib.bean
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 /**

@@ -23,7 +23,7 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.model.home.detail.ChapterList
 import com.rm.module_home.model.home.detail.CommentList
-import com.rm.component_comm.home.Tags
+import com.rm.business_lib.bean.Tags
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*

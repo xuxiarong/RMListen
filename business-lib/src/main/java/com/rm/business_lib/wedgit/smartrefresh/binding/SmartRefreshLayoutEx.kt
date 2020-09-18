@@ -1,4 +1,4 @@
-package com.rm.component_comm.smartrefresh.binding
+package com.rm.business_lib.wedgit.smartrefresh.binding
 
 import androidx.databinding.BindingAdapter
 import com.scwang.smart.refresh.layout.SmartRefreshLayout

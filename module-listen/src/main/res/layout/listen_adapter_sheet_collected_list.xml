@@ -14,7 +14,7 @@
             type="com.rm.module_listen.viewmodel.ListenSheetCollectedListViewModel" />
     </data>
 
-    <com.rm.business_lib.shadow.ShadowLayout
+    <com.rm.business_lib.wedgit.shadow.ShadowLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/padding_width"
@@ -106,6 +106,6 @@
                 android:layout_marginTop="@dimen/dp_14"
                 app:layout_constraintTop_toBottomOf="@id/listen_sheet_collected_adapter_author_icon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.rm.business_lib.shadow.ShadowLayout>
+    </com.rm.business_lib.wedgit.shadow.ShadowLayout>
 
 </layout>

@@ -1,4 +1,4 @@
-package com.rm.business_lib.shadow;
+package com.rm.business_lib.wedgit.shadow;
 
 import android.content.Context;
 import android.content.res.TypedArray;

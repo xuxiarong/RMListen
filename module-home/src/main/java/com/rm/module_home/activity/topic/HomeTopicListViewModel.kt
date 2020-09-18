@@ -6,7 +6,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.BR
 import com.rm.business_lib.bean.AudioBean
-import com.rm.component_comm.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.R
 import com.rm.module_home.repository.HomeTopicRepository
 

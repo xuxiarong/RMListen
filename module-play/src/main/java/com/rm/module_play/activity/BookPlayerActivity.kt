@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.databinding.Observable
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
-import com.rm.component_comm.home.AudioChapterListModel
-import com.rm.component_comm.home.HomeDetailModel
+import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.component_comm.navigateToForResult
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -27,7 +25,6 @@ import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.model.PlayControlModel
 import com.rm.module_play.playview.GlobalplayHelp
-import com.rm.module_play.test.SearchResultInfo
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_JOIN_LISTEN
@@ -37,7 +34,6 @@ import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
