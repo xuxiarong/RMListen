@@ -134,14 +134,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             playControlModel.value ?: PlayControlModel(),
             playControlSubModel.value ?: PlayControlSubModel(),
             PlayControlRecommentModel(),
-            PlayControlHotModel(),
-            PlayControlCommentTitleModel(),
-            PlayControlCommentListModel(),
-            PlayControlCommentListModel(),
-            PlayControlCommentListModel(),
-            PlayControlCommentListModel(),
-            PlayControlCommentListModel(),
-            PlayControlCommentListModel()
+            PlayControlHotModel()
         )
 
     }
@@ -181,6 +174,23 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     //精品详情
     fun playBoutiqueDetails(model: PlayControlRecommentListModel) {
         Log.i("", "playBoutiqueDetails")
+    }
+
+    /**
+     *
+     */
+    fun commentAudioComments(audioID: String, page: Int, pageSize: Int) {
+        launchOnIO {
+            repository.commentAudioComments(audioID, page, pageSize)
+                .checkResult(onSuccess = {
+                    it.list.forEach {
+                        mutableList.value?.add(PlayControlCommentListModel(comments = it))
+                    }
+                    mutableList.postValue(mutableList.value)
+                }, onError = {
+
+                })
+        }
     }
 
 }
