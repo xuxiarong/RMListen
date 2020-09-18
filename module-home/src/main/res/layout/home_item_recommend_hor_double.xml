@@ -25,8 +25,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
-                bindUrl="@{item.topRecommendModel.url}"
-                corner="@{item.topRecommendModel.iconCorner}"
+                bindUrl="@{item.topRecommendModel.cover_url}"
+                corner="@{8}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:scaleType="fitXY"
@@ -35,14 +35,14 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopTag"
-                bindText="@{item.topRecommendModel.tag}"
+                bindText="@{item.topRecommendModel.audio_label}"
                 style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopName"
-                bindText="@{item.topRecommendModel.name}"
+                bindText="@{item.topRecommendModel.audio_name}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -77,8 +77,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
-                bindUrl="@{item.bottomRecommendModel.url}"
-                corner="@{item.bottomRecommendModel.iconCorner}"
+                bindUrl="@{item.bottomRecommendModel.cover_url}"
+                corner="@{8}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:scaleType="fitXY"
@@ -87,14 +87,14 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomTag"
-                bindText="@{item.bottomRecommendModel.tag}"
+                bindText="@{item.bottomRecommendModel.audio_label}"
                 style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomName"
-                bindText="@{item.bottomRecommendModel.name}"
+                bindText="@{item.bottomRecommendModel.audio_name}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"

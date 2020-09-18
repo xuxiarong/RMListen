@@ -6,6 +6,7 @@ import com.rm.business_lib.bean.SheetListBean
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.bean.MenuSheetInfoBean
+import com.rm.module_home.model.home.HomeModel
 import com.rm.module_home.model.home.detail.HomeDetailModel
 import retrofit2.http.*
 
@@ -16,6 +17,13 @@ import retrofit2.http.*
  * version: 1.0
  */
 interface HomeApiService {
+
+
+    /**
+     * 获取首页数据
+     */
+    @GET("content/page/home")
+    suspend fun getHomeData(): BaseResponse<HomeModel>
 
     @FormUrlEncoded
     @POST("/lg/user_article/add/json")

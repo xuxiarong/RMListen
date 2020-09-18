@@ -11,7 +11,7 @@
 
         <variable
             name="item"
-            type="com.rm.module_home.model.home.collect.HomeCollectModel" />
+            type="com.rm.module_home.model.home.HomeMenuModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,7 @@
             android:layout_marginBottom="6dp"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            bindSrc="@{item.imageId}"
+            bindUrl="@{item.icon_url}"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -44,8 +44,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_12sp"
-            android:text="@string/home_listen_list"
-            bindText="@{item.collectName}"
+            bindText="@{item.menu_name}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

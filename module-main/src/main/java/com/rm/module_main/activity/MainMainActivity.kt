@@ -125,7 +125,7 @@ class MainMainActivity : BaseActivity() {
             })
         }.build()
         navigationController.addPlaceholder(2)
-        var viewPager = findViewById<NoTouchViewPager>(R.id.view_pager).apply {
+        val viewPager = findViewById<NoTouchViewPager>(R.id.view_pager).apply {
             adapter = MyViewPagerAdapter(
                 supportFragmentManager,
                 navigationController.itemCount

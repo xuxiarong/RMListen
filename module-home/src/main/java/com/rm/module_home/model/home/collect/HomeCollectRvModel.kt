@@ -9,5 +9,5 @@ import com.rm.module_home.R
  * version: 1.0
  */
 class HomeCollectRvModel : MultiItemEntity {
-    override val itemType = R.layout.home_item_collect_rv
+    override val itemType = R.layout.home_item_menu_rv
 }

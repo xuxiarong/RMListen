@@ -1,8 +1,11 @@
 package com.rm.module_home.fragment
 
+import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.util.DLog
+import com.rm.business_lib.isLogin
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity
@@ -12,9 +15,8 @@ import com.rm.module_home.activity.menu.HomeMenuActivity
 import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
+import com.rm.module_home.model.home.HomeMenuModel
 import com.rm.module_home.model.home.banner.HomeBannerRvModel
-import com.rm.module_home.model.home.collect.HomeCollectModel
-import com.rm.module_home.model.home.collect.HomeCollectRvModel
 import com.rm.module_home.model.home.grid.HomeGridRecommendRvModel
 import com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleRvModel
 import com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleRvModel
@@ -38,7 +40,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun initData() {
-
+        mViewModel.getHomeDataFromService()
     }
 
     override fun initView() {
@@ -46,20 +48,19 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         setStatusBar(R.color.base_activity_bg_color)
 
         mViewModel.collectItemClickList = {initCollectClick(it)}
-        mViewModel.initBannerInfo()
-        mViewModel.initCollect()
-        mViewModel.initSingleList()
-        mViewModel.initDoubleList()
-        mViewModel.initGridList()
-        mViewModel.initVerList()
+//        mViewModel.initBannerInfo()
+//        mViewModel.initCollect()
+//        mViewModel.initSingleList()
+//        mViewModel.initDoubleList()
+//        mViewModel.initGridList()
+//        mViewModel.initVerList()
         mViewModel.doubleRvLeftScrollOpenDetail = {startBoutique()}
         mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
-        mHomeAdapter.setNewInstance(initHomeAdapter())
 
     }
 
-    fun initCollectClick(model: HomeCollectModel) {
-        when (model.collectName) {
+    fun initCollectClick(model: HomeMenuModel) {
+        when (model.menu_name) {
             "精品推荐" -> {
                 startBoutique()
             }
@@ -78,7 +79,6 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     private fun initHomeAdapter(): MutableList<MultiItemEntity> {
         return mutableListOf(
             HomeBannerRvModel(mViewModel.homeBannerInfoList.value),
-            HomeCollectRvModel(),
             HomeMoreModel("精品推荐Double") { startHorDoubleMore() },
             HomeRecommendHorDoubleRvModel(),
             HomeMoreModel("精品推荐Grid") { startHorSingleMore() },
@@ -88,10 +88,26 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             HomeMoreModel("新书推荐") { startHorSingleMore() },
             HomeRecommendVerRvModel()
         )
-
     }
 
     override fun startObserve() {
+        mViewModel.homeAllData.observe(this, Observer {
+            mHomeAdapter.setList(it)
+        })
+
+        isLogin.observe(this, Observer {
+            DLog.d("suolong","isLogin = $it")
+        })
+    }
+
+
+    var count = 0
+    override fun onResume() {
+        super.onResume()
+        isLogin.value = (!isLogin.value!!)
+        count++
+        mViewModel.homeAllData.value = mutableListOf(
+            HomeMoreModel("标题$count",{}))
 
     }
 

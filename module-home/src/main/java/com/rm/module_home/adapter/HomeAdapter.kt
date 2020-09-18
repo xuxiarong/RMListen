@@ -2,8 +2,8 @@ package com.rm.module_home.adapter
 
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.rm.baselisten.adapter.multi.BaseMultiAdapter
 import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
@@ -26,7 +26,7 @@ class HomeAdapter(
     private var homeViewModel: HomeFragmentViewModel,
     modelBrId: Int,
     itemBrId: Int
-) : BaseMultiVMAdapter<MultiItemEntity>(homeViewModel, modelBrId, itemBrId) {
+) : BaseMultiVMAdapter<BaseMultiAdapter.BaseMultiItemEntity>(homeViewModel, modelBrId, itemBrId) {
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
@@ -36,14 +36,14 @@ class HomeAdapter(
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
                 homeItemBannerBinding.mainBanner.bindData(homeViewModel.homeBannerInfoList.value!!)
             }
-            R.layout.home_item_collect_rv -> {
+            R.layout.home_item_menu_rv -> {
                 val homeItemBannerBinding =
-                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemCollectRvBinding
-                if (homeViewModel.homeCollectModel.value != null) {
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemMenuRvBinding
+                if (homeViewModel.homeMenuList.value != null) {
                     val homeCollectAdapter =
                         CommonMultiVMAdapter(
                             homeViewModel,
-                            homeViewModel.homeCollectModel.value!!,
+                            homeViewModel.homeMenuList.value!!,
                             BR.viewModel,
                             BR.item
                         )

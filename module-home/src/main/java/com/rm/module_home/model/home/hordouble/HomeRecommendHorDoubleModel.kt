@@ -2,7 +2,7 @@ package com.rm.module_home.model.home.hordouble
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_home.R
-import com.rm.module_home.model.HomeRecommendModel
+import com.rm.module_home.model.home.HomeAudioModel
 
 /**
  * desc   :
@@ -10,8 +10,8 @@ import com.rm.module_home.model.HomeRecommendModel
  * version: 1.0
  */
 data class HomeRecommendHorDoubleModel(
-    val topRecommendModel: HomeRecommendModel,
-    val bottomRecommendModel: HomeRecommendModel
+    val topRecommendModel: HomeAudioModel,
+    val bottomRecommendModel: HomeAudioModel
 ) : MultiItemEntity {
     override val itemType = R.layout.home_item_recommend_hor_double
 }

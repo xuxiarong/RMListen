@@ -22,6 +22,22 @@ fun XBanner.bindData(bannerInfoList: List<BannerInfoBean>?) {
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
             view as ImageView,
+            bannerInfoList[position].img_url
+        )
+    }
+}
+
+@BindingAdapter("bindBanner")
+fun XBanner.bindBanner(bannerInfoList: List<BannerInfoBean>?) {
+    if (bannerInfoList == null) {
+        return
+    }
+
+    setBannerData(bannerInfoList)
+    loadImage { _, _, view, position ->
+        com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
+            8f,
+            view as ImageView,
             bannerInfoList[position].banner_img
         )
     }

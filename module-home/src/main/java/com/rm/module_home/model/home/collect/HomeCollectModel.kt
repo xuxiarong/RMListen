@@ -9,6 +9,6 @@ import com.rm.module_home.R
  * version: 1.0
  */
 data class HomeCollectModel constructor(val imageId : Int, val collectName:String) : MultiItemEntity {
-    override val itemType = R.layout.home_item_collect
+    override val itemType = R.layout.home_item_menu
 
 }

@@ -18,7 +18,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
-    viewModel { HomeFragmentViewModel() }
+    viewModel { HomeFragmentViewModel(get()) }
     viewModel { MenuViewModel(get()) }
     viewModel { MenuDetailViewModel(get()) }
     viewModel { BoutiqueViewModel(get()) }
@@ -41,6 +41,7 @@ val repositoryModule = module {
     single { DetailRepository(get()) }
     // 专题列表Repository
     single { HomeTopicRepository(get()) }
+    single { HomeRepository(get()) }
     single { BusinessRetrofitClient().getService(HomeApiService::class.java) }
 }
 
