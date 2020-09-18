@@ -5,21 +5,21 @@ import android.text.TextUtils
 import com.google.gson.Gson
 import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.net.bean.BaseResponse
-import com.rm.baselisten.util.*
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.encodeMD5
+import com.rm.baselisten.util.getStringMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.ACCESS_TOKEN
 import com.rm.business_lib.ACCESS_TOKEN_INVALID_TIMESTAMP
 import com.rm.business_lib.REFRESH_TOKEN
-import com.rm.business_lib.bean.RefreshTokenBean
 import com.rm.business_lib.helpter.loginOut
 import com.rm.business_lib.helpter.parseToken
+import com.rm.business_lib.net.api.BusinessApiService
 import com.rm.business_lib.utils.DeviceUtils
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.Call
-import retrofit2.http.POST
-import retrofit2.http.Query
 
 /**
  * desc   : 业务网络拦截器
@@ -41,45 +41,47 @@ class CustomInterceptor : Interceptor {
 
     private val apiService by lazy {
         BusinessRetrofitClient().getService(
-            RefreshApiService::class.java
+            BusinessApiService::class.java
         )
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         // 请求拦截处理
-        val originalResponse = requestIntercept(chain)
+//        val originalResponse = requestIntercept(chain)
+        // 构建请求
+        val originalResponse = buildRequestResponse(chain)
         // 返回参数拦截处理
         responseIntercept(originalResponse, chain)
         return originalResponse[0]
     }
 
-    /**
-     * 拦截请求数据，判断访问token是否已过期
-     * @return Boolean
-     */
-    private fun requestIntercept(chain: Interceptor.Chain): Array<Response> {
-        if (TextUtils.isEmpty(ACCESS_TOKEN.getStringMMKV())
-            || ACCESS_TOKEN_INVALID_TIMESTAMP.getLongMMKV(0) > System.currentTimeMillis()/1000
-            || chain.request().url.toUri().path.contains("auth/refresh")
-        ) {
-            // 证明未登陆 或者 访问令牌token还未过期 或者 是刷新token的接口， 则不去判断token是否过期了,直接请求
-            return buildRequestResponse(chain)
-        }
-
-        DLog.d(TAG, "请求时，验证token已过期，刷新token")
-        // 到这里，说明刷新token已经过期了，则去刷新接口
-        // 注意，一定要在当前线程同步请求刷新接口，否则再重新请求之前的接口会抛异常
-        val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
-        return if (result?.code == 0) {
-            // 刷新token成功，保存最新token
-            updateLocalToken(result.data.access, result.data.refresh)
-            // 再去构造真正用户需要请求的接口请求信息
-            buildRequestResponse(chain)
-        } else {
-            // 刷新token失败，则还是让用户去请求，提示他token过期
-            buildRequestResponse(chain)
-        }
-    }
+//    /**
+//     * 拦截请求数据，判断访问token是否已过期
+//     * @return Boolean
+//     */
+//    private fun requestIntercept(chain: Interceptor.Chain): Array<Response> {
+//        if (TextUtils.isEmpty(ACCESS_TOKEN.getStringMMKV())
+//            || ACCESS_TOKEN_INVALID_TIMESTAMP.getLongMMKV(0) > System.currentTimeMillis()/1000
+//            || chain.request().url.toUri().path.contains("auth/refresh")
+//        ) {
+//            // 证明未登陆 或者 访问令牌token还未过期 或者 是刷新token的接口， 则不去判断token是否过期了,直接请求
+//            return buildRequestResponse(chain)
+//        }
+//
+//        DLog.d(TAG, "请求时，验证token已过期，刷新token")
+//        // 到这里，说明刷新token已经过期了，则去刷新接口
+//        // 注意，一定要在当前线程同步请求刷新接口，否则再重新请求之前的接口会抛异常
+//        val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
+//        return if (result?.code == 0) {
+//            // 刷新token成功，保存最新token
+//            updateLocalToken(result.data.access, result.data.refresh)
+//            // 再去构造真正用户需要请求的接口请求信息
+//            buildRequestResponse(chain)
+//        } else {
+//            // 刷新token失败，则还是让用户去请求，提示他token过期
+//            buildRequestResponse(chain)
+//        }
+//    }
 
     /**
      * 构建之前的请求
@@ -191,16 +193,4 @@ class CustomInterceptor : Interceptor {
         val nonceItem: (Int) -> Char = { nonceScope[(nonceScope.length * Math.random()).toInt()] }
         return Array(16, nonceItem).joinToString("")
     }
-}
-
-
-interface RefreshApiService {
-    /**
-     * 刷新token(令牌)
-     * @param refreshToken String
-     */
-    @POST("auth/refresh")
-    fun refreshToken(
-        @Query("refresh_token") refreshToken: String
-    ): Call<BaseResponse<RefreshTokenBean>>
 }
