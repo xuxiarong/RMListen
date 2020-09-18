@@ -3,7 +3,6 @@ package com.rm.module_home.fragment
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity
@@ -51,7 +50,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
     private fun initCollectClick(model: HomeMenuModel) {
         when (model.menu_name) {
-            "精品推荐" -> {
+            "精品" -> {
                 startBoutique()
             }
             "榜单" -> {
@@ -103,8 +102,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         HomeDetailActivity.startActivity(activity!!,audioModel.audio_id)
     }
 
+    /**
+     * 首页home更多点击事件
+     * @param blockModel HomeBlockModel
+     */
     private fun onBlockClick(blockModel: HomeBlockModel){
-        DLog.d("suolong", blockModel.block_name)
+        HomeTopicListActivity.startActivity(activity!!,blockModel.page_id,blockModel.block_id,blockModel.topic_id,blockModel.block_name)
     }
 
 
