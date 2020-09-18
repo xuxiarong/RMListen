@@ -36,8 +36,14 @@ class CustomInterceptor : Interceptor {
     // 需要刷新token服务器返回的code
     private val CODE_REFRESH_TOKEN = 1004
 
+    // 用户未登陆
+    private val CODE_NOT_LOGIN = 1013
+
     // 被强制登出了(被挤下线了)
     private val CODE_LOGIN_OUT = 1204
+
+    // 刷新token失败
+    private val CODE_REFRESH_TOKEN_FAILED = 1014
 
     private val apiService by lazy {
         BusinessRetrofitClient().getService(
@@ -101,6 +107,7 @@ class CustomInterceptor : Interceptor {
     private fun responseIntercept(originalResponse: Array<Response>, chain: Interceptor.Chain) {
         //保存body的相关信息，用于后续构造新的Response
         val responseBody = originalResponse[0].body ?: return
+        val responseCode = originalResponse[0].code
         val contentType = responseBody.contentType()
         val responseStr = responseBody.string()
         responseBody.close()
@@ -126,24 +133,26 @@ class CustomInterceptor : Interceptor {
                 } catch (e: Exception) {
                     e.printStackTrace()
                     // 再次请求之前拦截的接口失败，就下发之前请求到的数据到具体位置
-                    originalResponse[0] = originalResponse[0].newBuilder().code(200)
+                    originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                         .body(responseStr.toResponseBody(contentType)).build()
                 }
             } else {
-                // 刷新token失败，强制退出当前登陆
-                loginOut()
+                if (result?.code == CODE_REFRESH_TOKEN_FAILED) {
+                    // 刷新token失败，强制退出当前登陆
+                    loginOut()
+                }
                 // TODO 如果刷新token失败，将之前请求的数据同样下发到具体位置，不过是否需要自己组一个账户已退出的消息数据进行下发？？？
-                originalResponse[0] = originalResponse[0].newBuilder().code(200)
+                originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                     .body(responseStr.toResponseBody(contentType)).build()
             }
-        } else if (baseResponse.code == CODE_LOGIN_OUT) {
-            // 被挤下线，强制退出了
+        } else if (baseResponse.code == CODE_LOGIN_OUT || baseResponse.code == CODE_NOT_LOGIN || baseResponse.code == CODE_REFRESH_TOKEN_FAILED) {
+            // 被挤下线，强制退出了  或者 直接是未登陆  或者 刷新token的时候，刷新token失败(每次app启动会有一个刷新token操作，所以也要在这里判断)
             loginOut()
-            originalResponse[0] = originalResponse[0].newBuilder().code(200)
+            originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                 .body(responseStr.toResponseBody(contentType)).build()
         } else {
             // 正常请求,下发数据到具体请求位置
-            originalResponse[0] = originalResponse[0].newBuilder().code(200)
+            originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                 .body(responseStr.toResponseBody(contentType)).build()
         }
     }
