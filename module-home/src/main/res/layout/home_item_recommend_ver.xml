@@ -5,7 +5,9 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
         <variable
             name="item"
             type="com.rm.module_home.model.home.ver.HomeRecommendVerModel" />
@@ -14,9 +16,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_18">
+        android:layout_marginBottom="@dimen/dp_18"
+        android:onClick="@{()->viewModel.onAudioClick(item.verModel)}">
 
-        <androidx.appcompat.widget.AppCompatImageView
+
+    <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_book_adapter_icon"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"

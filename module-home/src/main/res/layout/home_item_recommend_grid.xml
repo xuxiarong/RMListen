@@ -7,6 +7,10 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+
+        <variable
             name="item"
             type="com.rm.module_home.model.home.grid.HomeGridRecommendModel" />
     </data>
@@ -18,7 +22,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="12dp">
+        android:layout_marginEnd="12dp"
+        android:onClick="@{()->viewModel.onAudioClick(item.gridRecommendRvModel)}"
+        >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"

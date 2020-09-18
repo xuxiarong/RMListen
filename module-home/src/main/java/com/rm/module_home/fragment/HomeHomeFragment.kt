@@ -49,7 +49,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
     }
 
-    fun initCollectClick(model: HomeMenuModel) {
+    private fun initCollectClick(model: HomeMenuModel) {
         when (model.menu_name) {
             "精品推荐" -> {
                 startBoutique()
@@ -86,31 +86,24 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     }
 
     private fun startMenu() {
-        HomeMenuActivity.startActivity(context!!)
+        context?.let {
+            HomeMenuActivity.startActivity(it)
+        }
     }
 
     private fun startHorDoubleMore() {
         this.context?.let { HomeTopicListActivity.startActivity(it,1,1,2,"精品推荐Double") }
     }
 
-    private fun startHorSingleMore() {
-        this.context?.let { HomeTopicListActivity.startActivity(it,1,1,2,"精品推荐Grid") }
-    }
-
-
-    fun recommendClick() {
+    private fun recommendClick() {
         HomeDetailActivity.startActivity(context!!,"1")
     }
 
-    fun moreClick() {
-
-    }
-
-    fun onAudioClick(audioModel: HomeAudioModel){
+    private fun onAudioClick(audioModel: HomeAudioModel){
         HomeDetailActivity.startActivity(activity!!,audioModel.audio_id)
     }
 
-    fun onBlockClick(blockModel: HomeBlockModel){
+    private fun onBlockClick(blockModel: HomeBlockModel){
         DLog.d("suolong", blockModel.block_name)
     }
 

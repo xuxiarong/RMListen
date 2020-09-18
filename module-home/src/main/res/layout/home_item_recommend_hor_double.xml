@@ -5,7 +5,9 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
         <variable
             name="item"
             type="com.rm.module_home.model.home.hordouble.HomeRecommendHorDoubleModel" />
@@ -21,6 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.onAudioClick(item.topRecommendModel)}"
             >
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -74,7 +77,8 @@
             isVisible="@{item.needShowBottom}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp">
+            android:layout_marginTop="14dp"
+            android:onClick="@{()->viewModel.onAudioClick(item.bottomRecommendModel)}">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"

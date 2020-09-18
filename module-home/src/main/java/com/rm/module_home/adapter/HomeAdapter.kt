@@ -5,7 +5,6 @@ import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
-import com.rm.baselisten.adapter.multi.CommonMultiAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
@@ -51,11 +50,14 @@ class HomeAdapter(
                 }
             }
             R.layout.home_item_recommend_hor_single_rv -> {
-                val singleRvBinding = DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorSingleRvBinding
+                val singleRvBinding =
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorSingleRvBinding
                 if (homeViewModel.homeHorSingleList.value != null) {
                     val singleAdapter =
-                        CommonMultiAdapter(
+                        CommonMultiVMAdapter(
+                            homeViewModel,
                             homeViewModel.homeHorSingleList.value!!,
+                            BR.viewModel,
                             BR.item
                         )
                     singleRvBinding.homeRvRecommendHorSingle.bindHorizontalLayout(singleAdapter)
@@ -67,8 +69,10 @@ class HomeAdapter(
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorDoubleRvBinding
                 if (homeViewModel.homeHorDoubleList.value != null) {
                     val doubleAdapter =
-                        CommonMultiAdapter(
+                        CommonMultiVMAdapter(
+                            homeViewModel,
                             homeViewModel.homeHorDoubleList.value!!,
+                            BR.viewModel,
                             BR.item
                         )
                     singleRvBinding.homeRvRecommendHorDouble.bindHorizontalLayout(doubleAdapter)
@@ -80,8 +84,10 @@ class HomeAdapter(
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendGridRvBinding
                 if (homeViewModel.homeGridList.value != null) {
                     val doubleAdapter =
-                        CommonMultiAdapter(
+                        CommonMultiVMAdapter(
+                            homeViewModel,
                             homeViewModel.homeGridList.value!!,
+                            BR.viewModel,
                             BR.item
                         )
                     gridBanding.homeRvRecommendGrid.bindGridLayout(doubleAdapter, 3)
@@ -92,8 +98,10 @@ class HomeAdapter(
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendVerRvBinding
                 if (homeViewModel.homeVerList.value != null) {
                     val verAdapter =
-                        CommonMultiAdapter(
+                        CommonMultiVMAdapter(
+                            homeViewModel,
                             homeViewModel.homeVerList.value!!,
+                            BR.viewModel,
                             BR.item
                         )
                     verBanding.homeRvRecommendVer.bindVerticalLayout(verAdapter)
