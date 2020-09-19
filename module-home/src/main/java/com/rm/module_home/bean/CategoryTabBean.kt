@@ -5,4 +5,4 @@ package com.rm.module_home.bean
  * date   : 2020/08/24
  * version: 1.0
  */
-data class CategoryTabBean(val id: Int, val name: String)
+data class CategoryTabBean(val class_id: Int, val class_name: String)

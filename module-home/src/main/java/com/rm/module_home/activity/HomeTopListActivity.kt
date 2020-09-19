@@ -69,7 +69,7 @@ class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListVi
     //配置创建fragment需要的数据
     private fun configureFragment(data: MutableList<CategoryTabBean>) {
         data.forEach { bean ->
-            val type = when (bean.name) {
+            val type = when (bean.class_name) {
                 "热门榜" -> {
                     HomeTopListContentFragment.RANK_TYPE_POPULAR
                 }

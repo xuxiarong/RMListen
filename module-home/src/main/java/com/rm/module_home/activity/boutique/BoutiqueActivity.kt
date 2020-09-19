@@ -2,15 +2,11 @@ package com.rm.module_home.activity.boutique
 
 import android.content.Context
 import android.content.Intent
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.lifecycle.observe
+import androidx.databinding.Observable
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.bean.CategoryTabBean
 import com.rm.module_home.databinding.HomeActivityBoutiqueBinding
 import kotlinx.android.synthetic.main.home_activity_boutique.*
 
@@ -32,10 +28,12 @@ class BoutiqueActivity :
 
 
     override fun startObserve() {
-        mViewModel.tabList.observe(this) {
-            home_boutique_view_pager.adapter = BoutiqueViewPageAdapter(supportFragmentManager, it)
-            home_boutique_tab_layout.setupWithViewPager(home_boutique_view_pager)
-        }
+        mViewModel.tabSize.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                home_boutique_view_pager.offscreenPageLimit = mViewModel.tabSize.get()
+            }
+        })
     }
 
     override fun initView() {
@@ -45,27 +43,13 @@ class BoutiqueActivity :
                 finish()
             }
         mViewModel.baseTitleModel.value = baseTitleModel
+
+        mViewModel.fragmentManager = supportFragmentManager
+        home_boutique_tab_layout.setupWithViewPager(home_boutique_view_pager)
+
     }
 
     override fun initData() {
         mViewModel.getTabListInfo()
-    }
-}
-
-private class BoutiqueViewPageAdapter(
-    fm: FragmentManager,
-    private val tabList: List<CategoryTabBean>
-) :
-    FragmentPagerAdapter(fm) {
-    override fun getItem(position: Int): Fragment {
-        return BoutiqueFragment(tabList[position])
-    }
-
-    override fun getCount(): Int {
-        return tabList.size
-    }
-
-    override fun getPageTitle(position: Int): CharSequence? {
-        return tabList[position].name
     }
 }
