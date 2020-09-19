@@ -1,5 +1,6 @@
 package com.rm.module_home
 
+import android.app.Activity
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.component_comm.base.IApplicationDelegate
@@ -29,14 +30,14 @@ class HomeServiceImpl : HomeService {
     }
 
     /**
-     * 跳转到听单详情
+     * 跳转到home听单详情
      */
-    override fun startHomeSheetDetailActivity(context: Context,sheetId:String,pageId:Int) {
-        HomeMenuDetailActivity.startActivity(context,pageId,sheetId )
+    override fun startHomeSheetDetailActivity(context: Activity, sheetId: String, pageId: Int) {
+        HomeMenuDetailActivity.startActivity(context, sheetId, pageId)
     }
 
     override fun toDetailActivity(context: Context, audioID: String) {
-        HomeDetailActivity.startActivity(context,audioID)
+        HomeDetailActivity.startActivity(context, audioID)
     }
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {

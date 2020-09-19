@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -8,10 +8,17 @@
             type="com.rm.module_listen.viewmodel.ListenSheetMyListViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/listen_sheet_my_list_recycler_view"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/listen_sheet_my_list_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listen_sheet_my_list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 </layout>

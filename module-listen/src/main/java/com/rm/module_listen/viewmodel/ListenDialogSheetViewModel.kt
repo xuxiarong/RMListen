@@ -17,6 +17,7 @@ class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : B
 
     val audioId = MutableLiveData<String>()
     val data = MutableLiveData<ListenSheetMyListBean>()
+    var dismiss: () -> Unit = {}
 
     /**
      * 获取我的听单列表
@@ -46,11 +47,14 @@ class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : B
             repository.addSheetList(sheet_id, audio_id).checkResult(
                 onSuccess = {
                     DLog.i("----->", "添加成功")
+                    baseViewModel.showToast("添加成功")
                     baseViewModel.showContentView()
+                    dismissFun()
                 },
                 onError = {
                     DLog.i("----->", "添加失败  $it")
                     baseViewModel.showContentView()
+                    baseViewModel.showToast("添加失败")
                 }
             )
         }
@@ -60,5 +64,12 @@ class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : B
         audioId.value?.let {
             addSheet("${bean.sheet_id}", it)
         }
+    }
+
+    /**
+     *
+     */
+    fun dismissFun() {
+        dismiss()
     }
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.rm.module_listen.bean.ListenSheetDetailDataBean" />
+            type="com.rm.business_lib.bean.AudioBean" />
 
         <variable
             name="viewModel"
@@ -16,18 +16,41 @@
 
     <com.rm.baselisten.view.swipe.SwipeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp_18">
+
+        <LinearLayout
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/business_shape_round_ff5e5e_32dp"
+            android:onClick="@{(AudioBean)->viewModel.removeAudioFun(item)}">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/listen_icon_swipe_delete" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/business_delete"
+                android:textColor="@color/business_text_color_ffffff" />
+        </LinearLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/dp_16"
-            android:paddingTop="@dimen/dp_18"
             android:paddingEnd="@dimen/dp_16">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/listen_book_adapter_icon"
-                bindUrl="@{item.audio_cover}"
+                bindUrl="@{item.cover_url}"
                 corner="@{@dimen/dp_4}"
                 android:layout_width="@dimen/dp_106"
                 android:layout_height="@dimen/dp_106"
@@ -47,7 +70,7 @@
             <TextView
                 android:id="@+id/listen_book_adapter_name"
                 style="@style/BusinessTextStyleFirst_2"
-                bindText="@{item.audio_label}"
+                bindText="@{item.audio_name}"
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/dp_12"
                 android:singleLine="true"
@@ -59,7 +82,7 @@
             <TextView
                 android:id="@+id/listen_book_adapter_describe"
                 style="@style/BusinessTextStyleSecond_3"
-                bindText="@{item.audio_label}"
+                bindText="@{item.audio_intro}"
                 android:layout_width="0dp"
                 android:layout_marginTop="@dimen/dp_8"
                 android:maxLines="2"
@@ -71,28 +94,10 @@
             <TextView
                 android:id="@+id/listen_book_adapter_author"
                 style="@style/BusinessTextStyleThird_4"
-                bindText="@{item}"
+                bindText="@{item.author}"
                 app:layout_constraintBottom_toBottomOf="@id/listen_book_adapter_icon"
                 app:layout_constraintLeft_toLeftOf="@id/listen_book_adapter_name"
                 tools:text="楼芸蓓" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <FrameLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:onClick="@{(ListenSheetDetailDataBean)->viewModel.deleteItem(item)}"
-            android:background="@drawable/business_shape_round_ff5e5e_32dp">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:drawableTop="@drawable/listen_icon_swipe_delete"
-                android:text="@string/business_delete"
-                android:textColor="@color/business_text_color_ffffff" />
-        </FrameLayout>
     </com.rm.baselisten.view.swipe.SwipeLayout>
 </layout>

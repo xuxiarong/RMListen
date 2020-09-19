@@ -5,9 +5,8 @@ import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.module_listen.bean.ListenSheetBean
-import com.rm.module_listen.bean.ListenSheetDetailBean
-import com.rm.module_listen.bean.ListenSheetDetailDataBean
+import com.rm.business_lib.bean.AudioBean
+import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_listen.repository.ListenSheetDetailRepository
 
 class ListenSheetDetailViewModel(private val repository: ListenSheetDetailRepository) :
@@ -17,23 +16,24 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
     val mDialog by lazy { CommBottomDialog() }
 
     //数据源
-    val data = MutableLiveData<ListenSheetDetailBean>()
+    val data = MutableLiveData<SheetInfoBean>()
 
-    //头部详情信息 由上级页面传递过来
-    val sheetBean = MutableLiveData<ListenSheetBean>()
-
-    //删除操作
+    //删除
     val deleteQuery = MutableLiveData<Boolean>(false)
 
-    var editSheetClick: (ListenSheetBean) -> Unit = {}
+    //编辑成功回调
+    var editSheetClick: (SheetInfoBean) -> Unit = {}
+
+    //音频移除成功
+    var removeAudio: (AudioBean) -> Unit = {}
 
     /**
      * 获取听单列表
      */
-    fun getData(sheetId: String, page: Int) {
+    fun getData(sheetId: String) {
         showLoading()
         launchOnIO {
-            repository.getSheetDetail(sheetId, page).checkResult(
+            repository.getSheetDetail(sheetId).checkResult(
                 onSuccess = {
                     showContentView()
                     data.value = it
@@ -46,18 +46,22 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
         }
     }
 
-    //编辑点击事件
+    /**
+     * 编辑点击事件
+     */
     fun dialogSheetDetailEditSheetFun() {
-        sheetBean.value?.let{
+        data.value?.let {
             editSheetClick(it)
         }
     }
 
-    //删除点击事件
+    /**
+     * 删除点击事件
+     */
     fun dialogSheetDetailDeleteFun() {
         showLoading()
         launchOnIO {
-            repository.deleteSheet("${sheetBean.value?.sheet_id}").checkResult(
+            repository.deleteSheet("${data.value?.sheet_id}").checkResult(
                 onSuccess = {
                     showContentView()
                     DLog.i("----->", "删除成功")
@@ -73,14 +77,32 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
         }
     }
 
-    //取消点击事件
+    /**
+     * 取消点击事件
+     */
     fun dialogSheetDetailCancelFun() {
         mDialog.dismiss()
     }
 
-    //删除事件
-    fun deleteItem(bean: ListenSheetDetailDataBean){
-
+    /**
+     * 将音频从听单移除
+     */
+    fun removeAudioFun(bean: AudioBean) {
+        DLog.i("---------->","听单移除")
+        showLoading()
+        launchOnIO {
+            repository.removeAudio("${data.value?.sheet_id}", bean.audio_id).checkResult(
+                onSuccess = {
+                    showContentView()
+                    removeAudio(bean)
+                    DLog.i("-------->", "移除成功  $it")
+                },
+                onError = {
+                    showContentView()
+                    DLog.i("-------->", "移除失败  $it")
+                }
+            )
+        }
     }
 
 }

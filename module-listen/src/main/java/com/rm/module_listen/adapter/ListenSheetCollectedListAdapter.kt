@@ -7,10 +7,8 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
-import com.rm.business_lib.bean.SheetBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.bean.ListenAudioBean
 import com.rm.module_listen.bean.ListenSheetCollectedDataBean
 
 class ListenSheetCollectedListAdapter(
@@ -34,7 +32,7 @@ class ListenSheetCollectedListAdapter(
     }
 
     private val mItemAdapter by lazy {
-        CommonBindVMAdapter<ListenAudioBean>(
+        CommonBindVMAdapter<AudioBean>(
             viewModel,
             mutableListOf(),
             R.layout.listen_adapter_sheet_collected_book,

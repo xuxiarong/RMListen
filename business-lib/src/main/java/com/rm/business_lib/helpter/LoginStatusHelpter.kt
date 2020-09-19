@@ -22,7 +22,7 @@ import com.rm.business_lib.bean.TokenBean
  */
 fun loginIn(access: String, refresh: String, userInfo: LoginUserBean) {
     // 保存登陆信息到本地
-    ACCESS_TOKEN.putMMKV("Bearer $access")
+    ACCESS_TOKEN.putMMKV(access)
     REFRESH_TOKEN.putMMKV(refresh)
     LOGIN_USER_INFO.putMMKV(loginUser)
     // 解析访问令牌的过期时间，并保存解析出来的token失效的时间戳

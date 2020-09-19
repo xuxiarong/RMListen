@@ -23,25 +23,25 @@
     </declare-styleable>
 
     <declare-styleable name="BendTabLayout">
-        <attr name="bendTabIndicatorAnimation" format="boolean" />
-        <attr name="bendTabIndicatorColor" format="color" />
-        <attr name="bendTabIndicatorHeight" format="dimension" />
-        <attr name="bendTabIndicatorWidth" format="dimension" />
-        <attr name="bendTabContentStart" format="dimension" />
-        <attr name="bendTabBackground" format="reference" />
-        <attr name="bendTabTextSize" format="dimension" />
-        <attr name="bendTabMode">
-            <enum name="scrollable" value="0" />
-            <enum name="fixed" value="1" />
+        <attr name="bendTabIndicatorAnimation" format="boolean" /><!--指示器切换是否加载动画-->
+        <attr name="bendTabIndicatorColor" format="color" /> <!--指示器颜色-->
+        <attr name="bendTabIndicatorHeight" format="dimension" /> <!-- 指示器高度(可通过此属性去调整圆弧的弧度)-->
+        <attr name="bendTabIndicatorWidth" format="dimension" /> <!-- 指示器的宽度-->
+        <attr name="bendTabContentStart" format="dimension" /> <!--指示器内容距离左边的距离-->
+        <attr name="bendTabBackground" format="reference" /> <!--整个tabLayout的背景-->
+        <attr name="bendTabTextSize" format="dimension" /><!--指示器文本字体大小-->
+        <attr name="bendTabMode"> <!--指示器显示模式-->
+            <enum name="scrollable" value="0" /> <!-- 滚动-->
+            <enum name="fixed" value="1" /> <!--填满-->
         </attr>
         <attr name="bendTabGravity">
             <enum name="fill" value="0" />
             <enum name="center" value="1" />
         </attr>
-        <attr name="bendTabMinWidth" format="dimension" />
-        <attr name="bendTabMaxWidth" format="dimension" />
-        <attr name="bendTabSelectedTextColor" format="color" />
-        <attr name="bendTabUnSelectedTextColor" format="color" />
+        <attr name="bendTabMinWidth" format="dimension" /><!--单个tab最小宽度-->
+        <attr name="bendTabMaxWidth" format="dimension" /><!--单个tab最大宽度-->
+        <attr name="bendTabSelectedTextColor" format="color" /> <!--tab选中时，文本的色值-->
+        <attr name="bendTabUnSelectedTextColor" format="color" /><!--tab未选中时的文本色值-->
         <attr name="bendTabPaddingStart" format="dimension" />
         <attr name="bendTabPaddingTop" format="dimension" />
         <attr name="bendTabPaddingEnd" format="dimension" />

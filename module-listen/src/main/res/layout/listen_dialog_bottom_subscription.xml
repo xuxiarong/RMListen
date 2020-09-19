@@ -60,6 +60,7 @@
                 android:gravity="center"
                 android:onClick="@{()->viewModel.dialogFindSimilarFun()}"
                 android:paddingTop="@dimen/dp_16"
+                android:visibility="gone"
                 android:paddingBottom="@dimen/dp_16"
                 android:text="@string/listen_find_similar" />
 

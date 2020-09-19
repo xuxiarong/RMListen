@@ -7,6 +7,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.rm.baselisten.R
 import com.rm.baselisten.utilExt.dip
 
 /**
@@ -46,7 +47,7 @@ fun loadImage(imageView: ImageView, url: String?) {
     loadImage(
         imageView,
         url,
-        0
+        R.drawable.base_default
     )
 }
 
@@ -63,7 +64,7 @@ fun loadCircleImage(imageView: ImageView, url: String?) {
     loadImageByTransform(
         imageView,
         url,
-        0,
+        R.drawable.base_default,
         CircleCrop()
     )
 }
@@ -85,7 +86,7 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String?) {
     loadImageByTransform(
         imageView,
         url,
-        0,
+        R.drawable.base_default,
         RoundedCorners(imageView.dip(corner))
     )
 }
@@ -95,7 +96,7 @@ fun loadBlurImage(imageView: ImageView, url: String) {
     loadImageByTransform(
         imageView,
         url,
-        0,
+        R.drawable.base_default,
         BlurTransformation(imageView.context, 25, 4)
     )
 }

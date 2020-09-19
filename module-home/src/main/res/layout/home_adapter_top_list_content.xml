@@ -10,18 +10,20 @@
             type="com.rm.module_home.bean.HomeTopListDataBean" />
 
         <variable
-            name="viewMode"
+            name="itemViewModel"
             type="com.rm.module_home.viewmodel.HomeTopListContentFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_14"
+        android:onClick="@{(HomeTopListDataBean)->itemViewModel.itemClickFun(item)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_top_list_book_adapter_icon"
-            bindUrl="@{item.audio_cover}"
-            corner="@{@dimen/dp_4}"
+            bindUrl="@{item.cover_url}"
+            corner="@{4f}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"
@@ -43,8 +45,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_top_list_book_adapter_name"
             style="@style/BusinessTextStyleFirst_3"
-            android:layout_width="0dp"
             bindText="@{item.audio_name}"
+            android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,8 +56,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_top_list_book_adapter_author"
             style="@style/BusinessTextStyleThird_4"
-            android:layout_width="0dp"
             bindText="@{item.author}"
+            android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginBottom="@dimen/dp_12"
             android:maxHeight="@dimen/dp_40"

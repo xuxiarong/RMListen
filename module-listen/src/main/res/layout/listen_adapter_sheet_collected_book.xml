@@ -7,7 +7,7 @@
 
         <variable
             name="bookBean"
-            type="com.rm.module_listen.bean.ListenAudioBean" />
+            type="com.rm.business_lib.bean.AudioBean" />
         <variable
             name="viewModel"
             type="com.rm.module_listen.viewmodel.ListenSheetCollectedListViewModel" />
@@ -21,7 +21,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_collected_book_adapter_icon"
-            bindUrl="@{bookBean.audio_cover}"
+            bindUrl="@{bookBean.cover_url}"
             corner="@{@dimen/dp_4}"
             android:layout_width="@dimen/dp_88"
             android:layout_height="0dp"

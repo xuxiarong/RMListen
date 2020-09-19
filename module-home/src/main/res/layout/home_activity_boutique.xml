@@ -29,9 +29,9 @@
             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
             app:bendTabTextSize="@dimen/business_text_size_16sp"
             app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1" />
-
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/home_boutique_view_pager"
+            bindAdapter="@{viewModel.tabAdapter}"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

@@ -7,7 +7,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.gridItemDecoration
 import com.rm.business_lib.bean.AudioBean
-import com.rm.business_lib.bean.SheetBean
+import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.viewmodel.MenuViewModel
@@ -20,13 +20,14 @@ import com.rm.module_home.databinding.HomeAdapterMenuBookBinding
  * version: 1.0
  */
 class MenuListAdapter(val viewModel: MenuViewModel) :
-    BaseQuickAdapter<SheetBean, BaseViewHolder>(layoutResId = R.layout.home_adapter_menu) {
-    override fun convert(holder: BaseViewHolder, item: SheetBean) {
+    BaseQuickAdapter<SheetInfoBean, BaseViewHolder>(layoutResId = R.layout.home_adapter_menu) {
+    override fun convert(holder: BaseViewHolder, item: SheetInfoBean) {
         DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
             ?.setVariable(BR.menuItemBean, item)
 
         DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
-            ?.setVariable(BR.viewModel, viewModel)
+            ?.setVariable(BR.itemViewModel, viewModel)
+
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
             if (tag != true) {
                 tag = true

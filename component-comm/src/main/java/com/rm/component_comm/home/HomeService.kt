@@ -1,5 +1,6 @@
 package com.rm.component_comm.home
 
+import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
 import com.rm.component_comm.router.ApplicationProvider
@@ -21,7 +22,7 @@ interface HomeService : ApplicationProvider {
      * @param sheetId 听单ID
      * @param pageId 页面Id
      */
-    fun startHomeSheetDetailActivity(context: Context, sheetId: String, pageId: Int)
+    fun startHomeSheetDetailActivity(context: Activity, sheetId: String,pageId:Int)
 
     // 获取主页Fragment
     fun getHomeFragment(): Fragment
