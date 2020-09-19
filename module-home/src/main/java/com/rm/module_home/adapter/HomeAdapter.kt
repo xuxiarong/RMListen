@@ -34,6 +34,7 @@ class HomeAdapter(
                 val homeItemBannerBinding =
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
                 homeItemBannerBinding.mainBanner.bindData(homeViewModel.homeBannerInfoList.value!!)
+                homeItemBannerBinding.mainBanner.setIsClipChildrenMode(false)
             }
             R.layout.home_item_menu_rv -> {
                 val homeItemBannerBinding =

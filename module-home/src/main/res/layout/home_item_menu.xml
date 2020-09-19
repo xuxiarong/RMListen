@@ -5,6 +5,7 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
@@ -18,34 +19,41 @@
         android:layout_width="77dp"
         android:layout_height="67dp"
         android:layout_marginEnd="10dp"
-        android:onClick="@{() -> viewModel.collectClick(item)}"
-        >
+        android:onClick="@{() -> viewModel.collectClick(item)}">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.shadow.ShadowLayout
             android:id="@+id/homeItemCollectIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_44"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            bindUrl="@{item.icon_url}"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+                <androidx.appcompat.widget.AppCompatImageView
+                    bindMenu="@{item.menu_name}"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="24dp"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:layout_shadowColor="#0a000000"
+                    android:src="@drawable/home_icon_menu_boutique"
+                    android:background="@drawable/business_selector_ff5e5e_white_8dp"
+                    />
+        </com.rm.business_lib.wedgit.shadow.ShadowLayout>
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemCollectName"
-            app:layout_constraintTop_toBottomOf="@+id/homeItemCollectIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="6dp"
+            bindText="@{item.menu_name}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_12sp"
-            bindText="@{item.menu_name}"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

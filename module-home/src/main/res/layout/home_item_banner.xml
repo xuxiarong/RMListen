@@ -6,17 +6,27 @@
 
     <data>
         <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+
+        <variable
             name="item"
             type="com.rm.module_home.model.home.banner.HomeBannerRvModel" />
     </data>
 
-    <com.stx.xhb.androidx.XBanner
-        android:id="@+id/mainBanner"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="176dp"
-        app:AutoPlayTime="3000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:pageChangeDuration="800"
-        app:pointsPosition="RIGHT"
-        app:tipTextSize="12sp" />
+        android:layout_height="wrap_content">
+        <com.stx.xhb.androidx.XBanner
+            android:id="@+id/mainBanner"
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            app:AutoPlayTime="5000"
+            app:clipChildrenTopBottomMargin="0dp"
+            app:isClipChildrenMode="true"
+            app:pageChangeDuration="1000"
+            app:pointsPosition="CENTER"
+            app:viewPagerClipChildren="true" />
+    </FrameLayout>
+
 </layout>

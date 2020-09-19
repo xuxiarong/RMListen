@@ -12,3 +12,18 @@ fun ImageView.isSrc(isLiked: Boolean){
         setImageResource(R.drawable.icon_detail_comment_like)
     }
 }
+
+@BindingAdapter("bindMenu")
+fun ImageView.bindMenu(menuName : String){
+    when (menuName) {
+        context.getString(R.string.home_boutique) -> {
+            setImageResource(R.drawable.home_selector_menu_boutique)
+        }
+        context.getString(R.string.home_rank) -> {
+            setImageResource(R.drawable.home_selector_menu_rank)
+        }
+        context.getString(R.string.home_listen_list) -> {
+            setImageResource(R.drawable.home_selector_menu_listen)
+        }
+    }
+}
