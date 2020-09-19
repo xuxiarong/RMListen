@@ -14,18 +14,21 @@ import androidx.recyclerview.widget.RecyclerView
 fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
 
     var isSlidingToLeft = false
-    var isStopSwipe = true
-
+    var lastOpenTime = System.currentTimeMillis()
     if (action == null) {
         return
     }
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            val manager =
-                recyclerView.layoutManager as LinearLayoutManager?
             // 当不滑动时
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                //修复连续滑动打开执行多次回调的bug
+                if(System.currentTimeMillis() - lastOpenTime < 500){
+                    lastOpenTime = System.currentTimeMillis()
+                    return
+                }
+                val manager = recyclerView.layoutManager as LinearLayoutManager?
                 // 获取最后一个完全显示的itemPosition
                 val lastItemPosition = manager!!.findLastCompletelyVisibleItemPosition()
                 val itemCount = manager.itemCount
@@ -33,6 +36,7 @@ fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
                 // 判断是否滑动到了最后一个Item，并且是向左滑动
                 if (lastItemPosition == itemCount - 1 && isSlidingToLeft) {
                     // 加载更多
+                    lastOpenTime = System.currentTimeMillis()
                     action()
                 }
             }
@@ -41,7 +45,6 @@ fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            isStopSwipe = false
             isSlidingToLeft = dx>10
         }
     })
