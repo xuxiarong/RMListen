@@ -38,7 +38,7 @@ fun XBanner.bindBanner(bannerInfoList: List<BannerInfoBean>?) {
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
             view as ImageView,
-            bannerInfoList[position].banner_img
+            bannerInfoList[position].img_url
         )
     }
 }
@@ -54,7 +54,7 @@ fun XBanner.paddingBindData(bannerInfoList: List<BannerInfoBean>?) {
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
             view as ImageView,
-            bannerInfoList[position].banner_img
+            bannerInfoList[position].img_url
         )
         view.setPadding(
             view.dip(16f),
