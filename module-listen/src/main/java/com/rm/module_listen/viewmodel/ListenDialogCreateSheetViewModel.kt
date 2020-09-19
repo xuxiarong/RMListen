@@ -29,10 +29,10 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
     val titleData = ObservableField<String>("")
 
     //编辑成功
-    var editSuccess: () -> Unit = {}
+    var editSuccess: (String) -> Unit = {}
 
     //编辑的听单
-    val sheetBean = ObservableField<ListenSheetBean>()
+    val sheetId = ObservableField<String>()
 
     // 监听绑定输入框内容变化
     val checkInput: (String) -> Unit = { inputChange(it) }
@@ -77,7 +77,6 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                 onSuccess = {
                     baseViewModel.showContentView()
                     DLog.i("----->", "添加成功")
-                    editSuccess()
                     baseViewModel.showToast("添加成功,请到我的听单中查看")
                     mDialog.dismiss()
                 },
@@ -103,6 +102,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                 onSuccess = {
                     baseViewModel.showContentView()
                     DLog.i("----->", "编辑成功")
+                    editSuccess(bean.sheet_name)
                     baseViewModel.showToast("修改成功,请到我的听单中查看")
                     mDialog.dismiss()
                 },
@@ -130,11 +130,10 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                     baseViewModel.showToast("长度不能大于20")
                 }
                 else -> {
-                    if (sheetBean.get() == null) {
+                    if (sheetId.get() == null) {
                         createSheet(str, "")
                     } else {
-                        val sheetBean = sheetBean.get()!!
-                        val bean = ListenPatchSheetBean(str, "${sheetBean.sheet_id}")
+                        val bean = ListenPatchSheetBean(str, sheetId.get()!!)
                         editSheet(bean)
                     }
                 }

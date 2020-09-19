@@ -1,5 +1,6 @@
 package com.rm.module_listen.viewmodel
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
@@ -18,12 +19,14 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
     //订阅数据源
     val data = MutableLiveData<MutableList<SubscriptionListBean>>()
 
+    //记录当前点击的实体对象
+    val subscriptionData = ObservableField<SubscriptionListBean>()
+
     //item点击事件闭包，提供外部调用
     var itemClick: (SubscriptionListBean) -> Unit = {}
 
     //更多按钮闭包
     var itemChildMoreClick: (SubscriptionListBean) -> Unit = {}
-
 
 
     /**
@@ -71,12 +74,14 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
      */
     fun dialogSetTopFun() {
         mDialog.dismiss()
-//        if (bean.is_top == 1) {
-//            cancelTop(bean.audio_id)
-//        } else {
-//            setTop(bean.audio_id)
-//        }
+        subscriptionData.get()?.let {
+            if (it.is_top == 1) {
+                cancelTop(it.audio_id)
+            } else {
+                setTop(it.audio_id)
+            }
 
+        }
     }
 
 
@@ -98,20 +103,20 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
      * dialog 取消订阅
      */
     fun dialogUnsubscribeFun() {
-//        showLoading()
-//        launchOnIO {
-//            repository.unsubscribe(bean.audio_id.toString()).checkResult(
-//                onSuccess = {
-//                    showContentView()
-//                    mDialog.dismiss()
-//                    DLog.i("------>", "取消订阅成功")
-//                },
-//                onError = {
-//                    showContentView()
-//                    DLog.i("------>", "取消订阅失败   $it")
-//                }
-//            )
-//        }
+        showLoading()
+        launchOnIO {
+            repository.unsubscribe(subscriptionData.get()!!.audio_id.toString()).checkResult(
+                onSuccess = {
+                    showContentView()
+                    mDialog.dismiss()
+                    DLog.i("------>", "取消订阅成功")
+                },
+                onError = {
+                    showContentView()
+                    DLog.i("------>", "取消订阅失败   $it")
+                }
+            )
+        }
     }
 
     /**

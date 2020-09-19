@@ -1,14 +1,10 @@
 package com.rm.module_home.api
 
 import com.rm.baselisten.net.bean.BaseResponse
-import com.rm.business_lib.bean.AudioListBean
-import com.rm.business_lib.bean.SheetListBean
-import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.*
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
-import com.rm.module_home.bean.MenuSheetInfoBean
 import com.rm.module_home.model.home.HomeModel
-import com.rm.business_lib.bean.HomeDetailModel
 import retrofit2.http.*
 
 
@@ -56,10 +52,10 @@ interface HomeApiService {
      */
     @GET("audio/chapter/list")
     suspend fun chapterList(
-        @Query("audio_id") audioId:String,
+        @Query("audio_id") audioId: String,
         @Query("page") page: Int,
         @Query("page_size") page_size: Int,
-        @Query("sort") sort:String
+        @Query("sort") sort: String
     ): BaseResponse<AudioChapterListModel>
 
     /**
@@ -86,7 +82,7 @@ interface HomeApiService {
     @GET("content/sheet/list")
     suspend fun homeSheetList(
         @Query("page_id") page_id: String,
-        @Query("page") page: Int,
+        @Query("page") page: Int    ,
         @Query("page_size") pageSize: Int
     ): BaseResponse<SheetListBean>
 
@@ -94,11 +90,19 @@ interface HomeApiService {
      * 听单详情
      */
     @GET("content/sheet/info")
-    suspend fun homeSheetInfo(
+    suspend fun homeSheetInfo(@Query("sheet_id") sheet_id: String): BaseResponse<SheetInfoBean>
+
+    /**
+     * 听单音频列表
+     */
+    @GET("content/sheet/audio-list")
+    suspend fun homeAudioList(
         @Query("page_id") page_id: String,
         @Query("sheet_id") sheet_id: String,
-        @Query("member_id") member_id: String
-    ): BaseResponse<MenuSheetInfoBean>
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<AudioListBean>
+
 
     /**
      * 榜单
@@ -143,6 +147,16 @@ interface HomeApiService {
      *  @param sheet_id 听单Id
      */
     @DELETE("/api/v1_0/sheet/my-favorite")
-    suspend fun homeUnFavoriteSheet(@Field("sheet_id") sheet_id: String): BaseResponse<Any>
+    suspend fun homeUnFavoriteSheet(@Query("sheet_id") sheet_id: String): BaseResponse<Any>
+
+
+    /**
+     * 添加订阅
+     * @param audio_id 音频Id
+     */
+    @FormUrlEncoded
+    @POST("subscription/list")
+    suspend fun listenAddSubscription(@Field("audio_id") audio_id: String): BaseResponse<Any>
+
 
 }

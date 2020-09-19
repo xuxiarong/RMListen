@@ -13,6 +13,8 @@ import com.rm.module_listen.activity.ListenMySheetDetailActivity
 import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_DELETE
 import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_EDIT
 import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_REQUEST_CODE
+import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.SHEET_ID
+import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.SHEET_NAME
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.databinding.ListenFragmentSheetMyListBinding
 import com.rm.module_listen.viewmodel.ListenSheetMyListViewModel
@@ -27,6 +29,7 @@ class ListenSheetMyListFragment :
         }
     }
 
+    //懒加载构建adapter对象
     private val mAdapter by lazy {
         CommonBindVMAdapter<ListenSheetBean>(
             mViewModel,
@@ -41,12 +44,18 @@ class ListenSheetMyListFragment :
         return BR.viewModel
     }
 
+    //记录点击item对应的实体对象
+    private var clickBean: ListenSheetBean? = null
+
     override fun initView() {
         super.initView()
+        //recyclerView初始化操作
         listen_sheet_my_list_recycler_view.apply {
             bindVerticalLayout(mAdapter)
             linearBottomItemDecoration(dimen(R.dimen.dp_14))
         }
+
+        //item点击事件
         mViewModel.itemClick = { startDetail(it) }
     }
 
@@ -64,22 +73,39 @@ class ListenSheetMyListFragment :
         mViewModel.getData()
     }
 
+    /**
+     * 跳转到详情页面
+     */
     private fun startDetail(bean: ListenSheetBean) {
         activity?.let {
-            ListenMySheetDetailActivity.startActivity(it, bean)
+            clickBean = bean
+            ListenMySheetDetailActivity.startActivity(it, bean.sheet_id.toString())
         }
     }
 
-
+    /**
+     * activity回调监听
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LISTEN_SHEET_DETAIL_REQUEST_CODE) {
-            when (resultCode) {
-                //删除
-                LISTEN_SHEET_DETAIL_DELETE,LISTEN_SHEET_DETAIL_EDIT -> {
-                    mViewModel.getData()
-                }
-                else -> {
+            val sheetId = data?.getStringExtra(SHEET_ID)
+            if (clickBean?.sheet_id.toString() == sheetId) {
+                when (resultCode) {
+                    //删除
+                    LISTEN_SHEET_DETAIL_DELETE -> {
+                        mAdapter.remove(clickBean!!)
+                    }
+
+                    //编辑成功
+                    LISTEN_SHEET_DETAIL_EDIT -> {
+                        val sheetName = data.getStringExtra(SHEET_NAME)!!
+                        mViewModel.data.value?.list?.let {
+                            val indexOf = it.indexOf(clickBean!!)
+                            it[indexOf].sheet_name = sheetName
+                            mAdapter.notifyItemChanged(indexOf)
+                        }
+                    }
                 }
             }
         }

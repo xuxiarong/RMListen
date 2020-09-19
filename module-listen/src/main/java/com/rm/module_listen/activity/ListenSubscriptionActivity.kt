@@ -23,12 +23,14 @@ import kotlinx.android.synthetic.main.listen_activity_subscription.*
 class ListenSubscriptionActivity :
     BaseVMActivity<ListenActivitySubscriptionBinding, ListenSubscriptionViewModel>() {
     companion object {
-
         fun startActivity(context: Context) {
             context.startActivity(Intent(context, ListenSubscriptionActivity::class.java))
         }
     }
 
+    /**
+     * 懒加载创建adapter对象
+     */
     private val mAdapter by lazy {
         CommonBindVMAdapter<SubscriptionListBean>(
             mViewModel,
@@ -45,19 +47,26 @@ class ListenSubscriptionActivity :
 
     override fun initView() {
         super.initView()
+        //初始化title信息
         val baseTitleModel = BaseTitleModel().setTitle("订阅")
             .setLeftIcon(R.drawable.base_icon_back)
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = baseTitleModel
 
+        //初始化recyclerView
         listen_subscription_recycler_view.apply {
             bindVerticalLayout(mAdapter)
             linearBottomItemDecoration(dimen(R.dimen.dp_14))
         }
 
+        //更多点击事件
         mViewModel.itemChildMoreClick = { itemChildClick(it) }
     }
 
+    /**
+     * 更多点事件
+     * @param bean 订阅实体bean
+     */
     private fun itemChildClick(bean: SubscriptionListBean) {
         showBottomDialog(bean)
     }
@@ -72,12 +81,17 @@ class ListenSubscriptionActivity :
 
 
     override fun startObserve() {
+        //监听数据的变换
         mViewModel.data.observe(this) {
             mAdapter.setList(it)
         }
     }
 
+    /**
+     * 现实底部弹窗
+     */
     private fun showBottomDialog(bean: SubscriptionListBean) {
+        mViewModel.subscriptionData.set(bean)
         mViewModel.mDialog.initDialog = {
             val subscriptionBinding =
                 mViewModel.mDialog.mDataBind as ListenDialogBottomSubscriptionBinding

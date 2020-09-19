@@ -1,6 +1,6 @@
 package com.rm.module_home.activity.menu
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -34,8 +34,11 @@ import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.databinding.HomeActivityListenMenuDetailBinding
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.viewmodel.MenuDetailViewModel
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
 import kotlinx.android.synthetic.main.home_header_menu_detail.*
+import kotlin.properties.Delegates
 
 
 class HomeMenuDetailActivity :
@@ -43,11 +46,14 @@ class HomeMenuDetailActivity :
     View.OnClickListener {
 
     companion object {
-        fun startActivity(context: Context, pageId: Int, sheetId: String) {
-            context.startActivity(Intent(context, HomeMenuDetailActivity::class.java).apply {
-                putExtra("pageId", pageId)
-                putExtra("sheetId", sheetId)
-            })
+        const val SHEET_ID = "sheetId"
+        const val PAGE_ID = "pageId"
+
+        fun startActivity(context: Activity, sheetId: String, pageId: Int) {
+            val intent = Intent(context, HomeMenuDetailActivity::class.java)
+            intent.putExtra(SHEET_ID, sheetId)
+            intent.putExtra(PAGE_ID, pageId)
+            context.startActivityForResult(intent, 100)
         }
     }
 
@@ -80,29 +86,24 @@ class HomeMenuDetailActivity :
         adapter.addHeaderView(dataBinding!!.root)
     }
 
+    /**
+     * 头部dataBinding对象
+     */
     private var dataBinding: HomeHeaderMenuDetailBinding? = null
 
-    /**
-     * 数据发生改变监听
-     */
-    override fun startObserve() {
-        mViewModel.data.observe(this) {
-            mAdapter.setList(it.audio_list.list)
-            dataBinding?.setVariable(BR.header, it)
-            loadBlurImage(home_menu_detail_iv_bg, it.cover_url)
-            home_menu_detail_title.text = it.sheet_name
-            collectionStateChange(it.favor == 1)
-        }
+    //是否收藏
+    private var isFavorite: Boolean? = null
 
-        mViewModel.favorites.observe(this) {
-            collectionStateChange(it)
-            favoritesSuccess()
-        }
+    //听单id
+    private lateinit var sheetId: String
+    private var pageId by Delegates.notNull<Int>()
 
-        mViewModel.unFavorites.observe(this) {
-            collectionStateChange(!it)
-        }
-    }
+    //当前加载的页码
+    private var mPage = 1
+
+    //每次家在数据的条数
+    private val pageSize = 10
+
 
     override fun initView() {
         super.initView()
@@ -113,6 +114,8 @@ class HomeMenuDetailActivity :
             val stateHeight = getStateHeight(this@HomeMenuDetailActivity)
             topMargin = stateHeight
         }
+
+        //初始化recyclerview
         home_menu_detail_recycler_view.apply {
             bindVerticalLayout(mAdapter)
             linearBottomItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_18))
@@ -120,19 +123,35 @@ class HomeMenuDetailActivity :
             recycleScrollListener()
         }
 
+        //上下拉监听
+        refreshListener()
+
+
         //item点击事件
         mViewModel.itemClick = {
-            HomeDetailActivity.startActivity(this,it.audio_id)
+            HomeDetailActivity.startActivity(this, it.audio_id)
         }
+
+        //收藏成功
+        mViewModel.favoritesSuccess = {
+            collectionStateChange(true)
+            favoritesSuccess()
+        }
+
+        //取消收藏成功
+        mViewModel.unFavoritesSuccess = {
+            collectionStateChange(false)
+        }
+
         home_menu_detail_back.setOnClickListener(this)
         home_menu_detail_share.setOnClickListener(this)
 
     }
 
     override fun initData() {
-        val pageId = intent.getIntExtra("pageId", 0)
-        val sheetId = intent.getStringExtra("sheetId") ?: ""
-        mViewModel.getData("$pageId", sheetId, "0")
+        sheetId = intent.getStringExtra(SHEET_ID) ?: ""
+        pageId = intent.getIntExtra(PAGE_ID, -1)
+        mViewModel.getData(sheetId)
     }
 
     override fun getLayoutId(): Int {
@@ -164,20 +183,29 @@ class HomeMenuDetailActivity :
      * 改变收藏状态
      */
     private fun collectionStateChange(isFavor: Boolean) {
-        DLog.i("-------->collectionStateChange","$isFavor")
+        isFavorite = isFavor
+
         if (isFavor) {
             home_menu_detail_collected?.apply {
+                visibility = View.VISIBLE
                 setBackgroundResource(R.drawable.home_select_menu_collected_unselect)
                 text = resources.getString(R.string.home_menu_detail_collected)
                 setTextColor(Color(R.color.business_text_color_b1b1b1))
             }
         } else {
             home_menu_detail_collected?.apply {
+                visibility = View.VISIBLE
                 setBackgroundResource(R.drawable.home_select_menu_collected_select)
                 text = resources.getString(R.string.home_menu_detail_add_collected)
                 setTextColor(Color(R.color.business_text_color_ffffff))
             }
         }
+
+        val intent = intent
+        intent.putExtra("isFavorite", isFavorite == true)
+        intent.putExtra(SHEET_ID, sheetId)
+        setResult(200, intent)
+
     }
 
 
@@ -187,13 +215,12 @@ class HomeMenuDetailActivity :
     private fun showCollectedDialog() {
         if (isLogin.value == true) {
             mViewModel.data.value?.sheet_id?.let {
-                if (mViewModel.favorites.value == true) {
+                if (isFavorite == false) {
                     mViewModel.favoritesSheet(it)
                 } else {
                     mViewModel.unFavoritesSheet(it)
                 }
             }
-
         } else {
             RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel, this)
         }
@@ -201,9 +228,46 @@ class HomeMenuDetailActivity :
 
     //分享
     private fun share() {
-
         RouterHelper.createRouter(ListenService::class.java)
             .showMySheetListDialog(mViewModel, this, "")
+    }
+
+    /**
+     * 数据发生改变监听
+     */
+    override fun startObserve() {
+        mViewModel.data.observe(this) {
+            //完成刷新
+            home_menu_detail_refresh.finishRefresh()
+            //清空原有的数据，并设置新的数据源
+            mAdapter.setList(it.audio_list?.list)
+            //给头部设置新的数据
+            dataBinding?.setVariable(BR.header, it)
+            //设置高斯模糊
+            loadBlurImage(home_menu_detail_iv_bg, it.cover_url)
+            //设置标题
+            home_menu_detail_title.text = it.sheet_name
+            //听单是否有收藏
+            collectionStateChange(it.favor == 1)
+
+            //标记没有更多数据
+            if (it.audio_list?.total ?: 0 <= (mAdapter.data.size)) {
+                home_menu_detail_refresh.finishLoadMoreWithNoMoreData()
+            }
+        }
+
+        mViewModel.audioListData.observe(this) {
+            if (it.total <= mAdapter.data.size) {
+                //完成加载并标记没有更多数据
+                home_menu_detail_refresh.finishLoadMoreWithNoMoreData()
+            } else {
+                //完成加载
+                home_menu_detail_refresh.finishLoadMore()
+            }
+
+            //将数据源添加到原有的列表中
+            mAdapter.addData(it.list)
+        }
     }
 
     /**
@@ -214,8 +278,11 @@ class HomeMenuDetailActivity :
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                //获取当前显示item的下标
                 val position =
                     (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                //如果显示的是头部信息，则隐藏标题栏并显示高斯模糊
                 home_menu_detail_title.visibility = if (position == 0) {
                     home_menu_detail_iv_bg.visibility = View.VISIBLE
                     View.GONE
@@ -223,6 +290,26 @@ class HomeMenuDetailActivity :
                     home_menu_detail_iv_bg.visibility = View.GONE
                     View.VISIBLE
                 }
+            }
+        })
+    }
+
+
+    /**
+     * 上拉加载/下拉刷新 事件监听
+     */
+    private fun refreshListener() {
+        home_menu_detail_refresh.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+            //上拉加载更多
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                ++mPage
+                mViewModel.getAudioList(pageId.toString(), sheetId, mPage, pageSize)
+            }
+
+            //下拉刷新
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                mPage = 1
+                mViewModel.getData(sheetId)
             }
         })
     }
@@ -258,5 +345,4 @@ class HomeMenuDetailActivity :
             mViewModel.showToast("收藏成功，请在我听-听单中查看")
         }
     }
-
 }

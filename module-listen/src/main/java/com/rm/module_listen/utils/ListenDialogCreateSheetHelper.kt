@@ -4,8 +4,6 @@ import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.bean.ListenSheetBean
-import com.rm.module_listen.bean.ListenSheetDetailDataBean
 import com.rm.module_listen.viewmodel.ListenDialogCreateSheetViewModel
 
 /**
@@ -36,9 +34,9 @@ class ListenDialogCreateSheetHelper(
         )
     }
 
-    fun showEditDialog(sheetBean: ListenSheetBean, success: () -> Unit) {
-        mViewModel.sheetBean.set(sheetBean)
-        mViewModel.editSuccess = { success() }
+    fun showEditDialog(sheetId: String, success: (String) -> Unit) {
+        mViewModel.sheetId.set(sheetId)
+        mViewModel.editSuccess = { success(it) }
         mViewModel.mDialog.showCommonDialog(
             mActivity, R.layout.listen_dialog_create_sheet,
             mViewModel,

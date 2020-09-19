@@ -1,5 +1,6 @@
 package com.rm.module_listen.fragment
 
+import android.content.Intent
 import androidx.lifecycle.observe
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.linearBottomItemDecoration
@@ -33,7 +34,6 @@ class ListenSheetCollectedListFragment :
     }
 
 
-
     override fun initModelBrId(): Int {
         return BR.viewModel
     }
@@ -59,8 +59,36 @@ class ListenSheetCollectedListFragment :
             linearBottomItemDecoration(dimen(R.dimen.dp_18))
         }
 
-        mViewModel.itemClick={
-            RouterHelper.createRouter(HomeService::class.java).startHomeSheetDetailActivity(context!!,it.sheet_id.toString(),100)
+        mViewModel.itemClick = {
+            RouterHelper.createRouter(HomeService::class.java)
+                .startHomeSheetDetailActivity(activity!!, it.sheet_id.toString(),100)
+        }
+    }
+
+    /**
+     * 跳转activity回调
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == 200) {
+            val isFavorite = data?.getBooleanExtra("isFavorite", true)
+            val sheetId = data?.getStringExtra("sheetId")
+            if (isFavorite == false) {
+                changeAdapter(sheetId)
+            }
+        }
+    }
+
+    /**
+     * 如果当前的听单取消收藏是，将当前听单移除
+     */
+    private fun changeAdapter(sheetId: String?) {
+        val bean = mViewModel.data.value
+        bean?.let {
+            val index = it.getIndex(sheetId)
+            if (index != -1) {
+                mAdapter.removeAt(index)
+            }
         }
     }
 }

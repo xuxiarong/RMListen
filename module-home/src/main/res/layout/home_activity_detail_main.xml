@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.rm.module_home.viewmodel.HomeDetailViewModel"
-            />
+            type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
     </data>
 
     <RelativeLayout
         android:id="@+id/bottom_sheet_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <include
             layout="@layout/home_activity_detail_content"
-            bind:viewModel="@{viewModel}"
-            />
+            bind:viewModel="@{viewModel}" />
+
         <com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
             android:id="@+id/scroll_down_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
                 <include
-                    bind:viewModel="@{viewModel}"
                     layout="@layout/home_detail_chapter_headerview"
-                    />
+                    bind:viewModel="@{viewModel}" />
+
                 <com.rm.business_lib.wedgit.bottomsheet.ContentRecyclerView
                     android:id="@+id/detail_directory_recycler"
                     android:layout_width="match_parent"

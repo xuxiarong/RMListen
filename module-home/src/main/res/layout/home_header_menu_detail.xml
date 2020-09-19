@@ -8,7 +8,7 @@
 
         <variable
             name="header"
-            type="com.rm.module_home.bean.MenuSheetInfoBean" />
+            type="com.rm.business_lib.bean.SheetInfoBean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,6 +81,7 @@
             android:layout_marginStart="@dimen/dp_12"
             android:background="@drawable/shape_red_20"
             android:text="@string/home_menu_detail_add_collected"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_front_cover"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover" />
 

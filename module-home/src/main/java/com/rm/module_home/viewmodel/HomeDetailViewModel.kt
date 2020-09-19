@@ -3,8 +3,11 @@ package com.rm.module_home.viewmodel
 import android.util.Log
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.component_comm.listen.ListenService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.model.home.detail.DetailChapterModel
 import com.rm.module_home.model.home.detail.HomeCommentViewModel
 import com.rm.business_lib.bean.HomeDetailModel
@@ -16,7 +19,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var detailViewModel = ObservableField<HomeDetailModel>()
     var detailCommentViewModel = ObservableField<HomeCommentViewModel>()
     var detailChapterViewModel = ObservableField<DetailChapterModel>()
-    val audioList=ObservableField<AudioChapterListModel>()
+    val audioList = ObservableField<AudioChapterListModel>()
     var showStatus = ObservableField<String>()
     var TimeStamp = ObservableField<String>()
 
@@ -24,6 +27,12 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     // 错误提示信息
     var errorTips = ObservableField<String>("")
+
+    //收藏点击事件闭包
+    var clickCollected: () -> Unit = {}
+    //订阅点击事件闭包
+    var clickSubscribe: () -> Unit = {}
+
 
     /**
      * 获取书籍详情信息
@@ -43,6 +52,25 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
         showStatus()
         detailCommentViewModel.set(repository.getCommentInfo())
         detailChapterViewModel.set(repository.getChapterInfo())
+    }
+
+    /**
+     * 订阅
+     */
+    fun subscribe(audioID: String){
+        showLoading()
+        launchOnIO {
+            repository.subscribe(audioID).checkResult(
+                onSuccess = {
+                    showContentView()
+                    DLog.i("------->","订阅成功")
+                },
+                onError = {
+                    showContentView()
+                    DLog.i("------->","订阅失败  $it")
+                }
+            )
+        }
     }
 
     /**
@@ -84,5 +112,19 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      */
     fun showTimeStamp() {
 
+    }
+
+    /**
+     * 收藏点击事件
+     */
+    fun clickCollectionFun() {
+        clickCollected()
+    }
+
+    /**
+     * 订阅点击事件
+     */
+    fun clickSubscribeFun() {
+        clickSubscribe()
     }
 }

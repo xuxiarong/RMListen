@@ -9,8 +9,6 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.component_comm.listen.ListenService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.bean.ListenSheetBean
@@ -31,6 +29,9 @@ class ListenDialogSheetHelper(
      */
     private val mViewModel by lazy { ListenDialogSheetViewModel(baseViewModel) }
 
+    /**
+     * 懒加载adapter
+     */
     private val mAdapter by lazy {
         CommonBindVMAdapter<ListenSheetBean>(
             mViewModel,
@@ -41,6 +42,10 @@ class ListenDialogSheetHelper(
         )
     }
 
+
+    /**
+     * 懒加载dialog
+     */
     private val mDialog by lazy {
         val height = BaseApplication.CONTEXT.resources.getDimensionPixelSize(R.dimen.dp_390)
         CommonMvFragmentDialog().apply {
@@ -51,21 +56,28 @@ class ListenDialogSheetHelper(
             initDialog = {
                 val dateBinding = mDataBind as ListenDialogSheetListBinding
 
-                dateBinding.listenDialogSheetRecyclerView.let {
-                    it.bindVerticalLayout(mAdapter)
-                    it.linearBottomItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_14))
-                }
-
-                dateBinding.listenDialogSheetCreateBookList.setOnClickListener{
-                    ListenDialogCreateSheetHelper(baseViewModel,mActivity).showDialog()
-                    dismiss()
-                }
-
-                mViewModel.audioId.value = audioId
-                startObserveData()
-                mViewModel.getData()
+                initView(dateBinding)
             }
         }
+    }
+
+    /**
+     * 初始化操作
+     */
+    private fun CommonMvFragmentDialog.initView(dateBinding: ListenDialogSheetListBinding) {
+        dateBinding.listenDialogSheetRecyclerView.let {
+            it.bindVerticalLayout(mAdapter)
+            it.linearBottomItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_14))
+        }
+
+        dateBinding.listenDialogSheetCreateBookList.setOnClickListener {
+            ListenDialogCreateSheetHelper(baseViewModel, mActivity).showDialog()
+            dismiss()
+        }
+        mViewModel.audioId.value = audioId
+        startObserveData()
+        mViewModel.getData()
+        mViewModel.dismiss = { dismiss() }
     }
 
 
@@ -75,6 +87,9 @@ class ListenDialogSheetHelper(
         }
     }
 
+    /**
+     * 显示dialog
+     */
     fun showDialog() {
         mDialog.showCommonDialog(
             mActivity, R.layout.listen_dialog_sheet_list,

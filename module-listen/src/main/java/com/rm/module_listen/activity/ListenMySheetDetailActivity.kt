@@ -8,15 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.dimen
+import com.rm.business_lib.bean.AudioBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.bean.ListenSheetBean
-import com.rm.module_listen.bean.ListenSheetDetailDataBean
 import com.rm.module_listen.databinding.ListenActivitySheetDetailBinding
 import com.rm.module_listen.databinding.ListenHeaderSheetDetailBinding
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
@@ -29,8 +25,11 @@ import kotlinx.android.synthetic.main.listen_activity_sheet_detail.*
 class ListenMySheetDetailActivity :
     BaseVMActivity<ListenActivitySheetDetailBinding, ListenSheetDetailViewModel>() {
 
+    /**
+     * 懒加载构建adapter对象
+     */
     private val mAdapter by lazy {
-        CommonBindVMAdapter<ListenSheetDetailDataBean>(
+        CommonBindVMAdapter<AudioBean>(
             mViewModel,
             mutableListOf(),
             R.layout.listen_adapter_book,
@@ -40,23 +39,33 @@ class ListenMySheetDetailActivity :
     }
 
     companion object {
-
+        //删除成功回调code
         const val LISTEN_SHEET_DETAIL_DELETE = 0x1001
+
+        //编辑成功回调code
         const val LISTEN_SHEET_DETAIL_EDIT = 0x1002
+
+        //跳转过来的code
         const val LISTEN_SHEET_DETAIL_REQUEST_CODE = 0x101
 
-        fun startActivity(context: Activity, bean: ListenSheetBean) {
+        const val SHEET_ID = "sheetId"
+        const val SHEET_NAME = "sheetName"
+        fun startActivity(context: Activity, sheetId: String) {
             context.startActivityForResult(
                 Intent(
                     context,
                     ListenMySheetDetailActivity::class.java
-                ).putExtra("bean", bean)
+                ).putExtra(SHEET_ID, sheetId)
                 , LISTEN_SHEET_DETAIL_REQUEST_CODE
             )
         }
     }
 
-    private var mSheetBean: ListenSheetBean? = null
+    //当前听单id
+    private var mSheetId: String? = null
+
+    //头部dataBinding对象
+    private var dataBinding: ListenHeaderSheetDetailBinding? = null
 
     override fun initModelBrId(): Int {
         return BR.viewModel
@@ -68,80 +77,96 @@ class ListenMySheetDetailActivity :
 
     override fun initView() {
         super.initView()
+        //返回按钮点击时间
         listen_sheet_detail_back.setOnClickListener { finish() }
+        //更多按钮点击事件
         listen_sheet_detail_more.setOnClickListener { showDialog() }
 
+        //recyclerView绑定数据
         listen_sheet_detail_recycler_view.apply {
             bindVerticalLayout(mAdapter)
-            linearBottomItemDecoration(dimen(R.dimen.dp_14))
         }
-
+        //获取其他页面传过来的听单id
         intent?.let {
-            mSheetBean = it.getParcelableExtra("bean")
-            mSheetBean?.let { bean ->
-                mViewModel.sheetBean.value = bean
-
-                //默认听单不给操作
-                if (bean.created_from == 3) {
-                    listen_sheet_detail_more.visibility = View.INVISIBLE
-                } else {
-                    listen_sheet_detail_more.visibility = View.VISIBLE
-                }
-
-                loadBlurImage(listen_sheet_detail_iv_bg, bean.sheet_cover)
-                createHeader()
-            }
+            mSheetId = it.getStringExtra(SHEET_ID)
         }
 
+        //创建头部
+        createHeader()
+
+        //点击编辑听单
         mViewModel.editSheetClick = {
             ListenDialogCreateSheetHelper(mViewModel, this).setTitle("编辑听单")
-                .showEditDialog(it, success = { success() })
+                .showEditDialog(it.sheet_id, success = { sheetName -> success(sheetName) })
+        }
+
+        //移除音频成功
+        mViewModel.removeAudio={
+            mAdapter.remove(it)
         }
     }
 
-    private fun success() {
-        DLog.i("--------->>>>", "编辑成功的回调")
+    /**
+     * 编辑听单回调
+     */
+    private fun success(sheetName: String) {
+        dataBinding?.listenSheetDetailDescription?.text = sheetName
+        val intent = intent
+        intent.putExtra(SHEET_ID, mSheetId)
+        intent.putExtra(SHEET_NAME, sheetName)
+        setResult(LISTEN_SHEET_DETAIL_EDIT, intent)
     }
 
     /**
      * 创建头部
      */
     private fun createHeader() {
-        val dataBinding = DataBindingUtil.inflate<ListenHeaderSheetDetailBinding>(
+        dataBinding = DataBindingUtil.inflate(
             LayoutInflater.from(this),
             R.layout.listen_header_sheet_detail,
             listen_sheet_detail_recycler_view,
             false
         )
-        dataBinding.setVariable(BR.item, mSheetBean)
-        mAdapter.addHeaderView(dataBinding.root)
+        mAdapter.addHeaderView(dataBinding!!.root)
     }
 
     override fun startObserve() {
+        //数据源改变监听
         mViewModel.data.observe(this) {
-            mAdapter.setList(it.list)
+            dataBinding?.setVariable(BR.item, it)
+            mAdapter.setList(it.audio_list?.list)
+
+            //默认听单不给操作
+            if (it.created_from == 3) {
+                listen_sheet_detail_more.visibility = View.INVISIBLE
+            } else {
+                listen_sheet_detail_more.visibility = View.VISIBLE
+            }
+
+            //设置高斯模糊
+            loadBlurImage(listen_sheet_detail_iv_bg, it.cover_url)
         }
         //删除回调
         mViewModel.deleteQuery.observe(this) {
             if (it) {
-                setResult(LISTEN_SHEET_DETAIL_DELETE)
+                val intent = intent
+                intent.putExtra(SHEET_ID, mSheetId)
+                setResult(LISTEN_SHEET_DETAIL_DELETE, intent)
                 finish()
             }
         }
-    }
-
-    override fun finish() {
-        super.finish()
 
     }
 
     override fun initData() {
-        mSheetBean?.let {
-            mViewModel.getData("${it.sheet_id}", 1)
+        mSheetId?.let {
+            mViewModel.getData(it)
         }
     }
 
-    //弹窗
+    /**
+     * 显示弹窗
+     */
     private fun showDialog() {
         mViewModel.mDialog.showCommonDialog(
             this,

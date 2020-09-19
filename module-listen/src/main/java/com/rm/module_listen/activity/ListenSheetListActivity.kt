@@ -18,9 +18,7 @@ import kotlinx.android.synthetic.main.listen_activity_sheet_list.*
 class ListenSheetListActivity : BaseActivity() {
 
     companion object {
-
         const val SHEET_LIST_TYPE = "sheetListType"
-
         fun startActivity(context: Context, @ListenSheetListType sheetListType: Int) {
             context.startActivity(
                 Intent(context, ListenSheetListActivity::class.java)

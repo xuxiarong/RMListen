@@ -1,6 +1,7 @@
 package com.rm.module_listen.api
 
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_listen.bean.*
 import com.rm.module_listen.model.ListenSubsModel
 import com.rm.module_listen.repository.ListenPatchSheetBean
@@ -80,12 +81,10 @@ interface ListenApiService {
      * @param page 加载页码
      * @param page_size 加载多少条数据
      */
-    @GET("sheet/list")
+    @GET("content/sheet/info")
     suspend fun listenSheetList(
-        @Query("sheet_id") sheet_id: String,
-        @Query("page") page: Int,
-        @Query("page_size") page_size: Int
-    ): BaseResponse<ListenSheetDetailBean>
+        @Query("sheet_id") sheet_id: String
+    ): BaseResponse<SheetInfoBean>
 
     /**
      * 添加到听单
@@ -125,4 +124,16 @@ interface ListenApiService {
      */
     @PATCH("sheet/my-list")
     suspend fun listenEditSheet(@Body bean: ListenPatchSheetBean): BaseResponse<Any>
+
+    /**
+     * 将音频从听单移除
+     * @param sheetId 听单ID
+     * @param audioId 音频ID
+     */
+    @DELETE("sheet/list")
+    suspend fun listenRemoveAudio(
+        @Query("sheet_id") sheetId: String,
+        @Query("audio_id") audioId: String
+    ): BaseResponse<Any>
+
 }

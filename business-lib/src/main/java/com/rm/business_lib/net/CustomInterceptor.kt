@@ -190,7 +190,7 @@ class CustomInterceptor : Interceptor {
         requestBuilder.addHeader("APP-SIGN", encodeMD5(signSource))
         requestBuilder.addHeader("APP-VERSION", BuildConfig.VERSION_NAME)
         requestBuilder.addHeader("APP-CHANNEL", "0")
-        requestBuilder.addHeader("Authorization", ACCESS_TOKEN.getStringMMKV())
+        requestBuilder.addHeader("Authorization", "Bearer ${ACCESS_TOKEN.getStringMMKV()}")
         return requestBuilder
     }
 

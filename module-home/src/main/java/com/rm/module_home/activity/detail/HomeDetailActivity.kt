@@ -16,6 +16,7 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
+import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
@@ -24,9 +25,12 @@ import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.model.home.detail.ChapterList
 import com.rm.module_home.model.home.detail.CommentList
 import com.rm.business_lib.bean.Tags
+import com.rm.business_lib.isLogin
+import com.rm.component_comm.login.LoginService
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
+import kotlin.properties.Delegates
 
 /**
  * 书籍详情
@@ -55,14 +59,16 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     }
 
     companion object {
-        val mAudioID = "audioID"
+        const val AUDIO_ID = "audioID"
         fun startActivity(context: Context, audioID: String) {
             val intent = Intent(context, HomeDetailActivity::class.java)
-            intent.putExtra(mAudioID, audioID)
+            intent.putExtra(AUDIO_ID, audioID)
             context.startActivity(intent)
+            isLogin
         }
     }
 
+    private var audioId: String = ""
     private var stateHeight: Int = 0
     override fun initView() {
         super.initView()
@@ -73,6 +79,11 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             stateHeight = getStateHeight(this@HomeDetailActivity)
             topMargin = stateHeight
         }
+        //收藏点击事件
+        mViewModel.clickCollected = { clickCollected() }
+
+        //订阅点击时间
+        mViewModel.clickSubscribe = { clickSubscribe() }
     }
 
     override fun startObserve() {
@@ -145,6 +156,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
 
     override fun initData() {
+        audioId = intent?.getStringExtra(AUDIO_ID) ?: ""
 
         scroll_down_layout?.setMinOffset(0)
         scroll_down_layout?.setMaxOffset((screenHeight * 0.75).toInt())
@@ -156,10 +168,8 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         LayoutMargin.topMargin = stateHeight + dip(44)
         scroll_down_layout.layoutParams = LayoutMargin
         scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
-        val audioIDs = intent.getStringExtra(mAudioID)
-        if (audioIDs.orEmpty().isNotEmpty()) {
-            mViewModel.intDetailInfo(audioIDs)
-            mViewModel.chapterList(audioIDs)
+        if (audioId.orEmpty().isNotEmpty()) {
+            mViewModel.intDetailInfo(audioId)
         }
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)
@@ -171,4 +181,35 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     override fun getLayoutId(): Int = R.layout.home_activity_detail_main
 
     override fun initModelBrId() = BR.viewModel
+
+
+    /**
+     * 收藏点击事件
+     */
+    private fun clickCollected() {
+        if (isLogin.value == false) {
+            toLogin()
+            return
+        }
+        RouterHelper.createRouter(ListenService::class.java)
+            .showMySheetListDialog(mViewModel, this, audioId.toString())
+    }
+
+    /**
+     * 点击订阅
+     */
+    private fun clickSubscribe() {
+        if (isLogin.value == false) {
+            toLogin()
+            return
+        }
+        mViewModel.subscribe(audioId)
+    }
+
+    /**
+     * 快捷登陆
+     */
+    private fun toLogin() {
+        RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel, this)
+    }
 }
