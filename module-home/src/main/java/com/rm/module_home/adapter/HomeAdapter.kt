@@ -9,7 +9,6 @@ import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.binding.bindData
 import com.rm.business_lib.binding.bindLeftScroll
 import com.rm.module_home.BR
@@ -36,13 +35,6 @@ class HomeAdapter(
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
                 homeItemBannerBinding.mainBanner.apply {
                     bindData(homeViewModel.homeBannerInfoList.value!!)
-                    setIsClipChildrenMode(false)
-                    setPadding(
-                        dip(16f),
-                        dip(16f),
-                        paddingRight,
-                        paddingBottom
-                    )
                 }
             }
             R.layout.home_item_menu_rv -> {
