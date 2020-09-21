@@ -79,11 +79,11 @@ interface HomeApiService {
 
     /**
      * 听单列表
+     *  @Query("page_id") page_id: String,
      */
     @GET("content/sheet/list")
     suspend fun homeSheetList(
-        @Query("page") page: Int    ,
-        @Query("page_id") page_id: String,
+        @Query("page") page: Int,
         @Query("page_size") pageSize: Int
     ): BaseResponse<SheetListBean>
 
