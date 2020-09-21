@@ -123,7 +123,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
                 mViewModel.detailViewModel.get()?.let {
                     val router = RouterHelper.createRouter(PlayService::class.java)
 
-                    router.toPlayPage(this@HomeDetailActivity, it, mViewModel.audioList.get()!!)
+                    router.toPlayPage(this@HomeDetailActivity, it, mViewModel.audioList.get())
                 }
 
             }

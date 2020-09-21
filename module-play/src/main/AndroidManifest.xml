@@ -13,7 +13,9 @@
         android:maxAspectRatio="2.4"
         android:resizeableActivity="true"
         android:supportsRtl="true">
-        <activity android:name=".activity.BookPlayerActivity"></activity>
+        <activity android:name=".activity.BookPlayerActivity"
+            android:launchMode="singleTask"
+            ></activity>
 
         <meta-data
             android:name="android.max_aspect"

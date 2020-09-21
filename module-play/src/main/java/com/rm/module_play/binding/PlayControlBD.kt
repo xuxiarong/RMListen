@@ -1,19 +1,15 @@
 package com.rm.module_play.binding
 
-import android.util.Log
-import android.widget.Adapter
+import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
-import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.model.PlayControlModel
-import com.rm.module_play.view.PlayButtonView
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
-import kotlinx.android.synthetic.main.music_paly_control_view.*
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
+
 
 /**
  *
@@ -73,18 +69,19 @@ fun BubbleSeekBar.updateThumbText(str: String) {
 
 
 @BindingAdapter("playStart", "playAction", requireAll = false)
-fun LottieAnimationView.startLottieAnimation(play: Boolean=false,playAction: (() -> Unit)) {
+fun LottieAnimationView.startLottieAnimation(play: PlayControlModel?,playAction: (() -> Unit)) {
     setOnClickListener {
         playAction()
-        if (play) {
-            setAnimation("stop_play.json")
-        } else {
+        if (play?.state==true) {
             setAnimation("play_stop.json")
+        } else {
+            setAnimation("stop_play.json")
+
         }
         playAnimation()
 
     }
-    addAnimatorUpdateListener{
-        Log.v("wuyue", "onAnimationUpdate ===" + it.animatedFraction);
-    }
+    addAnimatorUpdateListener(AnimatorUpdateListener { animation ->
+        ExoplayerLogger.exoLog(  " 动画进度" + (animation.animatedFraction * 100).toInt() + "%")
+    })
 }

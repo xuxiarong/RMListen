@@ -27,8 +27,8 @@ class PlayServiceImpl : PlayService {
 
     override fun toPlayPage(
         context: Context,
-        bean: HomeDetailModel,
-        detailModel: AudioChapterListModel
+        bean: HomeDetailModel?,
+        detailModel: AudioChapterListModel?
     ) {
         BookPlayerActivity.startActivity(context,bean,detailModel)
 

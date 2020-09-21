@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        android:text="1"
+        tools:text="1"
         android:textColor="@color/business_text_color_333333"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="parent"
@@ -21,10 +21,11 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
+        android:id="@+id/tv_music_play_chapter_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="13dp"
-        android:text="Albert Castillo"
+        tools:text="Albert Castillo"
         android:textColor="@color/business_text_color_333333"
         android:textSize="16sp"
         app:layout_constraintLeft_toRightOf="@+id/music_play_book_list_position"
@@ -40,6 +41,7 @@
         tools:ignore="MissingConstraints">
 
         <TextView
+            android:id="@+id/tv_music_play_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/music_play_ic_icon_play_eb"
@@ -48,25 +50,28 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/tv_music_play_time_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:drawableLeft="@drawable/music_play_ic_icon_time_eb"
-            android:text="14:34"
+            tools:text="14:34"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/tv_music_play_up_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:drawableLeft="@drawable/music_play_ic_icon_day_eb"
-            android:text="1988/04/23"
+            tools:text="1988/04/23"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="12sp" />
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/image_music_play_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"

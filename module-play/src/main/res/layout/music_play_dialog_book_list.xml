@@ -72,7 +72,8 @@
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="共34集"
+                   android:id="@+id/music_play_total_chapter"
+                   tools:text="共34集"
                    android:textColor="@color/business_text_color_666666"
                    android:textSize="14sp" />
                <com.rm.business_lib.wedgit.arrow.ArrowView

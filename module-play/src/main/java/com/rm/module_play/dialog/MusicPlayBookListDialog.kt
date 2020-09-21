@@ -11,6 +11,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
+import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.ChapterList
 import com.rm.module_play.R
 import com.rm.module_play.view.RecycleViewDivider
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
@@ -26,25 +28,28 @@ import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.rv_music_p
  * @data: 8/27/20 11:19 AM
  * @Version: 1.0.0
  */
-fun FragmentActivity.showPlayBookListDialog() {
+fun FragmentActivity.showPlayBookListDialog(
+    audioListModel: AudioChapterListModel,
+    back: (type: Int) -> Unit
+) {
     MusicPlayBookListDialog().apply {
+        this.audioChapterListModel = audioListModel
+        this.mBack = back
     }.show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
 class MusicPlayBookListDialog : BottomDialogFragment() {
-
+    var mBack: (type: Int) -> Unit = {}
+    var audioChapterListModel: AudioChapterListModel? = null
     private val timeSAdapter by lazy {
-        TimeSAdapter(timeList)
-    }
-    private val timeList by lazy {
-        //占位 add
-
-        arrayListOf<String>().apply {
-            for (index in 30 downTo 1) {
-                add("${index}分钟")
+        TimeSAdapter(audioChapterListModel?.list as MutableList<ChapterList>).apply {
+            setOnItemClickListener { adapter, view, position ->
+                mBack(position)
+                dismissAllowingStateLoss()
             }
         }
     }
+
 
     override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_book_list
 
@@ -66,10 +71,15 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     }
 
 
-    internal class TimeSAdapter(list: MutableList<String>) :
-        BaseQuickAdapter<String, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
+    internal class TimeSAdapter(list: MutableList<ChapterList>) :
+        BaseQuickAdapter<ChapterList, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
 
-        override fun convert(holder: BaseViewHolder, item: String) {
+        override fun convert(holder: BaseViewHolder, item: ChapterList) {
+            holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
+            holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
+            holder.setText(R.id.tv_music_play_count, "${item.play_count}")
+            holder.setText(R.id.tv_music_play_time_count, "${item.duration}")
+            holder.setText(R.id.tv_music_play_up_time, item.created_at)
 
 
         }
@@ -93,6 +103,9 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         val resDrawable = resources.getDrawable(res, null)
         resDrawable.setBounds(0, 0, resDrawable.minimumWidth, resDrawable.minimumHeight)
         music_play_order_play.setCompoundDrawables(resDrawable, null, null, null)
+        audioChapterListModel?.let {
+            music_play_total_chapter.text = "共${it.total}集"
+        }
     }
 
 }

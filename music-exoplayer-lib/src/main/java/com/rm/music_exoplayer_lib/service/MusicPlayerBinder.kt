@@ -16,7 +16,7 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binder() {
 
     fun startPlayMusic(position: Int) {
-        presenter.startPlayMusic(0)
+        presenter.startPlayMusic(position)
     }
 
     //暂停

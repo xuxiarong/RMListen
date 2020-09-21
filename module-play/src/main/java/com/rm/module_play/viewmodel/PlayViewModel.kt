@@ -15,6 +15,7 @@ import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,7 +33,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     val process = ObservableField<Float>()//进度条
     val maxProcess = ObservableField<Float>()//最大进度
     val updateThumbText = ObservableField<String>()//更改文字
-    var playControlModel = MutableLiveData<PlayControlModel>()
+    var playControlModel = ObservableField<PlayControlModel>()
     var playControlAction = ObservableField<String>()
     var playControlSubModel = MutableLiveData<PlayControlSubModel>()
     val homeDetailModel = MutableLiveData<HomeDetailModel>()
@@ -124,17 +125,18 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      * 初始化数据
      */
     fun initPlayerAdapterModel() {
-        val recommentListModel = arrayListOf<PlayControlRecommentListModel>()
-        for (index in 1..10) {
-            recommentListModel.add(PlayControlRecommentListModel())
-
-        }
-        playControlRecommentListModel.value = recommentListModel
+//        val recommentListModel = arrayListOf<PlayControlRecommentListModel>()
+//        for (index in 1..10) {
+//            recommentListModel.add(PlayControlRecommentListModel())
+//
+//        }
+        //        playControlRecommentListModel.value = recommentListModel
+//        playControlSubModel.value ?: PlayControlSubModel(),
+//            PlayControlRecommentModel(),
+        playControlModel.set(PlayControlModel())
         mutableList.value = mutableListOf(
-            playControlModel.value ?: PlayControlModel(),
-            playControlSubModel.value ?: PlayControlSubModel(),
-            PlayControlRecommentModel(),
-            PlayControlHotModel()
+            playControlModel.get()!!,
+            PlayControlCommentTitleModel()
         )
 
     }
@@ -152,7 +154,11 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      */
     fun playFun() {
         playManger.playOrPause()
-        playControlModel.postValue(PlayControlModel(state = (!(playControlModel.value?.state == true))))
+        val playControl = playControlModel.get()
+        playControl?.state = !(playControlModel.get()?.state == true)
+        playControlModel.set(playControl)
+        playControlModel.notifyChange()
+
     }
 
 

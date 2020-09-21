@@ -17,5 +17,5 @@ interface PlayService : ApplicationProvider {
     //显示播放器按钮
     fun showView()
     //跳著到播放器页面
-    fun toPlayPage(context: Context, bean: HomeDetailModel, detailModel: AudioChapterListModel)
+    fun toPlayPage(context: Context, bean: HomeDetailModel?, detailModel: AudioChapterListModel?)
 }

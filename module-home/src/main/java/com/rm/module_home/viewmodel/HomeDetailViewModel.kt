@@ -50,6 +50,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             )
         }
         showStatus()
+        chapterList(audioID)
         detailCommentViewModel.set(repository.getCommentInfo())
         detailChapterViewModel.set(repository.getChapterInfo())
     }

@@ -127,7 +127,7 @@ class PlayActivity :
         }
         image_music_play_book_list.setOnClickListener {
             //调整播放列表
-            showPlayBookListDialog()
+//            showPlayBookListDialog()
         }
         bt_get_book_list.setOnClickListener {
             navigateToForResult(testPath, 100)
