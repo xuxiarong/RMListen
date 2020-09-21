@@ -9,8 +9,8 @@ import com.rm.module_home.model.home.HomeAudioModel
  * date   : 2020/08/24
  * version: 1.0
  */
-data class HomeRecommendVerModel constructor(
+data class HomeAudioVerModel constructor(
     var verModel: HomeAudioModel
 ) : MultiItemEntity {
-    override val itemType = R.layout.home_item_recommend_ver
+    override val itemType = R.layout.home_item_audio_ver
 }

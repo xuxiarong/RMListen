@@ -9,8 +9,8 @@ import com.rm.module_home.model.home.HomeAudioModel
  * date   : 2020/08/24
  * version: 1.0
  */
-data class HomeRecommendHorSingleModel constructor(
+data class HomeAudioHorSingleModel constructor(
     val singleModel: HomeAudioModel
 ) : MultiItemEntity {
-    override val itemType = R.layout.home_item_recommend_hor_single
+    override val itemType = R.layout.home_item_audio_hor_single
 }

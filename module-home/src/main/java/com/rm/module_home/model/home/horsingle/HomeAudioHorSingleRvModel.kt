@@ -8,7 +8,7 @@ import com.rm.module_home.R
  * date   : 2020/08/24
  * version: 1.0
  */
-class HomeRecommendHorSingleRvModel : MultiItemEntity {
+class HomeAudioHorSingleRvModel : MultiItemEntity {
 
-    override val itemType = R.layout.home_item_recommend_hor_single_rv
+    override val itemType = R.layout.home_item_audio_hor_single_rv
 }

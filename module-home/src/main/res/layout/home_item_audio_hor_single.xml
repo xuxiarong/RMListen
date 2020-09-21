@@ -10,7 +10,7 @@
             type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
         <variable
             name="item"
-            type="com.rm.module_home.model.home.horsingle.HomeRecommendHorSingleModel" />
+            type="com.rm.module_home.model.home.horsingle.HomeAudioHorSingleModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -9,6 +9,6 @@ import com.rm.module_home.model.home.HomeAudioModel
  * date   : 2020/08/25
  * version: 1.0
  */
-class HomeGridRecommendModel constructor(var gridRecommendRvModel: HomeAudioModel) : MultiItemEntity {
-    override val itemType = R.layout.home_item_recommend_grid
+class HomeGridAudioModel constructor(var gridRecommendRvModel: HomeAudioModel) : MultiItemEntity {
+    override val itemType = R.layout.home_item_audio_grid
 }
