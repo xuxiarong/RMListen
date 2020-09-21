@@ -9,8 +9,12 @@ import androidx.viewpager.widget.ViewPager
  * date   : 2020/09/19
  * version: 1.0
  */
-@BindingAdapter("bindAdapter")
-fun ViewPager.bindAdapter(adapter: FragmentPagerAdapter?){
-    if(adapter == null) return
-    setAdapter(adapter)
+@BindingAdapter("bindAdapter","bindingOffscreenPageLimit",requireAll = false)
+fun ViewPager.bindAdapter(adapter: FragmentPagerAdapter?,pageLimit:Int?){
+    if(adapter != null){
+        setAdapter(adapter)
+    }
+    if(pageLimit!= null && pageLimit > 0){
+        offscreenPageLimit = pageLimit
+    }
 }
