@@ -24,6 +24,7 @@ var isLogin = MutableLiveData<Boolean>(false)
 // 当前登陆的用户信息
 var loginUser = MutableLiveData<LoginUserBean>()
 
+var isHomeDouClick = MutableLiveData(false)
 
 
 // ******** home ********
