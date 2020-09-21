@@ -1,5 +1,115 @@
 [
   {
+    "cn": "A",
+    "en": "A",
+    "phone_code": ""
+  },
+  {
+    "cn": "B",
+    "en": "B",
+    "phone_code": ""
+  },
+  {
+    "cn": "C",
+    "en": "C",
+    "phone_code": ""
+  },
+  {
+    "cn": "D",
+    "en": "D",
+    "phone_code": ""
+  },
+  {
+    "cn": "E",
+    "en": "E",
+    "phone_code": ""
+  },
+  {
+    "cn": "F",
+    "en": "F",
+    "phone_code": ""
+  },
+  {
+    "cn": "G",
+    "en": "G",
+    "phone_code": ""
+  },
+  {
+    "cn": "H",
+    "en": "H",
+    "phone_code": ""
+  },
+  {
+    "cn": "J",
+    "en": "J",
+    "phone_code": ""
+  },
+  {
+    "cn": "K",
+    "en": "K",
+    "phone_code": ""
+  },
+  {
+    "cn": "L",
+    "en": "L",
+    "phone_code": ""
+  },
+  {
+    "cn": "M",
+    "en": "M",
+    "phone_code": ""
+  },
+  {
+    "cn": "N",
+    "en": "N",
+    "phone_code": ""
+  },
+  {
+    "cn": "P",
+    "en": "P",
+    "phone_code": ""
+  },
+  {
+    "cn": "Q",
+    "en": "Q",
+    "phone_code": ""
+  },
+  {
+    "cn": "R",
+    "en": "R",
+    "phone_code": ""
+  },
+  {
+    "cn": "S",
+    "en": "S",
+    "phone_code": ""
+  },
+  {
+    "cn": "T",
+    "en": "T",
+    "phone_code": ""
+  },
+  {
+    "cn": "W",
+    "en": "W",
+    "phone_code": ""
+  },
+  {
+    "cn": "X",
+    "en": "X",
+    "phone_code": ""
+  },
+  {
+    "cn": "Y",
+    "en": "Y",
+    "phone_code": ""
+  },
+  {
+    "cn": "Z",
+    "en": "Z",
+    "phone_code": ""
+  },
+  {
     "cn": "阿富汗",
     "en": "Afghanistan",
     "phone_code": "93"

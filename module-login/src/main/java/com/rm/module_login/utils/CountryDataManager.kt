@@ -30,6 +30,7 @@ object CountryDataManager {
                 )
             }
             pinyinCountryList.addAll(CNPinyinFactory.createCNPinyinList(tempList))
+            pinyinCountryList.sort()
             pinyinCountryList
         }
     }
