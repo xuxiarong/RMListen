@@ -7,9 +7,9 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
-import com.rm.module_home.repository.MenuDetailRepository
+import com.rm.module_home.repository.HomeMenuDetailRepository
 
-class MenuDetailViewModel(private var repository: MenuDetailRepository) : BaseVMViewModel() {
+class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) : BaseVMViewModel() {
     //数据源
     val data = MutableLiveData<SheetInfoBean>()
     //加载更多 听单音频列表

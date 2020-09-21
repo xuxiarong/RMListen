@@ -30,10 +30,10 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
     /**
      * 获取听单列表
      */
-    fun getData(sheetId: String) {
+    fun getData(sheetId: String,page:Int,pageSize:Int) {
         showLoading()
         launchOnIO {
-            repository.getSheetDetail(sheetId).checkResult(
+            repository.getSheetDetail(sheetId,page, pageSize).checkResult(
                 onSuccess = {
                     showContentView()
                     data.value = it

@@ -14,8 +14,11 @@ class ListenSubscriptionRepository(private val service: ListenApiService) : Base
     /**
      * 订阅列表
      */
-    suspend fun getSubscriptionList(): BaseResult<MutableList<SubscriptionListBean>> {
-        return apiCall { service.listenSubscriptionList() }
+    suspend fun getSubscriptionList(
+        page: Int,
+        pageSize: Int
+    ): BaseResult<MutableList<SubscriptionListBean>> {
+        return apiCall { service.listenSubscriptionList(page, pageSize) }
     }
 
     /**
@@ -28,7 +31,7 @@ class ListenSubscriptionRepository(private val service: ListenApiService) : Base
     /**
      * 取消置顶
      */
-    suspend fun cancelTop(audioId: String):BaseResult<Any>{
+    suspend fun cancelTop(audioId: String): BaseResult<Any> {
         return apiCall { service.listenSubscriptionTCancelTop(audioId) }
     }
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.rm.module_mine.bean.MineHomeBean" />
+
+        <variable
+            name="itemViewModel"
+            type="com.rm.module_mine.viewmodel.MineHomeViewModel" />
+    </data>
+
+    <com.rm.business_lib.wedgit.shadow.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_noSolid="true"
+            app:layout_roundRadius="@dimen/dp_8"
+            app:layout_shadowColor="#55b1b1b1"
+            app:layout_shadowRadius="@dimen/dp_3">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/mine_adapter_home_title"
+                style="@style/BusinessTextStyleSecond_3"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_16"
+                android:text="@{item.title}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine_adapter_home_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_20"
+                app:layout_constraintTop_toBottomOf="@id/mine_adapter_home_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.rm.business_lib.wedgit.shadow.ShadowLayout>
+
+</layout>

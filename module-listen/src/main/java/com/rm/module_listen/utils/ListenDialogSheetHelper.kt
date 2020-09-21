@@ -6,7 +6,6 @@ import androidx.lifecycle.observe
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
@@ -67,7 +66,6 @@ class ListenDialogSheetHelper(
     private fun CommonMvFragmentDialog.initView(dateBinding: ListenDialogSheetListBinding) {
         dateBinding.listenDialogSheetRecyclerView.let {
             it.bindVerticalLayout(mAdapter)
-            it.linearBottomItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_14))
         }
 
         dateBinding.listenDialogSheetCreateBookList.setOnClickListener {

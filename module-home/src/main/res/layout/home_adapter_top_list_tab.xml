@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_top_list_tab_adapter_tv"
     style="@style/BusinessTextStyleFirst_2"
     android:layout_marginTop="@dimen/dp_2"
     android:layout_marginEnd="@dimen/dp_2"
     android:layout_marginBottom="@dimen/dp_2"
     android:background="@drawable/home_top_list_tab_bg"
+    app:layout_goneMarginBottom="@dimen/dp_14"
     android:drawablePadding="@dimen/dp_6" />
 
 

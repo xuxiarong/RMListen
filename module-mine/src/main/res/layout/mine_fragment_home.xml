@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineHomeViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mine_home_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_48"
+                android:paddingStart="@dimen/dp_16"
+                android:paddingEnd="@dimen/dp_16"
+                android:src="@drawable/business_icon_notice"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mine_home_setup"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_48"
+                android:paddingStart="@dimen/dp_16"
+                android:paddingEnd="@dimen/dp_16"
+                android:src="@drawable/business_icon_setup"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mine_home_user_icon"
+                bindUrl="@{viewModel.test}"
+                isCircle="@{true}"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_72"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_18"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mine_home_setup" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/dp_12"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/mine_home_user_icon"
+                app:layout_constraintStart_toEndOf="@id/mine_home_user_icon"
+                app:layout_constraintTop_toTopOf="@id/mine_home_user_icon">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_home_user_name"
+                    style="@style/BusinessTextStyleFirst_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="元芳" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/mine_home_user_name"
+                    android:layout_alignBottom="@id/mine_home_user_name"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:layout_toEndOf="@id/mine_home_user_name"
+                    android:gravity="center"
+                    android:textColor="@color/business_color_ff5e5e"
+                    tools:text="LV5" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_home_user_attention"
+                    style="@style/BusinessTextStyleThird_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mine_home_user_name"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:text="@string/mine_attention" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_home_user_attention_num"
+                    style="@style/BusinessTextStyleFirst_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mine_home_user_name"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:layout_toEndOf="@id/mine_home_user_attention"
+                    tools:text="100" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_home_user_slash"
+                    style="@style/BusinessTextStyleThird_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mine_home_user_name"
+                    android:layout_marginStart="@dimen/dp_18"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:layout_marginEnd="@dimen/dp_18"
+                    android:layout_toEndOf="@id/mine_home_user_attention_num"
+                    android:text="@string/mine_slash" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_home_user_fans"
+                    style="@style/BusinessTextStyleThird_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mine_home_user_name"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:layout_toEndOf="@id/mine_home_user_slash"
+                    android:text="@string/mine_fans" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_home_user_fans_num"
+                    style="@style/BusinessTextStyleFirst_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mine_home_user_name"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:layout_toEndOf="@id/mine_home_user_fans"
+                    tools:text="100" />
+
+            </RelativeLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mine_home_vip_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:background="@drawable/mine_shape_home_vip_bg"
+                android:paddingStart="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_20"
+                android:paddingBottom="@dimen/dp_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mine_home_user_icon">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_home_vip_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mine_vip"
+                    android:textColor="@color/business_color_ffdf85"
+                    android:textSize="@dimen/business_text_size_18sp"
+                    android:textStyle="italic|bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:text="@string/mine_vip_privilege"
+                    android:textColor="@color/business_color_ffdf85"
+                    android:textSize="@dimen/business_text_size_12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mine_home_vip_text" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/mine_shape_home_vip_btn_bg"
+                    android:paddingStart="@dimen/dp_12"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="@dimen/dp_12"
+                    android:paddingBottom="@dimen/dp_6"
+                    android:text="@string/mine_open_now"
+                    android:textSize="@dimen/business_text_size_12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine_home_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_20"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mine_home_vip_cl" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

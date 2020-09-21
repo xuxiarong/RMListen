@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MineCommonMaterialView">
+        <attr name="material_name" format="string" />
+        <attr name="material_icon" format="reference" />
+        <attr name="need_line" format="boolean" />
+    </declare-styleable>
+</resources>

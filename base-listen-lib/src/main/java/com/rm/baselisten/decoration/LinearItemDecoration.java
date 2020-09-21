@@ -128,11 +128,8 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
         }
         outRect.left = spanLeft;
         outRect.right = spanRight;
-        if (getPosition(view, parent) == getItemCount(parent) - 1) {
-            outRect.bottom = 0;
-        } else {
-            outRect.bottom = spanBottom;
-        }
+
+        outRect.bottom = spanBottom;
     }
 
     //水平方向的分割线

@@ -11,7 +11,7 @@ import com.rm.module_home.api.HomeApiService
  * date   : 2020/08/04
  * version: 1.0
  */
-class MenuDetailRepository(private val service: HomeApiService) : BaseRepository() {
+class HomeMenuDetailRepository(private val service: HomeApiService) : BaseRepository() {
 
     /**
      * 获取听单详情

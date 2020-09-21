@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineSettingViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:background="@color/business_color_e8e8e8"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:text="账号设置" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                userText="@{@string/test}"
+                app:material_name="个人资料" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                userIcon="@{viewModel.data}"
+                app:material_name="手机绑定" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="账号安全" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="个人资料" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:text="应用设置" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="播放设置" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="下载设置" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="缓存清除" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="消息设置" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:text="其他" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="免费求书" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="给个好评" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

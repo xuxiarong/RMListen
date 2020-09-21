@@ -1,10 +1,12 @@
 package com.rm.module_listen.adapter
 
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
+import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
 import com.rm.module_listen.BR
@@ -12,33 +14,30 @@ import com.rm.module_listen.R
 import com.rm.module_listen.bean.ListenSheetCollectedDataBean
 
 class ListenSheetCollectedListAdapter(
-    viewModel: BaseVMViewModel,
-    commonData: MutableList<ListenSheetCollectedDataBean>,
-    commonViewModelId: Int,
-    commonDataBrId: Int
+    viewModel: BaseVMViewModel
 ) : BaseBindVMAdapter<ListenSheetCollectedDataBean>(
     viewModel,
-    commonData,
+    mutableListOf(),
     R.layout.listen_adapter_sheet_collected_list,
-    commonViewModelId,
-    commonDataBrId
+    BR.viewModel,
+    BR.item
 ) {
     override fun convert(holder: BaseViewHolder, item: ListenSheetCollectedDataBean) {
         super.convert(holder, item)
-        holder.getView<RecyclerView>(R.id.listen_sheet_collected_adapter_recycler_view).apply {
-            bindHorizontalLayout(mItemAdapter)
+        item.audio_list?.let {
+            val recyclerView =
+                holder.getView<RecyclerView>(R.id.listen_sheet_collected_adapter_recycler_view)
+            recyclerView.apply {
+                bindHorizontalLayout(
+                    CommonBindVMAdapter(
+                        viewModel,
+                        it,
+                        R.layout.listen_adapter_sheet_collected_book,
+                        BR.viewModel,
+                        BR.bookBean
+                    )
+                )
+            }
         }
-        mItemAdapter.setList(item.audio_list)
     }
-
-    private val mItemAdapter by lazy {
-        CommonBindVMAdapter<AudioBean>(
-            viewModel,
-            mutableListOf(),
-            R.layout.listen_adapter_sheet_collected_book,
-            BR.viewModel,
-            BR.bookBean
-        )
-    }
-
 }

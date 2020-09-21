@@ -6,14 +6,14 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.*
 import com.rm.module_home.bean.MenuSheetBean
-import com.rm.module_home.repository.MenuRepository
+import com.rm.module_home.repository.HomeMenuRepository
 
 /**
  * desc   :
  * date   : 2020/08/04
  * version: 1.0
  */
-class MenuViewModel(private val repository: MenuRepository) : BaseVMViewModel() {
+class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMViewModel() {
     // 听单详情数据
     var menuList = MutableLiveData<MenuSheetBean>()
 
@@ -44,10 +44,10 @@ class MenuViewModel(private val repository: MenuRepository) : BaseVMViewModel() 
     /**
      * 获取听单列表
      */
-    fun getSheetList(pageId: String, page: Int, pageSize: Int) {
+    fun getSheetList( page: Int, pageSize: Int) {
         showLoading()
         launchOnIO {
-            repository.getSheetList(pageId, page, pageSize)
+            repository.getSheetList( page, pageSize)
                 .checkResult(onSuccess = {
                     showContentView()
                     sheetList.value = it

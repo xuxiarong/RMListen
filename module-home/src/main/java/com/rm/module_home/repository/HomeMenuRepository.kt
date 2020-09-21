@@ -11,7 +11,7 @@ import com.rm.module_home.bean.MenuSheetBean
  * date   : 2020/08/04
  * version: 1.0
  */
-class MenuRepository(private val service: HomeApiService) : BaseRepository() {
+class HomeMenuRepository(private val service: HomeApiService) : BaseRepository() {
 
     /**
      * 获取听单详情
@@ -23,7 +23,7 @@ class MenuRepository(private val service: HomeApiService) : BaseRepository() {
     /**
      * 获取听单列表
      */
-    suspend fun getSheetList(pageId: String, page: Int, pageSize: Int): BaseResult<SheetListBean> {
-        return apiCall { service.homeSheetList(pageId, page, pageSize) }
+    suspend fun getSheetList( page: Int, pageSize: Int): BaseResult<SheetListBean> {
+        return apiCall { service.homeSheetList( page, pageSize) }
     }
 }

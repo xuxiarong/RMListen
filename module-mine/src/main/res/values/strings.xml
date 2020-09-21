@@ -11,4 +11,12 @@
     <string name="mine_or">Or</string>
     <string name="mine_register">注册</string>
     <string name="mine_is_registering">正在注册</string>
+
+    <string name="test">18820204748</string>
+    <string name="mine_attention">关注:</string>
+    <string name="mine_fans">粉丝:</string>
+    <string name="mine_slash">/</string>
+    <string name="mine_open_now">立即开通</string>
+    <string name="mine_vip_privilege">开通会员尊享特权</string>
+    <string name="mine_vip">VIP</string>
 </resources>

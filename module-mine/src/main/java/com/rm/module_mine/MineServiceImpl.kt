@@ -2,10 +2,12 @@ package com.rm.module_mine
 
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.ARouterModuleServicePath
+import com.rm.module_mine.fragment.MineHomeFragment
 import com.rm.module_mine.login.LoginActivity
 
 /**
@@ -23,5 +25,9 @@ class MineServiceImpl : MineService {
     }
 
     override fun init(context: Context?) {
+    }
+
+    override fun getMineFragment(): Fragment {
+        return MineHomeFragment.newInstance()
     }
 }

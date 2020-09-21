@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
+import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.AudioBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -17,6 +19,8 @@ import com.rm.module_listen.databinding.ListenActivitySheetDetailBinding
 import com.rm.module_listen.databinding.ListenHeaderSheetDetailBinding
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 import com.rm.module_listen.viewmodel.ListenSheetDetailViewModel
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.listen_activity_sheet_detail.*
 
 /**
@@ -67,6 +71,12 @@ class ListenMySheetDetailActivity :
     //头部dataBinding对象
     private var dataBinding: ListenHeaderSheetDetailBinding? = null
 
+    //每页加载的条数
+    private val pageSize = 10
+
+    //当前请求数据的页码
+    private var mPage = 1
+
     override fun initModelBrId(): Int {
         return BR.viewModel
     }
@@ -77,6 +87,19 @@ class ListenMySheetDetailActivity :
 
     override fun initView() {
         super.initView()
+
+        // 设置透明沉浸式
+        setD()
+
+        val layoutParams =
+            (listen_sheet_detail_title_cl.layoutParams) as ConstraintLayout.LayoutParams
+        layoutParams.apply {
+            //动态获取状态栏的高度,并设置标题栏的topMargin
+            val stateHeight = getStateHeight(this@ListenMySheetDetailActivity)
+            topMargin = stateHeight
+        }
+
+
         //返回按钮点击时间
         listen_sheet_detail_back.setOnClickListener { finish() }
         //更多按钮点击事件
@@ -94,6 +117,8 @@ class ListenMySheetDetailActivity :
         //创建头部
         createHeader()
 
+        addRefreshListener()
+
         //点击编辑听单
         mViewModel.editSheetClick = {
             ListenDialogCreateSheetHelper(mViewModel, this).setTitle("编辑听单")
@@ -101,7 +126,7 @@ class ListenMySheetDetailActivity :
         }
 
         //移除音频成功
-        mViewModel.removeAudio={
+        mViewModel.removeAudio = {
             mAdapter.remove(it)
         }
     }
@@ -160,8 +185,26 @@ class ListenMySheetDetailActivity :
 
     override fun initData() {
         mSheetId?.let {
-            mViewModel.getData(it)
+            mViewModel.getData(it, mPage, pageSize)
         }
+    }
+
+    /**
+     * 上下拉监听
+     */
+    private fun addRefreshListener() {
+        listen_sheet_detail_refresh.setOnRefreshLoadMoreListener(object :
+            OnRefreshLoadMoreListener {
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                ++mPage
+                mViewModel.getData(mSheetId!!, mPage, pageSize)
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                mPage = 1
+                mViewModel.getData(mSheetId!!, mPage, pageSize)
+            }
+        })
     }
 
     /**

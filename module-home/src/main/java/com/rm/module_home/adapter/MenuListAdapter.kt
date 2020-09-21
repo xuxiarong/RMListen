@@ -10,7 +10,7 @@ import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.viewmodel.MenuViewModel
+import com.rm.module_home.viewmodel.HomeMenuViewModel
 import com.rm.module_home.databinding.HomeAdapterMenuBinding
 import com.rm.module_home.databinding.HomeAdapterMenuBookBinding
 
@@ -19,7 +19,7 @@ import com.rm.module_home.databinding.HomeAdapterMenuBookBinding
  * date   : 2020/08/21
  * version: 1.0
  */
-class MenuListAdapter(val viewModel: MenuViewModel) :
+class MenuListAdapter(val viewModel: HomeMenuViewModel) :
     BaseQuickAdapter<SheetInfoBean, BaseViewHolder>(layoutResId = R.layout.home_adapter_menu) {
     override fun convert(holder: BaseViewHolder, item: SheetInfoBean) {
         DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)

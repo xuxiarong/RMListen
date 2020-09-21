@@ -28,6 +28,18 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
     //更多按钮闭包
     var itemChildMoreClick: (SubscriptionListBean) -> Unit = {}
 
+    //取消订阅
+    var dialogUnsubscribe: () -> Unit = {}
+
+    //置顶
+    var dialogSetTop: (SubscriptionListBean) -> Unit = {}
+
+    //取消置顶
+    var dialogCancelTop: (SubscriptionListBean) -> Unit = {}
+
+    //刷新/加载更多是否成功
+    val isRefreshOrLoadComplete = MutableLiveData<Boolean>()
+
 
     /**
      * item点击事件
@@ -46,21 +58,24 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
     /**
      * 发送请求获取数据
      */
-    fun getData() {
+    fun getData(page: Int, pageSize: Int) {
         showLoading()
         launchOnIO {
-            repository.getSubscriptionList().checkResult(
+            repository.getSubscriptionList(page, pageSize).checkResult(
                 onSuccess = {
                     showContentView()
                     data.value = it
+                    isRefreshOrLoadComplete.value = true
                 },
                 onError = {
-                    showContentView()
+                    showNetError()
+                    isRefreshOrLoadComplete.value = true
                     DLog.i("------->", "$it")
                 }
             )
         }
     }
+
 
     /**
      * dialog 取消
@@ -109,10 +124,11 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                 onSuccess = {
                     showContentView()
                     mDialog.dismiss()
+                    dialogUnsubscribe()
                     DLog.i("------>", "取消订阅成功")
                 },
                 onError = {
-                    showContentView()
+                    showNetError()
                     DLog.i("------>", "取消订阅失败   $it")
                 }
             )
@@ -129,10 +145,14 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                 onSuccess = {
                     mDialog.dismiss()
                     showContentView()
+                    subscriptionData.get()?.let{
+                        dialogSetTop(it)
+                    }
+                    showToast("置顶成功")
                     DLog.i("------>", "置顶成功")
                 },
                 onError = {
-                    showContentView()
+                    showNetError()
                     DLog.i("------>", "置顶失败   $it")
                 }
             )
@@ -149,11 +169,15 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                 onSuccess = {
                     mDialog.dismiss()
                     showContentView()
-                    DLog.i("------>", "置顶成功")
+                    subscriptionData.get()?.let{
+                        dialogCancelTop(it)
+                    }
+                    showToast("取消置顶成功")
+                    DLog.i("------>", "取消置顶成功")
                 },
                 onError = {
-                    showContentView()
-                    DLog.i("------>", "置顶失败   $it")
+                    showNetError()
+                    DLog.i("------>", "取消置顶失败   $it")
                 }
             )
         }

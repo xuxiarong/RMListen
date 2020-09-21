@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.utilExt.Color
@@ -33,7 +31,7 @@ import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.databinding.HomeActivityListenMenuDetailBinding
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
-import com.rm.module_home.viewmodel.MenuDetailViewModel
+import com.rm.module_home.viewmodel.HomeMenuDetailViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
@@ -42,7 +40,7 @@ import kotlin.properties.Delegates
 
 
 class HomeMenuDetailActivity :
-    BaseVMActivity<HomeActivityListenMenuDetailBinding, MenuDetailViewModel>(),
+    BaseVMActivity<HomeActivityListenMenuDetailBinding, HomeMenuDetailViewModel>(),
     View.OnClickListener {
 
     companion object {
@@ -118,7 +116,6 @@ class HomeMenuDetailActivity :
         //初始化recyclerview
         home_menu_detail_recycler_view.apply {
             bindVerticalLayout(mAdapter)
-            linearBottomItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_18))
             createHeader(mAdapter)
             recycleScrollListener()
         }
@@ -238,7 +235,7 @@ class HomeMenuDetailActivity :
     override fun startObserve() {
         mViewModel.data.observe(this) {
             //完成刷新
-            home_menu_detail_refresh.finishRefresh()
+            home_menu_detail_refresh?.finishRefresh()
             //清空原有的数据，并设置新的数据源
             mAdapter.setList(it.audio_list?.list)
             //给头部设置新的数据
@@ -251,18 +248,18 @@ class HomeMenuDetailActivity :
             collectionStateChange(it.favor == 1)
 
             //标记没有更多数据
-            if (it.audio_list?.total ?: 0 <= (mAdapter.data.size)) {
-                home_menu_detail_refresh.finishLoadMoreWithNoMoreData()
+            if (it.audio_list?.list?.size ?: 0 < pageSize) {
+                home_menu_detail_refresh?.finishLoadMoreWithNoMoreData()
             }
         }
 
         mViewModel.audioListData.observe(this) {
-            if (it.total <= mAdapter.data.size) {
+            if (it.list.size < pageSize) {
                 //完成加载并标记没有更多数据
-                home_menu_detail_refresh.finishLoadMoreWithNoMoreData()
+                home_menu_detail_refresh?.finishLoadMoreWithNoMoreData()
             } else {
                 //完成加载
-                home_menu_detail_refresh.finishLoadMore()
+                home_menu_detail_refresh?.finishLoadMore()
             }
 
             //将数据源添加到原有的列表中

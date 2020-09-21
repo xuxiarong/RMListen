@@ -13,7 +13,10 @@ interface ListenApiService {
      *订阅列表
      */
     @GET("subscription/list")
-    suspend fun listenSubscriptionList(): BaseResponse<MutableList<SubscriptionListBean>>
+    suspend fun listenSubscriptionList(
+        @Query("page") page: Int,
+        @Query("page_size") pageSize: Int
+    ): BaseResponse<MutableList<SubscriptionListBean>>
 
     /**
      * 置顶
@@ -73,7 +76,10 @@ interface ListenApiService {
      * 收藏听单列表
      */
     @GET("sheet/my-favorite")
-    suspend fun listenSheetFavoriteList(): BaseResponse<ListenSheetCollectedBean>
+    suspend fun listenSheetFavoriteList(
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<ListenSheetCollectedBean>
 
     /**
      * 听单列表
@@ -83,7 +89,9 @@ interface ListenApiService {
      */
     @GET("content/sheet/info")
     suspend fun listenSheetList(
-        @Query("sheet_id") sheet_id: String
+        @Query("sheet_id") sheet_id: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
     ): BaseResponse<SheetInfoBean>
 
     /**

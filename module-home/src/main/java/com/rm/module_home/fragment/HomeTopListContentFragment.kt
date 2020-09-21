@@ -3,16 +3,13 @@ package com.rm.module_home.fragment
 import android.os.Bundle
 import androidx.annotation.IntDef
 import androidx.lifecycle.observe
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeTopListContentAdapter
-import com.rm.module_home.bean.HomeTopListDataBean
 import com.rm.module_home.databinding.HomeFragmentTopListContentBinding
 import com.rm.module_home.viewmodel.HomeTopListContentFragmentViewModel
 import kotlinx.android.synthetic.main.home_fragment_top_list_content.*
@@ -59,6 +56,10 @@ class HomeTopListContentFragment :
     private var mVisible = false//是否可见
     private var canRefreshData = false//是否能够刷新数据
     private var mPage = 1//当前的页码
+
+    //每页加载数据条数
+    private val pageSize = 10
+
 
     /**
      * 懒加载构建adapter对象
@@ -140,7 +141,7 @@ class HomeTopListContentFragment :
             return
         }
         canRefreshData = false
-        mViewModel.getListInfo("$rankType", rankSeg, mPage)
+        mViewModel.getListInfo("$rankType", rankSeg, mPage, pageSize)
     }
 
     /**
@@ -168,15 +169,15 @@ class HomeTopListContentFragment :
     override fun startObserve() {
         mViewModel.dataList.observe(this) {
             if (mPage == 1) {
-                home_top_list_refresh.finishRefresh()
+                home_top_list_refresh?.finishRefresh()
                 mAdapter.setList(it.list)
             } else {
-                home_top_list_refresh.finishLoadMore()
+                home_top_list_refresh?.finishLoadMore()
                 it.list?.let { data -> mAdapter.addData(data) }
             }
-            //如果总页数等于当前的页码则表示没有更多数据了
-            if (it.total <= mAdapter.data.size) {
-                home_top_list_refresh.finishLoadMoreWithNoMoreData()
+            //没有更多数据
+            if (it.list?.size ?: 0 < pageSize) {
+                home_top_list_refresh?.finishLoadMoreWithNoMoreData()
             }
         }
     }

@@ -10,8 +10,8 @@ class ListenSheetDetailRepository(private val service: ListenApiService) : BaseR
      * 获取听单详情
      * @param sheet_id 听单Id
      */
-    suspend fun getSheetDetail(sheet_id: String): BaseResult<SheetInfoBean> {
-        return apiCall { service.listenSheetList(sheet_id) }
+    suspend fun getSheetDetail(sheet_id: String,page:Int,pageSize:Int): BaseResult<SheetInfoBean> {
+        return apiCall { service.listenSheetList(sheet_id,page,pageSize) }
     }
 
     /**

@@ -12,7 +12,6 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.divLinearItemDecoration
-import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -27,10 +26,19 @@ import com.rm.module_home.viewmodel.TopListViewModel
 import kotlinx.android.synthetic.main.home_activity_top_list.*
 
 class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewModel>() {
+
     private var mPopupWindow: PopupWindow? = null
+
+    //侧边tab adapter对象
     private val tabAdapter by lazy { HomeTopListTabAdapter() }
+
+    //popup adapter对象
     private val popupAdapter by lazy { HomeTopListPopupAdapter() }
+
+    //tab 对应的fragment集合
     private val fragments = mutableListOf<HomeTopListContentFragment>()
+
+    //当前显示fragment的pos
     private var mCurPosition = 0
 
     companion object {
@@ -61,12 +69,13 @@ class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListVi
         home_top_list_title_icon.setOnClickListener { showPopupWindow() }
         home_list_recycler_tab.apply {
             bindVerticalLayout(tabAdapter)
-            linearBottomItemDecoration(resources.getDimensionPixelOffset(R.dimen.dp_14))
         }
         itemClick()
     }
 
-    //配置创建fragment需要的数据
+    /**
+     * 配置创建fragment需要的数据
+     */
     private fun configureFragment(data: MutableList<CategoryTabBean>) {
         data.forEach { bean ->
             val type = when (bean.name) {
@@ -97,7 +106,9 @@ class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListVi
         }
     }
 
-    //tab点击事件监听
+    /**
+     * tab点击事件监听
+     */
     private fun itemClick() {
         tabAdapter.setOnItemClickListener { _, view, position ->
             if (mCurPosition == position) {
@@ -110,7 +121,9 @@ class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListVi
         }
     }
 
-    //弹出popupWindow
+    /**
+     * 弹出popupWindow
+     */
     private fun showPopupWindow() {
         if (mPopupWindow == null) {
             createPopupWindow()
@@ -124,7 +137,9 @@ class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListVi
         home_top_list_title_icon.setImageResource(R.drawable.business_ic_up)
     }
 
-    //创建popupWindow
+    /**
+     * 创建popupWindow
+     */
     private fun createPopupWindow() {
         mPopupWindow = PopupWindow()
 

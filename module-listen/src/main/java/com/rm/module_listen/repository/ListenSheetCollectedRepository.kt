@@ -16,8 +16,8 @@ class ListenSheetCollectedRepository(private val service: ListenApiService) : Ba
     /**
      * 收藏听单列表
      */
-    suspend fun getCollectedList(): BaseResult<ListenSheetCollectedBean> {
-        return apiCall { service.listenSheetFavoriteList() }
+    suspend fun getCollectedList(page:Int,pageSize:Int): BaseResult<ListenSheetCollectedBean> {
+        return apiCall { service.listenSheetFavoriteList(page,pageSize) }
     }
 
 

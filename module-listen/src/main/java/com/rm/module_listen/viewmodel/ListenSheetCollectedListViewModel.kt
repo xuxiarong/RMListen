@@ -13,23 +13,43 @@ import com.rm.module_listen.repository.ListenSheetCollectedRepository
 class ListenSheetCollectedListViewModel(private val repository: ListenSheetCollectedRepository) :
     BaseVMViewModel() {
 
+    //数据源
     val data = MutableLiveData<ListenSheetCollectedBean>()
 
+    //网络请求是否完成
+    val isRefreshOrLoadComplete = MutableLiveData<Boolean>()
+
+    //item点击事件
     var itemClick: (ListenSheetCollectedDataBean) -> Unit = {}
 
-    fun getData() {
+    /**
+     * 请求加载数据
+     */
+    fun getData(page: Int, pageSize: Int) {
+        showLoading()
         launchOnIO {
-            repository.getCollectedList().checkResult(
+            repository.getCollectedList(page, pageSize).checkResult(
                 onSuccess = {
-                    data.postValue(it)
+                    showContentView()
+                    isRefreshOrLoadComplete.value = true
+                    if (it.list.isNotEmpty()) {
+                        data.postValue(it)
+                    } else {
+                        showDataEmpty()
+                    }
                 },
                 onError = {
-                    DLog.i("--------?", "$it")
+                    isRefreshOrLoadComplete.value = true
+                    showNetError()
+                    DLog.i("-------->", "$it")
                 }
             )
         }
     }
 
+    /**
+     * item点击事件
+     */
     fun itemClickFun(bean: ListenSheetCollectedDataBean) {
         itemClick(bean)
     }

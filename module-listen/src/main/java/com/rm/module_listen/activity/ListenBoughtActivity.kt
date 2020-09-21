@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dimen
@@ -13,7 +12,6 @@ import com.rm.business_lib.bean.BookBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenActivityBoughtBinding
-import com.rm.module_listen.utils.ListenDialogSheetHelper
 import com.rm.module_listen.viewmodel.ListenBoughtViewModel
 import kotlinx.android.synthetic.main.listen_activity_bought.*
 
@@ -55,7 +53,6 @@ class ListenBoughtActivity :
 
         listen_bought_recycler_view.apply {
             bindVerticalLayout(mAdapter)
-            linearBottomItemDecoration(dimen(R.dimen.dp_14))
         }
 
 

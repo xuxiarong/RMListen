@@ -81,7 +81,6 @@ interface HomeApiService {
      */
     @GET("content/sheet/list")
     suspend fun homeSheetList(
-        @Query("page_id") page_id: String,
         @Query("page") page: Int    ,
         @Query("page_size") pageSize: Int
     ): BaseResponse<SheetListBean>
@@ -139,14 +138,14 @@ interface HomeApiService {
      * @param sheet_id 听单Id
      */
     @FormUrlEncoded
-    @POST("/api/v1_0/sheet/my-favorite")
+    @POST("sheet/my-favorite")
     suspend fun homeFavoritesSheet(@Field("sheet_id") sheet_id: String): BaseResponse<Any>
 
     /**
      * 取消收藏
      *  @param sheet_id 听单Id
      */
-    @DELETE("/api/v1_0/sheet/my-favorite")
+    @DELETE("sheet/my-favorite")
     suspend fun homeUnFavoriteSheet(@Query("sheet_id") sheet_id: String): BaseResponse<Any>
 
 

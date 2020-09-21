@@ -1,6 +1,7 @@
 package com.rm.component_comm.mine
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -10,4 +11,9 @@ import com.rm.component_comm.router.ApplicationProvider
  */
 interface MineService : ApplicationProvider {
     fun routerLogin(context: Context)
+
+    /**
+     * 我的模块主界面
+     */
+    fun getMineFragment(): Fragment
 }

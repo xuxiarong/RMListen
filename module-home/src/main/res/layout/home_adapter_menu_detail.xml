@@ -11,12 +11,13 @@
 
         <variable
             name="click"
-            type="com.rm.module_home.viewmodel.MenuDetailViewModel" />
+            type="com.rm.module_home.viewmodel.HomeMenuDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_18"
         android:onClick="@{(AudioBean)->click.itemClickFun(item)}">
 
 

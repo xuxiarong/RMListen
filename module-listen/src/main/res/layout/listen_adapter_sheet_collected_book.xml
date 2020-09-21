@@ -8,9 +8,6 @@
         <variable
             name="bookBean"
             type="com.rm.business_lib.bean.AudioBean" />
-        <variable
-            name="viewModel"
-            type="com.rm.module_listen.viewmodel.ListenSheetCollectedListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

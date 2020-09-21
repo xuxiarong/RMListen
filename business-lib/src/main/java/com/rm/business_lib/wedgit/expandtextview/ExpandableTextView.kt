@@ -98,7 +98,6 @@ class ExpandableTextView @JvmOverloads constructor(
         }
         mTextView.text = str
         mTextView.post {
-            DLog.i("-------->", "expand   post")
             val layout = mTextView.layout
             val lineCount = layout.lineCount//获取当前TextView总行数
             val lineStart = layout.getLineStart(lineCount - 1)

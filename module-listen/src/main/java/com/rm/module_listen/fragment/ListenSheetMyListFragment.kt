@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.binding.linearBottomItemDecoration
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.dimen
 import com.rm.module_listen.BR
@@ -52,7 +51,6 @@ class ListenSheetMyListFragment :
         //recyclerView初始化操作
         listen_sheet_my_list_recycler_view.apply {
             bindVerticalLayout(mAdapter)
-            linearBottomItemDecoration(dimen(R.dimen.dp_14))
         }
 
         //item点击事件

@@ -18,7 +18,7 @@ data class ListenSheetCollectedBean(
 
 data class ListenSheetCollectedDataBean(
     var audio_label: String,
-    var audio_list: List<AudioBean>?,
+    var audio_list: MutableList<AudioBean>?,
     var audio_total: Int,
     var avatar_url: String,
     var member_id: Int,

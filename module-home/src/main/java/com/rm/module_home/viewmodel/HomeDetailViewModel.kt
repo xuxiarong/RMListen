@@ -64,6 +64,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 onSuccess = {
                     showContentView()
                     DLog.i("------->","订阅成功")
+                    showToast("订阅成功")
                 },
                 onError = {
                     showContentView()

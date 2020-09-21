@@ -11,7 +11,7 @@
 
         <variable
             name="itemViewModel"
-            type="com.rm.module_home.viewmodel.MenuViewModel" />
+            type="com.rm.module_home.viewmodel.HomeMenuViewModel" />
     </data>
 
     <com.rm.business_lib.wedgit.shadow.ShadowLayout
