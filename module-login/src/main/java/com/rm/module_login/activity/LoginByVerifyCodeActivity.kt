@@ -36,9 +36,9 @@ class LoginByVerifyCodeActivity :
     override fun initModelBrId() = BR.viewModel
 
     override fun startObserve() {
-        mViewModel.testDialogData.observe(this, Observer {
-//            dialogAdapter.setList(mViewModel.testDialogData.value!!)
-        })
+//        mViewModel.testDialogData.observe(this, Observer {
+////            dialogAdapter.setList(mViewModel.testDialogData.value!!)
+//        })
 
         // 监听登陆状态
         isLogin.observe(this, Observer {
