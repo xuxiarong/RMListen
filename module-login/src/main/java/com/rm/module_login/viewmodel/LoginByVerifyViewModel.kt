@@ -85,7 +85,6 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
     fun loginByPassword() {
         // 密码登陆
         startActivity(LoginByPasswordActivity::class.java)
-        finish()
     }
 
     fun testClick() {

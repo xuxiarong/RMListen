@@ -3,7 +3,6 @@ package com.rm.module_login.activity
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.Observer
-import com.rm.baselisten.dialog.CommonFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
@@ -62,7 +61,7 @@ class LoginByVerifyCodeActivity :
     }
 
 
-    private lateinit var commonDialog: CommonFragmentDialog
+//    private lateinit var commonDialog: CommonFragmentDialog
 
 //    override fun onResume() {
 //        super.onResume()
