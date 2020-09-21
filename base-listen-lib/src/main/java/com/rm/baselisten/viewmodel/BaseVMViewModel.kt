@@ -1,8 +1,13 @@
 package com.rm.baselisten.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.model.*
 import com.rm.baselisten.mvvm.BaseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * desc   : MVVM模式的基类ViewModel
@@ -39,6 +44,15 @@ open class BaseVMViewModel : BaseViewModel() {
      * 基类的Toast数据
      */
     var baseToastModel = MutableLiveData<BaseToastModel>()
+
+
+    fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {
+        viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
+    }
+
+    fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
+        viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
+    }
 
 
     fun startActivity(clazz: Class<*>) {

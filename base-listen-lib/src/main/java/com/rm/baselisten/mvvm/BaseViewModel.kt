@@ -4,11 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * desc   :
@@ -28,15 +23,6 @@ open class BaseViewModel() : ViewModel(),Parcelable {
     val mException: MutableLiveData<Throwable> = MutableLiveData()
 
     constructor(parcel: Parcel) : this() {
-    }
-
-
-    fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
-    }
-
-    fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
-        viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

@@ -6,6 +6,7 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BannerInfoBean
+import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.R
 import com.rm.module_home.model.home.HomeAudioModel
 import com.rm.module_home.model.home.HomeMenuModel
@@ -30,6 +31,9 @@ import com.rm.module_home.repository.HomeRepository
  */
 class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() {
 
+    // 下拉刷新和加载更多控件状态控制Model
+    val refreshStatusModel = SmartRefreshLayoutStatusModel()
+
     var homeBannerInfoList = MutableLiveData<List<BannerInfoBean>>()
     var homeMenuList = MutableLiveData<MutableList<MultiItemEntity>>()
 
@@ -48,11 +52,14 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     var blockClick : (com.rm.module_home.model.home.HomeBlockModel)->Unit = {}
 
     fun getHomeDataFromService() {
+        refreshStatusModel.setHasMore(false)
         launchOnIO {
             repository.getHomeData().checkResult(
                 onSuccess = {
+                    refreshStatusModel.finishRefresh(true)
                     dealHomeData(it)
                 }, onError = {
+                    refreshStatusModel.finishRefresh(false)
                     DLog.d("suolong ", "error = $it")
                 }
             )
