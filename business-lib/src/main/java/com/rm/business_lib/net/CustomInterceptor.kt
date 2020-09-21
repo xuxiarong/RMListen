@@ -51,7 +51,7 @@ class CustomInterceptor : Interceptor {
         )
     }
 
-    override fun intercept(chain: Interceptor.Chain): Response {
+    @Synchronized override fun intercept(chain: Interceptor.Chain): Response {
         // 请求拦截处理
 //        val originalResponse = requestIntercept(chain)
         // 构建请求
