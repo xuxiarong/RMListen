@@ -54,6 +54,7 @@ object CountryListDialogHelper {
 
                 countryListAdapter.setOnItemClickListener { _, _, position: Int ->
                     if (TextUtils.isEmpty(countryListAdapter.data[position].data.phone_code)) return@setOnItemClickListener
+                    CountryDataManager.setCurrentCountry(countryListAdapter.data[position].data)
                     phoneInputViewModel!!.countryCode.set("+${countryListAdapter.data[position].data.phone_code}")
                     dismiss()
                 }
