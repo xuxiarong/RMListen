@@ -6,7 +6,6 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.helpter.loginIn
 import com.rm.module_login.R
 import com.rm.module_login.activity.ForgetPasswordActivity
-import com.rm.module_login.activity.LoginByVerifyCodeActivity
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.view.PasswordInputViewModel
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
@@ -76,7 +75,8 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
      * 验证码登陆
      */
     fun loginByVerifyCode() {
-        startActivity(LoginByVerifyCodeActivity::class.java)
+        // 密码登陆界面一定是验证码登陆跳转过来的，所以这里直接finish就好
+//        startActivity(LoginByVerifyCodeActivity::class.java)
         finish()
     }
 }
