@@ -8,8 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.rm.business_lib.isHomeDouClick
 import com.rm.module_main.R
 import com.rm.module_main.customview.bottomtab.internal.RoundMessageView
 
@@ -26,6 +26,8 @@ class NormalItemView @JvmOverloads constructor(
     private var mDefaultTextColor = 0x56000000
     private var mCheckedTextColor = 0x56000000
     private var mChecked = false
+    private var clickCount = 0
+    private var firstClickTime = 0L
     override fun getAccessibilityClassName(): CharSequence {
         return NormalItemView::class.java.name
     }
@@ -94,10 +96,32 @@ class NormalItemView @JvmOverloads constructor(
         mCheckedTextColor = color
     }
 
+    fun setDoubleClickListener(){
+        if(mChecked){
+            clickCount++
+            //第二次点击
+            if(clickCount == 2){
+                //两次点击时间小于1S
+                if(System.currentTimeMillis() - firstClickTime <=1000){
+                    //重新开始计算点击次数
+                    clickCount = 0
+                    isHomeDouClick.postValue(true)
+                }else{
+                    //两次点击时间已经超过1S，那么该次点击时间作为第一次
+                    clickCount = 1
+                    firstClickTime = System.currentTimeMillis()
+                }
+            }else{
+                firstClickTime = System.currentTimeMillis()
+            }
+        }
+    }
+
     init {
         LayoutInflater.from(context).inflate(R.layout.main_tab_item_normal, this, true)
         mIcon = findViewById(R.id.icon)
         mTitle = findViewById(R.id.title)
         mMessages = findViewById(R.id.messages)
     }
+
 }

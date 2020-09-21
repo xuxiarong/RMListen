@@ -1,6 +1,7 @@
 package com.rm.module_login.viewmodel.view
 
 import androidx.databinding.ObservableField
+import com.rm.module_login.utils.CountryDataManager
 
 /**
  * desc   :
@@ -12,7 +13,7 @@ class PhoneInputViewModel {
     var phone = ObservableField<String>("")
 
     // 国家代码具体值
-    var countryCode = ObservableField<String>("+86")
+    var countryCode = ObservableField<String>("+${CountryDataManager.choiceCountry.phone_code}")
 
     /**
      * 置空输入框的值

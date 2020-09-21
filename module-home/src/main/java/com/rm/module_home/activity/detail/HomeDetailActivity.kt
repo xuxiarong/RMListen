@@ -15,8 +15,11 @@ import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
+import com.rm.business_lib.bean.Tags
+import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
 import com.rm.component_comm.listen.ListenService
+import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
@@ -24,13 +27,9 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.model.home.detail.ChapterList
 import com.rm.module_home.model.home.detail.CommentList
-import com.rm.business_lib.bean.Tags
-import com.rm.business_lib.isLogin
-import com.rm.component_comm.login.LoginService
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
-import kotlin.properties.Delegates
 
 /**
  * 书籍详情
@@ -46,15 +45,15 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
     private val homeDetailCommentAdapter by lazy {
         CommonBindAdapter(
-            mutableListOf<CommentList>()
-            , R.layout.home_detail_item_comment, BR.comment_list
+            mutableListOf<CommentList>(), R.layout.home_detail_item_comment, BR.comment_list
         )
     }
 
     private val homechapterAdater by lazy {
         CommonBindAdapter(
-            mutableListOf<ChapterList>()
-            , R.layout.home_item_detail_chapter, BR.DetailChapterViewModel
+            mutableListOf<ChapterList>(),
+            R.layout.home_item_detail_chapter,
+            BR.DetailChapterViewModel
         )
     }
 
@@ -64,7 +63,12 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             val intent = Intent(context, HomeDetailActivity::class.java)
             intent.putExtra(AUDIO_ID, audioID)
             context.startActivity(intent)
-            isLogin
+        }
+
+        fun getIntent(audioId: String): HashMap<String, Any> {
+            return hashMapOf(
+                Pair(AUDIO_ID, audioId)
+            )
         }
     }
 

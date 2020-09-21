@@ -26,23 +26,6 @@ class MainMainActivity : BaseActivity() {
     lateinit var homeService: HomeService
     lateinit var mineService: MineService
 
-    //    override fun initView() {
-////        homeService = (navigateTo(ConstantsARouter.Home.PATH_HOME_SERVICE) as HomeService)
-//        homeService = RouterHelper.createRouter(HomeService::class.java)
-//
-//        btnTest.setOnClickListener {
-//            homeService.routerTest(this@MainActivity)
-//        }
-//
-////        mineService = (navigateTo(ConstantsARouter.Mine.PATH_MINE_SERVICE) as MineService)
-//        mineService = RouterHelper.createRouter(MineService::class.java)
-//
-//
-//        btnLogin.setOnClickListener {
-//            mineService.routerLogin(this)
-//        }
-//    }
-
     override fun initView() {
 
         navigationController = findViewById<BottomTabView>(R.id.mainTab).custom().run {

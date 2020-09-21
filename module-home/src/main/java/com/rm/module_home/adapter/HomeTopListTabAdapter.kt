@@ -1,7 +1,6 @@
 package com.rm.module_home.adapter
 
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.module_home.R
@@ -13,7 +12,7 @@ class HomeTopListTabAdapter :
     private var mCurTv: TextView? = null//当前选中的textview
 
     override fun convert(holder: BaseViewHolder, item: CategoryTabBean) {
-        holder.setText(R.id.home_top_list_tab_adapter_tv, item.name)
+        holder.setText(R.id.home_top_list_tab_adapter_tv, item.class_name)
         val tv = holder.getView<TextView>(R.id.home_top_list_tab_adapter_tv)
         if (mPosition == -1 && holder.adapterPosition == 0) {
             setSelectTv(true, tv)

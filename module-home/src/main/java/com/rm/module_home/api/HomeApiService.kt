@@ -2,6 +2,7 @@ package com.rm.module_home.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.*
+import com.rm.module_home.bean.CategoryTabListBean
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.model.home.HomeModel
@@ -82,6 +83,7 @@ interface HomeApiService {
     @GET("content/sheet/list")
     suspend fun homeSheetList(
         @Query("page") page: Int    ,
+        @Query("page_id") page_id: String,
         @Query("page_size") pageSize: Int
     ): BaseResponse<SheetListBean>
 
@@ -157,5 +159,23 @@ interface HomeApiService {
     @POST("subscription/list")
     suspend fun listenAddSubscription(@Field("audio_id") audio_id: String): BaseResponse<Any>
 
+
+    /**
+     * 获取精品列表tab 类别标签列表
+     */
+    @GET("content/page/boutique")
+    suspend fun getBoutiqueTabList(): BaseResponse<CategoryTabListBean>
+
+    /**
+     * 根据分类id获取列表
+     * @param classId Int
+     * @return BaseResponse<AudioListBean>
+     */
+    @GET("content/class/audio-list")
+    suspend fun getCategoryList(
+        @Query("class_id") classId: Int,
+        @Query("page") page: Int,
+        @Query("page_size") pageSize: Int
+    ): BaseResponse<AudioListBean>
 
 }

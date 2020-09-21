@@ -1,6 +1,5 @@
 package com.rm.module_main.customview.bottomtab.internal
 
-import android.animation.LayoutTransition
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -9,9 +8,9 @@ import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import com.rm.module_main.customview.bottomtab.ItemController
 import com.rm.module_main.customview.bottomtab.item.BaseTabItem
+import com.rm.module_main.customview.bottomtab.item.NormalItemView
 import com.rm.module_main.customview.bottomtab.listener.OnTabItemSelectedListener
 import com.rm.module_main.customview.bottomtab.listener.SimpleTabItemSelectedListener
-import kotlin.collections.ArrayList
 
 /**
  * 存放自定义项的布局
@@ -130,6 +129,11 @@ class ItemContainerLayout @JvmOverloads constructor(
                     mItems[selected].onRepeat()
                     listener.onRepeat(selected)
                 }
+            }
+            //首页双次点击
+            if(index == 0){
+               var homeItem =  mItems[0] as NormalItemView
+                homeItem.setDoubleClickListener()
             }
             return
         }

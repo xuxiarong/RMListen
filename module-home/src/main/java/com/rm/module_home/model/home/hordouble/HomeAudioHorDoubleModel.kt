@@ -9,10 +9,10 @@ import com.rm.module_home.model.home.HomeAudioModel
  * date   : 2020/08/24
  * version: 1.0
  */
-data class HomeRecommendHorDoubleModel(
+data class HomeAudioHorDoubleModel(
     val topRecommendModel: HomeAudioModel,
     val bottomRecommendModel: HomeAudioModel,
     var needShowBottom : Boolean = true
 ) : MultiItemEntity {
-    override val itemType = R.layout.home_item_recommend_hor_double
+    override val itemType = R.layout.home_item_audio_hor_double
 }

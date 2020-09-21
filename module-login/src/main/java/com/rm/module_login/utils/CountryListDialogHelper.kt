@@ -1,5 +1,6 @@
 package com.rm.module_login.utils
 
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.MotionEvent
 import androidx.fragment.app.FragmentActivity
@@ -52,6 +53,8 @@ object CountryListDialogHelper {
                 }
 
                 countryListAdapter.setOnItemClickListener { _, _, position: Int ->
+                    if (TextUtils.isEmpty(countryListAdapter.data[position].data.phone_code)) return@setOnItemClickListener
+                    CountryDataManager.setCurrentCountry(countryListAdapter.data[position].data)
                     phoneInputViewModel!!.countryCode.set("+${countryListAdapter.data[position].data.phone_code}")
                     dismiss()
                 }

@@ -2,12 +2,12 @@ package com.rm.module_home.activity.topic
 
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.BR
 import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.R
+import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.repository.HomeTopicRepository
 
 /**
@@ -32,10 +32,7 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
             BR.audioItem
         ).apply {
             setOnItemClickListener { _, _, position ->
-                DLog.i(
-                    "llj",
-                    "item点击事件-position--->>>$position"
-                )
+                startActivity(HomeDetailActivity::class.java, HomeDetailActivity.getIntent(data[position].audio_id))
             }
         }
     }
@@ -44,7 +41,7 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
      * 获取专题列表
      */
     fun getTopicList() {
-        if(page == 1){
+        if (page == 1) {
             showLoading()
         }
         launchOnIO {
@@ -52,9 +49,13 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
                 onSuccess = {
                     mAdapter.data.addAll(it.list)
                     mAdapter.notifyDataSetChanged()
-                    if(page == 1){
-                        showContentView()
-                    }else{
+                    if (page == 1) {
+                        if (it.list.isEmpty()) {
+                            showDataEmpty()
+                        } else {
+                            showContentView()
+                        }
+                    } else {
                         // 加载更多
                         refreshStatusModel.finishLoadMore(true)
                     }

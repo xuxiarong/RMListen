@@ -8,6 +8,6 @@ import com.rm.module_home.R
  * date   : 2020/08/24
  * version: 1.0
  */
-class HomeRecommendHorDoubleRvModel : MultiItemEntity{
-    override val itemType=R.layout.home_item_recommend_hor_double_rv
+class HomeAudioHorDoubleRvModel : MultiItemEntity{
+    override val itemType=R.layout.home_item_audio_hor_double_rv
 }

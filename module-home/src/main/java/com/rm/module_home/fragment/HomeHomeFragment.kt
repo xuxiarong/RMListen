@@ -3,6 +3,7 @@ package com.rm.module_home.fragment
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.business_lib.isHomeDouClick
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity
@@ -45,6 +46,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         mViewModel.audioClick = { onAudioClick(it) }
         mViewModel.blockClick = { onBlockClick(it) }
         mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
+        isHomeDouClick.observe(this, Observer {
+            if(it){
+                mDataBind.homeRv.smoothScrollToPosition(0)
+                isHomeDouClick.value = false
+            }
+        })
 
     }
 

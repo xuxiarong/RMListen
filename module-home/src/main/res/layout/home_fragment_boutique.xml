@@ -8,8 +8,18 @@
             type="com.rm.module_home.activity.boutique.BoutiqueFragmentViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_boutique_fragment_recycler_view"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
+        bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
+        bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess}"
+        bindOnLoadMoreListener="@{viewModel.getBookList}"
+        bindOnRefreshListener="@{viewModel.refresh}"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_boutique_fragment_recycler_view"
+            bindVerticalLayout="@{viewModel.bookAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

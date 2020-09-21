@@ -66,5 +66,5 @@ data class HomeAudioModel(
     val short_intro: String,
     val status: Int
 ):MultiItemEntity{
-    override var itemType = R.layout.home_item_recommend_ver
+    override var itemType = R.layout.home_item_audio_ver
 }

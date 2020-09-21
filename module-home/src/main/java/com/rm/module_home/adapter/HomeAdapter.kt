@@ -33,7 +33,9 @@ class HomeAdapter(
             R.layout.home_item_banner -> {
                 val homeItemBannerBinding =
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
-                homeItemBannerBinding.mainBanner.bindData(homeViewModel.homeBannerInfoList.value!!)
+                homeItemBannerBinding.mainBanner.apply {
+                    bindData(homeViewModel.homeBannerInfoList.value!!)
+                }
             }
             R.layout.home_item_menu_rv -> {
                 val homeItemBannerBinding =
@@ -49,9 +51,9 @@ class HomeAdapter(
                     homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayout(homeCollectAdapter)
                 }
             }
-            R.layout.home_item_recommend_hor_single_rv -> {
+            R.layout.home_item_audio_hor_single_rv -> {
                 val singleRvBinding =
-                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorSingleRvBinding
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemAudioHorSingleRvBinding
                 if (homeViewModel.homeHorSingleList.value != null) {
                     val singleAdapter =
                         CommonMultiVMAdapter(
@@ -64,9 +66,9 @@ class HomeAdapter(
                 }
             }
 
-            R.layout.home_item_recommend_hor_double_rv -> {
+            R.layout.home_item_audio_hor_double_rv -> {
                 val singleRvBinding =
-                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendHorDoubleRvBinding
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemAudioHorDoubleRvBinding
                 if (homeViewModel.homeHorDoubleList.value != null) {
                     val doubleAdapter =
                         CommonMultiVMAdapter(
@@ -79,9 +81,9 @@ class HomeAdapter(
                     singleRvBinding.homeRvRecommendHorDouble.bindLeftScroll { homeViewModel.doubleRvOpenDetail() }
                 }
             }
-            R.layout.home_item_recommend_grid_rv -> {
+            R.layout.home_item_audio_grid_rv -> {
                 val gridBanding =
-                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendGridRvBinding
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemAudioGridRvBinding
                 if (homeViewModel.homeGridList.value != null) {
                     val doubleAdapter =
                         CommonMultiVMAdapter(
@@ -93,9 +95,9 @@ class HomeAdapter(
                     gridBanding.homeRvRecommendGrid.bindGridLayout(doubleAdapter, 3)
                 }
             }
-            R.layout.home_item_recommend_ver_rv -> {
+            R.layout.home_item_audio_ver_rv -> {
                 val verBanding =
-                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemRecommendVerRvBinding
+                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemAudioVerRvBinding
                 if (homeViewModel.homeVerList.value != null) {
                     val verAdapter =
                         CommonMultiVMAdapter(

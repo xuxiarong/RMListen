@@ -12,7 +12,7 @@
 
         <variable
             name="item"
-            type="com.rm.module_home.model.home.grid.HomeGridRecommendModel" />
+            type="com.rm.module_home.model.home.grid.HomeGridAudioModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
