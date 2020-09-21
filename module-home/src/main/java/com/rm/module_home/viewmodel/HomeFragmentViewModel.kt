@@ -112,6 +112,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     }
                     doubleHorList.add(doubleModel)
                 }
+
+
                 homeHorDoubleList.value = doubleHorList
                 allData.add(HomeMoreModel(block))
                 allData.add(HomeRecommendHorDoubleRvModel())
