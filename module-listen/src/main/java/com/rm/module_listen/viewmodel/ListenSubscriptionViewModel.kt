@@ -6,8 +6,8 @@ import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.module_home.repository.ListenSubscriptionRepository
 import com.rm.module_listen.bean.SubscriptionListBean
+import com.rm.module_listen.repository.ListenSubscriptionRepository
 
 class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepository) :
     BaseVMViewModel() {
@@ -59,13 +59,16 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
      * 发送请求获取数据
      */
     fun getData(page: Int, pageSize: Int) {
-        showLoading()
         launchOnIO {
             repository.getSubscriptionList(page, pageSize).checkResult(
                 onSuccess = {
-                    showContentView()
-                    data.value = it
                     isRefreshOrLoadComplete.value = true
+                    if (it.size > 0) {
+                        data.value = it
+                        showContentView()
+                    } else {
+                        showDataEmpty()
+                    }
                 },
                 onError = {
                     showNetError()
@@ -145,7 +148,7 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                 onSuccess = {
                     mDialog.dismiss()
                     showContentView()
-                    subscriptionData.get()?.let{
+                    subscriptionData.get()?.let {
                         dialogSetTop(it)
                     }
                     showToast("置顶成功")
@@ -169,7 +172,7 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                 onSuccess = {
                     mDialog.dismiss()
                     showContentView()
-                    subscriptionData.get()?.let{
+                    subscriptionData.get()?.let {
                         dialogCancelTop(it)
                     }
                     showToast("取消置顶成功")

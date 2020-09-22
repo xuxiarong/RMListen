@@ -12,6 +12,7 @@ import com.rm.business_lib.binding.bindData
 import com.rm.business_lib.binding.paddingBindData
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.adapter.MenuListAdapter
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.rm.module_home.viewmodel.HomeMenuViewModel
@@ -94,6 +95,10 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
         //item点击事件
         mViewModel.itemClick = {
             HomeMenuDetailActivity.startActivity(this@HomeMenuActivity, it.sheet_id, mPageId)
+        }
+
+        mViewModel.itemChildClick = {
+            HomeDetailActivity.startActivity(this@HomeMenuActivity, it.audio_id)
         }
 
     }

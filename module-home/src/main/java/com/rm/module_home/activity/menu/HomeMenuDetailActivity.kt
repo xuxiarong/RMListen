@@ -14,7 +14,6 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.utilExt.Color
@@ -128,6 +127,7 @@ class HomeMenuDetailActivity :
 
         //取消收藏成功
         mViewModel.unFavoritesSuccess = {
+            mViewModel.showToast("已取消收藏")
             collectionStateChange(false)
         }
 
@@ -135,6 +135,7 @@ class HomeMenuDetailActivity :
         home_menu_detail_share.setOnClickListener(this)
 
     }
+
 
     override fun initData() {
         sheetId = intent.getStringExtra(SHEET_ID) ?: ""
@@ -154,7 +155,7 @@ class HomeMenuDetailActivity :
             false
         )
         dataBinding?.homeMenuDetailCollected?.setOnClickListener(this)
-
+        dataBinding!!.root.visibility = View.GONE
         adapter.addHeaderView(dataBinding!!.root)
     }
 
@@ -209,7 +210,7 @@ class HomeMenuDetailActivity :
      * 收藏听单/取消收藏
      */
     private fun showCollectedDialog() {
-        if (isLogin.value == true) {
+        if (isLogin.get()) {
             mViewModel.data.value?.sheet_id?.let {
                 if (isFavorite == false) {
                     mViewModel.favoritesSheet(it)
@@ -220,7 +221,8 @@ class HomeMenuDetailActivity :
         } else {
             RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel, this) {
                 mViewModel.showLoading()
-                mViewModel.getData(sheetId)            }
+                mViewModel.getData(sheetId)
+            }
         }
     }
 
@@ -237,8 +239,11 @@ class HomeMenuDetailActivity :
             home_menu_detail_refresh?.finishRefresh()
             //清空原有的数据，并设置新的数据源
             mAdapter.setList(it.audio_list?.list)
+
+            dataBinding?.root?.visibility = View.VISIBLE
             //给头部设置新的数据
             dataBinding?.setVariable(BR.header, it)
+
             //设置高斯模糊
             loadBlurImage(home_menu_detail_iv_bg, it.cover_url)
             //设置标题
@@ -342,4 +347,14 @@ class HomeMenuDetailActivity :
         }
     }
 
+    /**
+     * 防止首次添加收藏进入收藏听单后再次进入详情取消收藏
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 300 && resultCode == 200) {
+            val favorite = data?.getBooleanExtra("isFavorite", false)
+            collectionStateChange(favorite == true)
+        }
+    }
 }

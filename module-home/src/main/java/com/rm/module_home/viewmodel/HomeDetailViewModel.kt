@@ -32,7 +32,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     //订阅点击事件闭包
     var clickSubscribe: () -> Unit = {}
 
-    val test="dfas豆腐口感马拉喀什的风格穆沙拉卡的父母过来；四大发明；，公司的分公司的奉公守法公司"
+    val test="dfas豆腐口感马拉喀什的风格穆沙拉卡的父母过来；四大发明；，公司的分公司的奉公守法公司反而你我i片分为发票金额为皮肤饥饿我"
 
 
     /**

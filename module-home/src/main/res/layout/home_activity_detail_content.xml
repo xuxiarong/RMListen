@@ -10,7 +10,15 @@
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
     </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/home_detail_abl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+        </com.google.android.material.appbar.AppBarLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_detail_top_bg"
             android:layout_width="match_parent"
@@ -23,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                app:layout_constraintBottom_toBottomOf="@id/home_detail_tx_status"
+                app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
                 app:layout_constraintDimensionRatio="w,1:1" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -205,12 +213,12 @@
             <com.rm.business_lib.wedgit.expandtextview.ExpandableTextView
                 android:id="@+id/home_detail_tx_content"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_23"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_4"
                 expandText="@{viewModel.test}"
                 android:textColor="@color/business_text_color_666666"
                 app:layout_constraintStart_toStartOf="@id/home_detail_icon"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/home_detail_collect_icon"
                 app:layout_constraintTop_toBottomOf="@id/home_detail_tx_content_title"
                 tools:text="@string/home_detail_brief_introduction" />
 
@@ -337,4 +345,5 @@
                 app:layout_constraintStart_toStartOf="@id/home_detail_icon"
                 app:layout_constraintTop_toBottomOf="@id/home_detail_layout_anchor" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

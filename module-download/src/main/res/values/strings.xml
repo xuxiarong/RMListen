@@ -1,3 +1,15 @@
 <resources>
     <string name="download_app_name">Download</string>
+    <string name="download_download">下载</string>
+    <string name="download_chapter_begin">起始集</string>
+    <string name="download_chapter_end">最终集</string>
+    <string name="download_to">至</string>
+    <string name="download_edit_chapter_selection">请输入要下载的起止选集</string>
+    <string name="download_disk_use">占用空间</string>
+    <string name="download_disk_free">剩余可用</string>
+    <string name="download_cancel">取消</string>
+    <string name="download_edit">编辑</string>
+    <string name="download_downloading">下载中</string>
+    <string name="download_downloaded">已下载</string>
+
 </resources>

@@ -24,13 +24,13 @@ fun loginIn(access: String, refresh: String, userInfo: LoginUserBean) {
     // 保存登陆信息到本地
     ACCESS_TOKEN.putMMKV(access)
     REFRESH_TOKEN.putMMKV(refresh)
-    LOGIN_USER_INFO.putMMKV(loginUser)
+    LOGIN_USER_INFO.putMMKV(userInfo)
     // 解析访问令牌的过期时间，并保存解析出来的token失效的时间戳
     ACCESS_TOKEN_INVALID_TIMESTAMP.putMMKV(parseToken(access))
 
     // 改变当前是否用户登陆状态 和 登陆的用户信息
-    isLogin.postValue(true)
-    loginUser.postValue(userInfo)
+    isLogin.set(true)
+    loginUser.set(userInfo)
 }
 
 /**
@@ -38,14 +38,15 @@ fun loginIn(access: String, refresh: String, userInfo: LoginUserBean) {
  */
 fun loginOut() {
     // 保存登陆信息到本地
+    DLog.e("llj","开始登出操作！！！")
     ACCESS_TOKEN.putMMKV("")
     REFRESH_TOKEN.putMMKV("")
     LOGIN_USER_INFO.putMMKV("")
     ACCESS_TOKEN_INVALID_TIMESTAMP.putMMKV(0)
 
     // 改变当前是否用户登陆状态 和 登陆的用户信息
-    isLogin.postValue(false)
-    loginUser.postValue(null)
+    isLogin.set(false)
+    loginUser.set(null)
 }
 
 /**
@@ -60,8 +61,6 @@ fun parseToken(access: String): Long {
     }
     val base64Json = String(Base64.decode(array[1], Base64.DEFAULT))
     if (TextUtils.isEmpty(base64Json)) return 0
-    DLog.i("llj", "token base64Json------->>>$base64Json")
     val tokenBean = Gson().fromJson<TokenBean>(base64Json, TokenBean::class.java)
-    DLog.i("llj", "token tokenBean------->>>$tokenBean")
     return tokenBean.exp
 }

@@ -6,7 +6,10 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
+import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.repository.ListenSheetDetailRepository
 
 class ListenSheetDetailViewModel(private val repository: ListenSheetDetailRepository) :
@@ -18,6 +21,8 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
     //数据源
     val data = MutableLiveData<SheetInfoBean>()
 
+    val audioList = MutableLiveData<AudioListBean>()
+
     //删除
     val deleteQuery = MutableLiveData<Boolean>(false)
 
@@ -26,25 +31,8 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
 
     //音频移除成功
     var removeAudio: (AudioBean) -> Unit = {}
+    var itemClick: (AudioBean) -> Unit = {}
 
-    /**
-     * 获取听单列表
-     */
-    fun getData(sheetId: String,page:Int,pageSize:Int) {
-        showLoading()
-        launchOnIO {
-            repository.getSheetDetail(sheetId,page, pageSize).checkResult(
-                onSuccess = {
-                    showContentView()
-                    data.value = it
-                },
-                onError = {
-                    showContentView()
-                    DLog.i("----->", "$it")
-                }
-            )
-        }
-    }
 
     /**
      * 编辑点击事件
@@ -52,6 +40,44 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
     fun dialogSheetDetailEditSheetFun() {
         data.value?.let {
             editSheetClick(it)
+        }
+    }
+
+    /**
+     * 取消点击事件
+     */
+    fun dialogSheetDetailCancelFun() {
+        mDialog.dismiss()
+    }
+
+    /**
+     * 获取听单列表
+     */
+    fun getSheetInfo(sheetId: String) {
+        launchOnIO {
+            repository.getSheetInfo(sheetId).checkResult(
+                onSuccess = {
+                    showContentView()
+                    data.value = it
+                },
+                onError = {
+                    showNetError()
+                    DLog.i("----->", "$it")
+                }
+            )
+        }
+    }
+
+    fun getAudioList(page: Int, pageSize: Int) {
+        launchOnIO {
+            repository.getAudioList(page, pageSize).checkResult(
+                onSuccess = {
+                    audioList.value = it
+                },
+                onError = {
+                    showNetError()
+                    DLog.i("----->", "$it")
+                })
         }
     }
 
@@ -78,17 +104,10 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
     }
 
     /**
-     * 取消点击事件
-     */
-    fun dialogSheetDetailCancelFun() {
-        mDialog.dismiss()
-    }
-
-    /**
      * 将音频从听单移除
      */
     fun removeAudioFun(bean: AudioBean) {
-        DLog.i("---------->","听单移除")
+        DLog.i("---------->", "听单移除")
         showLoading()
         launchOnIO {
             repository.removeAudio("${data.value?.sheet_id}", bean.audio_id).checkResult(
@@ -105,4 +124,7 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
         }
     }
 
+    fun itemClickFun(bean: AudioBean) {
+        itemClick(bean)
+    }
 }

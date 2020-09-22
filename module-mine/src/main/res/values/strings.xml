@@ -35,4 +35,6 @@
     <string name="mine_favorable_comment">给个好评</string>
     <string name="mine_free_book">免费求书</string>
     <string name="mine_sign_out">退出登录</string>
+    <string name="mine_login_and_register">登陆/注册</string>
+    <string name="mine_login_tips">登录享受更多功能</string>
 </resources>

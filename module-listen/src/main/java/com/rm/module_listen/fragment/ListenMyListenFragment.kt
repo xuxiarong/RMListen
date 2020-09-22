@@ -73,7 +73,7 @@ class ListenMyListenFragment :
         val router = RouterHelper.createRouter(LoginService::class.java)
 
         listenBuyCl.setOnClickListener {
-            if (isLogin.value == false) {
+            if (!isLogin.get()) {
                 activity?.let {
                     router.quicklyLogin(mViewModel, it)
                 }
@@ -84,17 +84,17 @@ class ListenMyListenFragment :
 
 
         listenSubCl.setOnClickListener {
-            if (isLogin.value == false) {
+            if (!isLogin.get()) {
                 router.quicklyLogin(mViewModel, activity!!)
             } else {
                 ListenSubscriptionActivity.startActivity(it.context)
             }
         }
         listenListCl.setOnClickListener {
-            if (isLogin.value == false) {
+            if (!isLogin.get()) {
                 router.quicklyLogin(mViewModel, activity!!)
             } else {
-                ListenSheetListActivity.startActivity(it.context,
+                ListenSheetListActivity.startActivity(activity!!,
                     LISTEN_SHEET_LIST_MY_LIST
                 )
             }

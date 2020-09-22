@@ -85,7 +85,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     /**
      * 设置直播模式
      */
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     fun setPlayModel() {
         var res = 0
         if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_SINGLE) {

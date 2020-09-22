@@ -68,14 +68,14 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     }
 
 
-    fun zipPlayPath(searchResultInfo: AudioChapterListModel) {
+    fun zipPlayPath(searchResultInfo: AudioChapterListModel,headUrl:String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 searchResultInfo.chapter_list.forEach {
                     pathList.add(
                         BaseAudioInfo(
                             it.path_url,
-                            it.path,
+                            headUrl,
                             it.chapter_name,
                             it.created_at,
                             it.audio_id,

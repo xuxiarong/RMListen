@@ -1,7 +1,9 @@
 package debug
 
+import androidx.appcompat.widget.AppCompatButton
 import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_download.R
+import com.rm.module_download.activity.DownloadMainActivity
 
 /**
  * desc   :
@@ -9,9 +11,12 @@ import com.rm.module_download.R
  * version: 1.0
  */
 class DownloadMainDebugActivity : BaseDebugActivity() {
-    override fun getLayoutResId(): Int = R.layout.download_activity_main
+    override fun getLayoutResId(): Int = R.layout.download_debug_activity_main
 
     override fun initView() {
+        findViewById<AppCompatButton>(R.id.btn_start_main).setOnClickListener {
+            DownloadMainActivity.startActivity(this@DownloadMainDebugActivity)
+        }
     }
 
     override fun initData() {

@@ -5,7 +5,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Build
 import android.os.IBinder
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
@@ -40,6 +39,8 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             (service as? MusicPlayerBinder)?.let {
                 mBinder = service
+                mBinder?.setNotificationEnable(true)
+
             }
         }
 
@@ -226,6 +227,11 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun setPlayerAlarmModel(model: Int) {
         mBinder?.setPlayerAlarmModel(model)
+    }
+
+    override fun setNotificationEnable(enable: Boolean) {
+        mBinder?.setNotificationEnable(enable)
+
     }
 
 

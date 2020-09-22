@@ -2,6 +2,7 @@ package com.rm.module_listen.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_listen.api.ListenApiService
 
@@ -10,8 +11,17 @@ class ListenSheetDetailRepository(private val service: ListenApiService) : BaseR
      * 获取听单详情
      * @param sheet_id 听单Id
      */
-    suspend fun getSheetDetail(sheet_id: String,page:Int,pageSize:Int): BaseResult<SheetInfoBean> {
-        return apiCall { service.listenSheetList(sheet_id,page,pageSize) }
+    suspend fun getSheetInfo(sheet_id: String): BaseResult<SheetInfoBean> {
+        return apiCall { service.listenSheetInfo(sheet_id) }
+    }
+
+    /**
+     * 听单音频列表
+     * @param page Int
+     * @param pageSize Int
+     */
+    suspend fun getAudioList(page: Int, pageSize: Int): BaseResult<AudioListBean> {
+        return apiCall { service.listenAudioList(page, pageSize) }
     }
 
     /**

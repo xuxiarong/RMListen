@@ -4,6 +4,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.rm.baselisten.adapter.single.BaseBindVMAdapter
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.gridItemDecoration
 import com.rm.business_lib.bean.AudioBean
@@ -19,29 +21,31 @@ import com.rm.module_home.databinding.HomeAdapterMenuBookBinding
  * date   : 2020/08/21
  * version: 1.0
  */
-class MenuListAdapter(val viewModel: HomeMenuViewModel) :
-    BaseQuickAdapter<SheetInfoBean, BaseViewHolder>(layoutResId = R.layout.home_adapter_menu) {
+class MenuListAdapter(private val mViewModel: HomeMenuViewModel) :
+    BaseBindVMAdapter<SheetInfoBean>(
+        mViewModel,
+        mutableListOf(),
+        R.layout.home_adapter_menu,
+        BR.itemViewModel,
+        BR.menuItemBean
+    ) {
     override fun convert(holder: BaseViewHolder, item: SheetInfoBean) {
-        DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
-            ?.setVariable(BR.menuItemBean, item)
-
-        DataBindingUtil.bind<HomeAdapterMenuBinding>(holder.itemView)
-            ?.setVariable(BR.itemViewModel, viewModel)
-
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
             if (tag != true) {
                 tag = true
-                bindGridLayout(MenuBookAdapter().apply { setList(item.audio_list?.list) }, 3)
-                gridItemDecoration(8f)
+                item.audio_list?.list?.let {
+                    bindGridLayout(
+                        CommonBindVMAdapter<AudioBean>(
+                            mViewModel,
+                            it,
+                            R.layout.home_adapter_menu_book,
+                            BR.audioViewModel,
+                            BR.audioBean
+                        ), 3
+                    )
+                    gridItemDecoration(8f)
+                }
             }
         }
-    }
-}
-
-class MenuBookAdapter :
-    BaseQuickAdapter<AudioBean, BaseViewHolder>(R.layout.home_adapter_menu_book) {
-    override fun convert(holder: BaseViewHolder, item: AudioBean) {
-        DataBindingUtil.bind<HomeAdapterMenuBookBinding>(holder.itemView)
-            ?.setVariable(BR.bookBean, item)
     }
 }
