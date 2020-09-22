@@ -100,7 +100,6 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
         mViewModel.itemChildClick = {
             HomeDetailActivity.startActivity(this@HomeMenuActivity, it.audio_id)
         }
-
     }
 
     override fun initView() {
