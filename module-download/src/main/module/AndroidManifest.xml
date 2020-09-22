@@ -20,5 +20,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--选集下载页面-->
+        <activity
+            android:name=".activity.DownloadChapterSelectionActivity"
+            android:screenOrientation="portrait" />
+
+        <!--下载主页-->
+        <activity
+            android:name=".activity.DownloadMainActivity"
+            android:screenOrientation="portrait" />
+
+        <!--已下载-书籍详情-->
+        <activity
+            android:name=".activity.DownloadBookDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
