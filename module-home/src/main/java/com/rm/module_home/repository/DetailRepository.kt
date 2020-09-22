@@ -6,6 +6,7 @@ import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.model.home.detail.*
+import java.util.*
 
 class DetailRepository(val homeservice: HomeApiService) : BaseRepository() {
 
@@ -13,45 +14,19 @@ class DetailRepository(val homeservice: HomeApiService) : BaseRepository() {
         return apiCall { homeservice.homeDetail(id) }
     }
 
-    fun getCommentInfo(): HomeCommentViewModel {
-
-        val member = Member(
-            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598872294338&di=e452a46759d72fc10f5013911cee1ca9&imgtype=0&src=http%3A%2F%2Fimg.tuquu.com%2F2019-03%2F2%2F2019031910050683821.png",
-            "3163414801716737", "Maria Williams"
-        )
-        val commentlist = CommentList(
-            "do velit", 1598944782, 2188895048094859,
-            false, 7814, member, "6066473726094696", false
-        )
-
-        val homecomment = mutableListOf<CommentList>()
-
-        for (i in 0..50) {
-            homecomment.add(i, commentlist)
-        }
-        return HomeCommentViewModel(homecomment)
+    /**
+     * 评论列表
+     */
+    suspend fun getCommentInfo(audio_id: String,page: Int,page_size: Int): BaseResult<HomeCommentViewModel> {
+        return apiCall { homeservice.HomeDetail_Comment(audio_id,page,page_size) }
     }
 
-    fun getChapterInfo(): DetailChapterModel {
-        val chapterlist = ChapterList(
-            "2020", 25, "章节的名称",
-            0, "www.baidu.com", 100, 1, "100M"
-        )
-        val chapter = mutableListOf<ChapterList>()
-
-        for (i in 0..50) {
-            chapter.add(i, chapterlist)
-        }
-
-        return DetailChapterModel(chapter, 10)
-
-    }
 
     /**
      * 章节列表
      */
-    suspend fun chapterList(id: String): BaseResult<AudioChapterListModel> {
-        return apiCall { homeservice.chapterList(id, 1, 20, "asc") }
+    suspend fun chapterList(id: String ,page:Int ,page_size:Int ,sort:String): BaseResult<AudioChapterListModel> {
+        return apiCall { homeservice.chapterList(id, page, page_size, sort) }
     }
 
     /**

@@ -2,13 +2,11 @@ package com.rm.module_home.viewmodel
 
 import android.util.Log
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioChapterListModel
-import com.rm.component_comm.listen.ListenService
-import com.rm.component_comm.router.RouterHelper
-import com.rm.module_home.model.home.detail.DetailChapterModel
 import com.rm.module_home.model.home.detail.HomeCommentViewModel
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_home.repository.DetailRepository
@@ -17,9 +15,10 @@ import com.rm.module_home.repository.DetailRepository
 class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMViewModel() {
 
     var detailViewModel = ObservableField<HomeDetailModel>()
-    var detailCommentViewModel = ObservableField<HomeCommentViewModel>()
-    var detailChapterViewModel = ObservableField<DetailChapterModel>()
-    val audioList = ObservableField<AudioChapterListModel>()
+    var detailCommentViewModel = MutableLiveData<HomeCommentViewModel>()
+    var detailChapterViewModel = ObservableField<AudioChapterListModel>()
+
+    //val audioList = ObservableField<AudioChapterListModel>()
     var showStatus = ObservableField<String>()
     var TimeStamp = ObservableField<String>()
 
@@ -32,6 +31,8 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var clickCollected: () -> Unit = {}
     //订阅点击事件闭包
     var clickSubscribe: () -> Unit = {}
+
+    val test="dfas豆腐口感马拉喀什的风格穆沙拉卡的父母过来；四大发明；，公司的分公司的奉公守法公司"
 
 
     /**
@@ -50,9 +51,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             )
         }
         showStatus()
-        chapterList(audioID)
-        detailCommentViewModel.set(repository.getCommentInfo())
-        detailChapterViewModel.set(repository.getChapterInfo())
+
     }
 
     /**
@@ -65,7 +64,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 onSuccess = {
                     showContentView()
                     DLog.i("------->","订阅成功")
-                    showToast("订阅成功")
                 },
                 onError = {
                     showContentView()
@@ -97,23 +95,35 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 章节列表
      */
-    fun chapterList(audioId: String) {
+    fun chapterList(audioId: String ,page :Int,page_size:Int,sort:String) {
         launchOnUI {
-            repository.chapterList(audioId).checkResult(onSuccess = {
-                audioList.set(it)
-                audioList.notifyChange()
-                Log.i("AudioChapterListModel", it.toString())
+            repository.chapterList(audioId,page,page_size,sort).checkResult(onSuccess = {
+                //detailChapterViewModel.notifyChange()
+                showContentView()
+                detailChapterViewModel.set(it)
             }, onError = {
-                Log.i("AudioChapterListModel", it.toString())
+                showContentView()
+                errorTips.set(it)
             })
         }
     }
-
     /**
-     * 时间转化
+     * 评论列表
      */
-    fun showTimeStamp() {
-
+    fun commentList(audio_id: String,page: Int,page_size: Int){
+        launchOnUI {
+            repository.getCommentInfo(audio_id,page,page_size).checkResult(
+                onSuccess = {
+                    showContentView()
+                    detailCommentViewModel.postValue(it)
+                    Log.i("commentList", it.toString())
+                },onError = {
+                    showContentView()
+                    errorTips.set(it)
+                    Log.i("commentList", it.toString())
+                }
+            )
+        }
     }
 
     /**

@@ -58,12 +58,6 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
                 intent, it,
                 Context.BIND_AUTO_CREATE
             )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                context.startForegroundService(intent)
-            } else {
-                context.startService(intent)
-            }
-
             callBack.onSuccess()
         }
 

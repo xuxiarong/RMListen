@@ -40,7 +40,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
 
     private var materialNameStr: String? = ""
     private var materialIconRes: Int = 0
-    private var needLine = true
+    private var needLine = false
     private val paint = Paint()
 
 
@@ -56,7 +56,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
             R.styleable.MineCommonMaterialView_material_icon,
             R.drawable.icon_arrow_right
         )
-        needLine = ta.getBoolean(R.styleable.MineCommonMaterialView_need_line, true)
+        needLine = ta.getBoolean(R.styleable.MineCommonMaterialView_need_line, false)
         ta.recycle()
     }
 

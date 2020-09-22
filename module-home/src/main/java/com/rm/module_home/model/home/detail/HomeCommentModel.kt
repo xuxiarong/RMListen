@@ -12,14 +12,14 @@ data class HomeCommentViewModel(
 ): Serializable
 
 data class CommentList(
+    val id: Int,
     val content: String,
-    val created_at: Int,
-    val id: Long,
-    val liked: Boolean,
+    val member_id: String,
+    val created_at: String,
+    val is_liked: Boolean,
     val likes: Int,
     val member: Member,
-    val member_id: String,
-    val own: Boolean
+    val is_own: Boolean
 ):Serializable
 
 data class Member(

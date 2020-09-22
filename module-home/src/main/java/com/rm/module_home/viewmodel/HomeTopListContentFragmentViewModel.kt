@@ -19,7 +19,6 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeTopListRep
      * 获取榜单听单
      */
     fun getListInfo(rankType: String, rankSeg: String,page:Int,pageSize:Int) {
-        showLoading()
         launchOnIO {
             repository.getTopList(rankType, rankSeg, page, pageSize).checkResult(
                 onSuccess = {

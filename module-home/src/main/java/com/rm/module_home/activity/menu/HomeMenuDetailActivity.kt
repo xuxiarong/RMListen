@@ -14,6 +14,7 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.utilExt.Color
@@ -70,21 +71,6 @@ class HomeMenuDetailActivity :
     }
 
     /**
-     * 创建头部信息
-     */
-    private fun createHeader(adapter: CommonBindVMAdapter<AudioBean>) {
-        dataBinding = DataBindingUtil.inflate<HomeHeaderMenuDetailBinding>(
-            LayoutInflater.from(this@HomeMenuDetailActivity),
-            R.layout.home_header_menu_detail,
-            home_menu_detail_recycler_view,
-            false
-        )
-        dataBinding?.homeMenuDetailCollected?.setOnClickListener(this)
-
-        adapter.addHeaderView(dataBinding!!.root)
-    }
-
-    /**
      * 头部dataBinding对象
      */
     private var dataBinding: HomeHeaderMenuDetailBinding? = null
@@ -94,6 +80,7 @@ class HomeMenuDetailActivity :
 
     //听单id
     private lateinit var sheetId: String
+
     private var pageId by Delegates.notNull<Int>()
 
     //当前加载的页码
@@ -102,6 +89,10 @@ class HomeMenuDetailActivity :
     //每次家在数据的条数
     private val pageSize = 10
 
+    override fun getLayoutId() = R.layout.home_activity_listen_menu_detail
+
+
+    override fun initModelBrId() = BR.viewModel
 
     override fun initView() {
         super.initView()
@@ -148,15 +139,23 @@ class HomeMenuDetailActivity :
     override fun initData() {
         sheetId = intent.getStringExtra(SHEET_ID) ?: ""
         pageId = intent.getIntExtra(PAGE_ID, -1)
+        mViewModel.showLoading()
         mViewModel.getData(sheetId)
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.home_activity_listen_menu_detail
-    }
+    /**
+     * 创建头部信息
+     */
+    private fun createHeader(adapter: CommonBindVMAdapter<AudioBean>) {
+        dataBinding = DataBindingUtil.inflate<HomeHeaderMenuDetailBinding>(
+            LayoutInflater.from(this@HomeMenuDetailActivity),
+            R.layout.home_header_menu_detail,
+            home_menu_detail_recycler_view,
+            false
+        )
+        dataBinding?.homeMenuDetailCollected?.setOnClickListener(this)
 
-    override fun initModelBrId(): Int {
-        return BR.viewModel
+        adapter.addHeaderView(dataBinding!!.root)
     }
 
     /**
@@ -219,14 +218,14 @@ class HomeMenuDetailActivity :
                 }
             }
         } else {
-            RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel, this)
+            RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel, this) {
+                mViewModel.showLoading()
+                mViewModel.getData(sheetId)            }
         }
     }
 
     //分享
     private fun share() {
-        RouterHelper.createRouter(ListenService::class.java)
-            .showMySheetListDialog(mViewModel, this, "")
     }
 
     /**
@@ -342,4 +341,5 @@ class HomeMenuDetailActivity :
             mViewModel.showToast("收藏成功，请在我听-听单中查看")
         }
     }
+
 }
