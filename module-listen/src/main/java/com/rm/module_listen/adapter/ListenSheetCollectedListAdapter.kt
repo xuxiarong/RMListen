@@ -5,6 +5,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -28,7 +29,7 @@ class ListenSheetCollectedListAdapter(
             val recyclerView =
                 holder.getView<RecyclerView>(R.id.listen_sheet_collected_adapter_recycler_view)
             recyclerView.apply {
-                bindHorizontalLayout(
+                bindGridLayout(
                     CommonBindVMAdapter(
                         viewModel,
                         it,
@@ -36,7 +37,7 @@ class ListenSheetCollectedListAdapter(
                         BR.viewModel,
                         BR.bookBean
                     )
-                )
+                ,3)
             }
         }
     }

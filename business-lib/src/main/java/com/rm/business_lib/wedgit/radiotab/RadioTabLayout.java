@@ -49,9 +49,9 @@ public class RadioTabLayout extends LinearLayout implements View.OnClickListener
     private ViewPager2 mViewPager2;
     private ViewPager mViewPager;
 
-    private List<TextView> buttonList = new ArrayList<>();
+    private List<ConstraintLayout> buttonList = new ArrayList<>();
     private List<View> pointList = new ArrayList<>();
-    private TextView mCurButton;//当前选中的radioButton
+    private ConstraintLayout mCurButton;//当前选中的radioButton
 
     public RadioTabLayout(Context context) {
         this(context, null);
@@ -171,7 +171,7 @@ public class RadioTabLayout extends LinearLayout implements View.OnClickListener
             return;
         }
 
-        TextView button = buttonList.get(index);
+        ConstraintLayout button = buttonList.get(index);
         if (mCurButton == button) {
             return;
         }
@@ -189,18 +189,19 @@ public class RadioTabLayout extends LinearLayout implements View.OnClickListener
      * @param isSelect    是否选择
      * @param radioButton 选中的对象
      */
-    private void setState(boolean isSelect, TextView radioButton) {
+    private void setState(boolean isSelect, ConstraintLayout radioButton) {
+        TextView textView = (TextView) radioButton.getViewById(R.id.radio_tab_text);
         if (isSelect) {
-            ((ViewGroup) radioButton.getParent()).setBackgroundResource(selectDrawable);
-            radioButton.setTextColor(selectTextColor);
-            radioButton.setTextSize(selectTextSize);
-            radioButton.setTypeface(mSelectTypeface == 0 ? Typeface.defaultFromStyle(Typeface.NORMAL) : Typeface.defaultFromStyle(Typeface.BOLD));
+            radioButton.setBackgroundResource(selectDrawable);
+            textView.setTextColor(selectTextColor);
+            textView.setTextSize(selectTextSize);
+            textView.setTypeface(mSelectTypeface == 0 ? Typeface.defaultFromStyle(Typeface.NORMAL) : Typeface.defaultFromStyle(Typeface.BOLD));
             mCurButton = radioButton;
         } else {
-            radioButton.setTextColor(defaultTextColor);
-            ((ViewGroup) radioButton.getParent()).setBackgroundResource(defaultDrawable);
-            radioButton.setTextSize(defaultTextSize);
-            radioButton.setTypeface(mDefaultTypeface == 0 ? Typeface.defaultFromStyle(Typeface.NORMAL) : Typeface.defaultFromStyle(Typeface.BOLD));
+            radioButton.setBackgroundResource(defaultDrawable);
+            textView.setTextColor(defaultTextColor);
+            textView.setTextSize(defaultTextSize);
+            textView.setTypeface(mDefaultTypeface == 0 ? Typeface.defaultFromStyle(Typeface.NORMAL) : Typeface.defaultFromStyle(Typeface.BOLD));
         }
     }
 
@@ -208,12 +209,12 @@ public class RadioTabLayout extends LinearLayout implements View.OnClickListener
      * 动态创建添加tab button对象
      */
     private View createButton(CharSequence text) {
-        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.radio_tab_layout, this, false);
+        ConstraintLayout rootView = (ConstraintLayout) LayoutInflater.from(getContext()).inflate(R.layout.radio_tab_layout, this, false);
         TextView textView = rootView.findViewById(R.id.radio_tab_text);
         textView.setText(text);
-        setState(false, textView);
-        buttonList.add(textView);
-        textView.setOnClickListener(this);
+        setState(false, rootView);
+        buttonList.add(rootView);
+        rootView.setOnClickListener(this);
 
         View point = rootView.findViewById(R.id.radio_tab_point);
         pointList.add(point);
@@ -225,8 +226,8 @@ public class RadioTabLayout extends LinearLayout implements View.OnClickListener
             return;
         }
         pointList.get(index).setVisibility(visibility);
-        TextView textView = buttonList.get(index);
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) textView.getLayoutParams();
+        ConstraintLayout layout = buttonList.get(index);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) layout.getViewById(R.id.radio_tab_text).getLayoutParams();
         if (visibility == GONE) {
             params.rightMargin = 0;
             params.topMargin = 0;
@@ -237,7 +238,7 @@ public class RadioTabLayout extends LinearLayout implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (v instanceof TextView) {
+        if (v instanceof ConstraintLayout) {
             int index = buttonList.indexOf(v);
             if (index != -1) {
                 setSelect(index);

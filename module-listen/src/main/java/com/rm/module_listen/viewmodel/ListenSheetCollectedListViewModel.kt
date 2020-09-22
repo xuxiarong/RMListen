@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.bean.AudioBean
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.bean.ListenSheetCollectedBean
@@ -21,6 +22,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenSheetColle
 
     //item点击事件
     var itemClick: (ListenSheetCollectedDataBean) -> Unit = {}
+    var itemChildClick: (AudioBean) -> Unit = {}
 
     /**
      * 请求加载数据
@@ -52,6 +54,13 @@ class ListenSheetCollectedListViewModel(private val repository: ListenSheetColle
      */
     fun itemClickFun(bean: ListenSheetCollectedDataBean) {
         itemClick(bean)
+    }
+
+    /**
+     * 子view item点击事件
+     */
+    fun itemChildClickFun(bean: AudioBean) {
+        itemChildClick(bean)
     }
 
 }

@@ -42,13 +42,9 @@ class ListenSheetCollectedListFragment :
     private var mPage = 1
 
 
-    override fun initModelBrId(): Int {
-        return BR.viewModel
-    }
+    override fun initModelBrId() = BR.viewModel
 
-    override fun initLayoutId(): Int {
-        return R.layout.listen_fragment_sheet_collected_list
-    }
+    override fun initLayoutId() = R.layout.listen_fragment_sheet_collected_list
 
     override fun initData() {
         mViewModel.getData(mPage, pageSize)
@@ -67,6 +63,12 @@ class ListenSheetCollectedListFragment :
         mViewModel.itemClick = {
             RouterHelper.createRouter(HomeService::class.java)
                 .startHomeSheetDetailActivity(activity!!, it.sheet_id.toString(), 100)
+        }
+
+        //item点击事件
+        mViewModel.itemChildClick = {
+            RouterHelper.createRouter(HomeService::class.java)
+                .toDetailActivity(activity!!, it.audio_id)
         }
     }
 

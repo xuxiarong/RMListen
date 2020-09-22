@@ -129,8 +129,8 @@ class ListenMySheetDetailActivity :
         }
 
         //item点击事件
-        mViewModel.itemClick={
-            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(this,it.audio_id)
+        mViewModel.itemClick = {
+            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(this, it.audio_id)
         }
     }
 
@@ -155,13 +155,14 @@ class ListenMySheetDetailActivity :
             listen_sheet_detail_recycler_view,
             false
         )
+        dataBinding!!.root.visibility = View.GONE
         mAdapter.addHeaderView(dataBinding!!.root)
     }
 
     override fun startObserve() {
         //数据源改变监听
         mViewModel.data.observe(this) {
-
+            dataBinding?.root?.visibility = View.VISIBLE
             dataBinding?.setVariable(BR.item, it)
 
             //默认听单不给操作

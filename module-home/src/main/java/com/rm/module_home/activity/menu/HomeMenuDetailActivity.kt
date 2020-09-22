@@ -156,7 +156,7 @@ class HomeMenuDetailActivity :
             false
         )
         dataBinding?.homeMenuDetailCollected?.setOnClickListener(this)
-
+        dataBinding!!.root.visibility = View.GONE
         adapter.addHeaderView(dataBinding!!.root)
     }
 
@@ -240,8 +240,11 @@ class HomeMenuDetailActivity :
             home_menu_detail_refresh?.finishRefresh()
             //清空原有的数据，并设置新的数据源
             mAdapter.setList(it.audio_list?.list)
+
+            dataBinding?.root?.visibility = View.VISIBLE
             //给头部设置新的数据
             dataBinding?.setVariable(BR.header, it)
+
             //设置高斯模糊
             loadBlurImage(home_menu_detail_iv_bg, it.cover_url)
             //设置标题
