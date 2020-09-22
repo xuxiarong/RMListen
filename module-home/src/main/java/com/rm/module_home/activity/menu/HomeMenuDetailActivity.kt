@@ -14,7 +14,6 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.utilExt.Color
@@ -211,7 +210,7 @@ class HomeMenuDetailActivity :
      * 收藏听单/取消收藏
      */
     private fun showCollectedDialog() {
-        if (isLogin.value == true) {
+        if (isLogin.get()) {
             mViewModel.data.value?.sheet_id?.let {
                 if (isFavorite == false) {
                     mViewModel.favoritesSheet(it)

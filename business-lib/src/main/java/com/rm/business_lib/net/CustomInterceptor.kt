@@ -16,6 +16,9 @@ import com.rm.business_lib.helpter.loginOut
 import com.rm.business_lib.helpter.parseToken
 import com.rm.business_lib.net.api.BusinessApiService
 import com.rm.business_lib.utils.DeviceUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -139,7 +142,9 @@ class CustomInterceptor : Interceptor {
             } else {
                 if (result?.code == CODE_REFRESH_TOKEN_FAILED) {
                     // 刷新token失败，强制退出当前登陆
-                    loginOut()
+                    GlobalScope.launch(Dispatchers.Main) {
+                        loginOut()
+                    }
                 }
                 // TODO 如果刷新token失败，将之前请求的数据同样下发到具体位置，不过是否需要自己组一个账户已退出的消息数据进行下发？？？
                 originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
@@ -147,7 +152,9 @@ class CustomInterceptor : Interceptor {
             }
         } else if (baseResponse.code == CODE_LOGIN_OUT || baseResponse.code == CODE_NOT_LOGIN || baseResponse.code == CODE_REFRESH_TOKEN_FAILED) {
             // 被挤下线，强制退出了  或者 直接是未登陆  或者 刷新token的时候，刷新token失败(每次app启动会有一个刷新token操作，所以也要在这里判断)
-            loginOut()
+            GlobalScope.launch(Dispatchers.Main) {
+                loginOut()
+            }
             originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                 .body(responseStr.toResponseBody(contentType)).build()
         } else {

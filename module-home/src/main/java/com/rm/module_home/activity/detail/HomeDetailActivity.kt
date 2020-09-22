@@ -201,7 +201,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
      * 收藏点击事件
      */
     private fun clickCollected() {
-        if (isLogin.value == false) {
+        if (!isLogin.get()) {
             toLogin()
             return
         }
@@ -213,7 +213,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
      * 点击订阅
      */
     private fun clickSubscribe() {
-        if (isLogin.value == false) {
+        if (!isLogin.get()) {
             toLogin()
             return
         }

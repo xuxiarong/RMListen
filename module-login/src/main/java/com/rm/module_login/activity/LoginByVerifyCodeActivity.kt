@@ -2,7 +2,7 @@ package com.rm.module_login.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.Observer
+import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
@@ -41,10 +41,12 @@ class LoginByVerifyCodeActivity :
 //        })
 
         // 监听登陆状态
-        isLogin.observe(this, Observer {
-            if (it) {
-                // 登陆成功，关闭当前界面
-                finish()
+        isLogin.addOnPropertyChangedCallback(object :Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(isLogin.get()){
+                    // 登陆成功，关闭当前界面
+                    finish()
+                }
             }
         })
     }

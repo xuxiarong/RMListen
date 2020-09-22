@@ -1,6 +1,8 @@
 package com.rm.business_lib
 
 import androidx.annotation.IntDef
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.business_lib.bean.LoginUserBean
 
@@ -20,9 +22,9 @@ const val ACCESS_TOKEN_INVALID_TIMESTAMP = "accessTokenInvalidTimestamp"
 // 当前登陆用户信息
 const val LOGIN_USER_INFO = "loginUserInfo"
 // 当前是否登陆
-var isLogin = MutableLiveData<Boolean>(false)
+var isLogin = ObservableBoolean(false)
 // 当前登陆的用户信息
-var loginUser = MutableLiveData<LoginUserBean>()
+var loginUser = ObservableField<LoginUserBean>()
 
 var isHomeDouClick = MutableLiveData(false)
 

@@ -39,7 +39,8 @@ class LoginApplicationDelegate : IApplicationDelegate {
      */
     private fun initLogin() {
         val loginUserInfo = LOGIN_USER_INFO.getObjectMMKV(LoginUserBean::class.java, null)
-        isLogin.value = loginUserInfo != null
-        loginUser.value = loginUserInfo
+        DLog.i("llj","刚进入app初始化获取到的登陆用户信息------>>>$loginUserInfo")
+        isLogin.set(loginUserInfo != null)
+        loginUser.set(loginUserInfo)
     }
 }
