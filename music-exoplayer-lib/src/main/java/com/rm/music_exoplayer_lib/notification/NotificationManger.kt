@@ -53,7 +53,6 @@ class NotificationManger constructor(
             val isOpen: Boolean = manager.areNotificationsEnabled()
             if (isOpen) {
                 if (audioInfo.audioCover.isNotEmpty()) {
-
                     val notification = buildNotifyInstance(musicInfo)
                     showNotificationForeground(
                         notification
@@ -69,7 +68,7 @@ class NotificationManger constructor(
         }
     }
 
-    fun showNotificationForeground(
+    private fun showNotificationForeground(
         notification: Notification?
     ) {
         this.mForegroundEnable = mForegroundEnable
@@ -117,25 +116,36 @@ class NotificationManger constructor(
         Glide.with(context)
             .asBitmap()
             .load(audioInfo.audioCover)
+            .placeholder(R.drawable.ic_music_default_cover)
             .error(R.drawable.ic_music_default_cover)
             .into(object : SimpleTarget<Bitmap?>(120, 120) {
                 override fun onResourceReady(
                     resource: Bitmap,
                     transition: Transition<in Bitmap?>?
                 ) {
-                    builder.setCustomContentView(
-                        notificationView.getDefaultCoustomRemoteView(
-                            resource,
-                            playState,
-                            musicInfo
+                    var resources: Bitmap=resource
+                    if (resources.equals(null)) {
+                        resources = BitmapFactory.decodeResource(
+                            context.resources,
+                            R.drawable.ic_music_default_cover
                         )
-                    ).setCustomBigContentView(
-                        notificationView.getBigCoustomRemoteView(
-                            resource,
-                            playState,
-                            musicInfo
+                    }
+                    resources.let {
+                        builder.setCustomContentView(
+                            notificationView.getDefaultCoustomRemoteView(
+                                it,
+                                playState,
+                                musicInfo
+                            )
+                        ).setCustomBigContentView(
+                            notificationView.getBigCoustomRemoteView(
+                                it,
+                                playState,
+                                musicInfo
+                            )
                         )
-                    )
+                    }
+
                 }
             })
         builder.setContentIntent(pendClickIntent)

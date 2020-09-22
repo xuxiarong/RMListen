@@ -65,6 +65,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //用户设定的内部播放器播放模式，默认顺序
     private var mPlayModel = MUSIC_MODEL_ORDER
+    private val mForegroundEnable = true
+    private var mNotificationEnable: Boolean = true
 
     //用户设定的闹钟模式,默认:MusicAlarmModel.MUSIC_ALARM_MODEL_0
     private var mMusicAlarmModel = MUSIC_ALARM_MODEL_0
@@ -76,7 +78,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private val mLoop = false
 
     val notificationManger by lazy {
-        NotificationManger(this, getCurrentPlayerMusic(), getPlayerState())
+        getCurrentPlayerMusic()?.let {
+            NotificationManger(this,it, getPlayerState())
+
+        }
     }
     val alarmManger by lazy {
         BookAlarmManger(this)
@@ -185,6 +190,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private fun passivePause() {
         mExoPlayer.playWhenReady = false
         this.mIsPassive = true
+        showNotification();
     }
 
     /**MusicPlayerPresenter方法实现*/
@@ -204,8 +210,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                     source
                 )
                 mExoPlayer.playWhenReady = true
-                //最后更新通知栏
-                notificationManger.showNotification(baseContext, musicInfo)
             } else {
                 exoLog("没有链接")
             }
@@ -255,6 +259,15 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun pause() {
         mExoPlayer.playWhenReady = false
         mUpdateProgressHandler.removeMessages(0)
+        showNotification()
+    }
+
+    fun showNotification() {
+        getCurrentPlayerMusic()?.let {
+            notificationManger?.showNotification(this, it)
+
+        }
+
     }
 
     /**
@@ -263,6 +276,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun play() {
         mExoPlayer.playWhenReady = true
         this.mIsPassive = false
+        showNotification()
     }
 
     override fun setLoop(loop: Boolean) {
@@ -346,8 +360,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mExoPlayer.seekTo(currentTime)
     }
 
-    override fun getCurrentPlayerMusic(): BaseAudioInfo =
-        mAudios.getOrNull(mCurrentPlayIndex) as BaseAudioInfo
+    override fun getCurrentPlayerMusic(): BaseAudioInfo? =
+        mAudios?.getOrNull(mCurrentPlayIndex) as? BaseAudioInfo
 
     override fun getCurrentPlayList(): List<*> {
         TODO("Not yet implemented")
@@ -411,6 +425,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             }
 
         }
+        showNotification()
 
     }
 
@@ -419,6 +434,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      * @param currentPlayIndex 数据源中的Index
      */
     private fun postViewHandlerCurrentPosition(currentPlayIndex: Int) {
+        //最后更新通知栏
+        showNotification()
         if (mAudios.size > currentPlayIndex) {
             mOnPlayerEventListeners.forEach {
                 it.onPlayMusiconInfo(
@@ -479,7 +496,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      * @param notifiid 通知栏ID
      */
     private fun cleanNotification(notifiid: Int) {
-        notificationManger.mNotificationManager.cancel(notifiid)
+        notificationManger?.mNotificationManager?.cancel(notifiid)
     }
 
     @SuppressLint("WrongConstant")
@@ -555,6 +572,11 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     }
 
+    override fun setNotificationEnable(enable: Boolean) {
+        this.mNotificationEnable = enable
+
+    }
+
     /**
      * 播放器设计模式
      */
@@ -622,6 +644,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
         override fun onPlayerError(error: ExoPlaybackException) {
             mMusicPlayerState = MUSIC_PLAYER_ERROR
+            showNotification()
         }
 
         override fun onSeekProcessed() {

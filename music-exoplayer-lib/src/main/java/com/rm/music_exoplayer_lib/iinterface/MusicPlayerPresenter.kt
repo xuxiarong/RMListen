@@ -249,4 +249,9 @@ interface MusicPlayerPresenter {
     fun getPlayerModel(): Int
     //设置定时模式
     fun setPlayerAlarmModel(model: Int)
+
+    /**
+     * 开启通知
+     */
+    fun setNotificationEnable(enable:Boolean)
 }

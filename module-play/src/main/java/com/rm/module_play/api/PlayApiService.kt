@@ -39,7 +39,6 @@ interface PlayApiService {
     /**
      * 评论点赞和取消点赞
      */
-    @FormUrlEncoded
     @POST("comment/like")
     suspend fun likeComment(
         @Field("comment_id") comment_id: Int
@@ -58,7 +57,6 @@ interface PlayApiService {
     /**
      * 播放上报
      */
-    @FormUrlEncoded
     @POST("report/report")
     suspend fun playerReport(
         @Field("report_type") report_type: String,
