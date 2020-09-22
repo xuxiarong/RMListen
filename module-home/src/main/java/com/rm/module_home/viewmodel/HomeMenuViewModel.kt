@@ -26,7 +26,6 @@ class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMView
      * 获取听单详情
      */
     fun getMenuListInfo() {
-        showLoading()
         launchOnIO {
             repository.sheet().checkResult(
                 onSuccess = {
@@ -34,7 +33,7 @@ class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMView
                     menuList.value = it
                 },
                 onError = {
-                    showContentView()
+                    showNetError()
                     DLog.i("------>", "$it")
                 }
             )
@@ -45,14 +44,13 @@ class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMView
      * 获取听单列表
      */
     fun getSheetList( page: Int, pageSize: Int) {
-        showLoading()
         launchOnIO {
             repository.getSheetList( page, pageSize)
                 .checkResult(onSuccess = {
                     showContentView()
                     sheetList.value = it
                 }, onError = {
-                    showContentView()
+                    showNetError()
                     DLog.i("------>", "$it")
                 })
         }

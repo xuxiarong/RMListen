@@ -22,5 +22,14 @@ interface LoginService : ApplicationProvider {
      * @param baseViewModel BaseVMViewModel
      * @param fragmentActivity FragmentActivity
      */
-    fun quicklyLogin(baseViewModel: BaseVMViewModel,fragmentActivity: FragmentActivity)
+    fun quicklyLogin(
+        baseViewModel: BaseVMViewModel,
+        fragmentActivity: FragmentActivity,
+        loginSuccess: () -> Unit
+    )
+
+    fun quicklyLogin(
+        baseViewModel: BaseVMViewModel,
+        fragmentActivity: FragmentActivity
+    )
 }

@@ -25,7 +25,7 @@ import com.rm.module_login.viewmodel.dialog.LoginQuicklyViewModel
  * date   : 2020/09/08
  * version: 1.0
  */
-class LoginQuicklyDialogHelper(
+class LoginQuicklyDialogHelper constructor(
     private val baseViewModel: BaseVMViewModel,
     private val fragmentActivity: FragmentActivity
 ) {
@@ -33,6 +33,8 @@ class LoginQuicklyDialogHelper(
     private val loginQuicklyModel by lazy {
         LoginQuicklyViewModel(baseViewModel)
     }
+
+     var loginSuccess: () -> Unit = {}
 
     // 手机号码输入界面显示动画
     private val phoneShowAnimation by lazy {
@@ -118,6 +120,7 @@ class LoginQuicklyDialogHelper(
                     if (it) {
                         // 登陆成功,弹窗消失
                         this.dismiss()
+                        loginSuccess()
                     }
                 }
             }
