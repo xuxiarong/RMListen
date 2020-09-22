@@ -41,10 +41,18 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     }
 
     //评论
-    suspend fun commentAudioComments(audioID: String, page: Int, pageSize: Int): BaseResult<AudioCommentsModel> {
+    suspend fun commentAudioComments(
+        audioID: String,
+        page: Int,
+        pageSize: Int
+    ): BaseResult<AudioCommentsModel> {
         return apiCall { playApi.commentAudioComments(audioID, page, pageSize) }
     }
 
+    //评论
+    suspend fun playerReport(audio_id: String, chapter_id: String): BaseResult<Any> {
+        return apiCall { playApi.playerReport("player", audio_id, chapter_id) }
+    }
 
 
 }

@@ -122,15 +122,12 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 mViewModel.detailViewModel.get()?.let {
                     val router = RouterHelper.createRouter(PlayService::class.java)
-
                     router.toPlayPage(this@HomeDetailActivity, it, mViewModel.audioList.get())
                 }
 
             }
 
         })
-
-
     }
 
     private val mOnScrollChangedListener: ScrollLayout.OnScrollChangedListener =

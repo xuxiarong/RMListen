@@ -15,17 +15,12 @@ import android.os.Message
 import com.example.music_exoplayer_lib.manager.BookAlarmManger
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.extractor.ExtractorsFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.*
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.android.exoplayer2.util.Util.getUserAgent
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.*
@@ -39,7 +34,6 @@ import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 import com.rm.music_exoplayer_lib.utils.CacheUtils
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
-import java.io.File
 import java.util.*
 
 
@@ -87,7 +81,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     val alarmManger by lazy {
         BookAlarmManger(this)
     }
-    val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory()
 
     //是否被动暂停，用来处理音频焦点失去标记
     private var mIsPassive = false
@@ -132,7 +125,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     override fun onCreate() {
         super.onCreate()
-        buildMediaSource()
         mAudioFocusManager = MusicAudioFocusManager(this.applicationContext)
         requestAudioFocus = mAudioFocusManager?.requestAudioFocus(
             object : MusicAudioFocusManager.OnAudioFocusListener {
@@ -154,6 +146,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 override fun onFocusOut() {
                     passivePause()
                 }
+
                 /**
                  * 返回播放器是否正在播放
                  * @return 为true正在播放
@@ -202,23 +195,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         return mPlayerBinder as MusicPlayerBinder
     }
 
-    private var mTrackSelector: TrackSelector? = null
-
-    private fun buildMediaSource() {
-        val cacheFile =
-            File(baseContext.externalCacheDir?.absolutePath, "video") // 本地最多保存512M, 按照LRU原则删除老数据
-        val simpleCache = SimpleCache(cacheFile, LeastRecentlyUsedCacheEvictor(512 * 1024 * 1024))
-        val bandwidthMeter = DefaultBandwidthMeter()
-        val videoTrackSelectionFactory: TrackSelection.Factory =
-            AdaptiveTrackSelection.Factory(bandwidthMeter)
-        mTrackSelector = DefaultTrackSelector(videoTrackSelectionFactory)
-        cachedDataSourceFactory = CacheDataSourceFactory(simpleCache, dataSourceFactory)
-    }
-
     private fun startPlay(musicInfo: BaseAudioInfo) =
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
             if (musicInfo.audioPath.isNotEmpty()) {
-//                val source = ExtractorMediaSource(Uri.parse(musicInfo.audioPath),cachedDataSourceFactory,extractorsFactory,null, null)
                 val source = ProgressiveMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(Uri.parse(musicInfo.audioPath))
                 mExoPlayer.prepare(
@@ -235,11 +214,11 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
     override fun startPlayMusic(index: Int) {
+        postViewHandlerCurrentPosition(index)
         startPlay(mAudios.getOrNull(index) as BaseAudioInfo)
     }
 
     override fun startPlayMusic(audios: List<*>?, index: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun playOrPause() {
@@ -287,7 +266,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun setLoop(loop: Boolean) {
-        TODO("Not yet implemented")
     }
 
     override fun onStop() {
@@ -304,12 +282,15 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 if (mCurrentPlayIndex > 0) {
                     mCurrentPlayIndex--
                 }
-                postViewHandlerCurrentPosition(mCurrentPlayIndex)
                 startPlayMusic(mCurrentPlayIndex)
             }
             //单曲循环
             MUSIC_MODEL_SINGLE -> {
-
+                mCurrentPlayIndex--
+                if (mCurrentPlayIndex < 0) {
+                    mCurrentPlayIndex = mAudios.size - 1
+                }
+                startPlayMusic(mCurrentPlayIndex)
             }
             else -> {
             }
@@ -324,12 +305,16 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 if ((mAudios.size - 1) > mCurrentPlayIndex) {
                     mCurrentPlayIndex++
                 }
-                postViewHandlerCurrentPosition(mCurrentPlayIndex)
                 startPlayMusic(mCurrentPlayIndex)
             }
             //单曲循环
             MUSIC_MODEL_SINGLE -> {
-
+                if (mCurrentPlayIndex >= mAudios.size - 1) {
+                    mCurrentPlayIndex = 0
+                } else {
+                    mCurrentPlayIndex++
+                }
+                startPlayMusic(mCurrentPlayIndex)
             }
             else -> {
             }
@@ -417,7 +402,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             MUSIC_MODEL_ORDER -> {
                 if (mAudios.size - 1 > mCurrentPlayIndex) {
                     mCurrentPlayIndex++
-                    postViewHandlerCurrentPosition(mCurrentPlayIndex)
                     startPlayMusic(mCurrentPlayIndex)
                 }
             }
@@ -528,10 +512,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
     }
 
+    /**
+     * 设置闹钟模式
+     */
     override fun setPlayerAlarmModel(model: Int) {
         mMusicAlarmModel = model
         CacheUtils.instance.putInt(SP_KEY_ALARM_MODEL, model)
-
         mMusicAlarmModel = model
         when (model) {
             MUSIC_ALARM_MODEL_10 -> {
@@ -635,7 +621,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
         override fun onPlayerError(error: ExoPlaybackException) {
-            exoLog("$error")
             mMusicPlayerState = MUSIC_PLAYER_ERROR
         }
 

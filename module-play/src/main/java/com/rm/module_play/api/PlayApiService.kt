@@ -39,6 +39,7 @@ interface PlayApiService {
     /**
      * 评论点赞和取消点赞
      */
+    @FormUrlEncoded
     @POST("comment/like")
     suspend fun likeComment(
         @Field("comment_id") comment_id: Int
@@ -54,5 +55,14 @@ interface PlayApiService {
         @Query("page_size") page_size: Int
     ): BaseResponse<AudioCommentsModel>
 
-
+    /**
+     * 播放上报
+     */
+    @FormUrlEncoded
+    @POST("report/report")
+    suspend fun playerReport(
+        @Field("report_type") report_type: String,
+        @Field("audio_id") audio_id: String,
+        @Field("chapter_id") chapter_id: String
+    ): BaseResponse<Any>
 }

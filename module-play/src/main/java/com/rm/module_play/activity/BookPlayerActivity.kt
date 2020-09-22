@@ -37,6 +37,7 @@ import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
@@ -44,8 +45,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     private val mBookPlayerAdapter: BookPlayerAdapter by lazy {
         BookPlayerAdapter(mViewModel, BR.viewModel, BR.itemModel)
-    }
 
+    }
+    var homeDetailBean: HomeDetailModel? = null
+    var mAudioChapterListModel: AudioChapterListModel? = null
     companion object {
         val homeDetailModel = "homeDetailModel"
         val audioChapterListModel = "AudioChapterListModel"
@@ -103,6 +106,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 musicPlayerManger.updateMusicPlayerData(it, 2)
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
                 GlobalplayHelp.instance.addOnPlayerEventListener()
+                musicPlayerManger.playOrPause()
             }
         })
         mViewModel.playControlAction.addOnPropertyChangedCallback(object :
@@ -157,8 +161,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         })
     }
 
-    var homeDetailBean: HomeDetailModel? = null
-    var mAudioChapterListModel: AudioChapterListModel? = null
+
     override fun initData() {
         mViewModel.initPlayerAdapterModel()
         mDataBind.rvMusicPlay.bindVerticalLayout(mBookPlayerAdapter)
@@ -171,7 +174,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         homeDetailBean?.let {
             val listValue = mViewModel.mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
-            mViewModel.commentAudioComments("${it.detaillist.audio_id}", 1, 20)
+            mViewModel.audioID.set(it.detaillist.audio_id.toString())
+            mViewModel.commentAudioComments("${it.detaillist.audio_id}")
             mViewModel.mutableList.postValue(listValue)
             mBookPlayerAdapter.notifyDataSetChanged()
         }
@@ -185,12 +189,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onPrepared(totalDurtion: Long) {
         mViewModel.maxProcess.set(totalDurtion.toFloat())
-        val playerControl = mViewModel.playControlModel.get()
-        playerControl?.baseAudioInfo = musicPlayerManger.getCurrentPlayerMusic() ?: BaseAudioInfo()
-        mViewModel.playControlModel.set(playerControl)
-        mViewModel.playControlModel.notifyChange()
-
-
     }
 
     override fun onBufferingUpdate(percent: Int) {
@@ -200,9 +198,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-
-//        mViewModel.playControModel.set(PlayControlModel(musicInfo))
-
+        val playerControl = mViewModel.playControlModel.get()
+        playerControl?.baseAudioInfo = musicInfo
+        mViewModel.playControlModel.set(playerControl)
+        mViewModel.playControlModel.notifyChange()
+        mViewModel.playReport(playerControl?.baseAudioInfo?.audioId?:"",playerControl?.baseAudioInfo?.chapterId?:"")
 
     }
 
