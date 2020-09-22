@@ -8,6 +8,8 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dimen
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.bean.SubscriptionListBean
@@ -85,6 +87,10 @@ class ListenSubscriptionActivity :
         //取消置顶操作成功
         mViewModel.dialogCancelTop = { cancelTopSuccess(it) }
 
+        mViewModel.itemClick={
+            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(this,it.audio_id.toString())
+        }
+
         addRefreshListener()
     }
 
@@ -117,7 +123,7 @@ class ListenSubscriptionActivity :
      */
     private fun cancelTopSuccess(bean: SubscriptionListBean) {
         mAdapter.remove(bean)
-        mAdapter.data.add(mAdapter.data.lastIndex+1, bean)
+        mAdapter.data.add(mAdapter.data.lastIndex + 1, bean)
         mAdapter.notifyDataSetChanged()
     }
 
@@ -130,6 +136,7 @@ class ListenSubscriptionActivity :
     }
 
     override fun initData() {
+        mViewModel.showLoading()
         mViewModel.getData(mPage, pageSize)
     }
 

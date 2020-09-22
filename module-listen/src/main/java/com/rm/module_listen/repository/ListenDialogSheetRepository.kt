@@ -15,8 +15,8 @@ class ListenDialogSheetRepository(private val service: ListenApiService) : BaseR
     /**
      * 我的听单
      */
-    suspend fun getData(): BaseResult<ListenSheetMyListBean> {
-        return apiCall { service.listenSheetMyList() }
+    suspend fun getData(page: Int, pageSize: Int): BaseResult<ListenSheetMyListBean> {
+        return apiCall { service.listenSheetMyList(page,pageSize) }
     }
 
     /**

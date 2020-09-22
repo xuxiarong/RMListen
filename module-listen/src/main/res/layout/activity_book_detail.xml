@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<!--    &lt;!&ndash;  标题栏  &ndash;&gt;-->
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@+id/app_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="384dp">-->
+
+<!--        &lt;!&ndash;        app:contentScrim="?attr/colorPrimary"&ndash;&gt;-->
+<!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--            android:id="@+id/toolbar_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:minHeight="?actionBarSize"-->
+<!--            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"-->
+<!--            app:toolbarId="@+id/toolbar">-->
+
+<!--            <include-->
+<!--                android:id="@+id/topBookDetail"-->
+<!--                layout="@layout/item_book_detail_head" />-->
+
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/toolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                app:layout_collapseMode="pin">-->
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginEnd="@dimen/dp_16">-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/ivBackDetailHead"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:paddingTop="@dimen/dp_16"-->
+<!--                        android:paddingEnd="@dimen/dp_16"-->
+<!--                        android:paddingBottom="@dimen/dp_16"-->
+<!--                        android:src="@drawable/back_black" />-->
+
+<!--                    &lt;!&ndash;                    <TextView&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        android:id="@+id/titleName"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        android:layout_centerInParent="true"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        android:text=""&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        android:textColor="@color/charcoalGrey"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        android:textSize="@dimen/sp_16"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        android:visibility="invisible" />&ndash;&gt;-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/ivShareDetailHead"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:paddingStart="@dimen/dp_16"-->
+<!--                        android:paddingTop="@dimen/dp_16"-->
+<!--                        android:paddingBottom="@dimen/dp_16"-->
+<!--                        android:src="@drawable/share_icon" />-->
+<!--                </RelativeLayout>-->
+<!--            </androidx.appcompat.widget.Toolbar>-->
+
+<!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/bookDetailRecyclerView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginBottom="55dp"-->
+<!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+
+<!--    &lt;!&ndash;  底部menu  &ndash;&gt;-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/layoutRead"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="55dp"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:background="@color/white"-->
+<!--        android:visibility="visible"-->
+<!--        tools:visibility="visible">-->
+
+<!--        <include-->
+<!--            layout="@layout/include_divide_s"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/btnAddToBookShelf"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/btnDownload"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvAddToBookShelf"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginStart="@dimen/dp_16"-->
+<!--                android:drawableLeft="@drawable/bookshelf3x"-->
+<!--                android:drawablePadding="@dimen/dp_4"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/put_info_book_shelf"-->
+<!--                android:textColor="@color/charcoalGrey"-->
+<!--                android:textSize="@dimen/sp_16" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/btnDownload"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/btnRead"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/btnAddToBookShelf"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvDownload"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:drawableLeft="@drawable/download3x"-->
+<!--                android:gravity="center"-->
+<!--                android:text="下载"-->
+<!--                android:textColor="@color/charcoalGrey"-->
+<!--                android:textSize="@dimen/sp_16" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/btnRead"-->
+<!--            style="@style/largeButtonStyle"-->
+<!--            android:layout_width="@dimen/dp_140"-->
+<!--            android:layout_height="@dimen/dp_36"-->
+<!--            android:layout_marginEnd="@dimen/dp_16"-->
+<!--            android:text="开始阅读"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintCircleRadius="@dimen/dp_4"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.5"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/btnDownload"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvTitleBookDetail"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:elevation="5dp"-->
+<!--        android:ellipsize="end"-->
+<!--        android:gravity="center"-->
+<!--        android:lines="1"-->
+<!--        android:textColor="@color/charcoalGrey"-->
+<!--        android:textSize="@dimen/sp_20"-->
+<!--        app:layout_behavior="com.rayman.rmbook.views.BookDetailTitleBehavior"-->
+<!--        tools:text="来自一个陌生女人的来信" />-->
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

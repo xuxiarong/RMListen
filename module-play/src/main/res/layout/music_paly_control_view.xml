@@ -53,14 +53,14 @@
                 app:rv_backgroundColor="@color/business_color_ff5e5e"
                 app:rv_cornerRadius="40dp">
 
-                    <com.airbnb.lottie.LottieAnimationView
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/animation_view"
                     playAction="@{viewModel.playFun}"
                     playStart="@{viewModel.playControlModel}"
-                    app:lottie_fileName="play_stop.json"
-                    android:layout_width="39dp"
+                    android:layout_width="29dp"
                     android:layout_height="38dp"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    app:lottie_fileName="play_stop.json" />
             </com.flyco.roundview.RoundFrameLayout>
 
         </FrameLayout>

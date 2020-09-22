@@ -10,6 +10,7 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_play.model.*
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -41,6 +42,12 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         MutableLiveData<MutableList<PlayControlRecommentListModel>>()
     val mutableList = MutableLiveData<MutableList<MultiItemEntity>>()
     val playManger: MusicPlayerManager = musicPlayerManger
+    val audioID = ObservableField<String>()
+
+    // 下拉刷新和加载更多控件状态控制Model
+    val refreshStatusModel = SmartRefreshLayoutStatusModel()
+    var page = 1
+    val pageSize = 10
 
     init {
         updateThumbText.set("0/0")
@@ -60,41 +67,19 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         mText = text
     }
 
-    fun getPlayPath(hashKey: String) {
-        val params: MutableMap<String, String> = HashMap()
-        params["r"] = "play/getdata"
-        params["hash"] = hashKey
-        launchOnUI {
-            repository.getPlayPath(params).checkResult(
-                onSuccess = {
-                    if (it.play_url.orEmpty().isNotEmpty() && it.img.orEmpty().isNotEmpty()) {
-                        pathList.add(
-                            BaseAudioInfo(
-                                it.play_url,
-                                it.img,
-                                it.audio_name,
-                                it.author_name
-                            )
-                        )
-                        playPath.postValue(pathList)
-                    }
-                },
-                onError = {
-                }
-            )
-        }
-    }
 
-    fun zipPlayPath(searchResultInfo: AudioChapterListModel) {
+    fun zipPlayPath(searchResultInfo: AudioChapterListModel,headUrl:String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                searchResultInfo.list.forEach {
+                searchResultInfo.chapter_list.forEach {
                     pathList.add(
                         BaseAudioInfo(
                             it.path_url,
-                            it.path,
+                            headUrl,
                             it.chapter_name,
-                            it.created_at
+                            it.created_at,
+                            it.audio_id,
+                            it.chapter_id
                         )
                     )
                 }
@@ -153,7 +138,6 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      * 播放或者暂停
      */
     fun playFun() {
-        playManger.playOrPause()
         val playControl = playControlModel.get()
         playControl?.state = !(playControlModel.get()?.state == true)
         playControlModel.set(playControl)
@@ -183,20 +167,52 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     }
 
     /**
-     *
+     * 上报
      */
-    fun commentAudioComments(audioID: String, page: Int, pageSize: Int) {
+    fun playReport(audioID: String, chapterId: String) {
         launchOnIO {
+            repository.playerReport(audioID, chapterId).checkResult(onSuccess = {
+                ExoplayerLogger.exoLog(it)
+            }, onError = {
+                ExoplayerLogger.exoLog(it ?: "")
+
+            })
+        }
+    }
+
+    /**
+     *评论列表
+     */
+    fun commentAudioComments(audioID: String) {
+        launchOnIO {
+            if (page == 1) {
+                showLoading()
+            }
             repository.commentAudioComments(audioID, page, pageSize)
                 .checkResult(onSuccess = {
                     it.list.forEach {
                         mutableList.value?.add(PlayControlCommentListModel(comments = it))
                     }
                     mutableList.postValue(mutableList.value)
+                    if (page == 1) {
+                        if (it.list.isEmpty()) {
+                            showDataEmpty()
+                        } else {
+                            showContentView()
+                        }
+                    } else {
+                        refreshStatusModel.finishLoadMore(true)
+                    }
+                    refreshStatusModel.setHasMore(it.list.size > 0)
+                    page++
                 }, onError = {
+                    if (page == 1) {
+                        showNetError()
+                    } else {
+                        refreshStatusModel.finishLoadMore(false)
+                    }
 
                 })
         }
     }
-
 }

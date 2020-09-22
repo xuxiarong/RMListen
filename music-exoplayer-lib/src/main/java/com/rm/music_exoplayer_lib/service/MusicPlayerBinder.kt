@@ -5,7 +5,6 @@ import android.os.Binder
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
 /**
  *
@@ -166,6 +165,11 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     //设置定时任务
      fun setPlayerAlarmModel(model: Int) {
         presenter.setPlayerAlarmModel(model)
+    }
+
+    fun setNotificationEnable(enable: Boolean) {
+        presenter.setNotificationEnable(enable)
+
     }
 
 }

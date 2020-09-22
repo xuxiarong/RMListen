@@ -1,5 +1,6 @@
 package com.rm.module_listen.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
@@ -19,11 +20,11 @@ class ListenSheetListActivity : BaseActivity() {
 
     companion object {
         const val SHEET_LIST_TYPE = "sheetListType"
-        fun startActivity(context: Context, @ListenSheetListType sheetListType: Int) {
-            context.startActivity(
+        fun startActivity(context: Activity, @ListenSheetListType sheetListType: Int) {
+            context.startActivityForResult(
                 Intent(context, ListenSheetListActivity::class.java)
                     .putExtra(SHEET_LIST_TYPE, sheetListType)
-            )
+            ,300)
         }
     }
 
@@ -70,6 +71,7 @@ class ListenSheetListActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        setResult(resultCode, data)
         mListTabFragment.forEach {
             it.onActivityResult(requestCode, resultCode, data)
         }

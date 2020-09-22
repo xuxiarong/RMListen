@@ -54,5 +54,13 @@ interface PlayApiService {
         @Query("page_size") page_size: Int
     ): BaseResponse<AudioCommentsModel>
 
-
+    /**
+     * 播放上报
+     */
+    @POST("report/report")
+    suspend fun playerReport(
+        @Field("report_type") report_type: String,
+        @Field("audio_id") audio_id: String,
+        @Field("chapter_id") chapter_id: String
+    ): BaseResponse<Any>
 }

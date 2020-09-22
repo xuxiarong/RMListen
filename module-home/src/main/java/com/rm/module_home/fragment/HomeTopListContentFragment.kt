@@ -12,6 +12,8 @@ import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeTopListContentAdapter
 import com.rm.module_home.databinding.HomeFragmentTopListContentBinding
 import com.rm.module_home.viewmodel.HomeTopListContentFragmentViewModel
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.home_fragment_top_list_content.*
 
 class HomeTopListContentFragment :
@@ -103,8 +105,7 @@ class HomeTopListContentFragment :
             }
         }
 
-        refresh()
-        loadMore()
+        addRefreshListener()
 
     }
 
@@ -141,29 +142,26 @@ class HomeTopListContentFragment :
             return
         }
         canRefreshData = false
+        mViewModel.showLoading()
         mViewModel.getListInfo("$rankType", rankSeg, mPage, pageSize)
     }
 
     /**
-     * 下拉刷新
+     * 上拉加载/下拉刷新
      */
-    private fun refresh() {
-        home_top_list_refresh.setOnRefreshListener {
-            canRefreshData = true
-            mPage = 1
-            getData()
-        }
-    }
+    private fun addRefreshListener() {
+        home_top_list_refresh.setOnRefreshLoadMoreListener(object :OnRefreshLoadMoreListener{
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                ++mPage
+                mViewModel.getListInfo("$rankType", rankSeg, mPage, pageSize)
+            }
 
-    /**
-     * 上拉加载
-     */
-    private fun loadMore() {
-        home_top_list_refresh.setOnLoadMoreListener {
-            canRefreshData = true
-            ++mPage
-            getData()
-        }
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                mPage = 1
+                mViewModel.getListInfo("$rankType", rankSeg, mPage, pageSize)
+            }
+        })
+
     }
 
     override fun startObserve() {

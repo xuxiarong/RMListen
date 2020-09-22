@@ -44,7 +44,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     private val mBookPlayerAdapter: BookPlayerAdapter by lazy {
         BookPlayerAdapter(mViewModel, BR.viewModel, BR.itemModel)
+
     }
+    var homeDetailBean: HomeDetailModel? = null
+    var mAudioChapterListModel: AudioChapterListModel? = null
 
     companion object {
         val homeDetailModel = "homeDetailModel"
@@ -93,16 +96,18 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initView() {
         setStatusBar(R.color.businessWhite)
         mViewModel.addBubbleFLViewModel(bubbleFl)
-
+        mViewModel.initPlayerAdapterModel()
+        mDataBind.rvMusicPlay.bindVerticalLayout(mBookPlayerAdapter)
     }
 
-
     override fun startObserve() {
+
         mViewModel.playPath.observe(this, Observer {
             it?.let {
                 musicPlayerManger.updateMusicPlayerData(it, 2)
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
                 GlobalplayHelp.instance.addOnPlayerEventListener()
+                musicPlayerManger.playOrPause()
             }
         })
         mViewModel.playControlAction.addOnPropertyChangedCallback(object :
@@ -115,7 +120,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                             showPlayBookListDialog(it) { position ->
                                 musicPlayerManger.startPlayMusic(position)
                             }
-
                         }
                     }
                     ACTION_PLAY_OPERATING -> {
@@ -157,27 +161,43 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         })
     }
 
-    var homeDetailBean: HomeDetailModel? = null
-    var mAudioChapterListModel: AudioChapterListModel? = null
-    override fun initData() {
-        mViewModel.initPlayerAdapterModel()
-        mDataBind.rvMusicPlay.bindVerticalLayout(mBookPlayerAdapter)
+    private fun getIntentParams(isOnCreate: Boolean) {
+
+        //正在播放的对象
+        val currentPlayerMusic = musicPlayerManger
+            .getCurrentPlayerMusic()
+        currentPlayerMusic?.let {
+            if (!isOnCreate){
+                return
+            }
+        }
+
         homeDetailBean = intent.getSerializableExtra(homeDetailModel) as? HomeDetailModel
         mAudioChapterListModel =
             intent.getSerializableExtra(audioChapterListModel) as? AudioChapterListModel
         mAudioChapterListModel?.let {
-            mViewModel.zipPlayPath(it)
+            mViewModel.zipPlayPath(it, homeDetailBean?.detaillist?.anchor?.anchor_avatar ?: "")
         }
         homeDetailBean?.let {
             val listValue = mViewModel.mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
-            mViewModel.commentAudioComments("${it.detaillist.audio_id}", 1, 20)
+            mViewModel.audioID.set(it.detaillist.audio_id.toString())
+            mViewModel.commentAudioComments("${it.detaillist.audio_id}")
             mViewModel.mutableList.postValue(listValue)
             mBookPlayerAdapter.notifyDataSetChanged()
         }
+    }
+
+    override fun initData() {
+        getIntentParams(true)
 
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        getIntentParams(true)
+
+    }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
 
@@ -185,12 +205,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onPrepared(totalDurtion: Long) {
         mViewModel.maxProcess.set(totalDurtion.toFloat())
-        val playerControl = mViewModel.playControlModel.get()
-        playerControl?.baseAudioInfo = musicPlayerManger.getCurrentPlayerMusic() ?: BaseAudioInfo()
-        mViewModel.playControlModel.set(playerControl)
-        mViewModel.playControlModel.notifyChange()
-
-
     }
 
     override fun onBufferingUpdate(percent: Int) {
@@ -200,9 +214,14 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-
-//        mViewModel.playControModel.set(PlayControlModel(musicInfo))
-
+        val playerControl = mViewModel.playControlModel.get()
+        playerControl?.baseAudioInfo = musicInfo
+        mViewModel.playControlModel.set(playerControl)
+        mViewModel.playControlModel.notifyChange()
+        mViewModel.playReport(
+            playerControl?.baseAudioInfo?.audioId ?: "",
+            playerControl?.baseAudioInfo?.chapterId ?: ""
+        )
 
     }
 

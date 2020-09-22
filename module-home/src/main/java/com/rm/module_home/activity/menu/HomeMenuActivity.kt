@@ -7,9 +7,12 @@ import androidx.lifecycle.observe
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.binding.bindData
+import com.rm.business_lib.binding.paddingBindData
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.adapter.MenuListAdapter
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.rm.module_home.viewmodel.HomeMenuViewModel
@@ -23,7 +26,14 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
 
     //懒加载头部banner
     private val headView by lazy {
-        View.inflate(this, R.layout.home_header_banner, null)
+        View.inflate(this, R.layout.home_header_banner, null).apply {
+            setPadding(
+                paddingLeft,
+                dip(14f),
+                paddingRight,
+                paddingBottom
+            )
+        }
     }
 
     //懒加载adapter
@@ -51,8 +61,10 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
     override fun startObserve() {
         mViewModel.menuList.observe(this) {
             //设置banner数据源
-            headView.findViewById<XBanner>(R.id.home_head_banner).bindData(it.banner_list)
-
+            headView.findViewById<XBanner>(R.id.home_head_banner).apply {
+                paddingBindData(it.banner_list)
+                setIsClipChildrenMode(false)
+            }
             mPageId = it.page_id
         }
 
@@ -85,6 +97,10 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
             HomeMenuDetailActivity.startActivity(this@HomeMenuActivity, it.sheet_id, mPageId)
         }
 
+        mViewModel.itemChildClick = {
+            HomeDetailActivity.startActivity(this@HomeMenuActivity, it.audio_id)
+        }
+
     }
 
     override fun initView() {
@@ -103,6 +119,7 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
     }
 
     override fun initData() {
+        mViewModel.showLoading()
         mViewModel.getMenuListInfo()
         mViewModel.getSheetList(mPage, pageSize)
     }

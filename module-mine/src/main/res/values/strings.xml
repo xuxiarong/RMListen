@@ -19,4 +19,20 @@
     <string name="mine_open_now">立即开通</string>
     <string name="mine_vip_privilege">开通会员尊享特权</string>
     <string name="mine_vip">VIP</string>
+
+
+    <!--setting-->
+    <string name="mine_account_settings">账号设置</string>
+    <string name="mine_personal_info">个人资料</string>
+    <string name="mine_phone_binding">手机绑定</string>
+    <string name="mine_account_security">账号安全</string>
+    <string name="mine_application_settings">应用设置</string>
+    <string name="mine_play_settings">播放设置</string>
+    <string name="mine_download_setting">下载设置</string>
+    <string name="mine_clear_cache">缓存清除</string>
+    <string name="mine_other">其他</string>
+    <string name="mine_message_setting">消息设置</string>
+    <string name="mine_favorable_comment">给个好评</string>
+    <string name="mine_free_book">免费求书</string>
+    <string name="mine_sign_out">退出登录</string>
 </resources>

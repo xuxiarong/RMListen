@@ -15,19 +15,29 @@ data class HomeDetailModel(
 
 
 data class DetailArticle(
-    val anchor: Anchor,
-    val anchor_id: String,
-    val audio_id: Long,
+    val audio_id : String,
+    val audio_type :Int,
+    val audio_name: String,
+    val original_name: String,
     val author: String,
     val author_intro: String,
-    val cover_url: String = "",
-    val intro: String,
-    val last_sequence: Int,
-    val name: String,
-    val play_count: String,
+    val anchor_id: String,
+    val short_intro: String,
+    val audio_intro: String,
+    val audio_cover: String,
+    val audio_label: String,
+    val quality: String,
     val progress: Int,
-    val tags: MutableList<Tags>,
-    val type: Int
+    val play_count: String,
+    val subscription_count: String,
+    val last_sequence: String,
+    val status: Int,
+    val created_at: String,
+    val chapter_updated_at: String,
+    val audio_cover_url: String,
+    @SerializedName("tags")
+    val detail_tags: MutableList<DetailTags>,
+    val anchor: Anchor
 ):Serializable
 
 data class Anchor(
@@ -37,7 +47,9 @@ data class Anchor(
     val status: Boolean
 ):Serializable
 
-data class Tags(
-    val id: Int,
-    val name: String
+data class DetailTags(
+    val tag_id: Int,
+    val tag_name: String
 ):Serializable
+
+

@@ -25,10 +25,16 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
     var itemClick: (AudioBean) -> Unit = {}
 
     /**
+     * item 点击事件
+     */
+    fun itemClickFun(bookBean: AudioBean) {
+        itemClick(bookBean)
+    }
+
+    /**
      * 获取听单详情
      */
     fun getData(sheetId: String) {
-        showLoading()
         launchOnIO {
             repository.getData(sheetId)
                 .checkResult(
@@ -38,7 +44,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                     },
                     onError = {
                         DLog.i("----->", "$it")
-                        showContentView()
+                        showNetError()
                     }
                 )
         }
@@ -53,7 +59,6 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
         page: Int,
         page_size: Int
     ) {
-        showLoading()
         launchOnIO {
             repository.getAudioList(page_id, sheetId, page, page_size).checkResult(
                 onSuccess = {
@@ -61,7 +66,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                     audioListData.value = it
                 },
                 onError = {
-                    showContentView()
+                    showNetError()
                     DLog.i("------>", "$it")
                 }
             )
@@ -81,7 +86,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                     DLog.i("----->", "收藏听单成功")
                 },
                 onError = {
-                    showContentView()
+                    showNetError()
                     DLog.i("----->", "$it")
                 }
             )
@@ -102,19 +107,10 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                     DLog.i("----->", "取消收藏成功")
                 },
                 onError = {
-                    showContentView()
+                    showNetError()
                     DLog.i("----->", "$it")
                 }
             )
         }
     }
-
-    /**
-     * item 点击事件
-     */
-    fun itemClickFun(bookBean: AudioBean) {
-        itemClick(bookBean)
-    }
-
-
 }

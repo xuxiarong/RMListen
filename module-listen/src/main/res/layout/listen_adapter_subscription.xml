@@ -24,7 +24,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_subscription_adapter_icon"
-            bindUrl="@{item.audio_cover}"
+            bindUrl="@{item.cover_url}"
             corner="@{@dimen/dp_4}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"

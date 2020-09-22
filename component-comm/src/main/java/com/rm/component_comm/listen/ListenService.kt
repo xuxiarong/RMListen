@@ -1,5 +1,6 @@
 package com.rm.component_comm.listen
 
+import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -34,5 +35,10 @@ interface ListenService : ApplicationProvider {
      * @param context 上下文
      * @param sheetListType 指定对应的fragment
      */
-    fun startListenSheetList(context: Context,@ListenSheetListType sheetListType: Int)
+    fun startListenSheetList(context: Activity, @ListenSheetListType sheetListType: Int)
+
+    /**
+     * 跳转到订阅界面
+     */
+    fun startSubscription(context: Context)
 }

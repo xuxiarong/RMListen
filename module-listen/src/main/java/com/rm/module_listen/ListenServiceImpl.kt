@@ -1,5 +1,6 @@
 package com.rm.module_listen
 
+import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -12,6 +13,7 @@ import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.activity.ListenSheetListActivity
+import com.rm.module_listen.activity.ListenSubscriptionActivity
 import com.rm.module_listen.fragment.ListenMyListenFragment
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 import com.rm.module_listen.utils.ListenDialogSheetHelper
@@ -55,7 +57,11 @@ class ListenServiceImpl : ListenService {
         ListenDialogCreateSheetHelper(baseViewModel, activity).showDialog()
     }
 
-    override fun startListenSheetList(context: Context, sheetListType: Int) {
+    override fun startListenSheetList(context: Activity, sheetListType: Int) {
         ListenSheetListActivity.startActivity(context, sheetListType)
+    }
+
+    override fun startSubscription(context: Context) {
+        ListenSubscriptionActivity.startActivity(context)
     }
 }

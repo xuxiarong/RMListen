@@ -1,5 +1,6 @@
 package com.rm.business_lib.bean
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 /**
@@ -10,22 +11,23 @@ import java.io.Serializable
  */
 
 data class AudioChapterListModel(
-    val list: List<ChapterList>,
-    val total: Int
+    @SerializedName("list")
+    val chapter_list: MutableList<ChapterList>,
+    val total: String
 ) : Serializable
 
 
 data class ChapterList(
-    val amount: Int,
-    val audio_id: String,
     val chapter_id: String,
-    val chapter_name: String,
+    val audio_id :String,
     val created_at: String,
-    val duration: Int,
+    val duration: Int, //音频时长
     val need_pay: Int,
-    val path: String,
-    val path_url: String,
-    val play_count: Int,
-    val sequence: Int,
-    val size: Int
+    val path_url: String, //音频地址
+    val play_count: String,
+    val amount:Int,
+    val chapter_name:String,
+    val sequence: Int, //章节序号
+    val size: Long, //音频大小
+    val path:String
 ) : Serializable
