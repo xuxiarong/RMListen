@@ -6,6 +6,7 @@ import com.rm.module_home.bean.CategoryTabListBean
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.model.home.HomeModel
+import com.rm.module_home.model.home.detail.HomeCommentViewModel
 import retrofit2.http.*
 
 
@@ -43,10 +44,10 @@ interface HomeApiService {
 
     @GET("comment/audio-comments")
     suspend fun HomeDetail_Comment(
-        @Field("audio_id") audio_id: String,
-        @Field("page") page: Int,
-        @Field("page_size") page_size: Int
-    ): BaseResponse<String>
+        @Query("audio_id") audio_id: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<HomeCommentViewModel>
 
     /**
      * 章节列表

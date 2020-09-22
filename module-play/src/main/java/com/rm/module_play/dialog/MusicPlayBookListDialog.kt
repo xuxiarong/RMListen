@@ -6,20 +6,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.module_play.R
-import com.rm.module_play.view.RecycleViewDivider
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
-import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.*
 import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.rv_music_play_time_setting
 
 /**
@@ -42,7 +38,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     var mBack: (type: Int) -> Unit = {}
     var audioChapterListModel: AudioChapterListModel? = null
     private val timeSAdapter by lazy {
-        TimeSAdapter(audioChapterListModel?.list as MutableList<ChapterList>).apply {
+        TimeSAdapter(audioChapterListModel?.chapter_list as MutableList<ChapterList>).apply {
             setOnItemClickListener { adapter, view, position ->
                 mBack(position)
                 dismissAllowingStateLoss()
