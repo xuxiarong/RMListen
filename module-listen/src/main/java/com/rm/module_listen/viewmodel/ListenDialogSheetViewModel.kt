@@ -15,23 +15,34 @@ class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : B
         ListenDialogSheetRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
 
+    //音频Id
     val audioId = MutableLiveData<String>()
+
+    //数据源
     val data = MutableLiveData<ListenSheetMyListBean>()
+
+    //网络请求是否完成
+    val isRefreshOrLoadComplete = MutableLiveData<Boolean>()
+
     var dismiss: () -> Unit = {}
 
     /**
      * 获取我的听单列表
      */
-    fun getData() {
-        baseViewModel.showLoading()
+    fun getData(page: Int, pageSize: Int, showLoad: Boolean) {
+        if (showLoad) {
+            baseViewModel.showLoading()
+        }
         launchOnIO {
-            repository.getData().checkResult(
+            repository.getData(page, pageSize).checkResult(
                 onSuccess = {
                     baseViewModel.showContentView()
                     data.value = it
+                    isRefreshOrLoadComplete.value = true
                 },
                 onError = {
                     baseViewModel.showContentView()
+                    isRefreshOrLoadComplete.value = true
                     DLog.i("------>", "$it")
                 }
             )

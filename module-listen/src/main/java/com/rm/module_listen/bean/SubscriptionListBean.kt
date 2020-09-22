@@ -10,7 +10,8 @@ data class SubscriptionListBean(
     var progress: Int,//1未开播,2连载中,3已完结
     var is_top: Int,//1: 已置顶；0:否
     var unread: Int,//未阅读的章节数
-    var sequence: Int//当前最新章节的集数
+    var sequence: Int,//当前最新章节的集数
+    var cover_url: String//封面url
 ) {
     fun getProgressStr(): String {
         return when (progress) {

@@ -21,11 +21,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_detail_front_cover"
-            bindUrl="@{item.sheet_cover}"
-            corner="@{@dimen/dp_14}"
+            bindUrl="@{item.cover_url}"
+            corner="@{8f}"
             android:layout_width="@dimen/dp_144"
             android:layout_height="@dimen/dp_144"
-            android:layout_marginStart="@dimen/dp_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />

@@ -111,7 +111,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         //收藏点击事件
         mViewModel.clickCollected = { clickCollected() }
 
-        //订阅点击时间
+        //订阅点击事件
         mViewModel.clickSubscribe = { clickSubscribe() }
 
         home_detail_title_cl.setOnClickListener { finish() }

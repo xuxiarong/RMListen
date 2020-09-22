@@ -1,6 +1,7 @@
 package com.rm.module_listen.api
 
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_listen.bean.*
 import com.rm.module_listen.model.ListenSubsModel
@@ -70,7 +71,10 @@ interface ListenApiService {
      * 我的听单列表
      */
     @GET("sheet/my-list")
-    suspend fun listenSheetMyList(): BaseResponse<ListenSheetMyListBean>
+    suspend fun listenSheetMyList(
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<ListenSheetMyListBean>
 
     /**
      * 收藏听单列表
@@ -82,17 +86,25 @@ interface ListenApiService {
     ): BaseResponse<ListenSheetCollectedBean>
 
     /**
-     * 听单列表
+     * 听单详情
      * @param sheet_id 听单Id
-     * @param page 加载页码
-     * @param page_size 加载多少条数据
      */
     @GET("content/sheet/info")
-    suspend fun listenSheetList(
-        @Query("sheet_id") sheet_id: String,
+    suspend fun listenSheetInfo(
+        @Query("sheet_id") sheet_id: String
+    ): BaseResponse<SheetInfoBean>
+
+    /**
+     * 听单音频列表
+     * @param page Int
+     * @param page_size Int
+     */
+    @GET("sheet/list")
+    suspend fun listenAudioList(
         @Query("page") page: Int,
         @Query("page_size") page_size: Int
-    ): BaseResponse<SheetInfoBean>
+    ): BaseResponse<AudioListBean>
+
 
     /**
      * 添加到听单

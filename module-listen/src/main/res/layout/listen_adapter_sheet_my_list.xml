@@ -17,14 +17,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_14"
+        android:layout_marginBottom="@dimen/dp_18"
         android:onClick="@{(ListenSheetBean)->click.itemClickFun(item)}">
 
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_adapter_icon"
             bindUrl="@{item.sheet_cover}"
-            corner="@{@dimen/dp_4}"
+            corner="@{4f}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"
@@ -32,15 +32,27 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/listen_sheet_adapter_love"
+            isVisible="@{item.created_from==3}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/business_icon_love"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/listen_sheet_adapter_icon"
+            app:layout_constraintEnd_toEndOf="@id/listen_sheet_adapter_icon"
+            app:layout_constraintStart_toStartOf="@id/listen_sheet_adapter_icon"
+            app:layout_constraintTop_toTopOf="@id/listen_sheet_adapter_icon" />
+
         <com.flyco.roundview.RoundTextView
             android:id="@+id/listen_sheet_adapter_tips"
+            bindText="@{item.sheet_label}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_16"
             android:enabled="false"
             android:gravity="center"
             android:paddingStart="@dimen/dp_4"
             android:paddingEnd="@dimen/dp_4"
-            bindText="@{item.sheet_label}"
             android:textColor="@color/businessWhite"
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintRight_toRightOf="@id/listen_sheet_adapter_icon"
@@ -54,8 +66,8 @@
             android:id="@+id/listen_sheet_adapter_view"
             android:layout_width="@dimen/dp_8"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
             android:background="@drawable/listen_shape_sheet_color_bdbdbd"
             app:layout_constraintBottom_toBottomOf="@id/listen_sheet_adapter_icon"
             app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_icon"

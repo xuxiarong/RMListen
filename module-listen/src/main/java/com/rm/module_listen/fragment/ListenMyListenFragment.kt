@@ -94,7 +94,7 @@ class ListenMyListenFragment :
             if (isLogin.value == false) {
                 router.quicklyLogin(mViewModel, activity!!)
             } else {
-                ListenSheetListActivity.startActivity(it.context,
+                ListenSheetListActivity.startActivity(activity!!,
                     LISTEN_SHEET_LIST_MY_LIST
                 )
             }

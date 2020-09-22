@@ -128,6 +128,7 @@ class HomeMenuDetailActivity :
 
         //取消收藏成功
         mViewModel.unFavoritesSuccess = {
+            mViewModel.showToast("已取消收藏")
             collectionStateChange(false)
         }
 
@@ -135,6 +136,7 @@ class HomeMenuDetailActivity :
         home_menu_detail_share.setOnClickListener(this)
 
     }
+
 
     override fun initData() {
         sheetId = intent.getStringExtra(SHEET_ID) ?: ""
@@ -220,7 +222,8 @@ class HomeMenuDetailActivity :
         } else {
             RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel, this) {
                 mViewModel.showLoading()
-                mViewModel.getData(sheetId)            }
+                mViewModel.getData(sheetId)
+            }
         }
     }
 
@@ -342,4 +345,14 @@ class HomeMenuDetailActivity :
         }
     }
 
+    /**
+     * 防止首次添加收藏进入收藏听单后再次进入详情取消收藏
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 300 && resultCode == 200) {
+            val favorite = data?.getBooleanExtra("isFavorite", false)
+            collectionStateChange(favorite == true)
+        }
+    }
 }

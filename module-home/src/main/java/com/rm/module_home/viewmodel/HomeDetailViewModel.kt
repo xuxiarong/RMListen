@@ -29,10 +29,11 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     //收藏点击事件闭包
     var clickCollected: () -> Unit = {}
+
     //订阅点击事件闭包
     var clickSubscribe: () -> Unit = {}
 
-    val test="dfas豆腐口感马拉喀什的风格穆沙拉卡的父母过来；四大发明；，公司的分公司的奉公守法公司"
+    val test = "dfas豆腐口感马拉喀什的风格穆沙拉卡的父母过来；四大发明；，公司的分公司的奉公守法公司"
 
 
     /**
@@ -57,17 +58,17 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 订阅
      */
-    fun subscribe(audioID: String){
+    fun subscribe(audioID: String) {
         showLoading()
         launchOnIO {
             repository.subscribe(audioID).checkResult(
                 onSuccess = {
                     showContentView()
-                    DLog.i("------->","订阅成功")
+                    DLog.i("------->", "订阅成功")
                 },
                 onError = {
                     showContentView()
-                    DLog.i("------->","订阅失败  $it")
+                    DLog.i("------->", "订阅失败  $it")
                 }
             )
         }
@@ -95,9 +96,9 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 章节列表
      */
-    fun chapterList(audioId: String ,page :Int,page_size:Int,sort:String) {
+    fun chapterList(audioId: String, page: Int, page_size: Int, sort: String) {
         launchOnUI {
-            repository.chapterList(audioId,page,page_size,sort).checkResult(onSuccess = {
+            repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
                 //detailChapterViewModel.notifyChange()
                 showContentView()
                 detailChapterViewModel.set(it)
@@ -107,17 +108,18 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             })
         }
     }
+
     /**
      * 评论列表
      */
-    fun commentList(audio_id: String,page: Int,page_size: Int){
+    fun commentList(audio_id: String, page: Int, page_size: Int) {
         launchOnUI {
-            repository.getCommentInfo(audio_id,page,page_size).checkResult(
+            repository.getCommentInfo(audio_id, page, page_size).checkResult(
                 onSuccess = {
                     showContentView()
                     detailCommentViewModel.postValue(it)
                     Log.i("commentList", it.toString())
-                },onError = {
+                }, onError = {
                     showContentView()
                     errorTips.set(it)
                     Log.i("commentList", it.toString())

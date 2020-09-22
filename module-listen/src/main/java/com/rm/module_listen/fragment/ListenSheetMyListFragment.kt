@@ -17,6 +17,8 @@ import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.SHEET
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.databinding.ListenFragmentSheetMyListBinding
 import com.rm.module_listen.viewmodel.ListenSheetMyListViewModel
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.listen_fragment_sheet_my_list.*
 
 class ListenSheetMyListFragment :
@@ -39,12 +41,17 @@ class ListenSheetMyListFragment :
         )
     }
 
-    override fun initModelBrId(): Int {
-        return BR.viewModel
-    }
-
     //记录点击item对应的实体对象
     private var clickBean: ListenSheetBean? = null
+
+
+    private val pageSize = 10
+
+    private var page = 1
+
+    override fun initModelBrId() = BR.viewModel
+
+    override fun initLayoutId() = R.layout.listen_fragment_sheet_my_list
 
     override fun initView() {
         super.initView()
@@ -55,20 +62,40 @@ class ListenSheetMyListFragment :
 
         //item点击事件
         mViewModel.itemClick = { startDetail(it) }
+
+        addRefreshListener()
+    }
+
+    override fun initData() {
+        mViewModel.showLoading()
+        mViewModel.getData(page, pageSize)
     }
 
     override fun startObserve() {
         mViewModel.data.observe(this) {
-            mAdapter.setList(it.list)
+            if (page == 1) {
+                //设置新的数据
+                mAdapter.setList(it.list)
+            } else {
+                //添加数据
+                it.list?.let { data -> mAdapter.addData(data) }
+            }
+
+            //没有更多数据
+            if (it.list?.size ?: 0 < pageSize) {
+                listen_sheet_my_list_refresh.finishLoadMoreWithNoMoreData()
+            }
         }
-    }
 
-    override fun initLayoutId(): Int {
-        return R.layout.listen_fragment_sheet_my_list
-    }
-
-    override fun initData() {
-        mViewModel.getData()
+        mViewModel.isRefreshOrLoadComplete.observe(this) {
+            if (page == 1) {
+                //刷新完成
+                listen_sheet_my_list_refresh.finishRefresh()
+            } else {
+                //加载完成
+                listen_sheet_my_list_refresh.finishLoadMore()
+            }
+        }
     }
 
     /**
@@ -79,6 +106,24 @@ class ListenSheetMyListFragment :
             clickBean = bean
             ListenMySheetDetailActivity.startActivity(it, bean.sheet_id.toString())
         }
+    }
+
+    /**
+     * 添加上下拉监听
+     */
+    private fun addRefreshListener() {
+        listen_sheet_my_list_refresh.setOnRefreshLoadMoreListener(object :
+            OnRefreshLoadMoreListener {
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                ++page
+                mViewModel.getData(page, pageSize)
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                page = 1
+                mViewModel.getData(page, pageSize)
+            }
+        })
     }
 
     /**

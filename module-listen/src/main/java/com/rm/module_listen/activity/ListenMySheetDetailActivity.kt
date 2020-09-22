@@ -13,6 +13,8 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.AudioBean
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenActivitySheetDetailBinding
@@ -22,6 +24,7 @@ import com.rm.module_listen.viewmodel.ListenSheetDetailViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.listen_activity_sheet_detail.*
+import kotlinx.android.synthetic.main.listen_fragment_sheet_my_list.*
 
 /**
  * 听单详情
@@ -77,13 +80,9 @@ class ListenMySheetDetailActivity :
     //当前请求数据的页码
     private var mPage = 1
 
-    override fun initModelBrId(): Int {
-        return BR.viewModel
-    }
+    override fun initModelBrId() = BR.viewModel
 
-    override fun getLayoutId(): Int {
-        return R.layout.listen_activity_sheet_detail
-    }
+    override fun getLayoutId() = R.layout.listen_activity_sheet_detail
 
     override fun initView() {
         super.initView()
@@ -99,7 +98,6 @@ class ListenMySheetDetailActivity :
             topMargin = stateHeight
         }
 
-
         //返回按钮点击时间
         listen_sheet_detail_back.setOnClickListener { finish() }
         //更多按钮点击事件
@@ -109,13 +107,13 @@ class ListenMySheetDetailActivity :
         listen_sheet_detail_recycler_view.apply {
             bindVerticalLayout(mAdapter)
         }
+
+        createHeader()
+
         //获取其他页面传过来的听单id
         intent?.let {
             mSheetId = it.getStringExtra(SHEET_ID)
         }
-
-        //创建头部
-        createHeader()
 
         addRefreshListener()
 
@@ -128,6 +126,11 @@ class ListenMySheetDetailActivity :
         //移除音频成功
         mViewModel.removeAudio = {
             mAdapter.remove(it)
+        }
+
+        //item点击事件
+        mViewModel.itemClick={
+            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(this,it.audio_id)
         }
     }
 
@@ -158,8 +161,8 @@ class ListenMySheetDetailActivity :
     override fun startObserve() {
         //数据源改变监听
         mViewModel.data.observe(this) {
+
             dataBinding?.setVariable(BR.item, it)
-            mAdapter.setList(it.audio_list?.list)
 
             //默认听单不给操作
             if (it.created_from == 3) {
@@ -167,9 +170,21 @@ class ListenMySheetDetailActivity :
             } else {
                 listen_sheet_detail_more.visibility = View.VISIBLE
             }
-
             //设置高斯模糊
             loadBlurImage(listen_sheet_detail_iv_bg, it.cover_url)
+
+            //刷新完成
+            if (listen_sheet_detail_refresh.isRefreshing) {
+                listen_sheet_detail_refresh.finishRefresh()
+            }
+
+            //设置新数据
+            mAdapter.setList(it.audio_list?.list)
+
+            //没有更多数据
+            if (pageSize > it.audio_list?.list?.size ?: 0) {
+                listen_sheet_detail_refresh.finishLoadMoreWithNoMoreData()
+            }
         }
         //删除回调
         mViewModel.deleteQuery.observe(this) {
@@ -181,11 +196,24 @@ class ListenMySheetDetailActivity :
             }
         }
 
+        mViewModel.audioList.observe(this) {
+            //加载更多完成
+            listen_sheet_detail_refresh.finishLoadMore()
+            //添加数据
+            it?.list?.let { mAdapter.addData(it) }
+
+            //没有更多数据
+            if (pageSize > it.list.size) {
+                listen_sheet_detail_refresh.finishLoadMoreWithNoMoreData()
+            }
+        }
+
     }
 
     override fun initData() {
         mSheetId?.let {
-            mViewModel.getData(it, mPage, pageSize)
+            mViewModel.showLoading()
+            mViewModel.getSheetInfo(it)
         }
     }
 
@@ -197,12 +225,12 @@ class ListenMySheetDetailActivity :
             OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
                 ++mPage
-                mViewModel.getData(mSheetId!!, mPage, pageSize)
+                mViewModel.getAudioList(mPage, pageSize)
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
                 mPage = 1
-                mViewModel.getData(mSheetId!!, mPage, pageSize)
+                mViewModel.getSheetInfo(mSheetId!!)
             }
         })
     }
