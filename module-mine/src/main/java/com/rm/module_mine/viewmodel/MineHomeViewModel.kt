@@ -6,9 +6,9 @@ import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
-import com.rm.module_mine.MineHomeAdapter
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineSettingActivity
+import com.rm.module_mine.adapter.MineHomeAdapter
 import com.rm.module_mine.bean.MineHomeBean
 import com.rm.module_mine.bean.MineHomeDetailBean
 
