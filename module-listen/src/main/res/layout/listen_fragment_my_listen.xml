@@ -81,7 +81,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 style="@style/ListenTopText"
-                                android:text="@string/listen_my_listen_subs"/>
+                                bindSubsText="@{viewModel.subsNumber}"/>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <androidx.constraintlayout.widget.ConstraintLayout

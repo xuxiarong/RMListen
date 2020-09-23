@@ -1,6 +1,7 @@
 package com.rm.module_listen.fragment
 
 import android.view.View
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
@@ -42,19 +43,21 @@ class ListenMyListenFragment :
         mViewPagerAdapter = ListenMyListenPagerAdapter(this.activity!!, mMyListenFragmentList)
         listenMyListenVp.adapter = mViewPagerAdapter
         setClick()
-        listenMyListenVp.adapter = mViewPagerAdapter
         configTab()
     }
 
     override fun startObserve() {
-
+        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(isLogin.get()){
+                    mViewModel.getSubsTotalNumberFromService()
+                }
+            }
+        })
     }
 
     override fun initData() {
-
-//        val loginService = RouterHelper.createRouter(LoginService::class.java)
-//        loginService.quicklyLogin(mViewModel,activity!!)
-
+        mViewModel.getSubsTotalNumberFromService()
         mViewModel.getSubsDataFromService()
     }
 

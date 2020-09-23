@@ -1,29 +1,33 @@
 package com.rm.module_listen.viewmodel
 
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
+import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.model.ListenAudioDateModel
 import com.rm.module_listen.model.ListenRecentDateModel
 import com.rm.module_listen.model.ListenRecentListenModel
+import com.rm.module_listen.repository.ListenMyListenRepository
 
 /**
  * desc   :
  * date   : 2020/09/02
  * version: 1.0
  */
-class ListenMyListenViewModel : BaseVMViewModel() {
+class ListenMyListenViewModel(val repository: ListenMyListenRepository) : BaseVMViewModel() {
 
     var recentListenData = MutableLiveData<MutableList<MultiItemEntity>>()
     var todayListenData = MutableLiveData<MutableList<MultiItemEntity>>()
     var lastMonthListenData = MutableLiveData<MutableList<MultiItemEntity>>()
     var earlyListenData = MutableLiveData<MutableList<MultiItemEntity>>()
 
-
+    var subsNumber = ObservableInt(0)
 
     var subsDateVisible = ObservableBoolean(false)
     var subsDateListDate = MutableLiveData<MutableList<ListenAudioDateModel>>()
@@ -34,6 +38,20 @@ class ListenMyListenViewModel : BaseVMViewModel() {
             R.id.listenRecentSl,
             BR.viewModel,
             BR.item)
+    }
+
+
+    fun getSubsTotalNumberFromService(){
+        launchOnIO {
+            repository.getSubsNumber().checkResult(
+                onSuccess = {
+                    subsNumber.set(it.subNumber)
+                },
+                onError = {
+                    DLog.d("suolong","$it")
+                }
+            )
+        }
     }
 
 
