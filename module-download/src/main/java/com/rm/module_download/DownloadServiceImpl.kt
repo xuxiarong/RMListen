@@ -8,6 +8,7 @@ import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_download.activity.DownloadChapterSelectionActivity
 import com.rm.module_download.activity.DownloadMainActivity
+import com.rm.module_download.service.DownloadFileManager
 
 /**
  * desc   : download module 路由服务实现类
@@ -46,7 +47,7 @@ class DownloadServiceImpl : DownloadService {
     }
 
     override fun getDownloadAudioInfo(url: String): DownloadAudioBean {
-        TODO("Not yet implemented")
+        return DownloadFileManager.INSTANCE.getDownloadAudioInfo(url)
     }
 
 

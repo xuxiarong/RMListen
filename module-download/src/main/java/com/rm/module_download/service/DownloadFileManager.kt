@@ -1,9 +1,11 @@
 package com.rm.module_download.service
 
+import android.app.DownloadManager
 import com.liulishuo.okdownload.*
 import com.liulishuo.okdownload.core.cause.EndCause
 import com.rm.baselisten.BaseApplication
 import com.rm.business_lib.bean.download.DownloadAudioBean
+import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.component_comm.download.DownloadService
 import com.rm.module_download.DownloadApplicationDelegate
 import com.rm.module_download.util.getParentFile
@@ -39,8 +41,8 @@ class DownloadFileManager private constructor() : DownloadContextListener {
             downloadContext = getDownloadBuilder().apply {
                 bind(DownloadTask.Builder(url, cacheFile.absolutePath, fileName))
             }.build()
-        }else{
-
+        } else {
+            downloadContext = downloadContext!!.toBuilder().apply { bind(DownloadTask.Builder(url, cacheFile.absolutePath, fileName)) }.build()
         }
     }
 
@@ -62,6 +64,7 @@ class DownloadFileManager private constructor() : DownloadContextListener {
     }
 
     fun getDownloadAudioInfo(url: String): DownloadAudioBean {
+        return DownloadAudioBean("","","","",DownloadUIStatus.DOWNLOAD_IN_PROGRESS)
     }
 
     override fun taskEnd(context: DownloadContext, task: DownloadTask, cause: EndCause, realCause: Exception?, remainCount: Int) {
