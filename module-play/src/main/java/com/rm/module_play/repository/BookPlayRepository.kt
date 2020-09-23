@@ -2,6 +2,7 @@ package com.rm.module_play.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.test.ResultData
@@ -53,6 +54,11 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     suspend fun playerReport(audio_id: String, chapter_id: String): BaseResult<Any> {
         return apiCall { playApi.playerReport("player", audio_id, chapter_id) }
     }
-
+    /**
+     * 章节列表
+     */
+    suspend fun chapterList(id: String ,page:Int ,page_size:Int ,sort:String): BaseResult<AudioChapterListModel> {
+        return apiCall { playApi.chapterList(id, page, page_size, sort) }
+    }
 
 }

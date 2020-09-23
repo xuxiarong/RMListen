@@ -1,5 +1,6 @@
 package com.rm.module_play.playview
 
+import android.content.Context
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.utilExt.dip
 import com.rm.module_play.activity.BookPlayerActivity
@@ -26,13 +27,8 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         GlobalPlay(Cxt.context).apply {
             setRadius(Cxt.context.dip(19).toFloat())
             setBarWidth(Cxt.context.dip(2).toFloat())
-            setOnClickListener {
-                BookPlayerActivity.startActivity(context)
-            }
-
         }
     }
-
     fun addOnPlayerEventListener() {
         musicPlayerManger.addOnPlayerEventListener(this)
     }

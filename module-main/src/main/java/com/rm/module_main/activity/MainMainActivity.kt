@@ -126,7 +126,7 @@ class MainMainActivity : BaseActivity() {
         super.onResume()
         val playService = RouterHelper.createRouter(PlayService::class.java)
         rootViewAddView(playService.getGlobalPlay())
-        playService.showView()
+        playService.showView(this)
     }
 
     override fun initData() {

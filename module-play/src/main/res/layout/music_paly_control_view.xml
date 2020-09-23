@@ -39,7 +39,9 @@
             tools:ignore="MissingConstraints">
 
             <ProgressBar
+                android:id="@+id/progress_play"
                 android:layout_width="66dp"
+                isVisible="@{viewModel.playSate==1}"
                 android:layout_height="66dp"
                 android:layout_gravity="center"
                 android:indeterminate="false"

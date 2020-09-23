@@ -40,7 +40,6 @@ class GlobalPlay @JvmOverloads constructor(
      * 0.0~1.0
      */
     private var mProgress = 0f
-
     /**
      * 矩形范围
      */

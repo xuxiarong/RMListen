@@ -31,6 +31,7 @@ import java.util.HashMap
 open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
     val playPath = MutableLiveData<List<BaseAudioInfo>>()
     val pathList = ArrayList<BaseAudioInfo>()
+    val audioChapterModel=ObservableField<AudioChapterListModel>()
     val process = ObservableField<Float>()//进度条
     val maxProcess = ObservableField<Float>()//最大进度
     val updateThumbText = ObservableField<String>()//更改文字
@@ -43,7 +44,8 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     val mutableList = MutableLiveData<MutableList<MultiItemEntity>>()
     val playManger: MusicPlayerManager = musicPlayerManger
     val audioID = ObservableField<String>()
-
+    //播放状态进度条，0是播放2是加载中
+    val playSate=ObservableField<Int>()
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
     var page = 1
@@ -68,7 +70,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     }
 
 
-    fun zipPlayPath(searchResultInfo: AudioChapterListModel,headUrl:String) {
+    fun zipPlayPath(searchResultInfo: AudioChapterListModel, headUrl: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 searchResultInfo.chapter_list.forEach {
@@ -176,6 +178,22 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             }, onError = {
                 ExoplayerLogger.exoLog(it ?: "")
 
+            })
+        }
+    }
+
+    /**
+     * 章节列表
+     */
+    fun chapterList(audioId: String, page: Int, page_size: Int, sort: String, anchorURL: String) {
+        launchOnUI {
+            repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
+                audioChapterModel.set(it)
+                zipPlayPath(it, anchorURL)
+                showContentView()
+
+            }, onError = {
+                showContentView()
             })
         }
     }

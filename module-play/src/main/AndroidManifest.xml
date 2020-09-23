@@ -13,9 +13,9 @@
         android:maxAspectRatio="2.4"
         android:resizeableActivity="true"
         android:supportsRtl="true">
-        <activity android:name=".activity.BookPlayerActivity"
-            android:launchMode="singleTask"
-            ></activity>
+        <activity
+            android:name=".activity.BookPlayerActivity"
+            android:launchMode="singleTop" />
 
         <meta-data
             android:name="android.max_aspect"
@@ -31,7 +31,7 @@
 
         <activity
             android:name=".activity.PlayActivity"
-            android:launchMode="singleTask"></activity> <!-- 锁屏 -->
+            android:launchMode="singleTask" /> <!-- 锁屏 -->
         <activity
             android:name=".activity.MusicLockActivity"
             android:exported="false"
@@ -39,7 +39,7 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:taskAffinity="com.rm.module_play"
-            android:theme="@style/MusicLockScreenTheme"></activity>
+            android:theme="@style/MusicLockScreenTheme" />
     </application>
 
 </manifest>
