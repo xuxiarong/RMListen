@@ -85,7 +85,12 @@ class MineHomeViewModel : BaseVMViewModel() {
      * @param context Context
      */
     fun noticeClick(context: Context){
-        showToast("消息通知点击事件")
+        if(!isLogin.get()){
+            // 未登陆
+            RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
+            return
+        }
+        showToast("已登陆,跳转到消息界面")
     }
 
     /**
