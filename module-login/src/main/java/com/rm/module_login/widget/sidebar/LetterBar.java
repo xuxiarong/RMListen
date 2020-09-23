@@ -31,10 +31,16 @@ public class LetterBar extends View {
     private float mLetterSize;
     private float mLetterMarginTop;
     private int mLetterColor;
-    private int mLetterPressColor;
+    private int mChoiceColor;
     private float mLetterHeight = 20.0f;
     private Paint mPaint;
     private IIndexChangeListener listener;
+    // 选中的字母颜色
+    private int mLetterPressColor;
+    // 当前选中的字母
+    private String currentChoiceLetter;
+    // 标识当前是否正按下滚动
+    private boolean isPressing = false;
 
     private String[] DEFAULT_LETTER_ARRAY = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
             "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"};
@@ -56,6 +62,7 @@ public class LetterBar extends View {
         mLetterSize = typedArray.getDimension(R.styleable.LetterBar_text_size, DEFAULT_LETTER_SIZE);
         mLetterMarginTop = typedArray.getDimension(R.styleable.LetterBar_text_margin_top, 8);
         mLetterColor = typedArray.getColor(R.styleable.LetterBar_text_color, ContextCompat.getColor(context, R.color.business_text_color_999999));
+        mChoiceColor = typedArray.getColor(R.styleable.LetterBar_text_choice_color, ContextCompat.getColor(context, R.color.business_color_0f0f0f));
         mLetterPressColor = typedArray.getColor(R.styleable.LetterBar_text_press_color, ContextCompat.getColor(context, R.color.business_color_0f0f0f));
         typedArray.recycle();
         init();
@@ -88,6 +95,13 @@ public class LetterBar extends View {
         for (int i = 0; i < mLetterArray.length; i++) {
             String textTag = mLetterArray[i];
             float xPos = (mMeasureWidth - mPaint.measureText(textTag)) / 2;
+            if(isPressing){
+                if(TextUtils.equals(textTag,currentChoiceLetter)){
+                    mPaint.setColor(mChoiceColor);
+                }else {
+                    mPaint.setColor(mLetterColor);
+                }
+            }
             canvas.drawText(textTag, xPos, mLetterBarMarginTop + (mLetterHeight + mLetterMarginTop) * (i + 1), mPaint);
         }
     }
@@ -123,6 +137,7 @@ public class LetterBar extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 //按下
+                isPressing = true;
                 mPaint.setColor(mLetterPressColor);
                 invalidate();
             case MotionEvent.ACTION_MOVE:
@@ -133,6 +148,10 @@ public class LetterBar extends View {
                 }
                 int position = (int) Math.floor(range);
                 if (position >= 0 && position < mLetterArray.length) {
+                    if(!TextUtils.equals(currentChoiceLetter,mLetterArray[position])){
+                        currentChoiceLetter = mLetterArray[position];
+                        invalidate();
+                    }
                     if (listener != null) {
                         listener.indexChanged(position, mLetterArray[position], event);
                     }
@@ -140,6 +159,7 @@ public class LetterBar extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 //抬起
+                isPressing = false;
                 ((IndexBar) getParent()).setTagStatus(false);
                 mPaint.setColor(mLetterColor);
                 invalidate();
