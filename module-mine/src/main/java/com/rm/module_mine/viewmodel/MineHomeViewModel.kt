@@ -1,13 +1,14 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_mine.MineHomeAdapter
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineSettingActivity
 import com.rm.module_mine.bean.MineHomeBean
 import com.rm.module_mine.bean.MineHomeDetailBean
 
@@ -19,17 +20,18 @@ import com.rm.module_mine.bean.MineHomeDetailBean
  *
  */
 class MineHomeViewModel : BaseVMViewModel() {
-    val data = MutableLiveData<MutableList<MineHomeBean>>()
+    val mAdapter by lazy { MineHomeAdapter(this) }
 
     var currentLoginUser = loginUser
     var currentIsLogin = isLogin
+
 
     fun getData() {
         val list = mutableListOf<MineHomeBean>()
         list.add(MineHomeBean("我的服务", getMyServiceList()))
         list.add(MineHomeBean("必备工具", getToolList()))
-
-        data.value = list
+        mAdapter.setList(list)
+        mAdapter.notifyDataSetChanged()
     }
 
 
@@ -78,12 +80,27 @@ class MineHomeViewModel : BaseVMViewModel() {
         return list
     }
 
+    /**
+     * 消息通知点击事件
+     * @param context Context
+     */
+    fun noticeClick(context: Context){
+        showToast("消息通知点击事件")
+    }
+
+    /**
+     * 设置点击事件
+     * @param context Context
+     */
+    fun settingClick(context: Context){
+        MineSettingActivity.startActivity(context)
+    }
 
     /**
      * 用户信息点击事件
      */
-    fun userInfoClick(context: Context){
-        if(!isLogin.get()){
+    fun userInfoClick(context: Context) {
+        if (!isLogin.get()) {
             // 未登陆
             RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
             return
