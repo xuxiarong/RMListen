@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.component_comm.login.LoginService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.MineHomeAdapter
 import com.rm.module_mine.R
@@ -43,9 +41,6 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
         addClickListener()
         mine_home_recycler_view.apply {
             bindVerticalLayout(mAdapter)
-        }
-        mViewModel.skipToLogin = {
-            RouterHelper.createRouter(LoginService::class.java).startLoginActivity(activity!!)
         }
     }
 

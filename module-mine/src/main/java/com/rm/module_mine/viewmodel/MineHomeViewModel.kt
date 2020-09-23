@@ -1,9 +1,12 @@
 package com.rm.module_mine.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
+import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.R
 import com.rm.module_mine.bean.MineHomeBean
 import com.rm.module_mine.bean.MineHomeDetailBean
@@ -20,9 +23,6 @@ class MineHomeViewModel : BaseVMViewModel() {
 
     var currentLoginUser = loginUser
     var currentIsLogin = isLogin
-
-    // 跳转到登陆界面的函数
-    var skipToLogin = {}
 
     fun getData() {
         val list = mutableListOf<MineHomeBean>()
@@ -82,10 +82,10 @@ class MineHomeViewModel : BaseVMViewModel() {
     /**
      * 用户信息点击事件
      */
-    fun userInfoClick(){
+    fun userInfoClick(context: Context){
         if(!isLogin.get()){
             // 未登陆
-            skipToLogin()
+            RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
             return
         }
         showToast("已登陆，跳转到个人详情界面")
