@@ -63,7 +63,7 @@
             android:id="@+id/mine_home_user_name"
             style="@style/BusinessTextStyleFirst_1"
             bindingDefaultText="@{@string/mine_login_and_register}"
-            bindingShowText="@{viewModel.currentLoginUser.account}"
+            bindingShowText="@{viewModel.currentLoginUser.nickname}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.userInfoClick(context)}"

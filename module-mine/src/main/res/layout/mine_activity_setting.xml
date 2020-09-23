@@ -118,13 +118,14 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/mine_setting_sign_out"
                 style="@style/BusinessTextStyleSecond_2"
+                bindClick="@{viewModel.loginOutClick}"
                 isVisible="@{viewModel.mIsLogin}"
                 android:layout_width="match_parent"
                 android:layout_marginStart="@dimen/dp_16"
-                android:gravity="center"
                 android:layout_marginTop="@dimen/dp_20"
                 android:layout_marginEnd="@dimen/dp_16"
                 android:background="@drawable/business_shape_stroke_b1b1b1_37dp"
+                android:gravity="center"
                 android:paddingTop="@dimen/dp_10"
                 android:paddingBottom="@dimen/dp_10"
                 android:text="@string/mine_sign_out" />

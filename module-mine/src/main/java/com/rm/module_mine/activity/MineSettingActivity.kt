@@ -2,10 +2,8 @@ package com.rm.module_mine.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.databinding.Observable
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.DLog
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
@@ -57,18 +55,18 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
      * 监听数据的变化
      */
     override fun startObserve() {
-        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                mViewModel.mIsLogin.set(isLogin.get())
-            }
-        })
-
-        //监听用户登陆信息变化
-        loginUser.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                mViewModel.userInfo.set(loginUser.get())
-            }
-        })
+//        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+//                mViewModel.mIsLogin.set(isLogin.get())
+//            }
+//        })
+//
+//        //监听用户登陆信息变化
+//        loginUser.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+//                mViewModel.userInfo.set(loginUser.get())
+//            }
+//        })
     }
 
     /**
