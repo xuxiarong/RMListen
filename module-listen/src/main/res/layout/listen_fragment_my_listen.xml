@@ -27,7 +27,7 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:minHeight="44dp"
+                android:minHeight="40dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
                 >
 
@@ -169,7 +169,7 @@
                     android:id="@+id/listenMyListenRtl"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_height="44dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal"
                     android:layout_gravity="center_horizontal|bottom"
                     app:layout_collapseMode="pin"

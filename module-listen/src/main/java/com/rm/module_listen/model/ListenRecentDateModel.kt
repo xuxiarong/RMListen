@@ -9,8 +9,9 @@ import com.rm.module_listen.R
  * version: 1.0
  */
 data class ListenRecentDateModel constructor(
-    val date: String,
-    val showDelete : Boolean
+    val date: String = "",
+    val showDelete : Boolean = false,
+    val showSearch : Boolean = false
 ) : MultiItemEntity{
     override val itemType= R.layout.listen_item_recent_date
 }

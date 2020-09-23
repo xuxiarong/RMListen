@@ -36,6 +36,9 @@ class DemoActivity : BaseActivity() {
         demoSwipeBtn.setOnClickListener {
             startActivity(Intent(this@DemoActivity,SwipeColseActivity::class.java))
         }
+        demoRvTopBtn.setOnClickListener {
+            startActivity(Intent(this@DemoActivity,DemoTopRvActivity::class.java))
+        }
 
     }
 

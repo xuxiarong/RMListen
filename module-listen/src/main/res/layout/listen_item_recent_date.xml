@@ -20,8 +20,6 @@
         android:layout_marginBottom="22dp"
         >
 
-
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemMoreTitle"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,13 +35,27 @@
             />
 
 
+
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/homeItemIconNext"
+            android:id="@+id/listenRecentListenDeleteIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            isVisible="@{item.showDelete}"
+            android:src="@drawable/listen_icon_delete"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/listenRecentListenDeleteIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="10dp"
+            isVisible="@{item.showSearch}"
             android:src="@drawable/listen_icon_delete"
             />
 

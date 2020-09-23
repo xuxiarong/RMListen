@@ -90,4 +90,18 @@
         android:text="侧滑删除"
         />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/demoRvTopBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/demoSwipeBtn"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/business_text_color_333333"
+        android:text="吸顶效果"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,7 +31,7 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
 
     fun getTodayListenDataFromLocal(){
         todayListenData.value = mutableListOf(
-            ListenRecentDateModel("今天",true),
+            ListenRecentDateModel("今天", showDelete = true, showSearch = true),
             ListenRecentListenModel(
                 "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
                 8.0f,
@@ -55,7 +55,7 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
 
     fun getRecentMonthListenDataFromLocal(){
         lastMonthListenData.value = mutableListOf(
-            ListenRecentDateModel("最近一月",true),
+            ListenRecentDateModel("最近一月"),
             ListenRecentListenModel(
                 "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
                 8.0f,
@@ -79,7 +79,7 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
 
     fun getEarlyListenDataFromLocal(){
         earlyListenData.value = mutableListOf(
-            ListenRecentDateModel("更早",true),
+            ListenRecentDateModel("更早"),
             ListenRecentListenModel(
                 "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
                 8.0f,
@@ -102,7 +102,6 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     }
 
     fun deleteItem(item : MultiItemEntity){
-        mSwipeAdapter.mItemManger.closeAllItems()
         mSwipeAdapter.data.remove(item)
         mSwipeAdapter.notifyDataSetChanged()
     }
