@@ -37,6 +37,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mine_home_user_icon"
+            bindClick="@{viewModel.userInfoClick}"
             bindUrl="@{viewModel.currentLoginUser.avatar_url}"
             isCircle="@{true}"
             android:layout_width="0dp"
@@ -59,6 +60,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_name"
             style="@style/BusinessTextStyleFirst_1"
+            bindClick="@{viewModel.userInfoClick}"
             bindingDefaultText="@{@string/mine_login_and_register}"
             bindingShowText="@{viewModel.currentLoginUser.account}"
             android:layout_width="wrap_content"
@@ -69,6 +71,7 @@
             tools:text="元芳" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            bindClick="@{viewModel.userInfoClick}"
             isVisible="@{viewModel.currentIsLogin}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,6 +91,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_attention"
             style="@style/BusinessTextStyleThird_4"
+            bindClick="@{viewModel.userInfoClick}"
             bindingDefaultText="@{@string/mine_login_tips}"
             bindingShowStatus="@{viewModel.currentIsLogin}"
             bindingShowText="@{@string/mine_attention}"
@@ -101,10 +105,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_attention_num"
             style="@style/BusinessTextStyleFirst_4"
+            bindClick="@{viewModel.userInfoClick}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
-            android:layout_marginTop="@dimen/dp_14"
             android:text="@{viewModel.currentLoginUser.follows}"
             app:layout_constraintBaseline_toBaselineOf="@id/mine_home_user_attention"
             app:layout_constraintLeft_toRightOf="@id/mine_home_user_attention"
@@ -113,12 +117,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_slash"
             style="@style/BusinessTextStyleThird_4"
+            bindClick="@{viewModel.userInfoClick}"
             isVisible="@{viewModel.currentIsLogin}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
-            android:layout_marginStart="@dimen/dp_18"
-            android:layout_marginTop="@dimen/dp_14"
+            android:paddingStart="@dimen/dp_18"
+            android:paddingEnd="@dimen/dp_18"
             android:text="@string/mine_slash"
             app:layout_constraintBaseline_toBaselineOf="@id/mine_home_user_attention"
             app:layout_constraintLeft_toRightOf="@id/mine_home_user_attention_num" />
@@ -126,12 +131,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_fans"
             style="@style/BusinessTextStyleThird_4"
+            bindClick="@{viewModel.userInfoClick}"
             isVisible="@{viewModel.currentIsLogin}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
-            android:layout_marginStart="@dimen/dp_18"
-            android:layout_marginTop="@dimen/dp_14"
             android:text="@string/mine_fans"
             app:layout_constraintBaseline_toBaselineOf="@id/mine_home_user_attention"
             app:layout_constraintLeft_toRightOf="@id/mine_home_user_slash" />
@@ -139,11 +143,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_fans_num"
             style="@style/BusinessTextStyleFirst_4"
+            bindClick="@{viewModel.userInfoClick}"
             isVisible="@{viewModel.currentIsLogin}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
-            android:layout_marginTop="@dimen/dp_14"
             android:text="@{viewModel.currentLoginUser.fans}"
             app:layout_constraintBaseline_toBaselineOf="@id/mine_home_user_attention"
             app:layout_constraintLeft_toRightOf="@id/mine_home_user_fans"

@@ -16,12 +16,13 @@ import com.rm.module_mine.bean.MineHomeDetailBean
  *
  */
 class MineHomeViewModel : BaseVMViewModel() {
-    val test =
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg"
     val data = MutableLiveData<MutableList<MineHomeBean>>()
 
     var currentLoginUser = loginUser
     var currentIsLogin = isLogin
+
+    // 跳转到登陆界面的函数
+    var skipToLogin = {}
 
     fun getData() {
         val list = mutableListOf<MineHomeBean>()
@@ -75,5 +76,18 @@ class MineHomeViewModel : BaseVMViewModel() {
             )
         )
         return list
+    }
+
+
+    /**
+     * 用户信息点击事件
+     */
+    fun userInfoClick(){
+        if(!isLogin.get()){
+            // 未登陆
+            skipToLogin()
+            return
+        }
+        showToast("已登陆，跳转到个人详情界面")
     }
 }
