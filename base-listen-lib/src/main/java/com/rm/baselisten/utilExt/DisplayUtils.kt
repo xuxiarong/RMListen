@@ -3,7 +3,6 @@ package com.rm.baselisten.utilExt
 import android.content.Context
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.rm.baselisten.R
 
 /**
  * desc   :
@@ -14,6 +13,10 @@ object DisplayUtils {
     //提供给JAVA代码调用
     fun getDip(context: Context, value: Float): Float {
         return context.dip(value).toFloat()
+    }
+
+    fun getSp(context: Context,value: Float):Float{
+        return context.sp(value).toFloat()
     }
 }
 
