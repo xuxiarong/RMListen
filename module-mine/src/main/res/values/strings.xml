@@ -12,7 +12,6 @@
     <string name="mine_register">注册</string>
     <string name="mine_is_registering">正在注册</string>
 
-    <string name="test">18820204748</string>
     <string name="mine_attention">关注:</string>
     <string name="mine_fans">粉丝:</string>
     <string name="mine_slash">/</string>
@@ -31,10 +30,32 @@
     <string name="mine_download_setting">下载设置</string>
     <string name="mine_clear_cache">缓存清除</string>
     <string name="mine_other">其他</string>
-    <string name="mine_message_setting">消息设置</string>
+    <string name="mine_message_notice">消息通知</string>
     <string name="mine_favorable_comment">给个好评</string>
     <string name="mine_free_book">免费求书</string>
     <string name="mine_sign_out">退出登录</string>
     <string name="mine_login_and_register">登陆/注册</string>
     <string name="mine_login_tips">登录享受更多功能</string>
+
+    <!--personal info-->
+    <string name="mine_avatar">头像</string>
+    <string name="mine_nickname">昵称</string>
+    <string name="mine_sex">性别</string>
+    <string name="mine_birthday">生日</string>
+    <string name="mine_address">所在地</string>
+    <string name="mine_signature">个性签名</string>
+
+    <!--play setting-->
+    <string name="mine_play_setting_net_name">使用2G/3G/4G网络播放提醒</string>
+    <string name="mine_play_setting_net_tip">关闭后，使用流量听书将不会弹框提示</string>
+    <string name="mine_play_setting_next_name">自动播放下一首</string>
+    <string name="mine_play_setting_next_tip">当前曲目播放完，自动播放下一首</string>
+    <string name="mine_play_setting_last_play_name">继续上一次播放</string>
+    <string name="mine_play_setting_last_play_tip">启动听书后，自动继续上一次播放</string>
+
+    <!--download setting-->
+    <string name="mine_download_setting_name">Wi-Fi连接时下载</string>
+    <string name="mine_download_setting_tip">是否只在Wi-Fi连接时才可以下载</string>
+
+
 </resources>

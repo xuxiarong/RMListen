@@ -16,8 +16,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/dp_60"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_60">
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/BusinessTextStyleThird_4"
@@ -29,18 +29,21 @@
                 android:text="@string/mine_account_settings" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
-                userText="@{@string/test}"
+                android:id="@+id/mine_setting_personal"
+                userText="@{viewModel.userInfo.nickname}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_personal_info" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
-                userIcon="@{viewModel.data}"
+                android:id="@+id/mine_setting_phone_binding"
+                userText="@{viewModel.userInfo.account}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_phone_binding" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_setting_account_security"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_account_security" />
@@ -54,6 +57,7 @@
                 android:background="@color/business_color_e8e8e8" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/mine_setting_app_setting"
                 style="@style/BusinessTextStyleThird_4"
                 android:layout_width="match_parent"
                 android:layout_marginStart="@dimen/dp_16"
@@ -62,11 +66,13 @@
                 android:text="@string/mine_application_settings" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_setting_play_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_play_settings" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_setting_download_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_download_setting" />
@@ -77,9 +83,10 @@
                 app:material_name="@string/mine_clear_cache" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_setting_message_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:material_name="@string/mine_message_setting" />
+                app:material_name="@string/mine_message_notice" />
 
             <View
                 android:layout_width="match_parent"
@@ -97,25 +104,30 @@
                 android:text="@string/mine_other" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_setting_free_book"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_free_book" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_setting_favorable_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_favorable_comment" />
-            
-            <Button
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/mine_setting_sign_out"
+                style="@style/BusinessTextStyleSecond_2"
+                isVisible="@{viewModel.mIsLogin}"
                 android:layout_width="match_parent"
                 android:layout_marginStart="@dimen/dp_16"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/dp_20"
                 android:layout_marginEnd="@dimen/dp_16"
-                style="@style/BusinessTextStyleSecond_2"
+                android:background="@drawable/business_shape_stroke_b1b1b1_37dp"
                 android:paddingTop="@dimen/dp_10"
                 android:paddingBottom="@dimen/dp_10"
-                android:text="@string/mine_sign_out"
-                android:layout_marginTop="@dimen/dp_20"
-                android:background="@drawable/business_shape_stroke_b1b1b1_37dp"/>
+                android:text="@string/mine_sign_out" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

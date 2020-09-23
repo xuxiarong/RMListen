@@ -30,6 +30,7 @@ class MenuListAdapter(private val mViewModel: HomeMenuViewModel) :
         BR.menuItemBean
     ) {
     override fun convert(holder: BaseViewHolder, item: SheetInfoBean) {
+        super.convert(holder, item)
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
             if (tag != true) {
                 tag = true

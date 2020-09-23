@@ -12,7 +12,9 @@ import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
+import com.rm.module_mine.databinding.MineActivityPlaySettingBinding
 import com.rm.module_mine.databinding.MineActivitySettingBinding
+import com.rm.module_mine.viewmodel.MinePlaySettingViewModel
 import com.rm.module_mine.viewmodel.MineSettingViewModel
 
 /**
@@ -22,17 +24,17 @@ import com.rm.module_mine.viewmodel.MineSettingViewModel
  * @description
  *
  */
-class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSettingViewModel>() {
+class MinePlaySettingActivity : BaseVMActivity<MineActivityPlaySettingBinding, MinePlaySettingViewModel>() {
 
     companion object {
         fun startActivity(context: Context) {
-            context.startActivity(Intent(context, MineSettingActivity::class.java))
+            context.startActivity(Intent(context, MinePlaySettingActivity::class.java))
         }
     }
 
     override fun initModelBrId() = BR.viewModel
 
-    override fun getLayoutId() = R.layout.mine_activity_setting
+    override fun getLayoutId() = R.layout.mine_activity_play_setting
 
     /**
      * 初始化数据
@@ -46,7 +48,7 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
         super.initView()
         val titleModel = BaseTitleModel()
             .setLeftIcon(R.drawable.base_icon_back)
-            .setTitle("设置")
+            .setTitle("播放设置")
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = titleModel
 
@@ -75,27 +77,7 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
      * 点击事件监听
      */
     private fun addClickListener() {
-        mDataBind.mineSettingPersonal.setOnClickListener {
-            if (isLogin.get()) {
-                MinePersonalInfoActivity.startActivity(this)
-            }else{
-                RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel,this)
-            }
-        }
-        mDataBind.mineSettingPlaySetting.setOnClickListener {
-//            if (isLogin.get()) {
-                MinePlaySettingActivity.startActivity(this)
-//            }else{
-//                RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel,this)
-//            }
-        }
-        mDataBind.mineSettingDownloadSetting.setOnClickListener {
-//            if (isLogin.get()) {
-                MineDownloadSettingActivity.startActivity(this)
-//            }else{
-//                RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel,this)
-//            }
-        }
+
     }
 
 }

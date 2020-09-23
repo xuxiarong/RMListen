@@ -6,9 +6,12 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.TypedValue
+import android.util.TypedValue.COMPLEX_UNIT_PX
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -18,6 +21,7 @@ import androidx.databinding.BindingAdapter
 import com.rm.baselisten.binding.bindUrl
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
+import com.rm.baselisten.utilExt.dimen
 import com.rm.module_mine.R
 
 /**
@@ -70,7 +74,12 @@ class MineCommonMaterialView @JvmOverloads constructor(
 
         materialName.text = materialNameStr
         materialIcon.setImageResource(materialIconRes)
-
+        setPadding(
+            dimen(R.dimen.dp_16),
+            dimen(R.dimen.dp_16),
+            dimen(R.dimen.dp_16),
+            dimen(R.dimen.dp_16)
+        )
         setBackgroundColor(Color.WHITE)
     }
 
@@ -123,16 +132,19 @@ class MineCommonMaterialView @JvmOverloads constructor(
 }
 
 @BindingAdapter("userText")
-fun MineCommonMaterialView.userText(userText: String) {
+fun MineCommonMaterialView.userText(userText: String?) {
+    DLog.i("------>>>userText", "$userText")
     if (!TextUtils.isEmpty(userText)) {
-        setMaterialUserText(userText)
+        setMaterialUserText(userText!!)
     }
 }
 
 @BindingAdapter("userIcon")
 fun MineCommonMaterialView.userIcon(userIconUrl: String?) {
-
     if (!TextUtils.isEmpty(userIconUrl)) {
         setMaterialUserIcon(userIconUrl)
+    } else {
+        //TODO test
+        setMaterialUserIcon("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg")
     }
 }

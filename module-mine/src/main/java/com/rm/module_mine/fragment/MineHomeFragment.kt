@@ -12,8 +12,9 @@ import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
-import com.rm.module_mine.MineHomeAdapter
+import com.rm.module_mine.adapter.MineHomeAdapter
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineSettingActivity
 import com.rm.module_mine.databinding.MineFragmentHomeBinding
 import com.rm.module_mine.viewmodel.MineHomeViewModel
 import kotlinx.android.synthetic.main.mine_fragment_home.*
@@ -35,7 +36,11 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
         }
     }
 
-    private val mAdapter by lazy { MineHomeAdapter(mViewModel) }
+    private val mAdapter by lazy {
+        MineHomeAdapter(
+            mViewModel
+        )
+    }
 
     override fun initLayoutId() = R.layout.mine_fragment_home
 
@@ -51,9 +56,9 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
 
     private fun addClickListener() {
         mine_home_setup.setOnClickListener {
-//            MineSettingActivity.startActivity(it.context)
+            MineSettingActivity.startActivity(it.context)
             // test 登出
-            loginOut()
+//            loginOut()
         }
         mine_home_notice.setOnClickListener {
             // test 登陆

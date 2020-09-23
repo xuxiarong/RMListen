@@ -11,7 +11,7 @@ import com.rm.business_lib.bean.LoginUserBean
  * @description
  *
  */
-class MineSettingViewModel : BaseVMViewModel() {
+class MinePersonalInfoViewModel : BaseVMViewModel() {
 
      val userInfo = ObservableField<LoginUserBean>()
      val mIsLogin = ObservableField<Boolean>()
