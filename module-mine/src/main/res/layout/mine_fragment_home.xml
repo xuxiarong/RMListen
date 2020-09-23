@@ -197,6 +197,7 @@
             android:paddingStart="@dimen/dp_12"
             android:paddingTop="6dp"
             android:paddingEnd="@dimen/dp_12"
+            android:onClick="@{()->viewModel.getVipClick(context)}"
             android:paddingBottom="@dimen/dp_6"
             android:text="@string/mine_open_now"
             android:textSize="@dimen/business_text_size_12sp"

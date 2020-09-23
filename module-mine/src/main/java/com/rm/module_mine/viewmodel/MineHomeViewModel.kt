@@ -112,4 +112,13 @@ class MineHomeViewModel : BaseVMViewModel() {
         }
         showToast("已登陆，跳转到个人详情界面")
     }
+
+
+    /**
+     * 立即开通点击事件
+     * @param context Context
+     */
+    fun getVipClick(context: Context){
+        showToast("立即开通点击事件")
+    }
 }
