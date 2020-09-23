@@ -10,7 +10,7 @@ import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
 import com.rm.module_listen.model.*
-import com.rm.module_listen.repository.ListenSubsUpdateRepository
+import com.rm.module_listen.repository.ListenMyListenRepository
 
 /**
  * desc   :
@@ -20,7 +20,7 @@ import com.rm.module_listen.repository.ListenSubsUpdateRepository
 class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     private val repository by lazy {
-        ListenSubsUpdateRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
+        ListenMyListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
 
 
@@ -40,12 +40,13 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     }
 
     fun getSubsDataFromService(){
-
+        showLoading()
         launchOnIO {
             repository.getListenSubsUpgradeList().checkResult(
                 onSuccess = {
                     dealServiceData(it)
                 },onError = {
+                    showNetError()
                     DLog.d("suolong","on error")
                 }
             )
@@ -68,6 +69,12 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     }
 
     fun dealServiceData(it: ListenSubsModel) {
+        if(it.today.isEmpty() && it.yesterday.isEmpty() && it.early.isEmpty()){
+            showDataEmpty()
+            return
+        }else{
+            showContentView()
+        }
 
         allUpdateList.value?.clear()
         todayUpdateList.value?.clear()

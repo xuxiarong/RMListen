@@ -1,11 +1,14 @@
 package com.rm.module_listen.fragment
 
+import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.business_lib.isLogin
 import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -55,14 +58,32 @@ class ListenSubscriptionUpdateFragment :
         mViewModel.yesterdayUpdateList.observe(this, Observer {
             mListenAudioAdapter.notifyDataSetChanged()
         })
+        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(isLogin.get()){
+                    mViewModel.getSubsDataFromService()
+                }
+            }
+        })
+
     }
 
     override fun initLayoutId() = R.layout.listen_fragment_subscription_update
 
     override fun initData() {
         mViewModel.onAudioClick = {startDetail(it)}
-        mViewModel.getSubsDataFromService()
+        if(isLogin.get()){
+            mViewModel.getSubsDataFromService()
+        }
     }
+
+    override fun onStart() {
+        super.onStart()
+        if(!isLogin.get()){
+            RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel,activity!!)
+        }
+    }
+
 
     fun startDetail(audioId :String){
         val homeService = RouterHelper.createRouter(HomeService::class.java)

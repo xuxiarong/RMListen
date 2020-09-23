@@ -4,6 +4,8 @@
     <string name="listen_tab_recent_listen">最近收听</string>
     <string name="listen_tab_subscription_update">订阅更新</string>
     <string name="listen_my_listen_subs">订阅</string>
+    <string name="listen_my_listen_subs_number">订阅(%d)</string>
+
     <string name="listen_my_listen_buy">已购</string>
     <string name="listen_my_listen_download">下载</string>
     <string name="listen_my_listen_list">听单</string>

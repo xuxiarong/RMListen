@@ -1,11 +1,8 @@
 package com.rm.module_listen
 
 import com.rm.business_lib.net.BusinessRetrofitClient
-import com.rm.module_listen.repository.ListenSheetCollectedRepository
-import com.rm.module_listen.repository.ListenSheetMyListRepository
 import com.rm.module_listen.api.ListenApiService
-import com.rm.module_listen.repository.ListenSheetDetailRepository
-import com.rm.module_listen.repository.ListenSubscriptionRepository
+import com.rm.module_listen.repository.*
 import com.rm.module_listen.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -17,7 +14,7 @@ import org.koin.dsl.module
  */
 val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
-    viewModel { ListenMyListenViewModel() }
+    viewModel { ListenMyListenViewModel(get()) }
     viewModel { ListenRecentListenViewModel() }
     viewModel { ListenSubsUpdateViewModel() }
     viewModel { ListenBoughtViewModel() }
@@ -30,6 +27,7 @@ val viewModelModule = module {
 val repositoryModule = module {
     // 所有的Repository都需要在这里声明
     single { ListenSubscriptionRepository(get()) }
+    single { ListenMyListenRepository(get()) }
     single { ListenSheetMyListRepository(get()) }
     single { ListenSheetCollectedRepository(get()) }
     single { ListenSheetDetailRepository(get()) }

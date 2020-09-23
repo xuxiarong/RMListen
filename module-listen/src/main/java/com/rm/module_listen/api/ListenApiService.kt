@@ -3,8 +3,11 @@ package com.rm.module_listen.api
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
-import com.rm.module_listen.bean.*
+import com.rm.module_listen.bean.ListenSheetCollectedBean
+import com.rm.module_listen.bean.ListenSheetMyListBean
+import com.rm.module_listen.bean.SubscriptionListBean
 import com.rm.module_listen.model.ListenSubsModel
+import com.rm.module_listen.model.ListenSubsNumberModel
 import com.rm.module_listen.repository.ListenPatchSheetBean
 import retrofit2.http.*
 
@@ -53,7 +56,7 @@ interface ListenApiService {
      * 导航栏相关
      */
     @GET("listen/navigation")
-    suspend fun listenNavigation(): BaseResponse<String>
+    suspend fun getSubsNumber(): BaseResponse<ListenSubsNumberModel>
 
     /**
      * 最新更新

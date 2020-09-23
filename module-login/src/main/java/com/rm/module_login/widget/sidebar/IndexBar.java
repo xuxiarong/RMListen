@@ -1,12 +1,20 @@
 package com.rm.module_login.widget.sidebar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.core.content.ContextCompat;
+
+import com.rm.baselisten.util.DLog;
+import com.rm.baselisten.utilExt.DisplayUtils;
+import com.rm.module_login.R;
 
 
 /**
@@ -43,6 +51,15 @@ public class IndexBar extends ViewGroup {
         mPaint.setColor(Color.RED);
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
+        mPaint.setTextSize(DisplayUtils.INSTANCE.getSp(mContext,24));
+
+        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.login_ic_letteraxis_back);
+        if (drawable != null) {
+            mBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(mBitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+        }
     }
 
     @Override
@@ -126,20 +143,24 @@ public class IndexBar extends ViewGroup {
             //根据位置来不断变换Paint的颜色
             //ColorUtil.setPaintColor(mPaint, position);
             //绘制圆和文字
-           // canvas.drawCircle((mWidth - childWidth) / 2, centerY, circleRadius, mPaint);
+            // canvas.drawCircle((mWidth - childWidth) / 2, centerY, circleRadius, mPaint);
 
-            //canvas.drawBitmap(mBitmap,(int)((mWidth - childWidth) / 1.5) ,centerY + mPaint.ascent()  ,mPaint);
-
-//            canvas.drawBitmap(mBitmap,(int)((mWidth - childWidth - 116) /1.5) ,centerY - (mPaint.ascent() + mPaint.descent()) / 2 - 96,mPaint);
-
-
+//            canvas.drawBitmap(mBitmap,(int)((mWidth - childWidth) / 1.5) ,centerY + mPaint.ascent(),mPaint);
+            float tagSize = mPaint.measureText(tag);
+            if (mBitmap != null) {
+//                canvas.drawBitmap(mBitmap, (int) ((mWidth - childWidth - 120) / 1.5), centerY - (mPaint.ascent() + mPaint.descent()) / 2 - 100, mPaint);
+                canvas.drawBitmap(mBitmap, mWidth - childWidth - mBitmap.getWidth(), (int) (centerY - mBitmap.getHeight() / 2), mPaint);
+                canvas.drawText(tag, mWidth - childWidth - (mBitmap.getWidth() + tagSize)/2 - tagSize/4, (int)(centerY + tagSize / 2), mPaint);
+            }else {
+                canvas.drawText(tag, (int) ((mWidth - childWidth - mPaint.measureText(tag)) / 1.5), centerY - (mPaint.ascent() + mPaint.descent()) / 2, mPaint);
+            }
 //            mPaint.setColor(getResources().getColor(R.color.color_blue_379eff));
-            mPaint.setTextSize(80);
-            canvas.drawText(tag, (int)((mWidth - childWidth - mPaint.measureText(tag)) / 1.5), centerY - (mPaint.ascent() + mPaint.descent()) / 2, mPaint);
+
         }
     }
 
-//    Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.img_letteraxis_back);
+    private Bitmap mBitmap = null;
+
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         return super.generateDefaultLayoutParams();

@@ -1,10 +1,14 @@
 package com.rm.module_mine.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
+import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.router.RouterHelper
+import com.rm.module_mine.MineHomeAdapter
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineSettingActivity
 import com.rm.module_mine.bean.MineHomeBean
 import com.rm.module_mine.bean.MineHomeDetailBean
 
@@ -16,19 +20,18 @@ import com.rm.module_mine.bean.MineHomeDetailBean
  *
  */
 class MineHomeViewModel : BaseVMViewModel() {
-    val test =
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg"
-    val data = MutableLiveData<MutableList<MineHomeBean>>()
+    val mAdapter by lazy { MineHomeAdapter(this) }
 
     var currentLoginUser = loginUser
     var currentIsLogin = isLogin
+
 
     fun getData() {
         val list = mutableListOf<MineHomeBean>()
         list.add(MineHomeBean("我的服务", getMyServiceList()))
         list.add(MineHomeBean("必备工具", getToolList()))
-
-        data.value = list
+        mAdapter.setList(list)
+        mAdapter.notifyDataSetChanged()
     }
 
 
@@ -75,5 +78,33 @@ class MineHomeViewModel : BaseVMViewModel() {
             )
         )
         return list
+    }
+
+    /**
+     * 消息通知点击事件
+     * @param context Context
+     */
+    fun noticeClick(context: Context){
+        showToast("消息通知点击事件")
+    }
+
+    /**
+     * 设置点击事件
+     * @param context Context
+     */
+    fun settingClick(context: Context){
+        MineSettingActivity.startActivity(context)
+    }
+
+    /**
+     * 用户信息点击事件
+     */
+    fun userInfoClick(context: Context) {
+        if (!isLogin.get()) {
+            // 未登陆
+            RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
+            return
+        }
+        showToast("已登陆，跳转到个人详情界面")
     }
 }
