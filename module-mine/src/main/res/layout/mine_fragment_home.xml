@@ -18,6 +18,7 @@
             android:id="@+id/mine_home_notice"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_48"
+            android:onClick="@{()->viewModel.noticeClick(context)}"
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
             android:src="@drawable/business_icon_notice"
@@ -28,6 +29,7 @@
             android:id="@+id/mine_home_setup"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_48"
+            android:onClick="@{()->viewModel.settingClick(context)}"
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
             android:src="@drawable/business_icon_setup"
@@ -37,13 +39,13 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mine_home_user_icon"
-            android:onClick="@{()->viewModel.userInfoClick(context)}"
             bindUrl="@{viewModel.currentLoginUser.avatar_url}"
             isCircle="@{true}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_72"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_18"
+            android:onClick="@{()->viewModel.userInfoClick(context)}"
             app:layout_constraintDimensionRatio="W,1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mine_home_setup" />
@@ -60,18 +62,17 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_name"
             style="@style/BusinessTextStyleFirst_1"
-            android:onClick="@{()->viewModel.userInfoClick(context)}"
             bindingDefaultText="@{@string/mine_login_and_register}"
             bindingShowText="@{viewModel.currentLoginUser.account}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.userInfoClick(context)}"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/mine_top_split_line"
             app:layout_constraintLeft_toLeftOf="@id/mine_top_split_line"
             tools:text="元芳" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:onClick="@{()->viewModel.userInfoClick(context)}"
             isVisible="@{viewModel.currentIsLogin}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,6 +82,7 @@
             android:layout_marginBottom="@dimen/dp_3"
             android:layout_toEndOf="@id/mine_home_user_name"
             android:gravity="center"
+            android:onClick="@{()->viewModel.userInfoClick(context)}"
             android:textColor="@color/business_color_ff5e5e"
             android:textSize="@dimen/business_text_size_10sp"
             android:textStyle="italic|bold"
@@ -91,13 +93,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_attention"
             style="@style/BusinessTextStyleThird_4"
-            android:onClick="@{()->viewModel.userInfoClick(context)}"
             bindingDefaultText="@{@string/mine_login_tips}"
             bindingShowStatus="@{viewModel.currentIsLogin}"
             bindingShowText="@{@string/mine_attention}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
+            android:onClick="@{()->viewModel.userInfoClick(context)}"
             app:layout_constraintLeft_toLeftOf="@id/mine_top_split_line"
             app:layout_constraintTop_toBottomOf="@id/mine_top_split_line"
             tools:text="@string/mine_attention" />
@@ -105,10 +107,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_attention_num"
             style="@style/BusinessTextStyleFirst_4"
-            android:onClick="@{()->viewModel.userInfoClick(context)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
+            android:onClick="@{()->viewModel.userInfoClick(context)}"
             android:text="@{viewModel.currentLoginUser.follows}"
             app:layout_constraintBaseline_toBaselineOf="@id/mine_home_user_attention"
             app:layout_constraintLeft_toRightOf="@id/mine_home_user_attention"
@@ -117,11 +119,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_slash"
             style="@style/BusinessTextStyleThird_4"
-            android:onClick="@{()->viewModel.userInfoClick(context)}"
             isVisible="@{viewModel.currentIsLogin}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
+            android:onClick="@{()->viewModel.userInfoClick(context)}"
             android:paddingStart="@dimen/dp_18"
             android:paddingEnd="@dimen/dp_18"
             android:text="@string/mine_slash"
@@ -131,11 +133,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_fans"
             style="@style/BusinessTextStyleThird_4"
-            android:onClick="@{()->viewModel.userInfoClick(context)}"
             isVisible="@{viewModel.currentIsLogin}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
+            android:onClick="@{()->viewModel.userInfoClick(context)}"
             android:text="@string/mine_fans"
             app:layout_constraintBaseline_toBaselineOf="@id/mine_home_user_attention"
             app:layout_constraintLeft_toRightOf="@id/mine_home_user_slash" />
@@ -143,11 +145,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_user_fans_num"
             style="@style/BusinessTextStyleFirst_4"
-            android:onClick="@{()->viewModel.userInfoClick(context)}"
             isVisible="@{viewModel.currentIsLogin}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mine_home_user_name"
+            android:onClick="@{()->viewModel.userInfoClick(context)}"
             android:text="@{viewModel.currentLoginUser.fans}"
             app:layout_constraintBaseline_toBaselineOf="@id/mine_home_user_attention"
             app:layout_constraintLeft_toRightOf="@id/mine_home_user_fans"
@@ -204,6 +206,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mine_home_recycler_view"
+            bindVerticalLayout="@{viewModel.mAdapter}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
