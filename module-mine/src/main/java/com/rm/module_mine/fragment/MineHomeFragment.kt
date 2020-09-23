@@ -25,7 +25,6 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
         }
     }
 
-
     override fun initLayoutId() = R.layout.mine_fragment_home
 
     override fun initModelBrId() = BR.viewModel

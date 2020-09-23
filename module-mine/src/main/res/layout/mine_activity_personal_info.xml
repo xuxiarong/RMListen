@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MinePersonalInfoViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_60">
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_personal_avatar"
+                userIcon="@{viewModel.userInfo.avatar_url}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="@string/mine_avatar" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_personal_nickname"
+                userText="@{viewModel.userInfo.getNickNameStr()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="@string/mine_nickname" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_personal_sex"
+                userText="@{viewModel.userInfo.getSexStr()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="@string/mine_sex" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_personal_birthday"
+                userText="@{viewModel.userInfo.getBirthdayStr()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="@string/mine_birthday" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_personal_address"
+                userText="@{viewModel.userInfo.getAddressStr()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="@string/mine_address" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_personal_signature"
+                userText="@{viewModel.userInfo.getSignatureStr()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:material_name="@string/mine_signature" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

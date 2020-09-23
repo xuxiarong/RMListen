@@ -2,8 +2,7 @@ package com.rm.module_mine
 
 import com.rm.module_mine.login.LoginViewModel
 import com.rm.module_mine.repository.LoginRepository
-import com.rm.module_mine.viewmodel.MineSettingViewModel
-import com.rm.module_mine.viewmodel.MineHomeViewModel
+import com.rm.module_mine.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -17,6 +16,9 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { MineHomeViewModel() }
     viewModel { MineSettingViewModel() }
+    viewModel { MinePersonalInfoViewModel() }
+    viewModel { MinePlaySettingViewModel() }
+    viewModel { MineDownloadSettingViewModel() }
 }
 
 val repositoryModule = module {

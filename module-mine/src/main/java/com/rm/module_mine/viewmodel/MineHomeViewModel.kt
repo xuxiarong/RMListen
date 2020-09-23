@@ -6,9 +6,9 @@ import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
-import com.rm.module_mine.MineHomeAdapter
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineSettingActivity
+import com.rm.module_mine.adapter.MineHomeAdapter
 import com.rm.module_mine.bean.MineHomeBean
 import com.rm.module_mine.bean.MineHomeDetailBean
 
@@ -85,7 +85,12 @@ class MineHomeViewModel : BaseVMViewModel() {
      * @param context Context
      */
     fun noticeClick(context: Context){
-        showToast("消息通知点击事件")
+        if(!isLogin.get()){
+            // 未登陆
+            RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
+            return
+        }
+        showToast("已登陆,跳转到消息界面")
     }
 
     /**
@@ -106,5 +111,14 @@ class MineHomeViewModel : BaseVMViewModel() {
             return
         }
         showToast("已登陆，跳转到个人详情界面")
+    }
+
+
+    /**
+     * 立即开通点击事件
+     * @param context Context
+     */
+    fun getVipClick(context: Context){
+        showToast("立即开通点击事件")
     }
 }

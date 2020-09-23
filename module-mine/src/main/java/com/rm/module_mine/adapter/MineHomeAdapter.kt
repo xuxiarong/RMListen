@@ -1,15 +1,13 @@
-package com.rm.module_mine
+package com.rm.module_mine.adapter
 
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
-import com.rm.baselisten.binding.bindHorizontalLayout
+import com.rm.module_mine.BR
+import com.rm.module_mine.R
 import com.rm.module_mine.bean.MineHomeBean
-import com.rm.module_mine.bean.MineHomeDetailBean
 import com.rm.module_mine.viewmodel.MineHomeViewModel
 
 /**

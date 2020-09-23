@@ -25,5 +25,9 @@
 
         <activity android:name=".activity.MineSettingActivity" />
 
+        <activity android:name=".activity.MinePersonalInfoActivity" />
+        <activity android:name=".activity.MinePlaySettingActivity" />
+        <activity android:name=".activity.MineDownloadSettingActivity" />
+
     </application>
 </manifest>

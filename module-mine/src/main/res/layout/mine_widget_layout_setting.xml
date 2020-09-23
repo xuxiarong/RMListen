@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_widget_common_setting_name"
+            style="@style/BusinessTextStyleFirst_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="使用2G/3G/4G网络播放提醒" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_widget_common_setting_tips"
+            style="@style/BusinessTextStyleThird_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_3"
+            tools:text="关闭后，使用流量听书将不会弹框提示" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/mine_widget_common_setting_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:thumb="@drawable/mine_switch_thumb"
+        app:track="@drawable/mine_switch_track" />
+
+</merge>
