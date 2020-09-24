@@ -24,7 +24,8 @@
             android:id="@+id/img_comment_book_play"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/business_defualt_img"
+            bindUrl="@{itemModel.comments.member.avatar_url}"
+            corner="@{@dimen/dp_4}"
             tools:ignore="MissingConstraints" />
 
         <TextView

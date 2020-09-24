@@ -19,21 +19,21 @@ import com.rm.module_play.playview.GlobalplayHelp
 @Route(path = ARouterModuleServicePath.PATH_PLAY_SERVICE)
 class PlayServiceImpl : PlayService {
 
-
     override fun getGlobalPlay(): View = GlobalplayHelp.instance.globalView
-    override fun showView() {
+    override fun showView(context: Context) {
         GlobalplayHelp.instance.globalView.mainShow()
+        GlobalplayHelp.instance.globalView.setOnClickListener {
+            BookPlayerActivity.startActivity(context)
+        }
     }
 
     override fun toPlayPage(
         context: Context,
         bean: HomeDetailModel?,
-        detailModel: AudioChapterListModel?
+        index: Int
     ) {
-        BookPlayerActivity.startActivity(context,bean,detailModel)
-
+        BookPlayerActivity.startActivity(context, bean,index)
     }
-
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return PlayApplicationDelegate::class.java
@@ -42,6 +42,4 @@ class PlayServiceImpl : PlayService {
     override fun init(context: Context?) {
 
     }
-
-
 }

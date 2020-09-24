@@ -73,15 +73,14 @@ class NotificationRemoteView constructor(val context: Context) {
         return R.drawable.ic_music_mini_play_noimal
     }
 
-    private fun getClickPending(action: String): PendingIntent =
-        PendingIntent.getBroadcast(context, 1, Intent(action), PendingIntent.FLAG_UPDATE_CURRENT)
-
     /**
      * 生成并绑定大通知栏View点击事件的默认RemoteView
      * @param audioInfo 音频对象
      * @param cover 封面
      * @return RemoteView
      */
+    private fun getClickPending(action: String): PendingIntent = PendingIntent.getBroadcast(context, 1, Intent(action), PendingIntent.FLAG_UPDATE_CURRENT)
+
     fun getBigCoustomRemoteView(
         cover: Bitmap,
         mMusicPlayerState: Int,

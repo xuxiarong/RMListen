@@ -2,6 +2,7 @@ package com.rm.module_play.activity
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -37,6 +38,7 @@ import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
@@ -48,31 +50,28 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
     var homeDetailBean: HomeDetailModel? = null
     var mAudioChapterListModel: AudioChapterListModel? = null
+    var indexSong = 0
 
     companion object {
         val homeDetailModel = "homeDetailModel"
         val audioChapterListModel = "AudioChapterListModel"
+        val songindex = "songIndex";
         fun startActivity(
             context: Context,
             homeDetailBean: HomeDetailModel?,
-            detailModel: AudioChapterListModel?
+            index: Int = 0
         ) {
-            if (homeDetailBean != null && detailModel != null) {
+            if (homeDetailBean != null) {
                 val intent = Intent(context, BookPlayerActivity::class.java)
                 intent.putExtra(homeDetailModel, homeDetailBean)
-                intent.putExtra(audioChapterListModel, detailModel)
-                context.startActivity(intent.apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                })
+                intent.putExtra(songindex, index)
+                context.startActivity(intent)
             }
-
         }
 
         fun startActivity(context: Context) {
             val intent = Intent(context, BookPlayerActivity::class.java)
-            context.startActivity(intent.apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            })
+            context.startActivity(intent)
         }
     }
 
@@ -104,7 +103,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
         mViewModel.playPath.observe(this, Observer {
             it?.let {
-                musicPlayerManger.updateMusicPlayerData(it, 2)
+                musicPlayerManger.updateMusicPlayerData(it, indexSong)
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
                 GlobalplayHelp.instance.addOnPlayerEventListener()
                 musicPlayerManger.playOrPause()
@@ -116,11 +115,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 when (mViewModel.playControlAction.get()) {
                     ACTION_PLAY_QUEUE -> {
                         //调整播放列表
-                        mAudioChapterListModel?.let { it ->
+                        mViewModel.audioChapterModel.get()?.let {
                             showPlayBookListDialog(it) { position ->
                                 musicPlayerManger.startPlayMusic(position)
                             }
                         }
+
                     }
                     ACTION_PLAY_OPERATING -> {
                         showMusicPlayMoreDialog { it1 ->
@@ -162,30 +162,33 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     private fun getIntentParams(isOnCreate: Boolean) {
-
         //正在播放的对象
         val currentPlayerMusic = musicPlayerManger
             .getCurrentPlayerMusic()
         currentPlayerMusic?.let {
-            if (!isOnCreate){
+            if (!isOnCreate) {
                 return
             }
         }
-
         homeDetailBean = intent.getSerializableExtra(homeDetailModel) as? HomeDetailModel
-        mAudioChapterListModel =
-            intent.getSerializableExtra(audioChapterListModel) as? AudioChapterListModel
-        mAudioChapterListModel?.let {
-            mViewModel.zipPlayPath(it, homeDetailBean?.detaillist?.anchor?.anchor_avatar ?: "")
-        }
+
+
         homeDetailBean?.let {
             val listValue = mViewModel.mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
-            mViewModel.audioID.set(it.detaillist.audio_id.toString())
-            mViewModel.commentAudioComments("${it.detaillist.audio_id}")
+            mViewModel.audioID.set(it.detaillist.audio_id)
+            mViewModel.chapterList(
+                it.detaillist.audio_id,
+                1,
+                20,
+                "asc",
+                homeDetailBean?.detaillist?.anchor?.anchor_avatar ?: ""
+            )
+            mViewModel.commentAudioComments(it.detaillist.audio_id)
             mViewModel.mutableList.postValue(listValue)
             mBookPlayerAdapter.notifyDataSetChanged()
         }
+        indexSong = intent.getIntExtra(songindex, 0)
     }
 
     override fun initData() {
@@ -245,5 +248,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+        ExoplayerLogger.exoLog("playbackState===>${playbackState}")
+        mViewModel.playSate.set(playbackState)
+        mViewModel.playSate.notifyChange()
+
     }
 }

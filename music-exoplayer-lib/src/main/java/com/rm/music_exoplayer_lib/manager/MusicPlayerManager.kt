@@ -40,7 +40,6 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
             (service as? MusicPlayerBinder)?.let {
                 mBinder = service
                 mBinder?.setNotificationEnable(true)
-
             }
         }
 

@@ -52,18 +52,7 @@ class NotificationManger constructor(
                 NotificationManagerCompat.from(context)
             val isOpen: Boolean = manager.areNotificationsEnabled()
             if (isOpen) {
-                if (audioInfo.audioCover.isNotEmpty()) {
-                    val notification = buildNotifyInstance(musicInfo)
-                    showNotificationForeground(
-                        notification
-                    )
-                } else {
-                    //File
-                    //缓存为空，获取音频文件自身封面
-                    //封面为空，使用默认
-                    val notification = buildNotifyInstance(musicInfo)
-                    showNotificationForeground(notification)
-                }
+                buildNotifyInstance(musicInfo)
             }
         }
     }
@@ -71,7 +60,6 @@ class NotificationManger constructor(
     private fun showNotificationForeground(
         notification: Notification?
     ) {
-        this.mForegroundEnable = mForegroundEnable
         mNotificationManager.notify(NOTIFICATION_ID, notification)
         if (mForegroundEnable) {
             context.startForeground(NOTIFICATION_ID, notification)
@@ -92,7 +80,7 @@ class NotificationManger constructor(
      * @param cover 封面
      * @return 通知对象
      */
-    fun buildNotifyInstance(musicInfo: BaseAudioInfo): Notification? {
+    fun buildNotifyInstance(musicInfo: BaseAudioInfo) {
         //8.0及以上系统需创建通知通道
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: String = context.getResources().getString(R.string.music_text_notice_name)
@@ -123,14 +111,8 @@ class NotificationManger constructor(
                     resource: Bitmap,
                     transition: Transition<in Bitmap?>?
                 ) {
-                    var resources: Bitmap=resource
-                    if (resources.equals(null)) {
-                        resources = BitmapFactory.decodeResource(
-                            context.resources,
-                            R.drawable.ic_music_default_cover
-                        )
-                    }
-                    resources.let {
+
+                    resource.let {
                         builder.setCustomContentView(
                             notificationView.getDefaultCoustomRemoteView(
                                 it,
@@ -144,23 +126,25 @@ class NotificationManger constructor(
                                 musicInfo
                             )
                         )
+                        builder.setContentIntent(pendClickIntent)
+                            .setTicker(appName)
+                            .setSmallIcon(R.drawable.ic_music_mini_close)
+                            .setWhen(System.currentTimeMillis())
+                            .setOngoing(true)
+                            .setOnlyAlertOnce(true)
+                            .setChannelId(CHANNEL_ID).priority = Notification.PRIORITY_HIGH
+                        if (MusicRomUtil.instance?.isMiui == true) {
+                            builder.setFullScreenIntent(pendClickIntent, false) //禁用悬挂
+                        } else {
+                            builder.setFullScreenIntent(null, false) //禁用悬挂
+                        }
+                        showNotificationForeground(builder.build())
                     }
 
                 }
             })
-        builder.setContentIntent(pendClickIntent)
-            .setTicker(appName)
-            .setSmallIcon(R.drawable.ic_music_mini_close)
-            .setWhen(System.currentTimeMillis())
-            .setOngoing(true)
-            .setOnlyAlertOnce(true)
-            .setChannelId(CHANNEL_ID).priority = Notification.PRIORITY_HIGH
-        if (MusicRomUtil.instance?.isMiui == true) {
-            builder.setFullScreenIntent(pendClickIntent, false) //禁用悬挂
-        } else {
-            builder.setFullScreenIntent(null, false) //禁用悬挂
-        }
-        return builder.build()
+
+
     }
 
 
