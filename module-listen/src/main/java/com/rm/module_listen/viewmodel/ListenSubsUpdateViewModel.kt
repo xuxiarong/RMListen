@@ -20,7 +20,7 @@ import com.rm.module_listen.repository.ListenMyListenRepository
 class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     private val repository by lazy {
-        ListenMyListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
+        ListenMyListenRepository(BusinessRetrofitClient().getListenService(ListenApiService::class.java))
     }
 
 
@@ -44,15 +44,14 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         launchOnIO {
             repository.getListenSubsUpgradeList().checkResult(
                 onSuccess = {
-                    dealServiceData(it)
+//                    dealServiceData(it)
+                    var list = it.list
                 },onError = {
                     showNetError()
                     DLog.d("suolong","on error")
                 }
             )
         }
-
-
 
         subsDateListDate.value = mutableListOf(
             ListenAudioDateModel("今天",false),
@@ -131,118 +130,6 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         earlyUpdateList.value = serviceEarly
 
 
-    }
-
-//    fun testData(){
-//        var todayData = ArrayList<ListenSubsToday>()
-//        for (i in 0..5){
-//            todayData.add(ListenSubsToday(
-//                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
-//                "today_id_$i",
-//                "今天第{$i}本",
-//                testTodayChapter()
-//            ))
-//        }
-//        var yesterdayData = ArrayList<ListenSubsYesterday>()
-//        for (i in 0..5){
-//            todayData.add(ListenSubsToday(
-//                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
-//                "today_id_$i",
-//                "今天第{$i}本",
-//                testYesChapter()
-//            ))
-//        }
-//
-//        var early = ArrayList<ListenSubsEarly>()
-//        for (i in 0..5){
-//            todayData.add(ListenSubsToday(
-//                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2011292736,2426988592&fm=26&gp=0.jpg",
-//                "today_id_$i",
-//                "今天第{$i}本",
-//                testEarlyChapter()
-//            ))
-//        }
-//        subsData.value = ListenSubsModel(
-//            today = todayData,
-//            yesterday = yesterdayData,
-//            early =  early,
-//            last_unread = 0,
-//            total_unread = 1
-//        )
-//    }
-
-    fun testTodayChapter() : MutableList<ListenSubsChapter>{
-        return mutableListOf(
-            ListenSubsChapter(
-                "chapter_1",
-                chapter_name =  "第1章",
-                duration = "10:10",
-                path = "d://test",
-                play_count = 1000L,
-                sequence = "100",
-                size = "100M",
-                upgrade_time = "今天"
-            ),
-            ListenSubsChapter(
-                "chapter_2",
-                chapter_name =  "第2章",
-                duration = "20:20",
-                path = "d://test",
-                play_count = 2000L,
-                sequence = "200",
-                size = "200M",
-                upgrade_time = "今天"
-            )
-        )
-    }
-
-    fun testYesChapter() : MutableList<ListenSubsChapter>{
-        return mutableListOf(
-            ListenSubsChapter(
-                "chapter_1",
-                chapter_name =  "第1章",
-                duration = "10:10",
-                path = "d://test",
-                play_count = 1000L,
-                sequence = "100",
-                size = "100M",
-                upgrade_time = "昨天"
-            ),
-            ListenSubsChapter(
-                "chapter_2",
-                chapter_name =  "第2章",
-                duration = "20:20",
-                path = "d://test",
-                play_count = 2000L,
-                sequence = "200",
-                size = "200M",
-                upgrade_time = "昨天"
-            )
-        )
-    }
-    fun testEarlyChapter() : MutableList<ListenSubsChapter>{
-        return mutableListOf(
-            ListenSubsChapter(
-                "chapter_1",
-                chapter_name =  "第1章",
-                duration = "10:10",
-                path = "d://test",
-                play_count = 1000L,
-                sequence = "100",
-                size = "100M",
-                upgrade_time = "2020/09/01"
-            ),
-            ListenSubsChapter(
-                "chapter_2",
-                chapter_name =  "第2章",
-                duration = "20:20",
-                path = "d://test",
-                play_count = 2000L,
-                sequence = "200",
-                size = "200M",
-                upgrade_time = "2020/09/02"
-            )
-        )
     }
 
 }
