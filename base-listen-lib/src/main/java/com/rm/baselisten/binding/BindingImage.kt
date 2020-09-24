@@ -1,10 +1,10 @@
 package com.rm.baselisten.binding
 
+import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.glide.loadCircleImage
 import com.rm.baselisten.thridlib.glide.loadImage
 import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
@@ -44,18 +44,35 @@ fun ImageView.bindVisible(content: String? = "") {
     }
 }
 
-@BindingAdapter("corner", "bindUrl", "isCircle", requireAll = false)
-fun ImageView.bindUrl(corner: Float = 0f, bindUrl: String?, isCircle: Boolean = false) {
+@BindingAdapter("corner", "bindUrl", "isCircle", "defaultIcon", requireAll = false)
+fun ImageView.bindUrl(
+    corner: Float = 0f,
+    bindUrl: String?,
+    isCircle: Boolean = false,
+    defaultIcon: Drawable? = null
+) {
     val url = bindUrl ?: ""
     when {
         isCircle -> {
-            loadCircleImage(this, url)
+            if (defaultIcon != null) {
+                loadCircleImage(this, url, defaultIcon)
+            } else {
+                loadCircleImage(this, url)
+            }
         }
         corner > 0 -> {
-            loadRoundCornersImage(corner, this, url)
+            if (defaultIcon != null) {
+                loadRoundCornersImage(corner, this, url, defaultIcon)
+            } else {
+                loadRoundCornersImage(corner, this, url)
+            }
         }
         else -> {
-            loadImage(this, url)
+            if (defaultIcon != null) {
+                loadImage(this, url, defaultIcon)
+            } else {
+                loadImage(this, url)
+            }
         }
     }
 }
