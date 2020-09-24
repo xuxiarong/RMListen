@@ -254,4 +254,6 @@ interface MusicPlayerPresenter {
      * 开启通知
      */
     fun setNotificationEnable(enable:Boolean)
+
+    fun getServiceName():String
 }

@@ -22,7 +22,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var showStatus = ObservableField<String>()
     var TimeStamp = ObservableField<String>()
 
-    val action = ObservableField<String>()
+    val actionControl = MutableLiveData<String>()
 
     // 错误提示信息
     var errorTips = ObservableField<String>("")
@@ -77,8 +77,8 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      * 跳转到播放器页面
      */
     fun toPlayPage() {
-        action.set("toPlayPage")
-        action.notifyChange()
+        actionControl.postValue("toPlayPage")
+
     }
 
     /**

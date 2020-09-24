@@ -37,7 +37,9 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
     }
 
     //懒加载adapter
-    private val menuAdapter by lazy { MenuListAdapter(mViewModel) }
+    private val menuAdapter by lazy {
+        MenuListAdapter(mViewModel)
+    }
 
     companion object {
         fun startActivity(context: Context) {
