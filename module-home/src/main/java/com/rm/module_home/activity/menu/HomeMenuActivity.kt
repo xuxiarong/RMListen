@@ -4,23 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.observe
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dip
-import com.rm.business_lib.binding.bindData
 import com.rm.business_lib.binding.paddingBindData
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.activity.detail.HomeDetailActivity
-import com.rm.module_home.adapter.MenuListAdapter
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.rm.module_home.viewmodel.HomeMenuViewModel
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.stx.xhb.androidx.XBanner
-import kotlinx.android.synthetic.main.home_activity_listen_menu.*
-import kotlin.properties.Delegates
 
 class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuViewModel>() {
 

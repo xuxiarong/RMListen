@@ -2,7 +2,6 @@ package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.*
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel

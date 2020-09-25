@@ -6,7 +6,6 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.getBooleanMMKV
@@ -27,7 +26,6 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity.Companion.AUDIO_ID
-import com.rm.module_home.activity.menu.HomeMenuDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.repository.HomeMenuDetailRepository
