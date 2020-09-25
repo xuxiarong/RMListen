@@ -33,7 +33,7 @@
                 userText="@{viewModel.userInfo.nickname}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{()->viewModel.clickSettingPersonal()}"
+                android:onClick="@{()->viewModel.clickSettingPersonal(context)}"
                 app:material_name="@string/mine_personal_info" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
@@ -122,7 +122,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/mine_setting_sign_out"
                 style="@style/BusinessTextStyleSecond_2"
-                bindClick="@{viewModel.loginOutClick}"
+                android:onClick="@{()->viewModel.loginOutClick(context)}"
                 isVisible="@{viewModel.mIsLogin}"
                 android:layout_width="match_parent"
                 android:layout_marginStart="@dimen/dp_16"

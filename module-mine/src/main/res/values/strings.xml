@@ -35,6 +35,9 @@
     <string name="mine_sign_out">退出登录</string>
     <string name="mine_login_and_register">登陆/注册</string>
     <string name="mine_login_tips">登录享受更多功能</string>
+    <string name="mine_login_out_tips">退出后，将无法收听已购节目\n无法接收订阅更新</string>
+    <string name="mine_login_out_sure">坚持退出</string>
+    <string name="mine_login_out_cancel">保持登陆</string>
 
     <!--personal info-->
     <string name="mine_avatar">头像</string>
