@@ -10,13 +10,19 @@
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/home_top_list_refresh"
+        bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore()}"
+        bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess()}"
+        bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
+        bindOnLoadMoreListener="@{viewModel.loadData}"
+        bindOnRefreshListener="@{viewModel.refreshData}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_top_list_recycler_content"
+            bindVerticalLayout="@{viewModel.mAdapter}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never" />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

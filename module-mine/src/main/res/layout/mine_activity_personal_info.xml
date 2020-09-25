@@ -28,7 +28,8 @@
 
             <com.rm.module_mine.widget.MineCommonMaterialView
                 android:id="@+id/mine_personal_nickname"
-                userText="@{viewModel.userInfo.getNickNameStr()}"
+                defaultText="@{@string/mine_unfilled}"
+                userText="@{viewModel.userInfo.nickname}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_nickname" />
@@ -42,21 +43,24 @@
 
             <com.rm.module_mine.widget.MineCommonMaterialView
                 android:id="@+id/mine_personal_birthday"
-                userText="@{viewModel.userInfo.getBirthdayStr()}"
+                defaultText="@{@string/mine_unfilled}"
+                userText="@{viewModel.userInfo.birthday}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_birthday" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
                 android:id="@+id/mine_personal_address"
-                userText="@{viewModel.userInfo.getAddressStr()}"
+                defaultText="@{@string/mine_unfilled}"
+                userText="@{viewModel.userInfo.address}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_address" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
                 android:id="@+id/mine_personal_signature"
-                userText="@{viewModel.userInfo.getSignatureStr()}"
+                defaultText="@{@string/mine_unfilled}"
+                userText="@{viewModel.userInfo.signature}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_signature" />

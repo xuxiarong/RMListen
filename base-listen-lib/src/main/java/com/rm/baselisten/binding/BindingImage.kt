@@ -5,9 +5,11 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.R
+import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.thridlib.glide.loadCircleImage
 import com.rm.baselisten.thridlib.glide.loadImage
 import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
+import com.rm.baselisten.util.DLog
 
 /**
  * desc   :
@@ -58,4 +60,11 @@ fun ImageView.bindUrl(corner: Float = 0f, bindUrl: String?, isCircle: Boolean = 
             loadImage(this, url)
         }
     }
+}
+
+@BindingAdapter("blurUrl")
+fun ImageView.blurUrl(blurUrl: String?) {
+    DLog.i("------->blurUrl","$blurUrl")
+    val url = blurUrl ?: ""
+    loadBlurImage(this, url)
 }

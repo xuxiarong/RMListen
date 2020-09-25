@@ -37,19 +37,4 @@ data class LoginUserBean(
         }
     }
 
-    fun getNickNameStr(): String {
-        return if (TextUtils.isEmpty(nickname)) "未填写" else nickname
-    }
-
-    fun getAddressStr(): String {
-        return if (TextUtils.isEmpty(address)) "未填写" else address
-    }
-
-    fun getSignatureStr(): String {
-        return if (TextUtils.isEmpty(signature)) "未填写" else signature
-    }
-
-    fun getBirthdayStr(): String {
-        return if (TextUtils.isEmpty(birthday)) "未填写" else birthday
-    }
 }

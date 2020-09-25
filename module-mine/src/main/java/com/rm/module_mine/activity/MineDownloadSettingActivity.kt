@@ -28,12 +28,6 @@ import com.rm.module_mine.viewmodel.MineSettingViewModel
  */
 class MineDownloadSettingActivity : BaseVMActivity<MineActivityDownloadSettingBinding, MineDownloadSettingViewModel>() {
 
-    companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, MineDownloadSettingActivity::class.java))
-        }
-    }
-
     override fun initModelBrId() = BR.viewModel
 
     override fun getLayoutId() = R.layout.mine_activity_download_setting
@@ -51,21 +45,9 @@ class MineDownloadSettingActivity : BaseVMActivity<MineActivityDownloadSettingBi
             .setTitle("下载设置")
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = titleModel
-
-        addClickListener()
     }
 
-    /**
-     * 监听数据的变化
-     */
     override fun startObserve() {
-    }
-
-    /**
-     * 点击事件监听
-     */
-    private fun addClickListener() {
-
     }
 
 }

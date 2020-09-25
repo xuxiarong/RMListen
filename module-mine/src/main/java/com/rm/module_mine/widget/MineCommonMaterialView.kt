@@ -131,11 +131,12 @@ class MineCommonMaterialView @JvmOverloads constructor(
     }
 }
 
-@BindingAdapter("userText")
-fun MineCommonMaterialView.userText(userText: String?) {
-    DLog.i("------>>>userText", "$userText")
+@BindingAdapter("userText", "defaultText", requireAll = false)
+fun MineCommonMaterialView.userText(userText: String?, defaultText: String?) {
     if (!TextUtils.isEmpty(userText)) {
         setMaterialUserText(userText!!)
+    } else {
+        setMaterialUserText(defaultText ?: "")
     }
 }
 
@@ -143,8 +144,5 @@ fun MineCommonMaterialView.userText(userText: String?) {
 fun MineCommonMaterialView.userIcon(userIconUrl: String?) {
     if (!TextUtils.isEmpty(userIconUrl)) {
         setMaterialUserIcon(userIconUrl)
-    } else {
-        //TODO test
-        setMaterialUserIcon("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg")
     }
 }

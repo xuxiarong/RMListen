@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_14"
-        android:onClick="@{(SubscriptionListBean)->click.itemClickFun(item)}">
+        android:onClick="@{(view)->click.itemClickFun(view,item)}">
 
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -68,7 +68,7 @@
             android:id="@+id/listen_subscription_adapter_more"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:onClick="@{(SubscriptionListBean)->click.itemChildMoreClickFun(item)}"
+            android:onClick="@{(view)->click.itemChildMoreClickFun(view,item)}"
             android:src="@drawable/business_icon_more"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@id/listen_subscription_adapter_icon"

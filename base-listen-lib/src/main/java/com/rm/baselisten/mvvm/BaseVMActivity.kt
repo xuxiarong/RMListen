@@ -78,7 +78,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
     }
 
 
-    fun showCommonDialog(){
+    fun showCommonDialog() {
 
     }
 
@@ -91,7 +91,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             mChildView = mBaseBinding.baseChildView.viewStub?.inflate()
             if (mChildView != null) {
                 mDataBind = DataBindingUtil.bind(mChildView!!)!!
-                mDataBind.setVariable(initModelBrId(),mViewModel)
+                mDataBind.setVariable(initModelBrId(), mViewModel)
             }
         }
     }
@@ -109,36 +109,51 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             setTitle()
         })
         mViewModel.baseToastModel.observe(this, Observer {
-            if(it.contentId>0){
-                ToastUtil.show(this@BaseVMActivity,getString(it.contentId))
-            }else{
-                ToastUtil.show(this@BaseVMActivity,it.content)
+            if (it.contentId > 0) {
+                ToastUtil.show(this@BaseVMActivity, getString(it.contentId))
+            } else {
+                ToastUtil.show(this@BaseVMActivity, it.content)
             }
         })
 
         mViewModel.baseIntentModel.observe(this, Observer {
-            val startIntent = Intent(this@BaseVMActivity,it.clazz)
-            if(it.dataMap!=null && it.dataMap.size>0){
+            val startIntent = Intent(this@BaseVMActivity, it.clazz)
+            if (it.dataMap != null && it.dataMap.size > 0) {
                 it.dataMap.forEach { (key, value) ->
-                    startIntent.putAnyExtras(key,value)
+                    startIntent.putAnyExtras(key, value)
                 }
             }
-            startActivityForResult(startIntent,it.requestCode)
+            startActivityForResult(startIntent, it.requestCode)
         })
+
         mViewModel.baseFinishModel.observe(this, Observer {
-            if(it.finish){
-                if(it.dataMap!=null && it.dataMap.size>0){
+            if (it.finish) {
+                if (it.dataMap != null && it.dataMap.size > 0) {
                     val finishIntent = Intent()
                     it.dataMap.forEach { (key, value) ->
-                        finishIntent.putAnyExtras(key,value)
+                        finishIntent.putAnyExtras(key, value)
                     }
-                    setResult(it.resultCode,finishIntent)
-                }else{
+                    setResult(it.resultCode, finishIntent)
+                } else {
                     setResult(it.resultCode)
                 }
                 finish()
             }
         })
+
+        mViewModel.baseResultModel.observe(this, Observer {
+            if (it.dataMap != null && it.dataMap.size > 0) {
+                val finishIntent = Intent()
+                it.dataMap.forEach { (key, value) ->
+                    finishIntent.putAnyExtras(key, value)
+                }
+                setResult(it.resultCode, finishIntent)
+            } else {
+                setResult(it.resultCode)
+            }
+        })
+
+
     }
 
     /**
@@ -172,7 +187,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
                 mChildView?.visibility = View.VISIBLE
             }
             else -> {
-                DLog.d("suolong"," netStatus = ${statusModel.netStatus}")
+                DLog.d("suolong", " netStatus = ${statusModel.netStatus}")
             }
         }
     }
@@ -195,7 +210,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
      *  初始化子类viewModel的BrId
      * @return Int
      */
-    abstract fun initModelBrId() : Int
+    abstract fun initModelBrId(): Int
 
     /**
      * 开启子类的LiveData观察者

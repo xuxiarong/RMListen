@@ -1,5 +1,9 @@
 package com.rm.baselisten.viewmodel
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.model.*
@@ -34,6 +38,11 @@ open class BaseVMViewModel : BaseViewModel() {
      * 基类的页面跳转数据
      */
     var baseIntentModel = MutableLiveData<BaseIntentModel>()
+
+    /**
+     * 基类的页面销毁返回数据
+     */
+    var baseResultModel = MutableLiveData<BaseResultModel>()
 
     /**
      * 基类的销毁界面数据
@@ -77,16 +86,31 @@ open class BaseVMViewModel : BaseViewModel() {
         )
     }
 
-    fun finish(){
+    fun finish() {
         baseFinishModel.postValue(BaseFinishModel(finish = true))
     }
 
-    fun setResultAndFinish(resultCode : Int){
-        baseFinishModel.postValue(BaseFinishModel(finish = true,resultCode = resultCode))
+    fun setResultAndFinish(resultCode: Int) {
+        baseFinishModel.postValue(BaseFinishModel(finish = true, resultCode = resultCode))
     }
 
-    fun setResultAndFinish(resultCode : Int,dataMap: HashMap<String, Any>){
-        baseFinishModel.postValue(BaseFinishModel(finish = true,dataMap = dataMap,resultCode = resultCode))
+    fun setResultAndFinish(resultCode: Int, dataMap: HashMap<String, Any>) {
+        baseFinishModel.postValue(
+            BaseFinishModel(
+                finish = true,
+                dataMap = dataMap,
+                resultCode = resultCode
+            )
+        )
+    }
+
+    fun setResult(resultCode: Int, dataMap: HashMap<String, Any>) {
+        baseResultModel.postValue(
+            BaseResultModel(
+                dataMap = dataMap,
+                resultCode = resultCode
+            )
+        )
     }
 
     fun showToast(content: String) {
@@ -113,5 +137,23 @@ open class BaseVMViewModel : BaseViewModel() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING))
     }
 
+    /**
+     * 根据context 获取activity对象
+     */
+    fun getActivity(context: Context): FragmentActivity? {
+        if (context is FragmentActivity) {
+            return context
+        }
+        return if (context is ContextWrapper) {
+            val contextWrapper = context.baseContext
+            getActivity(contextWrapper)
+        } else {
+            null
+        }
+    }
+
+    fun getHasMap(): HashMap<String, Any> {
+        return hashMapOf()
+    }
 
 }

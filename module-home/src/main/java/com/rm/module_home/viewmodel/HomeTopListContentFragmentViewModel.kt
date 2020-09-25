@@ -1,45 +1,115 @@
 package com.rm.module_home.viewmodel
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
+import com.rm.module_home.BR
+import com.rm.module_home.adapter.HomeTopListContentAdapter
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.HomeTopListDataBean
 import com.rm.module_home.repository.HomeTopListRepository
 
 class HomeTopListContentFragmentViewModel(private val repository: HomeTopListRepository) :
     BaseVMViewModel() {
-    // 榜单列表数据
-    val dataList = MutableLiveData<HomeTopListBean>()
+    /**
+     * 懒加载构建adapter对象
+     */
+    val mAdapter by lazy {
+        HomeTopListContentAdapter(
+            this,
+            BR.itemViewModel,
+            BR.item
+        )
+    }
+    val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
-    var itemClick: (HomeTopListDataBean) -> Unit = {}
+    private var mPage = 1//当前的页码
+
+    //每页加载数据条数
+    private val pageSize = 10
+
+    private lateinit var rankType: String
+    private lateinit var rankSeg: String
+
 
     /**
      * 获取榜单听单
      */
-    fun getListInfo(rankType: String, rankSeg: String,page:Int,pageSize:Int) {
+    fun getListInfo(rankType: String, rankSeg: String, page: Int) {
+        this.rankType = rankType
+        this.rankSeg = rankSeg
         launchOnIO {
             repository.getTopList(rankType, rankSeg, page, pageSize).checkResult(
                 onSuccess = {
-                    showContentView()
-                    dataList.value = it
+                    processSuccessData(it)
+
                 },
                 onError = {
-                    showContentView()
-                    DLog.i("-------->", "$it")
+                    processFailData()
                 }
             )
         }
     }
 
     /**
-     * item点击事件
+     * 成功数据处理
      */
-    fun itemClickFun(bean: HomeTopListDataBean) {
-        itemClick(bean)
+    private fun processSuccessData(bean: HomeTopListBean) {
+        showContentView()
+        if (mPage == 1) {
+            //刷新完成
+            refreshStatusModel.finishRefresh(true)
+            mAdapter.setList(bean.list)
+        } else {
+            //加载更多完成
+            refreshStatusModel.finishLoadMore(true)
+            bean.list?.let { list -> mAdapter.addData(list) }
+        }
+
+        //是否有更多数据
+        refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
     }
 
+    /**
+     * 失败数据处理
+     */
+    private fun processFailData() {
+        showNetError()
+        if (mPage == 1) {
+            refreshStatusModel.finishRefresh(false)
+        } else {
+            refreshStatusModel.finishLoadMore(false)
+        }
+    }
+
+    /**
+     * item点击事件
+     */
+    fun itemClickFun(view: View, bean: HomeTopListDataBean) {
+        RouterHelper.createRouter(HomeService::class.java)
+            .toDetailActivity(view.context, bean.audio_id)
+    }
+
+    /**
+     * 刷新数据
+     */
+    fun refreshData() {
+        mPage = 1
+        getListInfo(rankType, rankSeg, mPage)
+    }
+
+    /**
+     * 加载更多
+     */
+    fun loadData() {
+        ++mPage
+        getListInfo(rankType, rankSeg, mPage)
+    }
 
 
 }

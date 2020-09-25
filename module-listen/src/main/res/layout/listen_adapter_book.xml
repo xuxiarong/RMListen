@@ -47,7 +47,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{(AudioBean)->viewModel.itemClickFun(item)}">
+            android:onClick="@{(view)->viewModel.itemClickFun(view,item)}">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/listen_book_adapter_icon"

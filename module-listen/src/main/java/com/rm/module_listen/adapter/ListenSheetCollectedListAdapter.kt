@@ -7,6 +7,7 @@ import com.rm.baselisten.adapter.single.BaseBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
+import com.rm.baselisten.binding.gridItemDecoration
 import com.rm.baselisten.holder.BaseBindHolder
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
@@ -26,19 +27,25 @@ class ListenSheetCollectedListAdapter(
     override fun convert(holder: BaseViewHolder, item: ListenSheetCollectedDataBean) {
         super.convert(holder, item)
         item.audio_list?.let {
-            val recyclerView =
-                holder.getView<RecyclerView>(R.id.listen_sheet_collected_adapter_recycler_view)
-            recyclerView.apply {
-                bindGridLayout(
-                    CommonBindVMAdapter(
-                        viewModel,
-                        it,
-                        R.layout.listen_adapter_sheet_collected_book,
-                        BR.viewModel,
-                        BR.bookBean
-                    )
-                ,3)
+            val list = if (it.size > 3) {
+                it.subList(0, 3)
+            } else {
+                it
             }
+            holder.getView<RecyclerView>(R.id.listen_sheet_collected_adapter_recycler_view)
+                .apply {
+                    bindGridLayout(
+                        CommonBindVMAdapter(
+                            viewModel,
+                            list,
+                            R.layout.listen_adapter_sheet_collected_book,
+                            BR.viewModel,
+                            BR.bookBean
+                        )
+                        , 3
+                    )
+                    gridItemDecoration(8f)
+                }
         }
     }
 }

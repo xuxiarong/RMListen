@@ -33,6 +33,7 @@
                 userText="@{viewModel.userInfo.nickname}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.clickSettingPersonal()}"
                 app:material_name="@string/mine_personal_info" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
@@ -69,11 +70,13 @@
                 android:id="@+id/mine_setting_play_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.clickPlaySetting()}"
                 app:material_name="@string/mine_play_settings" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
                 android:id="@+id/mine_setting_download_setting"
                 android:layout_width="match_parent"
+                android:onClick="@{()->viewModel.clickDownloadSetting()}"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_download_setting" />
 

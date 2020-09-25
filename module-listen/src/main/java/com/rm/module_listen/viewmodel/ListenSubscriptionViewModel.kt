@@ -1,81 +1,128 @@
 package com.rm.module_listen.viewmodel
 
+import android.view.View
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
+import com.rm.module_listen.BR
+import com.rm.module_listen.R
 import com.rm.module_listen.bean.SubscriptionListBean
+import com.rm.module_listen.databinding.ListenDialogBottomSubscriptionBinding
 import com.rm.module_listen.repository.ListenSubscriptionRepository
 
 class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepository) :
     BaseVMViewModel() {
 
-    val mDialog by lazy {
-        CommBottomDialog()
+    /**
+     * 懒加载创建adapter对象
+     */
+    val mAdapter by lazy {
+        CommonBindVMAdapter<SubscriptionListBean>(
+            this,
+            mutableListOf(),
+            R.layout.listen_adapter_subscription,
+            BR.click,
+            BR.item
+        )
     }
 
+    var refreshStatusModel = SmartRefreshLayoutStatusModel()
+
+    private val mDialog by lazy { CommBottomDialog() }
+
     //订阅数据源
-    val data = MutableLiveData<MutableList<SubscriptionListBean>>()
+    val data = ObservableField<MutableList<SubscriptionListBean>>()
 
     //记录当前点击的实体对象
-    val subscriptionData = ObservableField<SubscriptionListBean>()
+    private val subscriptionData = ObservableField<SubscriptionListBean>()
 
-    //item点击事件闭包，提供外部调用
-    var itemClick: (SubscriptionListBean) -> Unit = {}
+    //当前请求的页码
+    private var mPage = 1
 
-    //更多按钮闭包
-    var itemChildMoreClick: (SubscriptionListBean) -> Unit = {}
-
-    //取消订阅
-    var dialogUnsubscribe: () -> Unit = {}
-
-    //置顶
-    var dialogSetTop: (SubscriptionListBean) -> Unit = {}
-
-    //取消置顶
-    var dialogCancelTop: (SubscriptionListBean) -> Unit = {}
-
-    //刷新/加载更多是否成功
-    val isRefreshOrLoadComplete = MutableLiveData<Boolean>()
-
+    //每次请求数据的条数
+    private val pageSize = 10
 
     /**
      * item点击事件
      */
-    fun itemClickFun(bookBean: SubscriptionListBean) {
-        itemClick(bookBean)
+    fun itemClickFun(view: View, bookBean: SubscriptionListBean) {
+        RouterHelper.createRouter(HomeService::class.java)
+            .toDetailActivity(view.context, bookBean.audio_id.toString())
     }
 
     /**
      * 更多点击事件
      */
-    fun itemChildMoreClickFun(bookBean: SubscriptionListBean) {
-        itemChildMoreClick(bookBean)
+    fun itemChildMoreClickFun(view: View, bookBean: SubscriptionListBean) {
+        showBottomDialog(view, bookBean)
+    }
+
+    /**
+     * 刷新
+     */
+    fun refreshData() {
+        mPage = 1
+        getData()
+    }
+
+    /**
+     * 加载更多
+     */
+    fun loadData() {
+        ++mPage
+        getData()
     }
 
     /**
      * 发送请求获取数据
      */
-    fun getData(page: Int, pageSize: Int) {
+    fun getData() {
         launchOnIO {
-            repository.getSubscriptionList(page, pageSize).checkResult(
+            repository.getSubscriptionList(mPage, pageSize).checkResult(
                 onSuccess = {
-                    isRefreshOrLoadComplete.value = true
-                    if (it.size > 0) {
-                        data.value = it
-                        showContentView()
-                    } else {
-                        showDataEmpty()
-                    }
+                    data.set(it)
+                    processSuccessData(it)
                 },
                 onError = {
                     showNetError()
-                    isRefreshOrLoadComplete.value = true
-                    DLog.i("------->", "$it")
+                    processFailData()
                 }
             )
+        }
+    }
+
+    /**
+     * 处理成功数据
+     */
+    private fun processSuccessData(list: MutableList<SubscriptionListBean>) {
+        showContentView()
+        if (mPage == 1) {
+            //刷新完成
+            refreshStatusModel.finishRefresh(true)
+            mAdapter.setList(list)
+        } else {
+            //加载更多完成
+            refreshStatusModel.finishLoadMore(true)
+            mAdapter.addData(list)
+        }
+        //是否有更多数据
+        refreshStatusModel.setHasMore(list.size >= pageSize)
+    }
+
+    /**
+     * 处理失败数据
+     */
+    private fun processFailData() {
+        if (mPage == 1) {
+            refreshStatusModel.finishRefresh(false)
+        } else {
+            refreshStatusModel.finishLoadMore(false)
         }
     }
 
@@ -98,7 +145,6 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
             } else {
                 setTop(it.audio_id)
             }
-
         }
     }
 
@@ -127,7 +173,7 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                 onSuccess = {
                     showContentView()
                     mDialog.dismiss()
-                    dialogUnsubscribe()
+                    mAdapter.remove(subscriptionData.get()!!)
                     DLog.i("------>", "取消订阅成功")
                 },
                 onError = {
@@ -146,20 +192,28 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
         launchOnIO {
             repository.setTop(audioId.toString()).checkResult(
                 onSuccess = {
-                    mDialog.dismiss()
-                    showContentView()
-                    subscriptionData.get()?.let {
-                        dialogSetTop(it)
-                    }
-                    showToast("置顶成功")
-                    DLog.i("------>", "置顶成功")
+                    setTopSuccess()
                 },
                 onError = {
-                    showNetError()
-                    DLog.i("------>", "置顶失败   $it")
+                    showContentView()
+                    showToast("置顶失败")
                 }
             )
         }
+    }
+
+    /**
+     * 置顶成功
+     */
+    private fun setTopSuccess() {
+        showContentView()
+        showToast("置顶成功")
+        subscriptionData.get()?.let {
+            mAdapter.remove(it)
+            mAdapter.data.add(0, it)
+            mAdapter.notifyDataSetChanged()
+        }
+        mDialog.dismiss()
     }
 
     /**
@@ -170,21 +224,55 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
         launchOnIO {
             repository.cancelTop(audioId.toString()).checkResult(
                 onSuccess = {
-                    mDialog.dismiss()
-                    showContentView()
-                    subscriptionData.get()?.let {
-                        dialogCancelTop(it)
-                    }
-                    showToast("取消置顶成功")
+                    cancelTopSuccess()
                     DLog.i("------>", "取消置顶成功")
                 },
                 onError = {
-                    showNetError()
+                    showContentView()
+                    showToast("取消置顶失败")
                     DLog.i("------>", "取消置顶失败   $it")
                 }
             )
         }
     }
 
+    /**
+     * 取消置顶成功
+     */
+    private fun cancelTopSuccess() {
+        showContentView()
+        showToast("取消置顶成功")
+        subscriptionData.get()?.let {
+            mAdapter.remove(it)
+            mAdapter.data.add(mAdapter.data.lastIndex + 1, it)
+            mAdapter.notifyDataSetChanged()
+        }
+        mDialog.dismiss()
+    }
+
+    /**
+     * 现实底部弹窗
+     */
+    private fun showBottomDialog(view: View, bean: SubscriptionListBean) {
+        subscriptionData.set(bean)
+        mDialog.initDialog = {
+            val subscriptionBinding =
+                mDialog.mDataBind as ListenDialogBottomSubscriptionBinding
+
+            subscriptionBinding.listenDialogBottomSubscriptionTop.text = if (bean.is_top == 0) {
+                view.resources.getString(R.string.listen_set_top)
+            } else {
+                view.resources.getString(R.string.listen_cancel_top)
+            }
+        }
+        getActivity(view.context)?.let {
+            mDialog.showCommonDialog(
+                it,
+                R.layout.listen_dialog_bottom_subscription,
+                this,
+                BR.viewModel
+            )
+        }
+    }
 
 }

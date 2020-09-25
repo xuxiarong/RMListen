@@ -19,6 +19,7 @@
     <string name="mine_vip_privilege">开通会员尊享特权</string>
     <string name="mine_vip">VIP</string>
 
+    <string name="mine_unfilled">未填写</string>
 
     <!--setting-->
     <string name="mine_account_settings">账号设置</string>
