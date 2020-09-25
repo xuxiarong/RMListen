@@ -28,5 +28,10 @@
     <!--format String-->
     <string name="format_total_books" formatted="false">共%d本</string>
     <string name="home_swipe_open_detail">侧\n滑\n打\n开\n更\n多</string>
+    <string name="home_popular_list">热门榜</string>
+    <string name="home_hot_list">热销榜</string>
+    <string name="home_new_book_list">新书榜</string>
+    <string name="home_search_list">搜索榜</string>
+    <string name="home_praise_list">好评榜</string>
 </resources>
 

@@ -17,7 +17,7 @@ import com.rm.module_mine.viewmodel.MineSettingViewModel
  *
  * @author yuanfang
  * @date 9/21/20
- * @description
+ * @description 设置页面
  *
  */
 class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSettingViewModel>() {
@@ -42,7 +42,7 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
         super.initView()
         val titleModel = BaseTitleModel()
             .setLeftIcon(R.drawable.base_icon_back)
-            .setTitle("设置")
+            .setTitle(getString(R.string.mine_settings))
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = titleModel
     }

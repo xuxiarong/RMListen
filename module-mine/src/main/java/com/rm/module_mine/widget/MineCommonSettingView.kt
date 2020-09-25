@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.binding.bindUrl
+import com.rm.baselisten.binding.isVisible
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.dimen
@@ -41,10 +42,13 @@ class MineCommonSettingView @JvmOverloads constructor(
     private lateinit var settingName: AppCompatTextView
     private lateinit var settingTip: AppCompatTextView
     private lateinit var settingSwitch: SwitchCompat
+    private lateinit var settingIcon: AppCompatImageView
 
     private var settingNameStr: String? = ""
     private var settingTipStr: String? = ""
     private var settingChecked = false
+    private var settingShowIcon = false
+    private var settingShowSwitch = true
 
 
     init {
@@ -53,6 +57,8 @@ class MineCommonSettingView @JvmOverloads constructor(
         settingNameStr = ta.getString(R.styleable.MineCommonSettingView_setting_name)
         settingTipStr = ta.getString(R.styleable.MineCommonSettingView_setting_tip)
         settingChecked = ta.getBoolean(R.styleable.MineCommonSettingView_setting_checked, false)
+        settingShowIcon = ta.getBoolean(R.styleable.MineCommonSettingView_setting_show_icon, settingShowIcon)
+        settingShowSwitch = ta.getBoolean(R.styleable.MineCommonSettingView_setting_show_switch, settingShowSwitch)
         ta.recycle()
     }
 
@@ -62,10 +68,14 @@ class MineCommonSettingView @JvmOverloads constructor(
         settingName = findViewById(R.id.mine_widget_common_setting_name)
         settingTip = findViewById(R.id.mine_widget_common_setting_tips)
         settingSwitch = findViewById(R.id.mine_widget_common_setting_switch)
+        settingIcon = findViewById(R.id.mine_widget_common_setting_icon)
 
-        settingName.text = settingTipStr
+        settingName.text = settingNameStr
         settingTip.text = settingTipStr
         settingSwitch.isChecked = settingChecked
+
+        settingIcon.isVisible(settingShowIcon)
+        settingSwitch.isVisible(settingShowSwitch)
 
         setPadding(
             dimen(R.dimen.dp_16),

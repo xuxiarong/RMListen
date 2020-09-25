@@ -11,7 +11,7 @@ import com.rm.module_mine.viewmodel.MinePersonalInfoViewModel
  *
  * @author yuanfang
  * @date 9/21/20
- * @description
+ * @description 个人资料页面
  *
  */
 class MinePersonalInfoActivity :
@@ -32,7 +32,7 @@ class MinePersonalInfoActivity :
         super.initView()
         val titleModel = BaseTitleModel()
             .setLeftIcon(R.drawable.base_icon_back)
-            .setTitle("个人资料")
+            .setTitle(getString(R.string.mine_personal_info))
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = titleModel
     }

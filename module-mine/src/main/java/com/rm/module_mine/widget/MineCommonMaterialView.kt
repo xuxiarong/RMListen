@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.binding.bindUrl
+import com.rm.baselisten.binding.isVisible
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.dimen
@@ -42,6 +43,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
     private lateinit var userIcon: AppCompatImageView
     private lateinit var userText: AppCompatTextView
 
+    private var userTextStr: String? = ""
     private var materialNameStr: String? = ""
     private var materialIconRes: Int = 0
     private var needLine = false
@@ -56,6 +58,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
         val ta =
             context.obtainStyledAttributes(attrs, R.styleable.MineCommonMaterialView)
         materialNameStr = ta.getString(R.styleable.MineCommonMaterialView_material_name)
+        userTextStr = ta.getString(R.styleable.MineCommonMaterialView_user_text)
         materialIconRes = ta.getResourceId(
             R.styleable.MineCommonMaterialView_material_icon,
             R.drawable.icon_arrow_right
@@ -73,12 +76,15 @@ class MineCommonMaterialView @JvmOverloads constructor(
         userText = findViewById(R.id.mine_widget_common_material_user_text)
 
         materialName.text = materialNameStr
+        userText.text = userTextStr
+        userText.isVisible(!TextUtils.isEmpty(userTextStr))
+
         materialIcon.setImageResource(materialIconRes)
         setPadding(
             dimen(R.dimen.dp_16),
+            0,
             dimen(R.dimen.dp_16),
-            dimen(R.dimen.dp_16),
-            dimen(R.dimen.dp_16)
+            0
         )
         setBackgroundColor(Color.WHITE)
     }

@@ -19,6 +19,9 @@ val viewModelModule = module {
     viewModel { MinePersonalInfoViewModel() }
     viewModel { MinePlaySettingViewModel() }
     viewModel { MineDownloadSettingViewModel() }
+    viewModel { MineAccountSecuritySettingViewModel() }
+    viewModel { MineNicknameSettingViewModel() }
+    viewModel { MinePersonalSignatureSettingViewModel() }
 }
 
 val repositoryModule = module {

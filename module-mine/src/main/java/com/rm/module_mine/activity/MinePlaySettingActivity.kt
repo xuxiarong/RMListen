@@ -1,30 +1,21 @@
 package com.rm.module_mine.activity
 
-import android.content.Context
-import android.content.Intent
-import androidx.databinding.Observable
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.DLog
-import com.rm.business_lib.isLogin
-import com.rm.business_lib.loginUser
-import com.rm.component_comm.login.LoginService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivityPlaySettingBinding
-import com.rm.module_mine.databinding.MineActivitySettingBinding
 import com.rm.module_mine.viewmodel.MinePlaySettingViewModel
-import com.rm.module_mine.viewmodel.MineSettingViewModel
 
 /**
  *
  * @author yuanfang
  * @date 9/21/20
- * @description
+ * @description 播放设置页面
  *
  */
-class MinePlaySettingActivity : BaseVMActivity<MineActivityPlaySettingBinding, MinePlaySettingViewModel>() {
+class MinePlaySettingActivity :
+    BaseVMActivity<MineActivityPlaySettingBinding, MinePlaySettingViewModel>() {
 
     override fun initModelBrId() = BR.viewModel
 
@@ -40,7 +31,7 @@ class MinePlaySettingActivity : BaseVMActivity<MineActivityPlaySettingBinding, M
         super.initView()
         val titleModel = BaseTitleModel()
             .setLeftIcon(R.drawable.base_icon_back)
-            .setTitle("播放设置")
+            .setTitle(getString(R.string.mine_play_settings))
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = titleModel
 

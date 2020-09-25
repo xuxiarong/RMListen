@@ -12,6 +12,7 @@
     <string name="mine_register">注册</string>
     <string name="mine_is_registering">正在注册</string>
 
+    <!--home-->
     <string name="mine_attention">关注:</string>
     <string name="mine_fans">粉丝:</string>
     <string name="mine_slash">/</string>
@@ -23,12 +24,9 @@
 
     <!--setting-->
     <string name="mine_account_settings">账号设置</string>
-    <string name="mine_personal_info">个人资料</string>
     <string name="mine_phone_binding">手机绑定</string>
     <string name="mine_account_security">账号安全</string>
     <string name="mine_application_settings">应用设置</string>
-    <string name="mine_play_settings">播放设置</string>
-    <string name="mine_download_setting">下载设置</string>
     <string name="mine_clear_cache">缓存清除</string>
     <string name="mine_other">其他</string>
     <string name="mine_message_notice">消息通知</string>
@@ -44,7 +42,7 @@
     <string name="mine_sex">性别</string>
     <string name="mine_birthday">生日</string>
     <string name="mine_address">所在地</string>
-    <string name="mine_signature">个性签名</string>
+
 
     <!--play setting-->
     <string name="mine_play_setting_net_name">使用2G/3G/4G网络播放提醒</string>
@@ -57,6 +55,23 @@
     <!--download setting-->
     <string name="mine_download_setting_name">Wi-Fi连接时下载</string>
     <string name="mine_download_setting_tip">是否只在Wi-Fi连接时才可以下载</string>
+
+    <!--account security setting-->
+    <string name="mine_change_password">修改密码</string>
+    <string name="mine_modify">修改</string>
+    <string name="mine_recently_logged_device">最近登录设备</string>
+    <string name="mine_logout">注销账号</string>
+    <string name="mine_logout_tip">删除所有数据，永久注销账号</string>
+    <string name="mine_enter_signature">请输入您的个人签名</string>
+
+    <!--title-->
+    <string name="mine_change_nickname">修改昵称</string>
+    <string name="mine_download_setting">下载设置</string>
+    <string name="mine_account_security_setting">账号安全设置</string>
+    <string name="mine_personal_info">个人资料</string>
+    <string name="mine_signature">个人签名</string>
+    <string name="mine_play_settings">播放设置</string>
+    <string name="mine_settings">设置</string>
 
 
 </resources>

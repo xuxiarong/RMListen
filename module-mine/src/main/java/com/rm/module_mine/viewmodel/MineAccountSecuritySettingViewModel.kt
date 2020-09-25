@@ -9,6 +9,6 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  * @description
  *
  */
-class MinePlaySettingViewModel : BaseVMViewModel() {
+class MineAccountSecuritySettingViewModel : BaseVMViewModel() {
 
 }

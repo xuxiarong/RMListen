@@ -1,16 +1,10 @@
 package com.rm.module_mine.viewmodel
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
-import android.view.View
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.helpter.loginOut
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
-import com.rm.component_comm.login.LoginService
-import com.rm.component_comm.router.RouterHelper
+import com.rm.module_mine.activity.MineAccountSecuritySettingActivity
 import com.rm.module_mine.activity.MineDownloadSettingActivity
 import com.rm.module_mine.activity.MinePersonalInfoActivity
 import com.rm.module_mine.activity.MinePlaySettingActivity
@@ -53,6 +47,13 @@ class MineSettingViewModel : BaseVMViewModel() {
      */
     fun clickDownloadSetting() {
         startActivity(MineDownloadSettingActivity::class.java)
+    }
+
+    /**
+     * 账号安全设置
+     */
+    fun clickAccountSecurity() {
+        startActivity(MineAccountSecuritySettingActivity::class.java)
     }
 
 }

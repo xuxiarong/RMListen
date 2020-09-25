@@ -79,19 +79,19 @@ class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListVi
     private fun configureFragment(data: MutableList<CategoryTabBean>) {
         data.forEach { bean ->
             val type = when (bean.class_name) {
-                "热门榜" -> {
+                getString(R.string.home_popular_list) -> {
                     HomeTopListContentFragment.RANK_TYPE_POPULAR
                 }
-                "热销榜" -> {
+                getString(R.string.home_hot_list) -> {
                     HomeTopListContentFragment.RANK_TYPE_HOT
                 }
-                "新书榜" -> {
+                getString(R.string.home_new_book_list) -> {
                     HomeTopListContentFragment.RANK_TYPE_NEW_BOOK
                 }
-                "搜索榜" -> {
+                getString(R.string.home_search_list) -> {
                     HomeTopListContentFragment.RANK_TYPE_SEARCH
                 }
-                "好评榜" -> {
+                getString(R.string.home_praise_list) -> {
                     HomeTopListContentFragment.RANK_TYPE_PRAISE
                 }
                 else -> {

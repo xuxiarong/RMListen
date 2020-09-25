@@ -88,7 +88,7 @@
             android:background="@drawable/business_shape_round_ffffff_14dp"
             android:gravity="center"
             android:onClick="@{()->viewModel.dialogCancelFun()}"
-            android:text="@string/base_cancel"
+            android:text="@string/business_cancel"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent" />
 
