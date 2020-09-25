@@ -21,6 +21,28 @@ data class ListenSubsModel(
 ) : Parcelable
 
 @Parcelize
+data class ChapterList(
+    val last_unread: Int,
+    val total_unread: Int,
+    val list: List<ListenAudioChapters>
+) : Parcelable
+@Parcelize
+data class ListenAudioChapters(
+    val audio_cover: String,
+    val audio_id: String,
+    val audio_name: String,
+    val chapter_name: String,
+    val chapter_id: String,
+    val cover_url: String,
+    val duration: String,
+    val path: String,
+    val play_count: String,
+    val sequence: String,
+    val size: String,
+    val upgrade_time: String
+): Parcelable
+
+@Parcelize
 data class ListenSubsChapter(
     val chapter_id: String,
     val chapter_name: String,

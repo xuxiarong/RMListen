@@ -23,8 +23,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         const val  NEW_URL="http://mobilecdn.kugou.com/api/v3"
         const val OLD_HOST="http://10.1.3.12:9602"
         const val PLAY_PATH="http://www.kugou.com/yy/index.php"
-        const val LISTEN_PATH="http://192.168.11.217:3000/mock/154/api/v1_0/"
-
+        const val LISTEN_PATH="http://192.168.11.88:9602/api/v1_0/"
     }
 
     override fun handleBuilder(builder: OkHttpClient.Builder) {
@@ -54,6 +53,30 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
             .baseUrl(BASE_URL)
             .build().create(serviceClass)
     }
+
+    fun <S> getListenService(serviceClass: Class<S>): S {
+        return Retrofit.Builder()
+            .client(client)
+            .callFactory(object : CallFactoryProxy(client) {
+                override fun getNewUrl(baseUrlName: String?, request: Request?): HttpUrl? {
+                    if (baseUrlName.equals("baidu")) {
+                        val oldUrl = request?.url.toString()
+                        val newUrl =oldUrl.replace(OLD_HOST,NEW_URL)
+                        return newUrl.toHttpUrl()
+                    }
+                    if (baseUrlName.equals("play")) {
+                        val oldUrl = request?.url.toString()
+                        val newUrl =oldUrl.replace(OLD_HOST,PLAY_PATH)
+                        return newUrl.toHttpUrl()
+                    }
+                    return null
+                }
+            })
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(LISTEN_PATH)
+            .build().create(serviceClass)
+    }
+
 }
 
 abstract class CallFactoryProxy(private val delegate: Call.Factory) : Call.Factory {

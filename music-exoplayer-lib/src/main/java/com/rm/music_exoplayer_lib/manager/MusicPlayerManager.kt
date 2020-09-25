@@ -54,6 +54,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mConnection = MusicPlayerServiceConnection()
         mConnection?.let {
             val intent = Intent(context, MusicPlayerService::class.java)
+            context.startService(intent)
             context.bindService(
                 intent, it,
                 Context.BIND_AUTO_CREATE
@@ -232,6 +233,8 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mBinder?.setNotificationEnable(enable)
 
     }
+
+    override fun getServiceName(): String = mBinder?.getServiceName()?:""
 
 
 }

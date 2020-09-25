@@ -84,6 +84,11 @@ class ListenSubscriptionUpdateFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mViewModel.getSubsDataFromService()
+
+    }
 
     fun startDetail(audioId :String){
         val homeService = RouterHelper.createRouter(HomeService::class.java)

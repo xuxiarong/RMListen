@@ -6,7 +6,7 @@ import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_listen.bean.ListenSheetCollectedBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.bean.SubscriptionListBean
-import com.rm.module_listen.model.ListenSubsModel
+import com.rm.module_listen.model.ChapterList
 import com.rm.module_listen.model.ListenSubsNumberModel
 import com.rm.module_listen.repository.ListenPatchSheetBean
 import retrofit2.http.*
@@ -62,7 +62,7 @@ interface ListenApiService {
      * 最新更新
      */
     @GET("listen/upgrade")
-    suspend fun listenUpgrade(): BaseResponse<ListenSubsModel>
+    suspend fun listenUpgrade(): BaseResponse<ChapterList>
 
     /**
      * 最近收听

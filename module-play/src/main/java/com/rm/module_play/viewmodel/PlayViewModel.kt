@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.model.*
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -31,7 +33,7 @@ import java.util.HashMap
 open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
     val playPath = MutableLiveData<List<BaseAudioInfo>>()
     val pathList = ArrayList<BaseAudioInfo>()
-    val audioChapterModel=ObservableField<AudioChapterListModel>()
+    val audioChapterModel = ObservableField<AudioChapterListModel>()
     val process = ObservableField<Float>()//进度条
     val maxProcess = ObservableField<Float>()//最大进度
     val updateThumbText = ObservableField<String>()//更改文字
@@ -44,8 +46,10 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     val mutableList = MutableLiveData<MutableList<MultiItemEntity>>()
     val playManger: MusicPlayerManager = musicPlayerManger
     val audioID = ObservableField<String>()
+
     //播放状态进度条，0是播放2是加载中
-    val playSate=ObservableField<Int>()
+    val playSate = ObservableField<Int>()
+
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
     var page = 1
@@ -191,7 +195,6 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                 audioChapterModel.set(it)
                 zipPlayPath(it, anchorURL)
                 showContentView()
-
             }, onError = {
                 showContentView()
             })

@@ -55,7 +55,18 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             mutableListOf<ChapterList>(),
             R.layout.home_item_detail_chapter,
             BR.DetailChapterViewModel
-        )
+        ).apply {
+            setOnItemClickListener { adapter, view, position ->
+                mViewModel.detailViewModel.get()?.let {
+                    playService.toPlayPage(this@HomeDetailActivity, it, position)
+                }
+            }
+        }
+    }
+
+    //播放器路由
+    private val playService by lazy {
+        RouterHelper.createRouter(PlayService::class.java)
     }
 
     companion object {
@@ -84,9 +95,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             stateHeight = getStateHeight(this@HomeDetailActivity)
             topMargin = stateHeight
         }
-
         audioId = intent?.getStringExtra(AUDIO_ID) ?: ""
-
         scroll_down_layout?.setMinOffset(0)
         scroll_down_layout?.setMaxOffset((screenHeight * 0.75).toInt())
         scroll_down_layout?.setExitOffset(dip(101))
@@ -100,8 +109,8 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         //audioId = "162163095869968384"
         if (audioId.orEmpty().isNotEmpty()) {
             mViewModel.intDetailInfo(audioId)
-            mViewModel.chapterList(audioId,1,20,"asc")
-            mViewModel.commentList(audioId,1,20)
+            mViewModel.chapterList(audioId, 1, 20, "asc")
+            mViewModel.commentList(audioId, 1, 20)
         }
 
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
@@ -138,24 +147,18 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             homechapterAdater.setList(mViewModel.detailChapterViewModel.value!!.chapterList)
         })*/
 
-        mViewModel.detailChapterViewModel.addOnPropertyChangedCallback(object : OnPropertyChangedCallback(){
+        mViewModel.detailChapterViewModel.addOnPropertyChangedCallback(object :
+            OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 homechapterAdater.setList(mViewModel.detailChapterViewModel.get()!!.chapter_list)
             }
         })
 
-        mViewModel.action.addOnPropertyChangedCallback(object : OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                mViewModel.detailViewModel.get()?.let {
-                    val router = RouterHelper.createRouter(PlayService::class.java)
-
-                    router.toPlayPage(this@HomeDetailActivity, it,0)
-                }
-
+        mViewModel.actionControl.observe(this, Observer {
+            mViewModel.detailViewModel.get()?.let {
+                playService.toPlayPage(this@HomeDetailActivity, it, 0)
             }
-
         })
-
 
     }
 

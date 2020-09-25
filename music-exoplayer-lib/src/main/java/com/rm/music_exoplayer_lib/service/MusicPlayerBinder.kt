@@ -171,5 +171,5 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
         presenter.setNotificationEnable(enable)
 
     }
-
+     fun getServiceName(): String =presenter.getServiceName()
 }

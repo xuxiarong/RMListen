@@ -1,7 +1,8 @@
 package com.rm.baselisten.thridlib.glide
 
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -15,12 +16,12 @@ import com.rm.baselisten.utilExt.dip
  * date   : 2020/08/20
  * version: 1.0
  */
-fun loadImage(imageView: ImageView, url: String?, @DrawableRes defaultResId: Int) {
+fun loadImage(imageView: ImageView, url: String?, defaultDrawable: Drawable) {
     if (imageView.context == null) return
     val options: RequestOptions = RequestOptions() //图片加载出来前，显示的图片
-        .placeholder(defaultResId) //url为空的时候,显示的图片
-        .fallback(defaultResId) //图片加载失败后，显示的图片
-        .error(defaultResId)
+        .placeholder(defaultDrawable) //url为空的时候,显示的图片
+        .fallback(defaultDrawable) //图片加载失败后，显示的图片
+        .error(defaultDrawable)
     Glide.with(imageView).load(url)
         .apply(options)
         .into(imageView)
@@ -29,14 +30,14 @@ fun loadImage(imageView: ImageView, url: String?, @DrawableRes defaultResId: Int
 fun loadImageByTransform(
     imageView: ImageView,
     url: String?,
-    @DrawableRes defaultResId: Int,
+    defaultDrawable: Drawable,
     transformation: BitmapTransformation
 ) {
     if (imageView.context == null) return
     val options: RequestOptions = RequestOptions() //图片加载出来前，显示的图片
-        .placeholder(defaultResId) //url为空的时候,显示的图片
-        .fallback(defaultResId) //图片加载失败后，显示的图片
-        .error(defaultResId)
+        .placeholder(defaultDrawable) //url为空的时候,显示的图片
+        .fallback(defaultDrawable) //图片加载失败后，显示的图片
+        .error(defaultDrawable)
         .transform(transformation)
     Glide.with(imageView).load(url)
         .apply(options)
@@ -44,37 +45,46 @@ fun loadImageByTransform(
 }
 
 fun loadImage(imageView: ImageView, url: String?) {
-    loadImage(
-        imageView,
-        url,
-        R.drawable.base_default
-    )
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_default)?.let {
+        loadImage(
+            imageView,
+            url,
+            it
+        )
+    }
 }
 
-fun loadCircleImage(imageView: ImageView, url: String, @DrawableRes defaultResId: Int) {
+fun loadCircleImage(imageView: ImageView, url: String, defaultDrawable: Drawable) {
     loadImageByTransform(
         imageView,
         url,
-        defaultResId,
+        defaultDrawable,
         CircleCrop()
     )
 }
 
 fun loadCircleImage(imageView: ImageView, url: String?) {
-    loadImageByTransform(
-        imageView,
-        url,
-        R.drawable.base_default,
-        CircleCrop()
-    )
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_default)?.let {
+        loadImageByTransform(
+            imageView,
+            url,
+            it,
+            CircleCrop()
+        )
+    }
 }
 
-fun loadRoundCornersImage(imageView: ImageView, url: String?, @DrawableRes defaultResId: Int) {
+fun loadRoundCornersImage(
+    corner: Float,
+    imageView: ImageView,
+    url: String?,
+    defaultDrawable: Drawable
+) {
     loadImageByTransform(
         imageView,
         url,
-        defaultResId,
-        RoundedCorners(6)
+        defaultDrawable,
+        RoundedCorners(imageView.dip(corner))
     )
 }
 
@@ -83,21 +93,25 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String?) {
         loadImage(imageView, url)
         return
     }
-    loadImageByTransform(
-        imageView,
-        url,
-        R.drawable.base_default,
-        RoundedCorners(imageView.dip(corner))
-    )
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_default)?.let {
+        loadImageByTransform(
+            imageView,
+            url,
+            it,
+            RoundedCorners(imageView.dip(corner))
+        )
+    }
 }
 
 fun loadBlurImage(imageView: ImageView, url: String) {
     imageView.alpha = 0.2f
-    loadImageByTransform(
-        imageView,
-        url,
-        R.drawable.base_default,
-        BlurTransformation(imageView.context, 25, 4)
-    )
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_default)?.let {
+        loadImageByTransform(
+            imageView,
+            url,
+            it,
+            BlurTransformation(imageView.context, 25, 4)
+        )
+    }
 }
 
