@@ -45,7 +45,7 @@ fun loadImageByTransform(
 }
 
 fun loadImage(imageView: ImageView, url: String?) {
-    ContextCompat.getDrawable(imageView.context, R.drawable.base_default)?.let {
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_ic_default)?.let {
         loadImage(
             imageView,
             url,
@@ -64,7 +64,7 @@ fun loadCircleImage(imageView: ImageView, url: String, defaultDrawable: Drawable
 }
 
 fun loadCircleImage(imageView: ImageView, url: String?) {
-    ContextCompat.getDrawable(imageView.context, R.drawable.base_default)?.let {
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_ic_default)?.let {
         loadImageByTransform(
             imageView,
             url,
@@ -93,7 +93,7 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String?) {
         loadImage(imageView, url)
         return
     }
-    ContextCompat.getDrawable(imageView.context, R.drawable.base_default)?.let {
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_ic_default)?.let {
         loadImageByTransform(
             imageView,
             url,
@@ -105,7 +105,7 @@ fun loadRoundCornersImage(corner: Float, imageView: ImageView, url: String?) {
 
 fun loadBlurImage(imageView: ImageView, url: String) {
     imageView.alpha = 0.2f
-    ContextCompat.getDrawable(imageView.context, R.drawable.base_default)?.let {
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_ic_default)?.let {
         loadImageByTransform(
             imageView,
             url,
