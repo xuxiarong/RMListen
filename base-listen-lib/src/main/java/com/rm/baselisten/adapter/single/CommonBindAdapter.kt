@@ -8,4 +8,3 @@ package com.rm.baselisten.adapter.single
 open class CommonBindAdapter<T> constructor(commonData : MutableList<T>,commonItemId : Int,commonBrId : Int) : BaseBindAdapter<T>(commonData,commonItemId,commonBrId)
 
 
-
