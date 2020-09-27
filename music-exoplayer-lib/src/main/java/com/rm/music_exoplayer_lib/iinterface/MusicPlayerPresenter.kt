@@ -244,12 +244,14 @@ interface MusicPlayerPresenter {
      * @return 成功设置的播放模式
      */
     fun setPlayerModel(model: Int): Int
-
     //获取播放模式
     fun getPlayerModel(): Int
     //设置定时模式
     fun setPlayerAlarmModel(model: Int)
-
+    //获取闹钟模式
+    fun getPlayerAlarmModel():Int
+    //获取闹钟时长
+    fun getPlayerAlarmTime():Long
     /**
      * 开启通知
      */

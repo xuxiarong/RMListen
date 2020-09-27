@@ -56,6 +56,10 @@ class CacheUtils private constructor() {
             defaultValue
         )
     }
+    //移除时间戳
+    fun remove(key: String){
+        mEditor?.remove(key)?.commit()
+    }
 
     fun putLong(key: String?, value: Long): Boolean {
         mEditor?.putLong(key, value)

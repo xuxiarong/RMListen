@@ -193,6 +193,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             mViewModel.commentAudioComments(it.detaillist.audio_id)
             mViewModel.mutableList.postValue(listValue)
             mBookPlayerAdapter.notifyDataSetChanged()
+            mViewModel.setHistoryPlayBook(it)
         }
         indexSong = intent.getIntExtra(songindex, 0)
 
@@ -228,7 +229,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             playerControl?.baseAudioInfo?.audioId ?: "",
             playerControl?.baseAudioInfo?.chapterId ?: ""
         )
-
+        mViewModel.lastState.set(mViewModel.pathList.size>0&&position>0)
+        mViewModel.updatePlayBook(mViewModel.audioChapterModel.get()?.chapter_list?.getOrNull(position))
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -252,7 +254,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         mViewModel.playSate.set(playbackState)
-        mViewModel.playSate.notifyChange()
 
     }
 

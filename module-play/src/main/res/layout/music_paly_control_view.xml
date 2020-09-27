@@ -23,11 +23,11 @@
 
         <ImageView
             android:id="@+id/iv_music_play_left"
+            bindLastSrc="@{viewModel.lastState}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:src="@drawable/music_play_ic_icon_bf"
             app:bindClick="@{viewModel.playManger.playLastMusic}"
             tools:ignore="MissingConstraints" />
 
@@ -40,8 +40,8 @@
 
             <ProgressBar
                 android:id="@+id/progress_play"
-                android:layout_width="66dp"
                 isVisible="@{viewModel.playSate==1}"
+                android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:layout_gravity="center"
                 android:indeterminate="false"
@@ -57,10 +57,10 @@
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/animation_view"
-                    playAction="@{viewModel.playFun}"
-                    playStart="@{viewModel.playControlModel}"
+                    bindClick="@{viewModel.playManger.playOrPause}"
+                    playState="@{viewModel.playSate}"
                     android:layout_width="29dp"
-                    android:layout_height="38dp"
+                    android:layout_height="27dp"
                     android:layout_gravity="center"
                     app:lottie_fileName="play_stop.json" />
             </com.flyco.roundview.RoundFrameLayout>

@@ -12,14 +12,16 @@ import org.greenrobot.greendao.query.QueryBuilder
 class DaoManager private constructor() {
 
     val DB_NAME = "listen.db"
-    lateinit var devOpenHelper: SQLiteDatabase
-    lateinit var daoSession: DaoSession
+    var devOpenHelper: SQLiteDatabase? = null
+    var daoSession: DaoSession? = null
+
     companion object {
         val daoManager: DaoManager by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             DaoManager()
         }
 
     }
+
     fun initDaoManger() {
         //创建数据库
         devOpenHelper = DaoMaster.DevOpenHelper(Cxt.context, DB_NAME, null).writableDatabase
@@ -35,8 +37,8 @@ class DaoManager private constructor() {
 
     //使用完成后需要关闭
     fun closeConnection() {
-        devOpenHelper.close()
-        daoSession.clear()
+        devOpenHelper?.close()
+        daoSession?.clear()
     }
 
 }

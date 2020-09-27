@@ -7,6 +7,8 @@ import com.rm.baselisten.util.setOnClickNotDoubleListener
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
@@ -37,6 +39,8 @@ class PlayServiceImpl : PlayService {
         BookPlayerActivity.startActivity(context, bean,index)
         ExoplayerLogger.exoLog("toPlayPage${System.currentTimeMillis()}")
     }
+
+    override fun queryPlayBookList(): List<HistoryPlayBook>? = DaoUtil(HistoryPlayBook::class.java,"").queryAll()
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return PlayApplicationDelegate::class.java

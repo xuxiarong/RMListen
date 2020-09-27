@@ -73,7 +73,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //自动停止播放器的剩余时间
     private var TIMER_DURTION = Long.MAX_VALUE
-
+    //闹钟总时长
+    var alarmTimes=Long.MAX_VALUE
     //循环模式
     private val mLoop = false
 
@@ -519,17 +520,14 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //初始化闹钟
     fun initAlarmConfig() {
-        if (CacheUtils.instance.getLong(SP_KEY_ALARM_MODEL_TIME) > System.currentTimeMillis()) {
-            alarmManger.setAlarm(CacheUtils.instance.getLong(SP_KEY_ALARM_MODEL_TIME))
-        }
+        alarmManger.setAlarm(alarmTimes)
+
     }
 
     /**
      * 设置闹钟模式
      */
     override fun setPlayerAlarmModel(model: Int) {
-        mMusicAlarmModel = model
-        CacheUtils.instance.putInt(SP_KEY_ALARM_MODEL, model)
         mMusicAlarmModel = model
         when (model) {
             MUSIC_ALARM_MODEL_10 -> {
@@ -550,29 +548,48 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             MUSIC_ALARM_MODEL_60 -> {
                 TIMER_DURTION = 60 * 60.toLong()
             }
+
+            MUSIC_ALARM_MODEL_EPISODE_ONE -> {
+
+            }
+            MUSIC_ALARM_MODEL_EPISODE_TWO -> {
+
+            }
+            MUSIC_ALARM_MODEL_EPISODE_THREE -> {
+
+            }
+            MUSIC_ALARM_MODEL_EPISODE_FOUR -> {
+
+            }
+            MUSIC_ALARM_MODEL_EPISODE_FIVE -> {
+
+            }
             MUSIC_ALARM_MODEL_0 -> {
                 TIMER_DURTION = Long.MAX_VALUE
 
             }
-            MUSIC_ALARM_MODEL_CURRENT -> {
+            else -> {
 
             }
         }
-        val times = System.currentTimeMillis() + TIMER_DURTION * 1000
-        CacheUtils.instance.putLong(
-            SP_KEY_ALARM_MODEL_TIME,
-            times
-        )
-        alarmManger.setAlarm(times)
+        alarmTimes = System.currentTimeMillis() + TIMER_DURTION * 1000
+        alarmManger.setAlarm(alarmTimes)
 
     }
+
+    override fun getPlayerAlarmModel(): Int=mMusicAlarmModel
+
+
+
+    override fun getPlayerAlarmTime(): Long =alarmTimes
 
     override fun setNotificationEnable(enable: Boolean) {
         this.mNotificationEnable = enable
 
     }
 
-    override fun getServiceName(): String ="com.rm.music_exoplayer_lib.service.${MusicPlayerService::class.simpleName.toString()}"
+    override fun getServiceName(): String =
+        "com.rm.music_exoplayer_lib.service.${MusicPlayerService::class.simpleName.toString()}"
 
     /**
      * 播放器设计模式

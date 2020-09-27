@@ -162,8 +162,9 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     }
 
     fun getPlayerModel(): Int = presenter.getPlayerModel()
+
     //设置定时任务
-     fun setPlayerAlarmModel(model: Int) {
+    fun setPlayerAlarmModel(model: Int) {
         presenter.setPlayerAlarmModel(model)
     }
 
@@ -171,5 +172,13 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
         presenter.setNotificationEnable(enable)
 
     }
-     fun getServiceName(): String =presenter.getServiceName()
+
+    fun getServiceName(): String = presenter.getServiceName()
+
+
+    //获取闹钟模式
+    fun getPlayerAlarmModel(): Int = presenter.getPlayerAlarmModel()
+
+    //获取闹钟时长
+    fun getPlayerAlarmTime(): Long = presenter.getPlayerAlarmTime()
 }

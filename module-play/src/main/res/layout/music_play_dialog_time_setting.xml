@@ -29,6 +29,14 @@
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="14sp"
                 android:text="关闭定时" />
+
+            <ImageView
+                android:id="@+id/iv_music_play_time_setting_check"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="25dp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <View
