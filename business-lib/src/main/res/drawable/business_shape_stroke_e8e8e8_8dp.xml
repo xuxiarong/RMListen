@@ -5,4 +5,5 @@
     <stroke
         android:width="@dimen/line"
         android:color="@color/business_color_d6d6d6" />
+    <solid android:color="@color/business_color_f7f7f7"/>
 </shape>

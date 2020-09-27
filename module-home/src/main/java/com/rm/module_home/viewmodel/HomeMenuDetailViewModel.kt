@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.getBooleanMMKV
@@ -240,10 +241,10 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
         val activity = getActivity(context)
         if (IS_FIRST_FAVORITES.getBooleanMMKV(true) && activity != null) {
             CustomTipsFragmentDialog().apply {
-                titleText = "订阅成功"
-                contentText = "可在“我听-听单”中查看"
-                leftBtnText = "我知道了"
-                rightBtnText = "去看看"
+                titleText = context.getString(R.string.home_favorites_success)
+                contentText =context. getString(R.string.home_favorites_success_content)
+                leftBtnText = context.getString(R.string.home_know)
+                rightBtnText = context.getString(R.string.home_goto_look)
                 leftBtnTextColor = R.color.business_text_color_333333
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
@@ -261,7 +262,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                     ImageView(activity).apply { setImageResource(R.mipmap.home_ic_launcher) }
             }.show(activity)
         } else {
-            showToast("收藏成功，请在我听-听单中查看")
+            showToast(context.getString(R.string.home_favorites_success_tip))
         }
     }
 

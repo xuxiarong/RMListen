@@ -10,12 +10,8 @@ import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.databinding.ListenDialogSheetListBinding
 import com.rm.module_listen.viewmodel.ListenDialogSheetViewModel
-import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 
 /**
  * 添加听单dialog
@@ -31,18 +27,6 @@ class ListenDialogSheetHelper(
      */
     private val mViewModel by lazy { ListenDialogSheetViewModel(baseViewModel) }
 
-    /**
-     * 懒加载adapter
-     */
-    private val mAdapter by lazy {
-        CommonBindVMAdapter<ListenSheetBean>(
-            mViewModel,
-            mutableListOf(),
-            R.layout.listen_adapter_dialog_book_list,
-            BR.dialogClick,
-            BR.dialogItem
-        )
-    }
     private var dateBinding: ListenDialogSheetListBinding? = null
 
     /**
@@ -62,69 +46,21 @@ class ListenDialogSheetHelper(
         }
     }
 
-    private val pageSize = 10
-    private var page = 1
-
     /**
      * 初始化操作
      */
     private fun CommonMvFragmentDialog.initView(dateBinding: ListenDialogSheetListBinding) {
-        addRefreshListener(dateBinding.listenDialogSheetRefresh)
-        dateBinding.listenDialogSheetRecyclerView.let {
-            it.bindVerticalLayout(mAdapter)
-        }
-
         dateBinding.listenDialogSheetCreateBookList.setOnClickListener {
             ListenDialogCreateSheetHelper(baseViewModel, mActivity).showDialog()
             dismiss()
         }
         mViewModel.audioId.value = audioId
-        startObserveData()
 
-        mViewModel.getData(page, pageSize, true)
+        baseViewModel.showLoading()
+        mViewModel.getData()
         mViewModel.dismiss = { dismiss() }
     }
 
-
-    private fun startObserveData() {
-        mViewModel.data.observe(mActivity) {
-            if (page == 1) {
-                mAdapter.setList(it.list)
-            } else {
-                it.list?.let { mAdapter.addData(it) }
-            }
-
-            //没有更多数据
-            if (pageSize > it.list?.size ?: 0) {
-                dateBinding?.listenDialogSheetRefresh?.finishLoadMoreWithNoMoreData()
-            }
-        }
-
-        mViewModel.isRefreshOrLoadComplete.observe(mActivity) {
-            if (page == 1) {
-                //刷新完成
-                dateBinding?.listenDialogSheetRefresh?.finishRefresh()
-            } else {
-                //加载更多完成
-                dateBinding?.listenDialogSheetRefresh?.finishLoadMore()
-            }
-        }
-
-    }
-
-    private fun addRefreshListener(refreshLayout: SmartRefreshLayout) {
-        refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
-            override fun onLoadMore(refreshLayout: RefreshLayout) {
-                ++page
-                mViewModel.getData(page, pageSize, false)
-            }
-
-            override fun onRefresh(refreshLayout: RefreshLayout) {
-                page = 1
-                mViewModel.getData(page, pageSize, true)
-            }
-        })
-    }
 
     /**
      * 显示dialog

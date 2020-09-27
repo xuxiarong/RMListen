@@ -2,10 +2,10 @@ package com.rm.module_listen.viewmodel
 
 import android.view.View
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
@@ -174,11 +174,9 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                     showContentView()
                     mDialog.dismiss()
                     mAdapter.remove(subscriptionData.get()!!)
-                    DLog.i("------>", "取消订阅成功")
                 },
                 onError = {
-                    showNetError()
-                    DLog.i("------>", "取消订阅失败   $it")
+                    showContentView()
                 }
             )
         }
@@ -196,7 +194,7 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                 },
                 onError = {
                     showContentView()
-                    showToast("置顶失败")
+                    showToast(CONTEXT.getString(R.string.listen_set_top_fail))
                 }
             )
         }
@@ -207,7 +205,7 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
      */
     private fun setTopSuccess() {
         showContentView()
-        showToast("置顶成功")
+        showToast(CONTEXT.getString(R.string.listen_set_top_success))
         subscriptionData.get()?.let {
             mAdapter.remove(it)
             mAdapter.data.add(0, it)
@@ -225,12 +223,10 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
             repository.cancelTop(audioId.toString()).checkResult(
                 onSuccess = {
                     cancelTopSuccess()
-                    DLog.i("------>", "取消置顶成功")
                 },
                 onError = {
                     showContentView()
-                    showToast("取消置顶失败")
-                    DLog.i("------>", "取消置顶失败   $it")
+                    showToast(CONTEXT.getString(R.string.listen_cancel_top_fail))
                 }
             )
         }
@@ -241,7 +237,7 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
      */
     private fun cancelTopSuccess() {
         showContentView()
-        showToast("取消置顶成功")
+        showToast(CONTEXT.getString(R.string.listen_cancel_top_success))
         subscriptionData.get()?.let {
             mAdapter.remove(it)
             mAdapter.data.add(mAdapter.data.lastIndex + 1, it)

@@ -29,7 +29,7 @@ class ListenSubscriptionActivity :
     override fun initView() {
         super.initView()
         //初始化title信息
-        val baseTitleModel = BaseTitleModel().setTitle("订阅")
+        val baseTitleModel = BaseTitleModel().setTitle(getString(R.string.listen_subscription))
             .setLeftIcon(R.drawable.base_icon_back)
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = baseTitleModel

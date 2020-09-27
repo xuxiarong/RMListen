@@ -6,6 +6,7 @@ package com.rm.baselisten.model
  * version: 1.0
  */
 data class BaseToastModel constructor(
-    val content : String ? = "",
-    val contentId : Int  = -1
+    val content: String? = "",
+    val contentId: Int = -1,
+    val isCenter: Boolean = false
 )

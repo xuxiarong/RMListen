@@ -3,6 +3,7 @@ package com.rm.module_listen.viewmodel
 import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
@@ -131,7 +132,6 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
             repository.deleteSheet("${data.get()?.sheet_id}").checkResult(
                 onSuccess = {
                     showContentView()
-                    DLog.i("----->", "删除成功")
                     deleteSuccess()
                     mDialog.dismiss()
                 },
@@ -157,7 +157,7 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
     fun dialogSheetDetailEditSheetFun(view: View) {
         data.get()?.let {
             getActivity(view.context)?.let { activity ->
-                ListenDialogCreateSheetHelper(this, activity).setTitle("编辑听单")
+                ListenDialogCreateSheetHelper(this, activity).setTitle(CONTEXT.getString(R.string.listen_edit_sheet))
                     .showEditDialog(
                         it.sheet_id,
                         success = { sheetName ->
@@ -192,7 +192,6 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
      * 将音频从听单移除
      */
     fun removeAudioFun(bean: AudioBean) {
-        DLog.i("---------->", "听单移除")
         showLoading()
         launchOnIO {
             repository.removeAudio("${data.get()?.sheet_id}", bean.audio_id).checkResult(

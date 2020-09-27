@@ -17,7 +17,6 @@
     <string name="listen_find_similar">找相似</string>
     <string name="listen_unsubscribe">取消订阅</string>
     <string name="listen_delete">删除</string>
-    <string name="listen_edit_sheet">编辑听单</string>
 
     <string name="listen_add_to_book_list">添加到书单</string>
     <string name="listen_create_book_list">+新建书单</string>
@@ -25,6 +24,27 @@
     <string name="listen_create_sheet_list">新建听单</string>
     <string name="listen_title_text">标题：</string>
     <string name="listen_input_title">请输入标题</string>
+    <string name="listen_sheet_synopsis">听单简介：</string>
+    <string name="listen_input_optional">选填</string>
+
 
     <string name="listen_subscription_depict">%1s %2s</string>
+    <string name="listen_bought">已购</string>
+    <string name="listen_my_sheet">我的听单</string>
+    <string name="listen_collected_sheet">收藏听单</string>
+    <string name="listen_subscription">订阅</string>
+
+
+    <string name="listen_add_success_tip">添加成功,请到我的听单中查看</string>
+    <string name="listen_add_fail">添加失败</string>
+    <string name="listen_edit_fail">编辑失败</string>
+    <string name="listen_edit_success_tip">修改成功,请到我的听单中查看</string>
+    <string name="listen_input_char_tip">不能输入特殊字符</string>
+    <string name="listen_input_length_tip">长度不能大于20</string>
+    <string name="listen_add_success">添加成功</string>
+    <string name="listen_edit_sheet">编辑听单</string>
+    <string name="listen_set_top_fail">置顶失败</string>
+    <string name="listen_set_top_success">置顶成功</string>
+    <string name="listen_cancel_top_fail">取消置顶失败</string>
+    <string name="listen_cancel_top_success">取消置顶成功</string>
 </resources>

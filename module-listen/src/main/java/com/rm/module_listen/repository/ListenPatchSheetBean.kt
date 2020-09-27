@@ -6,4 +6,8 @@ package com.rm.module_listen.repository
  * @data 9/16/20
  * @description 编辑听单的body对象
  */
-class ListenPatchSheetBean constructor(var sheet_name: String, var sheet_id: String)
+class ListenPatchSheetBean constructor(
+    var sheet_name: String,
+    var description: String,
+    var sheet_id: String
+)

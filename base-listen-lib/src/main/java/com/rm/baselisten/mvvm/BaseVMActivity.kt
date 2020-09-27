@@ -110,9 +110,9 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         })
         mViewModel.baseToastModel.observe(this, Observer {
             if (it.contentId > 0) {
-                ToastUtil.show(this@BaseVMActivity, getString(it.contentId))
+                ToastUtil.show(this@BaseVMActivity, getString(it.contentId), it.isCenter)
             } else {
-                ToastUtil.show(this@BaseVMActivity, it.content)
+                ToastUtil.show(this@BaseVMActivity, it.content, it.isCenter)
             }
         })
 

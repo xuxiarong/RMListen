@@ -25,7 +25,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_subscription_adapter_icon"
             bindUrl="@{item.cover_url}"
-            corner="@{@dimen/dp_4}"
+            corner="@{4f}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"
@@ -53,11 +53,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_num"
             style="@style/BusinessTextStyleFourth_3"
-            bindText="@{item.getUnreadStr()}"
+            isVisible="@{item.unread>item.last_unread}"
             android:layout_width="@dimen/dp_18"
             android:layout_height="@dimen/dp_18"
             android:background="@drawable/business_shape_circle_ff5e5e"
             android:gravity="center"
+            android:text="@{item.getUnreadStr()}"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@id/listen_subscription_adapter_title"
             app:layout_constraintEnd_toEndOf="parent"

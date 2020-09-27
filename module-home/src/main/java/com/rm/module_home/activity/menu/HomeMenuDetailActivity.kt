@@ -2,21 +2,37 @@ package com.rm.module_home.activity.menu
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.renderscript.Allocation
+import android.renderscript.Element
+import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
+import com.bumptech.glide.request.transition.Transition
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.module_home.BR
+import com.rm.module_home.BlurUtil
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuDetailBinding
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.viewmodel.HomeMenuDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
+import com.bumptech.glide.request.target.BitmapImageViewTarget as BitmapImageViewTarget1
 
 class HomeMenuDetailActivity :
     BaseVMActivity<HomeActivityListenMenuDetailBinding, HomeMenuDetailViewModel>() {
@@ -62,6 +78,20 @@ class HomeMenuDetailActivity :
         }
     }
 
+    private fun blur(bitmap: Bitmap, radius: Float): Bitmap {
+        val output = Bitmap.createBitmap(bitmap) // 创建输出图片
+        val rs = RenderScript.create(this)// 构建一个RenderScript对象
+        val gaussianBlue = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs)) // 创建高斯模糊脚本
+        val allIn = Allocation.createFromBitmap(rs, bitmap) // 创建用于输入的脚本类型
+        val allOut = Allocation.createFromBitmap(rs, output) // 创建用于输出的脚本类型
+        gaussianBlue.setRadius(radius) // 设置模糊半径，范围0f<radius<=25f
+        gaussianBlue.setInput(allIn) // 设置输入脚本类型
+        gaussianBlue.forEach(allOut) // 执行高斯模糊算法，并将结果填入输出脚本类型中
+        allOut.copyTo(output) // 将输出内存编码为Bitmap，图片大小必须注意
+        rs.destroy()// 关闭RenderScript对象，API>=23则使用rs.releaseAllContexts()
+        return output
+
+    }
 
     override fun initData() {
         mViewModel.showLoading()
@@ -75,7 +105,7 @@ class HomeMenuDetailActivity :
             home_menu_detail_recycler_view,
             false
         ).apply {
-            this.root.visibility=View.GONE
+            this.root.visibility = View.GONE
             mViewModel.mAdapter.addHeaderView(this.root)
         }
     }
