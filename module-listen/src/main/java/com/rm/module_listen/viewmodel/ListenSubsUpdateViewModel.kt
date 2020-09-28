@@ -148,7 +148,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             val chapter = iterator.next()
             chapter.itemType = R.layout.listen_item_subs_list_chapter
             if (tempAllAudioList != null && tempAllAudioList.size > 0) {
-                val lastAudio = tempAllAudioList[tempAllAudioList.size - 1]
+                val lastAudio = tempAllAudioList.last()
                 if (lastAudio.info.audio_id == chapter.audio_id) {
                     lastAudio.chapter.add(chapter)
                     iterator.remove()
@@ -178,6 +178,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     fun onTopDateClick(model : ListenSubsDateModel){
         model.isSelected = true
+        subsDateAdapter.notifyItemChanged(subsAdapter.data.indexOf(model))
     }
 
 }
