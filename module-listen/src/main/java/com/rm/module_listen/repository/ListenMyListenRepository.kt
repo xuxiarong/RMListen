@@ -3,8 +3,7 @@ package com.rm.module_listen.repository
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.module_listen.api.ListenApiService
-import com.rm.module_listen.model.ChapterList
-import com.rm.module_listen.model.ListenSubsModel
+import com.rm.module_listen.model.ListenChapterList
 import com.rm.module_listen.model.ListenSubsNumberModel
 
 /**
@@ -17,8 +16,8 @@ class ListenMyListenRepository(private val service: ListenApiService) : BaseRepo
     /**
      * 我的听单
      */
-    suspend fun getListenSubsUpgradeList(): BaseResult<ChapterList> {
-        return apiCall { service.listenUpgrade() }
+    suspend fun getListenSubsUpgradeList( page : Int, pageSize : Int): BaseResult<ListenChapterList> {
+        return apiCall { service.listenUpgrade(page,pageSize) }
     }
 
     suspend fun getSubsNumber(): BaseResult<ListenSubsNumberModel> {

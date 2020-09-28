@@ -1,12 +1,15 @@
 package com.rm.module_listen.model
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.module_listen.R
+
 /**
  * desc   :
  * date   : 2020/09/24
  * version: 1.0
  */
 data class ListenChapterList(
-    val list: List<ListenAudioChapter>,
+    val list: ArrayList<ListenAudioChapter>,
     val msg: String,
     val total: Long
 )
@@ -23,5 +26,34 @@ data class ListenAudioChapter(
     val play_count: String,
     val sequence: String,
     val size: String,
-    val upgrade_time: String
-)
+    val upgrade_time: Long
+):MultiItemEntity{
+    override var itemType = R.layout.listen_item_subs_list_chapter
+}
+
+data class ListenAudio(
+    val info : ListenAudioInfo,
+    val chapter : ArrayList<ListenAudioChapter>):MultiItemEntity{
+    override var itemType = R.layout.listen_item_audio_rv
+}
+
+data class ListenAudioInfo(
+    val audio_id: String,
+    val cover_url: String,
+    val audio_name: String,
+    val upgrade_time: Long):MultiItemEntity{
+    override var itemType = R.layout.listen_item_subs_list_audio
+}
+
+
+data class ListenSubsDateModel constructor(
+    val date: String = "",
+    var isSelected : Boolean = false,
+    var isTopRvItem : Boolean = false
+):MultiItemEntity{
+    override var itemType = if(isTopRvItem){
+        R.layout.listen_item_subs_top_date
+    }else{
+        R.layout.listen_item_subs_list_audio_date
+    }
+}

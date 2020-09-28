@@ -10,9 +10,7 @@
             name="viewModel"
             type="com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel" />
 
-        <variable
-            name="item"
-            type="com.rm.module_listen.model.ListenAudioDateModel" />
+
     </data>
 
 
@@ -25,8 +23,7 @@
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginBottom="14dp"
         android:singleLine="true"
-        android:text="@{item.date}"
-        bindDateTextColor="@{item.selected}"
+
         tools:text="心要大，脚要实" />
 
 </layout>

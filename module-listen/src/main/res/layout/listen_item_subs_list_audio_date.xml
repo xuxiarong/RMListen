@@ -12,15 +12,15 @@
 
         <variable
             name="item"
-            type="com.rm.module_listen.model.ListenAudioDateModel" />
+            type="com.rm.module_listen.model.ListenSubsDateModel" />
     </data>
 
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="22dp"
         android:gravity="center_vertical"
-        android:textColor="@color/business_color_b1b1b1"
+        android:textColor="@color/business_color_b3333333"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_14"

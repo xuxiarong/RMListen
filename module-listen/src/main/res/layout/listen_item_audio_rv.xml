@@ -9,6 +9,9 @@
         <variable
             name="viewModel"
             type="com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel" />
+        <variable
+            name="item"
+            type="com.rm.module_listen.model.ListenAudio" />
 
     </data>
 
@@ -22,10 +25,11 @@
         android:layout_marginEnd="@dimen/padding_width">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listenItemEarlyRv"
+            android:id="@+id/listenAudioRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_noSolid="true"
+            bindVerticalLayout="@{viewModel.getAudioAdapter(item)}"
             app:layout_roundRadius="@dimen/dp_8"
             app:layout_shadowColor="#55b1b1b1"
             app:layout_shadowRadius="@dimen/dp_6" />

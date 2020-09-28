@@ -12,7 +12,7 @@
 
         <variable
             name="item"
-            type="com.rm.module_listen.model.ListenSubsChapter" />
+            type="com.rm.module_listen.model.ListenAudioChapter" />
     </data>
 
 
@@ -105,7 +105,6 @@
             android:layout_marginStart="@dimen/dp_2"
             android:layout_width="wrap_content"
             android:layout_height="14dp"
-            android:text="@{item.upgrade_time}"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="@dimen/business_text_size_12sp"
             android:layout_marginBottom="@dimen/dp_14"
