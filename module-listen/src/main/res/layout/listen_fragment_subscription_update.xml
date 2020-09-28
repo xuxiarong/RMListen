@@ -9,34 +9,35 @@
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listenSubsDataRv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="@dimen/dp_16"
-            isVisible="@{viewModel.subsDateVisible}"
             bindHorizontalLayout="@{viewModel.subsDateAdapter}"
+            isVisible="@{viewModel.subsDateVisible}"
             android:layout_width="match_parent"
-            android:layout_height="44dp" />
+            android:layout_height="44dp"
+            android:layout_marginStart="@dimen/dp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess()}"
+            bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
             bindOnLoadMoreListener="@{viewModel.getSubsDataFromService}"
+            bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="44dp"
             app:srlEnableLoadMore="true"
-            app:srlEnableRefresh="false"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            app:srlEnableRefresh="false">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listenSubscriptionRv"
+                bindVerticalLayout="@{viewModel.subsAudioAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                bindVerticalLayout="@{viewModel.subsAdapter}"
                 android:layout_marginBottom="70dp" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
