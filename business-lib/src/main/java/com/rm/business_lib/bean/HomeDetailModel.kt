@@ -37,7 +37,8 @@ data class DetailArticle(
     val audio_cover_url: String,
     @SerializedName("tags")
     val detail_tags: MutableList<DetailTags>,
-    val anchor: Anchor
+    val anchor: Anchor,
+    val sort:String
 ):Serializable
 
 data class Anchor(

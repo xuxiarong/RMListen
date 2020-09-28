@@ -50,8 +50,8 @@ public class ScrollLayout extends FrameLayout {
     private static final int MIN_SCROLL_DURATION = 50;//最小滚动时间
     private static final int FLING_VELOCITY_SLOP = 80;//抛射速度
     private static final float DRAG_SPEED_MULTIPLIER = 1.2f;//拖曳速度倍增器
-    private static final int DRAG_SPEED_SLOP = 30;//拖曳速度坡度
-    private static final int MOTION_DISTANCE_SLOP = 10;//运动距离滑道
+    private static final int DRAG_SPEED_SLOP = 60;//拖曳速度坡度
+    private static final int MOTION_DISTANCE_SLOP = 30;//运动距离滑道
     private static final float SCROLL_TO_CLOSE_OFFSET_FACTOR = 0.5f;
     private static final float SCROLL_TO_EXIT_OFFSET_FACTOR = 0.8f;
     private final GestureDetector.OnGestureListener gestureListener =
