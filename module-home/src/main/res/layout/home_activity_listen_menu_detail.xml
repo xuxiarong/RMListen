@@ -16,6 +16,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_menu_detail_iv_bg"
+            blurUrl="@{viewModel.data.cover_url}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="fitXY"
@@ -34,6 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_16"
+                android:onClick="@{()->viewModel.clickBack()}"
                 android:paddingTop="@dimen/dp_9"
                 android:paddingBottom="@dimen/dp_9"
                 android:src="@drawable/base_icon_back"
@@ -45,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_16"
+                android:onClick="@{()->viewModel.clickShare()}"
                 android:paddingTop="@dimen/dp_9"
                 android:paddingBottom="@dimen/dp_9"
                 android:src="@drawable/home_icon_share"
@@ -57,6 +60,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:singleLine="true"
+                android:text="@{viewModel.data.sheet_name}"
                 android:textColor="@color/business_color_0f0f0f"
                 android:textSize="@dimen/business_text_size_18sp"
                 android:visibility="gone"
@@ -67,6 +71,11 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/home_menu_detail_refresh"
+            bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore()}"
+            bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess()}"
+            bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
+            bindOnLoadMoreListener="@{viewModel.loadData}"
+            bindOnRefreshListener="@{viewModel.refreshData}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_12"

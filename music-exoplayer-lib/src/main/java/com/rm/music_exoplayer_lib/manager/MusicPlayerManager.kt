@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.constants.MUSIC_ALARM_MODEL_0
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
@@ -54,6 +55,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mConnection = MusicPlayerServiceConnection()
         mConnection?.let {
             val intent = Intent(context, MusicPlayerService::class.java)
+            context.startService(intent)
             context.bindService(
                 intent, it,
                 Context.BIND_AUTO_CREATE
@@ -228,10 +230,16 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mBinder?.setPlayerAlarmModel(model)
     }
 
+    override fun getPlayerAlarmModel(): Int =  mBinder?.getPlayerAlarmModel()?: MUSIC_ALARM_MODEL_0
+
+    override fun getPlayerAlarmTime(): Long = mBinder?.getPlayerAlarmTime()?: Long.MAX_VALUE
+
     override fun setNotificationEnable(enable: Boolean) {
         mBinder?.setNotificationEnable(enable)
 
     }
+
+    override fun getServiceName(): String = mBinder?.getServiceName()?:""
 
 
 }

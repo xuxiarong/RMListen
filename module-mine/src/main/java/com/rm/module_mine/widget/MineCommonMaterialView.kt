@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.binding.bindUrl
+import com.rm.baselisten.binding.isVisible
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.dimen
@@ -42,6 +43,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
     private lateinit var userIcon: AppCompatImageView
     private lateinit var userText: AppCompatTextView
 
+    private var userTextStr: String? = ""
     private var materialNameStr: String? = ""
     private var materialIconRes: Int = 0
     private var needLine = false
@@ -56,6 +58,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
         val ta =
             context.obtainStyledAttributes(attrs, R.styleable.MineCommonMaterialView)
         materialNameStr = ta.getString(R.styleable.MineCommonMaterialView_material_name)
+        userTextStr = ta.getString(R.styleable.MineCommonMaterialView_user_text)
         materialIconRes = ta.getResourceId(
             R.styleable.MineCommonMaterialView_material_icon,
             R.drawable.icon_arrow_right
@@ -73,12 +76,15 @@ class MineCommonMaterialView @JvmOverloads constructor(
         userText = findViewById(R.id.mine_widget_common_material_user_text)
 
         materialName.text = materialNameStr
+        userText.text = userTextStr
+        userText.isVisible(!TextUtils.isEmpty(userTextStr))
+
         materialIcon.setImageResource(materialIconRes)
         setPadding(
             dimen(R.dimen.dp_16),
+            0,
             dimen(R.dimen.dp_16),
-            dimen(R.dimen.dp_16),
-            dimen(R.dimen.dp_16)
+            0
         )
         setBackgroundColor(Color.WHITE)
     }
@@ -131,11 +137,12 @@ class MineCommonMaterialView @JvmOverloads constructor(
     }
 }
 
-@BindingAdapter("userText")
-fun MineCommonMaterialView.userText(userText: String?) {
-    DLog.i("------>>>userText", "$userText")
+@BindingAdapter("userText", "defaultText", requireAll = false)
+fun MineCommonMaterialView.userText(userText: String?, defaultText: String?) {
     if (!TextUtils.isEmpty(userText)) {
         setMaterialUserText(userText!!)
+    } else {
+        setMaterialUserText(defaultText ?: "")
     }
 }
 
@@ -143,8 +150,5 @@ fun MineCommonMaterialView.userText(userText: String?) {
 fun MineCommonMaterialView.userIcon(userIconUrl: String?) {
     if (!TextUtils.isEmpty(userIconUrl)) {
         setMaterialUserIcon(userIconUrl)
-    } else {
-        //TODO test
-        setMaterialUserIcon("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg")
     }
 }

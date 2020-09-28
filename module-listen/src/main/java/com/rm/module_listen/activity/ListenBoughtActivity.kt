@@ -44,7 +44,7 @@ class ListenBoughtActivity :
 
     override fun initView() {
         super.initView()
-        val baseTitleModel = BaseTitleModel().setTitle("已购")
+        val baseTitleModel = BaseTitleModel().setTitle(getString(R.string.listen_bought))
             .setLeftIcon(R.drawable.base_icon_back)
             .setLeftIconClick {
                 finish()

@@ -1,8 +1,6 @@
 package com.rm.module_home.adapter
 
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
@@ -13,8 +11,6 @@ import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.viewmodel.HomeMenuViewModel
-import com.rm.module_home.databinding.HomeAdapterMenuBinding
-import com.rm.module_home.databinding.HomeAdapterMenuBookBinding
 
 /**
  * desc   : 书单列表Adapter

@@ -46,6 +46,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_14"
+            bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+            bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
+            bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
+            bindOnRefreshListener="@{viewModel.refreshData}"
+            bindOnLoadMoreListener="@{viewModel.loadData}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/listen_dialog_sheet_line">
@@ -53,6 +58,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listen_dialog_sheet_recycler_view"
                 android:layout_width="match_parent"
+                bindVerticalLayout="@{viewModel.mAdapter}"
                 android:layout_height="match_parent" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

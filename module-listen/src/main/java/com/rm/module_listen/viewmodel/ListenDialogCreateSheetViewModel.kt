@@ -2,15 +2,14 @@ package com.rm.module_listen.viewmodel
 
 import android.text.TextUtils
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
-import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.databinding.ListenDialogCreateSheetBinding
 import com.rm.module_listen.repository.ListenDialogCreateSheetRepository
 import com.rm.module_listen.repository.ListenPatchSheetBean
@@ -76,14 +75,12 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
             repository.createSheet(sheet_name, description).checkResult(
                 onSuccess = {
                     baseViewModel.showContentView()
-                    DLog.i("----->", "添加成功")
-                    baseViewModel.showToast("添加成功,请到我的听单中查看")
+                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_success_tip))
                     mDialog.dismiss()
                 },
                 onError = {
                     baseViewModel.showContentView()
-                    baseViewModel.showToast("添加失败")
-                    DLog.i("----->", "添加失败  $it")
+                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_fail))
                 }
             )
         }
@@ -101,15 +98,13 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
             repository.editSheet(bean).checkResult(
                 onSuccess = {
                     baseViewModel.showContentView()
-                    DLog.i("----->", "编辑成功")
                     editSuccess(bean.sheet_name)
-                    baseViewModel.showToast("修改成功,请到我的听单中查看")
+                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_edit_success_tip))
                     mDialog.dismiss()
                 },
                 onError = {
                     baseViewModel.showContentView()
-                    baseViewModel.showToast("编辑失败")
-                    DLog.i("----->", "编辑失败  $it")
+                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_edit_fail))
                 }
             )
         }
@@ -122,24 +117,25 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
     private fun checkText() {
         if (inputText.get() != null) {
             val str = inputText.get()!!
+            val description =
+                dataBinding?.listenDialogCreateSheetEditSynopsis?.text.toString()
             when {
                 containsEmoji(str) -> {
-                    baseViewModel.showToast("不能输入特殊字符")
+                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_input_char_tip))
                 }
                 numberOfWords(str) -> {
-                    baseViewModel.showToast("长度不能大于20")
+                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_input_length_tip))
                 }
                 else -> {
                     if (sheetId.get() == null) {
-                        createSheet(str, "")
+                        createSheet(str, description)
                     } else {
-                        val bean = ListenPatchSheetBean(str, sheetId.get()!!)
-                        editSheet(bean)
+                        editSheet(ListenPatchSheetBean(str, description, sheetId.get()!!))
                     }
                 }
             }
         } else {
-            baseViewModel.showToast("请输入标题")
+            baseViewModel.showToast(CONTEXT.getString(R.string.listen_input_title))
         }
     }
 

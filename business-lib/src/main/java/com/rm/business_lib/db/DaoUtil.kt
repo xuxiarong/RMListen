@@ -9,14 +9,13 @@ import org.greenrobot.greendao.query.QueryBuilder
  * date   : 2020/08/13
  * version: 1.0
  */
-class DaoUtil<T, K> {
+class DaoUtil<T, K> @JvmOverloads  constructor(cls:Class<T>,key:K) {
 
     var mSession: AbstractDao<T, K>? = null
 
-    constructor(cls:Class<T>,key:K){
-        mSession=DaoManager.daoManager.daoSession.getDao(cls) as AbstractDao<T, K>
+    init {
+        mSession=DaoManager.daoManager.daoSession?.getDao(cls) as AbstractDao<T, K>
     }
-
 
 
     //保存单个数据
@@ -77,9 +76,7 @@ class DaoUtil<T, K> {
         mSession?.updateInTx(items)
     }
 
-    fun query(key: K): T? {
-        return mSession?.load(key)
-    }
+//    fun query(key: K): T? =  mSession?.load(key)
 
     fun queryAll(): List<T>? {
         return mSession?.loadAll()
@@ -107,4 +104,9 @@ class DaoUtil<T, K> {
     fun detach(item: T) {
         mSession?.detach(item)
     }
+
+
+    fun querySingle(k: K): T? =mSession?.load(k)
+
+
 }

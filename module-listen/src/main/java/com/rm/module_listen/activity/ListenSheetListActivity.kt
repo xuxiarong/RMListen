@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.ListenSheetListType
@@ -40,7 +41,7 @@ class ListenSheetListActivity : BaseActivity() {
     @ListenSheetListType
     private var sheetType = LISTEN_SHEET_LIST_MY_LIST
 
-    private val mListTabText = mutableListOf("我的听单", "收藏听单")
+    private val mListTabText = mutableListOf(CONTEXT.getString(R.string.listen_my_sheet), CONTEXT.getString(R.string.listen_collected_sheet))
 
 
     override fun getLayoutId(): Int {

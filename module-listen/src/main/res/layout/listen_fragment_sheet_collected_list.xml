@@ -10,11 +10,17 @@
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/listen_sheet_collected_list_refresh"
+        bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
+        bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
+        bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+        bindOnLoadMoreListener="@{viewModel.loadData}"
+        bindOnRefreshListener="@{viewModel.refreshData}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listen_sheet_collected_list_recycler_view"
+            bindVerticalLayout="@{viewModel.mAdapter}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingStart="@dimen/dp_16"

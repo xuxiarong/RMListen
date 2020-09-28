@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -23,4 +24,6 @@ interface PlayService : ApplicationProvider {
         context: Context, bean: HomeDetailModel?,
         index: Int
     )
+    //播放历史
+    fun queryPlayBookList(): List<HistoryPlayBook>?
 }

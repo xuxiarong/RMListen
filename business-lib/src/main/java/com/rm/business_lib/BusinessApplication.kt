@@ -6,6 +6,7 @@ import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.getLongMMKV
 import com.rm.baselisten.util.getStringMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.db.DaoManager
 import com.rm.business_lib.helpter.parseToken
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.net.api.BusinessApiService
@@ -15,6 +16,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.greenrobot.greendao.database.Database
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -41,6 +43,8 @@ open class BusinessApplication : BaseApplication() {
 //            layout.setEnableLoadMore(true)
             ClassicsFooter(context) //.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
         }
+
+
     }
 
     private val apiService by lazy {
@@ -56,7 +60,7 @@ open class BusinessApplication : BaseApplication() {
             androidContext(this@BusinessApplication)
         }
         Cxt.context = CONTEXT
-
+        DaoManager.daoManager.initDaoManger()
         // 检测token是否过期
         checkToken()
     }

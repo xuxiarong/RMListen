@@ -16,6 +16,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_detail_iv_bg"
+            blurUrl="@{viewModel.data.cover_url}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="fitXY"
@@ -34,8 +35,10 @@
                 android:id="@+id/listen_sheet_detail_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_16"
+                android:onClick="@{()->viewModel.clickBack()}"
+                android:paddingStart="@dimen/dp_16"
                 android:paddingTop="@dimen/dp_9"
+                android:paddingEnd="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_9"
                 android:src="@drawable/base_icon_back"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,10 +46,13 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/listen_sheet_detail_more"
+                isVisible="@{viewModel.data.created_from!=3}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_16"
+                android:onClick="@{(view)->viewModel.clickMore(view)}"
+                android:paddingStart="@dimen/dp_16"
                 android:paddingTop="@dimen/dp_9"
+                android:paddingEnd="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_9"
                 android:src="@drawable/business_icon_more"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -56,6 +62,11 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/listen_sheet_detail_refresh"
+            bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
+            bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
+            bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+            bindOnLoadMoreListener="@{viewModel.loadData}"
+            bindOnRefreshListener="@{viewModel.refreshData}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_12"

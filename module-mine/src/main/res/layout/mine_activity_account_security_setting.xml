@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.rm.module_mine.widget.MineCommonMaterialView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            app:material_name="@string/mine_change_password"
+            app:user_text="@string/mine_modify" />
+
+        <com.rm.module_mine.widget.MineCommonMaterialView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            app:material_name="@string/mine_recently_logged_device" />
+
+        <com.rm.module_mine.widget.MineCommonSettingView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            app:setting_name="@string/mine_logout"
+            app:setting_show_icon="true"
+            app:setting_show_switch="false"
+            app:setting_tip="@string/mine_logout_tip" />
+
+    </LinearLayout>
+</layout>

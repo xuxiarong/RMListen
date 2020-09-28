@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_14"
-        android:onClick="@{(HomeTopListDataBean)->itemViewModel.itemClickFun(item)}">
+        android:onClick="@{(view)->itemViewModel.itemClickFun(view,item)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_top_list_book_adapter_icon"

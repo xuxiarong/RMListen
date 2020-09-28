@@ -19,7 +19,7 @@
         android:layout_height="match_parent">
 
         <include
-            layout="@layout/home_activity_detail_content"
+            layout="@layout/home_detail_activity_content"
             bind:viewModel="@{viewModel}" />
 
         <com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
@@ -40,7 +40,7 @@
                     android:id="@+id/detail_directory_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/businessWhite" />
+                    android:background="@color/business_color_e6ffffff" />
             </LinearLayout>
         </com.rm.business_lib.wedgit.bottomsheet.ScrollLayout>
 

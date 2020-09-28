@@ -2,6 +2,7 @@ package com.rm.baselisten
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.multidex.MultiDex
 import kotlin.properties.Delegates
 
@@ -27,5 +28,11 @@ open class BaseApplication : Application(){
         MultiDex.install(this);
 
     }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        Log.i("BaseApplication","${onTerminate()}")
+    }
+
 
 }

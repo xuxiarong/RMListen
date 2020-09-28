@@ -24,6 +24,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_menu_detail_book_adapter_icon"
             bindUrl="@{dialogItem.sheet_cover}"
+            corner="@{4f}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"
@@ -31,6 +32,16 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
 
+        <View
+            android:id="@+id/home_menu_detail_book_adapter_view"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/listen_shape_sheet_color_bdbdbd"
+            app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_book_adapter_icon"
+            app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_book_adapter_title"
@@ -39,8 +50,8 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_view"
+            app:layout_constraintTop_toTopOf="@id/home_menu_detail_book_adapter_view"
             tools:text="123" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -51,9 +62,9 @@
             bindText="@{dialogItem.num_audio}"
             android:drawablePadding="@dimen/dp_2"
             android:drawableStart="@drawable/business_icon_book_num"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_book_adapter_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"
+            app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_view"
             tools:text="124" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

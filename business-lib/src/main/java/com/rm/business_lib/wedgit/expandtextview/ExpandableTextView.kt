@@ -2,10 +2,10 @@ package com.rm.business_lib.wedgit.expandtextview
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,13 +16,14 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.sp
 import com.rm.business_lib.R
 
+
 class ExpandableTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), View.OnClickListener {
 
-    private var mMaxCount = 60//最大显示字数
+    private var mMaxLine = 3//最大行数
     private var mText: String? = null//当前的文本信息
     private var isExpand = true//是否折叠
     private lateinit var mTextView: TextView
@@ -30,6 +31,7 @@ class ExpandableTextView @JvmOverloads constructor(
     private var mTextColor = ContextCompat.getColor(context, R.color.business_text_color_333333)
     private var mTextSize = 0
     private var mExpandIcon = R.drawable.business_icon_unfold
+    private var textHeight: Int = 0
 
     init {
         val ta =
@@ -38,7 +40,7 @@ class ExpandableTextView @JvmOverloads constructor(
         mTextSize =
             ta.getDimensionPixelSize(R.styleable.ExpandableTextView_expand_text_size, sp(16f))
         mExpandIcon = ta.getResourceId(R.styleable.ExpandableTextView_expand_iv_icon, mExpandIcon)
-        mMaxCount = ta.getInteger(R.styleable.ExpandableTextView_expand_text_max_line, mMaxCount)
+        mMaxLine = ta.getInteger(R.styleable.ExpandableTextView_expand_text_max_line, mMaxLine)
         ta.recycle()
     }
 
@@ -49,23 +51,21 @@ class ExpandableTextView @JvmOverloads constructor(
 
     private fun initView() {
         mTextView = TextView(context)
-        mTextView.text = mText
-        mImageView = ImageView(context)
-        mImageView.visibility = View.GONE
-
         mTextView.setLineSpacing(dip(4).toFloat(), 1f)
-        addView(mTextView)
-
         mTextView.setTextColor(mTextColor)
         mTextView.textSize = 16f
+        addView(mTextView)
+        textHeight = textHeight()
 
-        val textHeight = textHeight()
+
+        mImageView = ImageView(context)
+        mImageView.visibility = View.GONE
         mImageView.setImageResource(mExpandIcon)
-        val layoutParams = LayoutParams(textHeight, textHeight)
+        val layoutParams = LayoutParams(textHeight * 2, textHeight)
         layoutParams.bottomToBottom = ConstraintSet.PARENT_ID
         layoutParams.endToEnd = ConstraintSet.PARENT_ID
-        addView(mImageView, layoutParams)
         mImageView.setOnClickListener(this)
+        addView(mImageView, layoutParams)
     }
 
     //设置文本信息
@@ -81,35 +81,41 @@ class ExpandableTextView @JvmOverloads constructor(
             visibility = View.GONE
             return
         }
+        mTextView.text = mText
         visibility = View.VISIBLE
 
-        val str = if (isExpand) {
-            //如果当前字数小于限制的字数则显示当前的文本
-            val end = if (mText!!.length > mMaxCount) {
-                mImageView.visibility = View.VISIBLE
-                mMaxCount
-            } else {
-                mImageView.visibility = View.GONE
-                mText!!.length
-            }
-            mText?.substring(0,end)
-        } else {
-            mText
-        }
-        mTextView.text = str
         mTextView.post {
-            val layout = mTextView.layout
-            val lineCount = layout.lineCount//获取当前TextView总行数
-            val lineStart = layout.getLineStart(lineCount - 1)
-            val lineEnd = layout.getLineEnd(lineCount - 1)
-            val substring = mText?.substring(lineStart, lineEnd)//获取最后一行的文本
-            val measureTextWidth = mTextView.paint.measureText(substring)//测量最后一行文本所需要的宽度
-            val fl = measureTextWidth + mImageView.width
-            if (fl >= width) {//判断父容器宽度是否能够显示当前文本+图片，如果不行则对当前的文本追加两个空格达到换行的目的
-                val stringBuffer = StringBuffer()
-                stringBuffer.append(str)
-                stringBuffer.append("\t\t")
-                mTextView.text = stringBuffer.toString()
+            if (mMaxLine < mTextView.lineCount && isExpand) {
+                mImageView.visibility = View.VISIBLE
+                val buffer = StringBuffer()
+                mTextView.layout?.let {
+                    var start = 0
+                    var end: Int
+                    var lastWidth = 0f//最后一行的宽度
+                    var maxWidth = 0f//最大宽度
+                    var sub: String
+
+                    for (i in 0 until mMaxLine) {
+                        //获取当前这一行的字数
+                        end = it.getLineEnd(i)
+                        lastWidth = it.getLineWidth(i)
+                        if (i == 0) {
+                            maxWidth = lastWidth
+                        }
+                        //获取当前这一行的文本
+                        sub = mText!!.substring(start, end)
+                        start = end
+                        buffer.append(sub)
+                    }
+
+
+                    //判断最后一行是否能够显示完全，如果显示不全则添加空格让其换行
+                    if ((textHeight * 2 + lastWidth) > maxWidth) {
+                        buffer.delete(buffer.length - 4, buffer.length)
+                        buffer.append("...")
+                    }
+                    mTextView.text = buffer
+                }
             }
         }
     }

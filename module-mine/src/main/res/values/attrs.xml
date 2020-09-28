@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="MineCommonMaterialView">
         <attr name="material_name" format="string" />
+        <attr name="user_text" format="string" />
         <attr name="material_icon" format="reference" />
         <attr name="need_line" format="boolean" />
     </declare-styleable>
@@ -10,5 +11,7 @@
         <attr name="setting_name" format="string" />
         <attr name="setting_tip" format="string" />
         <attr name="setting_checked" format="boolean" />
+        <attr name="setting_show_icon" format="boolean" />
+        <attr name="setting_show_switch" format="boolean" />
     </declare-styleable>
 </resources>

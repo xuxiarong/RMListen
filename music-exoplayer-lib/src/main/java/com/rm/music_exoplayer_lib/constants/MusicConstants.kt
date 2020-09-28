@@ -9,11 +9,14 @@ package com.rm.music_exoplayer_lib.constants
 
 const val ACTION_ALARM_REPLENISH_STOCK = "witmoon.auto.replenish.stock.action"
 const val ACTION_ALARM_SYNCHRONIZE = "witmoon.auto.synchronize.action"
+
 //播放模式
-val PLAY_MODEL="PLAY_MODEL"
+val PLAY_MODEL = "PLAY_MODEL"
+
 //播放闹钟设置
 val SP_KEY_ALARM_MODEL = "SP_ALARM_MODEL"
-val SP_KEY_ALARM_MODEL_TIME="SP_KEY_ALARM_MODEL_TIME"
+//val SP_KEY_ALARM_MODEL_TIME = "SP_KEY_ALARM_MODEL_TIME"
+
 //前台进程通知群组ID
 var CHANNEL_ID = "com.android.rm.music_exoplayer_lib"
 
@@ -41,6 +44,7 @@ val MUSIC_INTENT_ACTION_CLICK_COLLECT = "IMUSIC_INTENT_ACTION_CLICK_COLLECT"
 //参数传入
 val MUSIC_KEY_MEDIA_ID = "MUSIC_KEY_MEDIA_ID"
 var BASE_SCREEN_WIDTH = 1080.0.toFloat()
+
 //锁屏唱盘比例
 var SCALE_DISC_LOCK_SIZE = (680.0 / BASE_SCREEN_WIDTH).toFloat()
 
@@ -64,7 +68,11 @@ const val MUSIC_ALARM_MODEL_30 = 30
 const val MUSIC_ALARM_MODEL_40 = 40
 const val MUSIC_ALARM_MODEL_60 = 60
 const val MUSIC_ALARM_MODEL_0 = 0 //无限期
-const val MUSIC_ALARM_MODEL_CURRENT = 5 //当前歌曲播放完成立即结束
+const val MUSIC_ALARM_MODEL_EPISODE_ONE = 1//一集
+const val MUSIC_ALARM_MODEL_EPISODE_TWO = 2//二集
+const val MUSIC_ALARM_MODEL_EPISODE_THREE = 3//三集
+const val MUSIC_ALARM_MODEL_EPISODE_FOUR = 4//四集
+const val MUSIC_ALARM_MODEL_EPISODE_FIVE = 5//五集
 
 
 /**

@@ -94,6 +94,7 @@ class BubbleSeekBar @JvmOverloads constructor(
         } else {
             mLayoutParams.type = TYPE_TOAST
         }
+
         mWindowManager.addView(mBubbleFL, mLayoutParams)
     }
 
@@ -208,8 +209,7 @@ class BubbleSeekBar @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-//        mWindowManager
-//        mWindowManager.removeViewImmediate(mBubbleFL)
+//        mWindowManager.removeView(mBubbleFL)
     }
 
     /**

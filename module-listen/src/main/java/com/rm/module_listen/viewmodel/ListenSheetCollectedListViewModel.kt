@@ -1,12 +1,13 @@
 package com.rm.module_listen.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import android.view.View
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
+import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_listen.adapter.ListenSheetCollectedListAdapter
 import com.rm.module_listen.bean.ListenSheetCollectedBean
 import com.rm.module_listen.bean.ListenSheetCollectedDataBean
 import com.rm.module_listen.repository.ListenSheetCollectedRepository
@@ -14,53 +15,147 @@ import com.rm.module_listen.repository.ListenSheetCollectedRepository
 class ListenSheetCollectedListViewModel(private val repository: ListenSheetCollectedRepository) :
     BaseVMViewModel() {
 
-    //数据源
-    val data = MutableLiveData<ListenSheetCollectedBean>()
+    /**
+     * 懒加载创建adapter对象
+     */
+    val mAdapter by lazy {
+        ListenSheetCollectedListAdapter(this)
+    }
 
-    //网络请求是否完成
-    val isRefreshOrLoadComplete = MutableLiveData<Boolean>()
+    val refreshStateModel = SmartRefreshLayoutStatusModel()
 
-    //item点击事件
-    var itemClick: (ListenSheetCollectedDataBean) -> Unit = {}
-    var itemChildClick: (AudioBean) -> Unit = {}
+    //每页加载的数据
+    private val pageSize = 10
+
+    //当前加载的页码
+    private var mPage = 1
+
+    //记录点击的bean对象
+    private var clickBean: ListenSheetCollectedDataBean? = null
 
     /**
      * 请求加载数据
      */
-    fun getData(page: Int, pageSize: Int) {
+    fun getData() {
         showLoading()
         launchOnIO {
-            repository.getCollectedList(page, pageSize).checkResult(
+            repository.getCollectedList(mPage, pageSize).checkResult(
                 onSuccess = {
-                    showContentView()
-                    isRefreshOrLoadComplete.value = true
-                    if (it.list.isNotEmpty()) {
-                        data.postValue(it)
-                    } else {
-                        showDataEmpty()
-                    }
+                    successData(it)
                 },
                 onError = {
-                    isRefreshOrLoadComplete.value = true
-                    showNetError()
-                    DLog.i("-------->", "$it")
+                    failData()
                 }
             )
         }
     }
 
     /**
+     * 处理成功数据
+     */
+    private fun successData(bean: ListenSheetCollectedBean) {
+        if (mPage == 1) {
+            //刷新完成
+            refreshStateModel.finishRefresh(true)
+            if (bean.list.isNotEmpty()) {
+                showContentView()
+                mAdapter.setList(bean.list)
+            } else {
+                showDataEmpty()
+            }
+        } else {
+            //加载更多完成
+            refreshStateModel.finishLoadMore(true)
+            mAdapter.addData(bean.list)
+        }
+
+        //是否有更多数据
+        refreshStateModel.setHasMore(bean.list.size >= pageSize)
+    }
+
+    /**
+     * 处理请求失败
+     */
+    private fun failData() {
+        if (mPage == 1) {
+            refreshStateModel.finishRefresh(false)
+        } else {
+            refreshStateModel.finishLoadMore(false)
+        }
+    }
+
+    /**
+     * 刷新
+     */
+    fun refreshData() {
+        mPage = 1
+        getData()
+    }
+
+    /**
+     * 加载更多
+     */
+    fun loadData() {
+        ++mPage
+        getData()
+    }
+
+    /**
      * item点击事件
      */
-    fun itemClickFun(bean: ListenSheetCollectedDataBean) {
-        itemClick(bean)
+    fun itemClickFun(view: View, bean: ListenSheetCollectedDataBean) {
+        getActivity(view.context)?.let {
+            clickBean = bean
+            RouterHelper.createRouter(HomeService::class.java)
+                .startHomeSheetDetailActivity(it, bean.sheet_id.toString(), 100)
+        }
     }
 
     /**
      * 子view item点击事件
      */
-    fun itemChildClickFun(bean: AudioBean) {
-        itemChildClick(bean)
+    fun itemChildClickFun(view: View, bean: AudioBean) {
+        getActivity(view.context)?.let {
+            RouterHelper.createRouter(HomeService::class.java)
+                .toDetailActivity(it, bean.audio_id)
+        }
+    }
+
+    /**
+     * 通过听单id 移除
+     */
+    fun remove(sheetId: String) {
+        if (clickBean != null) {
+            if (sheetId == clickBean!!.sheet_id.toString()) {
+                mAdapter.remove(clickBean!!)
+            } else {
+                removeIndex(sheetId)
+            }
+        } else {
+            removeIndex(sheetId)
+        }
+    }
+
+    /**
+     * 通过下标移除
+     */
+    private fun removeIndex(sheetId: String) {
+        val index = getIndex(sheetId)
+        if (index != -1) {
+            mAdapter.removeAt(index)
+        }
+    }
+
+    /**
+     * 通过听单id 获取下标
+     */
+    private fun getIndex(sheetId: String): Int {
+        mAdapter.data.forEachIndexed { index, bean ->
+            if (bean.sheet_id.toString() == sheetId) {
+                return index
+            }
+        }
+        return -1
     }
 
 }

@@ -1,8 +1,8 @@
 package com.rm.module_play.activity
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -12,7 +12,8 @@ import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
-import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.baselisten.util.getObjectMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
@@ -38,24 +39,27 @@ import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
-@Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
+
+@Suppress(
+    "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING",
+    "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+)
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
     MusicPlayerEventListener {
-
     private val mBookPlayerAdapter: BookPlayerAdapter by lazy {
         BookPlayerAdapter(mViewModel, BR.viewModel, BR.itemModel)
 
     }
     var homeDetailBean: HomeDetailModel? = null
-    var mAudioChapterListModel: AudioChapterListModel? = null
     var indexSong = 0
+    var fromGlobalValue: String? = ""
 
     companion object {
         val homeDetailModel = "homeDetailModel"
         val audioChapterListModel = "AudioChapterListModel"
         val songindex = "songIndex";
+        val fromGlobal = "fromGlobal"
         fun startActivity(
             context: Context,
             homeDetailBean: HomeDetailModel?,
@@ -69,8 +73,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
         }
 
-        fun startActivity(context: Context) {
+        fun startActivity(context: Context, fromGlobal: String) {
             val intent = Intent(context, BookPlayerActivity::class.java)
+            intent.putExtra(BookPlayerActivity.fromGlobal, fromGlobal)
             context.startActivity(intent)
         }
     }
@@ -100,15 +105,17 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun startObserve() {
-
         mViewModel.playPath.observe(this, Observer {
             it?.let {
                 musicPlayerManger.updateMusicPlayerData(it, indexSong)
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
                 GlobalplayHelp.instance.addOnPlayerEventListener()
-                musicPlayerManger.playOrPause()
+                if (fromGlobalValue.orEmpty().isEmpty()) {
+                    musicPlayerManger.startPlayMusic(indexSong)
+                }
             }
         })
+
         mViewModel.playControlAction.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
@@ -161,19 +168,18 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         })
     }
 
-    private fun getIntentParams(isOnCreate: Boolean) {
+
+    private fun getIntentParams() {
         //正在播放的对象
-        val currentPlayerMusic = musicPlayerManger
-            .getCurrentPlayerMusic()
-        currentPlayerMusic?.let {
-            if (!isOnCreate) {
-                return
-            }
-        }
         homeDetailBean = intent.getSerializableExtra(homeDetailModel) as? HomeDetailModel
+        //来自全局小圆圈点击进来
+        fromGlobalValue = intent.getStringExtra(fromGlobal)
 
-
+        if (fromGlobalValue.orEmpty().isNotEmpty()) {
+            homeDetailBean = homeDetailModel.getObjectMMKV(HomeDetailModel::class.java)
+        }
         homeDetailBean?.let {
+            homeDetailModel.putMMKV(it)
             val listValue = mViewModel.mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
             mViewModel.audioID.set(it.detaillist.audio_id)
@@ -187,18 +193,16 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             mViewModel.commentAudioComments(it.detaillist.audio_id)
             mViewModel.mutableList.postValue(listValue)
             mBookPlayerAdapter.notifyDataSetChanged()
+            mViewModel.setHistoryPlayBook(it)
         }
         indexSong = intent.getIntExtra(songindex, 0)
+
     }
 
     override fun initData() {
-        getIntentParams(true)
-
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        getIntentParams(true)
+        if (isServiceWork(musicPlayerManger.getServiceName())) {
+        }
+        getIntentParams()
 
     }
 
@@ -225,7 +229,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             playerControl?.baseAudioInfo?.audioId ?: "",
             playerControl?.baseAudioInfo?.chapterId ?: ""
         )
-
+        mViewModel.lastState.set(mViewModel.pathList.size>0&&position>0)
+        mViewModel.updatePlayBook(mViewModel.audioChapterModel.get()?.chapter_list?.getOrNull(position))
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -248,9 +253,29 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        ExoplayerLogger.exoLog("playbackState===>${playbackState}")
         mViewModel.playSate.set(playbackState)
-        mViewModel.playSate.notifyChange()
 
+    }
+
+    /**
+     * 判断服务是否正在运行
+     */
+    fun isServiceWork(
+        serviceName: String
+    ): Boolean {
+        var isWork = false
+        val myList: List<ActivityManager.RunningServiceInfo> =
+            (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).getRunningServices(100)
+        if (myList.isEmpty()) {
+            return false
+        }
+        myList.forEach {
+            val mName: String = it.service.className
+            if (mName == serviceName) {
+                isWork = true
+                return isWork
+            }
+        }
+        return isWork
     }
 }

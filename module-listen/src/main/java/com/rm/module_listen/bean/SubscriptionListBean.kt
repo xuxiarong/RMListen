@@ -11,7 +11,8 @@ data class SubscriptionListBean(
     var is_top: Int,//1: 已置顶；0:否
     var unread: Int,//未阅读的章节数
     var sequence: Int,//当前最新章节的集数
-    var cover_url: String//封面url
+    var cover_url: String,//封面url
+    var last_unread: Int//上一次请求未读数
 ) {
     fun getProgressStr(): String {
         return when (progress) {
@@ -31,17 +32,7 @@ data class SubscriptionListBean(
     }
 
     fun getUnreadStr(): String {
-        return when {
-            unread <= 0 -> {
-                ""
-            }
-            unread > 99 -> {
-                "99"
-            }
-            else -> {
-                "$unread"
-            }
-        }
+        return (unread - last_unread).toString()
     }
 
 }

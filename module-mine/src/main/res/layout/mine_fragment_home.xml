@@ -171,13 +171,14 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_home_vip_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
             android:text="@string/mine_vip"
             android:textColor="@color/business_color_ffdf85"
             android:textSize="@dimen/business_text_size_26sp"
             android:textStyle="italic|bold"
+            app:layout_constraintEnd_toEndOf="@id/mine_vip_bg_view"
             app:layout_constraintStart_toStartOf="@id/mine_vip_bg_view"
             app:layout_constraintTop_toTopOf="@id/mine_vip_bg_view" />
 

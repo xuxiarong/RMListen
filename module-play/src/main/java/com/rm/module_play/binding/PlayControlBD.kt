@@ -1,10 +1,13 @@
 package com.rm.module_play.binding
 
 import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
+import com.rm.module_play.R
 import com.rm.module_play.model.PlayControlModel
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -68,20 +71,26 @@ fun BubbleSeekBar.updateThumbText(str: String) {
 }
 
 
-@BindingAdapter("playStart", "playAction", requireAll = false)
-fun LottieAnimationView.startLottieAnimation(play: PlayControlModel?,playAction: (() -> Unit)) {
-    setOnClickListener {
-        playAction()
-        if (play?.state==true) {
-            setAnimation("play_stop.json")
-        } else {
-            setAnimation("stop_play.json")
+@BindingAdapter("playState")
+fun LottieAnimationView.startLottieAnimation(state: Int) {
+    if (state == 2 || state == 3) {
+        setAnimation("play_stop.json")
+    } else if (state == 1) {
+        setAnimation("stop_play.json")
+    }
+    playAnimation()
 
-        }
-        playAnimation()
+}
+
+@BindingAdapter("bindLastSrc")
+fun ImageView.bindLastSrc(state: Boolean=true) {
+    var resourceId = 0
+    if (state) {
+        resourceId= R.drawable.ic_icon_previouspiece_bc
+    } else {
+        resourceId= R.drawable.music_play_ic_icon_bf
 
     }
-    addAnimatorUpdateListener(AnimatorUpdateListener { animation ->
-        ExoplayerLogger.exoLog(  " 动画进度" + (animation.animatedFraction * 100).toInt() + "%")
-    })
+    setImageResource(resourceId)
+
 }

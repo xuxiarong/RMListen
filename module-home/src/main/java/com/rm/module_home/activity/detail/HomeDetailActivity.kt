@@ -4,15 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
@@ -29,8 +35,8 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.model.home.detail.CommentList
 import com.rm.module_home.viewmodel.HomeDetailViewModel
-import kotlinx.android.synthetic.main.home_activity_detail_content.*
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
+import kotlinx.android.synthetic.main.home_detail_activity_content.*
 
 /**
  * 书籍详情
@@ -55,7 +61,18 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             mutableListOf<ChapterList>(),
             R.layout.home_item_detail_chapter,
             BR.DetailChapterViewModel
-        )
+        ).apply {
+            setOnItemClickListener { adapter, view, position ->
+                mViewModel.detailViewModel.get()?.let {
+                    playService.toPlayPage(this@HomeDetailActivity, it, position)
+                }
+            }
+        }
+    }
+
+    //播放器路由
+    private val playService by lazy {
+        RouterHelper.createRouter(PlayService::class.java)
     }
 
     companion object {
@@ -78,15 +95,13 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     override fun initView() {
         super.initView()
         setD()
-        val layoutParams = (home_detail_title_cl.layoutParams) as ConstraintLayout.LayoutParams
+        val layoutParams = (home_detail_title_cl.layoutParams) as Toolbar.LayoutParams
         layoutParams.apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin
             stateHeight = getStateHeight(this@HomeDetailActivity)
             topMargin = stateHeight
         }
-
         audioId = intent?.getStringExtra(AUDIO_ID) ?: ""
-
         scroll_down_layout?.setMinOffset(0)
         scroll_down_layout?.setMaxOffset((screenHeight * 0.75).toInt())
         scroll_down_layout?.setExitOffset(dip(101))
@@ -94,20 +109,25 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         scroll_down_layout?.setIsSupportExit(true)
         scroll_down_layout?.setToOpen()
         val LayoutMargin = scroll_down_layout.layoutParams as ViewGroup.MarginLayoutParams
-        LayoutMargin.topMargin = stateHeight + dip(44)
+        LayoutMargin.topMargin = stateHeight + dip(48)
+
+        val ContentMargin = home_detail_icon.layoutParams as ViewGroup.MarginLayoutParams
+        ContentMargin.topMargin = stateHeight + dip(48)
+
         scroll_down_layout.layoutParams = LayoutMargin
         scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
         //audioId = "162163095869968384"
         if (audioId.orEmpty().isNotEmpty()) {
             mViewModel.intDetailInfo(audioId)
-            mViewModel.chapterList(audioId,1,20,"asc")
-            mViewModel.commentList(audioId,1,20)
+            mViewModel.chapterList(audioId, 1, 20, "asc")
+            mViewModel.commentList(audioId, 1, 20)
         }
 
-        home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)
-        detail_directory_recycler.bindVerticalLayout(homechapterAdater)
 
+        detail_directory_recycler.bindVerticalLayout(homechapterAdater)
+        //homeDetailCommentAdapter.addHeaderView(detailcontent)
+        home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
         //收藏点击事件
         mViewModel.clickCollected = { clickCollected() }
 
@@ -122,6 +142,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         mViewModel.detailViewModel.addOnPropertyChangedCallback(object :
             OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                //高斯效果
                 loadBlurImage(
                     img_glide,
                     mViewModel.detailViewModel.get()?.detaillist?.audio_cover_url ?: ""
@@ -138,24 +159,18 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             homechapterAdater.setList(mViewModel.detailChapterViewModel.value!!.chapterList)
         })*/
 
-        mViewModel.detailChapterViewModel.addOnPropertyChangedCallback(object : OnPropertyChangedCallback(){
+        mViewModel.detailChapterViewModel.addOnPropertyChangedCallback(object :
+            OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 homechapterAdater.setList(mViewModel.detailChapterViewModel.get()!!.chapter_list)
             }
         })
 
-        mViewModel.action.addOnPropertyChangedCallback(object : OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                mViewModel.detailViewModel.get()?.let {
-                    val router = RouterHelper.createRouter(PlayService::class.java)
-
-                    router.toPlayPage(this@HomeDetailActivity, it,0)
-                }
-
+        mViewModel.actionControl.observe(this, Observer {
+            mViewModel.detailViewModel.get()?.let {
+                playService.toPlayPage(this@HomeDetailActivity, it, 0)
             }
-
         })
-
 
     }
 
@@ -164,9 +179,9 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             override fun onScrollProgressChanged(currentProgress: Float) {
                 //Log.e("currentProgress",""+currentProgress)
                 if (currentProgress == 0f) {
-                    home_detail_title.visibility = View.VISIBLE
+                    //home_detail_title.visibility = View.VISIBLE
                 } else {
-                    home_detail_title.visibility = View.GONE
+                    //home_detail_title.visibility = View.GONE
                 }
             }
 
@@ -180,10 +195,9 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             }
         }
 
-    private val Chapter_headView by lazy {
-        View.inflate(this, R.layout.home_detail_chapter_headerview, null)
+    private val commenheader by lazy {
+        View.inflate(this, R.layout.home_detail_recyc_title, null)
     }
-
 
     override fun initData() {
 

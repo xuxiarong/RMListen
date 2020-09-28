@@ -13,6 +13,9 @@
         <activity android:name=".activity.MinePersonalInfoActivity" />
         <activity android:name=".activity.MinePlaySettingActivity" />
         <activity android:name=".activity.MineDownloadSettingActivity" />
+        <activity android:name=".activity.MineAccountSecuritySettingActivity" />
+        <activity android:name=".activity.MinePersonalSignatureSettingActivity" />
+        <activity android:name=".activity.MineNicknameSettingActivity" />
 
     </application>
 

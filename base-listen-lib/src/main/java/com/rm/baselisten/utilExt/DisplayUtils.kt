@@ -18,6 +18,10 @@ object DisplayUtils {
     fun getSp(context: Context,value: Float):Float{
         return context.sp(value).toFloat()
     }
+
+    fun getStateHeight(context: Context):Int{
+        return context.getStateHeight(context)
+    }
 }
 
 inline fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()

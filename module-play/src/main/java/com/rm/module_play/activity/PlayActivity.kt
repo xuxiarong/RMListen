@@ -4,12 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.provider.MediaStore
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
 import com.rm.baselisten.util.Cxt
@@ -26,10 +24,8 @@ import com.rm.module_play.databinding.ActivityPlayBinding
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
-import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.test.SearchResultInfo
-import com.rm.module_play.view.PlayButtonView
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString

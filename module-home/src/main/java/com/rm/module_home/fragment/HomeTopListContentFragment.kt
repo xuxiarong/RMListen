@@ -2,19 +2,11 @@ package com.rm.module_home.fragment
 
 import android.os.Bundle
 import androidx.annotation.IntDef
-import androidx.lifecycle.observe
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.component_comm.home.HomeService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.adapter.HomeTopListContentAdapter
 import com.rm.module_home.databinding.HomeFragmentTopListContentBinding
 import com.rm.module_home.viewmodel.HomeTopListContentFragmentViewModel
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
-import kotlinx.android.synthetic.main.home_fragment_top_list_content.*
 
 class HomeTopListContentFragment :
     BaseVMFragment<HomeFragmentTopListContentBinding, HomeTopListContentFragmentViewModel>() {
@@ -54,25 +46,9 @@ class HomeTopListContentFragment :
         }
     }
 
-
     private var mVisible = false//是否可见
     private var canRefreshData = false//是否能够刷新数据
-    private var mPage = 1//当前的页码
 
-    //每页加载数据条数
-    private val pageSize = 10
-
-
-    /**
-     * 懒加载构建adapter对象
-     */
-    private val mAdapter by lazy {
-        HomeTopListContentAdapter(
-            mViewModel,
-            BR.itemViewModel,
-            BR.item
-        )
-    }
 
     override fun initLayoutId() = R.layout.home_fragment_top_list_content
 
@@ -93,20 +69,6 @@ class HomeTopListContentFragment :
         arguments?.let {
             rankType = it.getInt(RANK_TYPE)
         }
-
-        home_top_list_recycler_content.apply {
-            bindVerticalLayout(mAdapter)
-        }
-
-        mViewModel.itemClick = {
-            context?.let { cox ->
-                RouterHelper.createRouter(HomeService::class.java)
-                    .toDetailActivity(cox, it.audio_id)
-            }
-        }
-
-        addRefreshListener()
-
     }
 
     /**
@@ -115,7 +77,6 @@ class HomeTopListContentFragment :
     fun changRankSeg(rankSeg: String) {
         canRefreshData = rankSeg != this.rankSeg
         this.rankSeg = rankSeg
-        mPage = 1
         if (mVisible) {
             getData()
         }
@@ -143,41 +104,12 @@ class HomeTopListContentFragment :
         }
         canRefreshData = false
         mViewModel.showLoading()
-        mViewModel.getListInfo("$rankType", rankSeg, mPage, pageSize)
+        mViewModel.getListInfo("$rankType", rankSeg, 1)
     }
 
-    /**
-     * 上拉加载/下拉刷新
-     */
-    private fun addRefreshListener() {
-        home_top_list_refresh.setOnRefreshLoadMoreListener(object :OnRefreshLoadMoreListener{
-            override fun onLoadMore(refreshLayout: RefreshLayout) {
-                ++mPage
-                mViewModel.getListInfo("$rankType", rankSeg, mPage, pageSize)
-            }
-
-            override fun onRefresh(refreshLayout: RefreshLayout) {
-                mPage = 1
-                mViewModel.getListInfo("$rankType", rankSeg, mPage, pageSize)
-            }
-        })
-
-    }
 
     override fun startObserve() {
-        mViewModel.dataList.observe(this) {
-            if (mPage == 1) {
-                home_top_list_refresh?.finishRefresh()
-                mAdapter.setList(it.list)
-            } else {
-                home_top_list_refresh?.finishLoadMore()
-                it.list?.let { data -> mAdapter.addData(data) }
-            }
-            //没有更多数据
-            if (it.list?.size ?: 0 < pageSize) {
-                home_top_list_refresh?.finishLoadMoreWithNoMoreData()
-            }
-        }
+
     }
 
 }

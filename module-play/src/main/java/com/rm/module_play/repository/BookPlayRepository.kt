@@ -3,12 +3,16 @@ package com.rm.module_play.repository
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.db.DaoManager.Companion.daoManager
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.HistoryPlayBook
+import com.rm.business_lib.db.HistoryPlayBookDao
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.model.AudioCommentsModel
-import com.rm.module_play.test.ResultData
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
-import com.rm.module_play.test.SearchResultInfo
+import org.greenrobot.greendao.query.Query
 
 /**
  *
@@ -54,11 +58,56 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     suspend fun playerReport(audio_id: String, chapter_id: String): BaseResult<Any> {
         return apiCall { playApi.playerReport("player", audio_id, chapter_id) }
     }
+
     /**
      * 章节列表
      */
-    suspend fun chapterList(id: String ,page:Int ,page_size:Int ,sort:String): BaseResult<AudioChapterListModel> {
+    suspend fun chapterList(
+        id: String,
+        page: Int,
+        page_size: Int,
+        sort: String
+    ): BaseResult<AudioChapterListModel> {
         return apiCall { playApi.chapterList(id, page, page_size, sort) }
     }
 
+    var daoUtil: DaoUtil<HistoryPlayBook, Long>? = null
+
+    init {
+        daoUtil = DaoUtil(
+            HistoryPlayBook::class.java,0L
+        )
+    }
+
+    /**
+     * 记录播放的章节
+     */
+    fun insertPlayBook(historyPlayBook: HistoryPlayBook) {
+        val history = daoUtil?.querySingle(historyPlayBook.audio_id)
+        if (history == null) {
+            daoUtil?.save(historyPlayBook)
+        }
+
+
+    }
+
+    /**
+     * 记录播放的章节
+     */
+    fun updatePlayBook(key: Long, chapter: ChapterList?) {
+        val historyPlayBook = daoUtil?.querySingle(key)
+        val chapterFind = historyPlayBook?.listBean?.find { it.chapter_id == chapter?.chapter_id }
+        if (chapterFind == null) {
+            historyPlayBook?.listBean?.add(chapter)
+        } else {
+            chapterFind.recentPlay = System.currentTimeMillis()
+        }
+        historyPlayBook?.let { daoUtil?.update(it) }
+    }
+
+    /**
+     * 查询
+     */
+    fun queryPlayBookList(): List<HistoryPlayBook>? =
+        daoUtil?.queryAll()
 }
