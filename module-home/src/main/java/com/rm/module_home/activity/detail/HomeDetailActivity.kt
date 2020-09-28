@@ -23,6 +23,7 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.bean.DetailTags
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.bottomsheet.ScrollLayout
@@ -65,7 +66,17 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         ).apply {
             setOnItemClickListener { adapter, view, position ->
                 mViewModel.detailViewModel.get()?.let {
-                    playService.toPlayPage(this@HomeDetailActivity, it, position)
+                    playService.toPlayPage(
+                        this@HomeDetailActivity,
+                        DetailBookBean(
+                            audio_id = it.detaillist.audio_id,
+                            audio_name = it.detaillist.audio_name,
+                            original_name = it.detaillist.original_name,
+                            author = it.detaillist.author,
+                            audio_cover_url = it.detaillist.audio_cover_url
+                        ),
+                        position
+                    )
                 }
             }
         }
@@ -137,18 +148,18 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
         home_detail_title_cl.setOnClickListener { finish() }
         // TODO: 2020/9/28 章节排序
-        home_detail_play_sort.setOnCheckedChangeListener{buttonView, isChecked ->
-            if(isChecked){
+        home_detail_play_sort.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
                 mViewModel.chapterList(audioId, 1, 20, "desc")
-            }else{
+            } else {
                 mViewModel.chapterList(audioId, 1, 20, "asc")
             }
         }
         // TODO: 2020/9/28 选集展示
-        home_detail_play_show.setOnCheckedChangeListener{buttonView, isChecked ->
-            if(isChecked){
+        home_detail_play_show.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
 
-            }else{
+            } else {
 
             }
         }
@@ -183,7 +194,15 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
         mViewModel.actionControl.observe(this, Observer {
             mViewModel.detailViewModel.get()?.let {
-                playService.toPlayPage(this@HomeDetailActivity, it, 0)
+                playService.toPlayPage(
+                    this@HomeDetailActivity, DetailBookBean(
+                        audio_id = it.detaillist.audio_id,
+                        audio_name = it.detaillist.audio_name,
+                        original_name = it.detaillist.original_name,
+                        author = it.detaillist.author,
+                        audio_cover_url = it.detaillist.audio_cover_url
+                    ), 0
+                )
             }
         })
 
@@ -210,9 +229,9 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             }
         }
 
-    private val commenheader by lazy {
-        View.inflate(this, R.layout.home_detail_recyc_title, null)
-    }
+//    private val commenheader by lazy {
+//        View.inflate(this, R.layout.home_detail_recyc_title, null)
+//    }
 
     override fun initData() {
 

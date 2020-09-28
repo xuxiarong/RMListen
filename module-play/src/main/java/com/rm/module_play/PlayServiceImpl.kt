@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.baselisten.util.setOnClickNotDoubleListener
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
@@ -33,7 +34,7 @@ class PlayServiceImpl : PlayService {
 
     override fun toPlayPage(
         context: Context,
-        bean: HomeDetailModel?,
+        bean: DetailBookBean?,
         index: Int
     ) {
         BookPlayerActivity.startActivity(context, bean,index)

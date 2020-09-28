@@ -11,11 +11,13 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_play.activity.BookPlayerActivity
+import com.rm.module_play.cache.PlayBookState
 import com.rm.module_play.model.*
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -48,6 +50,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     val mutableList = MutableLiveData<MutableList<MultiItemEntity>>()
     val playManger: MusicPlayerManager = musicPlayerManger
     val audioID = ObservableField<String>()
+    val playBookSate: PlayBookState = PlayBookState()
 
     //播放状态进度条，0是播放2是加载中1是暂停
     val playSate = ObservableField<Int>()
@@ -191,25 +194,11 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     }
 
     //设置书籍
-    fun setHistoryPlayBook(homeDetail: HomeDetailModel) {
-        mHistoryPlayBook.anchor_id = homeDetail.detaillist.anchor_id
-        mHistoryPlayBook.audio_cover = homeDetail.detaillist.audio_cover
-        mHistoryPlayBook.audio_cover_url = homeDetail.detaillist.audio_cover_url
-        mHistoryPlayBook.audio_id = homeDetail.detaillist.audio_id.toLong()
-        mHistoryPlayBook.audio_intro = homeDetail.detaillist.audio_intro
-        mHistoryPlayBook.audio_label = homeDetail.detaillist.audio_label
-        mHistoryPlayBook.audio_name = homeDetail.detaillist.audio_name
-        mHistoryPlayBook.audio_type = homeDetail.detaillist.audio_type
-        mHistoryPlayBook.author = homeDetail.detaillist.author
-        mHistoryPlayBook.chapter_updated_at = homeDetail.detaillist.chapter_updated_at
-        mHistoryPlayBook.created_at = homeDetail.detaillist.created_at
-        mHistoryPlayBook.subscription_count = homeDetail.detaillist.subscription_count
-        mHistoryPlayBook.status = homeDetail.detaillist.status
-        mHistoryPlayBook.quality = homeDetail.detaillist.quality
-        mHistoryPlayBook.short_intro = homeDetail.detaillist.short_intro
-        mHistoryPlayBook.progress = homeDetail.detaillist.progress
-        mHistoryPlayBook.play_count = homeDetail.detaillist.play_count
-        mHistoryPlayBook.last_sequence = homeDetail.detaillist.last_sequence
+    fun setHistoryPlayBook(homeDetail: DetailBookBean) {
+        mHistoryPlayBook.audio_cover_url = homeDetail.audio_cover_url
+        mHistoryPlayBook.audio_id = homeDetail.audio_id.toLong()
+        mHistoryPlayBook.audio_name = homeDetail.audio_name
+        mHistoryPlayBook.author = homeDetail.author
         mHistoryPlayBook.listBean = arrayListOf()
         repository.insertPlayBook(mHistoryPlayBook)
 
@@ -238,7 +227,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                     } else {
                         refreshStatusModel.finishLoadMore(true)
                     }
-                    refreshStatusModel.setHasMore(it.list.size > 0)
+                    refreshStatusModel.setHasMore(it.list.isNotEmpty())
                     page++
                 }, onError = {
                     if (page == 1) {

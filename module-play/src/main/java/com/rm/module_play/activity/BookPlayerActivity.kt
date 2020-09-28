@@ -10,6 +10,7 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
@@ -50,7 +51,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         BookPlayerAdapter(mViewModel, BR.viewModel, BR.itemModel)
 
     }
-    var homeDetailBean: HomeDetailModel? = null
+    var homeDetailBean: DetailBookBean? = null
     var indexSong = 0
     var fromGlobalValue: String? = ""
     //是否重置播放
@@ -62,7 +63,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         const val fromGlobal = "fromGlobal"
         fun startActivity(
             context: Context,
-            homeDetailBean: HomeDetailModel?,
+            homeDetailBean: DetailBookBean?,
             index: Int = 0
         ) {
             if (homeDetailBean != null) {
@@ -146,7 +147,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                 .showMySheetListDialog(
                                     mViewModel,
                                     this@BookPlayerActivity,
-                                    it.detaillist.audio_id
+                                    it.audio_id
                                 )
                         }
 
@@ -170,26 +171,27 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
      */
     private fun getIntentParams() {
         //正在播放的对象
-        homeDetailBean = intent.getSerializableExtra(homeDetailModel) as? HomeDetailModel
+        homeDetailBean = intent.getSerializableExtra(homeDetailModel) as? DetailBookBean
         //来自全局小圆圈点击进来
         fromGlobalValue = intent.getStringExtra(fromGlobal)
 
         if (fromGlobalValue.orEmpty().isNotEmpty()) {
-            homeDetailBean = homeDetailModel.getObjectMMKV(HomeDetailModel::class.java)
+            homeDetailBean = homeDetailModel.getObjectMMKV(DetailBookBean::class.java)
         }
         homeDetailBean?.let {
             homeDetailModel.putMMKV(it)
+
             val listValue = mViewModel.mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
-            mViewModel.audioID.set(it.detaillist.audio_id)
+            mViewModel.audioID.set(it.audio_id)
             mViewModel.chapterList(
-                it.detaillist.audio_id,
+                it.audio_id,
                 1,
                 20,
                 "asc",
-                homeDetailBean?.detaillist?.anchor?.anchor_avatar ?: ""
+                homeDetailBean?.audio_cover_url ?: ""
             )
-            mViewModel.commentAudioComments(it.detaillist.audio_id)
+            mViewModel.commentAudioComments(it.audio_id)
             mViewModel.mutableList.postValue(listValue)
             mBookPlayerAdapter.notifyDataSetChanged()
             mViewModel.setHistoryPlayBook(it)
