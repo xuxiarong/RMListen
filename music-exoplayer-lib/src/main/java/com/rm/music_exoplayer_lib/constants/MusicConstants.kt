@@ -67,13 +67,12 @@ const val MUSIC_ALARM_MODEL_20 = 20
 const val MUSIC_ALARM_MODEL_30 = 30
 const val MUSIC_ALARM_MODEL_40 = 40
 const val MUSIC_ALARM_MODEL_60 = 60
-const val MUSIC_ALARM_MODEL_0 = 0 //无限期
 const val MUSIC_ALARM_MODEL_EPISODE_ONE = 1//一集
 const val MUSIC_ALARM_MODEL_EPISODE_TWO = 2//二集
 const val MUSIC_ALARM_MODEL_EPISODE_THREE = 3//三集
 const val MUSIC_ALARM_MODEL_EPISODE_FOUR = 4//四集
 const val MUSIC_ALARM_MODEL_EPISODE_FIVE = 5//五集
-
+const val MUSIC_ALARM_MODEL_0 = -1 //取消
 
 /**
  * 播放模式，替换enum类型

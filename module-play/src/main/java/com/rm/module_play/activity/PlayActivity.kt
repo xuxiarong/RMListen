@@ -115,9 +115,7 @@ class PlayActivity :
                 if (it1 == 0) {
                     showMusicPlayTimeSettingDialog()
                 } else {
-                    showMusicPlaySpeedDialog {
-                        musicPlayerManger.setPlayerMultiple(it)
-                    }
+                    showMusicPlaySpeedDialog()
                 }
             }
         }

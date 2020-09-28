@@ -72,11 +72,6 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
 
     }
 
-    var mText: TextView? = null
-    fun addBubbleFLViewModel(text: TextView) {
-        mText = text
-    }
-
 
     fun zipPlayPath(searchResultInfo: AudioChapterListModel, headUrl: String) {
         viewModelScope.launch {
@@ -84,12 +79,13 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                 searchResultInfo.chapter_list.forEach {
                     pathList.add(
                         BaseAudioInfo(
-                            it.path_url,
-                            headUrl,
-                            it.chapter_name,
-                            it.created_at,
-                            it.audio_id,
-                            it.chapter_id
+                            audioPath = it.path_url,
+                            audioCover = headUrl,
+                            audioName = it.chapter_name,
+                            filename = it.created_at,
+                            audioId = it.audio_id,
+                            chapterId = it.chapter_id,
+                            duration = it.duration
                         )
                     )
                 }
@@ -214,7 +210,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         mHistoryPlayBook.progress = homeDetail.detaillist.progress
         mHistoryPlayBook.play_count = homeDetail.detaillist.play_count
         mHistoryPlayBook.last_sequence = homeDetail.detaillist.last_sequence
-        mHistoryPlayBook.listBean= arrayListOf()
+        mHistoryPlayBook.listBean = arrayListOf()
         repository.insertPlayBook(mHistoryPlayBook)
 
     }
@@ -260,11 +256,12 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      * 记录播放的章节
      */
     fun updatePlayBook(chapter: ChapterList?) {
-        repository.updatePlayBook(mHistoryPlayBook.audio_id.toLong(),chapter)
+        repository.updatePlayBook(mHistoryPlayBook.audio_id.toLong(), chapter)
     }
 
     /**
      * 查询
      */
-    fun queryPlayBookList(): List<HistoryPlayBook>? = DaoUtil(HistoryPlayBook::class.java,"").queryAll()
+    fun queryPlayBookList(): List<HistoryPlayBook>? =
+        DaoUtil(HistoryPlayBook::class.java, "").queryAll()
 }

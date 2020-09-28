@@ -49,10 +49,10 @@ internal class BookAlarmManger(val context: Context) {
     /**
      * 取消定时
      */
-    fun cancelAlarm(requestCode: Int, action: String) {
+    fun cancelAlarm() {
         alarmService?.cancel(
             PendingIntent.getBroadcast(
-                context, requestCode, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
             )
         )
     }

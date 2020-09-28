@@ -60,10 +60,6 @@ fun BubbleSeekBar.setProgressMax(max: Float) {
 }
 
 
-@BindingAdapter("addBubbleFL")
-fun BubbleSeekBar.addBubbleFL(text: TextView) {
-    addBubbleFL(text)
-}
 
 @BindingAdapter("updateThumbText")
 fun BubbleSeekBar.updateThumbText(str: String) {

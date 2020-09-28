@@ -33,7 +33,6 @@ import com.rm.music_exoplayer_lib.notification.NOTIFICATION_ID
 import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 import com.rm.music_exoplayer_lib.utils.CacheUtils
-import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import java.util.*
 
@@ -45,7 +44,7 @@ import java.util.*
  */
 internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     //更新播放进度时间频率
-    val UPDATE_PROGRESS_DELAY = 500L
+    val UPDATE_PROGRESS_DELAY = 1000L
     private val mOnPlayerEventListeners = arrayListOf<MusicPlayerEventListener>()
     private val mEventListener = ExoPlayerEventListener()
 
@@ -71,14 +70,19 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     //用户设定的闹钟模式,默认:MusicAlarmModel.MUSIC_ALARM_MODEL_0
     private var mMusicAlarmModel = MUSIC_ALARM_MODEL_0
 
-    //自动停止播放器的剩余时间
-    private var TIMER_DURTION = Long.MAX_VALUE
-    //闹钟总时长
-    var alarmTimes=Long.MAX_VALUE
-    //循环模式
-    private val mLoop = false
+    //定时剩余集数
+    private var mRemainingSet = 0
 
-    val notificationManger by lazy {
+    //闹钟总时长
+    var alarmTimes = 0L
+
+    //播放速度
+    var playerMultiples = 1f
+    //显示播放状态而不重新播放
+    var showState=false
+
+
+    private val notificationManger by lazy {
         getCurrentPlayerMusic()?.let {
             NotificationManger(this, it, getPlayerState())
 
@@ -99,7 +103,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             addListener(mEventListener)
         }
     }
-    private var cachedDataSourceFactory: CacheDataSourceFactory? = null
     private val dataSourceFactory: DataSource.Factory by lazy {
         DefaultDataSourceFactory(
             this,
@@ -192,7 +195,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private fun passivePause() {
         mExoPlayer.playWhenReady = false
         this.mIsPassive = true
-        showNotification();
+        showNotification()
     }
 
     /**MusicPlayerPresenter方法实现*/
@@ -300,6 +303,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 if (mCurrentPlayIndex > 0) {
                     mCurrentPlayIndex--
                 }
+                resetMusicAlarmModel()
                 startPlayMusic(mCurrentPlayIndex)
             }
             //单曲循环
@@ -308,6 +312,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 if (mCurrentPlayIndex < 0) {
                     mCurrentPlayIndex = mAudios.size - 1
                 }
+                resetMusicAlarmModel()
                 startPlayMusic(mCurrentPlayIndex)
             }
             else -> {
@@ -365,7 +370,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun getCurrentPlayerMusic(): BaseAudioInfo? =
-        mAudios?.getOrNull(mCurrentPlayIndex) as? BaseAudioInfo
+        mAudios.getOrNull(mCurrentPlayIndex) as? BaseAudioInfo
 
     override fun getCurrentPlayList(): List<*> {
         TODO("Not yet implemented")
@@ -392,6 +397,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun setPlayerMultiple(p: Float) {
+        this.playerMultiples = p
         mExoPlayer.setPlaybackParameters(PlaybackParameters(p, 1.0f))
     }
 
@@ -400,9 +406,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun setAlarm(times: Int) {
-        if (times > 0) {
-
-        }
     }
 
     override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int) {
@@ -529,59 +532,48 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      */
     override fun setPlayerAlarmModel(model: Int) {
         mMusicAlarmModel = model
+        if (mRemainingSet <= 0) {
+            mRemainingSet = model
+        }
+        alarmTimes = 0L
         when (model) {
-            MUSIC_ALARM_MODEL_10 -> {
-                TIMER_DURTION = 10 * 60.toLong()
-            }
-            MUSIC_ALARM_MODEL_20 -> {
-                TIMER_DURTION = 20 * 60.toLong()
-
-            }
-            MUSIC_ALARM_MODEL_30 -> {
-                TIMER_DURTION = 30 * 60.toLong()
-
-            }
-            MUSIC_ALARM_MODEL_40 -> {
-                TIMER_DURTION = 40 * 60.toLong()
-
-            }
+            MUSIC_ALARM_MODEL_20,
+            MUSIC_ALARM_MODEL_30,
+            MUSIC_ALARM_MODEL_40,
+            MUSIC_ALARM_MODEL_10,
             MUSIC_ALARM_MODEL_60 -> {
-                TIMER_DURTION = 60 * 60.toLong()
+                alarmTimes = System.currentTimeMillis() + model * 60 * 1000
+                alarmManger.setAlarm(alarmTimes)
             }
 
-            MUSIC_ALARM_MODEL_EPISODE_ONE -> {
-
-            }
-            MUSIC_ALARM_MODEL_EPISODE_TWO -> {
-
-            }
-            MUSIC_ALARM_MODEL_EPISODE_THREE -> {
-
-            }
-            MUSIC_ALARM_MODEL_EPISODE_FOUR -> {
-
-            }
+            MUSIC_ALARM_MODEL_EPISODE_ONE,
+            MUSIC_ALARM_MODEL_EPISODE_TWO,
+            MUSIC_ALARM_MODEL_EPISODE_THREE,
+            MUSIC_ALARM_MODEL_EPISODE_FOUR,
             MUSIC_ALARM_MODEL_EPISODE_FIVE -> {
+                for (index in 1..mRemainingSet) {
+                    alarmTimes += (mAudios.getOrNull(index - 1 + mCurrentPlayIndex) as BaseAudioInfo).duration * 1000
+                }
+                alarmTimes += System.currentTimeMillis()
+                alarmManger.setAlarm(alarmTimes)
 
             }
-            MUSIC_ALARM_MODEL_0 -> {
-                TIMER_DURTION = Long.MAX_VALUE
 
+            MUSIC_ALARM_MODEL_0 -> {
+                alarmManger.cancelAlarm()
             }
             else -> {
 
             }
         }
-        alarmTimes = System.currentTimeMillis() + TIMER_DURTION * 1000
-        alarmManger.setAlarm(alarmTimes)
+
 
     }
 
-    override fun getPlayerAlarmModel(): Int=mMusicAlarmModel
+    override fun getPlayerAlarmModel(): Int = mMusicAlarmModel
 
 
-
-    override fun getPlayerAlarmTime(): Long =alarmTimes
+    override fun getPlayerAlarmTime(): Long = alarmTimes
 
     override fun setNotificationEnable(enable: Boolean) {
         this.mNotificationEnable = enable
@@ -591,12 +583,24 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun getServiceName(): String =
         "com.rm.music_exoplayer_lib.service.${MusicPlayerService::class.simpleName.toString()}"
 
+    override fun getRemainingSetInt(): Int = mRemainingSet
+    override fun getPlayerMultiple(): Float = playerMultiples
+    override fun resumePlayState(state: Boolean) {
+        showState=state
+    }
+
     /**
      * 播放器设计模式
      */
-    fun initPlayerConfig() {
+    private fun initPlayerConfig() {
         this.mPlayModel = CacheUtils.instance.getInt(PLAY_MODEL, MUSIC_MODEL_ORDER)
 
+    }
+
+    private fun resetMusicAlarmModel() {
+        if (mMusicAlarmModel in 1..5 && mRemainingSet > 0) {
+            setPlayerAlarmModel(mMusicAlarmModel)
+        }
     }
 
     /**
@@ -617,6 +621,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 it.onPlayerStateChanged(playWhenReady, playbackState)
             }
             when (playbackState) {
+                //正在播放
                 Player.STATE_BUFFERING, Player.STATE_READY -> {
                     if (!mUpdateProgressHandler.hasMessages(0)) {
                         mUpdateProgressHandler.sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
@@ -625,9 +630,17 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                     mMusicPlayerState =
                         if (playWhenReady) MUSIC_PLAYER_PLAYING else MUSIC_PLAYER_PAUSE
                 }
-
+                //播放结束
                 Player.STATE_ENDED -> {
                     mUpdateProgressHandler.removeMessages(0)
+                    mRemainingSet--
+                    if (mMusicAlarmModel in 1..5) {
+                        if (mRemainingSet <= 0) {
+                            mRemainingSet = 0
+                            alarmManger.cancelAlarm()
+                            setPlayerAlarmModel(MUSIC_ALARM_MODEL_0)
+                        }
+                    }
                     onCompletionPlay()
                 }
 
