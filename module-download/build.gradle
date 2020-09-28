@@ -93,4 +93,6 @@ dependencies {
     implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
 // provide interface for kotlin extension
     implementation 'com.liulishuo.okdownload:ktx:1.0.7'
+
+    kapt rootProject.ext.dependencies["router_compiler"]
 }

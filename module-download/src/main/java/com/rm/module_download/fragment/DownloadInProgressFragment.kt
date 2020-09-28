@@ -1,16 +1,21 @@
 package com.rm.module_download.fragment
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.business_lib.downloadStatus
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterItemBean
 import com.rm.module_download.databinding.DownloadFragmentInProgressBinding
 import com.rm.module_download.viewmodel.DownloadMainViewModel
 import kotlinx.android.synthetic.main.download_fragment_in_progress.*
+import java.util.*
 
 class DownloadInProgressFragment : BaseVMFragment<DownloadFragmentInProgressBinding, DownloadMainViewModel>() {
+
 
 
     companion object {

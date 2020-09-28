@@ -4,8 +4,10 @@ import android.view.View
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
+import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
@@ -26,7 +28,7 @@ import kotlinx.android.synthetic.main.listen_fragment_my_listen.*
 class ListenMyListenFragment :
     BaseVMFragment<ListenFragmentMyListenBinding, ListenMyListenViewModel>() {
 
-    private lateinit var mViewPagerAdapter : ListenMyListenPagerAdapter
+    private lateinit var mViewPagerAdapter: ListenMyListenPagerAdapter
 
     private val mMyListenFragmentList = mutableListOf<Fragment>(
         ListenRecentListenFragment.newInstance(),
@@ -59,7 +61,6 @@ class ListenMyListenFragment :
     override fun initData() {
         mViewModel.getSubsTotalNumberFromService()
     }
-
 
 
     private fun configTab() {
@@ -96,10 +97,15 @@ class ListenMyListenFragment :
             if (!isLogin.get()) {
                 router.quicklyLogin(mViewModel, activity!!)
             } else {
-                ListenSheetListActivity.startActivity(activity!!,
+                ListenSheetListActivity.startActivity(
+                    activity!!,
                     LISTEN_SHEET_LIST_MY_LIST
                 )
             }
+        }
+        listenDownloadCl.setOnClickListener {
+            val createRouter = RouterHelper.createRouter(DownloadService::class.java)
+            createRouter.startDownloadChapterSelectionActivity(it.context, "162163095869968384")
         }
     }
 

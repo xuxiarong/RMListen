@@ -5,10 +5,11 @@
 
     <data>
 
+        <import type="com.rm.module_download.bean.DownloadChapterUIStatus" />
 
         <variable
             name="itemBean"
-            type="com.rm.module_download.bean.DownloadChapterItemBean" />
+            type="com.rm.module_download.bean.DownloadChapterAdapterBean" />
 
         <variable
             name="viewModel"
@@ -16,6 +17,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->viewModel.itemClickFun(itemBean)}"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_69"
         android:paddingLeft="@dimen/dp_16"
@@ -25,9 +27,9 @@
 
         <ImageView
             android:id="@+id/download_iv_check"
+            bindDownloadCheckSrc="@{itemBean.downloadChapterUIStatus}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/download_ic_item_checked"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +41,7 @@
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_marginRight="@dimen/dp_8"
             android:gravity="center"
-            android:text="1"
+            android:text="@{String.valueOf(itemBean.downloadChapterItemBean.sequence)}"
             android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +52,7 @@
             android:id="@+id/download_tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lena Olson"
+            android:text="@{itemBean.downloadChapterItemBean.chapter_name}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_16sp"
             app:layout_constraintLeft_toRightOf="@+id/download_tv_sequence"
@@ -69,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_memory_size"
-                android:text="3333"
+                android:text="@{String.valueOf(itemBean.downloadChapterItemBean.size)}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 
@@ -79,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:drawableLeft="@drawable/download_ic_duration"
-                android:text="4444"
+                android:text="@{String.valueOf(itemBean.downloadChapterItemBean.duration)}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 
@@ -87,9 +89,9 @@
 
 
         <ImageView
+            bindDownloadStatusSrc="@{itemBean.downloadChapterUIStatus}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/download_ic_download_completed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -97,9 +99,11 @@
         <ProgressBar
             android:layout_width="23dp"
             android:layout_height="23dp"
+            isVisible="@{itemBean.downloadChapterUIStatus==DownloadChapterUIStatus.DOWNLOADING}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

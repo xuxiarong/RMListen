@@ -63,8 +63,8 @@ class DownloadRepository(private val apiService: DownloadApiService) : BaseRepos
     /**
      *  获取章节列表
      */
-    suspend fun getDownloadChapterList(page: Int, audioId: String): BaseResult<DownloadChapterResponseBean> {
-        return apiCall { apiService.downloadGetChapterList(page = page, pageSize = 20, audioId = audioId, sort = "asc") }
+    suspend fun getDownloadChapterList(page: Int, pageSize:Int,audioId: String): BaseResult<DownloadChapterResponseBean> {
+        return apiCall { apiService.downloadGetChapterList(page = page, pageSize = pageSize, audioId = audioId, sort = "asc") }
     }
 
 }

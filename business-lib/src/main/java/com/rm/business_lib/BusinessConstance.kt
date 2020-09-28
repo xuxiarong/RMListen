@@ -5,6 +5,8 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.business_lib.bean.LoginUserBean
+import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
+import com.rm.business_lib.bean.download.DownloadStatusChangedBean
 
 /**
  * desc   : 基础业务常量类
@@ -42,3 +44,8 @@ const val IS_FIRST_ADD_SHEET = "is_first_add_sheet"
 annotation class ListenSheetListType(val type: Int = LISTEN_SHEET_LIST_MY_LIST)
 const val LISTEN_SHEET_LIST_MY_LIST = 0 //我的听单
 const val LISTEN_SHEET_LIST_COLLECTED_LIST = 1 //收藏听单
+
+
+// ******** download ********
+val downloadStatus = MutableLiveData<DownloadStatusChangedBean>()
+val downloadProgress = MutableLiveData<DownloadProgressUpdateBean>()

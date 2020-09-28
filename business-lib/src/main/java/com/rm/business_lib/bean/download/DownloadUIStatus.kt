@@ -9,4 +9,5 @@ enum class DownloadUIStatus {
     DOWNLOAD_PAUSED,//已暂停
     DOWNLOAD_IN_PROGRESS,//正在下载
     DOWNLOAD_PENDING,//等待中，已加入下载队列
+    DOWNLOAD_UNKNOWN,//未知状态，没有找到缓存文件
 }
