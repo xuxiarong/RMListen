@@ -99,9 +99,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         val resDrawable = resources.getDrawable(res, null)
         resDrawable.setBounds(0, 0, resDrawable.minimumWidth, resDrawable.minimumHeight)
         music_play_order_play.setCompoundDrawables(resDrawable, null, null, null)
-        audioChapterListModel?.let {
-            music_play_total_chapter.text = "共${it.total}集"
-        }
+
     }
 
 }

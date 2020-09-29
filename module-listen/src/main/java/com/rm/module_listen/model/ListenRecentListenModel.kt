@@ -1,6 +1,7 @@
 package com.rm.module_listen.model
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.module_listen.R
 
 /**
@@ -14,8 +15,15 @@ data class ListenRecentListenModel constructor(
     val title: String,
     val chapter: String,
     val tag: String,
-    val time : String,
-    val status : String
-):MultiItemEntity {
+    val time: String,
+    val status: String
+) : MultiItemEntity {
+    override val itemType = R.layout.listen_item_recent_listen
+}
+
+
+data class ListenHistoryModel constructor(
+    val HistoryPlayBook : HistoryPlayBook
+) : MultiItemEntity {
     override val itemType = R.layout.listen_item_recent_listen
 }

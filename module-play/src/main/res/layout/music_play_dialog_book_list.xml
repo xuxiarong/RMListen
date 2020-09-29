@@ -50,43 +50,43 @@
 
                 <ImageView
                     android:id="@+id/music_play_download_de"
-                    android:layout_toRightOf="@+id/music_play_order_play"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="108dp"
+                    android:layout_marginRight="58dp"
+                    android:layout_alignParentEnd="true"
                     android:src="@drawable/music_play_ic_icon_download_de" />
 
                 <ImageView
-                    android:layout_toRightOf="@+id/music_play_download_de"
+                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
+                    android:layout_marginRight="16dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:src="@drawable/music_play_ic_icon_sort_de" />
 
-           <LinearLayout
-               android:layout_alignParentRight="true"
-               android:orientation="horizontal"
-               android:layout_marginEnd="@dimen/dp_16"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content">
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/music_play_total_chapter"
-                   tools:text="共34集"
-                   android:textColor="@color/business_text_color_666666"
-                   android:textSize="14sp" />
-               <com.rm.business_lib.wedgit.arrow.ArrowView
-                   android:layout_width="@dimen/dp_22"
-                   android:layout_height="@dimen/dp_22"
-                   android:layout_marginStart="@dimen/dp_12"
-                   android:paddingStart="@dimen/dp_4"
-                   android:paddingTop="@dimen/dp_7"
-                   android:paddingEnd="@dimen/dp_4"
-                   android:paddingBottom="@dimen/dp_7"
-                   app:arrow_direction="bottom"
-                   app:arrow_line_color="@color/business_text_color_333333" />
-           </LinearLayout>
+<!--           <LinearLayout-->
+<!--               android:layout_alignParentRight="true"-->
+<!--               android:orientation="horizontal"-->
+<!--               android:layout_marginEnd="@dimen/dp_16"-->
+<!--               android:layout_width="wrap_content"-->
+<!--               android:layout_height="wrap_content">-->
+<!--               <TextView-->
+<!--                   android:layout_width="wrap_content"-->
+<!--                   android:layout_height="wrap_content"-->
+<!--                   android:id="@+id/music_play_total_chapter"-->
+<!--                   tools:text="共34集"-->
+<!--                   android:textColor="@color/business_text_color_666666"-->
+<!--                   android:textSize="14sp" />-->
+<!--               <com.rm.business_lib.wedgit.arrow.ArrowView-->
+<!--                   android:layout_width="@dimen/dp_22"-->
+<!--                   android:layout_height="@dimen/dp_22"-->
+<!--                   android:layout_marginStart="@dimen/dp_12"-->
+<!--                   android:paddingStart="@dimen/dp_4"-->
+<!--                   android:paddingTop="@dimen/dp_7"-->
+<!--                   android:paddingEnd="@dimen/dp_4"-->
+<!--                   android:paddingBottom="@dimen/dp_7"-->
+<!--                   app:arrow_direction="bottom"-->
+<!--                   app:arrow_line_color="@color/business_text_color_333333" />-->
+<!--           </LinearLayout>-->
 
             </RelativeLayout>
 

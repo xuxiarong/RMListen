@@ -22,16 +22,9 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
 
 
     override fun startObserve() {
-        mViewModel.todayListenData.observe(this, Observer {
+        mViewModel.allHistory.observe(this, Observer {
             mViewModel.mSwipeAdapter.addData(it)
         })
-        mViewModel.lastMonthListenData.observe(this, Observer {
-            mViewModel.mSwipeAdapter.addData(it)
-        })
-        mViewModel.earlyListenData.observe(this, Observer {
-            mViewModel.mSwipeAdapter.addData(it)
-        })
-
     }
 
 
@@ -42,9 +35,7 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
 
 
     override fun initData() {
-        mViewModel.getTodayListenDataFromLocal()
-        mViewModel.getRecentMonthListenDataFromLocal()
-        mViewModel.getEarlyListenDataFromLocal()
+        mViewModel.getListenHistory()
     }
 
     companion object {

@@ -40,7 +40,8 @@
                     android:id="@+id/detail_directory_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/business_color_e6ffffff" />
+                    android:background="@color/businessWhite" />
+
             </LinearLayout>
         </com.rm.business_lib.wedgit.bottomsheet.ScrollLayout>
 

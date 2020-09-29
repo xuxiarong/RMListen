@@ -10,7 +10,7 @@ import android.view.View
 import com.rm.business_lib.R
 
 /**
- * 统一虚线
+ * 统一实线
  */
 class DashLineView(
     context: Context?,

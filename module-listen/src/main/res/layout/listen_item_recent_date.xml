@@ -15,49 +15,44 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="22dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="22dp"
-        >
+        android:layout_height="28dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemMoreTitle"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/listen_recent"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_22"
+            android:layout_height="@dimen/dp_28"
             android:gravity="center_vertical"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_16sp"
             android:textStyle="bold"
-            tools:text="最近一月"
-            bindText="@{item.date}"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemMoreText"
+            bindClick="@{()->viewModel.startListenRecentDetail(context)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:text="@string/business_more"
+            android:textColor="@color/business_text_color_666666"
+            android:textSize="@dimen/business_text_size_14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/homeItemIconNext"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/listenRecentListenDeleteIcon"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/homeItemIconNext"
+            android:layout_width="14dp"
+            android:layout_height="24dp"
+            android:src="@drawable/business_ic_next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            isVisible="@{item.showDelete}"
-            android:src="@drawable/listen_icon_delete"
-            />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/listenRecentListenDeleteIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="10dp"
-            isVisible="@{item.showSearch}"
-            android:src="@drawable/listen_icon_delete"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

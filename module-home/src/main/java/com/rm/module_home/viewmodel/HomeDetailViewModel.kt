@@ -7,8 +7,10 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.ChapterList
 import com.rm.module_home.model.home.detail.HomeCommentViewModel
 import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.utils.time2format
 import com.rm.module_home.repository.DetailRepository
 
 
@@ -16,11 +18,11 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     var detailViewModel = ObservableField<HomeDetailModel>()
     var detailCommentViewModel = MutableLiveData<HomeCommentViewModel>()
-    var detailChapterViewModel = ObservableField<AudioChapterListModel>()
+    var total = ObservableField<String>("")
+    var detailChapterViewModel = MutableLiveData<MutableList<ChapterList>>()
 
     //val audioList = ObservableField<AudioChapterListModel>()
     var showStatus = ObservableField<String>()
-    var TimeStamp = ObservableField<String>()
 
     val actionControl = MutableLiveData<String>()
 
@@ -96,17 +98,20 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      * 章节列表
      */
     fun chapterList(audioId: String ,page :Int,page_size:Int,sort:String) {
-        launchOnUI {
+        launchOnIO {
             repository.chapterList(audioId,page,page_size,sort).checkResult(onSuccess = {
                 //detailChapterViewModel.notifyChange()
                 showContentView()
-                detailChapterViewModel.set(it)
+                detailChapterViewModel.postValue(it.chapter_list)
+                total.set(it.total)
             }, onError = {
                 showContentView()
                 errorTips.set(it)
             })
         }
     }
+
+
     /**
      * 评论列表
      */

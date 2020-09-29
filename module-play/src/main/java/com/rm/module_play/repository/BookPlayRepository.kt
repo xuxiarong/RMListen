@@ -4,15 +4,12 @@ import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.db.DaoManager.Companion.daoManager
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
-import com.rm.business_lib.db.HistoryPlayBookDao
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
-import org.greenrobot.greendao.query.Query
 
 /**
  *
@@ -75,7 +72,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
 
     init {
         daoUtil = DaoUtil(
-            HistoryPlayBook::class.java,0L
+            HistoryPlayBook::class.java, 0L
         )
     }
 
@@ -96,6 +93,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
      */
     fun updatePlayBook(key: Long, chapter: ChapterList?) {
         val historyPlayBook = daoUtil?.querySingle(key)
+
         val chapterFind = historyPlayBook?.listBean?.find { it.chapter_id == chapter?.chapter_id }
         if (chapterFind == null) {
             historyPlayBook?.listBean?.add(chapter)
@@ -104,10 +102,21 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
         }
         historyPlayBook?.let { daoUtil?.update(it) }
     }
-
+    /**
+     * 记录播放的章节
+     */
+    fun updatePlayBookProcess(key: Long, chapter: ChapterList?,progress:Long=0L) {
+        val historyPlayBook = daoUtil?.querySingle(key)
+        val chapterFind = historyPlayBook?.listBean?.find { it.chapter_id == chapter?.chapter_id }
+        if (chapterFind == null) {
+            historyPlayBook?.listBean?.add(chapter)
+        } else {
+            chapterFind.progress=progress
+        }
+        historyPlayBook?.let { daoUtil?.update(it) }
+    }
     /**
      * 查询
      */
-    fun queryPlayBookList(): List<HistoryPlayBook>? =
-        daoUtil?.queryAll()
+    fun queryPlayBookList(): List<HistoryPlayBook>? = daoUtil?.queryAll()
 }
