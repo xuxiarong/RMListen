@@ -1,5 +1,6 @@
 package com.rm.module_listen.viewmodel
 
+import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,8 @@ import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
@@ -80,13 +83,20 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         }
     }
 
-
+    /**
+     * 处理服务器返回的数据
+     * @param chapterList ArrayList<ListenAudioChapter>
+     */
     private fun dealData(chapterList: ArrayList<ListenAudioChapter>) {
         sortChapter(chapterList)
         val checkedChapterList = checkLastAudioContainerChapter(checkChapterList = chapterList)
         getAudioList(checkedChapterList)
     }
 
+    /**
+     * 对章节进行时间排序
+     * @param chapterList ArrayList<ListenAudioChapter>
+     */
     private fun sortChapter(chapterList: ArrayList<ListenAudioChapter>) {
         chapterList.sortWith(Comparator { o1, o2 ->
             return@Comparator if (o1.upgrade_time < o2.upgrade_time) {
@@ -305,6 +315,22 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+//    fun onChapterClick(context: Context,model : ListenAudioChapter){
+//        val playService = RouterHelper.createRouter(PlayService::class.java)
+//        playService.toPlayPage(context, HomeDetailModel(DetailArticle(
+//            audio_id = model.audio_id,
+//            audio_name =  model.audio_name,
+//            audio_cover =  model.cover_url,
+//            audio_cover_url = model.cover_url
+//
+//        )),0)
+//    }
+
+    fun onAudioClick(context: Context,model : ListenAudio){
+        val homeService = RouterHelper.createRouter(HomeService::class.java)
+        homeService.toDetailActivity(context = context,audioID = model.info.audio_id)
     }
 
 }

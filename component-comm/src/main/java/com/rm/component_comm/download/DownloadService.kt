@@ -2,6 +2,9 @@ package com.rm.component_comm.download
 
 import android.content.Context
 import com.rm.business_lib.bean.download.DownloadAudioBean
+import com.rm.business_lib.bean.download.BaseDownloadFileBean
+import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
+import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -23,39 +26,48 @@ interface DownloadService : ApplicationProvider {
     fun startDownloadChapterSelectionActivity(context: Context, audioId: String)
 
     /**
-     *下载单个音频文件
+     *下载单个音频文件并存储
      */
-    fun startDownloadAudio(audio: DownloadAudioBean)
+    fun startDownloadWithCache(audio: DownloadAudioBean)
 
     /**
-     * 下载音频列表
+     * 下载音频列表并存储
      */
-    fun startDownloadAudio(audioList: List<DownloadAudioBean>)
+    fun startDownloadWithCache(audioList: MutableList<DownloadAudioBean>)
 
     /**
      * 暂停下载
      */
-    fun stopDownload(url: String)
+    fun stopDownload(baseBean: BaseDownloadFileBean): Boolean
 
     /**
      * 暂停下载（列表）
      */
-    fun stopDownload(urlList: List<String>)
+    fun stopDownload(list: MutableList<BaseDownloadFileBean>)
+
 
     /**
      *删除下载（包括下载中,已完成）
      */
-    fun delete(url: String)
-
-
-    /**
-     *删除下载列表（包括下载中,已完成）
-     */
-    fun delete(urlList: List<String>)
+    fun deleteDownload(baseBean: BaseDownloadFileBean)
 
     /**
-     * 根据url获取对应的audio下载信息bean
+     *删除下载列表
      */
-    fun getDownloadAudioInfo(url: String): DownloadAudioBean
+    fun deleteDownload(list: MutableList<BaseDownloadFileBean>)
+
+    /**
+     * 获取任务状态
+     */
+    fun getDownloadStatus(baseBean: BaseDownloadFileBean): DownloadUIStatus
+
+    /**
+     * 获取任务进度信息
+     */
+    fun getDownloadProgressInfo(baseBean: BaseDownloadFileBean): DownloadProgressUpdateBean?
+
+    fun stopAll()
+
+    fun deleteAll()
 
 }

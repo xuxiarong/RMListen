@@ -46,10 +46,108 @@
                 android:src="@drawable/download_ic_download" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/download_rv_audio_list"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/download_audio_list_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/download_rv_audio_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.checkAllClickFun()}"
+                android:padding="@dimen/dp_16"
+                android:src="@{viewModel.isCheckAll?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_check_all"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="@dimen/sp_14" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已选1章/3.4M"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="@dimen/business_text_size_12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="剩余可用106G"
+                    android:textColor="@color/business_text_color_b1b1b1"
+                    android:textSize="@dimen/business_text_size_10sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/business_shape_stroke_e8e8e8_360dp"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_5"
+                android:text="@string/download_select_chapters_download"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/download_tv_download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="@drawable/business_shape_round_ff5e5e"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_5"
+                android:text="@string/download_download"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/sp_14" />
+
+
+            <TextView
+                android:id="@+id/download_tv_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="@drawable/business_shape_round_ff5e5e"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_5"
+                android:text="测试清空"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_10sp" />
+
+        </LinearLayout>
 
 
     </LinearLayout>

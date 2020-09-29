@@ -19,6 +19,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_book_adapter_name"
         android:layout_width="match_parent"
+        bindClick="@{}"
         android:layout_height="69dp">
         
         <androidx.appcompat.widget.AppCompatTextView

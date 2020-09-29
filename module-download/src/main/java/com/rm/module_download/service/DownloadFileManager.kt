@@ -1,76 +1,185 @@
 package com.rm.module_download.service
 
-import android.app.DownloadManager
+import android.util.ArrayMap
 import com.liulishuo.okdownload.*
+import com.liulishuo.okdownload.core.breakpoint.BlockInfo
+import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo
 import com.liulishuo.okdownload.core.cause.EndCause
+import com.liulishuo.okdownload.core.dispatcher.DownloadDispatcher
+import com.liulishuo.okdownload.core.listener.DownloadListener4WithSpeed
+import com.liulishuo.okdownload.core.listener.assist.Listener4SpeedAssistExtend
 import com.rm.baselisten.BaseApplication
-import com.rm.business_lib.bean.download.DownloadAudioBean
+import com.rm.business_lib.bean.download.BaseDownloadFileBean
+import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
+import com.rm.business_lib.bean.download.DownloadStatusChangedBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
-import com.rm.component_comm.download.DownloadService
-import com.rm.module_download.DownloadApplicationDelegate
+import com.rm.business_lib.downloadProgress
+import com.rm.business_lib.downloadStatus
+import com.rm.module_download.util.TagUtil
+import com.rm.module_download.util.deleteDir
 import com.rm.module_download.util.getParentFile
-import org.koin.dsl.koinApplication
 import java.io.File
-import java.lang.Exception
+import kotlin.time.hours
 
-class DownloadFileManager private constructor() : DownloadContextListener {
-    private val taskList = arrayListOf<DownloadTask>()
+class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
 
-    private val cacheFile: File by lazy { File(getParentFile(BaseApplication.CONTEXT), "download_cache") }
+    private val taskList = ArrayMap<String, DownloadTask>()
+    private val context = BaseApplication.CONTEXT
 
-    private val queueListener: DownloadListener by lazy { QueueListener() }
+    private val cacheFile: File by lazy { File(getParentFile(context), cacheFileName) }
 
-    private var downloadContext: DownloadContext? = null
+    private val queueListener: DownloadListener by lazy { this@DownloadFileManager }
+
 
     companion object {
         @JvmStatic
         val INSTANCE: DownloadFileManager by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { DownloadFileManager() }
-        private const val callbackTimeSchedule = 200
-        private const val isSerial = true
+        const val minIntervalMillisCallbackProcess = 200  //回掉间隔毫秒数
+        const val maxParallelRunningCount = 1  //最大并行数
+        const val cacheFileName = "download_cache"  //缓存文件名称
     }
 
-    private fun getDownloadBuilder(): DownloadContext.Builder {
-        return DownloadContext.QueueSet().apply {
-            setParentPathFile(cacheFile)
-            minIntervalMillisCallbackProcess = callbackTimeSchedule
-        }.commit().setListener(this@DownloadFileManager)
+    init {
+        //并行下载，并发下载数设置为1，来实现串行下载
+        DownloadDispatcher.setMaxParallelRunningCount(maxParallelRunningCount)
+
+
     }
 
-    suspend fun download(url: String, fileName: String) {
-        if (downloadContext == null) {
-            downloadContext = getDownloadBuilder().apply {
-                bind(DownloadTask.Builder(url, cacheFile.absolutePath, fileName))
-            }.build()
+    private inline fun createTask(url: String, fileName: String): DownloadTask {
+        return DownloadTask.Builder(url, cacheFile.absolutePath, fileName)
+            .setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess)
+            .setAutoCallbackToUIThread(true)//是否在UI线程回掉
+            .build()
+    }
+
+    private inline fun createFinder(url: String, fileName: String): DownloadTask {
+        return if (taskList.contains(url)) {
+            taskList[url]!!
         } else {
-            downloadContext = downloadContext!!.toBuilder().apply { bind(DownloadTask.Builder(url, cacheFile.absolutePath, fileName)) }.build()
+            DownloadTask.Builder(url, cacheFile.absolutePath, fileName).build()
         }
     }
 
 
-    fun startDownloadAudio(audioList: List<DownloadAudioBean>) {
+    fun download(baseBean: BaseDownloadFileBean) {
+        createTask(baseBean.url, baseBean.fileName).also {
+            TagUtil.saveHolder(it, baseBean)
+            taskList[baseBean.url] = it
+            downloadStatus.value=(DownloadStatusChangedBean(baseBean.url, DownloadUIStatus.DOWNLOAD_PENDING))
+        }.run {
+            enqueue(queueListener)
+        }
+    }
+
+    fun download(audioList: List<BaseDownloadFileBean>) {
+        var taskList = Array(audioList.size) { index ->
+            createTask(audioList[index].url, audioList[index].fileName).also {
+                TagUtil.saveHolder(it, audioList[index])
+                taskList[audioList[index].url] = it
+                downloadStatus.value=(DownloadStatusChangedBean(audioList[index].url, DownloadUIStatus.DOWNLOAD_PENDING))
+            }
+        }
+        DownloadTask.enqueue(taskList, queueListener)
+    }
+
+    fun stopDownload(baseBean: BaseDownloadFileBean): Boolean {
+        return OkDownload.with().downloadDispatcher().cancel(createFinder(baseBean.url, baseBean.fileName))
+    }
+
+    fun stopDownload(baseBean: List<BaseDownloadFileBean>) {
+        var cancelList = arrayListOf<DownloadTask>()
+        baseBean.forEach {
+            taskList[it.url]?.run { cancelList.add(this) }
+        }
+        OkDownload.with().downloadDispatcher().cancel(cancelList.toTypedArray())
+    }
+
+    fun delete(baseBean: BaseDownloadFileBean) {
+        createFinder(baseBean.url, baseBean.fileName).run {
+            OkDownload.with().downloadDispatcher().cancel(this)
+            OkDownload.with().breakpointStore().remove(id)
+            file?.delete()
+        }.also {
+            taskList.remove(baseBean.url)
+        }
+    }
+
+    fun delete(list: List<BaseDownloadFileBean>) {
+        list.forEach {
+            delete(it)
+        }
+    }
+
+    fun getTaskStatus(baseBean: BaseDownloadFileBean): DownloadUIStatus {
+        return when (StatusUtil.getStatus(createFinder(baseBean.url, baseBean.fileName))) {
+            StatusUtil.Status.COMPLETED -> DownloadUIStatus.DOWNLOAD_COMPLETED
+            StatusUtil.Status.PENDING -> DownloadUIStatus.DOWNLOAD_PENDING
+            StatusUtil.Status.RUNNING -> DownloadUIStatus.DOWNLOAD_IN_PROGRESS
+            StatusUtil.Status.IDLE -> DownloadUIStatus.DOWNLOAD_PAUSED
+            else -> DownloadUIStatus.DOWNLOAD_UNKNOWN
+        }
+    }
+
+    fun getTaskBreakpointInfo(baseBean: BaseDownloadFileBean): DownloadProgressUpdateBean? {
+        var breakpointInfo = createFinder(baseBean.url, baseBean.fileName).info
+        return if (breakpointInfo == null) {
+            null
+        } else {
+            DownloadProgressUpdateBean(baseBean.url, breakpointInfo.totalOffset, "0/s")
+        }
+    }
+
+    fun stopAll() {
+        OkDownload.with().downloadDispatcher().cancelAll()
+    }
+
+    fun deleteAll() {
+        OkDownload.with().downloadDispatcher().cancelAll()
+        taskList.forEach {
+            OkDownload.with().breakpointStore().remove(it.value.id)
+        }.also {
+            taskList.clear()
+            deleteDir(cacheFile.absolutePath)
+        }
+    }
+
+    override fun taskStart(task: DownloadTask) {
 
     }
 
-    fun stopDownload(url: String) {
+    override fun blockEnd(task: DownloadTask, blockIndex: Int, info: BlockInfo?, blockSpeed: SpeedCalculator) {
+
     }
 
-    fun stopDownload(urlList: List<String>) {
+    /**
+     * 这里已经是UI线程，所以不用postValue，postValue在并发情况下会把之前的值覆盖，导致数据丢失
+     */
+    override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?, taskSpeed: SpeedCalculator) {
+        when (cause) {
+            EndCause.COMPLETED -> downloadStatus.value=(DownloadStatusChangedBean(task.url, DownloadUIStatus.DOWNLOAD_COMPLETED))
+            else -> downloadStatus.value=(DownloadStatusChangedBean(task.url, DownloadUIStatus.DOWNLOAD_PAUSED))
+        }
     }
 
-    fun delete(url: String) {
+    override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
+        downloadProgress.value=(DownloadProgressUpdateBean(task.url, currentOffset, taskSpeed.speed()))
     }
 
-    fun delete(urlList: List<String>) {
+    override fun connectEnd(task: DownloadTask, blockIndex: Int, responseCode: Int, responseHeaderFields: MutableMap<String, MutableList<String>>) {
+        downloadStatus.value=(DownloadStatusChangedBean(task.url, DownloadUIStatus.DOWNLOAD_IN_PROGRESS))
     }
 
-    fun getDownloadAudioInfo(url: String): DownloadAudioBean {
-        return DownloadAudioBean("","","","",DownloadUIStatus.DOWNLOAD_IN_PROGRESS)
+    override fun connectStart(task: DownloadTask, blockIndex: Int, requestHeaderFields: MutableMap<String, MutableList<String>>) {
+
     }
 
-    override fun taskEnd(context: DownloadContext, task: DownloadTask, cause: EndCause, realCause: Exception?, remainCount: Int) {
+    override fun infoReady(task: DownloadTask, info: BreakpointInfo, fromBreakpoint: Boolean, model: Listener4SpeedAssistExtend.Listener4SpeedModel) {
+
     }
 
-    override fun queueEnd(context: DownloadContext) {
+    override fun progressBlock(task: DownloadTask, blockIndex: Int, currentBlockOffset: Long, blockSpeed: SpeedCalculator) {
+
     }
 
 

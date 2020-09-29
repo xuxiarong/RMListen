@@ -4,8 +4,8 @@ package com.rm.module_download.bean
  * 章节下载列表item bean
  */
 data class DownloadChapterItemBean(
-    val chapter_id: Long,
-    val audio_id: String,   //音频id
+    val chapter_id: Long,//章节id
+    val audio_id: String,   //书籍id
     val sequence: Int,   //章节序号
     val chapter_name: String,   //章节名称
     val size: Long,  //音频大小(单位:字节byte)

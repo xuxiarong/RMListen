@@ -8,14 +8,14 @@ import java.io.Serializable
  */
 data class HomeCommentViewModel(
     @SerializedName("list")
-    val List_comment: MutableList<CommentList>
+    val list_comment: MutableList<CommentList>
 ): Serializable
 
 data class CommentList(
     val id: Int,
     val content: String,
     val member_id: String,
-    val created_at: String,
+    val created_at: Long,
     val is_liked: Boolean,
     val likes: Int,
     val member: Member,

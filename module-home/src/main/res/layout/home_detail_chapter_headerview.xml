@@ -19,7 +19,7 @@
         android:paddingEnd="@dimen/dp_16"
         android:paddingBottom="@dimen/dp_16">
 
-        <com.rm.business_lib.wedgit.DashLineView
+        <View
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_6"
             android:layout_marginTop="@dimen/dp_21"
@@ -42,18 +42,20 @@
             android:id="@+id/home_detail_play_all_tx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:layout_marginStart="@dimen/dp_4"
             android:text="全部播放"
             app:layout_constraintBottom_toBottomOf="@id/home_detail_play_all_img"
             app:layout_constraintStart_toEndOf="@id/home_detail_play_all_img"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_img" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/home_detail_play_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
             android:layout_marginStart="108dp"
-            android:src="@drawable/home_ic_icon_unfold_de"
+            android:button="@null"
+            android:drawableStart="@drawable/home_detail_fold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />
 
@@ -61,7 +63,7 @@
             android:id="@+id/home_detail_chapter_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.detailChapterViewModel.total}"
+            android:text="@{viewModel.total}"
             app:layout_constraintEnd_toStartOf="@id/home_detail_play_show"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />
 
@@ -74,12 +76,13 @@
             app:layout_constraintEnd_toStartOf="@id/home_detail_chapter_count"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/home_detail_play_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
             android:layout_marginEnd="@dimen/dp_20"
-            android:src="@drawable/home_icon_chapter_sort"
+            android:button="@null"
+            android:drawableStart="@drawable/home_detail_chapter_ce"
             app:layout_constraintEnd_toStartOf="@id/home_detail_play_download"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />
 

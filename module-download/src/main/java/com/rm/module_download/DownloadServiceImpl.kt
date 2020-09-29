@@ -3,11 +3,15 @@ package com.rm.module_download
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.business_lib.bean.download.DownloadAudioBean
+import com.rm.business_lib.bean.download.BaseDownloadFileBean
+import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
+import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_download.activity.DownloadChapterSelectionActivity
 import com.rm.module_download.activity.DownloadMainActivity
+import com.rm.module_download.service.DownloadAudioCache
 import com.rm.module_download.service.DownloadFileManager
 
 /**
@@ -27,27 +31,48 @@ class DownloadServiceImpl : DownloadService {
         DownloadChapterSelectionActivity.startActivity(context, audioId)
     }
 
-    override fun startDownloadAudio(audio: DownloadAudioBean) {
-
+    override fun startDownloadWithCache(audio: DownloadAudioBean) {
+        DownloadAudioCache.INSTANCE.saveAudio(audio)
+        DownloadFileManager.INSTANCE.download(audio)
     }
 
-    override fun startDownloadAudio(audioList: List<DownloadAudioBean>) {
+    override fun startDownloadWithCache(audioList: MutableList<DownloadAudioBean>) {
+        DownloadFileManager.INSTANCE.download(audioList)
+        DownloadAudioCache.INSTANCE.saveAudio(audioList)
     }
 
-    override fun stopDownload(url: String) {
+    override fun stopDownload(baseBean: BaseDownloadFileBean): Boolean {
+        return DownloadFileManager.INSTANCE.stopDownload(baseBean)
     }
 
-    override fun stopDownload(urlList: List<String>) {
+    override fun stopDownload(list: MutableList<BaseDownloadFileBean>) {
+        DownloadFileManager.INSTANCE.stopDownload(list)
     }
 
-    override fun delete(url: String) {
+    override fun deleteDownload(baseBean: BaseDownloadFileBean) {
+        DownloadFileManager.INSTANCE.delete(baseBean)
+        DownloadAudioCache.INSTANCE.deleteAudio(baseBean.url)
     }
 
-    override fun delete(urlList: List<String>) {
+    override fun deleteDownload(list: MutableList<BaseDownloadFileBean>) {
+        DownloadFileManager.INSTANCE.delete(list)
+        DownloadAudioCache.INSTANCE.deleteAudio(list.map { it.url })
     }
 
-    override fun getDownloadAudioInfo(url: String): DownloadAudioBean {
-        return DownloadFileManager.INSTANCE.getDownloadAudioInfo(url)
+    override fun getDownloadStatus(baseBean: BaseDownloadFileBean): DownloadUIStatus {
+        return DownloadFileManager.INSTANCE.getTaskStatus(baseBean)
+    }
+
+    override fun getDownloadProgressInfo(baseBean: BaseDownloadFileBean): DownloadProgressUpdateBean? {
+        return DownloadFileManager.INSTANCE.getTaskBreakpointInfo(baseBean)
+    }
+
+    override fun stopAll() {
+        DownloadFileManager.INSTANCE.stopAll()
+    }
+
+    override fun deleteAll() {
+        DownloadFileManager.INSTANCE.deleteAll()
     }
 
 

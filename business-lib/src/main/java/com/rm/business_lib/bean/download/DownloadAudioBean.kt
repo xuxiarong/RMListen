@@ -2,11 +2,19 @@ package com.rm.business_lib.bean.download
 
 /**
  * 音频文件下载bean
+ * audioUrl:音频url
+ * bookId: 所属书籍id
+ * audioName:存储文件名称
+ * bookName:所属书籍名称
  */
+
 data class DownloadAudioBean(
-    var url: String,
-    var audioId: String,
+    var audioUrl: String,
+    var bookId: String,
     var audioName: String,
     var bookName: String,
-    var downloadUIStatus: DownloadUIStatus
-)
+    var fileSize: Long
+) : BaseDownloadFileBean {
+    override val url = audioUrl
+    override val fileName = audioName
+}

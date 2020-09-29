@@ -1,21 +1,25 @@
 package com.rm.module_download.adapter
 
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.baselisten.adapter.single.BaseBindVMAdapter
+import com.rm.business_lib.bean.download.DownloadUIStatus
+import com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel
 
 class DownloadChapterSelectionAdapter<DownloadChapterItemBean> constructor(
-    viewModel: BaseVMViewModel,
+    viewModel: DownloadChapterSelectionViewModel,
     data: MutableList<DownloadChapterItemBean>,
     itemLayoutId: Int,
-    viewModelId : Int,
+    viewModelBrId: Int,
     dataBrId: Int
-) : CommonBindVMAdapter<DownloadChapterItemBean>(viewModel,data, itemLayoutId, viewModelId,dataBrId){
+) : BaseBindVMAdapter<DownloadChapterItemBean>(viewModel, data, itemLayoutId, viewModelBrId, dataBrId) {
 
-     override fun convert(holder: BaseViewHolder, item: DownloadChapterItemBean) {
-         super.convert(holder, item)
-     }
+    val mViewModel = viewModel
 
- }
+    val checkedList: MutableList<DownloadChapterItemBean> by lazy { mutableListOf<DownloadChapterItemBean>() }
+
+
+    override fun convert(holder: BaseViewHolder, item: DownloadChapterItemBean) {
+        super.convert(holder, item)
+    }
+
+}
