@@ -26,16 +26,38 @@ fun TextView.bindSubsText(number:Int?){
     }
 }
 
-@BindingAdapter("listenBindChapterTime")
-fun TextView.listenBindChapterTime(audio:ListenHistoryModel){
+@BindingAdapter("listenBindChapterName")
+fun TextView.listenBindChapterName(audio:ListenHistoryModel){
+    text = ""
     try {
         if (audio.HistoryPlayBook.listBean.isNotEmpty()){
-
+            text = audio.HistoryPlayBook.listBean[0].chapter_name
         }
     }catch (e : Exception){
-        text = ""
         e.printStackTrace()
     }
+}
 
+@BindingAdapter("listenBindChapterTime")
+fun TextView.listenBindChapterTime(audio:ListenHistoryModel){
+    text = ""
+    try {
+        if (audio.HistoryPlayBook.listBean.isNotEmpty()){
+            text = audio.HistoryPlayBook.listBean[0].duration.toString()
+        }
+    }catch (e : Exception){
+        e.printStackTrace()
+    }
+}
 
+@BindingAdapter("listenBindChapterPlayCount")
+fun TextView.listenBindChapterPlayCount(audio:ListenHistoryModel){
+    text = ""
+    try {
+        if (audio.HistoryPlayBook.listBean.isNotEmpty()){
+            text = audio.HistoryPlayBook.listBean[0].play_count
+        }
+    }catch (e : Exception){
+        e.printStackTrace()
+    }
 }

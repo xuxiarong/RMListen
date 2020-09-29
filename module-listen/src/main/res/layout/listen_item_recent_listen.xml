@@ -84,7 +84,7 @@
                 android:layout_width="0dp"
                 android:layout_marginTop="@dimen/dp_8"
                 android:maxLines="2"
-                android:text="@{item.chapter}"
+               listenBindChapterName="@{item}"
                 app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/home_book_adapter_name"
@@ -106,13 +106,13 @@
                 android:layout_marginStart="2dp"
                 app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
                 app:layout_constraintStart_toEndOf="@id/listenItemRecentTimeIv"
-                android:text="@{item.historyPlayBook.}"
+                listenBindChapterTime="@{item}"
                 tools:text="34:34" />
 
             <TextView
                 android:id="@+id/home_book_adapter_author"
                 style="@style/BusinessTextStyleThird_4"
-                android:text="@{item.status}"
+                listenBindChapterPlayCount="@{item}"
                 android:layout_marginStart="@dimen/dp_12"
                 app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
                 app:layout_constraintStart_toEndOf="@id/listenRecentTimeTv"
