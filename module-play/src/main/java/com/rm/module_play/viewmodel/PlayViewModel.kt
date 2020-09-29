@@ -198,7 +198,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     }
 
     //设置书籍
-    fun setHistoryPlayBook(homeDetail: DetailBookBean) {
+    private fun setHistoryPlayBook(homeDetail: DetailBookBean) {
         mHistoryPlayBook.audio_cover_url = homeDetail.audio_cover_url
         mHistoryPlayBook.audio_id = homeDetail.audio_id.toLong()
         mHistoryPlayBook.audio_name = homeDetail.audio_name
@@ -241,7 +241,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                     mutableList.postValue(mutableList.value)
                     if (page == 1) {
                         if (it.list.isEmpty()) {
-                            showDataEmpty()
+                            showContentView()
                         } else {
                             showContentView()
                         }

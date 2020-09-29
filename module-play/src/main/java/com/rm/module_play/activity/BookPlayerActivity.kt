@@ -173,6 +173,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.playBookSate.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                indexSong=mViewModel.playBookSate.get()?.index?:0
 
             }
 
