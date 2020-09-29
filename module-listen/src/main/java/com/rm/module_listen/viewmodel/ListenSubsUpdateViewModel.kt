@@ -11,9 +11,11 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -317,20 +319,20 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         }
     }
 
-//    fun onChapterClick(context: Context,model : ListenAudioChapter){
-//        val playService = RouterHelper.createRouter(PlayService::class.java)
-//        playService.toPlayPage(context, HomeDetailModel(DetailArticle(
-//            audio_id = model.audio_id,
-//            audio_name =  model.audio_name,
-//            audio_cover =  model.cover_url,
-//            audio_cover_url = model.cover_url
-//
-//        )),0)
-//    }
+    fun onChapterClick(context: Context,model : ListenAudioChapter){
+        val playService = RouterHelper.createRouter(PlayService::class.java)
+        playService.toPlayPage(context, DetailBookBean(
+            audio_id = model.audio_id,
+            audio_name =  model.audio_name,
+            original_name =  "",
+            author = "",
+            audio_cover_url = model.cover_url
+        ),0)
+    }
 
-    fun onAudioClick(context: Context,model : ListenAudio){
+    fun onAudioClick(context: Context,model : ListenAudioInfo){
         val homeService = RouterHelper.createRouter(HomeService::class.java)
-        homeService.toDetailActivity(context = context,audioID = model.info.audio_id)
+        homeService.toDetailActivity(context = context,audioID = model.audio_id)
     }
 
 }
