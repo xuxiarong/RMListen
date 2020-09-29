@@ -10,7 +10,7 @@
             type="com.rm.module_listen.viewmodel.ListenRecentListenViewModel" />
         <variable
             name="item"
-            type="com.rm.module_listen.model.ListenRecentListenModel" />
+            type="com.rm.module_listen.model.ListenHistoryModel" />
     </data>
 
     <com.rm.baselisten.view.swipe.SwipeLayout
@@ -54,7 +54,7 @@
                 android:scaleType="fitXY"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                bindUrl="@{item.imageUrl}"
+                bindUrl="@{item.historyPlayBook.audio_cover_url}"
                 corner="@{8}"
                  />
 
@@ -63,7 +63,7 @@
                 style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
                 app:layout_constraintRight_toRightOf="@id/listenItemRecentIv"
                 app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
-                android:text="@{item.tag}"
+                android:text="@{item.historyPlayBook.audio_label}"
                 tools:text="文案" />
 
             <TextView
@@ -75,7 +75,7 @@
                 app:layout_constraintLeft_toRightOf="@id/listenItemRecentIv"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
-                android:text="@{item.title}"
+                android:text="@{item.historyPlayBook.audio_name}"
                 tools:text="心要大，脚要实" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -106,7 +106,7 @@
                 android:layout_marginStart="2dp"
                 app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
                 app:layout_constraintStart_toEndOf="@id/listenItemRecentTimeIv"
-                android:text="@{item.time}"
+                android:text="@{item.historyPlayBook.}"
                 tools:text="34:34" />
 
             <TextView

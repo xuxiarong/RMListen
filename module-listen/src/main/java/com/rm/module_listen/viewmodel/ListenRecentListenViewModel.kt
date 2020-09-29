@@ -1,11 +1,15 @@
 package com.rm.module_listen.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.component_comm.play.PlayService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.model.ListenHistoryModel
 import com.rm.module_listen.model.ListenRecentDateModel
 import com.rm.module_listen.model.ListenRecentListenModel
 
@@ -20,18 +24,45 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     var lastMonthListenData = MutableLiveData<MutableList<MultiItemEntity>>()
     var earlyListenData = MutableLiveData<MutableList<MultiItemEntity>>()
 
-    val mSwipeAdapter : CommonMultiSwipeVmAdapter by lazy {
-        CommonMultiSwipeVmAdapter(this, mutableListOf(),
+    private val playService by lazy {
+        RouterHelper.createRouter(PlayService::class.java)
+    }
+
+    val mSwipeAdapter: CommonMultiSwipeVmAdapter by lazy {
+        CommonMultiSwipeVmAdapter(
+            this, mutableListOf(),
             R.layout.listen_item_recent_listen,
             R.id.listenRecentSl,
             BR.viewModel,
-            BR.item)
+            BR.item
+        )
     }
 
 
-    fun getTodayListenDataFromLocal(){
+    fun getTodayListenDataFromLocal() {
+        showLoading()
+        launchOnIO {
+            val queryPlayBookList = playService.queryPlayBookList()
+            if (queryPlayBookList != null && queryPlayBookList.isNotEmpty()) {
+                showContentView()
+                mSwipeAdapter.addData(ListenRecentDateModel())
+                queryPlayBookList.forEach {
+                    mSwipeAdapter.addData(ListenHistoryModel(it))
+                }
+            } else {
+                showDataEmpty()
+            }
+        }
+
+
+
+
+
+
+
+
         todayListenData.value = mutableListOf(
-            ListenRecentDateModel("今天", showDelete = true, showSearch = true),
+            ListenRecentDateModel(),
             ListenRecentListenModel(
                 "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
                 8.0f,
@@ -53,9 +84,8 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         )
     }
 
-    fun getRecentMonthListenDataFromLocal(){
+    fun getRecentMonthListenDataFromLocal() {
         lastMonthListenData.value = mutableListOf(
-            ListenRecentDateModel("最近一月"),
             ListenRecentListenModel(
                 "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
                 8.0f,
@@ -77,9 +107,8 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         )
     }
 
-    fun getEarlyListenDataFromLocal(){
+    fun getEarlyListenDataFromLocal() {
         earlyListenData.value = mutableListOf(
-            ListenRecentDateModel("更早"),
             ListenRecentListenModel(
                 "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg",
                 8.0f,
@@ -101,7 +130,11 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         )
     }
 
-    fun deleteItem(item : MultiItemEntity){
+    fun startListenRecentDetail(context: Context) {
+
+    }
+
+    fun deleteItem(item: MultiItemEntity) {
         mSwipeAdapter.data.remove(item)
         mSwipeAdapter.notifyDataSetChanged()
     }

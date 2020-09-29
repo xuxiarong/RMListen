@@ -3,6 +3,7 @@ package com.rm.module_listen.bind
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.rm.module_listen.R
+import com.rm.module_listen.model.ListenHistoryModel
 
 /**
  * desc   :
@@ -12,15 +13,29 @@ import com.rm.module_listen.R
 
 @BindingAdapter("bindSubsText")
 fun TextView.bindSubsText(number:Int?){
-    when {
+    text = when {
         number ==null -> {
-            text = resources.getString(R.string.listen_my_listen_subs)
+            resources.getString(R.string.listen_my_listen_subs)
         }
         number <=0 -> {
-            text = resources.getString(R.string.listen_my_listen_subs)
+            resources.getString(R.string.listen_my_listen_subs)
         }
         else -> {
-            text = String.format(resources.getString((R.string.listen_my_listen_subs_number),number))
+            String.format(resources.getString((R.string.listen_my_listen_subs_number),number))
         }
     }
+}
+
+@BindingAdapter("listenBindChapterTime")
+fun TextView.listenBindChapterTime(audio:ListenHistoryModel){
+    try {
+        if (audio.HistoryPlayBook.listBean.isNotEmpty()){
+
+        }
+    }catch (e : Exception){
+        text = ""
+        e.printStackTrace()
+    }
+
+
 }
