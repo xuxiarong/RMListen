@@ -28,7 +28,7 @@ class PlayServiceImpl : PlayService {
     override fun showView(context: Context) {
         GlobalplayHelp.instance.globalView.mainShow()
         GlobalplayHelp.instance.globalView.setOnClickNotDoubleListener {
-            BookPlayerActivity.startActivity(context,BookPlayerActivity.fromGlobal)
+            BookPlayerActivity.startActivity(context, BookPlayerActivity.fromGlobal)
         }
     }
 
@@ -37,11 +37,16 @@ class PlayServiceImpl : PlayService {
         bean: DetailBookBean?,
         index: Int
     ) {
-        BookPlayerActivity.startActivity(context, bean,index)
-        ExoplayerLogger.exoLog("toPlayPage${System.currentTimeMillis()}")
+        BookPlayerActivity.startActivity(context, bean, index)
     }
 
-    override fun queryPlayBookList(): List<HistoryPlayBook>? = DaoUtil(HistoryPlayBook::class.java,"").queryAll()
+    override fun toPlayPage(context: Context, chapterId: String, audioId: String) {
+        BookPlayerActivity.startActivity(context, chapterId, audioId)
+
+    }
+
+    override fun queryPlayBookList(): List<HistoryPlayBook>? =
+        DaoUtil(HistoryPlayBook::class.java, "").queryAll()
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return PlayApplicationDelegate::class.java

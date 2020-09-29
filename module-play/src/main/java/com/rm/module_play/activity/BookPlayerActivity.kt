@@ -53,6 +53,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
     var indexSong = 0
     var fromGlobalValue: String? = ""
+
     //是否重置播放
     var isResumePlay = false
 
@@ -61,6 +62,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         const val songsIndex = "songIndex"
         const val fromGlobal = "fromGlobal"
         const val fromGlobalCache = "fromGlobalCache"
+
+        //网络信息加载
         fun startActivity(
             context: Context,
             homeDetailBean: DetailBookBean?,
@@ -74,11 +77,24 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
         }
 
+        //全局原点
         fun startActivity(context: Context, fromGlobal: String) {
             val intent = Intent(context, BookPlayerActivity::class.java)
             intent.putExtra(BookPlayerActivity.fromGlobal, fromGlobal)
             context.startActivity(intent)
         }
+
+        //从最近播放进入
+        const val paramChapterId = "chapterId"
+        const val paramAudioId = "audioId"
+        fun startActivity(context: Context, chapterId: String, audioId: String) {
+            val intent = Intent(context, BookPlayerActivity::class.java)
+            intent.putExtra(paramChapterId, chapterId)
+            intent.putExtra(paramAudioId, audioId)
+            context.startActivity(intent)
+        }
+
+
     }
 
 
@@ -173,7 +189,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.playBookSate.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                indexSong=mViewModel.playBookSate.get()?.index?:0
+                indexSong = mViewModel.playBookSate.get()?.index ?: 0
 
             }
 

@@ -20,11 +20,13 @@ interface PlayService : ApplicationProvider {
     //显示播放器按钮
     fun showView(context: Context)
 
-    //跳著到播放器页面
+    //跳转到播放器页面
     fun toPlayPage(
         context: Context, bean: DetailBookBean?,
         index: Int
     )
+    //从播放历史和最近播放进入播放页面
+    fun toPlayPage(context: Context, chapterId: String, audioId: String)
     //播放历史
     fun queryPlayBookList(): List<HistoryPlayBook>?
 }
