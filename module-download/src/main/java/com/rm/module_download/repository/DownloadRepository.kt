@@ -1,10 +1,15 @@
 package com.rm.module_download.repository
 
+import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.module_download.api.DownloadApiService
 import com.rm.module_download.bean.DownloadChapterItemBean
+import com.rm.module_download.bean.DownloadChapterRequestBean
 import com.rm.module_download.bean.DownloadChapterResponseBean
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * download repository
@@ -12,8 +17,8 @@ import com.rm.module_download.bean.DownloadChapterResponseBean
 class DownloadRepository(private val apiService: DownloadApiService) : BaseRepository() {
 
     companion object {
-        const val TYPE_SEQUENCE_SELECTION = 1  //选集下载类型
-        const val TYPE_SEQUENCE_CONTINUOUS = 2  //连续选集类型
+        const val TYPE_SEQUENCE_SELECTION = 1  // 序号方式下载
+        const val TYPE_SEQUENCE_CONTINUOUS = 2  //选集下载
     }
 
     /**
@@ -24,16 +29,17 @@ class DownloadRepository(private val apiService: DownloadApiService) : BaseRepos
      */
     suspend fun downloadChapterSelection(
         audioId: String,
-        sequences: String
-    ): BaseResult<List<DownloadChapterItemBean>> {
+        sequences: List<Int>
+    ): BaseResult<DownloadChapterResponseBean> {
         return apiCall {
-            apiService.downloadChapter(
-                audioId = audioId,
-                startSequence = 0,
-                endSequence = 0,
+            var requestBean = DownloadChapterRequestBean(
+                audio_id = audioId,
+                start_sequence = 0,
+                end_sequence = 0,
                 sequences = sequences,
                 type = TYPE_SEQUENCE_SELECTION
             )
+            apiService.downloadChapter(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
         }
     }
 
@@ -44,26 +50,27 @@ class DownloadRepository(private val apiService: DownloadApiService) : BaseRepos
      * @param startSequence 开始序列 取出大于等于当前值数据
      * @param endSequence 结束序列 取出小于等于当前值数据
      */
-    suspend fun downloadChapterContinuous(
+    suspend fun downloadChapterSelection(
         audioId: String,
         startSequence: Int,
         endSequence: Int
-    ): BaseResult<List<DownloadChapterItemBean>> {
+    ): BaseResult<DownloadChapterResponseBean> {
         return apiCall {
-            apiService.downloadChapter(
-                audioId = audioId,
-                startSequence = startSequence,
-                endSequence = endSequence,
-                sequences = "",
+            var requestBean = DownloadChapterRequestBean(
+                audio_id = audioId,
+                start_sequence = startSequence,
+                end_sequence = endSequence,
+                sequences = listOf(),
                 type = TYPE_SEQUENCE_CONTINUOUS
             )
+            apiService.downloadChapter(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
         }
     }
 
     /**
      *  获取章节列表
      */
-    suspend fun getDownloadChapterList(page: Int, pageSize:Int,audioId: String): BaseResult<DownloadChapterResponseBean> {
+    suspend fun getDownloadChapterList(page: Int, pageSize: Int, audioId: String): BaseResult<DownloadChapterResponseBean> {
         return apiCall { apiService.downloadGetChapterList(page = page, pageSize = pageSize, audioId = audioId, sort = "asc") }
     }
 

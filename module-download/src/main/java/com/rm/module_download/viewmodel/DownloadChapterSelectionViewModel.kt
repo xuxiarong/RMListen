@@ -120,14 +120,24 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         }
     }
 
-    fun downloadChapterSelection(audioId: String, sequences: String) {
+    fun downloadChapterSelection(audioId: String, sequences: List<Int>) {
         launchOnIO {
             repository.downloadChapterSelection(audioId = audioId, sequences = sequences).checkResult(
                 onSuccess = {
-
+                    var downloadList = it.list.map { chapterBean ->
+                        DownloadAudioBean(
+                            audioUrl = chapterBean.path_url,
+                            bookId = chapterBean.audio_id,
+                            audioName = chapterBean.chapter_name,
+                            bookName = chapterBean.chapter_name,
+                            fileSize = chapterBean.size
+                        )
+                    }
+                    downloadService.startDownloadWithCache(downloadList.toMutableList())
                 },
                 onError = {
                     DLog.i("download", "$it")
+                    showToast("$it")
                 }
             )
         }

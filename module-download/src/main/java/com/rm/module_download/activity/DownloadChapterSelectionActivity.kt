@@ -11,6 +11,7 @@ import com.rm.baselisten.binding.divLinearItemDecoration
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.downloadStatus
 import com.rm.module_download.BR
 import com.rm.module_download.R
@@ -18,6 +19,7 @@ import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.bean.DownloadChapterItemBean
 import com.rm.module_download.bean.DownloadChapterUIStatus
 import com.rm.module_download.databinding.DownloadActivityChapterSelectionBinding
+import com.rm.module_download.dialog.DownloadSelectChaptersDialog
 import com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel
 import kotlinx.android.synthetic.main.download_activity_chapter_selection.*
 
@@ -133,6 +135,16 @@ class DownloadChapterSelectionActivity : BaseVMActivity<DownloadActivityChapterS
                 }
                 mAdapter.notifyDataSetChanged()
             }
+        }
+        download_tv_select_chapters.setOnClickListener {
+            DownloadSelectChaptersDialog(100).apply {
+                downloadClick = { start, end ->
+                    mViewModel.downloadChapterSelection(audioId, (start..end).toList())
+                    dismiss()
+                }
+                //TODO 计算内存占用 待实现
+                calcMemoryUse = { start, end -> (start + end).toString() }
+            }.show(this)
         }
 
     }

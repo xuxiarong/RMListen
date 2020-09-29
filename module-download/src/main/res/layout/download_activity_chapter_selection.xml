@@ -105,6 +105,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/download_tv_select_chapters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/business_shape_stroke_e8e8e8_360dp"
