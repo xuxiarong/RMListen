@@ -18,7 +18,6 @@ import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.constants.MUSIC_ALARM_MODEL_0
-import com.rm.music_exoplayer_lib.constants.SP_KEY_ALARM_MODEL
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.CacheUtils
 import kotlinx.android.synthetic.main.music_play_dialog_time_setting.*
@@ -38,13 +37,13 @@ class MusicPlayTimeSettingDialog : BottomDialogFragment() {
     private val timeSAdapter by lazy {
         TimeSAdapter(timeList).apply {
             setOnItemClickListener { _, _, position ->
-                if (position <= 4) {
-                    val itemPos = (data.getOrNull(position) ?: "0").toInt()
-                    notifyChange(itemPos)
-                    val countTime = (timeList[position].toInt()) * 60 * 1000
-                    timerTask(countTime.toLong())
-                    musicPlayerManger.setPlayerAlarmModel(itemPos)
-                }
+                val itemPos = (data.getOrNull(position) ?: "0").toInt()
+                musicPlayerManger.setPlayerAlarmModel(itemPos)
+                val countTime = musicPlayerManger.getPlayerAlarmTime() - System.currentTimeMillis()
+                timerTask(countTime)
+                notifyDataSetChanged()
+                checkbox_music_play_time_setting_check.isChecked = false
+                setCheckBox()
 
 
             }
@@ -81,16 +80,35 @@ class MusicPlayTimeSettingDialog : BottomDialogFragment() {
         val time = musicPlayerManger.getPlayerAlarmTime() - System.currentTimeMillis()
         if (time > 0) {
             timerTask(time)
+            checkbox_music_play_time_setting_check.isChecked = false
+
         } else {
-            context?.let {
-                iv_music_play_time_setting_check.background = ContextCompat.getDrawable(
-                    it,
+            checkbox_music_play_time_setting_check.isChecked = true
+        }
+        setCheckBox()
+        checkbox_music_play_time_setting_check.setOnCheckedChangeListener { buttonView, isChecked ->
+            setCheckBox()
+            if (isChecked) {
+                musicPlayerManger.setPlayerAlarmModel(MUSIC_ALARM_MODEL_0)
+
+            }
+        }
+    }
+
+    fun setCheckBox() {
+        checkbox_music_play_time_setting_check.background =
+            if (checkbox_music_play_time_setting_check.isChecked) {
+                ContextCompat.getDrawable(
+                    context!!,
+                    R.drawable.music_play_item_time_selected_ic_icon_chosen_da
+                )
+
+            } else {
+                ContextCompat.getDrawable(
+                    context!!,
                     R.drawable.music_play_item_ic_icon_select_df
                 )
             }
-        }
-
-
     }
 
     var timerTask: CountDownTimer? = null
@@ -101,7 +119,9 @@ class MusicPlayTimeSettingDialog : BottomDialogFragment() {
         }
         timerTask = object : CountDownTimer(position, 1000) {
             override fun onFinish() {
-                CacheUtils.instance.remove(SP_KEY_ALARM_MODEL)
+                checkbox_music_play_time_setting_check.isChecked = true
+                musicPlayerManger.setPlayerAlarmModel(MUSIC_ALARM_MODEL_0)
+                timeSAdapter.notifyDataSetChanged()
             }
 
             override fun onTick(millisUntilFinished: Long) {
@@ -125,15 +145,19 @@ class MusicPlayTimeSettingDialog : BottomDialogFragment() {
      */
     internal class TimeSAdapter(list: MutableList<String>) :
         BaseQuickAdapter<String, BaseViewHolder>(R.layout.rv_item_times_page, list) {
-        var isCheckPos = CacheUtils.instance.getInt(SP_KEY_ALARM_MODEL, MUSIC_ALARM_MODEL_0)
-
         var timeDown = ""
         override fun convert(holder: BaseViewHolder, item: String) {
+            val isCheckPos = musicPlayerManger.getPlayerAlarmModel()
             val str = if (item.toInt() >= 10) "${item}分钟" else "${item}集"
             holder.setText(R.id.tv_music_play_time_play, str)
             holder.getView<ImageView>(R.id.music_play_time_setting_check).background =
                 if (item == isCheckPos.toString()) {
-                    holder.setText(R.id.tv_music_play_time_down, timeDown)
+                    val result = if (isCheckPos <= 5) {
+                        "${musicPlayerManger.getRemainingSetInt()}集结束"
+                    } else {
+                        timeDown
+                    }
+                    holder.setText(R.id.tv_music_play_time_down, result)
                     ContextCompat.getDrawable(
                         context,
                         R.drawable.music_play_item_time_selected_ic_icon_chosen_da
@@ -147,13 +171,6 @@ class MusicPlayTimeSettingDialog : BottomDialogFragment() {
             holder.setVisible(R.id.tv_music_play_time_down, isCheckPos.toString() == item)
         }
 
-        /**
-         * 刷新数据
-         */
-        fun notifyChange(isCheckPos: Int) {
-            this.isCheckPos = isCheckPos
-            notifyDataSetChanged()
-        }
 
         /**
          * 刷新数据

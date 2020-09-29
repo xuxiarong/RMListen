@@ -7,7 +7,7 @@ package com.rm.music_exoplayer_lib.bean
  * @Version: 1.0.0
  */
 data class BaseAudioInfo (val audioPath: String="", val audioCover:String="", val audioName:String="", val filename:String="", val audioId: String ="",
-                          val chapterId: String =""){
+                          val chapterId: String ="",val duration:Int=0){
 
 
 

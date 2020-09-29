@@ -5,6 +5,7 @@ import android.os.Binder
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
 /**
  *
@@ -181,4 +182,15 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
 
     //获取闹钟时长
     fun getPlayerAlarmTime(): Long = presenter.getPlayerAlarmTime()
+
+    //获取剩余集数
+    fun getRemainingSetInt(): Int = presenter.getRemainingSetInt()
+
+    //获取播放速度
+    fun getPlayerMultiple(): Float = presenter.getPlayerMultiple()
+
+
+    //恢复页面播放状态
+    fun resumePlayState(state:Boolean)=presenter.resumePlayState(state)
+
 }

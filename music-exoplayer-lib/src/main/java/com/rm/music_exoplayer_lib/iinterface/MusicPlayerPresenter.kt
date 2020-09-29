@@ -244,18 +244,38 @@ interface MusicPlayerPresenter {
      * @return 成功设置的播放模式
      */
     fun setPlayerModel(model: Int): Int
+
     //获取播放模式
     fun getPlayerModel(): Int
+
     //设置定时模式
     fun setPlayerAlarmModel(model: Int)
+
     //获取闹钟模式
-    fun getPlayerAlarmModel():Int
+    fun getPlayerAlarmModel(): Int
+
     //获取闹钟时长
-    fun getPlayerAlarmTime():Long
+    fun getPlayerAlarmTime(): Long
+
     /**
      * 开启通知
      */
-    fun setNotificationEnable(enable:Boolean)
+    fun setNotificationEnable(enable: Boolean)
 
-    fun getServiceName():String
+    /**
+     * 服务名称
+     */
+    fun getServiceName(): String
+
+    //剩余集数
+    fun getRemainingSetInt(): Int
+
+    /**
+     * 获取配速
+     */
+    fun getPlayerMultiple():Float
+
+    //恢复页面播放状态
+    fun resumePlayState(state:Boolean)
+
 }
