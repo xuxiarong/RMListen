@@ -93,6 +93,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
      */
     fun updatePlayBook(key: Long, chapter: ChapterList?) {
         val historyPlayBook = daoUtil?.querySingle(key)
+
         val chapterFind = historyPlayBook?.listBean?.find { it.chapter_id == chapter?.chapter_id }
         if (chapterFind == null) {
             historyPlayBook?.listBean?.add(chapter)
