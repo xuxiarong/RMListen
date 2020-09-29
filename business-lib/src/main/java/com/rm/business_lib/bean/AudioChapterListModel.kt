@@ -30,5 +30,6 @@ data class ChapterList(
     val sequence: Int, //章节序号
     val size: Long, //音频大小
     val path:String,
-    var recentPlay:Long
+    var recentPlay:Long,
+    var progress: Long=0L
 ) : Serializable

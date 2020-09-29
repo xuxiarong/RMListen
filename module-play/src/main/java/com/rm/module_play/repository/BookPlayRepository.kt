@@ -101,7 +101,19 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
         }
         historyPlayBook?.let { daoUtil?.update(it) }
     }
-
+    /**
+     * 记录播放的章节
+     */
+    fun updatePlayBookProcess(key: Long, chapter: ChapterList?,progress:Long=0L) {
+        val historyPlayBook = daoUtil?.querySingle(key)
+        val chapterFind = historyPlayBook?.listBean?.find { it.chapter_id == chapter?.chapter_id }
+        if (chapterFind == null) {
+            historyPlayBook?.listBean?.add(chapter)
+        } else {
+            chapterFind.progress=progress
+        }
+        historyPlayBook?.let { daoUtil?.update(it) }
+    }
     /**
      * 查询
      */

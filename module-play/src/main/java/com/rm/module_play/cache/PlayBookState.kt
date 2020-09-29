@@ -1,7 +1,7 @@
 package com.rm.module_play.cache
 
 import com.rm.business_lib.bean.AudioChapterListModel
-import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.bean.DetailBookBean
 import java.io.Serializable
 
 /**
@@ -11,10 +11,10 @@ import java.io.Serializable
  * @Version: 1.0.0
  */
 data class PlayBookState(
-    val homeDetailModel: HomeDetailModel?=null,
-    val audioChapterListModel: AudioChapterListModel?=null,
-    val index: Int=0,
-    val process:Long=0L
+    var homeDetailModel: DetailBookBean?=null,
+    var audioChapterListModel: AudioChapterListModel?=null,
+    var index: Int=0,
+    var process:Float=0f
 ) : Serializable {
 
 
