@@ -1,9 +1,11 @@
 package com.rm.module_download.service
 
-import com.rm.baselisten.util.putMMKV
-import com.rm.baselisten.util.removeValuesForKeys
+import com.rm.baselisten.util.*
 import com.rm.business_lib.bean.download.DownloadAudioBean
 
+/**
+ * 用于本地存储下载信息
+ */
 class DownloadAudioCache {
 
 
@@ -21,6 +23,11 @@ class DownloadAudioCache {
 
     fun saveAudio(downloadAudioBean: DownloadAudioBean) {
         downloadAudioBean.url.putMMKV(downloadAudioBean)
+        var list = KEY_DOWNLOAD_URL_LIST.getListString()
+        if (!list.contains(downloadAudioBean.url)) {
+            list.add(downloadAudioBean.url)
+            KEY_DOWNLOAD_URL_LIST.putMMKV(list)
+        }
     }
 
     fun saveAudio(audioList: List<DownloadAudioBean>) {
@@ -35,6 +42,16 @@ class DownloadAudioCache {
         list.forEach {
             removeValuesForKeys(it)
         }
+    }
+
+    fun getDownloadAudioList(): MutableList<DownloadAudioBean> {
+        var beanList = mutableListOf<DownloadAudioBean>()
+        KEY_DOWNLOAD_URL_LIST.getListString().forEach {
+            it.getObjectMMKV(DownloadAudioBean::class.java)?.apply {
+                beanList.add(this)
+            }
+        }
+        return beanList
     }
 
 }

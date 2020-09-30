@@ -31,6 +31,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     private val queueListener: DownloadListener by lazy { this@DownloadFileManager }
 
 
+
     companion object {
         @JvmStatic
         val INSTANCE: DownloadFileManager by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { DownloadFileManager() }
@@ -181,6 +182,5 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     override fun progressBlock(task: DownloadTask, blockIndex: Int, currentBlockOffset: Long, blockSpeed: SpeedCalculator) {
 
     }
-
 
 }

@@ -12,7 +12,7 @@
 
         <variable
             name="viewModel"
-            type="com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel" />
+            type="com.rm.module_download.viewmodel.DownloadMainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

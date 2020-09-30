@@ -66,6 +66,11 @@ interface DownloadService : ApplicationProvider {
      */
     fun getDownloadProgressInfo(baseBean: BaseDownloadFileBean): DownloadProgressUpdateBean?
 
+    /**
+     * 获取下载缓存列表
+     */
+    fun getDownloadAudioList():MutableList<DownloadAudioBean>
+
     fun stopAll()
 
     fun deleteAll()

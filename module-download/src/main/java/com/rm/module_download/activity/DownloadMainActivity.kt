@@ -16,9 +16,10 @@ import com.rm.module_download.databinding.DownloadActivityDownloadMainBinding
 import com.rm.module_download.fragment.DownloadCompletedFragment
 import com.rm.module_download.fragment.DownloadInProgressFragment
 import com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel
+import com.rm.module_download.viewmodel.DownloadMainViewModel
 import kotlinx.android.synthetic.main.download_activity_download_main.*
 
-class DownloadMainActivity : BaseVMActivity<DownloadActivityDownloadMainBinding, DownloadChapterSelectionViewModel>() {
+class DownloadMainActivity : BaseVMActivity<DownloadActivityDownloadMainBinding, DownloadMainViewModel>() {
 
 
     companion object {

@@ -32,8 +32,8 @@ class DownloadServiceImpl : DownloadService {
     }
 
     override fun startDownloadWithCache(audio: DownloadAudioBean) {
-        DownloadAudioCache.INSTANCE.saveAudio(audio)
         DownloadFileManager.INSTANCE.download(audio)
+        DownloadAudioCache.INSTANCE.saveAudio(audio)
     }
 
     override fun startDownloadWithCache(audioList: MutableList<DownloadAudioBean>) {
@@ -65,6 +65,10 @@ class DownloadServiceImpl : DownloadService {
 
     override fun getDownloadProgressInfo(baseBean: BaseDownloadFileBean): DownloadProgressUpdateBean? {
         return DownloadFileManager.INSTANCE.getTaskBreakpointInfo(baseBean)
+    }
+
+    override fun getDownloadAudioList(): MutableList<DownloadAudioBean> {
+        return DownloadAudioCache.INSTANCE.getDownloadAudioList()
     }
 
     override fun stopAll() {
