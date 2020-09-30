@@ -62,7 +62,6 @@
                     android:layout_width="29dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:src=""
                     app:lottie_fileName="play_stop.json" />
             </com.flyco.roundview.RoundFrameLayout>
 

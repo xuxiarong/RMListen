@@ -10,7 +10,7 @@ import com.rm.module_search.R
 import com.rm.module_search.bean.MemberBean
 import com.rm.module_search.bean.SearchResultBean
 import com.rm.module_search.bean.SearchSheetBean
-import com.rm.module_search.keyword
+import com.rm.module_search.searchKeyword
 import com.rm.module_search.repository.SearchRepository
 import com.rm.module_search.searchResultData
 
@@ -22,6 +22,8 @@ import com.rm.module_search.searchResultData
  *
  */
 class SearchContentAllViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
+    val data = searchResultData
+
     //书籍adapter
     val bookAdapter by lazy {
         CommonBindVMAdapter<AudioBean>(
@@ -81,14 +83,21 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
         const val REQUEST_TYPE_SHEET = "sheet"
     }
 
+    /**
+     * 全部-书籍更多点击时间
+     */
     fun clickBookFun() {
 
     }
-
+    /**
+     * 全部-主播更多点击时间
+     */
     fun clickAnchorFun() {
 
     }
-
+    /**
+     * 全部-听单更多点击时间
+     */
     fun clickSheetFun() {
 
     }
@@ -114,7 +123,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
      */
     private fun requestData() {
         launchOnIO {
-            repository.searchResult(keyword.get()!!, requestType, mPage, mPageSize).checkResult(
+            repository.searchResult(searchKeyword.get()!!, requestType, mPage, mPageSize).checkResult(
                 onSuccess = {
                     successData(it)
                 },
@@ -155,13 +164,13 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
         when (requestType) {
             REQUEST_TYPE_ALL -> {
                 refreshStateMode.setHasMore(false)
-                searchResultData.set(bean)
+                data.set(bean)
             }
             REQUEST_TYPE_MEMBER -> {
-                processAudioData(bean.member_list)
+                processMemberData(bean.member_list)
             }
             REQUEST_TYPE_AUDIO -> {
-                processMemberData(bean.audio_list)
+                processAudioData(bean.audio_list)
             }
             REQUEST_TYPE_SHEET -> {
                 processSheetData(bean.sheet_list)
@@ -172,26 +181,36 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
     /**
      * 处理书籍数据
      */
-    private fun processAudioData(memberList: List<MemberBean>) {
-        refreshStateMode.setHasMore(memberList.size >= 0)
-        if (mPage==1){
-//            bookAdapter.setList(me)
+    private fun processMemberData(memberList: List<MemberBean>?) {
+        refreshStateMode.setHasMore(memberList?.size ?: 0 >= 0)
+        if (mPage == 1) {
+            anchorAdapter.setList(memberList)
+        } else {
+            memberList?.let { anchorAdapter.addData(it) }
         }
     }
 
     /**
      * 处理主播数据
      */
-    private fun processMemberData(audioList: List<AudioBean>) {
-        refreshStateMode.setHasMore(audioList.size >= 0)
+    private fun processAudioData(audioList: List<AudioBean>?) {
+        refreshStateMode.setHasMore(audioList?.size ?: 0 >= 0)
+        if (mPage == 1) {
+            bookAdapter.setList(audioList)
+        } else {
+            audioList?.let { bookAdapter.addData(it) }
+        }
     }
 
     /**
      * 处理听单数据
      */
-    private fun processSheetData(sheetList: List<SearchSheetBean>) {
-
-
-        refreshStateMode.setHasMore(sheetList.size >= 0)
+    private fun processSheetData(sheetList: List<SearchSheetBean>?) {
+        refreshStateMode.setHasMore(sheetList?.size ?: 0 >= 0)
+        if (mPage == 1) {
+            sheetAdapter.setList(sheetList)
+        } else {
+            sheetList?.let { sheetAdapter.addData(it) }
+        }
     }
 }

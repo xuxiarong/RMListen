@@ -18,8 +18,7 @@ val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
     viewModel { SearchMainViewModel(get()) }
     viewModel { SearchRecommendViewModel() }
-    viewModel { SearchContentViewModel() }
-    viewModel { SearchContentAllViewModel() }
+    viewModel { SearchContentAllViewModel(get()) }
 }
 
 val repositoryModule = module {

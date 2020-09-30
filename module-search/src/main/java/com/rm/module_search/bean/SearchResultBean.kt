@@ -11,11 +11,11 @@ import com.rm.business_lib.bean.AudioBean
  */
 data class SearchResultBean(
     var audio: Long,//搜索到的书籍总量
-    var audio_list: List<AudioBean>,//书籍列表
+    var audio_list: List<AudioBean>?,//书籍列表
     var member: Long,//搜索到的主播数量
-    var member_list: List<MemberBean>,//主播列表
+    var member_list: List<MemberBean>?,//主播列表
     var sheet: Long,//搜索到的听单数量
-    var sheet_list: List<SearchSheetBean>//听单列表
+    var sheet_list: List<SearchSheetBean>?//听单列表
 )
 
 data class MemberBean(

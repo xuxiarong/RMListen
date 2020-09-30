@@ -34,6 +34,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/search_main_tv_search"
                         style="@style/BusinessTextStyleFirst_2"
+                        android:onClick="@{()->viewModel.clickSearchFun()}"
                         android:layout_height="@dimen/dp_48"
                         android:gravity="center"
                         android:paddingStart="@dimen/dp_16"
@@ -47,6 +48,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/BusinessTextStyleFirst_2"
                         android:layout_width="0dp"
+                        afterTextChanged="@{viewModel.inputKeyWord}"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_16"
                         android:background="@drawable/business_shape_f7f7f7_12dp"

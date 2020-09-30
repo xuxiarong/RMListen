@@ -20,4 +20,4 @@ val searchResultData = ObservableField<SearchResultBean>()
 val type = ObservableField<Int>()
 
 //当前进行搜索的关键字
-val keyword = ObservableField<String>("")
+val searchKeyword = ObservableField<String>("")
