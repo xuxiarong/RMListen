@@ -68,12 +68,14 @@ fun BubbleSeekBar.updateThumbText(str: String) {
 
 
 @BindingAdapter("playState")
-fun LottieAnimationView.startLottieAnimation(state: Int) {
-    if (state == 2 || state == 3) {
+fun LottieAnimationView.startLottieAnimation(state:Boolean) {
+    if (state) {
         setAnimation("play_stop.json")
-    } else if (state == 1) {
+    } else {
         setAnimation("stop_play.json")
+
     }
+
     playAnimation()
 
 }

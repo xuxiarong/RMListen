@@ -40,9 +40,9 @@
 
             <ProgressBar
                 android:id="@+id/progress_play"
-                isVisible="@{viewModel.playSate==1}"
+                isVisible="@{viewModel.playSate==false}"
                 android:layout_width="66dp"
-                android:layout_height="66dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminate="false"
                 android:indeterminateDrawable="@drawable/music_play_progressbar" />
@@ -59,10 +59,9 @@
                     android:id="@+id/animation_view"
                     bindClick="@{viewModel.playManger.playOrPause}"
                     playState="@{viewModel.playSate}"
-                    android:layout_width="29dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center"
-                    app:lottie_fileName="play_stop.json" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
             </com.flyco.roundview.RoundFrameLayout>
 
         </FrameLayout>

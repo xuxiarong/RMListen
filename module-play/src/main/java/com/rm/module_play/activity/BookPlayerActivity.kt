@@ -1,15 +1,18 @@
 package com.rm.module_play.activity
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
@@ -29,12 +32,15 @@ import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_JOIN_LISTEN
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_COMMENT
+import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_FINSH
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_OPERATING
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.yinglan.scrolllayout.ScrollLayout
+import kotlinx.android.synthetic.main.activity_book_player.*
 
 
 @Suppress(
@@ -51,6 +57,31 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         BookPlayerAdapter(mViewModel, BR.viewModel, BR.itemModel)
 
     }
+    private val mOnScrollChangedListener: ScrollLayout.OnScrollChangedListener =
+        object : ScrollLayout.OnScrollChangedListener {
+            override fun onScrollProgressChanged(currentProgress: Float) {
+                if (currentProgress >= 0) {
+                    var precent = 255 * currentProgress
+                    if (precent > 255) {
+                        precent = 255f
+                    } else if (precent < 0) {
+                        precent = 0f
+                    }
+                    root_play.background?.alpha = 255- precent.toInt()
+                }
+
+            }
+
+            override fun onScrollFinished(currentStatus: ScrollLayout.Status) {
+                if (currentStatus == ScrollLayout.Status.CLOSED) {
+//                    finish()
+                }
+            }
+
+            override fun onChildScroll(top: Int) {
+
+            }
+        }
     var indexSong = 0
     var fromGlobalValue: String? = ""
 
@@ -74,6 +105,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 intent.putExtra(homeDetailModel, homeDetailBean)
                 intent.putExtra(songsIndex, index)
                 context.startActivity(intent)
+                (context as Activity).overridePendingTransition(R.anim.activity_top_open,0);
+
             }
         }
 
@@ -82,6 +115,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             val intent = Intent(context, BookPlayerActivity::class.java)
             intent.putExtra(BookPlayerActivity.fromGlobal, fromGlobal)
             context.startActivity(intent)
+            (context as Activity).overridePendingTransition(R.anim.activity_top_open,0);
+
         }
 
         //从最近播放进入
@@ -92,11 +127,20 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             intent.putExtra(paramChapterId, chapterId)
             intent.putExtra(paramAudioId, audioId)
             context.startActivity(intent)
+            (context as Activity).overridePendingTransition(R.anim.activity_top_open,0);
+
         }
 
 
     }
 
+
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.activity_bottom_close,0);
+
+    }
 
     override fun getLayoutId(): Int = R.layout.activity_book_player
 
@@ -104,8 +148,19 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun initView() {
         setStatusBar(R.color.businessWhite)
+        /**设置 setting*/
+        scroll_down_layout.setMinOffset(0)
+        scroll_down_layout.setMaxOffset(((screenHeight * 0.5).toInt()))
+        scroll_down_layout.setExitOffset(dip(50))
+        scroll_down_layout.setIsSupportExit(true)
+        scroll_down_layout.setAllowHorizontalScroll(true)
+        scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
+        scroll_down_layout.scrollToClose()
+
+        scroll_down_layout.background?.mutate()?.alpha = 0
         mViewModel.initPlayerAdapterModel()
         mDataBind.rvMusicPlay.bindVerticalLayout(mBookPlayerAdapter)
+
     }
 
     override fun startObserve() {
@@ -175,7 +230,14 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
                     }
                     ACTION_MORE_COMMENT -> {
-                        ToastUtil.show(this@BookPlayerActivity, "更多评论")
+                        CommentCenterActivity.toCommentCenterActivity(
+                            this@BookPlayerActivity,
+                            "123"
+                        )
+                    }
+                    ACTION_MORE_FINSH -> {
+                        scroll_down_layout.scrollToExit()
+                        finish()
                     }
                     else -> {
 
@@ -311,7 +373,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        mViewModel.playSate.set(playbackState)
+        mViewModel.playSate.set(playWhenReady)
         indexSong = mViewModel.playBookSate.get()?.index ?: 0
     }
 

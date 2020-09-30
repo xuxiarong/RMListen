@@ -16,6 +16,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.DisplayUtils.getDip
 import com.rm.business_lib.R
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
@@ -30,12 +31,11 @@ class GlobalPlay @JvmOverloads constructor(
     private var mWidth = 0f
     private var mHeight = 0f
     private val mUnreachColor = 0x88a6a6a6
-    private val mReachedColor =0xffff7050
+    private var mReachedColor =0xff5e5e
     private var mRadius = 0f
     private var mBarWidth = 0f
     private var mBitmap: Bitmap? = null
     private var mPlayPath: Path? = null
-
     /**
      * 0.0~1.0
      */
@@ -51,11 +51,12 @@ class GlobalPlay @JvmOverloads constructor(
     private var mAnimator: ValueAnimator? = null
     private var mPathEffect: CornerPathEffect? = null
     private fun init() {
+        mReachedColor=context.Color(R.color.business_color_ff5e5e)
         mPaint =
             Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
         mPaint?.color = Color.BLACK
         mPaint?.style = Paint.Style.STROKE
-        setBitmap(BitmapFactory.decodeResource(resources, R.drawable.business_defualt_img))
+        setBitmap(BitmapFactory.decodeResource(resources, R.drawable.base_ic_default))
         mBpPaint =
             Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
         mMatrix = Matrix()
@@ -127,8 +128,8 @@ class GlobalPlay @JvmOverloads constructor(
     fun play(avatarUrl: String?) {
         Glide.with(this).asBitmap()
             .load(avatarUrl)
-            .error(R.drawable.business_defualt_img)
-            .placeholder(R.drawable.business_defualt_img)
+            .error(R.drawable.base_ic_default)
+            .placeholder(R.drawable.base_ic_default)
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
@@ -190,8 +191,8 @@ class GlobalPlay @JvmOverloads constructor(
     fun setImage(avatarUrl: String?) {
         Glide.with(this).asBitmap()
             .load(avatarUrl)
-            .error(R.drawable.business_defualt_img)
-            .placeholder(R.drawable.business_defualt_img)
+            .error(R.drawable.base_ic_default)
+            .placeholder(R.drawable.base_ic_default)
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
                 override fun onLoadCleared(placeholder: Drawable?) {
 

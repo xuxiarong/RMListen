@@ -73,7 +73,8 @@ ext {
             //scrolllayout              :"1.0.2"
             easypermissions           : "3.0.0",
             lottieVersion             : "3.4.2",
-            flexbox                   : "2.0.1"
+            flexbox                   : "2.0.1",
+            lottieVersion             : "3.0.0"
     ]
 
     dependencies = [
@@ -81,7 +82,6 @@ ext {
             retrofit                  : "com.squareup.retrofit2:retrofit:${version.retrofit}",
             retrofit_converter_gson   : "com.squareup.retrofit2:converter-gson:${version.retrofit_converter_gson}",
             okhttp_logging_interceptor: "com.squareup.okhttp3:logging-interceptor:${version.okhttp_logging_interceptor}",
-
             koin_android              : "org.koin:koin-android:${version.koin}",
             koin_androidx_scope       : "org.koin:koin-androidx-scope:${version.koin}",
             koin_androidx_viewmodel   : "org.koin:koin-androidx-viewmodel:${version.koin}",
@@ -113,7 +113,6 @@ ext {
             // 下拉刷新控件
             "smartRefreshLayout"      : "com.scwang.smart:refresh-layout-kernel:2.0.1",
 
-            //scrolllayout : "com.yinglan.scrolllayout:scrolllayout:${version.scrolllayout}"
             "lottie"                  : "com.airbnb.android:lottie:${version.lottieVersion}"
 
     ]
@@ -130,8 +129,7 @@ ext {
             recyclerview       : "androidx.recyclerview:recyclerview:${version.recyclerview}",
             xBanner            : "com.github.xiaohaibin:XBanner:androidx_v${version.xBanner}",
             fragment_ktx       : "androidx.fragment:fragment-ktx:${version.androidx_lib_version}@aar",
-            constraintLayout   : "androidx.constraintlayout:constraintlayout:${version.constraintLayout}",
-            flexbox            : "com.google.android:flexbox:${version.flexbox}"
+            constraintLayout   : "androidx.constraintlayout:constraintlayout:${version.constraintLayout}"
     ]
 
 

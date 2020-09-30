@@ -3,7 +3,6 @@ package com.rm.module_home.activity.menu
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
@@ -14,25 +13,15 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
-import com.bumptech.glide.request.transition.Transition
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.module_home.BR
-import com.rm.module_home.BlurUtil
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuDetailBinding
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.viewmodel.HomeMenuDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
-import com.bumptech.glide.request.target.BitmapImageViewTarget as BitmapImageViewTarget1
 
 class HomeMenuDetailActivity :
     BaseVMActivity<HomeActivityListenMenuDetailBinding, HomeMenuDetailViewModel>() {
@@ -61,7 +50,7 @@ class HomeMenuDetailActivity :
         mViewModel.pageId.set(pageId.toString())
         mViewModel.sheetId.set(sheetId)
 
-        setD()//设置透明沉浸状态栏
+        setTransparentStatusBar()//设置透明沉浸状态栏
 
         val layoutParams = (home_menu_detail_title_cl.layoutParams) as ConstraintLayout.LayoutParams
         layoutParams.apply {
