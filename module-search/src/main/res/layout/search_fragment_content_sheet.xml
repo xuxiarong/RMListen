@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.rm.module_search.viewmodel.SearchContentAllViewModel" />
+            type="com.rm.module_search.viewmodel.SearchContentSheetViewModel" />
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -22,7 +22,9 @@
             android:id="@+id/search_adapter_content_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
             android:paddingTop="@dimen/dp_6"
+            bindVerticalLayout="@{viewModel.sheetAdapter}"
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_6" />

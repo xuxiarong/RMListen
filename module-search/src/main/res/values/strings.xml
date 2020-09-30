@@ -7,4 +7,7 @@
     <string name="search_anchor">主播</string>
     <string name="search_sheet">听单</string>
     <string name="search_books_num">(%d)</string>
+    <string name="search_anchor_level">%d</string>
+    <string name="search_attention">关注</string>
+    <string name="search_a">fa</string>
 </resources>

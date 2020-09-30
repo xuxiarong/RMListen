@@ -21,3 +21,10 @@ val type = ObservableField<Int>()
 
 //当前进行搜索的关键字
 val searchKeyword = ObservableField<String>("")
+
+
+// all：全部；member：主播；audio：书籍；sheet：书单
+const val REQUEST_TYPE_ALL = "all"
+const val REQUEST_TYPE_MEMBER = "member"
+const val REQUEST_TYPE_AUDIO = "audio"
+const val REQUEST_TYPE_SHEET = "sheet"

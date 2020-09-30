@@ -3,6 +3,7 @@ package com.rm.module_search.viewmodel
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_search.*
 import com.rm.module_search.adapter.SearchMainAdapter.Companion.TYPE_CONTENT_ALL
@@ -34,7 +35,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
             BR.recommend
         )
     }
-    var keyWord = ""
+    private var keyWord = ""
     var inputKeyWord: (String) -> Unit = { keyWord = it }
 
     //推荐搜索数据
@@ -42,9 +43,6 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
 
     //搜索结果
     val contentData = ObservableField<SearchResultBean>()
-
-    //是否已经添加搜索结果
-    val hasAddContentTab = ObservableField<Boolean>(false)
 
     /**
      * 搜索点击事件
@@ -111,13 +109,11 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                 onSuccess = {
 
 
-                    val bean = getBean(it)
+//                    val bean = getBean(it)
 
-                    if (hasAddContentTab.get() == false) {
-                        mTabDataList.set(getTabList(bean))
-                    }
-                    contentData.set(bean)
-                    searchResultData.set(bean)
+                    mTabDataList.set(getTabList(it))
+                    contentData.set(it)
+                    searchResultData.set(it)
                 },
                 onError = {
 
@@ -189,7 +185,6 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     }
 
     private fun getTabList(bean: SearchResultBean): MutableList<SearchContentBean> {
-        hasAddContentTab.set(true)
         val list = mutableListOf<SearchContentBean>()
         list.add(SearchContentBean(TYPE_CONTENT_ALL, "全部", SearchContentAllFragment()))
 

@@ -1,12 +1,10 @@
 package com.rm.module_search.fragment
 
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_search.BR
 import com.rm.module_search.R
-import com.rm.module_search.databinding.SearchFragmentContentBinding
-import com.rm.module_search.viewmodel.SearchContentAllViewModel
-import kotlinx.android.synthetic.main.search_fragment_content.*
+import com.rm.module_search.databinding.SearchFragmentContentAnchorBinding
+import com.rm.module_search.viewmodel.SearchContentAnchorViewModel
 
 /**
  *
@@ -16,17 +14,12 @@ import kotlinx.android.synthetic.main.search_fragment_content.*
  *
  */
 class SearchContentAnchorFragment :
-    BaseVMFragment<SearchFragmentContentBinding, SearchContentAllViewModel>() {
+    BaseVMFragment<SearchFragmentContentAnchorBinding, SearchContentAnchorViewModel>() {
 
-    override fun initLayoutId() = R.layout.search_fragment_content
+    override fun initLayoutId() = R.layout.search_fragment_content_anchor
 
     override fun initModelBrId() = BR.viewModel
-    override fun initView() {
-        super.initView()
-        search_adapter_content_rv.apply {
-            bindVerticalLayout(mViewModel.anchorAdapter)
-        }
-    }
+
     override fun initData() {
 
     }

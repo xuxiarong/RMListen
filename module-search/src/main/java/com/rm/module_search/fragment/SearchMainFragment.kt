@@ -3,11 +3,15 @@ package com.rm.module_search.fragment
 import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
-import com.rm.module_search.*
+import com.rm.module_search.BR
+import com.rm.module_search.R
 import com.rm.module_search.adapter.SearchMainAdapter
 import com.rm.module_search.databinding.SearchFragmentMainBinding
+import com.rm.module_search.hotRecommend
+import com.rm.module_search.type
 import com.rm.module_search.viewmodel.SearchMainViewModel
 import kotlinx.android.synthetic.main.search_fragment_main.*
+
 
 /**
  *
@@ -54,9 +58,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 mViewModel.contentData.get()?.let {
                     search_main_view_pager.currentItem = 0
-                    if (mViewModel.hasAddContentTab.get() == true) {
-                        setData()
-                    }
+                    setData()
                 }
             }
         })

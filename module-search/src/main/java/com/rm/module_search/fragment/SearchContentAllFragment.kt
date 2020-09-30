@@ -1,5 +1,6 @@
 package com.rm.module_search.fragment
 
+import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_search.BR
 import com.rm.module_search.R
@@ -26,6 +27,12 @@ class SearchContentAllFragment :
     }
 
     override fun startObserve() {
+        mViewModel.data.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+
+            }
+        })
     }
 
 }
