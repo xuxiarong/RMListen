@@ -5,20 +5,14 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.loadBlurImage
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
@@ -106,7 +100,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     private var stateHeight: Int = 0
     override fun initView() {
         super.initView()
-        setD()
+        setTransparentStatusBar()
         val layoutParams = (home_detail_title_cl.layoutParams) as Toolbar.LayoutParams
         layoutParams.apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin

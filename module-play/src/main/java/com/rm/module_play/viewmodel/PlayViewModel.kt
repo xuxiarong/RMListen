@@ -48,7 +48,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     var playBookSate = ObservableField<PlayBookState>()
 
     //播放状态进度条，0是播放2是加载中1是暂停
-    val playSate = ObservableField<Int>()
+    val playSate = ObservableField<Boolean>()
     val lastState = ObservableField<Boolean>()
     var homeDetailBean = ObservableField<DetailBookBean>()
     // 下拉刷新和加载更多控件状态控制Model
@@ -69,7 +69,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         const val ACTION_GET_PLAYINFO_LIST = "ACTION_GET_PLAYINFO_LIST"//播放列表
         const val ACTION_JOIN_LISTEN = "ACTION_JOIN_LISTEN"//加入听单
         const val ACTION_MORE_COMMENT = "ACTION_MORE_COMMENT"//更多评论
-
+        const val ACTION_MORE_FINSH = "ACTION_MORE_FINSH"//关闭
     }
 
 
@@ -128,10 +128,11 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     //播放器操作行为
     fun playControlAction(action: String) {
         playControlAction.set(action)
-        playControlAction.notifyChange()
 
     }
-
+    fun finshActivity(action: String){
+        playControlAction.set(action)
+    }
 
     //订阅
     fun playSubAction(model: PlayControlSubModel) {
