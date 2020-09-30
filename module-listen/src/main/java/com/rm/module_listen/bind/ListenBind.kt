@@ -2,6 +2,7 @@ package com.rm.module_listen.bind
 
 import android.annotation.SuppressLint
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.TimeUtils
 import com.rm.module_listen.R
@@ -65,13 +66,12 @@ fun TextView.listenBindChapterStatus(audio:ListenHistoryModel){
                 result =1
             }
             if(result == 100){
-                text = "$result%"
-//                setTextColor()
+                text = context.getString(R.string.listen_finish)
+                setTextColor(ContextCompat.getColor(context,R.color.business_color_b1b1b1))
             }else {
-
+                setTextColor(ContextCompat.getColor(context,R.color.business_color_ffba56))
+                text = "${String.format(context.getString(R.string.listen_progress),result)}%"
             }
-
-
         }
     }catch (e : Exception){
         e.printStackTrace()
