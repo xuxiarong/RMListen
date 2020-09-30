@@ -7,6 +7,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="@dimen/dp_24"
+
     tools:ignore="MissingDefaultResource">
 
 
@@ -35,13 +36,20 @@
             android:textSize="@dimen/business_text_size_12sp" />
 
         <EditText
+            android:id="@+id/download_et_start"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
+            android:digits="0123456789"
+            android:focusableInTouchMode="true"
+            android:focusedByDefault="true"
             android:gravity="center"
             android:inputType="number"
             android:lines="1"
+            android:maxLength="4"
+            android:nextFocusForward="@id/download_et_end"
+            android:text="1"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_24sp" />
 
@@ -53,13 +61,16 @@
             android:textSize="@dimen/business_text_size_16sp" />
 
         <EditText
+            android:id="@+id/download_et_end"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
+            android:digits="0123456789"
             android:gravity="center"
             android:inputType="number"
             android:lines="1"
+            android:maxLength="4"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_24sp" />
 

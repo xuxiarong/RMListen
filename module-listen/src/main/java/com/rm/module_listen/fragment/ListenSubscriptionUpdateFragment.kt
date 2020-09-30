@@ -15,6 +15,7 @@ import com.rm.module_listen.adapter.ListenAudioAdapter
 import com.rm.module_listen.databinding.ListenFragmentSubscriptionUpdateBinding
 import com.rm.module_listen.model.ListenSubsDateModel
 import com.rm.module_listen.viewmodel.ListenSubsUpdateViewModel
+import kotlinx.android.synthetic.main.listen_fragment_subscription_update.*
 
 /**
  * desc   :
@@ -75,9 +76,9 @@ class ListenSubscriptionUpdateFragment :
 
     override fun initView() {
         super.initView()
-        mDataBind.listenSubsDataRv.bindHorizontalLayout(mSubsDateAdapter)
-        mDataBind.listenSubscriptionRv.bindVerticalLayout(mListenAudioAdapter)
-
+        listenSubsDataRv.bindHorizontalLayout(mViewModel.subsDateAdapter)
+        listenSubscriptionRv.bindVerticalLayout(mViewModel.subsAudioAdapter)
+        mViewModel.init()
     }
 
     companion object {

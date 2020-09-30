@@ -3,6 +3,7 @@ package com.rm.component_comm.play
 import android.content.Context
 import android.view.View
 import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.component_comm.router.ApplicationProvider
@@ -19,11 +20,13 @@ interface PlayService : ApplicationProvider {
     //显示播放器按钮
     fun showView(context: Context)
 
-    //跳著到播放器页面
+    //跳转到播放器页面
     fun toPlayPage(
-        context: Context, bean: HomeDetailModel?,
+        context: Context, bean: DetailBookBean?,
         index: Int
     )
+    //从播放历史和最近播放进入播放页面
+    fun toPlayPage(context: Context, chapterId: String, audioId: String)
     //播放历史
     fun queryPlayBookList(): List<HistoryPlayBook>?
 }
