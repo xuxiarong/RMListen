@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchMainViewModel" />
+
+        <variable
+            name="recommend"
+            type="String" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/BusinessTextStyleFirst_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_8"
+        android:paddingTop="@dimen/dp_8"
+        android:text="@{recommend}" />
+
+</layout>

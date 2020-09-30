@@ -9,6 +9,7 @@ import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.component_comm.search.SearchService
 import com.rm.module_main.TestFragment
 
 class MyViewPagerAdapter(fm: FragmentManager, private val size: Int) :
@@ -18,6 +19,9 @@ class MyViewPagerAdapter(fm: FragmentManager, private val size: Int) :
         when (position) {
             0 -> {
                 return RouterHelper.createRouter(HomeService::class.java).getHomeFragment()
+            }
+            1 -> {
+                return RouterHelper.createRouter(SearchService::class.java).getSearchFragment()
             }
             2 -> {
                 return RouterHelper.createRouter(ListenService::class.java).getListenFragment()

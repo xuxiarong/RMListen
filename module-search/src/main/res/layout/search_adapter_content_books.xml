@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchContentAllViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.business_lib.bean.AudioBean" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginBottom="@dimen/dp_8">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/search_adapter_content_books_icon"
+            bindUrl="@{item.audio_cover}"
+            corner="@{4f}"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="#2ff0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_adapter_content_books_title"
+            style="@style/BusinessTextStyleFirst_3"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/dp_12"
+            android:maxLength="2"
+            bindText="@{item.audio_name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
+            app:layout_constraintTop_toTopOf="@id/search_adapter_content_books_icon"
+            tools:text="任何人的错都是我的错" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/BusinessTextStyleSecond_4"
+            android:layout_width="0dp"
+            bindText="@{item.audio_intro}"
+            android:layout_marginStart="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
+            app:layout_constraintTop_toBottomOf="@id/search_adapter_content_books_title"
+            tools:text="第一集 我喜欢的那个太空的那个太空" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_adapter_content_books_anchor"
+            style="@style/BusinessTextStyleThird_4"
+            android:layout_marginStart="@dimen/dp_12"
+            bindText="@{item.nickname}"
+            android:drawableStart="@drawable/search_icon_anchor"
+            app:layout_constraintBottom_toBottomOf="@id/search_adapter_content_books_icon"
+            app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
+            tools:text="我是中国人" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/BusinessTextStyleThird_4"
+            bindText="@{item.play_count}"
+            android:layout_marginStart="@dimen/dp_12"
+            android:drawableStart="@drawable/search_icon_play"
+            app:layout_constraintBottom_toBottomOf="@id/search_adapter_content_books_icon"
+            app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_anchor"
+            tools:text="14w" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

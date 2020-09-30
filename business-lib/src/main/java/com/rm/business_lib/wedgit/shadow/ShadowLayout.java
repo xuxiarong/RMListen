@@ -25,6 +25,7 @@ public class ShadowLayout extends FrameLayout {
     private Rect layoutContainer = new Rect();
     private Rect layoutOut = new Rect();
     private ShadowHelper shadowHelper = new ShadowHelper();
+    private boolean needRequest = false;
 
     public ShadowLayout(@NonNull Context context) {
         super(context);
@@ -41,9 +42,20 @@ public class ShadowLayout extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        needRequest = true;
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             clearChildShadow(child);
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        //防止view被回收后再次加载没有阴影效果
+        if (needRequest) {
+            needRequest = false;
+            requestLayout();
         }
     }
 

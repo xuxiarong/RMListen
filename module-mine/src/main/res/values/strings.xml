@@ -20,6 +20,15 @@
     <string name="mine_vip_privilege">开通会员尊享特权</string>
     <string name="mine_vip">VIP</string>
 
+    <string name="mine_my_service">我的服务</string>
+    <string name="mine_essential_tools">必备工具</string>
+    <string name="mine_my_wallet">我的钱包</string>
+    <string name="mine_my_grade">我的等级</string>
+    <string name="mine_recommend_gift">推荐有礼</string>
+    <string name="mine_contact_service">联系客服</string>
+    <string name="mine_timing_play">定时播放</string>
+
+
     <string name="mine_unfilled">未填写</string>
 
     <!--setting-->
@@ -75,6 +84,5 @@
     <string name="mine_signature">个人签名</string>
     <string name="mine_play_settings">播放设置</string>
     <string name="mine_settings">设置</string>
-
 
 </resources>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchContentAllViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.module_search.bean.MemberBean" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/search_adapter_anchor_avatar"
+            bindUrl="@{item.avatar}"
+            isCircle="@{true}"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="#3ff0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_adapter_anchor_name"
+            style="@style/BusinessTextStyleFirst_3"
+            bindText="@{item.nickname}"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Manuel Burns" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_adapter_anchor_level"
+            bindText="@{item.nickname}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/business_text_size_10sp"
+            android:textColor="@color/business_color_ff5e5e"
+            android:textStyle="italic|bold"
+            app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_name"
+            app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_name"
+            tools:text="LV5" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_adapter_anchor_tip"
+            style="@style/BusinessTextStyleSecond_4"
+            bindText="@{item.nickname}"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/dp_4"
+            app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
+            app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
+            app:layout_constraintTop_toBottomOf="@id/search_adapter_anchor_name"
+            tools:text="第一集 我喜欢的那个太空" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/BusinessTextStyleThird_4"
+            bindText="@{item.fans}"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/dp_4"
+            app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
+            app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
+            app:layout_constraintTop_toBottomOf="@id/search_adapter_anchor_tip"
+            tools:text="1.5w粉丝" />
+
+        <androidx.appcompat.widget.AppCompatCheckedTextView
+            android:id="@+id/search_adapter_anchor_attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_select_bg"
+            android:checked="true"
+            android:drawableStart="@drawable/search_select_draw_start"
+            android:paddingStart="@dimen/sp_14"
+            android:paddingTop="5dp"
+            android:paddingEnd="@dimen/sp_14"
+            android:paddingBottom="@dimen/dp_5"
+            android:textColor="@drawable/search_select_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="关注" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

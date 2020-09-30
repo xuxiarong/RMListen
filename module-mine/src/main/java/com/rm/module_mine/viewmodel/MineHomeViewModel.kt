@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
@@ -28,8 +29,8 @@ class MineHomeViewModel : BaseVMViewModel() {
 
     fun getData() {
         val list = mutableListOf<MineHomeBean>()
-        list.add(MineHomeBean("我的服务", getMyServiceList()))
-        list.add(MineHomeBean("必备工具", getToolList()))
+        list.add(MineHomeBean(CONTEXT.getString(R.string.mine_my_service), getMyServiceList()))
+        list.add(MineHomeBean(CONTEXT.getString(R.string.mine_essential_tools), getToolList()))
         mAdapter.setList(list)
         mAdapter.notifyDataSetChanged()
     }
@@ -40,28 +41,28 @@ class MineHomeViewModel : BaseVMViewModel() {
         list.add(
             MineHomeDetailBean(
                 R.drawable.mine_icon_mywallet,
-                "我的钱包",
+                CONTEXT.getString(R.string.mine_my_wallet),
                 1
             )
         )
         list.add(
             MineHomeDetailBean(
                 R.drawable.mine_icon_mygrade,
-                "我的等级",
+                CONTEXT.getString(R.string.mine_my_grade),
                 1
             )
         )
         list.add(
             MineHomeDetailBean(
                 R.drawable.mine_icon_recommend,
-                "推荐有礼",
+                CONTEXT.getString(R.string.mine_recommend_gift),
                 1
             )
         )
         list.add(
             MineHomeDetailBean(
                 R.drawable.mine_icon_service,
-                "联系客服",
+                CONTEXT.getString(R.string.mine_contact_service),
                 1
             )
         )
@@ -73,7 +74,7 @@ class MineHomeViewModel : BaseVMViewModel() {
         list.add(
             MineHomeDetailBean(
                 R.drawable.mine_icon_timing,
-                "定时播放",
+                CONTEXT.getString(R.string.mine_timing_play),
                 1
             )
         )

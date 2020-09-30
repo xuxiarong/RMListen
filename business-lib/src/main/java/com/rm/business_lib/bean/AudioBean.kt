@@ -42,7 +42,9 @@ data class AudioBean(
     var play_count: Int,                // 音频播放数
     var created_at: String,             // 创建时间，格式：YYYY-mm-dd HH:ii:ss
     var chapter_updated_at: String,     // 章节更新时间，格式：YYYY-mm-dd HH:ii:ss
-    var author: String                  // 主播昵称
+    var author: String,                  // 主播昵称
+    var member_id: String,                  // 直播用户id
+    var nickname: String                  // 用户名
 )
 
 
