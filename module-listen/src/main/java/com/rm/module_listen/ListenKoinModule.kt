@@ -22,6 +22,7 @@ val viewModelModule = module {
     viewModel { ListenSheetMyListViewModel(get()) }
     viewModel { ListenSheetCollectedListViewModel(get()) }
     viewModel { ListenSheetDetailViewModel(get()) }
+    viewModel { ListenHistoryViewModel() }
 }
 
 val repositoryModule = module {
