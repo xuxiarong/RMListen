@@ -9,11 +9,6 @@ import java.io.File
 
 const val URL = "https://cdn.llscdn.com/yy/files/tkzpx40x-lls-LLS-5.7-785-20171108-111118.apk"
 
-fun calcProgressToView(progressBar: ProgressBar, offset: Long, total: Long) {
-    val percent = offset.toFloat() / total
-    progressBar.progress = (percent * progressBar.max).toInt()
-}
-
 
 fun getParentFile(@NonNull context: Context): File? {
     val externalSaveDir = context.externalCacheDir
@@ -43,4 +38,9 @@ fun DownloadUIStatus.toDownloadChapterStatus():DownloadChapterUIStatus{
         DownloadUIStatus.DOWNLOAD_COMPLETED -> DownloadChapterUIStatus.COMPLETED
         else -> DownloadChapterUIStatus.COMPLETED
     }
+}
+
+fun calcProgressToView(progressBar: ProgressBar, offset: Long, total: Long) {
+    val percent = offset.toFloat() / total
+    progressBar.progress = (percent * progressBar.max).toInt()
 }

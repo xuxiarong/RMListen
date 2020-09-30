@@ -1,6 +1,7 @@
 package com.rm.module_download.api
 
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_download.bean.DownloadChapterItemBean
 import com.rm.module_download.bean.DownloadChapterResponseBean
 import okhttp3.RequestBody
@@ -27,5 +28,11 @@ interface DownloadApiService {
         @Query("audio_id") audioId: String,
         @Query("sort") sort: String
     ): BaseResponse<DownloadChapterResponseBean>
+
+    /**
+     * 获取听书详情
+     */
+    @GET("audio/detail")
+    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailModel>
 
 }

@@ -6,7 +6,6 @@ import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.isLogin
-import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
@@ -62,16 +61,11 @@ class ListenSubscriptionUpdateFragment :
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         if(!isLogin.get()){
             RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel,activity!!)
         }
-    }
-
-    fun startDetail(audioId :String){
-        val homeService = RouterHelper.createRouter(HomeService::class.java)
-        homeService.toDetailActivity(context!!,audioId)
     }
 
     override fun initView() {

@@ -23,7 +23,7 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
 
     override fun startObserve() {
         mViewModel.allHistory.observe(this, Observer {
-            mViewModel.mSwipeAdapter.addData(it)
+            mViewModel.mSwipeAdapter.setList(it)
         })
     }
 
@@ -34,8 +34,12 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
     }
 
 
-    override fun initData() {
+    override fun onStart() {
+        super.onStart()
         mViewModel.getListenHistory()
+    }
+
+    override fun initData() {
     }
 
     companion object {

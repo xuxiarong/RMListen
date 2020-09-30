@@ -41,7 +41,6 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         launchOnIO {
             val queryPlayBookList = playService.queryPlayBookList()
             val audioList = ArrayList<MultiItemEntity>()
-
             if (queryPlayBookList != null && queryPlayBookList.isNotEmpty()) {
                 showContentView()
                 audioList.add(ListenRecentDateModel())
@@ -57,6 +56,10 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
 
     fun startListenRecentDetail(context: Context) {
         ListenHistorySearchActivity.startListenHistorySearch(context)
+    }
+
+    fun startAudioPlay(context: Context,model : ListenHistoryModel){
+        playService.toPlayPage(context = context,audioId = model.HistoryPlayBook.audio_id.toString(),chapterId = model.HistoryPlayBook.listBean[0].chapter_id)
     }
 
     fun deleteItem(item: MultiItemEntity) {

@@ -1,6 +1,8 @@
 package com.rm.module_listen.bind
 
+import android.annotation.SuppressLint
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.TimeUtils
 import com.rm.module_listen.R
@@ -51,6 +53,7 @@ fun TextView.listenBindChapterTime(audio:ListenHistoryModel){
     }
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("listenBindChapterStatus")
 fun TextView.listenBindChapterStatus(audio:ListenHistoryModel){
     text = ""
@@ -58,8 +61,17 @@ fun TextView.listenBindChapterStatus(audio:ListenHistoryModel){
         val chapterList = audio.HistoryPlayBook.listBean[0]
 
         if (audio.HistoryPlayBook.listBean.isNotEmpty()){
-            val result = (chapterList.progress * 1.0f) / (chapterList.duration * 1000L)
-            String.format("%.2f",(result))
+            var result = ((chapterList.progress * 1.0f) / (chapterList.duration * 1000L) * 100).toInt()
+            if(result <= 0){
+                result =1
+            }
+            if(result == 100){
+                text = context.getString(R.string.listen_finish)
+                setTextColor(ContextCompat.getColor(context,R.color.business_color_b1b1b1))
+            }else {
+                setTextColor(ContextCompat.getColor(context,R.color.business_color_ffba56))
+                text = "${String.format(context.getString(R.string.listen_progress),result)}%"
+            }
         }
     }catch (e : Exception){
         e.printStackTrace()
