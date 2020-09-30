@@ -1640,7 +1640,7 @@ public final class TimeUtils {
         return millis / unit;
     }
 
-    static String millis2FitTimeSpan(long millis, int precision) {
+    public static String millis2FitTimeSpan(long millis, int precision) {
         if (precision <= 0) return null;
         precision = Math.min(precision, 5);
         String[] units = {"天", "小时", "分钟", "秒", "毫秒"};
@@ -1656,6 +1656,29 @@ public final class TimeUtils {
                 long mode = millis / unitLen[i];
                 millis -= mode * unitLen[i];
                 sb.append(mode).append(units[i]);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String getListenHistoryTime(long millis, int precision) {
+        if (precision <= 0) return null;
+        precision = Math.min(precision, 4);
+        String[] units = {":", ":", ":", ":"};
+        if (millis == 0) return 0 + units[precision - 1];
+        StringBuilder sb = new StringBuilder();
+        if (millis < 0) {
+            sb.append("-");
+            millis = -millis;
+        }
+        int[] unitLen = {86400000, 3600000, 60000, 1000};
+        for (int i = 0; i < precision; i++) {
+            if (millis >= unitLen[i]) {
+                long mode = millis / unitLen[i];
+                millis -= mode * unitLen[i];
+                if(i < precision-1){
+                    sb.append(mode).append(units[i]);
+                }
             }
         }
         return sb.toString();

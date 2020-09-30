@@ -17,12 +17,13 @@
         android:id="@+id/listenRecentSl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:leftEdgeSwipeOffset="@dimen/dp_20"
+
         android:layout_marginBottom="@dimen/dp_18">
 
         <FrameLayout
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginEnd="16dp"
             bindClick="@{()->viewModel.deleteItem(item)}"
             android:background="@drawable/business_shape_round_ff5e5e_32dp">
 
@@ -71,7 +72,7 @@
                 style="@style/BusinessTextStyleFirst_2"
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/dp_12"
-                android:singleLine="true"
+                android:lines="1"
                 app:layout_constraintLeft_toRightOf="@id/listenItemRecentIv"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
@@ -83,8 +84,8 @@
                 style="@style/BusinessTextStyleSecond_3"
                 android:layout_width="0dp"
                 android:layout_marginTop="@dimen/dp_8"
-                android:maxLines="2"
-               listenBindChapterName="@{item}"
+                android:lines="1"
+                listenBindChapterName="@{item}"
                 app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/home_book_adapter_name"
@@ -95,6 +96,7 @@
                 android:layout_width="@dimen/dp_14"
                 android:layout_height="@dimen/dp_14"
                 android:layout_marginStart="@dimen/dp_12"
+                android:layout_marginBottom="2dp"
                 android:src="@drawable/listen_icon_recent_time"
                 app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
                 app:layout_constraintLeft_toRightOf="@id/listenItemRecentIv"/>
@@ -112,7 +114,7 @@
             <TextView
                 android:id="@+id/home_book_adapter_author"
                 style="@style/BusinessTextStyleThird_4"
-                listenBindChapterPlayCount="@{item}"
+                listenBindChapterStatus="@{item}"
                 android:layout_marginStart="@dimen/dp_12"
                 app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
                 app:layout_constraintStart_toEndOf="@id/listenRecentTimeTv"

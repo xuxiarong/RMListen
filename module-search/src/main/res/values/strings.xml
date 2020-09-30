@@ -1,3 +1,10 @@
 <resources>
     <string name="search_app_name">Search</string>
+    <string name="search_search">搜索</string>
+    <string name="search_history">搜索历史</string>
+    <string name="search_recommend">推荐搜索</string>
+    <string name="search_books">书籍</string>
+    <string name="search_anchor">主播</string>
+    <string name="search_sheet">听单</string>
+    <string name="search_books_num">(%d)</string>
 </resources>

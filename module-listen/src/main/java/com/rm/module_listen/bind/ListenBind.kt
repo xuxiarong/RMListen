@@ -2,6 +2,7 @@ package com.rm.module_listen.bind
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.util.TimeUtils
 import com.rm.module_listen.R
 import com.rm.module_listen.model.ListenHistoryModel
 
@@ -43,19 +44,22 @@ fun TextView.listenBindChapterTime(audio:ListenHistoryModel){
     text = ""
     try {
         if (audio.HistoryPlayBook.listBean.isNotEmpty()){
-            text = audio.HistoryPlayBook.listBean[0].duration.toString()
+            text = TimeUtils.getListenHistoryTime(audio.HistoryPlayBook.listBean[0].duration * 1000L,5)
         }
     }catch (e : Exception){
         e.printStackTrace()
     }
 }
 
-@BindingAdapter("listenBindChapterPlayCount")
-fun TextView.listenBindChapterPlayCount(audio:ListenHistoryModel){
+@BindingAdapter("listenBindChapterStatus")
+fun TextView.listenBindChapterStatus(audio:ListenHistoryModel){
     text = ""
     try {
+        val chapterList = audio.HistoryPlayBook.listBean[0]
+
         if (audio.HistoryPlayBook.listBean.isNotEmpty()){
-            text = audio.HistoryPlayBook.listBean[0].play_count
+            val result = (chapterList.progress * 1.0f) / (chapterList.duration * 1000L)
+            String.format("%.2f",(result))
         }
     }catch (e : Exception){
         e.printStackTrace()

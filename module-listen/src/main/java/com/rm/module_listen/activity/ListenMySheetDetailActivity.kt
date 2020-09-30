@@ -6,25 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.observe
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.utilExt.getStateHeight
-import com.rm.business_lib.bean.AudioBean
-import com.rm.component_comm.home.HomeService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenActivitySheetDetailBinding
-import com.rm.module_listen.databinding.ListenHeaderSheetDetailBinding
-import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 import com.rm.module_listen.viewmodel.ListenSheetDetailViewModel
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import kotlinx.android.synthetic.main.listen_activity_sheet_detail.*
-import kotlinx.android.synthetic.main.listen_fragment_sheet_my_list.*
 
 /**
  * 听单详情
@@ -70,7 +59,7 @@ class ListenMySheetDetailActivity :
         super.initView()
 
         // 设置透明沉浸式
-        setD()
+        setTransparentStatusBar()
 
         val layoutParams =
             (listen_sheet_detail_title_cl.layoutParams) as ConstraintLayout.LayoutParams

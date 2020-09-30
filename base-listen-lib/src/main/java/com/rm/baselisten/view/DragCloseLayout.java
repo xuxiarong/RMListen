@@ -98,6 +98,9 @@ public class DragCloseLayout extends RelativeLayout {
     }
 
     private void setupWindowDimAmount(float dimAmount){
+        if(mDialog == null){
+            return;
+        }
         Window window = mDialog.getWindow();
         if(window!=null){
             WindowManager.LayoutParams lp = window.getAttributes();

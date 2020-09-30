@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchContentAllViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/search_content_all_books_cl"
+            isVisible="@{viewModel.data.audio>0}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.clickBookFun()}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/search_content_all_books_text"
+                style="@style/BusinessTextStyleFirst_2"
+                android:text="@string/search_books"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/BusinessTextStyleThird_2"
+                android:text="@{@string/search_books_num(viewModel.data.audio)}"
+                app:layout_constraintBottom_toBottomOf="@id/search_content_all_books_text"
+                app:layout_constraintStart_toEndOf="@id/search_content_all_books_text"
+                app:layout_constraintTop_toTopOf="@id/search_content_all_books_text" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/BusinessTextStyleSecond_3"
+                android:drawableEnd="@drawable/icon_arrow_right"
+                android:gravity="center"
+                android:text="@string/business_more"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                bindVerticalLayout="@{viewModel.bookAdapter}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/search_content_all_books_text" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/search_content_all_anchor_cl"
+            isVisible="@{viewModel.data.member>0}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:onClick="@{()->viewModel.clickAnchorFun()}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/search_content_all_anchor_text"
+                style="@style/BusinessTextStyleFirst_2"
+                android:text="@string/search_anchor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/BusinessTextStyleThird_2"
+                android:text="@{@string/search_books_num(viewModel.data.member)}"
+                app:layout_constraintBottom_toBottomOf="@id/search_content_all_anchor_text"
+                app:layout_constraintStart_toEndOf="@id/search_content_all_anchor_text"
+                app:layout_constraintTop_toTopOf="@id/search_content_all_anchor_text" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/BusinessTextStyleSecond_3"
+                android:drawableEnd="@drawable/icon_arrow_right"
+                android:gravity="center"
+                android:text="@string/business_more"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                bindVerticalLayout="@{viewModel.anchorAdapter}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/search_content_all_anchor_text" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/search_content_all_sheet_cl"
+            isVisible="@{viewModel.data.sheet>0}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:onClick="@{()->viewModel.clickSheetFun()}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/search_content_all_sheet_text"
+                style="@style/BusinessTextStyleFirst_2"
+                android:text="@string/search_sheet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/BusinessTextStyleThird_2"
+                android:text="@{@string/search_books_num(viewModel.data.sheet)}"
+                app:layout_constraintBottom_toBottomOf="@id/search_content_all_sheet_text"
+                app:layout_constraintStart_toEndOf="@id/search_content_all_sheet_text"
+                app:layout_constraintTop_toTopOf="@id/search_content_all_sheet_text" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/BusinessTextStyleSecond_3"
+                android:drawableEnd="@drawable/icon_arrow_right"
+                android:gravity="center"
+                android:text="@string/business_more"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                bindVerticalLayout="@{viewModel.sheetAdapter}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/search_content_all_sheet_text" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</layout>

@@ -25,5 +25,5 @@ data class ListenRecentListenModel constructor(
 data class ListenHistoryModel constructor(
     val HistoryPlayBook : HistoryPlayBook
 ) : MultiItemEntity {
-    override val itemType = R.layout.listen_item_recent_listen
+    override var itemType = R.layout.listen_item_recent_listen
 }

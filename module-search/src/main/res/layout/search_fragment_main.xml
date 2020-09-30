@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchMainViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/businessWhite"
+            android:stateListAnimator="@drawable/search_app_bar_elevation">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_45"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/search_main_tv_search"
+                        style="@style/BusinessTextStyleFirst_2"
+                        android:onClick="@{()->viewModel.clickSearchFun()}"
+                        android:layout_height="@dimen/dp_48"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/dp_16"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_16"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:text="@string/search_search"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/BusinessTextStyleFirst_2"
+                        android:layout_width="0dp"
+                        afterTextChanged="@{viewModel.inputKeyWord}"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_16"
+                        android:background="@drawable/business_shape_f7f7f7_12dp"
+                        android:drawableStart="@drawable/business_icon_search"
+                        android:drawablePadding="@dimen/dp_6"
+                        android:paddingStart="@dimen/dp_12"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="@dimen/dp_12"
+                        android:paddingBottom="@dimen/dp_8"
+                        app:layout_constraintBottom_toBottomOf="@id/search_main_tv_search"
+                        app:layout_constraintEnd_toStartOf="@id/search_main_tv_search"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/search_main_tv_search"
+                        tools:hint="123" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/search_main_history_cl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_16"
+                        android:layout_marginEnd="@dimen/dp_16"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/search_main_tv_search">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BusinessTextStyleFirst_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/search_history"
+                            app:layout_constraintBottom_toBottomOf="@id/search_main_del_history"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/search_main_del_history" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/search_main_del_history"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/business_icon_delete"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/search_include_recommend_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_16"
+                        android:layout_marginEnd="@dimen/dp_16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/search_main_history_cl">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/search_include_recommend_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/search_recommend"
+                            android:textColor="@color/business_text_color_333333"
+                            android:textSize="@dimen/business_text_size_14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/search_main_recycler_view"
+                            bindCount="@{2}"
+                            bindGridLayout="@{viewModel.adapter}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/search_include_recommend_text" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
+                        android:id="@+id/search_main_tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_45"
+                        app:bendTabIndicatorAnimation="true"
+                        app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+                        app:bendTabIndicatorHeight="@dimen/dp_1"
+                        app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+                        app:bendTabIndicatorWidth="@dimen/dp_24"
+                        app:bendTabMode="scrollable"
+                        app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+                        app:bendTabTextSize="@dimen/business_text_size_16sp"
+                        app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
+                        app:layout_constraintTop_toBottomOf="@id/search_include_recommend_layout" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/search_main_view_pager"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

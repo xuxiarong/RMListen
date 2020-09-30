@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_listen.viewmodel.ListenHistoryViewModel" />
+        <variable
+            name="item"
+            type="com.rm.module_listen.model.ListenHistoryModel" />
+    </data>
+
+    <com.rm.baselisten.view.swipe.SwipeLayout
+        android:id="@+id/listenRecentSl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftEdgeSwipeOffset="@dimen/dp_20"
+
+        android:layout_marginBottom="@dimen/dp_18">
+
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            bindClick="@{()->viewModel.deleteItem(item)}"
+            android:background="@drawable/business_shape_round_ff5e5e_32dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/listen_icon_swipe_delete"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="26dp"
+                android:text="@string/business_delete"
+                />
+        </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_80"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/listenItemRecentIv"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:scaleType="fitXY"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bindUrl="@{item.historyPlayBook.audio_cover_url}"
+                corner="@{8}"
+                 />
+
+            <TextView
+                android:id="@+id/home_book_adapter_tips"
+                style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+                app:layout_constraintRight_toRightOf="@id/listenItemRecentIv"
+                app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
+                android:text="@{item.historyPlayBook.audio_label}"
+                tools:text="文案" />
+
+            <TextView
+                android:id="@+id/home_book_adapter_name"
+                style="@style/BusinessTextStyleFirst_2"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/dp_12"
+                android:lines="1"
+                app:layout_constraintLeft_toRightOf="@id/listenItemRecentIv"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
+                android:text="@{item.historyPlayBook.audio_name}"
+                tools:text="心要大，脚要实" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_book_adapter_describe"
+                style="@style/BusinessTextStyleSecond_3"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:lines="1"
+                listenBindChapterName="@{item}"
+                app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_book_adapter_name"
+                tools:text="第一集 我喜欢的那个太空" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/listenItemRecentTimeIv"
+                android:layout_width="@dimen/dp_14"
+                android:layout_height="@dimen/dp_14"
+                android:layout_marginStart="@dimen/dp_12"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/listen_icon_recent_time"
+                app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
+                app:layout_constraintLeft_toRightOf="@id/listenItemRecentIv"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/listenRecentTimeTv"
+                style="@style/BusinessTextStyleThird_4"
+                android:layout_marginStart="2dp"
+                app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
+                app:layout_constraintStart_toEndOf="@id/listenItemRecentTimeIv"
+                listenBindChapterTime="@{item}"
+                tools:text="34:34" />
+
+            <TextView
+                android:id="@+id/home_book_adapter_author"
+                style="@style/BusinessTextStyleThird_4"
+                listenBindChapterStatus="@{item}"
+                android:layout_marginStart="@dimen/dp_12"
+                app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
+                app:layout_constraintStart_toEndOf="@id/listenRecentTimeTv"
+                tools:text="已听完" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.rm.baselisten.view.swipe.SwipeLayout>
+
+
+
+
+</layout>

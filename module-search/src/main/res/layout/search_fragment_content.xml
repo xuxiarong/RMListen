@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchContentAllViewModel" />
+    </data>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        bindIsHasMoreData="@{viewModel.refreshStateMode.isHasMore()}"
+        bindIsLoadMoreSuccess="@{viewModel.refreshStateMode.isLoadMoreSuccess()}"
+        bindIsRefreshSuccess="@{viewModel.refreshStateMode.isRefreshSuccess()}"
+        bindOnLoadMoreListener="@{viewModel.loadData}"
+        bindOnRefreshListener="@{viewModel.refreshData}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_adapter_content_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/dp_6"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_6" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+</layout>

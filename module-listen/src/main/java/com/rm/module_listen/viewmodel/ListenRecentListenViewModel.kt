@@ -9,6 +9,7 @@ import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.activity.ListenHistorySearchActivity
 import com.rm.module_listen.model.ListenHistoryModel
 import com.rm.module_listen.model.ListenRecentDateModel
 
@@ -55,7 +56,7 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     }
 
     fun startListenRecentDetail(context: Context) {
-
+        ListenHistorySearchActivity.startListenHistorySearch(context)
     }
 
     fun deleteItem(item: MultiItemEntity) {

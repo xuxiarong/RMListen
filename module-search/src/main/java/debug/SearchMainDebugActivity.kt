@@ -9,7 +9,7 @@ import com.rm.module_search.R
  * version: 1.0
  */
 class SearchMainDebugActivity : BaseDebugActivity() {
-    override fun getLayoutResId(): Int = R.layout.search_activity_main
+    override fun getLayoutResId(): Int = R.layout.search_fragment_main
 
     override fun initView() {
     }
