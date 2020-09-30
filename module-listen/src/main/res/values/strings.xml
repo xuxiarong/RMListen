@@ -5,6 +5,7 @@
     <string name="listen_tab_subscription_update">订阅更新</string>
     <string name="listen_my_listen_subs">订阅</string>
     <string name="listen_recent">最近</string>
+    <string name="listen_search">搜索</string>
     <string name="listen_my_listen_subs_number">订阅(%d)</string>
 
     <string name="listen_my_listen_buy">已购</string>
