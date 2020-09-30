@@ -3,9 +3,7 @@ package com.rm.module_search
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_search.api.SearchApiService
 import com.rm.module_search.repository.SearchRepository
-import com.rm.module_search.viewmodel.SearchContentAllViewModel
-import com.rm.module_search.viewmodel.SearchRecommendViewModel
-import com.rm.module_search.viewmodel.SearchMainViewModel
+import com.rm.module_search.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -19,6 +17,9 @@ val viewModelModule = module {
     viewModel { SearchMainViewModel(get()) }
     viewModel { SearchRecommendViewModel() }
     viewModel { SearchContentAllViewModel(get()) }
+    viewModel { SearchContentAnchorViewModel(get()) }
+    viewModel { SearchContentSheetViewModel(get()) }
+    viewModel { SearchContentBooksViewModel(get()) }
 }
 
 val repositoryModule = module {
