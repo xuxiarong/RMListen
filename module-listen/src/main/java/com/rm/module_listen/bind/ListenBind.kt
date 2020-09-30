@@ -1,5 +1,6 @@
 package com.rm.module_listen.bind
 
+import android.annotation.SuppressLint
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.TimeUtils
@@ -51,6 +52,7 @@ fun TextView.listenBindChapterTime(audio:ListenHistoryModel){
     }
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("listenBindChapterStatus")
 fun TextView.listenBindChapterStatus(audio:ListenHistoryModel){
     text = ""
@@ -58,8 +60,18 @@ fun TextView.listenBindChapterStatus(audio:ListenHistoryModel){
         val chapterList = audio.HistoryPlayBook.listBean[0]
 
         if (audio.HistoryPlayBook.listBean.isNotEmpty()){
-            val result = (chapterList.progress * 1.0f) / (chapterList.duration * 1000L)
-            String.format("%.2f",(result))
+            var result = ((chapterList.progress * 1.0f) / (chapterList.duration * 1000L) * 100).toInt()
+            if(result <= 0){
+                result =1
+            }
+            if(result == 100){
+                text = "$result%"
+//                setTextColor()
+            }else {
+
+            }
+
+
         }
     }catch (e : Exception){
         e.printStackTrace()
