@@ -29,4 +29,12 @@ interface PlayService : ApplicationProvider {
     fun toPlayPage(context: Context, chapterId: String, audioId: String)
     //播放历史
     fun queryPlayBookList(): List<HistoryPlayBook>?
+
+    /**
+     * 评论中心跳转
+     */
+    fun toCommentCenterActivity(
+        context: Context,
+        audioID: String
+    )
 }

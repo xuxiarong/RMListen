@@ -13,6 +13,7 @@ import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
+import com.rm.module_play.activity.CommentCenterActivity
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
@@ -47,6 +48,10 @@ class PlayServiceImpl : PlayService {
 
     override fun queryPlayBookList(): List<HistoryPlayBook>? =
         DaoUtil(HistoryPlayBook::class.java, "").queryAll()
+
+    override fun toCommentCenterActivity(context: Context, audioID: String) {
+        CommentCenterActivity.toCommentCenterActivity(context,audioID)
+    }
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return PlayApplicationDelegate::class.java

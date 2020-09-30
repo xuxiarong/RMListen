@@ -5,6 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioChapterListModel
@@ -13,6 +14,9 @@ import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.module_play.BR
+import com.rm.module_play.R
+import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.module_play.cache.PlayBookState
 import com.rm.module_play.model.*
 import com.rm.module_play.repository.BookPlayRepository
@@ -43,10 +47,10 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     var playControlRecommentListModel =
         MutableLiveData<MutableList<PlayControlRecommentListModel>>()
     val mutableList = MutableLiveData<MutableList<MultiItemEntity>>()
+    val audioCommentList = MutableLiveData<MutableList<Comments>>()
     val playManger: MusicPlayerManager = musicPlayerManger
     val audioID = ObservableField<String>()
     var playBookSate = ObservableField<PlayBookState>()
-
     //播放状态进度条，0是播放2是加载中1是暂停
     val playSate = ObservableField<Boolean>()
     val lastState = ObservableField<Boolean>()
@@ -58,9 +62,22 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
 
     init {
-
         updateThumbText.set("0/0")
         playBookSate.set(PlayBookState())
+        audioCommentList.value = arrayListOf()
+    }
+     val mBookPlayerAdapter: BookPlayerAdapter by lazy {
+        BookPlayerAdapter(this, BR.viewModel, BR.itemModel)
+
+    }
+    val mAdapter by lazy {
+        CommonBindVMAdapter<Comments>(
+            this,
+            mutableListOf(),
+            R.layout.recy_item_book_comment_center,
+            BR.viewModel,
+            BR.itemModel
+        )
     }
 
     companion object {
@@ -130,7 +147,8 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         playControlAction.set(action)
 
     }
-    fun finshActivity(action: String){
+
+    fun finshActivity(action: String) {
         playControlAction.set(action)
     }
 
@@ -145,7 +163,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     }
 
     //点赞
-    fun playLikeBook(model: PlayControlCommentListModel) {
+    fun playLikeBook(model: Comments) {
 
     }
 
@@ -163,7 +181,6 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                 ExoplayerLogger.exoLog(it)
             }, onError = {
                 ExoplayerLogger.exoLog(it ?: "")
-
             })
         }
     }
@@ -262,6 +279,39 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         }
     }
 
+    /**
+     *评论中心列表
+     */
+    fun commentCenterAudioComments(audioID: String) {
+        launchOnIO {
+            if (page == 1) {
+                showLoading()
+            }
+            repository.commentAudioComments(audioID, page, pageSize)
+                .checkResult(onSuccess = {
+                    (audioCommentList.value as ArrayList<Comments>).addAll(it.list)
+                    audioCommentList.postValue(audioCommentList.value)
+                    if (page == 1) {
+                        if (it.list.isEmpty()) {
+                            showDataEmpty()
+                        } else {
+                            showContentView()
+                        }
+                    } else {
+                        refreshStatusModel.finishLoadMore(true)
+                    }
+                    refreshStatusModel.setHasMore(it.list.isNotEmpty())
+                    page++
+                }, onError = {
+                    if (page == 1) {
+                        showNetError()
+                    } else {
+                        refreshStatusModel.finishLoadMore(false)
+                    }
+
+                })
+        }
+    }
 
     /**
      * 记录播放的章节

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -22,22 +20,9 @@
         <com.rm.module_play.view.ContentRecyclerView
             android:id="@+id/rv_music_play"
             android:layout_width="match_parent"
+            bindVerticalLayout="@{viewModel.mBookPlayerAdapter}"
             android:layout_height="match_parent" />
-<!--        <com.scwang.smart.refresh.layout.SmartRefreshLayout-->
-<!--            bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"-->
-<!--            bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"-->
-<!--            bindOnLoadMoreListener="@{()->viewModel.commentAudioComments(viewModel.audioID)}"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            app:srlEnableRefresh="false"-->
-<!--            tools:context=".activity.BookPlayerActivity">-->
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/rv_music_play"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent" />-->
-
-<!--        </com.scwang.smart.refresh.layout.SmartRefreshLayout>-->
     </com.yinglan.scrolllayout.ScrollLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

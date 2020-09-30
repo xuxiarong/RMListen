@@ -19,7 +19,7 @@ import com.rm.module_play.viewmodel.PlayViewModel
  * @data: 9/9/20 3:06 PM
  * @Version: 1.0.0
  */
-internal class BookPlayerAdapter(
+class BookPlayerAdapter(
     val playViewModel: PlayViewModel,
     modelBrId: Int,
     itemBrId: Int

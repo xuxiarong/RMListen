@@ -63,7 +63,7 @@
             android:layout_marginTop="9dp"
             android:drawableRight="@drawable/music_play_ic_icon_like_dc"
             android:gravity="center"
-            android:onClick="@{()->viewModel.playLikeBook(itemModel)}"
+            android:onClick="@{()->viewModel.playLikeBook(itemModel.comments)}"
             android:paddingRight="16dp"
             tools:text="123"
             android:text="@{itemModel.comments.likes}"

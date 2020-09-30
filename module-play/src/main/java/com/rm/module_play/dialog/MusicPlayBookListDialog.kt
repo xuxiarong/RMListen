@@ -26,16 +26,19 @@ import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.rv_music_p
  */
 fun FragmentActivity.showPlayBookListDialog(
     audioListModel: AudioChapterListModel,
-    back: (type: Int) -> Unit
+    back: (position: Int) -> Unit,
+    mLoad: (types: Int) -> Unit
 ) {
     MusicPlayBookListDialog().apply {
         this.audioChapterListModel = audioListModel
         this.mBack = back
+        this.mLoad = mLoad
     }.show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
 class MusicPlayBookListDialog : BottomDialogFragment() {
-    var mBack: (type: Int) -> Unit = {}
+    var mBack: (position: Int) -> Unit = {}
+    var mLoad: (types: Int) -> Unit = {}
     var audioChapterListModel: AudioChapterListModel? = null
     private val timeSAdapter by lazy {
         TimeSAdapter(audioChapterListModel?.chapter_list as MutableList<ChapterList>).apply {
@@ -51,9 +54,9 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rv_music_play_time_setting.layoutManager =
+        rv_music_play_book_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        rv_music_play_time_setting.adapter = timeSAdapter
+        rv_music_play_book_list.adapter = timeSAdapter
         setPlayModel()
         music_play_order_play.setOnClickListener {
             if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_SINGLE) {
@@ -64,20 +67,25 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             setPlayModel()
         }
 
+        smart_refresh_layout_play.setOnRefreshListener {
+            smart_refresh_layout_play.finishRefresh(1500)
+            mLoad(0)
+        }
+        smart_refresh_layout_play.setOnLoadMoreListener {
+            smart_refresh_layout_play.finishLoadMore(1500)
+            mLoad(1)
+        }
     }
 
 
     internal class TimeSAdapter(list: MutableList<ChapterList>) :
         BaseQuickAdapter<ChapterList, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
-
         override fun convert(holder: BaseViewHolder, item: ChapterList) {
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
             holder.setText(R.id.tv_music_play_count, "${item.play_count}")
             holder.setText(R.id.tv_music_play_time_count, "${item.duration}")
             holder.setText(R.id.tv_music_play_up_time, item.created_at)
-
-
         }
 
     }

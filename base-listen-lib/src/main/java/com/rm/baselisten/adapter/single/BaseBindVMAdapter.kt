@@ -17,4 +17,5 @@ abstract class BaseBindVMAdapter<T> constructor(var viewModel : BaseVMViewModel,
      override fun convert(holder: BaseViewHolder, item: T){
          DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.setVariable(viewModelBrId,viewModel)
      }
+
 }

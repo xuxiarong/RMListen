@@ -2,12 +2,9 @@ package com.rm.module_play.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import androidx.lifecycle.Observer
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.business_lib.bean.BookBean
 import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
@@ -18,22 +15,12 @@ class CommentCenterActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayView
     companion object {
         const val AUDIO_ID = "AUDIO_ID"
         fun toCommentCenterActivity(context: Context, audioID: String) {
-
             context.startActivity(Intent(context, CommentCenterActivity::class.java).apply {
                 putExtra(AUDIO_ID, audioID)
             })
         }
     }
 
-    private val mAdapter by lazy {
-        CommonBindVMAdapter<BookBean>(
-            mViewModel,
-            mutableListOf(),
-            R.layout.recy_item_book_comment_center,
-            BR.viewModel,
-            BR.itemModel
-        )
-    }
 
     override fun initView() {
         val baseTitleModel = BaseTitleModel()
@@ -49,9 +36,16 @@ class CommentCenterActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayView
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
+        mViewModel.audioCommentList.observe(this, Observer {
+            mViewModel.mAdapter.setList(it)
+        })
     }
 
     override fun initData() {
+        intent.getStringExtra(AUDIO_ID)?.let {
+            mViewModel.audioID.set(it)
+            mViewModel.commentCenterAudioComments(it)
+        }
     }
 
 

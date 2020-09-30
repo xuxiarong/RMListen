@@ -4,11 +4,11 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.utilExt.dip
@@ -53,10 +53,7 @@ import kotlinx.android.synthetic.main.activity_book_player.*
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
     MusicPlayerEventListener {
 
-    private val mBookPlayerAdapter: BookPlayerAdapter by lazy {
-        BookPlayerAdapter(mViewModel, BR.viewModel, BR.itemModel)
 
-    }
     private val mOnScrollChangedListener: ScrollLayout.OnScrollChangedListener =
         object : ScrollLayout.OnScrollChangedListener {
             override fun onScrollProgressChanged(currentProgress: Float) {
@@ -67,7 +64,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     } else if (precent < 0) {
                         precent = 0f
                     }
-                    root_play.background?.alpha = 255- precent.toInt()
+                    root_play.background?.mutate()?.alpha = 255 - precent.toInt()
                 }
 
             }
@@ -105,7 +102,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 intent.putExtra(homeDetailModel, homeDetailBean)
                 intent.putExtra(songsIndex, index)
                 context.startActivity(intent)
-                (context as Activity).overridePendingTransition(R.anim.activity_top_open,0);
+                (context as Activity).overridePendingTransition(R.anim.activity_top_open, 0);
 
             }
         }
@@ -115,7 +112,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             val intent = Intent(context, BookPlayerActivity::class.java)
             intent.putExtra(BookPlayerActivity.fromGlobal, fromGlobal)
             context.startActivity(intent)
-            (context as Activity).overridePendingTransition(R.anim.activity_top_open,0);
+            (context as Activity).overridePendingTransition(R.anim.activity_top_open, 0);
 
         }
 
@@ -127,18 +124,16 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             intent.putExtra(paramChapterId, chapterId)
             intent.putExtra(paramAudioId, audioId)
             context.startActivity(intent)
-            (context as Activity).overridePendingTransition(R.anim.activity_top_open,0);
+            (context as Activity).overridePendingTransition(R.anim.activity_top_open, 0);
 
         }
 
 
     }
 
-
-
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.activity_bottom_close,0);
+        overridePendingTransition(R.anim.activity_bottom_close, 0);
 
     }
 
@@ -156,10 +151,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         scroll_down_layout.setAllowHorizontalScroll(true)
         scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
         scroll_down_layout.scrollToClose()
-
         scroll_down_layout.background?.mutate()?.alpha = 0
         mViewModel.initPlayerAdapterModel()
-        mDataBind.rvMusicPlay.bindVerticalLayout(mBookPlayerAdapter)
+
 
     }
 
@@ -199,10 +193,16 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 when (mViewModel.playControlAction.get()) {
                     ACTION_PLAY_QUEUE -> {
                         //调整播放列表
-                        mViewModel.audioChapterModel.get()?.let {
-                            showPlayBookListDialog(it) { position ->
-                                musicPlayerManger.startPlayMusic(position)
-                            }
+                        mViewModel.audioChapterModel.get()?.let { it ->
+                            showPlayBookListDialog(it, {
+                                musicPlayerManger.startPlayMusic(it)
+                            }, { type ->
+                                if (type == 0) {
+                                    ToastUtil.show(this@BookPlayerActivity,"刷新")
+                                } else {
+                                    ToastUtil.show(this@BookPlayerActivity,"加载更多")
+                                }
+                            })
                         }
 
                     }
@@ -230,10 +230,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
                     }
                     ACTION_MORE_COMMENT -> {
-                        CommentCenterActivity.toCommentCenterActivity(
-                            this@BookPlayerActivity,
-                            "123"
-                        )
+                        mViewModel.audioID.get()?.let {
+                            CommentCenterActivity.toCommentCenterActivity(
+                                this@BookPlayerActivity, it
+                            )
+                        }
+
                     }
                     ACTION_MORE_FINSH -> {
                         scroll_down_layout.scrollToExit()
@@ -246,7 +248,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
         })
         mViewModel.mutableList.observe(this, Observer {
-            mBookPlayerAdapter.setList(it)
+            mViewModel.mBookPlayerAdapter.setList(it)
         })
         mViewModel.playBookSate.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {

@@ -11,7 +11,7 @@
 
         <variable
             name="itemModel"
-            type="com.rm.module_play.model.PlayControlCommentListModel" />
+            type="com.rm.module_play.model.Comments" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             android:id="@+id/img_comment_book_play"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            bindUrl="@{itemModel.comments.member.avatar_url}"
+            bindUrl="@{itemModel.member.avatar_url}"
             corner="@{@dimen/dp_4}"
             tools:ignore="MissingConstraints" />
 
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{itemModel.comments.member.nickname}"
+            android:text="@{itemModel.member.nickname}"
             tools:text="name"
             android:textColor="@color/business_text_color_333333"
             android:textSize="14sp"
@@ -48,7 +48,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             tools:text="03/30"
-            android:text="@{itemModel.comments.created_at}"
+            android:text="@{itemModel.created_at}"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="14sp"
             app:layout_constraintLeft_toRightOf="@+id/img_comment_book_play"
@@ -66,7 +66,7 @@
             android:onClick="@{()->viewModel.playLikeBook(itemModel)}"
             android:paddingRight="16dp"
             tools:text="123"
-            android:text="@{itemModel.comments.likes}"
+            android:text="@{itemModel.likes}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="14sp"
             app:layout_constraintRight_toRightOf="parent"
@@ -81,7 +81,7 @@
             android:layout_marginLeft="48dp"
             android:layout_marginTop="8dp"
             android:paddingRight="16dp"
-            android:text="@{itemModel.comments.content}"
+            android:text="@{itemModel.content}"
             tools:text="根据对比来思考并不会让人逻辑混乱，因为即使是对比也可以联结称一个和谐的整体。有些概念只有通过它的对立面才能成为现实，比如“上”连着“下”，“水平”连着“垂直”，等等"
             android:textColor="@color/business_text_color_333333"
             android:textSize="14sp"
