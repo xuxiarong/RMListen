@@ -92,7 +92,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         scroll_down_layout?.setIsSupportExit(true)
         scroll_down_layout?.setToOpen()
         val LayoutMargin = scroll_down_layout.layoutParams as ViewGroup.MarginLayoutParams
-        LayoutMargin.topMargin = stateHeight + dip(44)
+        LayoutMargin.topMargin = stateHeight + dip(40)
 
         val ContentMargin = home_detail_icon.layoutParams as ViewGroup.MarginLayoutParams
         ContentMargin.topMargin = stateHeight + dip(48)
@@ -132,29 +132,27 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
                 mViewModel.refreshData()
             }
         }
-        // TODO: 2020/9/28 选集展示
+        /*// TODO: 2020/9/28 选集展示
         home_detail_play_show.setOnCheckedChangeListener{buttonView, isChecked ->
             if(isChecked){
                 //显示选集
                 home_detail_play_all_tx.setTextColor(getResources().getColor(R.color.business_color_b1b1b1))
+
                 home_detail_play_all_tx.isClickable =false
                 home_detail_play_all_img.isClickable = false
-                //当前recyclerview为选集
-                detail_directory_recycler.visibility = View.GONE
-                detail_anthology_recycler.visibility = View.VISIBLE
 
+                mViewModel.HideOr.set(true)
             }else{
                 //显示默认章节列表
                 home_detail_play_all_tx.setTextColor(getResources().getColor(R.color.business_text_color_666666))
                 home_detail_play_all_tx.isClickable = true
                 home_detail_play_all_img.isClickable = true
 
-                detail_directory_recycler.visibility = View.VISIBLE
-                detail_anthology_recycler.visibility = View.GONE
+                mViewModel.HideOr.set(false)
 
 
             }
-        }
+        }*/
         //TODO: 2020/9/28 关注主播
         detail_anthor_attention.setOnCheckedChangeListener{buttonView, isChecked ->
             if(isChecked){

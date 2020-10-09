@@ -18,7 +18,8 @@ data class AudioChapterListModel(
 ) : Serializable
 
 data class DataStr(
-    var strData:String = ""
+    var strData:String = "",
+    var position : Int = 0
 )
 
 data class ChapterList(

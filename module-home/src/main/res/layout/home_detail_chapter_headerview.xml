@@ -45,29 +45,23 @@
             android:textStyle="bold"
             android:layout_marginStart="@dimen/dp_4"
             android:text="全部播放"
-            android:textColor="@color/business_text_color_666666"
+            android:clickable="@{!viewModel.hideOr}"
+            android:textColor="@color/home_detail_chapter_clickable_color"
             app:layout_constraintBottom_toBottomOf="@id/home_detail_play_all_img"
             app:layout_constraintStart_toEndOf="@id/home_detail_play_all_img"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_img" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/home_detail_play_show"
-            android:layout_width="@dimen/dp_22"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_22"
             android:layout_marginStart="108dp"
             android:button="@null"
-            android:checked="false"
-            android:drawableStart="@drawable/home_detail_fold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_detail_chapter_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:checked="@={!viewModel.hideOr}"
             android:text="@{viewModel.total}"
             android:textColor="@color/business_text_color_666666"
-            app:layout_constraintEnd_toStartOf="@id/home_detail_play_show"
+            android:drawableEnd="@drawable/home_detail_fold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -75,8 +69,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_20"
+            android:clickable="@{!viewModel.hideOr}"
             android:src="@drawable/home_icon_chapter_download"
-            app:layout_constraintEnd_toStartOf="@id/home_detail_chapter_count"
+            app:layout_constraintEnd_toStartOf="@id/home_detail_play_show"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
@@ -85,6 +80,7 @@
             android:layout_height="@dimen/dp_22"
             android:layout_marginEnd="@dimen/dp_20"
             android:button="@null"
+            android:clickable="@{!viewModel.hideOr}"
             android:drawableStart="@drawable/home_detail_chapter_ce"
             app:layout_constraintEnd_toStartOf="@id/home_detail_play_download"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />

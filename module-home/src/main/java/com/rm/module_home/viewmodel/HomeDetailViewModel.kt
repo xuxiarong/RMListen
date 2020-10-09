@@ -2,6 +2,7 @@ package com.rm.module_home.viewmodel
 
 import android.content.Context
 import android.util.Log
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
@@ -27,16 +28,16 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var sort = ObservableField<String>()
 
     //当前加载的页码
-    var mPage = 2
+    var mPage = 1
 
     //每次加载数据的条数
     val pageSize = 5
 
     //上一页页码
-    private var upTrackPage = 1
+    private var upTrackPage = 0
 
     //下一页页码
-    private var curTrackPage = 2
+    private var curTrackPage = 1
 
     /**
      * 加载上一页
@@ -51,9 +52,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     fun loadData() {
         getTrackList(false)
     }
-
-    //场景，加载上一页，mPage 由 2变成1 ，用curTrackPage 记录变之后的值，加载更多时候，用curTrackPage++去加载数据,
-    //如果加载上一页再进行加载上一页数据时候，需要mPage
 
     var detailViewModel = ObservableField<HomeDetailModel>()
     var detailCommentViewModel = MutableLiveData<HomeCommentViewModel>()
@@ -200,16 +198,40 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
         }
     }
 
+    var HideOr = ObservableBoolean(false)
 
     /**
      * 分页查询
      */
-    fun getTrackList(page: Int) {
-        //view的操作
+    fun getTrackList(mPage: Int) {
+
+        launchOnIO {
+            repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
+                onSuccess = {
+                    showContentView()
+                    upTrackPage = mPage
+                    curTrackPage = mPage
+
+                    upTrackPage --
+                    curTrackPage ++
+
+                    it.chapter_list.let { list -> chapterAdapter.setList( list) }
+                    refreshStatusModel.setHasMore(it.chapter_list.size >= pageSize)
+                    HideOr.set(false)
+
+                }, onError = {
+                    showContentView()
+                    refreshStatusModel.finishRefresh(false)
+                    refreshStatusModel.finishLoadMore(false)
+                    errorTips.set(it)
+                })
+        }
 
     }
 
-
+    /**
+     * 分页适配器
+     */
     val ChapterAnthologyAdapter by lazy {
         CommonBindVMAdapter(
             this, mutableListOf<DataStr>(),
@@ -217,10 +239,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             BR.click,
             BR.item
         )
-    }
-
-    fun ClickAnthology() {
-
     }
 
     /**
@@ -307,22 +325,22 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             for (i in 0 until size) {
                 anthologyList.add(
                     DataStr(
-                        (totalcount - i * pageSize).toString() + "~" + (totalcount - (i + 1) * pageSize + 1)
+                        (totalcount - i * pageSize).toString() + "~" + (totalcount - (i + 1) * pageSize + 1) ,i
                     )
                 )
             }
-            if (totalcount % pageSize != 0) {
-                anthologyList.add(DataStr("${totalcount - size * pageSize}-1"))
+            if (size != 0) {
+                anthologyList.add(DataStr("${totalcount - size * pageSize}-1",size+1) )
             }
         } else {
 
             for (i in 0 until size) {
 
-                anthologyList.add(DataStr("${i * pageSize + 1}-" + (i + 1) * pageSize))
+                anthologyList.add(DataStr("${i * pageSize + 1}-" + (i + 1) * pageSize, i))
             }
 
-            if (totalcount % pageSize !== 0) {
-                anthologyList.add(DataStr("${size * pageSize + 1}"))
+            if (size !== 0) {
+                anthologyList.add(DataStr("${size * pageSize + 1}",size+1))
             }
         }
         //添加数据 : anthologyList
