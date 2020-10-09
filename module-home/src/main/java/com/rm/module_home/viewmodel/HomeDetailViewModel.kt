@@ -8,9 +8,7 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.DetailBookBean
-import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.bean.*
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
@@ -30,19 +28,23 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     //当前加载的页码
     var mPage = 2
+
     //每次加载数据的条数
     val pageSize = 5
 
     //上一页页码
     private var upTrackPage = 1
+
     //下一页页码
     private var curTrackPage = 2
+
     /**
      * 加载上一页
      */
     fun refreshData() {
         getTrackList(true)
     }
+
     /**
      * 加载更多
      */
@@ -55,8 +57,12 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     var detailViewModel = ObservableField<HomeDetailModel>()
     var detailCommentViewModel = MutableLiveData<HomeCommentViewModel>()
+
+    var detailAnthology = MutableLiveData<AudioChapterListModel>()
+
     var total = ObservableField<String>("")
     var totalcount = ObservableField<Int>()
+
     //val audioList = ObservableField<AudioChapterListModel>()
     var showStatus = ObservableField<String>()
 
@@ -67,10 +73,11 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     //收藏点击事件闭包
     var clickCollected: () -> Unit = {}
+
     //订阅点击事件闭包
     var clickSubscribe: () -> Unit = {}
 
-    val test="dfas豆腐口感马拉喀什的风格穆沙拉卡的父母过来；四大发明；，公司的分公司的奉公守法公司反而你我i片分为发票金额为皮肤饥饿我"
+    val test = "dfas豆腐口感马拉喀什的风格穆沙拉卡的父母过来；四大发明；，公司的分公司的奉公守法公司反而你我i片分为发票金额为皮肤饥饿我"
 
 
     /**
@@ -96,17 +103,17 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 订阅
      */
-    fun subscribe(audioID: String){
+    fun subscribe(audioID: String) {
         showLoading()
         launchOnIO {
             repository.subscribe(audioID).checkResult(
                 onSuccess = {
                     showContentView()
-                    DLog.i("------->","订阅成功")
+                    DLog.i("------->", "订阅成功")
                 },
                 onError = {
                     showContentView()
-                    DLog.i("------->","订阅失败  $it")
+                    DLog.i("------->", "订阅失败  $it")
                 }
             )
         }
@@ -140,14 +147,14 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      */
 
     //独立刷新事件
-     fun onRefresh(){
+    fun onRefresh() {
         launchOnIO {
-            repository.chapterList(audioId.get()!!,mPage,pageSize,sort.get()!!).checkResult(
+            repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
                 onSuccess = {
                     showContentView()
-                    total.set("共"+it.total+"集")
+                    total.set("共" + it.total + "集")
                     setPager(it.total)
-                    it.chapter_list.let { list ->  chapterAdapter.setList(list)}
+                    it.chapter_list.let { list -> chapterAdapter.setList(list) }
                 }, onError = {
                     showContentView()
                     errorTips.set(it)
@@ -158,31 +165,31 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 2 上拉，下拉更多
      */
-    fun getTrackList(isUp: Boolean){
-        var page :Int
-        if(isUp){
+    fun getTrackList(isUp: Boolean) {
+        var page: Int
+        if (isUp) {
             page = upTrackPage
-            if(0 == page){
+            if (0 == page) {
                 refreshStatusModel.finishRefresh(false)
             }
-        }else{
-            curTrackPage ++
+        } else {
+            curTrackPage++
             page = curTrackPage
         }
         launchOnIO {
-            repository.chapterList(audioId.get()!!,page,pageSize,sort.get()!!).checkResult(
+            repository.chapterList(audioId.get()!!, page, pageSize, sort.get()!!).checkResult(
                 onSuccess = {
                     showContentView()
-                    if(isUp){
-                        upTrackPage --
-                        it.chapter_list.let { list ->  chapterAdapter.addData(upTrackPage,list)}
+                    if (isUp) {
+                        upTrackPage--
+                        it.chapter_list.let { list -> chapterAdapter.addData(upTrackPage, list) }
                         refreshStatusModel.finishRefresh(true)
-                    }else{
-                        curTrackPage ++
-                        it.chapter_list.let { list ->  chapterAdapter.addData(curTrackPage,list)}
+                    } else {
+                        curTrackPage++
+                        it.chapter_list.let { list -> chapterAdapter.addData(curTrackPage, list) }
                         refreshStatusModel.finishLoadMore(true)
                     }
-                    refreshStatusModel.setHasMore(it.chapter_list.size>= pageSize)
+                    refreshStatusModel.setHasMore(it.chapter_list.size >= pageSize)
                 }, onError = {
                     showContentView()
                     refreshStatusModel.finishRefresh(false)
@@ -197,22 +204,25 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 分页查询
      */
-    fun getTrackList(page: Int){
+    fun getTrackList(page: Int) {
+        //view的操作
 
     }
 
 
     val ChapterAnthologyAdapter by lazy {
-        /*CommonBindVMAdapter(
-            this, mutableListOf<AudioChapterListModel>(),
+        CommonBindVMAdapter(
+            this, mutableListOf<DataStr>(),
             R.layout.home_chapter_item_anthology,
             BR.click,
             BR.item
-        )*/
+        )
     }
-    fun click(){
+
+    fun ClickAnthology() {
 
     }
+
     /**
      * 章节的适配器
      */
@@ -227,16 +237,19 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
         )
     }
 
-    fun itemClick(context: Context,bean :ChapterList){
+    fun itemClick(context: Context, bean: ChapterList) {
         val detailbean = detailViewModel.get()?.detaillist
         if (detailbean != null) {
-            playService.toPlayPage(context,DetailBookBean(
-                audio_id = detailbean.audio_id,
-                audio_name = detailbean.audio_name,
-                original_name = detailbean.original_name,
-                author = detailbean.author,
-                audio_cover_url = detailbean.audio_cover_url),
-                chapterAdapter.data.indexOf(bean))
+            playService.toPlayPage(
+                context, DetailBookBean(
+                    audio_id = detailbean.audio_id,
+                    audio_name = detailbean.audio_name,
+                    original_name = detailbean.original_name,
+                    author = detailbean.author,
+                    audio_cover_url = detailbean.audio_cover_url
+                ),
+                chapterAdapter.data.indexOf(bean)
+            )
         }
     }
 
@@ -248,14 +261,14 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 评论列表
      */
-    fun commentList(audio_id: String,page: Int,page_size: Int){
+    fun commentList(audio_id: String, page: Int, page_size: Int) {
         launchOnUI {
-            repository.getCommentInfo(audio_id,page,page_size).checkResult(
+            repository.getCommentInfo(audio_id, page, page_size).checkResult(
                 onSuccess = {
                     showContentView()
                     detailCommentViewModel.postValue(it)
                     Log.i("commentList", it.toString())
-                },onError = {
+                }, onError = {
                     showContentView()
                     errorTips.set(it)
                     Log.i("commentList", it.toString())
@@ -279,29 +292,42 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
         clickSubscribe()
     }
 
-    /**
-     * 设置分页
-     */
-    fun setPager(totalcount:Int){
+    var AudioChapterListModel = MutableLiveData<AudioChapterListModel>()
 
-        var anthologyList: MutableList<String> = ArrayList()
+    /**
+     * 获取分页列表
+     */
+    fun setPager(totalcount: Int) {
+
+        var anthologyList = ArrayList<DataStr>()
+
+        var size = totalcount / pageSize
+
         if (sort.equals("desc")) {
-            for (i in 0 until totalcount / pageSize) {
-                anthologyList.add((totalcount - i * pageSize).toString() + "~" + (totalcount - (i + 1) * pageSize + 1))
+            for (i in 0 until size) {
+                anthologyList.add(
+                    DataStr(
+                        (totalcount - i * pageSize).toString() + "~" + (totalcount - (i + 1) * pageSize + 1)
+                    )
+                )
             }
             if (totalcount % pageSize != 0) {
-                anthologyList.add("${totalcount - totalcount / pageSize * pageSize}-1")
+                anthologyList.add(DataStr("${totalcount - size * pageSize}-1"))
             }
         } else {
-            for (i in 0 until totalcount / pageSize) {
-                anthologyList.add("${i * pageSize + 1}-"+ (i + 1) * pageSize)
+
+            for (i in 0 until size) {
+
+                anthologyList.add(DataStr("${i * pageSize + 1}-" + (i + 1) * pageSize))
             }
+
             if (totalcount % pageSize !== 0) {
-                anthologyList.add("${totalcount / pageSize * pageSize + 1}")
+                anthologyList.add(DataStr("${size * pageSize + 1}"))
             }
         }
         //添加数据 : anthologyList
 
+        ChapterAnthologyAdapter.setList(anthologyList)
     }
-    // adapter 添加
+
 }

@@ -92,7 +92,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         scroll_down_layout?.setIsSupportExit(true)
         scroll_down_layout?.setToOpen()
         val LayoutMargin = scroll_down_layout.layoutParams as ViewGroup.MarginLayoutParams
-        LayoutMargin.topMargin = stateHeight + dip(48)
+        LayoutMargin.topMargin = stateHeight + dip(44)
 
         val ContentMargin = home_detail_icon.layoutParams as ViewGroup.MarginLayoutParams
         ContentMargin.topMargin = stateHeight + dip(48)
@@ -112,6 +112,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)
         detail_directory_recycler.bindVerticalLayout(mViewModel.chapterAdapter)
+        detail_anthology_recycler.bindHorizontalLayout(mViewModel.ChapterAnthologyAdapter)
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
 
         //收藏点击事件
@@ -139,13 +140,19 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
                 home_detail_play_all_tx.isClickable =false
                 home_detail_play_all_img.isClickable = false
                 //当前recyclerview为选集
-
+                detail_directory_recycler.visibility = View.GONE
+                detail_anthology_recycler.visibility = View.VISIBLE
 
             }else{
                 //显示默认章节列表
                 home_detail_play_all_tx.setTextColor(getResources().getColor(R.color.business_text_color_666666))
                 home_detail_play_all_tx.isClickable = true
                 home_detail_play_all_img.isClickable = true
+
+                detail_directory_recycler.visibility = View.VISIBLE
+                detail_anthology_recycler.visibility = View.GONE
+
+
             }
         }
         //TODO: 2020/9/28 关注主播

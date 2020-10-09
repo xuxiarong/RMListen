@@ -6,16 +6,21 @@
     <data>
         <variable
             name="item"
-            type="com.rm.business_lib.bean.AudioChapterListModel"
+            type="com.rm.business_lib.bean.DataStr"
             />
+        <variable
+            name="click"
+            type="com.rm.module_home.viewmodel.HomeDetailViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@drawable/busniesss_shape_4_e8e8e8"
+        android:layout_marginStart="@dimen/dp_12"
         android:layout_width="77dp"
         android:layout_height="@dimen/dp_40">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_chapter_anthology_tx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +28,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="@dimen/sp_14"
+            android:text="@{item.strData}"
             android:textColor="@color/business_text_color_666666"
-            tools:text="01-50" />
+            tools:text="01-20"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

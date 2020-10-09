@@ -14,11 +14,11 @@ data class AudioChapterListModel(
     @SerializedName("list")
     val chapter_list: MutableList<ChapterList>,
     val total: Int,
-    val anthology_list :MutableList<Str_sort>
+    val Anthology_list :MutableList<DataStr>
 ) : Serializable
 
-data class Str_sort(
-    val sort_str:String
+data class DataStr(
+    var strData:String = ""
 )
 
 data class ChapterList(
