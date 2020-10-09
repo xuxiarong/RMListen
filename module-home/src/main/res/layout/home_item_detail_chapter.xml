@@ -8,6 +8,9 @@
             name = "DetailChapterViewModel"
             type="com.rm.business_lib.bean.ChapterList"
             />
+        <variable
+            name = "chapterclick"
+            type="com.rm.module_home.viewmodel.HomeDetailViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +20,9 @@
         android:paddingBottom="@dimen/dp_10"
         android:layout_marginBottom="@dimen/dp_10"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{(ChapterList)->chapterclick.itemClick(context,DetailChapterViewModel)}"
+        >
 
 
         <androidx.appcompat.widget.AppCompatTextView

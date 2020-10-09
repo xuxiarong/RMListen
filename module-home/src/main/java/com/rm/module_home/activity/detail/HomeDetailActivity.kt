@@ -36,6 +36,7 @@ import kotlinx.android.synthetic.main.home_detail_chapter_headerview.*
 
 /**
  * 书籍详情
+ *  //1、需添加书籍下架的toast提示，然后finish掉详情页
  */
 class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
 
@@ -50,30 +51,6 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         CommonBindAdapter(
             mutableListOf<CommentList>(), R.layout.home_detail_item_comment, BR.comment_list
         )
-    }
-
-    private val homechapterAdater by lazy {
-        CommonBindAdapter(
-            mutableListOf<ChapterList>(),
-            R.layout.home_item_detail_chapter,
-            BR.DetailChapterViewModel
-        ).apply {
-            setOnItemClickListener { adapter, view, position ->
-                mViewModel.detailViewModel.get()?.let {
-                    playService.toPlayPage(
-                        this@HomeDetailActivity,
-                        DetailBookBean(
-                            audio_id = it.detaillist.audio_id,
-                            audio_name = it.detaillist.audio_name,
-                            original_name = it.detaillist.original_name,
-                            author = it.detaillist.author,
-                            audio_cover_url = it.detaillist.audio_cover_url
-                        ),
-                        position
-                    )
-                }
-            }
-        }
     }
 
     //播放器路由
@@ -124,16 +101,19 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
         //audioId = "162163095869968384"
         if (audioId.orEmpty().isNotEmpty()) {
+            mViewModel.audioId.set(audioId)
+            mViewModel.sort.set("asc")
             mViewModel.intDetailInfo(audioId)
-            mViewModel.chapterList(audioId, 1, 20, "asc")
-            mViewModel.commentList(audioId, 1, 20)
+            mViewModel.onRefresh() //初始化章节列表
+
+            mViewModel.commentList(audioId, 1, 10)
+
         }
 
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)
-
-        detail_directory_recycler.bindVerticalLayout(homechapterAdater)
-        //homeDetailCommentAdapter.addHeaderView(detailcontent)
+        detail_directory_recycler.bindVerticalLayout(mViewModel.chapterAdapter)
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
+
         //收藏点击事件
         mViewModel.clickCollected = { clickCollected() }
 
@@ -142,19 +122,40 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
         home_detail_title_cl.setOnClickListener { finish() }
         // TODO: 2020/9/28 章节排序
-        home_detail_play_sort.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                mViewModel.chapterList(audioId, 1, 20, "desc")
-            } else {
-                mViewModel.chapterList(audioId, 1, 20, "asc")
+        home_detail_play_sort.setOnCheckedChangeListener{buttonView, isChecked ->
+            if(isChecked){
+                mViewModel.sort.set("desc")
+                mViewModel.refreshData()
+            }else{
+                mViewModel.sort.set("asc")
+                mViewModel.refreshData()
             }
         }
         // TODO: 2020/9/28 选集展示
-        home_detail_play_show.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
+        home_detail_play_show.setOnCheckedChangeListener{buttonView, isChecked ->
+            if(isChecked){
+                //显示选集
+                home_detail_play_all_tx.setTextColor(getResources().getColor(R.color.business_color_b1b1b1))
+                home_detail_play_all_tx.isClickable =false
+                home_detail_play_all_img.isClickable = false
+                //当前recyclerview为选集
 
-            } else {
 
+            }else{
+                //显示默认章节列表
+                home_detail_play_all_tx.setTextColor(getResources().getColor(R.color.business_text_color_666666))
+                home_detail_play_all_tx.isClickable = true
+                home_detail_play_all_img.isClickable = true
+            }
+        }
+        //TODO: 2020/9/28 关注主播
+        detail_anthor_attention.setOnCheckedChangeListener{buttonView, isChecked ->
+            if(isChecked){
+                detail_anthor_attention.setText("已关注")
+                detail_anthor_attention.setTextColor(getResources().getColor(R.color.business_color_b1b1b1))
+            }else{
+                detail_anthor_attention.setText("关注")
+                detail_anthor_attention.setTextColor(getResources().getColor(R.color.business_text_color_666666))
             }
         }
     }
@@ -176,15 +177,6 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         mViewModel.detailCommentViewModel.observe(this, Observer {
             homeDetailCommentAdapter.setList(mViewModel.detailCommentViewModel.value!!.list_comment)
         })
-
-        /*mViewModel.detailChapterViewModel.observe(this, Observer {
-            homechapterAdater.setList(mViewModel.detailChapterViewModel.value!!.chapterList)
-        })*/
-
-        mViewModel.detailChapterViewModel.observe(this, Observer {
-            homechapterAdater.setList(mViewModel.detailChapterViewModel.value!!)
-        }
-        )
 
         mViewModel.actionControl.observe(this, Observer {
             mViewModel.detailViewModel.get()?.let {
@@ -223,14 +215,8 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             }
         }
 
-//    private val commenheader by lazy {
-//        View.inflate(this, R.layout.home_detail_recyc_title, null)
-//    }
-
     override fun initData() {
-
         //mViewModel.intDetailInfo("162163095869968384")
-
 
     }
 
@@ -248,7 +234,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             return
         }
         RouterHelper.createRouter(ListenService::class.java)
-            .showMySheetListDialog(mViewModel, this, audioId.toString())
+            .showMySheetListDialog(mViewModel, this, audioId)
     }
 
     /**
@@ -268,5 +254,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     private fun toLogin() {
         RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel, this)
     }
+
+
 
 }
