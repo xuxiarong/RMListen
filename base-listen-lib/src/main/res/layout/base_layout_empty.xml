@@ -19,21 +19,18 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/base_empty" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/base_no_data" />
 
         <TextView
             android:id="@+id/tv_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/base_fine_no_data"
-            android:textColor="#333333"
-            android:textSize="18sp" />
+            android:layout_marginTop="5dp"
+            android:textColor="@color/base_b1b1b1"
+            android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/base_click_me_to_retry" />
     </LinearLayout>
 </layout>

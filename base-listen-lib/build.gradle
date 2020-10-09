@@ -81,6 +81,8 @@ dependencies {
     api rootProject.ext.dependencies["multidex"]
     api rootProject.ext.dependencies["kotlin_reflect"]
     api rootProject.ext.dependencies["autosize"]
+    api rootProject.ext.dependencies["lottie"]
+
 //    implementation project(path: ':business-lib')
 
 //    implementation 'com.dacui.library:spannable-helper:1.0.1'

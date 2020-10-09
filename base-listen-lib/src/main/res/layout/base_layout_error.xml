@@ -8,6 +8,7 @@
         <variable
             name="status"
             type="com.rm.baselisten.model.BaseStatusModel" />
+
     </data>
 
     <LinearLayout
@@ -18,22 +19,18 @@
         isVisible="@{status.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR}"
         android:orientation="vertical">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="100dp"
             android:layout_height="80dp"
             android:layout_marginBottom="4dp"
-            android:background="@drawable/base_error" />
+            android:src="@drawable/base_net_error" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Boss! something is wrong."
-            android:textColor="#333333"
-            android:textSize="18sp" />
+            android:text="@string/net_service_error"
+            android:textColor="@color/base_b1b1b1"
+            android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="click me to retry!" />
     </LinearLayout>
 </layout>

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import com.rm.baselisten.BR
 import com.rm.baselisten.R
 import com.rm.baselisten.databinding.ActivityBaseVmBinding
 import com.rm.baselisten.ktx.putAnyExtras
@@ -165,7 +166,9 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             BaseNetStatus.BASE_SHOW_DATA_EMPTY -> {
                 if (!mBaseBinding.baseEmpty.isInflated) {
                     mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
-                    mBaseBinding.baseEmpty.viewStub?.inflate()
+                    val inflate = mBaseBinding.baseEmpty.viewStub?.inflate()
+                    val binding = DataBindingUtil.getBinding<ViewDataBinding>(inflate!!)
+                    binding?.setVariable(BR.viewModel,mViewModel)
                 }
                 mChildView?.visibility = View.GONE
             }

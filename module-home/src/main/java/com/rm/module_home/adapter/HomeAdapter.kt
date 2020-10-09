@@ -36,7 +36,7 @@ class HomeAdapter(
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
                 homeItemBannerBinding.mainBanner.apply {
                     bindData(homeViewModel.homeBannerInfoList.value!!)
-                    this.setOnItemClickListener { banner, model, view, position ->
+                    this.setOnItemClickListener { _, _, _, position ->
                         BannerJumpUtils.onBannerClick(context,homeViewModel.homeBannerInfoList.value!![position].banner_jump)
                     }
                 }
