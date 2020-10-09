@@ -58,6 +58,7 @@ fun SmartRefreshLayout.bindIsLoadMoreSuccess(isSuccess: Boolean?, isHasMoreData:
     }
     if (isHasMoreData != null && !isHasMoreData) {
         // 没有更多数据了
+        setEnableFooterFollowWhenNoMoreData(false)
         finishLoadMoreWithNoMoreData()
     }
 }
