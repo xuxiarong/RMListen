@@ -59,7 +59,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var detailAnthology = MutableLiveData<AudioChapterListModel>()
 
     var total = ObservableField<String>("")
-    var totalcount = ObservableField<Int>()
 
     //val audioList = ObservableField<AudioChapterListModel>()
     var showStatus = ObservableField<String>()
