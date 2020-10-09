@@ -5,17 +5,15 @@ import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.baselisten.util.setOnClickNotDoubleListener
 import com.rm.component_comm.base.IApplicationDelegate
-import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.DetailBookBean
-import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.activity.CommentCenterActivity
+import com.rm.module_play.enum.Jump
 import com.rm.module_play.playview.GlobalplayHelp
-import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 /**
  * desc   : play module 路由服务实现类
@@ -29,7 +27,7 @@ class PlayServiceImpl : PlayService {
     override fun showView(context: Context) {
         GlobalplayHelp.instance.globalView.mainShow()
         GlobalplayHelp.instance.globalView.setOnClickNotDoubleListener {
-            BookPlayerActivity.startActivity(context, BookPlayerActivity.fromGlobal)
+            BookPlayerActivity.startActivity(context, Jump.DOTS.from)
         }
     }
 
@@ -38,11 +36,11 @@ class PlayServiceImpl : PlayService {
         bean: DetailBookBean?,
         index: Int
     ) {
-        BookPlayerActivity.startActivity(context, bean, index)
+        BookPlayerActivity.startActivity(context, bean, Jump.DETAILSBOOK.from,index)
     }
 
     override fun toPlayPage(context: Context, chapterId: String, audioId: String) {
-        BookPlayerActivity.startActivity(context, chapterId, audioId)
+        BookPlayerActivity.startActivity(context, chapterId, audioId,Jump.RECENTPLAY.from)
 
     }
 

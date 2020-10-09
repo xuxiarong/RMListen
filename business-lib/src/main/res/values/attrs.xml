@@ -179,4 +179,11 @@
         <attr name="tabIndicatorColor" format="color" />
         <attr name="tabTextColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="living_style">
+        <attr name="line_number" format="integer" />
+        <attr name="line_width" format="dimension" />
+        <attr name="line_color" format="color" />
+        <attr name="line_duration" format="float" />
+    </declare-styleable>
 </resources>

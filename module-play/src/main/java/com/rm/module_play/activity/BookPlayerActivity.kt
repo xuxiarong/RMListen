@@ -3,6 +3,7 @@ package com.rm.module_play.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMActivity
@@ -24,6 +25,7 @@ import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
+import com.rm.module_play.enum.Jump
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
@@ -61,14 +63,15 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     } else if (precent < 0) {
                         precent = 0f
                     }
-                    root_play.background?.mutate()?.alpha = 255 - precent.toInt()
+                    val alpha = precent.toInt()
+                    root_play.setBackgroundColor(Color.argb(alpha, 0, 0, 0))
                 }
 
             }
 
             override fun onScrollFinished(currentStatus: ScrollLayout.Status) {
                 scrollStatus = currentStatus
-                if (currentStatus == ScrollLayout.Status.EXIT) {
+                if (currentStatus == ScrollLayout.Status.EXIT || currentStatus == ScrollLayout.Status.OPENED) {
                     finish()
                 }
             }
@@ -78,27 +81,30 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
         }
     var indexSong = 0
-    var fromGlobalValue: String? = ""
-    var scrollStatus = ScrollLayout.Status.OPENED
+    var fromJumpType: String? = null
+    var scrollStatus = ScrollLayout.Status.CLOSED
+
     //是否重置播放
     var isResumePlay = false
 
     companion object {
         const val homeDetailModel = "homeDetailModel"
         const val songsIndex = "songIndex"
-        const val fromGlobal = "fromGlobal"
+        const val fromJump = "fromJump"
         const val fromGlobalCache = "fromGlobalCache"
 
         //网络信息加载
         fun startActivity(
             context: Context,
             homeDetailBean: DetailBookBean?,
+            from: String,
             index: Int = 0
         ) {
             if (homeDetailBean != null) {
                 val intent = Intent(context, BookPlayerActivity::class.java)
                 intent.putExtra(homeDetailModel, homeDetailBean)
                 intent.putExtra(songsIndex, index)
+                intent.putExtra(fromJump, from)
                 context.startActivity(intent)
                 (context as Activity).overridePendingTransition(R.anim.activity_top_open, 0);
 
@@ -108,7 +114,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         //全局原点
         fun startActivity(context: Context, fromGlobal: String) {
             val intent = Intent(context, BookPlayerActivity::class.java)
-            intent.putExtra(BookPlayerActivity.fromGlobal, fromGlobal)
+            intent.putExtra(fromJump, fromGlobal)
             context.startActivity(intent)
             (context as Activity).overridePendingTransition(R.anim.activity_top_open, 0);
 
@@ -117,9 +123,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         //从最近播放进入
         const val paramChapterId = "chapterId"
         const val paramAudioId = "audioId"
-        fun startActivity(context: Context, chapterId: String, audioId: String) {
+        fun startActivity(context: Context, chapterId: String, audioId: String, from: String) {
             val intent = Intent(context, BookPlayerActivity::class.java)
             intent.putExtra(paramChapterId, chapterId)
+            intent.putExtra(fromJump, from)
             intent.putExtra(paramAudioId, audioId)
             context.startActivity(intent)
             (context as Activity).overridePendingTransition(R.anim.activity_top_open, 0);
@@ -131,10 +138,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun finish() {
         super.finish()
-        if (scrollStatus == ScrollLayout.Status.EXIT) {
-            overridePendingTransition(0, 0);
+        if (scrollStatus == ScrollLayout.Status.EXIT || scrollStatus == ScrollLayout.Status.OPENED) {
+            overridePendingTransition(0, 0)
+            scrollStatus = ScrollLayout.Status.CLOSED
         } else {
             overridePendingTransition(R.anim.activity_bottom_close, 0);
+
         }
 
     }
@@ -164,8 +173,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             it?.let { it1 ->
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
                 GlobalplayHelp.instance.addOnPlayerEventListener()
-                if ((fromGlobalValue.orEmpty()
-                        .isEmpty() && musicPlayerManger.getCurrentPlayerMusic()?.chapterId != it1.getOrNull(
+                if ((fromJumpType == Jump.DOTS.from && musicPlayerManger.getCurrentPlayerMusic()?.chapterId != it1.getOrNull(
                         indexSong
                     )?.chapterId) ||
                     musicPlayerManger.getCurrentPlayerMusic() == null
@@ -192,23 +200,23 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.playControlAction.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                when (mViewModel.playControlAction.get()) {
-                    ACTION_PLAY_QUEUE -> {
+                val controlTime = mViewModel.playControlAction.get()
+                when {
+                    controlTime?.contains(ACTION_PLAY_QUEUE) == true -> {
                         //调整播放列表
                         mViewModel.audioChapterModel.get()?.let { it ->
                             showPlayBookListDialog(it, {
                                 musicPlayerManger.startPlayMusic(it)
                             }, { type ->
                                 if (type == 0) {
-                                    ToastUtil.show(this@BookPlayerActivity, "刷新")
+                                    //                                    ToastUtil.show(this@BookPlayerActivity, "刷新")
                                 } else {
-                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
+                                    //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
                                 }
                             })
                         }
-
                     }
-                    ACTION_PLAY_OPERATING -> {
+                    controlTime?.contains(ACTION_PLAY_OPERATING) == true -> {
                         showMusicPlayMoreDialog { it1 ->
                             if (it1 == 0) {
                                 showMusicPlayTimeSettingDialog()
@@ -217,10 +225,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                             }
                         }
                     }
-                    ACTION_GET_PLAYINFO_LIST -> {
+                    controlTime?.contains(ACTION_GET_PLAYINFO_LIST) == true -> {
                         navigateToForResult(ARouterPath.testPath, 100)
+
                     }
-                    ACTION_JOIN_LISTEN -> {
+                    controlTime?.contains(ACTION_JOIN_LISTEN) == true -> {
                         mViewModel.homeDetailBean.get()?.let {
                             RouterHelper.createRouter(ListenService::class.java)
                                 .showMySheetListDialog(
@@ -231,15 +240,14 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         }
 
                     }
-                    ACTION_MORE_COMMENT -> {
+                    controlTime?.contains(ACTION_MORE_COMMENT) == true -> {
                         mViewModel.audioID.get()?.let {
                             CommentCenterActivity.toCommentCenterActivity(
                                 this@BookPlayerActivity, it
                             )
                         }
-
                     }
-                    ACTION_MORE_FINSH -> {
+                    controlTime?.contains(ACTION_MORE_FINSH) == true -> {
                         finish()
                     }
                     else -> {
@@ -265,11 +273,23 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     private fun getIntentParams() {
         //正在播放的对象
         //来自全局小圆圈点击进来
-        fromGlobalValue = intent.getStringExtra(fromGlobal)
-        if (fromGlobalValue.orEmpty().isNotEmpty()) {
-            mViewModel.initPlayBookSate(fromGlobalCache.getObjectMMKV(PlayBookState::class.java))
+        fromJumpType = intent.getStringExtra(fromJump)
+        when (fromJumpType) {
+            Jump.DOTS.from -> {
+                mViewModel.initPlayBookSate(fromGlobalCache.getObjectMMKV(PlayBookState::class.java))
 
+            }
+            Jump.RECENTPLAY.from -> {
+                val chapterId = intent.getStringExtra(paramChapterId)
+                val audioId = intent.getStringExtra(paramAudioId)
+
+
+            }
+            else -> {
+
+            }
         }
+
         if (intent.getSerializableExtra(homeDetailModel) as? DetailBookBean != null) {
             val homeDetailBean = intent.getSerializableExtra(homeDetailModel) as? DetailBookBean
             mViewModel.seBookDetailBean(homeDetailBean)

@@ -223,6 +223,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
     override fun startPlayMusic(index: Int) {
+        mCurrentPlayIndex=index
         postViewHandlerCurrentPosition(index)
         startPlay(mAudios.getOrNull(index) as BaseAudioInfo)
     }

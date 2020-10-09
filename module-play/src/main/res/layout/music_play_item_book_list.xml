@@ -8,12 +8,26 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
+    <com.rm.business_lib.wedgit.LivingView
+        android:id="@+id/living_img"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:layout_marginStart="9dp"
+        android:layout_marginRight="16dp"
+        android:visibility="invisible"
+        android:clickable="false"
+        app:line_color="@color/business_color_ff5e5e"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/music_play_book_list_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         tools:text="1"
+        android:visibility="invisible"
         android:textColor="@color/business_text_color_333333"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="parent"

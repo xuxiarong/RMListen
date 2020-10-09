@@ -1,7 +1,6 @@
 package com.rm.module_play.dialog
 
 import android.annotation.SuppressLint
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
@@ -16,7 +15,6 @@ import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
-import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.rv_music_play_time_setting
 
 /**
  *
@@ -81,9 +79,12 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     internal class TimeSAdapter(list: MutableList<ChapterList>) :
         BaseQuickAdapter<ChapterList, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
         override fun convert(holder: BaseViewHolder, item: ChapterList) {
+            val playChapter=item.chapter_id== musicPlayerManger.getCurrentPlayerMusic()?.chapterId
+            holder.setVisible(R.id.music_play_book_list_position,!playChapter)
+            holder.setVisible(R.id.living_img,playChapter)
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
-            holder.setText(R.id.tv_music_play_count, "${item.play_count}")
+            holder.setText(R.id.tv_music_play_count, item.play_count)
             holder.setText(R.id.tv_music_play_time_count, "${item.duration}")
             holder.setText(R.id.tv_music_play_up_time, item.created_at)
         }

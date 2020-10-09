@@ -76,4 +76,17 @@ interface PlayApiService {
         @Query("page_size") page_size: Int,
         @Query("sort") sort: String
     ): BaseResponse<AudioChapterListModel>
+
+
+    /**
+     * 章节列表
+     */
+    @GET("audio/chapter/list")
+    suspend fun chapterPage(
+        @Query("audio_id") audioId: String,
+        @Query("page") page: Int,
+        @Query("chapter_id") chapterId:String,
+        @Query("page_size") page_size: Int,
+        @Query("sort") sort: String
+    ): BaseResponse<AudioChapterListModel>
 }

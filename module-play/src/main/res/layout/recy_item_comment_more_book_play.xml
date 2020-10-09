@@ -29,7 +29,7 @@
             android:textColor="@color/business_text_color_333333"
             android:textSize="16sp"
             android:text="更多"
-            android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_MORE_COMMENT)}"
+            android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_MORE_COMMENT+viewModel.curTime)}"
             android:paddingRight="20dp"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"

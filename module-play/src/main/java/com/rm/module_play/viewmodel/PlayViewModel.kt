@@ -60,7 +60,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     var page = 1
     val pageSize = 10
     val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
-
+    val curTime=System.currentTimeMillis()
     init {
         updateThumbText.set("0/0")
         playBookSate.set(PlayBookState())
@@ -102,7 +102,8 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                             filename = it.created_at,
                             audioId = it.audio_id,
                             chapterId = it.chapter_id,
-                            duration = it.duration
+                            duration = it.duration,
+                            playCount = it.play_count
                         )
                     )
                 }
@@ -145,7 +146,6 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     //播放器操作行为
     fun playControlAction(action: String) {
         playControlAction.set(action)
-
     }
 
     fun finshActivity(action: String) {
