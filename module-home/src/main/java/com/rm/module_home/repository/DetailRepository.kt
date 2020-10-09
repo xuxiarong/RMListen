@@ -35,4 +35,11 @@ class DetailRepository(val homeservice: HomeApiService) : BaseRepository() {
     suspend fun subscribe(audioId: String): BaseResult<Any> {
         return apiCall { homeservice.listenAddSubscription(audioId) }
     }
+    /**
+     * 关注直播
+     */
+
+    /**
+     * 取消
+     */
 }

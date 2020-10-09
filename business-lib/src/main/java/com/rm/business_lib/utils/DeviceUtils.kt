@@ -1,6 +1,8 @@
 package com.rm.business_lib.utils
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.Context
 import android.provider.Settings
 import android.text.TextUtils
 import com.rm.baselisten.BaseApplication
@@ -18,6 +20,30 @@ import java.util.*
  */
 class DeviceUtils private constructor() {
     companion object {
+        /**
+         * 判断服务是否正在运行
+         */
+        private fun isServiceWork(
+            context: Context, serviceName: String
+        ): Boolean {
+            var isWork = false
+            val myList: List<ActivityManager.RunningServiceInfo> =
+                (context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).getRunningServices(
+                    100
+                )
+            if (myList.isEmpty()) {
+                return false
+            }
+            myList.forEach {
+                val mName: String = it.service.className
+                if (mName == serviceName) {
+                    isWork = true
+                    return isWork
+                }
+            }
+            return isWork
+        }
+
         /**
          * Return the android id of device.
          *

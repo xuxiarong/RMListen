@@ -45,6 +45,7 @@
             android:textStyle="bold"
             android:layout_marginStart="@dimen/dp_4"
             android:text="全部播放"
+            android:textColor="@color/business_text_color_666666"
             app:layout_constraintBottom_toBottomOf="@id/home_detail_play_all_img"
             app:layout_constraintStart_toEndOf="@id/home_detail_play_all_img"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_img" />
@@ -64,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.total}"
+            android:textColor="@color/business_text_color_666666"
             app:layout_constraintEnd_toStartOf="@id/home_detail_play_show"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />
 

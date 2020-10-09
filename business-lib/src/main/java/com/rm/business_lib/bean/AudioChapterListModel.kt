@@ -13,9 +13,13 @@ import java.io.Serializable
 data class AudioChapterListModel(
     @SerializedName("list")
     val chapter_list: MutableList<ChapterList>,
-    val total: String
+    val total: Int,
+    val anthology_list :MutableList<Str_sort>
 ) : Serializable
 
+data class Str_sort(
+    val sort_str:String
+)
 
 data class ChapterList(
     val chapter_id: String,
