@@ -11,6 +11,7 @@ import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.business_lib.binding.bindData
 import com.rm.business_lib.binding.bindLeftScroll
+import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.*
@@ -35,6 +36,9 @@ class HomeAdapter(
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
                 homeItemBannerBinding.mainBanner.apply {
                     bindData(homeViewModel.homeBannerInfoList.value!!)
+                    this.setOnItemClickListener { banner, model, view, position ->
+                        BannerJumpUtils.onBannerClick(context,homeViewModel.homeBannerInfoList.value!![position].banner_jump)
+                    }
                 }
             }
             R.layout.home_item_menu_rv -> {

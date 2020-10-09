@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/baseWebBack"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/base_icon_back"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/baseWebTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:maxWidth="120dp"
+        android:ellipsize="end"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        tools:text="测试标题"
+        android:textSize="18sp"
+        android:textColor="#333"
+        android:visibility="visible"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ProgressBar
+        android:id="@+id/baseWebPb"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:progressDrawable="@drawable/base_web_progress"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_below="@+id/baseWebBack"
+        />
+
+    <WebView
+        android:layout_marginTop="2dp"
+        android:id="@+id/baseWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/baseWebPb"
+        />
+
+</RelativeLayout>

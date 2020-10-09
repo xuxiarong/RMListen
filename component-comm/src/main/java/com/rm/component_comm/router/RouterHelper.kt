@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter
  * date   : 2020/08/14
  * version: 1.0
  */
-class RouterHelper {
+open class RouterHelper {
     companion object{
         /**
          * 定义一个通用，创建组件路由的方法

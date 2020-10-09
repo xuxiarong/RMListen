@@ -6,9 +6,9 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.ARouterModuleServicePath
+import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuActivity
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity
-import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.fragment.HomeHomeFragment
 
 /**

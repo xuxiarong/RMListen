@@ -1,5 +1,6 @@
 package com.rm.component_comm.main
 
+import android.content.Context
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -8,4 +9,8 @@ import com.rm.component_comm.router.ApplicationProvider
  * version: 1.1
  */
 interface MainService : ApplicationProvider {
+    /**
+     *  跳转到首页
+     */
+    fun startMainActivity(context: Context)
 }

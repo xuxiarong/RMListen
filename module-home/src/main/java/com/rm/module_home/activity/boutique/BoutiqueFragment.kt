@@ -5,6 +5,7 @@ import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.binding.paddingBindData
+import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.bean.CategoryTabBean
@@ -45,6 +46,9 @@ class BoutiqueFragment(
         headView.findViewById<XBanner>(R.id.home_head_banner).apply {
             setIsClipChildrenMode(false)
             paddingBindData(bannerList)
+            setOnItemClickListener { banner, model, view, position ->
+                BannerJumpUtils.onBannerClick(context,bannerList[position].banner_jump)
+            }
         }
 
         mViewModel.bookAdapter.addHeaderView(headView)

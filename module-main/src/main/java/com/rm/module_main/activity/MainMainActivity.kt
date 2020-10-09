@@ -1,5 +1,7 @@
 package com.rm.module_main.activity
 
+import android.content.Context
+import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.wedgit.NoTouchViewPager
@@ -131,5 +133,11 @@ class MainMainActivity : BaseActivity() {
 
     override fun initData() {
 
+    }
+
+    companion object{
+        fun startMainActivity(context: Context){
+            context.startActivity(Intent(context,MainMainActivity::class.java))
+        }
     }
 }

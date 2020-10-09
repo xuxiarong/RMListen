@@ -8,6 +8,7 @@ import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.binding.paddingBindData
+import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
@@ -25,6 +26,7 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
                 paddingRight,
                 paddingBottom
             )
+
         }
     }
 
@@ -44,6 +46,9 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
             headView.findViewById<XBanner>(R.id.home_head_banner).apply {
                 paddingBindData(it.banner_list)
                 setIsClipChildrenMode(false)
+                setOnItemClickListener { banner, model, view, position ->
+                    BannerJumpUtils.onBannerClick(context,it.banner_list!![position].banner_jump)
+                }
             }
         }
     }

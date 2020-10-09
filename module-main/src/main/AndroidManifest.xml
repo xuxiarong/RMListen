@@ -2,7 +2,8 @@
     package="com.rm.module_main">
 
     <application>
-        <activity android:name=".activity.MainMainActivity">
+        <activity android:name=".activity.MainMainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
