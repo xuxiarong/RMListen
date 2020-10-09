@@ -75,7 +75,6 @@ fun LottieAnimationView.startLottieAnimation(state:Boolean) {
         setAnimation("stop_play.json")
 
     }
-
     playAnimation()
 
 }

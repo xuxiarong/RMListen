@@ -1,12 +1,10 @@
 package com.rm.module_play.activity
 
 import android.app.Activity
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.getObjectMMKV
@@ -19,7 +17,6 @@ import com.rm.component_comm.navigateToForResult
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
-import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.module_play.cache.PlayBookState
 import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
@@ -70,8 +67,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
 
             override fun onScrollFinished(currentStatus: ScrollLayout.Status) {
-                if (currentStatus == ScrollLayout.Status.CLOSED) {
-//                    finish()
+                scrollStatus = currentStatus
+                if (currentStatus == ScrollLayout.Status.EXIT) {
+                    finish()
                 }
             }
 
@@ -81,7 +79,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
     var indexSong = 0
     var fromGlobalValue: String? = ""
-
+    var scrollStatus = ScrollLayout.Status.OPENED
     //是否重置播放
     var isResumePlay = false
 
@@ -133,7 +131,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.activity_bottom_close, 0);
+        if (scrollStatus == ScrollLayout.Status.EXIT) {
+            overridePendingTransition(0, 0);
+        } else {
+            overridePendingTransition(R.anim.activity_bottom_close, 0);
+        }
 
     }
 
@@ -148,7 +150,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         scroll_down_layout.setMaxOffset(((screenHeight * 0.5).toInt()))
         scroll_down_layout.setExitOffset(dip(50))
         scroll_down_layout.setIsSupportExit(true)
-        scroll_down_layout.setAllowHorizontalScroll(true)
+        scroll_down_layout.isAllowHorizontalScroll = true
         scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
         scroll_down_layout.scrollToClose()
         scroll_down_layout.background?.mutate()?.alpha = 0
@@ -158,12 +160,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun startObserve() {
-        mViewModel.playPath.observe(this, Observer {
+        mViewModel.playPath.observe(this, Observer { it ->
             it?.let { it1 ->
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
                 GlobalplayHelp.instance.addOnPlayerEventListener()
-                if ((fromGlobalValue.orEmpty().isEmpty() &&
-                            musicPlayerManger.getCurrentPlayerMusic()?.chapterId != it1.getOrNull(
+                if ((fromGlobalValue.orEmpty()
+                        .isEmpty() && musicPlayerManger.getCurrentPlayerMusic()?.chapterId != it1.getOrNull(
                         indexSong
                     )?.chapterId) ||
                     musicPlayerManger.getCurrentPlayerMusic() == null
@@ -178,8 +180,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     }
                     //相同书籍和章节进来
                     isResumePlay = true
-                    musicPlayerManger.getCurrentPlayerMusic()?.let {
-                        getRecentPlayBook(it, indexSong)
+                    musicPlayerManger.getCurrentPlayerMusic()?.let { audio ->
+                        getRecentPlayBook(audio, indexSong)
                     }
 
                 }
@@ -198,9 +200,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                 musicPlayerManger.startPlayMusic(it)
                             }, { type ->
                                 if (type == 0) {
-                                    ToastUtil.show(this@BookPlayerActivity,"刷新")
+                                    ToastUtil.show(this@BookPlayerActivity, "刷新")
                                 } else {
-                                    ToastUtil.show(this@BookPlayerActivity,"加载更多")
+                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
                                 }
                             })
                         }
@@ -238,7 +240,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
                     }
                     ACTION_MORE_FINSH -> {
-                        scroll_down_layout.scrollToExit()
                         finish()
                     }
                     else -> {
@@ -254,9 +255,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 indexSong = mViewModel.playBookSate.get()?.index ?: 0
-
             }
-
         })
     }
 
@@ -265,7 +264,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
      */
     private fun getIntentParams() {
         //正在播放的对象
-
         //来自全局小圆圈点击进来
         fromGlobalValue = intent.getStringExtra(fromGlobal)
         if (fromGlobalValue.orEmpty().isNotEmpty()) {
@@ -285,10 +283,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 )
             }
             indexSong = intent.getIntExtra(songsIndex, 0)
-
         }
-
-
     }
 
     override fun onPause() {
@@ -379,26 +374,5 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         indexSong = mViewModel.playBookSate.get()?.index ?: 0
     }
 
-    /**
-     * 判断服务是否正在运行
-     */
-    private fun isServiceWork(
-        serviceName: String
-    ): Boolean {
-        var isWork = false
-        val myList: List<ActivityManager.RunningServiceInfo> =
-            (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).getRunningServices(100)
-        if (myList.isEmpty()) {
-            return false
-        }
-        myList.forEach {
-            val mName: String = it.service.className
-            if (mName == serviceName) {
-                isWork = true
-                return isWork
-            }
-        }
-        return isWork
-    }
 
 }
