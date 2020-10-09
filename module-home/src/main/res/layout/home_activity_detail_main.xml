@@ -35,6 +35,12 @@
                 <include
                     layout="@layout/home_detail_chapter_headerview"
                     bind:viewModel="@{viewModel}" />
+                <com.rm.business_lib.wedgit.bottomsheet.ContentRecyclerView
+                    android:id="@+id/detail_anthology_recycler"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="match_parent"
+                    android:background="@color/businessWhite" />
                 <com.scwang.smart.refresh.layout.SmartRefreshLayout
                     android:id="@+id/home_chapter_detail_refresh"
                     bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore()}"
@@ -51,6 +57,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/businessWhite" />
                 </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
             </LinearLayout>
         </com.rm.business_lib.wedgit.bottomsheet.ScrollLayout>
 
