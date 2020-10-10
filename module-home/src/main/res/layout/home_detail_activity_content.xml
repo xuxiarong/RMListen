@@ -36,7 +36,8 @@
                             android:scaleType="fitXY"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintDimensionRatio="w,1:1" />
+                            app:layout_constraintBottom_toTopOf="@id/home_detail_tx_status"
+                            app:layout_constraintDimensionRatio="w,1:1.5" />
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/home_detail_icon"
                             bindUrl="@{viewModel.detailViewModel.detaillist.audio_cover_url}"
@@ -169,19 +170,20 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_4"
-                            expandText="@{viewModel.test}"
+                            expandText="@{viewModel.detailViewModel.detaillist.author_intro}"
                             android:textColor="@color/business_text_color_666666"
                             app:layout_constraintStart_toStartOf="@id/home_detail_icon"
                             app:layout_constraintEnd_toEndOf="@id/home_detail_collect_icon"
                             app:layout_constraintTop_toBottomOf="@id/home_detail_tx_content_title"
                             tools:text="@string/home_detail_brief_introduction" />
 
-                        <com.rm.business_lib.wedgit.DashLineView
+                        <View
                             android:id="@+id/detail_lineview"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/dp_1"
+                            android:layout_height="@dimen/line_0.5dp"
                             android:layout_marginTop="@dimen/dp_14"
                             android:layout_marginBottom="@dimen/dp_14"
+                            android:background="@color/business_color_e8e8e8"
                             app:layout_constraintEnd_toEndOf="@id/home_detail_collect_icon"
                             app:layout_constraintStart_toStartOf="@id/home_detail_icon"
                             app:layout_constraintTop_toBottomOf="@id/home_detail_tx_content" />
@@ -279,14 +281,13 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_detail_title_cl"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_48"
+                            android:layout_height="@dimen/dp_44"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/home_detail_back"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_8"
                                 android:paddingTop="@dimen/dp_9"
                                 android:paddingBottom="@dimen/dp_9"
                                 android:src="@drawable/base_icon_back"
@@ -326,7 +327,7 @@
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="@dimen/dp_44"
                     android:gravity="center"
                     android:paddingStart="@dimen/dp_16"
                     android:paddingEnd="@dimen/dp_16"
@@ -346,7 +347,7 @@
                         android:drawableEnd="@drawable/icon_arrow_right"
                         android:drawablePadding="@dimen/dp_2"
                         android:text="@string/home_detail_more"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:textColor="@color/business_text_color_333333"
                         android:textSize="@dimen/business_text_size_16sp"/>
                 </RelativeLayout>

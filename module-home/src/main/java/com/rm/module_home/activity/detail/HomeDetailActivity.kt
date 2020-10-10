@@ -9,6 +9,7 @@ import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.lifecycle.Observer
 import com.rm.baselisten.adapter.single.CommonBindAdapter
+import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
@@ -112,7 +113,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
         home_detail_comment_recycler.bindVerticalLayout(homeDetailCommentAdapter)
         detail_directory_recycler.bindVerticalLayout(mViewModel.chapterAdapter)
-        detail_anthology_recycler.bindHorizontalLayout(mViewModel.ChapterAnthologyAdapter)
+        detail_anthology_recycler.bindGridLayout(mViewModel.ChapterAnthologyAdapter,4)
         home_detail_recyc_style.bindHorizontalLayout(homedetailtagsadapter)
 
         //收藏点击事件
@@ -122,14 +123,15 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         mViewModel.clickSubscribe = { clickSubscribe() }
 
         home_detail_title_cl.setOnClickListener { finish() }
+
         // TODO: 2020/9/28 章节排序
         home_detail_play_sort.setOnCheckedChangeListener{buttonView, isChecked ->
             if(isChecked){
                 mViewModel.sort.set("desc")
-                mViewModel.refreshData()
+                mViewModel.getTrackList("desc")
             }else{
                 mViewModel.sort.set("asc")
-                mViewModel.refreshData()
+                mViewModel.getTrackList("asc")
             }
         }
 

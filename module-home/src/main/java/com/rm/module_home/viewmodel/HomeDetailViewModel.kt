@@ -31,7 +31,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var mPage = 1
 
     //每次加载数据的条数
-    val pageSize = 5
+    val pageSize = 2
 
     //上一页页码
     private var upTrackPage = 0
@@ -70,9 +70,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     //订阅点击事件闭包
     var clickSubscribe: () -> Unit = {}
-
-    val test = "dfas豆腐口感马拉喀什的风格穆沙拉卡的父母过来；四大发明；，公司的分公司的奉公守法公司反而你我i片分为发票金额为皮肤饥饿我"
-
 
     /**
      * 获取书籍详情信息
@@ -159,8 +156,24 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 排序
      */
-    fun getTrackList(sort :String){
-
+    fun getTrackList(mSort :String){
+        if(!mSort.equals(sort.get())){
+            //curTrackPage = 1
+            sort.set(mSort)
+        }
+        launchOnIO {
+            repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
+                onSuccess = {
+                    showContentView()
+                    setPager(it.total)
+                    //upTrackPage = 0
+                    //curTrackPage ++
+                    it.chapter_list.let { list -> chapterAdapter.setList(list) }
+                }, onError = {
+                    showContentView()
+                    errorTips.set(it)
+                })
+        }
     }
 
     /**
@@ -174,7 +187,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 refreshStatusModel.finishRefresh(false)
             }
         } else {
-            curTrackPage++
             page = curTrackPage
         }
         launchOnIO {
@@ -183,11 +195,11 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                     showContentView()
                     if (isUp) {
                         upTrackPage--
-                        it.chapter_list.let { list -> chapterAdapter.addData(upTrackPage, list) }
+                        it.chapter_list.let { list -> chapterAdapter.addData(0, list) }
                         refreshStatusModel.finishRefresh(true)
                     } else {
                         curTrackPage++
-                        it.chapter_list.let { list -> chapterAdapter.addData(curTrackPage, list) }
+                        it.chapter_list.let { list -> chapterAdapter.addData(list) }
                         refreshStatusModel.finishLoadMore(true)
                     }
                     refreshStatusModel.setHasMore(it.chapter_list.size >= pageSize)
@@ -205,7 +217,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     /**
      * 分页查询
-     * 正序与反序
      */
     fun getTrackList(mPage: Int) {
         DLog.e("mPage",""+mPage)
@@ -214,22 +225,19 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
                 onSuccess = {
                     showContentView()
+                    //当前为1，上一页为0，下一页为2
                     upTrackPage = mPage
                     curTrackPage = mPage
 
                     upTrackPage --
                     curTrackPage ++
 
-                    DLog.e("upTrackPage",""+upTrackPage)
-                    DLog.e("curTrackPage",""+curTrackPage)
                     it.chapter_list.let { list -> chapterAdapter.setList( list) }
                     refreshStatusModel.setHasMore(it.chapter_list.size >= pageSize)
                     HideOr.set(false)
 
                 }, onError = {
                     showContentView()
-                    refreshStatusModel.finishRefresh(false)
-                    refreshStatusModel.finishLoadMore(false)
                     errorTips.set(it)
                 })
         }
@@ -302,7 +310,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
         }
     }
 
-
     /**
      * 收藏点击事件
      */
@@ -317,8 +324,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
         clickSubscribe()
     }
 
-    var AudioChapterListModel = MutableLiveData<AudioChapterListModel>()
-
     /**
      * 获取分页列表
      */
@@ -328,7 +333,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
         var size = totalcount / pageSize
 
-        if (sort.equals("desc")) {
+        if (sort.get().equals("desc")) {
             for (i in 0 until size) {
                 anthologyList.add(
                     DataStr(
@@ -340,12 +345,9 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 anthologyList.add(DataStr("${totalcount - size * pageSize}-1",size+1) )
             }
         } else {
-
             for (i in 0 until size) {
-
                 anthologyList.add(DataStr("${i * pageSize + 1}-" + (i + 1) * pageSize, i+1))
             }
-
             if (size !== 0) {
                 anthologyList.add(DataStr("${size * pageSize + 1}",size+1))
             }
