@@ -117,8 +117,8 @@ class MainMainActivity : BaseActivity() {
             )
         }
         viewPager.offscreenPageLimit = 5
-        navigationController.setMessageNumber(3, 8)
-        navigationController.setHasMessage(1, true)
+//        navigationController.setMessageNumber(3, 8)
+//        navigationController.setHasMessage(1, true)
         navigationController.setupWithViewPager(viewPager)
 
 

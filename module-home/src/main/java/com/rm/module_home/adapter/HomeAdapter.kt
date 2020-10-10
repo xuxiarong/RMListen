@@ -7,7 +7,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
-import com.rm.business_lib.binding.bindData
+import com.rm.business_lib.binding.paddingBindData
 import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -33,7 +33,7 @@ class HomeAdapter(
                 val homeItemBannerBinding =
                     DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
                 homeItemBannerBinding.mainBanner.apply {
-                    bindData(homeViewModel.homeBannerInfoList.value!!)
+                    paddingBindData(homeViewModel.homeBannerInfoList.value!!)
                     this.setOnItemClickListener { _, _, _, position ->
                         BannerJumpUtils.onBannerClick(context,homeViewModel.homeBannerInfoList.value!![position].banner_jump)
                     }
