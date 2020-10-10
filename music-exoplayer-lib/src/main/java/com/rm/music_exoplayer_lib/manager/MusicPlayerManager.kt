@@ -66,12 +66,19 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
 
-    override fun startPlayMusic(index: Int) {
-        mBinder?.startPlayMusic(index)
+
+
+
+
+    override fun startPlayMusic(chapterId: String) {
+        mBinder?.startPlayMusic(chapterId)
     }
 
-    override fun startPlayMusic(audios: List<*>?, index: Int) {
-        mBinder?.startPlayMusic(audios, index)
+    override fun startPlayMusic(audios: List<*>?, chapterId: String) {
+        mBinder?.startPlayMusic(audios, chapterId)
+    }
+    override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, chapterId: String) {
+        mBinder?.updateMusicPlayerData(audios, chapterId)
     }
 
     override fun playOrPause() {
@@ -163,10 +170,8 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mBinder?.setAlarm(times)
     }
 
-    override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int) {
-        mBinder?.updateMusicPlayerData(audios, index)
 
-    }
+
 
     override fun getPlayerState(): Int = mBinder?.getPlayerState() ?: -1
     override fun setLockActivityName(activityClassName: String): MusicPlayerManager {

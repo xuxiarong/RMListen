@@ -50,23 +50,29 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     val audioCommentList = MutableLiveData<MutableList<Comments>>()
     val playManger: MusicPlayerManager = musicPlayerManger
     val audioID = ObservableField<String>()
+
+    //当前播放的章节ID
+    val mChapterId = ObservableField<String>()
     var playBookSate = ObservableField<PlayBookState>()
+
     //播放状态进度条，0是播放2是加载中1是暂停
     val playSate = ObservableField<Boolean>()
     val lastState = ObservableField<Boolean>()
-    var homeDetailBean = ObservableField<DetailBookBean>()
+
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
     var page = 1
     val pageSize = 10
     val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
-    val curTime=System.currentTimeMillis()
+    val curTime = System.currentTimeMillis()
+
     init {
         updateThumbText.set("0/0")
         playBookSate.set(PlayBookState())
         audioCommentList.value = arrayListOf()
     }
-     val mBookPlayerAdapter: BookPlayerAdapter by lazy {
+
+    val mBookPlayerAdapter: BookPlayerAdapter by lazy {
         BookPlayerAdapter(this, BR.viewModel, BR.itemModel)
 
     }
@@ -90,10 +96,10 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     }
 
 
-    fun setPlayPath(searchResultInfo: AudioChapterListModel, headUrl: String) {
+    fun setPlayPath(chapterList: List<ChapterList>, headUrl: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                searchResultInfo.chapter_list.forEach {
+                chapterList.forEach {
                     pathList.add(
                         BaseAudioInfo(
                             audioPath = it.path_url,
@@ -193,7 +199,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
                 playBookSate.get()?.audioChapterListModel = it
                 audioChapterModel.set(it)
-                setPlayPath(it, anchorURL)
+                setPlayPath(it.chapter_list, anchorURL)
                 showContentView()
             }, onError = {
                 showContentView()
@@ -201,15 +207,59 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         }
     }
 
+    /**
+     * 章节列表
+     */
+    fun chapterPageList(
+        audioId: String,
+        chapterId: String,
+        sort: String, anchorURL: String
+    ) {
+        launchOnUI {
+            repository.chapterPageList(audioId, chapterId, sort).checkResult(onSuccess = {
+                playBookSate.get()?.audioChapterListModel = it
+                audioChapterModel.set(it)
+                setPlayPath(it.chapter_list, anchorURL)
+                showContentView()
+            }, onError = {
+                showContentView()
+            })
+        }
+    }
+
+    /**
+     * 获取书籍详情信息
+     */
+    fun getDetailInfo(audioID: String) {
+        launchOnUI {
+            repository.getDetailInfo(audioID).checkResult(
+                onSuccess = {
+                    seBookDetailBean(
+                        DetailBookBean(
+                            audio_id = it.detaillist.audio_id,
+                            audio_name = it.detaillist.audio_name,
+                            original_name = it.detaillist.original_name,
+                            author = it.detaillist.author,
+                            audio_cover_url = it.detaillist.audio_cover_url
+                        )
+                    )
+                }, onError = {
+
+                }
+            )
+        }
+
+
+    }
+
     //设置上次播放缓存的数据
     fun initPlayBookSate(playBook: PlayBookState?) {
         playBook?.let {
             this.playBookSate.set(playBook)
-            this.homeDetailBean.set(it.homeDetailModel)
             seBookDetailBean(it.homeDetailModel)
             it.audioChapterListModel?.let { its ->
                 audioChapterModel.set(its)
-                setPlayPath(its, it.homeDetailModel?.audio_cover_url ?: "")
+                setPlayPath(its.chapter_list, it.homeDetailModel?.audio_cover_url ?: "")
             }
         }
 
@@ -231,7 +281,6 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      */
     fun seBookDetailBean(homeDetailBean: DetailBookBean?) {
         homeDetailBean?.let {
-            this.homeDetailBean.set(homeDetailBean)
             playBookSate.get()?.homeDetailModel = it
             val listValue = mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
@@ -317,14 +366,19 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      * 记录播放的章节
      */
     fun updatePlayBook(chapter: ChapterList?) {
-        repository.updatePlayBook(mHistoryPlayBook.audio_id.toLong(), chapter)
+        chapter?.let {
+            repository.updatePlayBook(it)
+
+        }
     }
 
     /**
      * 更新播放进度
      */
     fun updatePlayBookProcess(chapter: ChapterList?, progress: Long = 0L) {
-        repository.updatePlayBookProcess(mHistoryPlayBook.audio_id.toLong(), chapter, progress)
+        chapter?.let {
+            repository.updatePlayBookProcess(chapter, progress)
+        }
     }
 
     /**

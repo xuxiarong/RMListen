@@ -12,7 +12,7 @@ data class DetailBookBean(
     val audio_id: String,
     val audio_name: String,
     val original_name: String,
-    val author: String,
+    val author: String="",
     val audio_cover_url: String,
     val chapter_list: MutableList<ChapterList>? = null
 ) : Serializable

@@ -17,14 +17,14 @@ interface MusicPlayerPresenter {
      * 开始播放指定位置音频文件
      * @param index 指定的位置 0-data.size()
      */
-    fun startPlayMusic(index: Int)
+    fun startPlayMusic(chapterId: String)
 
     /**
      * 开始播放任务
      * @param audios 待播放的数据集，对象需要继承BaseaudioInfo
      * @param index 指定要播放的位置 0-data.size()
      */
-    fun startPlayMusic(audios: List<*>?, index: Int)
+    fun startPlayMusic(audios: List<*>?, chapterId: String)
 
     /**
      * 开始、暂停
@@ -158,7 +158,7 @@ interface MusicPlayerPresenter {
      * @param audios 待播放列表
      * @param index 位置
      */
-    fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int)
+    fun updateMusicPlayerData(audios: List<BaseAudioInfo>, chapterId: String)
 
     /**
      * 返回播放器内部工作状态

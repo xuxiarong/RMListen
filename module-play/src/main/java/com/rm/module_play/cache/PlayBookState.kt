@@ -13,7 +13,6 @@ import java.io.Serializable
 data class PlayBookState(
     var homeDetailModel: DetailBookBean?=null,
     var audioChapterListModel: AudioChapterListModel?=null,
-    var index: Int=0,
     var process:Float=0f
 ) : Serializable {
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.baselisten.util.setOnClickNotDoubleListener
+import com.rm.business_lib.bean.ChapterList
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.DaoUtil
@@ -31,18 +32,31 @@ class PlayServiceImpl : PlayService {
         }
     }
 
+    override fun toPlayPage(context: Context, bean: DetailBookBean, from: String) {
+        BookPlayerActivity.startActivity(context, bean, from)
+
+    }
+
+
+    override fun toPlayPage(context: Context, chapterId: String, audioId: String,from: String) {
+        BookPlayerActivity.startActivity(context, chapterId,audioId, from)
+
+    }
+
+    override fun toPlayPage(context: Context, book: ChapterList, from: String) {
+        BookPlayerActivity.startActivity(context, book, from)
+
+    }
+
     override fun toPlayPage(
         context: Context,
-        bean: DetailBookBean?,
-        index: Int
+        book: MutableList<ChapterList>,
+        from: String,
+        chapterId: String
     ) {
-        BookPlayerActivity.startActivity(context, bean, Jump.DETAILSBOOK.from,index)
+        BookPlayerActivity.startActivity(context, book,chapterId, from)
     }
 
-    override fun toPlayPage(context: Context, chapterId: String, audioId: String) {
-        BookPlayerActivity.startActivity(context, chapterId, audioId,Jump.RECENTPLAY.from)
-
-    }
 
     override fun queryPlayBookList(): List<HistoryPlayBook>? =
         DaoUtil(HistoryPlayBook::class.java, "").queryAll()

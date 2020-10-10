@@ -17,6 +17,7 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.model.home.detail.HomeCommentViewModel
 import com.rm.module_home.repository.DetailRepository
+import com.rm.module_play.enum.Jump
 
 
 class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMViewModel() {
@@ -271,19 +272,9 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     }
 
     fun itemClick(context: Context, bean: ChapterList) {
-        val detailbean = detailViewModel.get()?.detaillist
-        if (detailbean != null) {
-            playService.toPlayPage(
-                context, DetailBookBean(
-                    audio_id = detailbean.audio_id,
-                    audio_name = detailbean.audio_name,
-                    original_name = detailbean.original_name,
-                    author = detailbean.author,
-                    audio_cover_url = detailbean.audio_cover_url
-                ),
-                chapterAdapter.data.indexOf(bean)
-            )
-        }
+        playService.toPlayPage(
+            context, bean,Jump.CHAPTER.from
+        )
     }
 
     //播放器路由

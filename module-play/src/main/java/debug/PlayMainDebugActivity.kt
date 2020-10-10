@@ -25,7 +25,7 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
         //播放
         start_play.setOnClickListener {
 
-            musicPlayerManger.startPlayMusic(0)
+//            musicPlayerManger.startPlayMusic(0)
         }
         //暂停
         start_pause.setOnClickListener {

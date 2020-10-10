@@ -15,7 +15,7 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
  */
 class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binder() {
 
-    fun startPlayMusic(position: Int) {
+    fun startPlayMusic(position: String) {
         presenter.startPlayMusic(position)
     }
 
@@ -77,7 +77,7 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     /**
      * 更新播放器
      */
-    fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int) {
+    fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: String) {
         presenter.updateMusicPlayerData(audios, index)
     }
 
@@ -90,7 +90,7 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     }
 
     //播放或者暂停
-    fun startPlayMusic(audios: List<*>?, index: Int) {
+    fun startPlayMusic(audios: List<*>?, index: String) {
         presenter.startPlayMusic(audios, index)
     }
 

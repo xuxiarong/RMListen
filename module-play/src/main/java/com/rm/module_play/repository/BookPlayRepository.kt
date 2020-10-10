@@ -4,6 +4,7 @@ import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.module_play.api.PlayApiService
@@ -42,6 +43,12 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
         return apiCall { playApi.likeComment(commentID) }
     }
 
+    /**
+     * 获取书本详情
+     */
+    suspend fun getDetailInfo(id: String): BaseResult<HomeDetailModel> {
+        return apiCall { playApi.homeDetail(id) }
+    }
     //评论
     suspend fun commentAudioComments(
         audioID: String,
@@ -51,7 +58,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
         return apiCall { playApi.commentAudioComments(audioID, page, pageSize) }
     }
 
-    //评论
+    //上报
     suspend fun playerReport(audio_id: String, chapter_id: String): BaseResult<Any> {
         return apiCall { playApi.playerReport("player", audio_id, chapter_id) }
     }
@@ -66,6 +73,17 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
         sort: String
     ): BaseResult<AudioChapterListModel> {
         return apiCall { playApi.chapterList(id, page, page_size, sort) }
+    }
+
+    /**
+     * 返回
+     */
+    suspend fun chapterPageList(
+        audioId: String,
+        chapterId: String,
+        sort: String
+    ): BaseResult<AudioChapterListModel> {
+        return apiCall { playApi.chapterPage(audioId, chapterId,sort) }
     }
 
     var daoUtil: DaoUtil<HistoryPlayBook, Long>? = null
@@ -91,8 +109,8 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     /**
      * 记录播放的章节
      */
-    fun updatePlayBook(key: Long, chapter: ChapterList?) {
-        val historyPlayBook = daoUtil?.querySingle(key)
+    fun updatePlayBook(chapter: ChapterList) {
+        val historyPlayBook = daoUtil?.querySingle(chapter.audio_id.toLong())
 
         val chapterFind = historyPlayBook?.listBean?.find { it.chapter_id == chapter?.chapter_id }
         if (chapterFind == null) {
@@ -105,8 +123,8 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     /**
      * 记录播放的章节
      */
-    fun updatePlayBookProcess(key: Long, chapter: ChapterList?,progress:Long=0L) {
-        val historyPlayBook = daoUtil?.querySingle(key)
+    fun updatePlayBookProcess( chapter: ChapterList,progress:Long=0L) {
+        val historyPlayBook = daoUtil?.querySingle(chapter.audio_id.toLong())
         val chapterFind = historyPlayBook?.listBean?.find { it.chapter_id == chapter?.chapter_id }
         if (chapterFind == null) {
             historyPlayBook?.listBean?.add(chapter)

@@ -31,6 +31,7 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.model.home.detail.CommentList
 import com.rm.module_home.viewmodel.HomeDetailViewModel
+import com.rm.module_play.enum.Jump
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
 import kotlinx.android.synthetic.main.home_detail_activity_content.*
 import kotlinx.android.synthetic.main.home_detail_chapter_headerview.*
@@ -174,7 +175,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
                         original_name = it.detaillist.original_name,
                         author = it.detaillist.author,
                         audio_cover_url = it.detaillist.audio_cover_url
-                    ), 0
+                    ),Jump.DETAILSBOOK.from
                 )
             }
         })

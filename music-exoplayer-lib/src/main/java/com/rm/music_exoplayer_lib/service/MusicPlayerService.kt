@@ -58,7 +58,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private var mCurrentPlayIndex = 0
 
     //待播放音频队列池子
-    private val mAudios = ArrayList<Any>()
+    private val mAudios = ArrayList<BaseAudioInfo>()
 
     //监听系统事件的广播
     private var mHeadsetBroadcastReceiver: AlarmBroadcastReceiver? = null
@@ -78,8 +78,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //播放速度
     var playerMultiples = 1f
+
     //显示播放状态而不重新播放
-    var showState=false
+    var showState = false
 
 
     private val notificationManger by lazy {
@@ -222,13 +223,20 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             exoLog("未成功获取音频输出焦点")
         }
 
-    override fun startPlayMusic(index: Int) {
-        mCurrentPlayIndex=index
-        postViewHandlerCurrentPosition(index)
-        startPlay(mAudios.getOrNull(index) as BaseAudioInfo)
+
+    override fun startPlayMusic(chapterId: String) {
+        mCurrentPlayIndex = mAudios.indexOfFirst { it.chapterId == chapterId }
+        postViewHandlerCurrentPosition(mCurrentPlayIndex)
+        startPlay(mAudios.getOrNull(mCurrentPlayIndex) as BaseAudioInfo)
     }
 
-    override fun startPlayMusic(audios: List<*>?, index: Int) {
+    fun startPlayMusic(playIndex: Int) {
+        mCurrentPlayIndex = playIndex
+        postViewHandlerCurrentPosition(mCurrentPlayIndex)
+        startPlay(mAudios.getOrNull(mCurrentPlayIndex) as BaseAudioInfo)
+    }
+
+    override fun startPlayMusic(audios: List<*>?, chapterId: String) {
 
     }
 
@@ -354,7 +362,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun isPlaying(): Boolean {
-        return mExoPlayer.playWhenReady == true
+        return mExoPlayer.playWhenReady
     }
 
     override fun getDurtion(): Long {
@@ -409,10 +417,11 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun setAlarm(times: Int) {
     }
 
-    override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: Int) {
+
+    override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, chapterId: String) {
         mAudios.clear()
         mAudios.addAll(audios)
-        mCurrentPlayIndex = index
+        mCurrentPlayIndex = audios.indexOfFirst { it.chapterId == chapterId }
     }
 
     /**
@@ -587,7 +596,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun getRemainingSetInt(): Int = mRemainingSet
     override fun getPlayerMultiple(): Float = playerMultiples
     override fun resumePlayState(state: Boolean) {
-        showState=state
+        showState = state
     }
 
     /**
