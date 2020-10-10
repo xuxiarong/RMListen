@@ -132,27 +132,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
                 mViewModel.refreshData()
             }
         }
-        /*// TODO: 2020/9/28 选集展示
-        home_detail_play_show.setOnCheckedChangeListener{buttonView, isChecked ->
-            if(isChecked){
-                //显示选集
-                home_detail_play_all_tx.setTextColor(getResources().getColor(R.color.business_color_b1b1b1))
 
-                home_detail_play_all_tx.isClickable =false
-                home_detail_play_all_img.isClickable = false
-
-                mViewModel.HideOr.set(true)
-            }else{
-                //显示默认章节列表
-                home_detail_play_all_tx.setTextColor(getResources().getColor(R.color.business_text_color_666666))
-                home_detail_play_all_tx.isClickable = true
-                home_detail_play_all_img.isClickable = true
-
-                mViewModel.HideOr.set(false)
-
-
-            }
-        }*/
         //TODO: 2020/9/28 关注主播
         detail_anthor_attention.setOnCheckedChangeListener{buttonView, isChecked ->
             if(isChecked){

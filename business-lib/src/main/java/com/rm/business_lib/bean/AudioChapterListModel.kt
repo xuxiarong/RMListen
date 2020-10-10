@@ -19,7 +19,7 @@ data class AudioChapterListModel(
 
 data class DataStr(
     var strData:String = "",
-    var position : Int = 1
+    var position : Int = 0
 )
 
 data class ChapterList(
