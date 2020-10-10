@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/business_elevation_test">
+        android:background="@drawable/business_elevation_white">
 
         <View
             android:layout_width="@dimen/dp_50"

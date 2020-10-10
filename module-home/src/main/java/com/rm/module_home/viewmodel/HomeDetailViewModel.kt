@@ -22,23 +22,36 @@ import com.rm.module_play.enum.Jump
 
 class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMViewModel() {
 
-    // 下拉刷新和加载更多控件状态控制Model
-    val refreshStatusModel = SmartRefreshLayoutStatusModel()
-
-    var audioId = ObservableField<String>()
-    var sort = ObservableField<String>()
 
     //当前加载的页码
     var mPage = 1
-
     //每次加载数据的条数
     val pageSize = 2
-
     //上一页页码
     private var upTrackPage = 0
-
     //下一页页码
     private var curTrackPage = 1
+
+    //章节分页显示与隐藏
+    var HideOr = ObservableBoolean(false)
+    //主播关注与已关注
+    var MemberAnthor = ObservableBoolean(false)
+
+    var audioId = ObservableField<String>()
+    var sort = ObservableField<String>()
+    var total = ObservableField<String>()
+    var showStatus = ObservableField<String>()
+    val actionControl = MutableLiveData<String>()
+    var errorTips = ObservableField<String>()
+    var detailViewModel = ObservableField<HomeDetailModel>()
+    var detailCommentViewModel = MutableLiveData<HomeCommentViewModel>()
+    val refreshStatusModel = SmartRefreshLayoutStatusModel()
+
+    //收藏点击事件闭包
+    var clickCollected: () -> Unit = {}
+    //订阅点击事件闭包
+    var clickSubscribe: () -> Unit = {}
+
 
     /**
      * 加载上一页
@@ -53,24 +66,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     fun loadData() {
         getTrackList(false)
     }
-
-    var detailViewModel = ObservableField<HomeDetailModel>()
-    var detailCommentViewModel = MutableLiveData<HomeCommentViewModel>()
-
-    var total = ObservableField<String>("")
-
-    var showStatus = ObservableField<String>()
-
-    val actionControl = MutableLiveData<String>()
-
-    // 错误提示信息
-    var errorTips = ObservableField<String>("")
-
-    //收藏点击事件闭包
-    var clickCollected: () -> Unit = {}
-
-    //订阅点击事件闭包
-    var clickSubscribe: () -> Unit = {}
 
     /**
      * 获取书籍详情信息
@@ -89,7 +84,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             )
         }
         showStatus()
-
     }
 
     /**
@@ -213,8 +207,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 })
         }
     }
-
-    var HideOr = ObservableBoolean(false)
 
     /**
      * 分页查询
@@ -343,8 +335,6 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 anthologyList.add(DataStr("${size * pageSize + 1}",size+1))
             }
         }
-        //添加数据 : anthologyList
-
         ChapterAnthologyAdapter.setList(anthologyList)
     }
 

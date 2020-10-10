@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
+<!-- 上边界圆角:层级阴影 -->
     <item>
         <shape android:shape="rectangle">
             <padding
@@ -21,7 +21,7 @@
 
     <item>
         <shape>
-            <solid android:color="#FFFFFF" />
+            <solid android:color="@color/businessWhite"/>
             <corners
                 android:topLeftRadius="24dp"
                 android:topRightRadius="24dp"/>

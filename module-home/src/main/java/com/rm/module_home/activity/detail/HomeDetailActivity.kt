@@ -135,17 +135,15 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
                 mViewModel.getTrackList("asc")
             }
         }
-
         //TODO: 2020/9/28 关注主播
         detail_anthor_attention.setOnCheckedChangeListener{buttonView, isChecked ->
             if(isChecked){
                 detail_anthor_attention.setText("已关注")
-                detail_anthor_attention.setTextColor(getResources().getColor(R.color.business_color_b1b1b1))
             }else{
                 detail_anthor_attention.setText("关注")
-                detail_anthor_attention.setTextColor(getResources().getColor(R.color.business_text_color_666666))
             }
         }
+
     }
 
     override fun startObserve() {
