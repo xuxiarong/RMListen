@@ -5,19 +5,18 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+
         <variable
             name="item"
             type="com.rm.module_home.model.home.horsingle.HomeAudioHorSingleModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/homeItemRecommendHorDoubleTop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:onClick="@{()->viewModel.onAudioClick(item.singleModel)}">
@@ -27,46 +26,69 @@
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
             bindUrl="@{item.singleModel.cover_url}"
             corner="@{8}"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:scaleType="centerCrop" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
-            bindText="@{item.singleModel.audio_label}"
             style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
-            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
-            app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
+            bindText="@{item.singleModel.audio_label}"
+            android:layout_gravity="end" />
+
+        <RelativeLayout
+            android:layout_width="140dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="112dp"
+            android:background="@drawable/home_shape_gradient_0000000_66000000"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homeHorPlayCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:paddingEnd="8dp"
+                android:text="@{String.valueOf(item.singleModel.play_count)}"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_12sp"
+                tools:ignore="RtlSymmetry"
+                tools:text="14W" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="2dp"
+                android:layout_toStartOf="@+id/homeHorPlayCount"
+                android:src="@drawable/home_icon_chapter_play_count"
+                app:layout_constraintStart_toEndOf="@+id/homeHorPlayCount" />
+        </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopName"
             bindText="@{item.singleModel.audio_name}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="144dp"
             android:textColor="@color/business_color_b3333333"
             android:textSize="@dimen/business_text_size_14sp"
-            app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendHorDoubleTopIcon"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="Carolyn Gregory" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
             bindText="@{item.singleModel.author}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="9dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="@dimen/dp_17"
+            android:layout_marginTop="188dp"
             android:textColor="@color/business_color_b1b1b1"
             android:textSize="@dimen/business_text_size_12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/homeItemRecommendHorDoubleTopIcon"
-            app:layout_constraintLeft_toRightOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/homeItemRecommendHorDoubleTopName"
             tools:text="小丸子" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 
 </layout>

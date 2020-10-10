@@ -4,7 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
 
-    
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.module_home.model.home.grid.HomeGridAudioRvModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         
         android:layout_width="match_parent"
@@ -16,40 +25,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
+            bindGridLayout="@{viewModel.getAdapterWithList(item.data)}"
+            bindCount="@{3}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
-<!--        <LinearLayout-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/homeRvRecommendGrid"-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="32dp"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:background="@drawable/business_shape_stroke_d6d6d6_22dp"-->
-<!--            >-->
-<!--            -->
-<!--            <androidx.appcompat.widget.AppCompatImageView-->
-<!--                android:layout_width="17dp"-->
-<!--                android:layout_height="17dp"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                android:src="@drawable/home_icon_random_change"-->
-<!--                />-->
-
-<!--            <androidx.appcompat.widget.AppCompatTextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:gravity="center_vertical"-->
-<!--                android:text="@string/business_change_other"-->
-<!--                android:textSize="@dimen/business_text_size_12sp"-->
-<!--                android:textColor="@color/business_text_color_999999"-->
-<!--                />-->
-<!--        </LinearLayout>-->
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class BusinessRetrofitClient : BaseRetrofitClient() {
     companion object {
         // 基础host
-        const val BASE_URL = "http://10.1.3.12:9602/api/v1_0/"
+        const val BASE_URL = "http://dev-api.ls.com:9602/api/v1_0/"
         const val  NEW_URL="http://mobilecdn.kugou.com/api/v3"
         const val OLD_HOST="http://10.1.3.12:9602"
         const val PLAY_PATH="http://www.kugou.com/yy/index.php"

@@ -5,9 +5,11 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+
         <variable
             name="item"
             type="com.rm.module_home.model.home.ver.HomeAudioVerModel" />
@@ -20,22 +22,22 @@
         android:onClick="@{()->viewModel.onAudioClick(item.verModel)}">
 
 
-    <androidx.appcompat.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_book_adapter_icon"
+            bindUrl="@{item.verModel.cover_url}"
+            corner="@{8}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            bindUrl="@{item.verModel.cover_url}"
-            corner="@{8}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/home_book_adapter_tips"
             style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+            android:text="@{item.verModel.audio_label}"
             app:layout_constraintRight_toRightOf="@id/home_book_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/home_book_adapter_icon"
-            android:text="@{item.verModel.audio_label}"
             tools:text="文案" />
 
         <TextView
@@ -44,10 +46,10 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:singleLine="true"
+            android:text="@{item.verModel.audio_name}"
             app:layout_constraintLeft_toRightOf="@id/home_book_adapter_icon"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/home_book_adapter_icon"
-            android:text="@{item.verModel.audio_name}"
             tools:text="你自己觉得有，别人感觉" />
 
         <TextView

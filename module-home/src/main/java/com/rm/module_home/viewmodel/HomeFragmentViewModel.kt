@@ -2,11 +2,13 @@ package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.model.home.HomeAudioModel
 import com.rm.module_home.model.home.HomeMenuModel
@@ -36,20 +38,14 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
 
     var homeBannerInfoList = MutableLiveData<List<BannerInfoBean>>()
     var homeMenuList = MutableLiveData<MutableList<MultiItemEntity>>()
-
-    var homeHorSingleList = MutableLiveData<MutableList<MultiItemEntity>>()
-    var homeHorDoubleList = MutableLiveData<MutableList<MultiItemEntity>>()
-    var homeGridList = MutableLiveData<MutableList<MultiItemEntity>>()
     var collectItemClickList: (HomeMenuModel) -> Unit = {}
-
-    var homeVerList = MutableLiveData<MutableList<MultiItemEntity>>()
     var doubleRvLeftScrollOpenDetail: () -> Unit = {}
 
 
     var homeAllData = MutableLiveData<MutableList<MultiItemEntity>>()
 
-    var audioClick : (HomeAudioModel)->Unit = {}
-    var blockClick : (com.rm.module_home.model.home.HomeBlockModel)->Unit = {}
+    var audioClick: (HomeAudioModel) -> Unit = {}
+    var blockClick: (com.rm.module_home.model.home.HomeBlockModel) -> Unit = {}
 
     fun getHomeDataFromService() {
         refreshStatusModel.setHasMore(false)
@@ -66,7 +62,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         }
     }
 
-    fun dealHomeData(homeModel: HomeModel) {
+    private fun dealHomeData(homeModel: HomeModel) {
 
         val allData = ArrayList<MultiItemEntity>()
 
@@ -83,7 +79,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         allData.add(HomeMenuRvModel())
 
         homeModel.block_list.forEach {
-            setBlockData(allData,it)
+            setBlockData(allData, it)
         }
         homeMenuList.value = menuList
         homeAllData.value = allData
@@ -94,67 +90,76 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
      * @param allData ArrayList<MultiItemEntity> 所有的数据集合
      * @param block HomeBlockModel 板块
      */
-    private fun setBlockData(allData: ArrayList<MultiItemEntity>, block: com.rm.module_home.model.home.HomeBlockModel) {
+    private fun setBlockData(
+        allData: ArrayList<MultiItemEntity>,
+        block: com.rm.module_home.model.home.HomeBlockModel
+    ) {
         when (block.block_type_id) {
-            1 -> {
+            BLOCK_HOR_DOUBLE -> {
                 val doubleHorList = ArrayList<MultiItemEntity>()
                 val bottomList = ArrayList<HomeAudioModel>()
                 val topList = ArrayList<HomeAudioModel>()
                 //对板块1进行上下行拆分
                 for (i in 0 until block.audio_list.list.size) {
-                    if(i%2==0){
+                    if (i % 2 == 0) {
                         topList.add(block.audio_list.list[i])
-                    }else{
+                    } else {
                         bottomList.add(block.audio_list.list[i])
                     }
                 }
                 //如果板块1的数据是奇数，那么底下的那一行会少一个数据，这里做下处理
-                var doubleModel : HomeAudioHorDoubleModel
-                for(i in 0 until  topList.size) {
-                    if (i == topList.size-1) {
-                        doubleModel = HomeAudioHorDoubleModel(topList[i], topList[i], false)
+                var doubleModel: HomeAudioHorDoubleModel
+                for (i in 0 until topList.size) {
+                    doubleModel = if (i == topList.size - 1) {
+                        HomeAudioHorDoubleModel(topList[i], topList[i], false)
                     } else {
-                        doubleModel = HomeAudioHorDoubleModel(topList[i], bottomList[i])
+                        HomeAudioHorDoubleModel(topList[i], bottomList[i])
                     }
                     doubleHorList.add(doubleModel)
                 }
-                doubleHorList.add(HomeAudioHorDoubleFooterModel())
-
-                homeHorDoubleList.value = doubleHorList
+                if (doubleHorList.size >= 4) {
+                    doubleHorList.add(HomeAudioHorDoubleFooterModel())
+                }
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
-                allData.add(HomeAudioHorDoubleRvModel())
+                allData.add(HomeAudioHorDoubleRvModel(doubleHorList))
             }
-            2 -> {
+            BLOCK_HOR_GRID -> {
                 val gridList = ArrayList<MultiItemEntity>()
                 block.audio_list.list.forEach {
                     gridList.add(HomeGridAudioModel(it))
                 }
-                homeGridList.value = gridList
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
-                allData.add(HomeGridAudioRvModel())
+                allData.add(HomeGridAudioRvModel(gridList))
             }
-            3 -> {
+            BLOCK_HOR_SINGLE -> {
                 val horSingList = ArrayList<MultiItemEntity>()
                 block.audio_list.list.forEach {
                     horSingList.add(HomeAudioHorSingleModel(it))
                 }
-                homeHorSingleList.value = horSingList
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
-                allData.add(HomeAudioHorSingleRvModel())
+                allData.add(HomeAudioHorSingleRvModel(horSingList))
             }
-            4 -> {
+            BLOCK_HOR_VEr -> {
                 val verSingList = ArrayList<MultiItemEntity>()
                 block.audio_list.list.forEach {
                     verSingList.add(HomeAudioVerModel(it))
                 }
-                homeVerList.value = verSingList
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
-                allData.add(HomeAudioVerRvModel())
+                allData.add(HomeAudioVerRvModel(verSingList))
             }
             else -> {
 
             }
         }
+    }
+
+    fun getAdapterWithList(data: ArrayList<MultiItemEntity>): CommonMultiVMAdapter {
+        return CommonMultiVMAdapter(
+            this,
+            data,
+            BR.viewModel,
+            BR.item
+        )
     }
 
 
@@ -163,11 +168,11 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         DLog.d("suolong", "model = ${model.menu_name} ")
     }
 
-    fun onAudioClick(audioModel: HomeAudioModel){
+    fun onAudioClick(audioModel: HomeAudioModel) {
         audioClick(audioModel)
     }
 
-    fun onBlockClick(block: com.rm.module_home.model.home.HomeBlockModel){
+    fun onBlockClick(block: com.rm.module_home.model.home.HomeBlockModel) {
         blockClick(block)
     }
 
@@ -175,5 +180,12 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         doubleRvLeftScrollOpenDetail()
     }
 
+    companion object {
+        const val BLOCK_HOR_DOUBLE = 1
+        const val BLOCK_HOR_GRID = 2
+        const val BLOCK_HOR_SINGLE = 3
+        const val BLOCK_HOR_VEr = 4
+
+    }
 
 }

@@ -55,13 +55,6 @@ class BaseWebActivity : BaseActivity() {
 
         }
         baseWebView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                if (url.startsWith("http")) {
-                    baseWebView.loadUrl(url)
-                    return true
-                }
-                return true
-            }
 
         }
         baseWebBack.setOnClickListener {
