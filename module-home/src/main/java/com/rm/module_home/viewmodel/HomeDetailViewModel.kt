@@ -56,12 +56,8 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var detailViewModel = ObservableField<HomeDetailModel>()
     var detailCommentViewModel = MutableLiveData<HomeCommentViewModel>()
 
-    var detailAnthology = MutableLiveData<AudioChapterListModel>()
-
     var total = ObservableField<String>("")
-    var totalcount = ObservableField<Int>()
 
-    //val audioList = ObservableField<AudioChapterListModel>()
     var showStatus = ObservableField<String>()
 
     val actionControl = MutableLiveData<String>()
@@ -161,6 +157,13 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     }
 
     /**
+     * 排序
+     */
+    fun getTrackList(sort :String){
+
+    }
+
+    /**
      * 2 上拉，下拉更多
      */
     fun getTrackList(isUp: Boolean) {
@@ -202,8 +205,10 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
     /**
      * 分页查询
+     * 正序与反序
      */
     fun getTrackList(mPage: Int) {
+        DLog.e("mPage",""+mPage)
 
         launchOnIO {
             repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
@@ -215,6 +220,8 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                     upTrackPage --
                     curTrackPage ++
 
+                    DLog.e("upTrackPage",""+upTrackPage)
+                    DLog.e("curTrackPage",""+curTrackPage)
                     it.chapter_list.let { list -> chapterAdapter.setList( list) }
                     refreshStatusModel.setHasMore(it.chapter_list.size >= pageSize)
                     HideOr.set(false)
@@ -325,7 +332,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             for (i in 0 until size) {
                 anthologyList.add(
                     DataStr(
-                        (totalcount - i * pageSize).toString() + "~" + (totalcount - (i + 1) * pageSize + 1) ,i
+                        (totalcount - i * pageSize).toString() + "~" + (totalcount - (i + 1) * pageSize + 1) ,i+1
                     )
                 )
             }
@@ -336,7 +343,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
 
             for (i in 0 until size) {
 
-                anthologyList.add(DataStr("${i * pageSize + 1}-" + (i + 1) * pageSize, i))
+                anthologyList.add(DataStr("${i * pageSize + 1}-" + (i + 1) * pageSize, i+1))
             }
 
             if (size !== 0) {

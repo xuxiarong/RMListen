@@ -45,7 +45,7 @@
             android:textStyle="bold"
             android:layout_marginStart="@dimen/dp_4"
             android:text="全部播放"
-            android:clickable="@{!viewModel.hideOr}"
+            android:enabled="@{!viewModel.hideOr}"
             android:textColor="@color/home_detail_chapter_clickable_color"
             app:layout_constraintBottom_toBottomOf="@id/home_detail_play_all_img"
             app:layout_constraintStart_toEndOf="@id/home_detail_play_all_img"
