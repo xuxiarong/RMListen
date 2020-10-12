@@ -8,6 +8,7 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getListString
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_search.*
 import com.rm.module_search.activity.SearchResultActivity
@@ -60,9 +61,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
             BR.historyItem
         ).apply {
             val list = HISTORY_KEY.getListString()
-            if (list.isNotEmpty()) {
-                historyIsVisible.set(true)
-            }
+            historyIsVisible.set(list.size > 0)
             setList(list)
         }
     }
@@ -93,6 +92,8 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     //历史是否显示
     val historyIsVisible = ObservableField<Boolean>(false)
 
+    //推荐内容是否现实
+    val recommendVisible = ObservableField<Boolean>(true)
 
     var clearInput: () -> Unit = {}
 
@@ -108,6 +109,10 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         //如果请求没有结束则不会去搜索
         if (resultIsEnd && content.isNotEmpty()) {
             searchSuggest(content)
+        } else {
+            inputAdapter.setList(null)
+            historyIsVisible.set(HISTORY_KEY.getListString().size > 0)
+            suggestIsVisible.set(false)
         }
     }
 
@@ -115,7 +120,11 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
      * 键盘的显示隐藏监听
      */
     private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
-        DLog.i("------------>", "keyboardVisibility:$keyboardVisibility")
+        if (keyboardVisibility) {
+            recommendVisible.set(false)
+        } else {
+            recommendVisible.set(true)
+        }
     }
 
     /**

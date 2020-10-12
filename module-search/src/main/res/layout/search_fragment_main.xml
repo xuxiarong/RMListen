@@ -122,6 +122,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_16"
                             android:layout_marginEnd="@dimen/dp_16"
+                            android:onClick="@{()->viewModel.clickClearHistory()}"
                             isVisible="@{viewModel.historyIsVisible}"
                             android:src="@drawable/business_icon_delete"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -146,6 +147,7 @@
                             android:layout_marginStart="@dimen/dp_16"
                             android:text="@string/search_recommend"
                             android:textColor="@color/business_text_color_333333"
+                            isVisible="@{viewModel.recommendVisible}"
                             android:textSize="@dimen/business_text_size_14sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -155,6 +157,7 @@
                             android:id="@+id/search_main_recycler_view"
                             bindCount="@{2}"
                             bindGridLayout="@{viewModel.adapter}"
+                            isVisible="@{viewModel.recommendVisible}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_16"
@@ -165,7 +168,7 @@
 
                         <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
                             android:id="@+id/search_main_tab_layout"
-                            isVisible="@{!viewModel.suggestIsVisible}"
+                            isVisible="@{viewModel.recommendVisible}"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_45"
                             app:bendTabIndicatorAnimation="true"
@@ -188,7 +191,7 @@
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/search_main_view_pager"
-                isVisible="@{!viewModel.suggestIsVisible}"
+                isVisible="@{viewModel.recommendVisible}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
