@@ -7,12 +7,16 @@
         <variable
             name="item"
             type="com.rm.module_search.bean.MemberBean" />
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchContentAnchorViewModel" />
     </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/dp_20"
+        android:onClick="@{(view)->viewModel.itemClickFun(view,item)}"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -29,7 +33,9 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_anchor_name"
             style="@style/BusinessTextStyleFirst_3"
-            bindText="@{item.nickname}"
+            bindSpanColor="@{@color/base_ff5e5e}"
+            bindSpanContent="@{item.nickname}"
+            bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_avatar"
@@ -39,20 +45,25 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_anchor_level"
             bindText="@{@string/search_anchor_level(item.level)}"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_40"
             android:layout_height="wrap_content"
             android:textSize="@dimen/business_text_size_10sp"
+            android:layout_marginStart="@dimen/dp_2"
             android:textColor="@color/business_color_ff5e5e"
             android:textStyle="italic|bold"
             app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_name"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_name"
+            app:layout_constraintTop_toTopOf="@id/search_adapter_anchor_name"
             tools:text="LV5" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_anchor_tip"
             style="@style/BusinessTextStyleSecond_4"
-            bindText="@{item.nickname}"
+            bindSpanColor="@{@color/base_ff5e5e}"
+            bindSpanContent="@{item.nickname}"
+            bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/dp_4"
             app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
@@ -61,12 +72,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/BusinessTextStyleThird_4"
-            bindText="@{item.fans}"
+            bindText="@{@string/search_fans(item.fans)}"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_4"
             app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
-            app:layout_constraintTop_toBottomOf="@id/search_adapter_anchor_tip"
+            app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_avatar"
             tools:text="1.5w粉丝" />
 
         <androidx.appcompat.widget.AppCompatCheckedTextView

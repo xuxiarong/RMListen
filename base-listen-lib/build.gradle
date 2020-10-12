@@ -86,6 +86,7 @@ dependencies {
 //    implementation project(path: ':business-lib')
 
 //    implementation 'com.dacui.library:spannable-helper:1.0.1'
+    api rootProject.ext.androidx["flexbox"]
 
 
 }

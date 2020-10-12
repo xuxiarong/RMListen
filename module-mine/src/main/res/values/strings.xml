@@ -29,8 +29,6 @@
     <string name="mine_timing_play">定时播放</string>
 
 
-    <string name="mine_unfilled">未填写</string>
-
     <!--setting-->
     <string name="mine_account_settings">账号设置</string>
     <string name="mine_phone_binding">手机绑定</string>
@@ -84,5 +82,11 @@
     <string name="mine_signature">个人签名</string>
     <string name="mine_play_settings">播放设置</string>
     <string name="mine_settings">设置</string>
+
+    <string name="mine_secret">保密</string>
+    <string name="mine_man">男</string>
+    <string name="mine_woman">女</string>
+    <string name="mine_unfilled">未填写</string>
+
 
 </resources>

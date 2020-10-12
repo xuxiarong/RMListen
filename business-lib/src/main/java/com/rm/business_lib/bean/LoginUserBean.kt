@@ -1,7 +1,5 @@
 package com.rm.business_lib.bean
 
-import android.text.TextUtils
-
 /**
  * desc   : 登陆用户个人基本信息
  * date   : 2020/09/03
@@ -19,22 +17,4 @@ data class LoginUserBean(
     var avatar_url: String, // 头像链接
     val fans: String, // 粉丝数
     val follows: String // 关注数
-) {
-    fun getSexStr(): String {
-        return when (gender) {
-            "0" -> {
-                "保密"
-            }
-            "1" -> {
-                "男"
-            }
-            "2" -> {
-                "女"
-            }
-            else -> {
-                "未填写"
-            }
-        }
-    }
-
-}
+)

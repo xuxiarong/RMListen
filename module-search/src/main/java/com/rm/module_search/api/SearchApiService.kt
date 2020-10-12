@@ -2,7 +2,7 @@ package com.rm.module_search.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.module_search.bean.SearchHotRecommendBean
-import com.rm.module_search.bean.SearchRecommendBean
+import com.rm.module_search.bean.SearchCommonBean
 import com.rm.module_search.bean.SearchResultBean
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -20,7 +20,7 @@ interface SearchApiService {
      * 推荐搜索
      */
     @GET("search/recommend")
-    suspend fun searchRecommend(): BaseResponse<SearchRecommendBean>
+    suspend fun searchRecommend(): BaseResponse<SearchCommonBean>
 
     /**
      * 热搜推荐
@@ -32,7 +32,7 @@ interface SearchApiService {
      * 搜索栏轮播
      */
     @GET("search/roll")
-    suspend fun searchHintBanner(): BaseResponse<String>
+    suspend fun searchHintBanner(): BaseResponse<SearchCommonBean>
 
     /**
      * 搜索结果
@@ -47,6 +47,13 @@ interface SearchApiService {
         @Query("type") type: String,
         @Query("page") page: Int,
         @Query("page_size") page_size: Int
-    ):BaseResponse<SearchResultBean>
+    ): BaseResponse<SearchResultBean>
+
+    /**
+     * 下拉框搜索
+     * @param keyword 搜索关键字
+     */
+    @GET("search/suggest")
+    suspend fun searchSuggest(@Query("keyword") keyword: String): BaseResponse<SearchCommonBean>
 
 }

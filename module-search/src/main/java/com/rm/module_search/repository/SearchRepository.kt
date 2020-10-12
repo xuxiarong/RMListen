@@ -4,7 +4,7 @@ import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.module_search.api.SearchApiService
 import com.rm.module_search.bean.SearchHotRecommendBean
-import com.rm.module_search.bean.SearchRecommendBean
+import com.rm.module_search.bean.SearchCommonBean
 import com.rm.module_search.bean.SearchResultBean
 
 /**
@@ -18,7 +18,7 @@ class SearchRepository(private val service: SearchApiService) : BaseRepository()
     /**
      * 推荐搜索
      */
-    suspend fun searchRecommend(): BaseResult<SearchRecommendBean> {
+    suspend fun searchRecommend(): BaseResult<SearchCommonBean> {
         return apiCall { service.searchRecommend() }
     }
 
@@ -32,7 +32,7 @@ class SearchRepository(private val service: SearchApiService) : BaseRepository()
     /**
      * 搜索栏轮播
      */
-    suspend fun searchHintBanner(): BaseResult<String> {
+    suspend fun searchHintBanner(): BaseResult<SearchCommonBean> {
         return apiCall { service.searchHintBanner() }
     }
 
@@ -52,5 +52,12 @@ class SearchRepository(private val service: SearchApiService) : BaseRepository()
         return apiCall { service.searchResult(keyword, type, page, page_size) }
     }
 
+    /**
+     * 下拉框搜索
+     * @param keyword 搜索关键字
+     */
+    suspend fun searchSuggest(keyword: String): BaseResult<SearchCommonBean> {
+        return apiCall { service.searchSuggest(keyword) }
+    }
 
 }

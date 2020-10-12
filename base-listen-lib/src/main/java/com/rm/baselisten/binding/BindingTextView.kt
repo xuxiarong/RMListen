@@ -1,6 +1,5 @@
 package com.rm.baselisten.binding
 
-import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
@@ -9,8 +8,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.R
-import com.rm.baselisten.utilExt.Color
 
 /**
  * desc   :
@@ -69,19 +66,31 @@ fun TextView.bindShowText(content: String?, defaultContent: String?, showStatus:
  * @param spanColor 富文本字体颜色
  */
 @BindingAdapter("bindSpanContent", "bindSpanKeyword", "bindSpanColor", requireAll = false)
-fun TextView.bindSpanText(content: String?, keyword: String?,@ColorInt spanColor: Int) {
-    val str = content ?: ""
-    val key = keyword ?: ""
-    var a = str.indexOf(key)
-    val keyList = mutableListOf<IntArray>()
-    while (a != -1) {
-        keyList.add(intArrayOf(a, a + key.length ))
-        a = str.indexOf(key, a + key.length - 1)
+fun TextView.bindSpanText(content: String?, keyword: String?, @ColorInt spanColor: Int) {
+    if (content.isNullOrEmpty()) {
+        return
     }
-    val span = SpannableString(str)
-    for (ints in keyList) {
-        span.setSpan(ForegroundColorSpan(spanColor), ints[0], ints[1], Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+    if (!keyword.isNullOrEmpty()) {
+        var a = content.indexOf(keyword)
+        val keyList = mutableListOf<IntArray>()
+
+        while (a != -1) {
+            keyList.add(intArrayOf(a, a + keyword.length))
+            a = content.indexOf(keyword, a + keyword.length)
+        }
+        val span = SpannableString(content)
+        for (ints in keyList) {
+            span.setSpan(
+                ForegroundColorSpan(spanColor),
+                ints[0],
+                ints[1],
+                Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+            )
+        }
+        text = span
+    } else {
+        text = content
     }
-    text = span
+
 }
 

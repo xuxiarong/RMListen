@@ -1,18 +1,17 @@
 package com.rm.module_search.viewmodel
 
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.getListString
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_search.*
-import com.rm.module_search.adapter.SearchMainAdapter.Companion.TYPE_CONTENT_ALL
-import com.rm.module_search.adapter.SearchMainAdapter.Companion.TYPE_CONTENT_ANCHOR
-import com.rm.module_search.adapter.SearchMainAdapter.Companion.TYPE_CONTENT_BOOKS
-import com.rm.module_search.adapter.SearchMainAdapter.Companion.TYPE_CONTENT_SHEET
-import com.rm.module_search.adapter.SearchMainAdapter.Companion.TYPE_RECOMMEND
+import com.rm.module_search.activity.SearchResultActivity
 import com.rm.module_search.bean.*
-import com.rm.module_search.fragment.*
 import com.rm.module_search.repository.SearchRepository
 
 /**
@@ -24,8 +23,12 @@ import com.rm.module_search.repository.SearchRepository
  */
 class SearchMainViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
     //tab 数据
-    val mTabDataList = ObservableField<MutableList<SearchContentBean>>()
+    val mTabDataList = ObservableField<MutableList<String>>()
 
+    //搜索框轮播
+    val hintBannerList = ObservableField<List<String>>()
+
+    //推荐搜索 adapter
     val adapter by lazy {
         CommonBindVMAdapter<String>(
             this,
@@ -35,14 +38,85 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
             BR.recommend
         )
     }
-    private var keyWord = ""
-    var inputKeyWord: (String) -> Unit = { keyWord = it }
+
+    //输入框联想 adapter
+    val inputAdapter by lazy {
+        CommonBindVMAdapter<String>(
+            this,
+            mutableListOf(),
+            R.layout.search_adapter_suggest,
+            BR.viewModel,
+            BR.inputItem
+        )
+    }
+
+    //搜索历史 adapter
+    val historyAdapter by lazy {
+        CommonBindVMAdapter<String>(
+            this,
+            mutableListOf(),
+            R.layout.search_adapter_history,
+            BR.viewModel,
+            BR.historyItem
+        ).apply {
+            val list = HISTORY_KEY.getListString()
+            if (list.isNotEmpty()) {
+                historyIsVisible.set(true)
+            }
+            setList(list)
+        }
+    }
+
+    //当前输入框的内容
+    var keyWord = ObservableField<String>("")
+
+    //当前输入框 hint
+    var hintKeyword = ""
+
+    //输入框内容监听
+    var inputKeyWord: (String) -> Unit = { inputContentChangeListener(it) }
+
+    //输入法显示/隐藏监听
+    var keyboardVisibility: (Boolean) -> Unit = { keyboardVisibilityListener(it) }
+
+    val inputText = ObservableField<String>()
+
+    //输入法搜索按钮监听
+    val bindActionListener: (View) -> Unit = { clickSearchFun(it) }
 
     //推荐搜索数据
     private val recommendData = ObservableField<String>()
 
-    //搜索结果
-    val contentData = ObservableField<SearchResultBean>()
+    //联想是否显示
+    val suggestIsVisible = ObservableField<Boolean>(false)
+
+    //历史是否显示
+    val historyIsVisible = ObservableField<Boolean>(false)
+
+
+    var clearInput: () -> Unit = {}
+
+    //搜索是否结束
+    private var resultIsEnd = true
+
+    /**
+     * 输入框内容改变
+     */
+    private fun inputContentChangeListener(content: String) {
+        keyWord.set(content)
+        suggestIsVisible.set(true)
+        //如果请求没有结束则不会去搜索
+        if (resultIsEnd && content.isNotEmpty()) {
+            searchSuggest(content)
+        }
+    }
+
+    /**
+     * 键盘的显示隐藏监听
+     */
+    private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
+        DLog.i("------------>", "keyboardVisibility:$keyboardVisibility")
+    }
 
     /**
      * 搜索点击事件
@@ -60,22 +134,32 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
             repository.searchHotRecommend().checkResult(
                 onSuccess = {
                     val list = mutableListOf<SearchHotRecommendBean>()
-                    val tabList = mutableListOf<SearchContentBean>()
+                    val tabList = mutableListOf<String>()
                     it.forEach { bean ->
                         //如果集合中存在空的tab数据则进行移除
                         if (bean.list.size > 0) {
                             list.add(bean)
-                            tabList.add(
-                                SearchContentBean(
-                                    TYPE_RECOMMEND,
-                                    bean.cate_name,
-                                    SearchRecommendFragment.newInstance(bean.cate_name)
-                                )
-                            )
+                            tabList.add(bean.cate_name)
                         }
                     }
                     mTabDataList.set(tabList)
                     hotRecommend.set(list)
+                },
+                onError = {
+
+                }
+            )
+        }
+    }
+
+    /**
+     * 搜索栏轮播
+     */
+    fun searchHintBanner() {
+        launchOnIO {
+            repository.searchHintBanner().checkResult(
+                onSuccess = {
+                    hintBannerList.set(it.keywords.split(","))
                 },
                 onError = {
 
@@ -100,110 +184,22 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     }
 
     /**
-     * 搜索结果
+     * 下拉框搜索
      * @param keyword 搜索关键字
      */
-    private fun searchResult(keyword: String) {
+    private fun searchSuggest(keyword: String) {
+        resultIsEnd = false
         launchOnIO {
-            repository.searchResult(keyword, "all", 1, 10).checkResult(
+            repository.searchSuggest(keyword).checkResult(
                 onSuccess = {
-
-
-//                    val bean = getBean(it)
-
-                    mTabDataList.set(getTabList(it))
-                    contentData.set(it)
-                    searchResultData.set(it)
+                    resultIsEnd = true
+                    val list = it.keywords.split(",")
+                    inputAdapter.setList(list)
                 },
                 onError = {
-
-                })
-        }
-    }
-
-    fun getBean(it: SearchResultBean): SearchResultBean {
-        it.member_list = gettest(it)
-        it.sheet_list = gest(it)
-        return it
-    }
-
-    private val url =
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598073900947&di=8889a1a78863509eb671e05fd231a8df&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F10%2F20170710210234_y3Kf5.jpeg"
-
-    private fun gettest(it: SearchResultBean): MutableList<MemberBean> {
-        val list = mutableListOf<MemberBean>()
-        list.add(MemberBean(url, "12", 0, 12, "124135134 ", "周杰伦"))
-        list.add(MemberBean(url, "12", 0, 12, "124135134 ", "周杰伦"))
-        list.add(MemberBean(url, "12", 0, 12, "124135134 ", "周杰伦"))
-        list.add(MemberBean(url, "12", 0, 12, "124135134 ", "周杰伦"))
-        return list
-    }
-
-    private fun gest(it: SearchResultBean): MutableList<SearchSheetBean> {
-        val list = mutableListOf<SearchSheetBean>()
-        list.add(
-            SearchSheetBean(
-                29,
-                "2002/09/12",
-                10,
-                url,
-                "124135134 ",
-                "周杰伦"
-            )
-        )
-        list.add(
-            SearchSheetBean(
-                29,
-                "2002/09/12",
-                10,
-                url,
-                "124135134 ",
-                "周杰伦"
-            )
-        )
-        list.add(
-            SearchSheetBean(
-                29,
-                "2002/09/12",
-                10,
-                url,
-                "124135134 ",
-                "周杰伦"
-            )
-        )
-        list.add(
-            SearchSheetBean(
-                29,
-                "2002/09/12",
-                10,
-                url,
-                "124135134 ",
-                "周杰伦"
-            )
-        )
-        return list
-    }
-
-    private fun getTabList(bean: SearchResultBean): MutableList<SearchContentBean> {
-        val list = mutableListOf<SearchContentBean>()
-        list.add(SearchContentBean(TYPE_CONTENT_ALL, "全部", SearchContentAllFragment()))
-
-        if (bean.audio_list?.size ?: 0 > 0) {
-            list.add(SearchContentBean(TYPE_CONTENT_BOOKS, "书籍", SearchContentBooksFragment()))
-        }
-        if (bean.member_list?.size ?: 0 > 0) {
-            list.add(
-                SearchContentBean(
-                    TYPE_CONTENT_ANCHOR,
-                    "主播",
-                    SearchContentAnchorFragment()
-                )
+                    resultIsEnd = true
+                }
             )
         }
-        if (bean.sheet_list?.size ?: 0 > 0) {
-            list.add(SearchContentBean(TYPE_CONTENT_SHEET, "听单", SearchContentSheetFragment()))
-        }
-
-        return list
     }
 }

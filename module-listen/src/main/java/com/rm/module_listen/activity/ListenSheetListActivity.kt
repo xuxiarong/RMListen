@@ -17,7 +17,8 @@ import kotlinx.android.synthetic.main.listen_activity_sheet_list.*
 /**
  * 听单界面
  */
-class ListenSheetListActivity : BaseActivity() {
+class
+ListenSheetListActivity : BaseActivity() {
 
     companion object {
         const val SHEET_LIST_TYPE = "sheetListType"

@@ -8,13 +8,18 @@
         <variable
             name="item"
             type="com.rm.business_lib.bean.AudioBean" />
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchContentBooksViewModel" />
     </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/dp_20"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{(view)->viewModel.itemClickFun(view,item)}"
+        android:layout_marginBottom="@dimen/dp_20">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search_adapter_content_books_icon"
@@ -29,7 +34,9 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_content_books_title"
             style="@style/BusinessTextStyleFirst_3"
-            bindText="@{item.audio_name}"
+            bindSpanColor="@{@color/base_ff5e5e}"
+            bindSpanContent="@{item.audio_name}"
+            bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:maxLength="2"
@@ -40,10 +47,13 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/BusinessTextStyleSecond_4"
-            bindText="@{item.audio_intro}"
+            bindSpanColor="@{@color/base_ff5e5e}"
+            bindSpanContent="@{item.audio_intro}"
+            bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_6"
+            android:maxLines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
             app:layout_constraintTop_toBottomOf="@id/search_adapter_content_books_title"

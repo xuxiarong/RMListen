@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_15"
-                android:onClick="@{()->viewModel.clickBookFun()}">
+                android:onClick="@{()->viewModel.clickBookMoreFun()}">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/search_content_all_books_text"
@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
-                android:onClick="@{()->viewModel.clickAnchorFun()}">
+                android:onClick="@{()->viewModel.clickAnchorMoreFun()}">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/search_content_all_anchor_text"
@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
-                android:onClick="@{()->viewModel.clickSheetFun()}">
+                android:onClick="@{()->viewModel.clickSheetMoreFun()}">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/search_content_all_sheet_text"

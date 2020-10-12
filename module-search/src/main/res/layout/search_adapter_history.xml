@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchMainViewModel" />
+
+        <variable
+            name="historyItem"
+            type="String" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/BusinessTextStyleFirst_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/business_shape_round_f7f7f7_13dp"
+        android:gravity="center_vertical"
+        android:text="@{historyItem}"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:onClick="@{()->viewModel.historyItemClickFun(historyItem)}"
+        android:paddingStart="@dimen/dp_15"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingEnd="@dimen/dp_15"
+        android:paddingBottom="@dimen/dp_5"
+        android:singleLine="true"
+        tools:text="秦时明月" />
+</layout>

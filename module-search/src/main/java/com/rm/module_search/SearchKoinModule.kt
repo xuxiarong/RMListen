@@ -20,6 +20,7 @@ val viewModelModule = module {
     viewModel { SearchContentAnchorViewModel(get()) }
     viewModel { SearchContentSheetViewModel(get()) }
     viewModel { SearchContentBooksViewModel(get()) }
+    viewModel { SearchResultViewModel(get()) }
 }
 
 val repositoryModule = module {

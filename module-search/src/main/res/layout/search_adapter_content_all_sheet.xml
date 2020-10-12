@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchContentAllViewModel" />
+
+        <variable
             name="item"
             type="com.rm.module_search.bean.SearchSheetBean" />
 
@@ -13,8 +17,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/dp_20"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{(view)->viewModel.clickSheetFun(view,item)}"
+        android:layout_marginBottom="@dimen/dp_20">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search_adapter_icon"
@@ -41,7 +46,9 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_title"
             style="@style/BusinessTextStyleFirst_2"
-            bindText="@{item.sheet_name}"
+            bindSpanColor="@{@color/base_ff5e5e}"
+            bindSpanContent="@{item.sheet_name}"
+            bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"

@@ -161,7 +161,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                         refreshStatusModel.finishRefresh(true)
                         mAdapter.setList(it.audio_list?.list)
                         //是否有更多数据
-                        refreshStatusModel.setHasMore(it.audio_list?.list?.size ?: 0 >= pageSize)
+                        refreshStatusModel.setHasMore(it.audio_list?.list?.size ?: 0 > pageSize)
                     },
                     onError = {
                         showNetError()

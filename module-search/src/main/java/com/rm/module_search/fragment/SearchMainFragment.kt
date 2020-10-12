@@ -1,16 +1,17 @@
 package com.rm.module_search.fragment
 
 import androidx.databinding.Observable
+import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.util.getListString
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
-import com.rm.module_search.BR
-import com.rm.module_search.R
+import com.rm.module_search.*
 import com.rm.module_search.adapter.SearchMainAdapter
 import com.rm.module_search.databinding.SearchFragmentMainBinding
-import com.rm.module_search.hotRecommend
-import com.rm.module_search.type
 import com.rm.module_search.viewmodel.SearchMainViewModel
 import kotlinx.android.synthetic.main.search_fragment_main.*
+import java.lang.ref.WeakReference
+import kotlin.random.Random
 
 
 /**
@@ -21,23 +22,36 @@ import kotlinx.android.synthetic.main.search_fragment_main.*
  *
  */
 class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainViewModel>() {
+    private var hintTask: AutoTask? = null
 
     override fun initModelBrId() = BR.viewModel
 
     override fun initLayoutId() = R.layout.search_fragment_main
 
+    override fun initView() {
+        super.initView()
+        hintTask = AutoTask(this)
+
+        mViewModel.clearInput = {
+            mDataBind.searchMainEditText.setText("")
+        }
+    }
+
     override fun initData() {
         mViewModel.searchHotRecommend()
         mViewModel.searchRecommend()
+        mViewModel.searchHintBanner()
     }
 
-
+    /**
+     * tabLayout绑定viewpager滑动事件
+     */
     private fun attachViewPager() {
         BendTabLayoutMediator(search_main_tab_layout, search_main_view_pager,
             BendTabLayoutMediator.TabConfigurationStrategy { tab, position ->
                 mViewModel.mTabDataList.get()?.let {
                     if (it.size > position) {
-                        tab.text = it[position].title
+                        tab.text = it[position]
                     }
                 }
             }).attach()
@@ -45,6 +59,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
     }
 
     override fun startObserve() {
+        //推荐搜索数据监听
         hotRecommend.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 hotRecommend.get()?.let {
@@ -53,28 +68,103 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
             }
         })
 
-        mViewModel.contentData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                mViewModel.contentData.get()?.let {
-                    search_main_view_pager.currentItem = 0
-                    setData()
+        //tab变化监听
+        curType.observe(this) {
+            search_main_view_pager.currentItem = when (it) {
+                REQUEST_TYPE_ALL -> {
+                    0
+                }
+                REQUEST_TYPE_MEMBER -> {
+                    2
+                }
+                REQUEST_TYPE_AUDIO -> {
+                    1
+                }
+                REQUEST_TYPE_SHEET -> {
+                    3
+                }
+                else -> {
+                    0
                 }
             }
-        })
-        type.addOnPropertyChangedCallback(object :
+        }
+
+        //搜索框轮播数据监听
+        mViewModel.hintBannerList.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                type.get()!!
+                val list = mViewModel.hintBannerList.get()!!
+                mDataBind.searchMainEditText.hint = list[0]
+                startHintBanner()
             }
         })
-
     }
 
     private fun setData() {
         mViewModel.mTabDataList.get()?.let {
-            search_main_view_pager.adapter = SearchMainAdapter(this, it)
-            attachViewPager()
+            search_main_view_pager?.let { viewPager ->
+                viewPager.adapter = SearchMainAdapter(this, it)
+                attachViewPager()
+            }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        mViewModel.clickClearInput()
+        mViewModel.hintBannerList.get()?.let { startHintBanner() }
+
+        refreshHistoryData()
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        stopHintBanner()
+    }
+
+    /**
+     * 刷新搜索历史
+     */
+    private fun refreshHistoryData() {
+        val list = HISTORY_KEY.getListString()
+        if (list.isNotEmpty()) {
+            mViewModel.historyIsVisible.set(true)
+        }
+        mViewModel.historyAdapter.setList(list)
+    }
+
+    /**
+     * 开始轮播
+     */
+    private fun startHintBanner() {
+        stopHintBanner()
+        mDataBind.searchMainEditText.postDelayed(hintTask, 3000)
+    }
+
+    /**
+     * 结束轮播
+     */
+    private fun stopHintBanner() {
+        mDataBind.searchMainEditText.removeCallbacks(hintTask)
+    }
+
+    /**
+     * 定时任务
+     */
+    class AutoTask(fragment: SearchMainFragment) : Runnable {
+        private val weakReference = WeakReference(fragment)
+        override fun run() {
+            weakReference.get()?.let {
+                it.mViewModel.hintBannerList.get()?.let { list ->
+                    val random = Random.nextInt(list.size)
+                    val str = list[random]
+                    it.mViewModel.hintKeyword = str
+                    it.mDataBind.searchMainEditText.hint = str
+                    it.startHintBanner()
+                }
+            }
+        }
+    }
+
 }

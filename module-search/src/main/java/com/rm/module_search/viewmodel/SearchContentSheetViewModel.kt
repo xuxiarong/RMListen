@@ -1,9 +1,12 @@
 package com.rm.module_search.viewmodel
 
+import android.view.View
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_search.*
 import com.rm.module_search.bean.SearchResultBean
 import com.rm.module_search.bean.SearchSheetBean
@@ -17,6 +20,8 @@ import com.rm.module_search.repository.SearchRepository
  *
  */
 class SearchContentSheetViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
+    val keyword = searchKeyword
+
     //听单adapter
     val sheetAdapter by lazy {
         CommonBindVMAdapter<SearchSheetBean>(
@@ -25,9 +30,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
             R.layout.search_adapter_content_sheet,
             BR.viewModel,
             BR.item
-        ).apply {
-            setList(searchResultData.get()?.sheet_list)
-        }
+        )
     }
 
     val refreshStateMode = SmartRefreshLayoutStatusModel()
@@ -35,11 +38,9 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
     //页码
     private var mPage = 1
 
-    //
     //每页展示数量
     private var mPageSize = 10
 
-val test="fadsfadsfasdfdfasdfasasdfasdfadfasd"
     /**
      * 刷新
      */
@@ -83,11 +84,16 @@ val test="fadsfadsfasdfdfasdfasasdfasdfadfasd"
             refreshStateMode.finishLoadMore(true)
         }
 
-        refreshStateMode.setHasMore(bean.sheet_list?.size ?: 0 >= 0)
+        refreshStateMode.setHasMore(bean.sheet_list.isNotEmpty())
+
         if (mPage == 1) {
-            sheetAdapter.setList(bean.sheet_list)
+            if (bean.sheet_list.isEmpty()) {
+                showDataEmpty()
+            } else {
+                sheetAdapter.setList(bean.sheet_list)
+            }
         } else {
-            bean.sheet_list?.let { sheetAdapter.addData(it) }
+            bean.sheet_list.let { sheetAdapter.addData(it) }
         }
     }
 
@@ -102,5 +108,13 @@ val test="fadsfadsfasdfdfasdfasasdfasdfadfasd"
         }
     }
 
-
+    /**
+     * item点击事件
+     */
+    fun itemClickFun(view: View, bean: SearchSheetBean) {
+        getActivity(view.context)?.let {
+            RouterHelper.createRouter(HomeService::class.java)
+                .startHomeSheetDetailActivity(it, bean.sheet_id, 0)
+        }
+    }
 }

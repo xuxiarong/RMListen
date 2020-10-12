@@ -1,14 +1,15 @@
 package com.rm.module_search.viewmodel
 
+import android.view.View
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
-import com.rm.module_search.BR
-import com.rm.module_search.R
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
+import com.rm.module_search.*
 import com.rm.module_search.bean.MemberBean
 import com.rm.module_search.bean.SearchSheetBean
 import com.rm.module_search.repository.SearchRepository
-import com.rm.module_search.searchResultData
 
 /**
  *
@@ -18,6 +19,8 @@ import com.rm.module_search.searchResultData
  *
  */
 class SearchContentAllViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
+    val keyword = searchKeyword
+
     val data = searchResultData
 
     //书籍adapter
@@ -28,15 +31,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
             R.layout.search_adapter_content_all_books,
             BR.viewModel,
             BR.item
-        ).apply {
-            searchResultData.get()?.audio_list?.let {
-                if (it.size > 3) {
-                    setList(it.subList(0, 3))
-                } else {
-                    setList(it)
-                }
-            }
-        }
+        )
     }
 
     //主播adapter
@@ -47,17 +42,9 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
             R.layout.search_adapter_content_all_anchor,
             BR.viewModel,
             BR.item
-        ).apply {
-            searchResultData.get()?.member_list?.let {
-
-                if (it.size > 3) {
-                    setList(it.subList(0, 3))
-                } else {
-                    setList(it)
-                }
-            }
-        }
+        )
     }
+
 
     //听单adapter
     val sheetAdapter by lazy {
@@ -67,38 +54,51 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
             R.layout.search_adapter_content_all_sheet,
             BR.viewModel,
             BR.item
-        ).apply {
-            searchResultData.get()?.sheet_list?.let {
-
-                if (it.size > 3) {
-                    setList(it.subList(0, 3))
-                } else {
-                    setList(it)
-                }
-            }
-        }
+        )
     }
 
-
     /**
-     * 全部-书籍更多点击时间
+     * 全部-书籍更多点击事件
      */
-    fun clickBookFun() {
-
+    fun clickBookMoreFun() {
+        curType.postValue(REQUEST_TYPE_AUDIO)
     }
 
     /**
-     * 全部-主播更多点击时间
+     * 全部-主播更多点击事件
+     */
+    fun clickAnchorMoreFun() {
+        curType.postValue(REQUEST_TYPE_MEMBER)
+    }
+
+    /**
+     * 全部-听单更多点击事件
+     */
+    fun clickSheetMoreFun() {
+        curType.postValue(REQUEST_TYPE_SHEET)
+    }
+
+    /**
+     * 全部-书籍点击事件
+     */
+    fun clickBookFun(view: View,bean:AudioBean) {
+        RouterHelper.createRouter(HomeService::class.java).toDetailActivity(view.context,bean.audio_id)
+    }
+
+    /**
+     * 全部-主播点击事件
      */
     fun clickAnchorFun() {
 
     }
 
     /**
-     * 全部-听单更多点击时间
+     * 全部-听单点击事件
      */
-    fun clickSheetFun() {
-
+    fun clickSheetFun(view: View,bean:SearchSheetBean) {
+        getActivity(view.context)?.let {
+            RouterHelper.createRouter(HomeService::class.java).startHomeSheetDetailActivity(it,bean.sheet_id,0)
+        }
     }
 
 

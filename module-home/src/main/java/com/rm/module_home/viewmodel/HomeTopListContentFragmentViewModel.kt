@@ -62,7 +62,11 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeTopListRep
         if (mPage == 1) {
             //刷新完成
             refreshStatusModel.finishRefresh(true)
-            mAdapter.setList(bean.list)
+            if (bean.list.isNullOrEmpty()) {
+                showDataEmpty()
+            } else {
+                mAdapter.setList(bean.list)
+            }
         } else {
             //加载更多完成
             refreshStatusModel.finishLoadMore(true)
@@ -70,7 +74,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeTopListRep
         }
 
         //是否有更多数据
-        refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
+        refreshStatusModel.setHasMore(bean.list?.size ?: 0 > pageSize)
     }
 
     /**

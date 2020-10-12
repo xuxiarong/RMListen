@@ -75,7 +75,7 @@ class ListenSheetMyListViewModel(private val repository: ListenSheetMyListReposi
         }
 
         //是否有更多数据
-        refreshStateModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
+        refreshStateModel.setHasMore(bean.list?.size ?: 0 > pageSize)
     }
 
     /**

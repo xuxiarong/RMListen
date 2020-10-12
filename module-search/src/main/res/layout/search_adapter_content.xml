@@ -17,6 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{()->viewModel.itemClickFun(item)}"
         android:paddingStart="@dimen/dp_16"
         android:paddingTop="@dimen/dp_10"
         android:paddingEnd="@dimen/dp_16"
@@ -38,6 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_10"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="@{item.audio_name}"
@@ -45,7 +47,6 @@
             app:layout_constraintEnd_toStartOf="@id/search_adapter_content_icon"
             app:layout_constraintStart_toEndOf="@id/search_adapter_content_num"
             app:layout_constraintTop_toTopOf="@id/search_adapter_content_num"
-            android:layout_marginEnd="@dimen/dp_10"
             tools:text="秦时明月" />
 
         <androidx.appcompat.widget.AppCompatImageView

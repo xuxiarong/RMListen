@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchResultViewModel" />
+
+        <variable
+            name="editorInfo"
+            type="android.view.inputmethod.EditorInfo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_result_tv_search"
+            style="@style/BusinessTextStyleFirst_2"
+            android:layout_height="@dimen/dp_48"
+            android:gravity="center"
+            android:onClick="@{()->viewModel.clickCancelFun()}"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_10"
+            android:text="@string/business_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:background="@drawable/business_shape_f7f7f7_12dp"
+            android:paddingStart="@dimen/dp_12"
+            android:paddingTop="8dp"
+            android:paddingEnd="@dimen/dp_12"
+            android:paddingBottom="@dimen/dp_8"
+            app:layout_constraintBottom_toBottomOf="@id/search_result_tv_search"
+            app:layout_constraintEnd_toStartOf="@id/search_result_tv_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/search_result_tv_search">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/business_icon_search" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/search_result_edit_text"
+                style="@style/BusinessTextStyleFirst_2"
+                afterTextChanged="@{viewModel.inputKeyWord}"
+                bindAction="@{editorInfo.IME_ACTION_SEARCH}"
+                bindBlock="@{viewModel.bindActionListener}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:background="@null"
+                android:imeOptions="actionSearch"
+                android:singleLine="true" />
+        </LinearLayout>
+
+
+        <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
+            android:id="@+id/search_result_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            app:bendTabIndicatorAnimation="true"
+            app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+            app:bendTabIndicatorHeight="@dimen/dp_1"
+            app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+            app:bendTabIndicatorWidth="@dimen/dp_24"
+            app:bendTabMode="scrollable"
+            app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+            app:bendTabTextSize="@dimen/business_text_size_16sp"
+            app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
+            app:layout_constraintTop_toBottomOf="@id/search_result_tv_search" />
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/search_result_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_result_tab_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

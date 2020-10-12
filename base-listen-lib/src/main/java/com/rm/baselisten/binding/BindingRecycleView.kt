@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.rm.baselisten.decoration.GridSpaceItemDecoration
 import com.rm.baselisten.decoration.LinearItemDecoration
 import com.rm.baselisten.utilExt.dip
@@ -77,19 +81,17 @@ fun RecyclerView.gridItemDecoration(span: Float) {
     )
 }
 
-@BindingAdapter("linearBottomItemDecoration")
-fun RecyclerView.linearBottomItemDecoration(span: Int) {
-    addItemDecoration(
-        LinearItemDecoration().setSpanBottom(span)
-    )
-}
-
-
-@BindingAdapter("linearItemDecoration")
-fun RecyclerView.linearRightItemDecoration(span: Int) {
-    addItemDecoration(
-        LinearItemDecoration().setSpanRight(span)
-    )
+@BindingAdapter("bindFlexboxLayout")
+fun RecyclerView.bindFlexboxLayout(adapter: RecyclerView.Adapter<*>?) {
+    if (adapter == null) {
+        return
+    }
+    val manager = FlexboxLayoutManager(this.context)
+    manager.flexDirection = FlexDirection.ROW
+    manager.flexWrap = FlexWrap.WRAP
+    manager.alignItems = AlignItems.STRETCH
+    layoutManager = manager
+    this.adapter = adapter
 }
 
 @BindingAdapter("divLinearItemDecoration", "divHeight", "divColor")

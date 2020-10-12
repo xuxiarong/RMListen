@@ -7,4 +7,4 @@ package com.rm.module_search.bean
  * @description
  *
  */
-data class SearchRecommendBean(val keywords:String)
+data class SearchCommonBean(val keywords:String)

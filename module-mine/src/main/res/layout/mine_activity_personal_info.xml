@@ -32,11 +32,11 @@
 
         <com.rm.module_mine.widget.MineCommonMaterialView
             android:id="@+id/mine_personal_sex"
+            userText="@{viewModel.sex}"
             defaultText="@{@string/mine_unfilled}"
-            userText="@{viewModel.userInfo.getSexStr()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.clickSex()}"
+            android:onClick="@{(view)->viewModel.clickSex(view)}"
             app:material_name="@string/mine_sex" />
 
         <com.rm.module_mine.widget.MineCommonMaterialView

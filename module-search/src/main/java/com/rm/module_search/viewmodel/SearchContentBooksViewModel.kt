@@ -1,10 +1,13 @@
 package com.rm.module_search.viewmodel
 
+import android.view.View
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_search.*
 import com.rm.module_search.bean.SearchResultBean
 import com.rm.module_search.repository.SearchRepository
@@ -17,6 +20,8 @@ import com.rm.module_search.repository.SearchRepository
  *
  */
 class SearchContentBooksViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
+    val keyword = searchKeyword
+
     //书籍adapter
     val bookAdapter by lazy {
         CommonBindVMAdapter<AudioBean>(
@@ -25,9 +30,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
             R.layout.search_adapter_content_books,
             BR.viewModel,
             BR.item
-        ).apply {
-            setList(searchResultData.get()?.audio_list)
-        }
+        )
     }
 
     val refreshStateMode = SmartRefreshLayoutStatusModel()
@@ -35,7 +38,6 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
     //页码
     private var mPage = 1
 
-    //
     //每页展示数量
     private var mPageSize = 10
 
@@ -61,7 +63,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
      */
     private fun requestData() {
         launchOnIO {
-            repository.searchResult(searchKeyword.get()!!, REQUEST_TYPE_SHEET, mPage, mPageSize)
+            repository.searchResult(searchKeyword.get()!!, REQUEST_TYPE_AUDIO, mPage, mPageSize)
                 .checkResult(
                     onSuccess = {
                         successData(it)
@@ -82,11 +84,17 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
         } else {
             refreshStateMode.finishLoadMore(true)
         }
-        refreshStateMode.setHasMore(bean.audio_list?.size ?: 0 >= 0)
+
+        refreshStateMode.setHasMore(bean.audio_list.isNotEmpty())
+
         if (mPage == 1) {
-            bookAdapter.setList(bean.audio_list)
+            if (bean.audio_list.isEmpty()) {
+                showDataEmpty()
+            } else {
+                bookAdapter.setList(bean.audio_list)
+            }
         } else {
-            bean.audio_list?.let { bookAdapter.addData(it) }
+            bean.audio_list.let { bookAdapter.addData(it) }
         }
     }
 
@@ -101,4 +109,11 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
         }
     }
 
+    /**
+     * item点击事件
+     */
+    fun itemClickFun(view: View, bean: AudioBean) {
+        RouterHelper.createRouter(HomeService::class.java)
+            .toDetailActivity(view.context, bean.audio_id)
+    }
 }

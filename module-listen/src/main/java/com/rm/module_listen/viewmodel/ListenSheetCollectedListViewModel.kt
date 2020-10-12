@@ -70,7 +70,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenSheetColle
         }
 
         //是否有更多数据
-        refreshStateModel.setHasMore(bean.list.size >= pageSize)
+        refreshStateModel.setHasMore(bean.list.size > pageSize)
     }
 
     /**

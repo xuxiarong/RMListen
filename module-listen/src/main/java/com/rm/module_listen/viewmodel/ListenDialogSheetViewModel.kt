@@ -94,7 +94,7 @@ class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : B
         }
 
         //是否有跟多数据
-        refreshStateModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
+        refreshStateModel.setHasMore(bean.list?.size ?: 0 > pageSize)
     }
 
     /**

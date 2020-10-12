@@ -1,14 +1,13 @@
 package com.rm.module_search.viewmodel
 
+import android.view.View
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_search.*
 import com.rm.module_search.bean.MemberBean
 import com.rm.module_search.bean.SearchResultBean
-import com.rm.module_search.bean.SearchSheetBean
 import com.rm.module_search.repository.SearchRepository
 
 /**
@@ -19,6 +18,8 @@ import com.rm.module_search.repository.SearchRepository
  *
  */
 class SearchContentAnchorViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
+    val keyword = searchKeyword
+
     //主播adapter
     val anchorAdapter by lazy {
         CommonBindVMAdapter<MemberBean>(
@@ -27,9 +28,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
             R.layout.search_adapter_content_anchor,
             BR.viewModel,
             BR.item
-        ).apply {
-            setList(searchResultData.get()?.member_list)
-        }
+        )
     }
 
 
@@ -38,7 +37,6 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
     //页码
     private var mPage = 1
 
-    //
     //每页展示数量
     private var mPageSize = 10
 
@@ -85,11 +83,16 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         } else {
             refreshStateMode.finishLoadMore(true)
         }
-        refreshStateMode.setHasMore(bean.member_list?.size ?: 0 >= 0)
+        refreshStateMode.setHasMore(bean.member_list.isNotEmpty())
+
         if (mPage == 1) {
-            anchorAdapter.setList(bean.member_list)
+            if (bean.member_list.isEmpty()) {
+                showDataEmpty()
+            } else {
+                anchorAdapter.setList(bean.member_list)
+            }
         } else {
-            bean.member_list?.let { anchorAdapter.addData(it) }
+            bean.member_list.let { anchorAdapter.addData(it) }
         }
     }
 
@@ -104,5 +107,9 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         }
     }
 
-
+    /**
+     *   item点击事件
+     */
+    fun itemClickFun(view: View, bean: MemberBean) {
+    }
 }

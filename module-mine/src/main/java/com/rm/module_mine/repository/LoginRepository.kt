@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.baselisten.util.Preference
-import com.rm.module_mine.api.ListenApiService
+import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.bean.User
 
 /**
@@ -12,7 +12,7 @@ import com.rm.module_mine.bean.User
  * date   : 2020/08/04
  * version: 1.0
  */
-class LoginRepository(val service: ListenApiService) : BaseRepository() {
+class LoginRepository(val service: MineApiService) : BaseRepository() {
 
     private var isLogin by Preference(Preference.IS_LOGIN, false)
     private var userJson by Preference(Preference.USER_GSON, "")

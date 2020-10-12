@@ -94,7 +94,7 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
                     mAdapter.setList(it.audio_list?.list)
 
                     //是否有更多数据
-                    refreshStateModel.setHasMore(it.audio_list?.list?.size ?: 0 >= pageSize)
+                    refreshStateModel.setHasMore(it.audio_list?.list?.size ?: 0 > pageSize)
                 },
 
                 onError = {
@@ -115,7 +115,7 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
                     refreshStateModel.finishLoadMore(true)
                     mAdapter.addData(it.list)
 
-                    refreshStateModel.setHasMore(it.list.size >= pageSize)
+                    refreshStateModel.setHasMore(it.list.size > pageSize)
                 },
                 onError = {
                     refreshStateModel.finishLoadMore(false)

@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<variable
-    name="viewModel"
-    type="com.rm.module_search.viewmodel.SearchContentSheetViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_search.viewmodel.SearchContentSheetViewModel" />
+
         <variable
             name="item"
             type="com.rm.module_search.bean.SearchSheetBean" />
@@ -16,7 +18,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_20">
+        android:layout_marginBottom="@dimen/dp_20"
+        android:onClick="@{(view)->viewModel.itemClickFun(view,item)}">
 
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -44,9 +47,9 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_title"
             style="@style/BusinessTextStyleFirst_2"
-            bindSpanContent="@{viewModel.test}"
-            bindSpanKeyword="@{@string/search_a}"
             bindSpanColor="@{@color/base_ff5e5e}"
+            bindSpanContent="@{item.sheet_name}"
+            bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"

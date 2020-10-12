@@ -81,5 +81,4 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':component-comm')
     kapt rootProject.ext.dependencies["router_compiler"]
-    implementation rootProject.ext.androidx["flexbox"]
 }

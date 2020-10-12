@@ -6,7 +6,6 @@ import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.model.home.detail.*
-import java.util.*
 
 class DetailRepository(val homeservice: HomeApiService) : BaseRepository() {
 
@@ -33,7 +32,7 @@ class DetailRepository(val homeservice: HomeApiService) : BaseRepository() {
      * 订阅听单
      */
     suspend fun subscribe(audioId: String): BaseResult<Any> {
-        return apiCall { homeservice.listenAddSubscription(audioId) }
+        return apiCall { homeservice.homeAddSubscription(audioId) }
     }
     /**
      * 关注直播
