@@ -117,7 +117,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     }
                     doubleHorList.add(doubleModel)
                 }
-                if (doubleHorList.size >= 4) {
+                if (doubleHorList.size >= 3) {
                     doubleHorList.add(HomeAudioHorDoubleFooterModel())
                 }
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))

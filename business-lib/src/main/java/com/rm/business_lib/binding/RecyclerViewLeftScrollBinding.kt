@@ -27,7 +27,9 @@ fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
                 // 获取最后一个完全显示的itemPosition
                 val lastItemPosition = manager!!.findLastCompletelyVisibleItemPosition()
                 val itemCount = manager.itemCount
-
+                if(lastItemPosition<3){
+                    return
+                }
                 // 判断是否滑动到了最后一个Item，并且是向左滑动
                 if (lastItemPosition == itemCount - 1 && isSlidingToLeft) {
                     // 加载更多
