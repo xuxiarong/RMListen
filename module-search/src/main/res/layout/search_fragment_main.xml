@@ -80,7 +80,6 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_main_tv_search">
 
@@ -99,6 +98,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/search_main_tool_bar"
                         android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dp_20"
                         android:layout_height="wrap_content">
 
                         <androidx.appcompat.widget.AppCompatTextView
