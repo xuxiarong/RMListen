@@ -129,9 +129,70 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     /**
      * 搜索点击事件
      */
-    fun clickSearchFun() {
-        searchKeyword.set(keyWord)
-        searchResult(keyWord)
+    fun clickSearchFun(view: View?) {
+        view?.let {
+            val imm =
+                it.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (imm.isActive) {
+                imm.hideSoftInputFromWindow(it.applicationWindowToken, 0)
+            }
+        }
+        if (keyWord.get()!!.isEmpty()) {
+            searchKeyword.set(hintKeyword)
+        } else {
+            searchKeyword.set(keyWord.get())
+        }
+        startActivity(SearchResultActivity::class.java)
+    }
+
+    /**
+     * 历史 item 点击事件
+     */
+    fun historyItemClickFun(content: String) {
+        toSearch(content)
+    }
+
+    /**
+     * 删除历史点击事件
+     */
+    fun clickClearHistory() {
+        HISTORY_KEY.putMMKV(mutableListOf())
+        historyAdapter.setList(null)
+        historyIsVisible.set(false)
+    }
+
+    /**
+     * 联想 item 点击事件
+     */
+    fun inputItemClickFun(content: String) {
+        toSearch(content)
+    }
+
+    /**
+     * 清除输入内容
+     */
+    fun clickClearInput() {
+        searchKeyword.set("")
+        keyWord.set("")
+        clearInput()
+        inputAdapter.setList(null)
+        suggestIsVisible.set(false)
+        recommendVisible.set(true)
+    }
+
+    /**
+     * 热搜推荐item  点击事件
+     */
+    fun clickRecommendFun(recommend: String) {
+        toSearch(recommend)
+    }
+
+    /**
+     * 跳转到搜索
+     */
+    private fun toSearch(content: String) {
+        searchKeyword.set(content)
+        startActivity(SearchResultActivity::class.java)
     }
 
     /**
