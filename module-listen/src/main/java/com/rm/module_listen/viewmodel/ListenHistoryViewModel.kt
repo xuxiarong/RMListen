@@ -2,6 +2,7 @@ package com.rm.module_listen.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
@@ -26,6 +27,8 @@ class ListenHistoryViewModel : BaseVMViewModel() {
 
     var startSearchHistory: (String) -> Unit = { searchHistory(it) }
 
+    var searchHasData = ObservableBoolean(true)
+
     private val playService by lazy {
         RouterHelper.createRouter(PlayService::class.java)
     }
@@ -41,12 +44,11 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
     fun getListenHistory() {
-        showLoading()
         launchOnIO {
             val queryPlayBookList = playService.queryPlayBookList()
             val audioList = ArrayList<ListenHistoryModel>()
             if (queryPlayBookList != null && queryPlayBookList.isNotEmpty()) {
-                showContentView()
+                searchHasData.set(true)
                 queryPlayBookList.forEach {
                     val listenHistoryModel = ListenHistoryModel(it)
                     listenHistoryModel.itemType = R.layout.listen_item_history_listen
@@ -54,7 +56,7 @@ class ListenHistoryViewModel : BaseVMViewModel() {
                 }
                 allHistory.postValue(audioList)
             } else {
-                showDataEmpty()
+                searchHasData.set(false)
             }
         }
     }
@@ -75,11 +77,14 @@ class ListenHistoryViewModel : BaseVMViewModel() {
                     }
                 }
                 if(resultList.isNotEmpty()){
+                    searchHasData.set(true)
                     mSwipeAdapter.data.clear()
                     mSwipeAdapter.addData(resultList)
                 }else{
-                    showDataEmpty()
+                    searchHasData.set(false)
                 }
+            }else{
+                searchHasData.set(false)
             }
         }
     }

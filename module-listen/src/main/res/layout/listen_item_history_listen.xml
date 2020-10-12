@@ -18,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:leftEdgeSwipeOffset="@dimen/dp_20"
-
         android:layout_marginBottom="@dimen/dp_18">
 
         <FrameLayout
@@ -46,6 +45,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_80"
+            android:onClick="@{()->viewModel.startListenRecentDetail(context)}"
             >
 
             <androidx.appcompat.widget.AppCompatImageView
