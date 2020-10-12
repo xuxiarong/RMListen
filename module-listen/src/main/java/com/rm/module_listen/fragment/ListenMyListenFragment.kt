@@ -1,12 +1,12 @@
 package com.rm.module_listen.fragment
 
-import android.view.View
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
@@ -35,6 +35,11 @@ class ListenMyListenFragment :
         ListenSubscriptionUpdateFragment.newInstance()
     )
 
+    private val tabList = mutableListOf(
+        BaseApplication.CONTEXT.getString(R.string.listen_tab_recent_listen),
+        BaseApplication.CONTEXT.getString(R.string.listen_tab_subscription_update)
+    )
+
     override fun initModelBrId() = BR.viewModel
     override fun initLayoutId() = R.layout.listen_fragment_my_listen
 
@@ -42,8 +47,11 @@ class ListenMyListenFragment :
         super.initView()
 
         //用懒加载的方式切换fragment的时候会报错
-        mViewPagerAdapter = ListenMyListenPagerAdapter(this.activity!!, mMyListenFragmentList)
+        mViewPagerAdapter = ListenMyListenPagerAdapter(fm = activity!!.supportFragmentManager,tabList = tabList, fragmentList = mMyListenFragmentList)
+        listenMyListenVp.offscreenPageLimit = 2
+
         listenMyListenVp.adapter = mViewPagerAdapter
+
         setClick()
         configTab()
     }
@@ -64,12 +72,25 @@ class ListenMyListenFragment :
 
 
     private fun configTab() {
-        listenMyListenRtl.addTab(getString(R.string.listen_tab_recent_listen))
-        listenMyListenRtl.addTab(getString(R.string.listen_tab_subscription_update))
-        listenMyListenRtl.bindViewPager2(listenMyListenVp)
+        listenMyListenRtl.setupWithViewPager(listenMyListenVp)
+        listenMyListenRtl.addOnTabSelectedListener(object :BendTabLayout.OnTabSelectedListener{
+            override fun onTabReselected(tab: BendTabLayout.BendTab?) {
+            }
+
+            override fun onTabUnselected(tab: BendTabLayout.BendTab?) {
+            }
+
+            override fun onTabSelected(tab: BendTabLayout.BendTab?) {
+                if(tab!=null){
+                    if(tab.position == 1){
+                        val subFragment =   mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment
+                        subFragment.checkLogin()
+                    }
+                }
+            }
+        })
         listenMyListenVp.setCurrentItem(0, false)
-        listenMyListenVp.isUserInputEnabled = false
-        listenMyListenRtl.setRedPointVisibility(1, View.VISIBLE)
+
     }
 
     private fun setClick() {

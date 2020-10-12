@@ -27,7 +27,7 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:minHeight="40dp"
+                android:minHeight="@dimen/dp_45"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <LinearLayout
@@ -172,20 +172,37 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.rm.business_lib.wedgit.radiotab.RadioTabLayout
+<!--                <com.rm.business_lib.wedgit.radiotab.RadioTabLayout-->
+<!--                    android:id="@+id/listenMyListenRtl"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_gravity="center_horizontal|bottom"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    app:layout_collapseMode="pin" />-->
+
+                <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
                     android:id="@+id/listenMyListenRtl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    app:layout_collapseMode="pin" />
+                    app:layout_collapseMode="pin"
+                    app:bendTabIndicatorAnimation="true"
+                    app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+                    app:bendTabIndicatorHeight="@dimen/dp_1"
+                    app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+                    app:bendTabIndicatorWidth="@dimen/dp_24"
+                    app:bendTabMode="fixed"
+                    app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+                    app:bendTabTextSize="@dimen/business_text_size_16sp"
+                    app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
+        <com.rm.business_lib.wedgit.NoTouchViewPager
             android:id="@+id/listenMyListenVp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

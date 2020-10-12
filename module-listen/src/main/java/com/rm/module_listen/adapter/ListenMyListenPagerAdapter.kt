@@ -1,22 +1,25 @@
 package com.rm.module_listen.adapter
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 
 class ListenMyListenPagerAdapter(
-    activity: FragmentActivity,
-    mutableList: MutableList<Fragment>
-) : FragmentStateAdapter(activity) {
+    fm: FragmentManager,
+    private val tabList: MutableList<String>,
+    private val fragmentList: MutableList<Fragment>
+) :  FragmentStatePagerAdapter(fm) {
 
-    private val mDataList = mutableList
-
-    override fun getItemCount(): Int {
-        return mDataList.size
+    override fun getItem(position: Int): Fragment {
+        return fragmentList[position]
     }
 
-    override fun createFragment(position: Int): Fragment {
-        return mDataList[position]
+    override fun getCount(): Int {
+        return tabList.size
+    }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return tabList[position]
     }
 
 }
