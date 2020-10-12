@@ -41,5 +41,7 @@
     <string name="home_goto_look">去看看</string>
     <string name="home_favorites_success_tip">收藏成功，请在我听-听单中查看</string>
     <string name="home_favorites_success_content">可在“我听-听单”中查看</string>
+
+    <string name="home_audio_size">共%d本</string>
 </resources>
 

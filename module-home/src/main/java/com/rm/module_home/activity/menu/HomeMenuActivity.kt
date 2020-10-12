@@ -46,7 +46,7 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
             headView.findViewById<XBanner>(R.id.home_head_banner).apply {
                 paddingBindData(it.banner_list)
                 setIsClipChildrenMode(false)
-                setOnItemClickListener { banner, model, view, position ->
+                setOnItemClickListener { _, _, _, position ->
                     BannerJumpUtils.onBannerClick(context,it.banner_list!![position].banner_jump)
                 }
             }
