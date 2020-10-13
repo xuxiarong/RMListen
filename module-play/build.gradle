@@ -98,6 +98,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     kapt rootProject.ext.dependencies["router_compiler"]
-    implementation 'com.yinglan.scrolllayout:scrolllayout:1.0.2'
 
 }

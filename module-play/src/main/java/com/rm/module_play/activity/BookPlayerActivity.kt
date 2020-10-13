@@ -1,19 +1,21 @@
 package com.rm.module_play.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
-import com.rm.baselisten.utilExt.dip
-import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
+import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
 import com.rm.component_comm.router.RouterHelper
@@ -40,7 +42,6 @@ import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import com.yinglan.scrolllayout.ScrollLayout
 import kotlinx.android.synthetic.main.activity_book_player.*
 
 
@@ -52,38 +53,11 @@ import kotlinx.android.synthetic.main.activity_book_player.*
  * 播放器主要界面
  */
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
-    MusicPlayerEventListener {
+    MusicPlayerEventListener, SwipeBackLayout.SwipeBackListener {
 
-    private val mOnScrollChangedListener: ScrollLayout.OnScrollChangedListener =
-        object : ScrollLayout.OnScrollChangedListener {
-            override fun onScrollProgressChanged(currentProgress: Float) {
-                if (currentProgress >= 0) {
-                    var precent = 255 * currentProgress
-                    if (precent > 255) {
-                        precent = 255f
-                    } else if (precent < 0) {
-                        precent = 0f
-                    }
-                    val alpha = precent.toInt()
-                    root_play.setBackgroundColor(Color.argb(alpha, 0, 0, 0))
-                }
 
-            }
-
-            override fun onScrollFinished(currentStatus: ScrollLayout.Status) {
-                scrollStatus = currentStatus
-                if (currentStatus == ScrollLayout.Status.EXIT || currentStatus == ScrollLayout.Status.OPENED) {
-                    finish()
-                }
-            }
-
-            override fun onChildScroll(top: Int) {
-
-            }
-        }
     var mChapterId: String? = null
     var fromJumpType: String? = null
-    var scrollStatus = ScrollLayout.Status.CLOSED
 
     //是否重置播放
     var isResumePlay = false
@@ -158,7 +132,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             intent.putAnyExtras(fromJump, from)
             intent.putAnyExtras(chapterListModel, book)
             context.startActivity(intent)
-            (context as Activity).overridePendingTransition(activity_top_open, 0);
+            (context as Activity).overridePendingTransition(activity_top_open, 0)
 
         }
 
@@ -166,13 +140,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun finish() {
         super.finish()
-        if (scrollStatus == ScrollLayout.Status.EXIT || scrollStatus == ScrollLayout.Status.OPENED) {
-            overridePendingTransition(0, 0)
-            scrollStatus = ScrollLayout.Status.CLOSED
-        } else {
-            overridePendingTransition(R.anim.activity_bottom_close, 0);
-
-        }
+        overridePendingTransition(0, R.anim.activity_bottom_close)
 
     }
 
@@ -180,18 +148,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun initModelBrId(): Int = BR.viewModel
 
+    @SuppressLint("ResourceAsColor")
     override fun initView() {
         setStatusBar(R.color.businessWhite)
-        /**设置 setting*/
-        scroll_down_layout.setMinOffset(0)
-        scroll_down_layout.setMaxOffset(((screenHeight * 0.5).toInt()))
-        scroll_down_layout.setExitOffset(dip(50))
-        scroll_down_layout.setIsSupportExit(true)
-        scroll_down_layout.isAllowHorizontalScroll = true
-        scroll_down_layout.setOnScrollChangedListener(mOnScrollChangedListener)
-        scroll_down_layout.scrollToClose()
-        scroll_down_layout.background?.mutate()?.alpha = 0
         mViewModel.initPlayerAdapterModel()
+        swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)
+        swipe_back_layout.setOnSwipeBackListener(this)
 
 
     }
@@ -504,6 +466,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         mViewModel.playSate.set(playWhenReady)
 
+    }
+
+    override fun onViewPositionChanged(fractionAnchor: Float, fractionScreen: Float) {
+        getBaseContainer().background.mutate().alpha= (255*(1-fractionScreen)).toInt()
     }
 
 

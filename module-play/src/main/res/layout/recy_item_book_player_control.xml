@@ -77,10 +77,12 @@
                 android:layout_gravity="bottom|right"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="5dp"
+                android:drawablePadding="3dp"
                 android:text="@{viewModel.playControlModel.baseAudioInfo.playCount}"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="12sp"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints,RtlHardcoded"
+                app:drawableLeftCompat="@drawable/ic_icon_play_ed" />
         </FrameLayout>
 
 
