@@ -65,11 +65,14 @@
     <style name="PlayActivityTheme" parent="@android:style/Theme.Translucent">
         <!-- Customize your theme here. -->
         <item name="android:windowNoTitle">true</item>
-        <item name="android:activityOpenEnterAnimation">@null</item>
-        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:activityOpenEnterAnimation">@anim/anim_show</item>
+        <item name="android:activityOpenExitAnimation">@anim/anim_dismiss</item>
         <item name="android:activityCloseEnterAnimation">@null</item>
         <item name="android:activityCloseExitAnimation">@null</item>
         <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="windowActionBar">false</item>
         <item name="android:taskOpenExitAnimation">@null</item>
         <item name="android:taskCloseEnterAnimation">@null</item>
         <item name="android:taskCloseExitAnimation">@null</item>

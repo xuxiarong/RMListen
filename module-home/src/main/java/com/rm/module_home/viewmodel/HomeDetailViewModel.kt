@@ -36,6 +36,8 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var HideOr = ObservableBoolean(false)
     //主播关注与已关注
     var MemberAnthor = ObservableBoolean(false)
+    var MemberStr = ObservableField<String>()
+
 
     var audioId = ObservableField<String>()
     var sort = ObservableField<String>()
@@ -51,7 +53,16 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     var clickCollected: () -> Unit = {}
     //订阅点击事件闭包
     var clickSubscribe: () -> Unit = {}
+    //关注主播
+    var clickSubMember: () -> Unit = {}
 
+    fun MemberState(MemberState : Boolean){
+        if(MemberState){
+            MemberStr.set("已关注")
+        }else{
+            MemberStr.set("关注")
+        }
+    }
 
     /**
      * 加载上一页
@@ -76,10 +87,12 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 onSuccess = {
                     showContentView()
                     detailViewModel.set(it)
+                    MemberAnthor.set(it.detaillist.anchor.status)
+                    MemberState(MemberAnthor.get())
                 }, onError = {
                     showContentView()
                     errorTips.set(it)
-                    finish()
+                    showToast(it.toString())
                 }
             )
         }
@@ -305,6 +318,13 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      */
     fun clickSubscribeFun() {
         clickSubscribe()
+    }
+
+    /**
+     * 关注主播点击事件
+     */
+    fun clickSubMemberFun(){
+        clickSubMember()
     }
 
     /**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -7,23 +8,24 @@
             name="viewModel"
             type="com.rm.module_play.viewmodel.PlayViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/root_play"
-        android:layout_width="match_parent"
-        android:background="@color/businessWhite"
-        android:layout_height="match_parent">
-    <com.yinglan.scrolllayout.ScrollLayout
-        android:id="@+id/scroll_down_layout"
-        android:layout_width="match_parent"
-        android:background="@color/businessWhite"
-        android:layout_height="match_parent">
 
-        <com.rm.module_play.view.ContentRecyclerView
-            android:id="@+id/rv_music_play"
+
+
+        <com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
+            android:id="@+id/swipe_back_layout"
             android:layout_width="match_parent"
-            bindVerticalLayout="@{viewModel.mBookPlayerAdapter}"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-    </com.yinglan.scrolllayout.ScrollLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_music_play"
+                android:background="@color/base_activity_bg_color"
+                bindVerticalLayout="@{viewModel.mBookPlayerAdapter}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="MissingConstraints" />
+        </com.rm.business_lib.wedgit.swipleback.SwipeBackLayout>
+
+
+
+
 </layout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 关注主播的字体变化 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/business_color_ff5e5e" android:state_enabled="false" />
-    <item android:color="@color/business_text_color_666666" android:state_enabled="true"/>
+    <item android:color="@color/business_color_ff5e5e" android:state_checked="false" />
+    <item android:color="@color/business_text_color_666666" android:state_checked="true"/>
 </selector>

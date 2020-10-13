@@ -386,4 +386,5 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      */
     fun queryPlayBookList(): List<HistoryPlayBook>? =
         DaoUtil(HistoryPlayBook::class.java, "").queryAll()
+
 }
