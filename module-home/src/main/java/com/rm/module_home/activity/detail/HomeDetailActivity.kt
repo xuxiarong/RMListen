@@ -137,11 +137,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         }
         //TODO: 2020/9/28 关注主播
         detail_anthor_attention.setOnCheckedChangeListener{buttonView, isChecked ->
-            if(isChecked){
-                detail_anthor_attention.setText("已关注")
-            }else{
-                detail_anthor_attention.setText("关注")
-            }
+            mViewModel.MemberState(isChecked)
         }
 
     }
