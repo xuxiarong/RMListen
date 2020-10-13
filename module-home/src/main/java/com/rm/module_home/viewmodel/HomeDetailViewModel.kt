@@ -79,7 +79,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 }, onError = {
                     showContentView()
                     errorTips.set(it)
-                    finish()
+                    showToast(it.toString())
                 }
             )
         }
