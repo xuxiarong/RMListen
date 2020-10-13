@@ -13,7 +13,6 @@ import com.rm.baselisten.databinding.ActivityBaseVmBinding
 import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -76,11 +75,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         initView()
         //初始化子类的数据
         initData()
-    }
-
-
-    fun showCommonDialog() {
-
+        //添加通用的提示框
     }
 
     /**
@@ -168,11 +163,11 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
                     mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
                     val inflate = mBaseBinding.baseEmpty.viewStub?.inflate()
                     val binding = DataBindingUtil.getBinding<ViewDataBinding>(inflate!!)
-                    binding?.setVariable(BR.viewModel,mViewModel)
+                    binding?.setVariable(BR.viewModel, mViewModel)
                 }
                 mChildView?.visibility = View.GONE
             }
-            BaseNetStatus.BASE_SHOW_NET_ERROR -> {
+            BaseNetStatus.BASE_SHOW_SERVICE_ERROR -> {
                 if (!mBaseBinding.baseError.isInflated) {
                     mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
                     mBaseBinding.baseError.viewStub?.inflate()
@@ -189,8 +184,8 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             BaseNetStatus.BASE_SHOW_CONTENT -> {
                 mChildView?.visibility = View.VISIBLE
             }
-            else -> {
-                DLog.d("suolong", " netStatus = ${statusModel.netStatus}")
+            BaseNetStatus.BASE_SHOW_NET_ERROR -> {
+                tipView.showNetError(this)
             }
         }
     }

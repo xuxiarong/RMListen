@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        isVisible="@{status.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR}"
+        isVisible="@{status.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR}"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView

@@ -2,7 +2,6 @@ package com.rm.module_listen.viewmodel
 
 import android.view.View
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -83,7 +82,7 @@ class ListenSheetMyListViewModel(private val repository: ListenSheetMyListReposi
      */
     private fun failData() {
         if (page == 1) {
-            showNetError()
+            showServiceError()
             refreshStateModel.finishRefresh(false)
         } else {
             refreshStateModel.finishLoadMore(false)

@@ -1,13 +1,14 @@
 package com.rm.baselisten.viewmodel
 
-import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.model.*
 import com.rm.baselisten.mvvm.BaseViewModel
+import com.rm.baselisten.util.NetWorkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -56,11 +57,19 @@ open class BaseVMViewModel : BaseViewModel() {
 
 
     fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
+        if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+            viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
+        }else{
+            showNetError()
+        }
     }
 
     fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
-        viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
+        if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+            viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
+        }else{
+            showNetError()
+        }
     }
 
 
@@ -123,6 +132,10 @@ open class BaseVMViewModel : BaseViewModel() {
 
     fun showContentView() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT))
+    }
+
+    fun showServiceError() {
+        baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_SERVICE_ERROR))
     }
 
     fun showNetError() {

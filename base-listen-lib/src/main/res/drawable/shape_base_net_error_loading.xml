@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_base_tip_progress"
+    android:pivotY="50%"
+    android:interpolator="@android:anim/accelerate_interpolator"
+    android:fromDegrees="1440"
+    android:toDegrees="0"
+    android:pivotX="50%"
+     />
+

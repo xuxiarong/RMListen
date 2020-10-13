@@ -68,7 +68,7 @@ class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMView
                     mPageId = it.page_id
                 },
                 onError = {
-                    showNetError()
+                    showServiceError()
                 }
             )
         }
@@ -112,7 +112,7 @@ class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMView
      * 处理失败的数据
      */
     private fun processFailData() {
-        showNetError()
+        showServiceError()
         if (mPage == 1) {
             refreshStatusModel.finishRefresh(false)
         } else {

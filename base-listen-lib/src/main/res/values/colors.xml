@@ -4,6 +4,7 @@
     <color name="base_transparent">#00000000</color>
     <color name="base_transparent_80">#80000000</color>
     <color name="base_ff5e5e">#ff5e5e</color>
+    <color name="base_333">#333</color>
     <color name="base_a">#0f0</color>
     <color name="base_b1b1b1">#b1b1b1</color>
 

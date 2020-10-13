@@ -51,7 +51,7 @@ class LoginActivity : BaseVMActivity<ActivityLoginBinding, LoginViewModel>() {
 
         if (count % 4 == 0) {
             mViewModel.baseStatusModel.value =
-                BaseStatusModel(BaseNetStatus.BASE_SHOW_NET_ERROR)
+                BaseStatusModel(BaseNetStatus.BASE_SHOW_SERVICE_ERROR)
         } else if (count % 4 == 1) {
             mViewModel.baseStatusModel.value =
                 BaseStatusModel(BaseNetStatus.BASE_SHOW_DATA_EMPTY)

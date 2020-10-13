@@ -81,7 +81,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeTopListRep
      * 失败数据处理
      */
     private fun processFailData() {
-        showNetError()
+        showServiceError()
         if (mPage == 1) {
             refreshStatusModel.finishRefresh(false)
         } else {

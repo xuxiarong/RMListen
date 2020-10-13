@@ -6,7 +6,6 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
-import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.getBooleanMMKV
@@ -164,7 +163,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                         refreshStatusModel.setHasMore(it.audio_list?.list?.size ?: 0 > pageSize)
                     },
                     onError = {
-                        showNetError()
+                        showServiceError()
                         refreshStatusModel.finishRefresh(false)
                     }
                 )
@@ -188,7 +187,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
 
                     },
                     onError = {
-                        showNetError()
+                        showServiceError()
                         refreshStatusModel.finishLoadMore(false)
                     }
                 )
@@ -208,7 +207,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                     setFavorState(true)
                 },
                 onError = {
-                    showNetError()
+                    showServiceError()
                 }
             )
         }
@@ -227,7 +226,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                     setFavorState(false)
                 },
                 onError = {
-                    showNetError()
+                    showServiceError()
                 }
             )
         }

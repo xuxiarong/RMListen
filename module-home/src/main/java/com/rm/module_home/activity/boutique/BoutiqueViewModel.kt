@@ -40,7 +40,7 @@ class BoutiqueViewModel(private val repository: BoutiqueRepository) :
                     tabSize.set(tabList.size)
                 },
                 onError = {
-                    showNetError()
+                    showServiceError()
                 }
             )
         }

@@ -143,7 +143,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                 }
                 mChildView?.visibility = View.GONE
             }
-            BaseNetStatus.BASE_SHOW_NET_ERROR -> {
+            BaseNetStatus.BASE_SHOW_SERVICE_ERROR -> {
                 if (!mBaseBinding.baseError.isInflated) {
                     mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
                     mBaseBinding.baseError.viewStub?.inflate()
@@ -159,6 +159,11 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
             }
             BaseNetStatus.BASE_SHOW_CONTENT -> {
                 mChildView?.visibility = View.VISIBLE
+            }
+            BaseNetStatus.BASE_SHOW_NET_ERROR -> {
+                if(activity is BaseActivity){
+                    (activity as BaseActivity).tipView.showNetError(activity!!)
+                }
             }
             else -> {
                 DLog.d("suolong"," netStatus = ${statusModel.netStatus}")

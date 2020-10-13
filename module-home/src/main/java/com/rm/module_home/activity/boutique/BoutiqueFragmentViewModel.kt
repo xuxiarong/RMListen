@@ -62,7 +62,7 @@ class BoutiqueFragmentViewModel(private val repository: BoutiqueRepository) : Ba
                     },
                     onError = {
                         if (page == 1) {
-                            showNetError()
+                            showServiceError()
                         } else {
                             // 获取下一页失败，显示列表加载失败的视图
                             refreshStatusModel.finishLoadMore(false)

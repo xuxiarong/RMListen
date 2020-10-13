@@ -319,7 +319,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                     page++
                 }, onError = {
                     if (page == 1) {
-                        showNetError()
+                        showServiceError()
                     } else {
                         refreshStatusModel.finishLoadMore(false)
                     }
@@ -353,7 +353,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                     page++
                 }, onError = {
                     if (page == 1) {
-                        showNetError()
+                        showServiceError()
                     } else {
                         refreshStatusModel.finishLoadMore(false)
                     }

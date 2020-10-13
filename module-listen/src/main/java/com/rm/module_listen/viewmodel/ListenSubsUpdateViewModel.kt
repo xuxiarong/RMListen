@@ -11,7 +11,6 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
@@ -77,7 +76,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                     currentPage++
                     dealData(it.list)
                 }, onError = {
-                    showNetError()
+                    showServiceError()
                     refreshStatusModel.finishLoadMore(false)
                     DLog.d("suolong", "on error")
                 }

@@ -10,8 +10,8 @@ import androidx.fragment.app.FragmentActivity
 import com.gyf.barlibrary.ImmersionBar
 import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.view.BaseTipView
 
 /**
  * desc   : 基类的MvvmActivity
@@ -24,6 +24,9 @@ abstract class BaseActivity : FragmentActivity() {
         ImmersionBarHelper.create(this)
     }
 
+    val tipView : BaseTipView by lazy {
+        BaseTipView(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //不是dataBind的模式，则setContentView
@@ -35,8 +38,6 @@ abstract class BaseActivity : FragmentActivity() {
             initData()
         }
         setStatusBar(R.color.base_activity_bg_color)
-        DLog.d(javaClass.simpleName, " --- onCreate")
-
     }
 
     protected open fun isDataBind(): Boolean {

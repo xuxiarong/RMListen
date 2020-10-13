@@ -67,7 +67,7 @@ class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewMo
                     if (page == 1) {
                         // 获取第一页数据就失败
                         // 显示错误视图
-                        showNetError()
+                        showServiceError()
                     } else {
                         // 获取下一页失败，显示列表加载失败的视图
                         refreshStatusModel.finishLoadMore(false)

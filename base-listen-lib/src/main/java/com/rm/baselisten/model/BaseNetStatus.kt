@@ -8,7 +8,7 @@ package com.rm.baselisten.model
 enum class BaseNetStatus {
     BASE_SHOW_CONTENT,
     BASE_SHOW_LOADING,
-    BASE_SHOW_NET_ERROR,
+    BASE_SHOW_SERVICE_ERROR,
     BASE_SHOW_DATA_EMPTY,
-    BASE_SHOW_TOAST
+    BASE_SHOW_NET_ERROR,
 }

@@ -90,7 +90,7 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
                     processSuccessData(it)
                 },
                 onError = {
-                    showNetError()
+                    showServiceError()
                     processFailData()
                 }
             )
