@@ -80,4 +80,6 @@ dependencies {
     implementation project(path: ':component-comm')
     implementation rootProject.ext.dependencies["material"]
     kapt rootProject.ext.dependencies["router_compiler"]
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
+
 }

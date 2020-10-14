@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_110"
             android:layout_marginTop="@dimen/dp_24"
+            android:gravity="start|top"
             android:background="@drawable/business_shape_f7f7f7_8dp"
             android:hint="@string/mine_enter_signature"
             android:padding="@dimen/dp_10" />

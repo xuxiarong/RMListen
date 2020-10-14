@@ -89,4 +89,8 @@
     <string name="mine_unfilled">未填写</string>
 
 
+    <string name="mine_shoot">拍摄</string>
+    <string name="mine_album">本地相册</string>
+
+
 </resources>

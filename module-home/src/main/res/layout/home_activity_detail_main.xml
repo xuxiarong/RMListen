@@ -38,11 +38,13 @@
 
                 <com.rm.business_lib.wedgit.bottomsheet.ContentRecyclerView
                     android:id="@+id/detail_anthology_recycler"
+                    isVisible="@{viewModel.hideOr}"
+                    bindGridLayout="@{viewModel.chapterAnthologyAdapter}"
+                    bindCount="@{4}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/businessWhite"
-                    isVisible="@{viewModel.HideOr}"
-                    />
+                    android:background="@color/businessWhite" />
+
                 <com.scwang.smart.refresh.layout.SmartRefreshLayout
                     android:id="@+id/home_chapter_detail_refresh"
                     bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore()}"
@@ -50,14 +52,17 @@
                     bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
                     bindOnLoadMoreListener="@{viewModel.loadData}"
                     bindOnRefreshListener="@{viewModel.refreshData}"
-                    android:background="@color/businessWhite"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <com.rm.business_lib.wedgit.bottomsheet.ContentRecyclerView
-                    android:id="@+id/detail_directory_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/businessWhite" />
+                    android:background="@color/businessWhite"
+                    bind:srlEnableRefresh="false">
+
+                    <com.rm.business_lib.wedgit.bottomsheet.ContentRecyclerView
+                        android:id="@+id/detail_directory_recycler"
+                        bindVerticalLayout="@{viewModel.chapterAdapter}"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/businessWhite" />
                 </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
             </LinearLayout>

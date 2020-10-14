@@ -25,7 +25,14 @@ class MinePersonalInfoViewModel : BaseVMViewModel() {
 
     val sex = ObservableField<String>()
 
-    val sexDialog by lazy { CommBottomDialog() }
+    //性别 dialog
+    private val sexDialog by lazy { CommBottomDialog() }
+
+    //头像dialog
+    private val imageDialog by lazy { CommBottomDialog() }
+
+    //生日
+    private val birthdayDialog by lazy { CommBottomDialog() }
 
     init {
         userInfo.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
@@ -58,6 +65,20 @@ class MinePersonalInfoViewModel : BaseVMViewModel() {
     }
 
     /**
+     * 头像点击事件
+     */
+    fun clickAvatar(view: View) {
+        getActivity(view.context)?.let {
+            imageDialog.showCommonDialog(
+                it,
+                R.layout.mine_dialog_bottom_select_image,
+                this,
+                BR.viewModel
+            )
+        }
+    }
+
+    /**
      * 昵称点击事件
      */
     fun clickNickname() {
@@ -81,12 +102,23 @@ class MinePersonalInfoViewModel : BaseVMViewModel() {
     /**
      * 地址点击事件
      */
-    fun clickAddress() {}
+    fun clickAddress() {
+
+    }
 
     /**
      * 生日点击事件
      */
-    fun clickBirthday() {}
+    fun clickBirthday(view: View) {
+        getActivity(view.context)?.let {
+            birthdayDialog.showCommonDialog(
+                it,
+                R.layout.mine_dialog_bottom_select_birthday,
+                this,
+                BR.viewModel
+            )
+        }
+    }
 
     /**
      * 个性签名点击事件
@@ -116,4 +148,28 @@ class MinePersonalInfoViewModel : BaseVMViewModel() {
      * 保密
      */
     fun sexDialogSecretFun() {}
+
+
+    /**
+     * 相机
+     */
+    fun imageDialogCameraFun() {
+
+    }
+
+    /**
+     * 相册
+     */
+    fun imageDialogAlbumFun() {
+
+    }
+
+    /**
+     * 取消
+     */
+    fun imageDialogCancelFun() {
+        imageDialog.dismiss()
+    }
+
+
 }

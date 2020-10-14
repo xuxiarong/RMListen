@@ -22,17 +22,17 @@
             android:layout_marginBottom="@dimen/dp_8"
             android:background="@drawable/business_shape_round_c7f9f9f9_14dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/mine_dialog_sex_cancel">
+            app:layout_constraintBottom_toTopOf="@id/mine_dialog_bottom_image_cancel">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/mine_dialog_sex_man"
+                android:id="@+id/mine_dialog_bottom_image_camera"
                 style="@style/BusinessTextStyleFirst_6"
                 android:layout_width="match_parent"
-                android:onClick="@{()->viewModel.sexDialogManFun()}"
                 android:gravity="center"
+                android:onClick="@{()->viewModel.imageDialogCameraFun()}"
                 android:paddingTop="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_16"
-                android:text="@string/mine_man" />
+                android:text="@string/mine_shoot" />
 
             <View
                 android:layout_width="match_parent"
@@ -40,38 +40,24 @@
                 android:background="@color/business_color_80111111" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/mine_dialog_sex_woman"
+                android:id="@+id/mine_dialog_bottom_image_album"
                 style="@style/BusinessTextStyleFirst_6"
                 android:layout_width="match_parent"
                 android:gravity="center"
-                android:onClick="@{()->viewModel.sexDialogWoManFun()}"
+                android:onClick="@{()->viewModel.imageDialogAlbumFun()}"
                 android:paddingTop="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_16"
-                android:text="@string/mine_woman" />
+                android:text="@string/mine_album" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/business_color_80111111" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/mine_dialog_sex_secret"
-                style="@style/BusinessTextStyleFirst_6"
-                android:onClick="@{()->viewModel.sexDialogSecretFun()}"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:paddingTop="@dimen/dp_16"
-                android:paddingBottom="@dimen/dp_16"
-                android:text="@string/mine_secret" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/mine_dialog_sex_cancel"
+            android:id="@+id/mine_dialog_bottom_image_cancel"
             style="@style/BusinessTextStyleFirst_6"
             android:layout_width="match_parent"
             android:background="@drawable/business_shape_round_ffffff_14dp"
             android:gravity="center"
-            android:onClick="@{()->viewModel.sexDialogCancelFun()}"
+            android:onClick="@{()->viewModel.imageDialogCancelFun()}"
             android:text="@string/business_cancel"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent" />

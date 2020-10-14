@@ -4,34 +4,30 @@ import android.content.Context
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.*
-import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
-import com.rm.component_comm.listen.ListenService
-import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.model.home.detail.CommentList
+import com.rm.module_home.model.home.detail.HomeCommentViewModel
 import com.rm.module_home.repository.DetailRepository
 import com.rm.module_play.enum.Jump
 
 
-class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMViewModel() {
+class HomeDetailViewModel1(private val repository: DetailRepository) : BaseVMViewModel() {
+
 
     //当前加载的页码
-    private var mPage = 1
+    var mPage = 1
 
     //每次加载数据的条数
-    val pageSize = 10
+    val pageSize = 2
 
     //上一页页码
     private var upTrackPage = 0
@@ -40,69 +36,26 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     private var curTrackPage = 1
 
     //章节分页显示与隐藏
-    var hideOr = ObservableBoolean(false)
+    var HideOr = ObservableBoolean(false)
 
-    //主播是否关注
-    var isAttention = ObservableBoolean(false)
+    //主播关注与已关注
+    var MemberAnthor = ObservableBoolean(false)
 
-    var audioId = ObservableField<String>("")
+    var audioId = ObservableField<String>()
     var sort = ObservableField<String>()
     var total = ObservableField<String>()
     var showStatus = ObservableField<String>()
     val actionControl = MutableLiveData<String>()
-    private val errorTips = ObservableField<String>()
-
+    var errorTips = ObservableField<String>()
     var detailViewModel = ObservableField<HomeDetailModel>()
+    var detailCommentViewModel = MutableLiveData<HomeCommentViewModel>()
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
-    fun getAttentionStr(isAttention: Boolean): String {
-        return if (isAttention) {
-            "已关注"
-        } else {
-            "关注"
-        }
-    }
+    //收藏点击事件闭包
+    var clickCollected: () -> Unit = {}
 
-    //评论dapper
-    val homeDetailCommentAdapter by lazy {
-        CommonBindAdapter(
-            mutableListOf<CommentList>(), R.layout.home_detail_item_comment, BR.comment_list
-        )
-    }
-
-    //标签adapter
-    val homeDetailTagsAdapter by lazy {
-        CommonBindAdapter(
-            mutableListOf<DetailTags>(),
-            R.layout.home_item_book_label, BR.DetailTags
-        )
-    }
-
-    /**
-     * 分页适配器
-     */
-    val chapterAnthologyAdapter by lazy {
-        CommonBindVMAdapter(
-            this, mutableListOf<DataStr>(),
-            R.layout.home_chapter_item_anthology,
-            BR.click,
-            BR.item
-        )
-    }
-
-    /**
-     * 章节的适配器
-     */
-    val chapterAdapter by lazy {
-        CommonBindVMAdapter(
-            this,
-            mutableListOf<ChapterList>(),
-            R.layout.home_item_detail_chapter,
-            BR.chapterclick,
-            BR.DetailChapterViewModel
-
-        )
-    }
+    //订阅点击事件闭包
+    var clickSubscribe: () -> Unit = {}
 
 
     /**
@@ -128,13 +81,10 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 onSuccess = {
                     showContentView()
                     detailViewModel.set(it)
-                    isAttention.set(it.detaillist.anchor.status)
-
-                    homeDetailTagsAdapter.setList(it.detaillist.detail_tags)
                 }, onError = {
                     showContentView()
                     errorTips.set(it)
-                    showToast(it.toString())
+                    finish()
                 }
             )
         }
@@ -144,7 +94,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 订阅
      */
-    private fun subscribe(audioID: String) {
+    fun subscribe(audioID: String) {
         showLoading()
         launchOnIO {
             repository.subscribe(audioID).checkResult(
@@ -165,12 +115,13 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      */
     fun toPlayPage() {
         actionControl.postValue("toPlayPage")
+
     }
 
     /**
      * 书籍状态
      */
-    private fun showStatus() {
+    fun showStatus() {
         when (detailViewModel.get()?.detaillist?.progress) {
             0 -> showStatus.set("未开播")
             1 -> showStatus.set("已连载" + detailViewModel.get()?.detaillist?.last_sequence + "集")
@@ -206,7 +157,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      * 排序
      */
     fun getTrackList(mSort: String) {
-        if (mSort != sort.get()) {
+        if (!mSort.equals(sort.get())) {
             //curTrackPage = 1
             sort.set(mSort)
         }
@@ -228,8 +179,8 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     /**
      * 2 上拉，下拉更多
      */
-    private fun getTrackList(isUp: Boolean) {
-        val page: Int
+    fun getTrackList(isUp: Boolean) {
+        var page: Int
         if (isUp) {
             page = upTrackPage
             if (0 == page) {
@@ -266,10 +217,12 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      * 分页查询
      */
     fun getTrackList(mPage: Int) {
-        DLog.e("mPage", "" + mPage)
-
         launchOnIO {
-            repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
+            repository.chapterList(/*audioId.get()!!*/"168061563336011776",
+                mPage,
+                pageSize, /*sort.get()!!*/
+                "asc"
+            ).checkResult(
                 onSuccess = {
                     showContentView()
                     //当前为1，上一页为0，下一页为2
@@ -279,9 +232,21 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                     upTrackPage--
                     curTrackPage++
 
-                    it.chapter_list.let { list -> chapterAdapter.setList(list) }
+                    it.chapter_list.let { list ->
+                        chapterAdapter.setList(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                        chapterAdapter.addData(list)
+                    }
                     refreshStatusModel.setHasMore(it.chapter_list.size >= pageSize)
-                    hideOr.set(false)
+                    HideOr.set(false)
 
                 }, onError = {
                     showContentView()
@@ -292,8 +257,30 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     }
 
     /**
-     * 章节 item 点击事件
+     * 分页适配器
      */
+    val ChapterAnthologyAdapter by lazy {
+        CommonBindVMAdapter(
+            this, mutableListOf<DataStr>(),
+            R.layout.home_chapter_item_anthology,
+            BR.click,
+            BR.item
+        )
+    }
+
+    /**
+     * 章节的适配器
+     */
+    val chapterAdapter by lazy {
+        CommonBindVMAdapter(
+            this,
+            mutableListOf<ChapterList>(),
+            R.layout.home_item_detail_chapter1,
+            BR.chapterclick,
+            BR.DetailChapterViewModel
+        )
+    }
+
     fun itemClick(context: Context, bean: ChapterList) {
         playService.toPlayPage(
             context, bean, Jump.CHAPTER.from
@@ -313,7 +300,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
             repository.getCommentInfo(audio_id, page, page_size).checkResult(
                 onSuccess = {
                     showContentView()
-                    homeDetailCommentAdapter.setList(it.list_comment)
+                    detailCommentViewModel.postValue(it)
                     Log.i("commentList", it.toString())
                 }, onError = {
                     showContentView()
@@ -325,77 +312,49 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     }
 
     /**
-     * 快捷登陆
-     */
-    private fun toLogin(activity: FragmentActivity) {
-        RouterHelper.createRouter(LoginService::class.java).quicklyLogin(this, activity)
-    }
-
-
-    /**
      * 收藏点击事件
      */
-    fun clickCollectionFun(context: Context) {
-        getActivity(context)?.let {
-            if (!isLogin.get()) {
-                toLogin(it)
-                return
-            }
-            RouterHelper.createRouter(ListenService::class.java)
-                .showMySheetListDialog(this, it, audioId.get()!!)
-        }
-
+    fun clickCollectionFun() {
+        clickCollected()
     }
 
     /**
      * 订阅点击事件
      */
-    fun clickSubscribeFun(context: Context) {
-        getActivity(context)?.let {
-            if (!isLogin.get()) {
-                toLogin(it)
-                return
-            }
-            subscribe(audioId.get()!!)
-        }
-    }
-
-    /**
-     * 关注主播点击事件
-     */
-    fun clickSubMemberFun() {
+    fun clickSubscribeFun() {
+        clickSubscribe()
     }
 
     /**
      * 获取分页列表
      */
-    private fun setPager(totalCount: Int) {
+    fun setPager(totalcount: Int) {
 
-        val anthologyList = ArrayList<DataStr>()
+        var anthologyList = ArrayList<DataStr>()
 
-        val size = totalCount / pageSize
+        var size = totalcount / pageSize
 
         if (sort.get().equals("desc")) {
             for (i in 0 until size) {
                 anthologyList.add(
                     DataStr(
-                        (totalCount - i * pageSize).toString() + "~" + (totalCount - (i + 1) * pageSize + 1),
+                        (totalcount - i * pageSize).toString() + "~" + (totalcount - (i + 1) * pageSize + 1),
                         i + 1
                     )
                 )
             }
             if (size != 0) {
-                anthologyList.add(DataStr("${totalCount - size * pageSize}-1", size + 1))
+                anthologyList.add(DataStr("${totalcount - size * pageSize}-1", size + 1))
             }
         } else {
             for (i in 0 until size) {
                 anthologyList.add(DataStr("${i * pageSize + 1}-" + (i + 1) * pageSize, i + 1))
             }
-            if (size != 0) {
+            if (size !== 0) {
                 anthologyList.add(DataStr("${size * pageSize + 1}", size + 1))
             }
         }
-        chapterAnthologyAdapter.setList(anthologyList)
+        ChapterAnthologyAdapter.setList(anthologyList)
     }
 
 }

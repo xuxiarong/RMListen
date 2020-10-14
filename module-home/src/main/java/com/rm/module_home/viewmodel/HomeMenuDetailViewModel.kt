@@ -26,6 +26,7 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity.Companion.AUDIO_ID
+import com.rm.module_home.activity.detail.HomeDetailActivity1
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.repository.HomeMenuDetailRepository
@@ -111,7 +112,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
      * 分享点击事件
      */
     fun clickShare() {
-
+        startActivity(HomeDetailActivity1::class.java)
     }
 
     /**
@@ -241,7 +242,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
         if (IS_FIRST_FAVORITES.getBooleanMMKV(true) && activity != null) {
             CustomTipsFragmentDialog().apply {
                 titleText = context.getString(R.string.home_favorites_success)
-                contentText =context. getString(R.string.home_favorites_success_content)
+                contentText = context.getString(R.string.home_favorites_success_content)
                 leftBtnText = context.getString(R.string.home_know)
                 rightBtnText = context.getString(R.string.home_goto_look)
                 leftBtnTextColor = R.color.business_text_color_333333

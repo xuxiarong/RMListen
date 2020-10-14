@@ -92,7 +92,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     val historyIsVisible = ObservableField<Boolean>(false)
 
     //推荐内容是否现实
-    val recommendVisible = ObservableField<Boolean>(true)
+    val recommendVisible = ObservableField<Boolean>(false)
 
     var clearInput: () -> Unit = {}
 
@@ -246,6 +246,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                 onSuccess = {
                     val split = it.keywords.split(",")
                     recommendData.set(it.keywords)
+                    recommendVisible.set(true)
                     adapter.setList(split)
                 },
                 onError = {})

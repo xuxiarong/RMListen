@@ -17,6 +17,7 @@
         <com.rm.module_mine.widget.MineCommonMaterialView
             android:id="@+id/mine_personal_avatar"
             userIcon="@{viewModel.userInfo.avatar_url}"
+            android:onClick="@{(view)->viewModel.clickAvatar(view)}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:material_name="@string/mine_avatar" />
@@ -45,7 +46,7 @@
             userText="@{viewModel.userInfo.birthday}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.clickBirthday()}"
+            android:onClick="@{(view)->viewModel.clickBirthday(view)}"
             app:material_name="@string/mine_birthday" />
 
         <com.rm.module_mine.widget.MineCommonMaterialView

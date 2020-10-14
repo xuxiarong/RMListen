@@ -29,10 +29,6 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
 
     override fun initModelBrId() = BR.viewModel
 
-    override fun initView() {
-        super.initView()
-    }
-
     override fun initData() {
         mViewModel.getData()
     }
@@ -40,6 +36,5 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
 
     override fun startObserve() {
     }
-
 
 }

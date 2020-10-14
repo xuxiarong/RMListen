@@ -22,6 +22,7 @@ import com.rm.baselisten.binding.bindUrl
 import com.rm.baselisten.binding.isVisible
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
+import com.rm.baselisten.utilExt.Drawable
 import com.rm.baselisten.utilExt.dimen
 import com.rm.module_mine.R
 
@@ -118,7 +119,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
      */
     fun setMaterialUserIcon(imgUrl: String?) {
         userIcon.visibility = View.VISIBLE
-        userIcon.bindUrl(0f, imgUrl, true)
+        userIcon.bindUrl(0f, imgUrl, true,Drawable(R.drawable.business_ic_default_user))
     }
 
     /**

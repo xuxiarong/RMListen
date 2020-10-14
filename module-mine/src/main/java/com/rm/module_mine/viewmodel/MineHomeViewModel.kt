@@ -1,17 +1,23 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import com.bigkoo.pickerview.builder.TimePickerBuilder
+import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
+import com.rm.baselisten.dialog.CommBottomDialog
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineSettingActivity
 import com.rm.module_mine.adapter.MineHomeAdapter
 import com.rm.module_mine.bean.MineHomeBean
 import com.rm.module_mine.bean.MineHomeDetailBean
+import java.text.SimpleDateFormat
 
 /**
  *
@@ -85,8 +91,8 @@ class MineHomeViewModel : BaseVMViewModel() {
      * 消息通知点击事件
      * @param context Context
      */
-    fun noticeClick(context: Context){
-        if(!isLogin.get()){
+    fun noticeClick(context: Context) {
+        if (!isLogin.get()) {
             // 未登陆
             RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
             return
@@ -98,7 +104,7 @@ class MineHomeViewModel : BaseVMViewModel() {
      * 设置点击事件
      * @param context Context
      */
-    fun settingClick(context: Context){
+    fun settingClick(context: Context) {
         MineSettingActivity.startActivity(context)
     }
 
@@ -119,7 +125,24 @@ class MineHomeViewModel : BaseVMViewModel() {
      * 立即开通点击事件
      * @param context Context
      */
-    fun getVipClick(context: Context){
+    fun getVipClick(context: Context) {
         showToast("立即开通点击事件")
+//
+        getActivity(context)?.let {
+            CommBottomDialog().showCommonDialog(
+                it,
+                R.layout.mine_dialog_bottom_select_birthday,
+                this,
+                BR.viewModel
+            )
+        }
+//
+//        TimePickerBuilder(context, OnTimeSelectListener { date, v ->
+//            SimpleDateFormat.getDateInstance()
+//
+//            val dateFormat = SimpleDateFormat.getDateInstance()
+//            val format = dateFormat.format(date)
+//            DLog.i("--------->", "format:$format")
+//        }).build().show()
     }
 }
