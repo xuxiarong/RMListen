@@ -55,7 +55,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dp_2"
                             android:drawableStart="@drawable/home_icon_play_ed"
-                            android:text="@{viewModel.detailViewModel.detaillist.play_count}"
+                            bindPlayCountString="@{viewModel.detailViewModel.detaillist.play_count}"
                             android:textColor="@color/businessWhite"
                             app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
                             app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
