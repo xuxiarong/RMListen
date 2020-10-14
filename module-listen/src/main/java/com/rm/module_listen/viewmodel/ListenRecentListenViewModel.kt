@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
@@ -68,9 +70,10 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         )
     }
 
-    fun deleteItem(item: MultiItemEntity) {
+    fun deleteItem(item: ListenHistoryModel) {
+        mSwipeAdapter.mItemManger.closeItem(mSwipeAdapter.data.indexOf(item))
         mSwipeAdapter.data.remove(item)
-        mSwipeAdapter.notifyDataSetChanged()
+        DaoUtil(HistoryPlayBook::class.java, "").delete(item.HistoryPlayBook)
     }
 
 }

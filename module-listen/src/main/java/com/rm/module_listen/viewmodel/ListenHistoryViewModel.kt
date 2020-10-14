@@ -4,7 +4,6 @@ import android.content.Context
 import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.DaoUtil
@@ -98,9 +97,10 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         ListenHistorySearchActivity.startListenHistorySearch(context)
     }
 
-    fun deleteItem(item: MultiItemEntity) {
+    fun deleteItem(item: ListenHistoryModel) {
+        mSwipeAdapter.mItemManger.closeItem(mSwipeAdapter.data.indexOf(item))
         mSwipeAdapter.data.remove(item)
-        mSwipeAdapter.notifyDataSetChanged()
+        DaoUtil(HistoryPlayBook::class.java, "").delete(item.HistoryPlayBook)
     }
 
 
