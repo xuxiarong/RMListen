@@ -6,7 +6,7 @@ import com.rm.module_home.bean.CategoryTabListBean
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.model.home.HomeModel
-import com.rm.module_home.model.home.detail.HomeCommentViewModel
+import com.rm.module_home.model.home.detail.HomeCommentBean
 import retrofit2.http.*
 
 
@@ -24,18 +24,11 @@ interface HomeApiService {
     @GET("content/page/home")
     suspend fun getHomeData(): BaseResponse<HomeModel>
 
-    @FormUrlEncoded
-    @POST("/lg/user_article/add/json")
-    suspend fun test(
-        @Field("title") title: String,
-        @Field("link") url: String
-    ): BaseResponse<String>
-
     /**
      * 获取听书详情
      */
     @GET("audio/detail")
-    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailModel>
+    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailBean>
 
 
     /**
@@ -43,11 +36,11 @@ interface HomeApiService {
      */
 
     @GET("comment/audio-comments")
-    suspend fun HomeDetail_Comment(
+    suspend fun homeDetailComment(
         @Query("audio_id") audio_id: String,
         @Query("page") page: Int,
         @Query("page_size") page_size: Int
-    ): BaseResponse<HomeCommentViewModel>
+    ): BaseResponse<HomeCommentBean>
 
     /**
      * 章节列表
@@ -59,18 +52,6 @@ interface HomeApiService {
         @Query("page_size") page_size: Int,
         @Query("sort") sort: String
     ): BaseResponse<AudioChapterListModel>
-
-    /**
-     * 下载音频章节
-     */
-    @POST("audio/chapter/download")
-    suspend fun HomeChapterDown(
-        @Field("audio_id") audio_id: Int,
-        @Field("start_sequence") start_sequence: Int,
-        @Field("end_sequence") end_sequence: Int,
-        @Field("sequences") sequences: String,
-        @Field("type") type: Int
-    ): BaseResponse<String>
 
     /**
      * 首页-听单
@@ -92,7 +73,7 @@ interface HomeApiService {
      * 听单详情
      */
     @GET("content/sheet/info")
-    suspend fun homeSheetInfo(@Query("sheet_id") sheet_id: String): BaseResponse<SheetInfoBean>
+    suspend fun homeSheetInfo(@Query("sheet_id") sheet_id: String): BaseResponse<SheetDetailInfoBean>
 
     /**
      * 听单音频列表

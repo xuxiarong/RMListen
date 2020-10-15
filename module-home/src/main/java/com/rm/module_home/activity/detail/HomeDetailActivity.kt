@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dip
@@ -114,11 +113,11 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             mViewModel.detailViewModel.get()?.let {
                 playService.toPlayPage(
                     this@HomeDetailActivity, DetailBookBean(
-                        audio_id = it.detaillist.audio_id,
-                        audio_name = it.detaillist.audio_name,
-                        original_name = it.detaillist.original_name,
-                        author = it.detaillist.author,
-                        audio_cover_url = it.detaillist.audio_cover_url
+                        audio_id = it.list.audio_id,
+                        audio_name = it.list.audio_name,
+                        original_name = it.list.original_name,
+                        author = it.list.author,
+                        audio_cover_url = it.list.audio_cover_url
                     ), Jump.DETAILSBOOK.from
                 )
             }
@@ -130,9 +129,9 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         object : ScrollLayout.OnScrollChangedListener {
             override fun onScrollProgressChanged(currentProgress: Float) {
                 if (currentProgress == 0f) {
-                    home_detail_title.visibility = View.VISIBLE
+                    home_detail_audio_name.visibility = View.VISIBLE
                 } else {
-                    home_detail_title.visibility = View.GONE
+                    home_detail_audio_name.visibility = View.GONE
                 }
             }
 

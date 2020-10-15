@@ -2,10 +2,8 @@ package com.rm.component_comm.play
 
 import android.content.Context
 import android.view.View
-import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
-import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.component_comm.router.ApplicationProvider
 

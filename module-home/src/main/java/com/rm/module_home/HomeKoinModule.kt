@@ -34,13 +34,6 @@ val viewModelModule = module {
 
 val repositoryModule = module {
     // 所有的Repository都需要在这里声明
-    single { HomeMenuRepository(get()) }
-    single { HomeMenuDetailRepository(get()) }
-    single { BoutiqueRepository(get()) }
-    single { HomeTopListRepository(get()) }
-    single { DetailRepository(get()) }
-    // 专题列表Repository
-    single { HomeTopicRepository(get()) }
     single { HomeRepository(get()) }
     single { BusinessRetrofitClient().getService(HomeApiService::class.java) }
 }

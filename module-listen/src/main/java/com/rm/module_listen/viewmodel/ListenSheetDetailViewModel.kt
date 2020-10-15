@@ -91,10 +91,10 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
                     //刷新完成
                     refreshStateModel.finishRefresh(true)
                     //设置新数据源
-                    mAdapter.setList(it.audio_list?.list)
+                    mAdapter.setList(it.audio_list)
 
                     //是否有更多数据
-                    refreshStateModel.setHasMore(it.audio_list?.list?.size ?: 0 > pageSize)
+                    refreshStateModel.setHasMore(it.audio_list?.size ?: 0 > pageSize)
                 },
 
                 onError = {

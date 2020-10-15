@@ -1,10 +1,12 @@
 package com.rm.module_home.activity.detail
 
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.DLog
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetail1Binding
 import com.rm.module_home.viewmodel.HomeDetailViewModel1
+import kotlinx.android.synthetic.main.home_activity_detail1.*
 
 /**
  * 书籍详情
@@ -21,6 +23,9 @@ class HomeDetailActivity1 : BaseVMActivity<HomeActivityDetail1Binding, HomeDetai
     }
 
     override fun initData() {
-        mViewModel.getTrackList(1)
+        mViewModel.onRefresh()
+        mViewModel.getDetailInfo("165050481775759360")
+        mViewModel.commentList("165050481775759360", 1, 10)
     }
+
 }

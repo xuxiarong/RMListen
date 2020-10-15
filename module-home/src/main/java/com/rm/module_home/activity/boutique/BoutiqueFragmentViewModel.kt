@@ -9,14 +9,14 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.bean.CategoryTabBean
-import com.rm.module_home.repository.BoutiqueRepository
+import com.rm.module_home.repository.HomeRepository
 
 /**
  * desc   :
  * date   : 2020/08/25
  * version: 1.0
  */
-class BoutiqueFragmentViewModel(private val repository: BoutiqueRepository) : BaseVMViewModel() {
+class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
     private var page = 1
     private val pageSize = 10
 

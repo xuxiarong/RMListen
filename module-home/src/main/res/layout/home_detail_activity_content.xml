@@ -34,7 +34,7 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_glide"
-                        blurUrl="@{viewModel.detailViewModel.detaillist.audio_cover_url}"
+                        blurUrl="@{viewModel.detailViewModel.list.audio_cover_url}"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:scaleType="fitXY"
@@ -45,7 +45,7 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/home_detail_icon"
-                        bindUrl="@{viewModel.detailViewModel.detaillist.audio_cover_url}"
+                        bindUrl="@{viewModel.detailViewModel.list.audio_cover_url}"
                         corner="@{8.0f}"
                         android:layout_width="144dp"
                         android:layout_height="144dp"
@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/dp_2"
                         android:drawableStart="@drawable/home_icon_play_ed"
-                        android:text="@{viewModel.detailViewModel.detaillist.play_count}"
+                        android:text="@{viewModel.detailViewModel.list.play_count}"
                         android:textColor="@color/businessWhite"
                         app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
                         app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
@@ -83,7 +83,7 @@
                             android:layout_height="wrap_content"
                             android:lines="2"
                             android:maxLines="2"
-                            android:text="@{viewModel.detailViewModel.detaillist.audio_name}"
+                            android:text="@{viewModel.detailViewModel.list.audio_name}"
                             android:textColor="@color/business_text_color_333333"
                             android:textSize="@dimen/business_text_size_18sp"
                             tools:text="书名" />
@@ -96,18 +96,18 @@
                             android:lines="1"
                             android:paddingTop="@dimen/dp_4"
                             android:paddingBottom="@dimen/dp_6"
-                            android:text="@{viewModel.detailViewModel.detaillist.author}"
+                            android:text="@{viewModel.detailViewModel.list.author}"
                             android:textColor="@color/business_text_color_666666"
                             android:textSize="@dimen/business_text_size_12sp"
                             tools:text="作者：曹雪芹" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/detail_anthor"
+                            android:id="@+id/home_detail_anchor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawableStart="@drawable/home_detail_icon_anchor_ee"
                             android:lines="1"
-                            android:text="@{viewModel.detailViewModel.detaillist.anchor.anchor_name}"
+                            android:text="@{viewModel.detailViewModel.list.anchor.anchor_name}"
                             android:textColor="@color/business_text_color_666666"
                             android:textSize="@dimen/business_text_size_12sp"
                             tools:text="主播：小丸子的朋友" />
@@ -174,7 +174,7 @@
 
                     <com.rm.business_lib.wedgit.expandtextview.ExpandableTextView
                         android:id="@+id/home_detail_tx_content"
-                        expandText="@{viewModel.detailViewModel.detaillist.author_intro}"
+                        expandText="@{viewModel.detailViewModel.list.author_intro}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_4"
@@ -185,7 +185,7 @@
                         tools:text="@string/home_detail_brief_introduction" />
 
                     <View
-                        android:id="@+id/detail_lineview"
+                        android:id="@+id/home_detail_line"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/line_0.5dp"
                         android:layout_marginTop="@dimen/dp_14"
@@ -196,7 +196,7 @@
                         app:layout_constraintTop_toBottomOf="@id/home_detail_tx_content" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/detail_tx_money"
+                        android:id="@+id/home_detail_money"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_14"
@@ -204,7 +204,7 @@
                         android:textColor="@color/business_color_ff5e5e"
                         android:textSize="@dimen/business_text_size_26sp"
                         app:layout_constraintStart_toStartOf="@id/home_detail_icon"
-                        app:layout_constraintTop_toBottomOf="@+id/detail_lineview" />
+                        app:layout_constraintTop_toBottomOf="@+id/home_detail_line" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -212,9 +212,9 @@
                         android:text=" / 集"
                         android:textColor="@color/business_text_color_333333"
                         android:textSize="@dimen/business_text_size_16sp"
-                        app:layout_constraintBottom_toBottomOf="@id/detail_tx_money"
-                        app:layout_constraintStart_toEndOf="@+id/detail_tx_money"
-                        app:layout_constraintTop_toTopOf="@id/detail_tx_money" />
+                        app:layout_constraintBottom_toBottomOf="@id/home_detail_money"
+                        app:layout_constraintStart_toEndOf="@+id/home_detail_money"
+                        app:layout_constraintTop_toTopOf="@id/home_detail_money" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -224,7 +224,7 @@
                         android:text="@string/home_detail_join_membership"
                         android:textColor="@color/business_color_ff5e5e"
                         app:layout_constraintEnd_toEndOf="@id/home_detail_collect_icon"
-                        app:layout_constraintTop_toBottomOf="@+id/detail_lineview"
+                        app:layout_constraintTop_toBottomOf="@+id/home_detail_line"
                         tools:text="@string/home_detail_join_membership" />
 
                     <View
@@ -235,11 +235,11 @@
                         android:background="@drawable/shape_radius_f7f7f7"
                         app:layout_constraintEnd_toEndOf="@id/home_detail_collect_icon"
                         app:layout_constraintStart_toStartOf="@id/home_detail_icon"
-                        app:layout_constraintTop_toBottomOf="@id/detail_lineview"></View>
+                        app:layout_constraintTop_toBottomOf="@id/home_detail_line"></View>
                     <!-- 主播 -->
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/home_detail_anchor_url"
-                        bindUrl="@{viewModel.detailViewModel.detaillist.anchor.anchor_avatar}"
+                        bindUrl="@{viewModel.detailViewModel.list.anchor.anchor_avatar}"
                         isCircle="@{true}"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -253,7 +253,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_8"
-                        android:text="@{viewModel.detailViewModel.detaillist.anchor.anchor_name}"
+                        android:text="@{viewModel.detailViewModel.list.anchor.anchor_name}"
                         android:textColor="@color/business_text_color_333333"
                         android:textSize="@dimen/business_text_size_14sp"
                         android:textStyle="bold"
@@ -290,7 +290,6 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/home_detail_title_cl"
                         android:layout_width="match_parent"
-                        android:onClick="@{()->viewModel.finish()}"
                         android:layout_height="@dimen/dp_44"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -300,20 +299,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/dp_9"
+                            android:onClick="@{()->viewModel.finish()}"
                             android:paddingBottom="@dimen/dp_9"
                             android:src="@drawable/base_icon_back"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/home_detail_title"
+                            android:id="@+id/home_detail_audio_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_14"
                             android:ellipsize="end"
                             android:maxEms="10"
                             android:maxLines="1"
-                            android:text="@{viewModel.detailViewModel.detaillist.audio_name}"
+                            android:text="@{viewModel.detailViewModel.list.audio_name}"
                             android:textColor="@color/business_text_color_333333"
                             android:textSize="@dimen/business_text_size_18sp"
                             android:visibility="invisible"
@@ -370,7 +370,7 @@
             android:id="@+id/home_detail_comment_recycler"
             bindVerticalLayout="@{viewModel.homeDetailCommentAdapter}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/businessWhite"
             android:overScrollMode="never"
             android:paddingStart="@dimen/dp_16"

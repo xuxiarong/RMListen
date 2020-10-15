@@ -12,7 +12,7 @@ import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.PAGE_ID
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
 import com.rm.module_home.adapter.MenuListAdapter
 import com.rm.module_home.bean.MenuSheetBean
-import com.rm.module_home.repository.HomeMenuRepository
+import com.rm.module_home.repository.HomeRepository
 import kotlin.properties.Delegates
 
 /**
@@ -20,7 +20,7 @@ import kotlin.properties.Delegates
  * date   : 2020/08/04
  * version: 1.0
  */
-class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMViewModel() {
+class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -32,7 +32,7 @@ class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMView
     private var mPageId by Delegates.notNull<Int>()
 
     //每次加载的条数
-    private val pageSize = 10
+    private val pageSize = 5
 
     //当前的页码
     private var mPage = 1
@@ -112,8 +112,8 @@ class HomeMenuViewModel(private val repository: HomeMenuRepository) : BaseVMView
      * 处理失败的数据
      */
     private fun processFailData() {
-        showServiceError()
         if (mPage == 1) {
+            showServiceError()
             refreshStatusModel.finishRefresh(false)
         } else {
             refreshStatusModel.finishLoadMore(false)

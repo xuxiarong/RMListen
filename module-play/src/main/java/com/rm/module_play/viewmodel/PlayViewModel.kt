@@ -236,11 +236,11 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                 onSuccess = {
                     seBookDetailBean(
                         DetailBookBean(
-                            audio_id = it.detaillist.audio_id,
-                            audio_name = it.detaillist.audio_name,
-                            original_name = it.detaillist.original_name,
-                            author = it.detaillist.author,
-                            audio_cover_url = it.detaillist.audio_cover_url
+                            audio_id = it.list.audio_id,
+                            audio_name = it.list.audio_name,
+                            original_name = it.list.original_name,
+                            author = it.list.author,
+                            audio_cover_url = it.list.audio_cover_url
                         )
                     )
                 }, onError = {

@@ -21,11 +21,11 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.model.home.detail.CommentList
-import com.rm.module_home.repository.DetailRepository
+import com.rm.module_home.repository.HomeRepository
 import com.rm.module_play.enum.Jump
 
 
-class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMViewModel() {
+class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
 
     //当前加载的页码
     private var mPage = 1
@@ -52,7 +52,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     val actionControl = MutableLiveData<String>()
     private val errorTips = ObservableField<String>()
 
-    var detailViewModel = ObservableField<HomeDetailModel>()
+    var detailViewModel = ObservableField<HomeDetailBean>()
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
     fun getAttentionStr(isAttention: Boolean): String {
@@ -74,7 +74,7 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
     val homeDetailTagsAdapter by lazy {
         CommonBindAdapter(
             mutableListOf<DetailTags>(),
-            R.layout.home_item_book_label, BR.DetailTags
+            R.layout.home_item_book_label, BR.detailTags
         )
     }
 
@@ -128,9 +128,9 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
                 onSuccess = {
                     showContentView()
                     detailViewModel.set(it)
-                    isAttention.set(it.detaillist.anchor.status)
+                    isAttention.set(it.list.anchor.status)
 
-                    homeDetailTagsAdapter.setList(it.detaillist.detail_tags)
+                    homeDetailTagsAdapter.setList(it.list.tags)
                 }, onError = {
                     showContentView()
                     errorTips.set(it)
@@ -171,9 +171,9 @@ class HomeDetailViewModel(private val repository: DetailRepository) : BaseVMView
      * 书籍状态
      */
     private fun showStatus() {
-        when (detailViewModel.get()?.detaillist?.progress) {
+        when (detailViewModel.get()?.list?.progress) {
             0 -> showStatus.set("未开播")
-            1 -> showStatus.set("已连载" + detailViewModel.get()?.detaillist?.last_sequence + "集")
+            1 -> showStatus.set("已连载" + detailViewModel.get()?.list?.last_sequence + "集")
             else -> showStatus.set("已完结")
         }
     }

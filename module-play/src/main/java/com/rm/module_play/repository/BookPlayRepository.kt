@@ -4,7 +4,7 @@ import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.bean.HomeDetailBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.module_play.api.PlayApiService
@@ -46,7 +46,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     /**
      * 获取书本详情
      */
-    suspend fun getDetailInfo(id: String): BaseResult<HomeDetailModel> {
+    suspend fun getDetailInfo(id: String): BaseResult<HomeDetailBean> {
         return apiCall { playApi.homeDetail(id) }
     }
     //评论

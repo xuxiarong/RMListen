@@ -16,7 +16,7 @@ import com.rm.business_lib.IS_FIRST_FAVORITES
 import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.AudioBean
-import com.rm.business_lib.bean.SheetInfoBean
+import com.rm.business_lib.bean.SheetDetailInfoBean
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
@@ -29,16 +29,16 @@ import com.rm.module_home.activity.detail.HomeDetailActivity.Companion.AUDIO_ID
 import com.rm.module_home.activity.detail.HomeDetailActivity1
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
-import com.rm.module_home.repository.HomeMenuDetailRepository
+import com.rm.module_home.repository.HomeRepository
 
-class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) :
+class HomeMenuDetailViewModel(private var repository: HomeRepository) :
     BaseVMViewModel() {
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
     //数据源
-    val data = ObservableField<SheetInfoBean>()
+    val data = ObservableField<SheetDetailInfoBean>()
 
     //是否收藏
     val isFavor = ObservableField<Boolean>()
@@ -52,8 +52,8 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
     //当前加载的页码
     private var mPage = 1
 
-    //每次家在数据的条数
-    private val pageSize = 10
+    //每次加载数据的条数
+    private val pageSize = 5
 
     var dataBinding: HomeHeaderMenuDetailBinding? = null
 
@@ -161,7 +161,7 @@ class HomeMenuDetailViewModel(private var repository: HomeMenuDetailRepository) 
                         refreshStatusModel.finishRefresh(true)
                         mAdapter.setList(it.audio_list?.list)
                         //是否有更多数据
-                        refreshStatusModel.setHasMore(it.audio_list?.list?.size ?: 0 > pageSize)
+                        refreshStatusModel.setHasMore(it.audio_list?.list?.size ?: 0 >= pageSize)
                     },
                     onError = {
                         showServiceError()
