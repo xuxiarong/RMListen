@@ -159,4 +159,15 @@ interface HomeApiService {
         @Query("page_size") pageSize: Int
     ): BaseResponse<AudioListBean>
 
+    /**
+     * 关注主播
+     */
+    @POST("member/follow")
+    suspend fun memberFollow(@Field("follow_id") follow_id: String):BaseResponse<String>
+    /**
+     * 取消关注主播
+     */
+    @DELETE("member/follow")
+    suspend fun deleMemberFollow(@Field("follow_id") follow_id: String):BaseResponse<String>
+
 }

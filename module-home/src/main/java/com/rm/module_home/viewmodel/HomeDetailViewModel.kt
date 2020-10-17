@@ -364,6 +364,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 关注主播点击事件
      */
     fun clickSubMemberFun() {
+
     }
 
     /**

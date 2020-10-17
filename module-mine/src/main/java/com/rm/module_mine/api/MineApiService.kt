@@ -1,6 +1,8 @@
 package com.rm.module_mine.api
 
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.module_mine.bean.MineInfoDetail
+import com.rm.module_mine.bean.MineInfoProfile
 import com.rm.module_mine.bean.UpdateUserInfoBean
 import com.rm.module_mine.bean.User
 import okhttp3.MultipartBody
@@ -57,5 +59,15 @@ interface MineApiService {
     @POST("member/avatars")
     suspend fun uploadAvatar(@Part body: MultipartBody.Part): BaseResponse<Any>
 
+    /**
+     * 用户/主播详情
+     */
+    @GET("member/detail")
+    suspend fun MemberDetail(@Query ("member_id") member_id: String):BaseResponse<MineInfoDetail>
 
+    /**
+     * 主页 ->发布书籍/听单/收藏听单列表 : 请求他人数据，不传读取登陆态用户id
+     */
+    @GET("member/profile")
+    suspend fun getMemberProfile(@Query("member_id")member_id:String):BaseResponse<MineInfoProfile>
 }
