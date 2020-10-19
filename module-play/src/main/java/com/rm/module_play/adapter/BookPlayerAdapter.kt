@@ -1,12 +1,9 @@
 package com.rm.module_play.adapter
 
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
-import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -20,7 +17,7 @@ import com.rm.module_play.viewmodel.PlayViewModel
  * @Version: 1.0.0
  */
 class BookPlayerAdapter(
-    val playViewModel: PlayViewModel,
+    private val playViewModel: PlayViewModel,
     modelBrId: Int,
     itemBrId: Int
 ) : BaseMultiVMAdapter<MultiItemEntity>(playViewModel, modelBrId, itemBrId) {

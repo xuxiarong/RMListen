@@ -239,10 +239,6 @@ class GlobalPlay @JvmOverloads constructor(
         setRadius(mRadius)
     }
 
-    companion object {
-        private const val TAG = "GlobalPlay"
-    }
-
     init {
         init()
     }
