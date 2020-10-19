@@ -411,7 +411,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             createRouter.startDownloadChapterSelectionActivity(
                 context,
                 DownloadAudio(
-                    homeDetailModel.list.anchor_id.toLong(),
+                    homeDetailModel.list.audio_id.toLong(),
                     homeDetailModel.list.audio_name,
                     homeDetailModel.list.author,
                     homeDetailModel.list.audio_cover_url,
