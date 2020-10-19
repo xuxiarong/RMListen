@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.Cxt.Companion.context
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.ChapterList
@@ -362,7 +361,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = true
                     bean.likes = bean.likes + 1
-                    homeDetailCommentAdapter.notifyItemChanged(indexOf)
+                    //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
+                    val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
+                    homeDetailCommentAdapter.notifyItemChanged(indexOf+headerLayoutCount)
                 },
                 onError = {
                     DLog.i("----->", "评论点赞:$it")
@@ -381,7 +382,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = false
                     bean.likes = bean.likes - 1
-                    homeDetailCommentAdapter.notifyItemChanged(indexOf)
+                    val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
+                    homeDetailCommentAdapter.notifyItemChanged(indexOf+headerLayoutCount)
                 },
                 onError = {
                     DLog.i("----->", "评论点赞:$it")
@@ -487,13 +489,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             }
             subscribe(audioId.get()!!)
         }
-    }
-
-    /**
-     * 关注主播点击事件
-     */
-    fun clickSubMemberFun() {
-
     }
 
     /**
