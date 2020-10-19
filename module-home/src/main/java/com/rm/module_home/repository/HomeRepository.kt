@@ -2,20 +2,157 @@ package com.rm.module_home.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.business_lib.bean.*
 import com.rm.module_home.api.HomeApiService
+import com.rm.module_home.bean.CategoryTabListBean
+import com.rm.module_home.bean.HomeTopListBean
+import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.model.home.HomeModel
+import com.rm.module_home.model.home.detail.HomeCommentBean
 
 /**
  * desc   :
  * date   : 2020/08/04
  * version: 1.0
  */
-class HomeRepository(private val service: HomeApiService) : BaseRepository() {
+class HomeRepository(private val homeService: HomeApiService) : BaseRepository() {
 
     /**
      * 我的听单
      */
     suspend fun getHomeData(): BaseResult<HomeModel> {
-        return apiCall { service.getHomeData() }
+        return apiCall { homeService.getHomeData() }
     }
+
+    /**
+     * 获取听书详情
+     */
+    suspend fun getDetailInfo(id: String): BaseResult<HomeDetailBean> {
+        return apiCall { homeService.homeDetail(id) }
+    }
+
+    /**
+     * 评论列表
+     */
+    suspend fun getCommentInfo(
+        audio_id: String,
+        page: Int,
+        page_size: Int
+    ): BaseResult<HomeCommentBean> {
+        return apiCall { homeService.homeDetailComment(audio_id, page, page_size) }
+    }
+
+
+    /**
+     * 章节列表
+     */
+    suspend fun chapterList(
+        id: String,
+        page: Int,
+        page_size: Int,
+        sort: String
+    ): BaseResult<AudioChapterListModel> {
+        return apiCall { homeService.chapterList(id, page, page_size, sort) }
+    }
+
+    /**
+     * 订阅听单
+     */
+    suspend fun subscribe(audioId: String): BaseResult<Any> {
+        return apiCall { homeService.homeAddSubscription(audioId) }
+    }
+
+    suspend fun getTabList(): BaseResult<CategoryTabListBean> {
+        return apiCall { homeService.getBoutiqueTabList() }
+    }
+
+    suspend fun getBoutiqueRecommendInfoList(
+        classId: Int,
+        page: Int,
+        pageSize: Int = 10
+    ): BaseResult<AudioListBean> {
+        return apiCall { homeService.getCategoryList(classId, page, pageSize) }
+    }
+
+    /**
+     * 获取听单详情
+     */
+    suspend fun sheet(): BaseResult<MenuSheetBean> {
+        return apiCall { homeService.homeSheet() }
+    }
+
+    /**
+     * 获取听单列表
+     */
+    suspend fun getSheetList(page: Int, pageSize: Int): BaseResult<SheetListBean> {
+        return apiCall { homeService.homeSheetList(page, pageSize) }
+    }
+
+
+    /**
+     * 获取专题列表数据
+     * @param page_id Int
+     * @param block_id Int
+     * @param topic_id Int
+     * @param page Int
+     * @param page_size Int
+     * @return BaseResult<AudioListBean>
+     */
+    suspend fun getTopicList(
+        page_id: Int,
+        block_id: Int,
+        topic_id: Int,
+        page: Int,
+        page_size: Int
+    ): BaseResult<AudioListBean> {
+        return apiCall { homeService.homeTopicList(page_id, block_id, topic_id, page, page_size) }
+    }
+
+    /**
+     * 榜单
+     */
+    suspend fun getTopList(
+        rankType: String,
+        rankSeg: String,
+        page: Int,
+        pageSize: Int
+    ): BaseResult<HomeTopListBean> {
+        return apiCall { homeService.homeTopList(rankType, rankSeg, page, pageSize) }
+    }
+
+    /**
+     * 听单详情
+     */
+    suspend fun getData(sheetId: String): BaseResult<SheetDetailInfoBean> {
+        return apiCall { homeService.homeSheetInfo(sheetId) }
+    }
+
+    /**
+     * 听单音频列表
+     */
+    suspend fun getAudioList(
+        page_id: String,
+        sheetId: String,
+        page: Int,
+        page_size: Int
+    ): BaseResult<AudioListBean> {
+        return apiCall { homeService.homeAudioList(page_id, sheetId, page, page_size) }
+    }
+
+    /**
+     * 收藏听单
+     * @param sheetId String
+     */
+    suspend fun favoritesSheet(sheetId: String): BaseResult<Any> {
+        return apiCall { homeService.homeFavoritesSheet(sheetId) }
+    }
+
+    /**
+     * 取消收藏
+     * @param sheetId String
+     */
+    suspend fun unFavoritesSheet(sheetId: String): BaseResult<Any> {
+        return apiCall { homeService.homeUnFavoriteSheet(sheetId) }
+    }
+
 }

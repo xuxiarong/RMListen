@@ -8,14 +8,14 @@ import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
-import com.rm.module_home.repository.HomeTopicRepository
+import com.rm.module_home.repository.HomeRepository
 
 /**
  * desc   : 专题列表viewModel
  * date   : 2020/09/11
  * version: 1.0
  */
-class HomeTopicListViewModel(val repository: HomeTopicRepository) : BaseVMViewModel() {
+class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel() {
     var pageId = -1
     var blockId = -1
     var topicId = -1

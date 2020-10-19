@@ -68,27 +68,6 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
             }
         })
 
-        //tab变化监听
-        curType.observe(this) {
-            search_main_view_pager.currentItem = when (it) {
-                REQUEST_TYPE_ALL -> {
-                    0
-                }
-                REQUEST_TYPE_MEMBER -> {
-                    2
-                }
-                REQUEST_TYPE_AUDIO -> {
-                    1
-                }
-                REQUEST_TYPE_SHEET -> {
-                    3
-                }
-                else -> {
-                    0
-                }
-            }
-        }
-
         //搜索框轮播数据监听
         mViewModel.hintBannerList.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {

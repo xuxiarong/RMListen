@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.sp
@@ -144,4 +145,9 @@ class ExpandableTextView @JvmOverloads constructor(
         anim.start()
     }
 
+}
+
+@BindingAdapter("expandText")
+fun ExpandableTextView.setExpandText(mText:String?){
+    setText(mText)
 }

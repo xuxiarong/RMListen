@@ -72,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dp_4"
                 android:onClick="@{()->viewModel.clickClearInput()}"
                 android:src="@drawable/business_icon_cancel" />
 
@@ -87,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/businessWhite"
-                android:stateListAnimator="@drawable/search_app_bar_elevation">
+                android:stateListAnimator="@drawable/business_app_bar_elevation">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"

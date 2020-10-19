@@ -81,12 +81,13 @@ fun RecyclerView.gridItemDecoration(span: Float) {
     )
 }
 
-@BindingAdapter("bindFlexboxLayout")
-fun RecyclerView.bindFlexboxLayout(adapter: RecyclerView.Adapter<*>?) {
+@BindingAdapter("bindFlexboxLayout", "bindLayoutManagerMaxLine", requireAll = false)
+fun RecyclerView.bindFlexboxLayout(adapter: RecyclerView.Adapter<*>?, maxLine: Int = 1) {
     if (adapter == null) {
         return
     }
     val manager = FlexboxLayoutManager(this.context)
+    manager.maxLine = maxLine
     manager.flexDirection = FlexDirection.ROW
     manager.flexWrap = FlexWrap.WRAP
     manager.alignItems = AlignItems.STRETCH

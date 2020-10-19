@@ -1,17 +1,17 @@
 package com.rm.module_search.activity
 
+import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
-import com.rm.module_search.BR
-import com.rm.module_search.R
+import com.rm.module_search.*
 import com.rm.module_search.adapter.SearchResultAdapter
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_ALL
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_ANCHOR
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_BOOKS
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_SHEET
 import com.rm.module_search.databinding.SearchActivityResultBinding
-import com.rm.module_search.searchKeyword
 import com.rm.module_search.viewmodel.SearchResultViewModel
+import kotlinx.android.synthetic.main.search_fragment_main.*
 
 /**
  *
@@ -37,7 +37,27 @@ class SearchResultActivity : BaseVMActivity<SearchActivityResultBinding, SearchR
         mViewModel.searchResult(searchKeyword.get()!!)
     }
 
-    override fun startObserve() {
+    override fun startObserve() { //tab变化监听
+        curType.observe(this) {
+            mDataBind.searchResultViewPager.currentItem = when (it) {
+                REQUEST_TYPE_ALL -> {
+                    0
+                }
+                REQUEST_TYPE_MEMBER -> {
+                    2
+                }
+                REQUEST_TYPE_AUDIO -> {
+                    1
+                }
+                REQUEST_TYPE_SHEET -> {
+                    3
+                }
+                else -> {
+                    0
+                }
+            }
+        }
+
     }
 
     /**

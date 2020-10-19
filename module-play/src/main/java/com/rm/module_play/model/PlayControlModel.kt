@@ -2,7 +2,6 @@ package com.rm.module_play.model
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.business_lib.bean.DetailBookBean
-import com.rm.business_lib.bean.HomeDetailModel
 import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 

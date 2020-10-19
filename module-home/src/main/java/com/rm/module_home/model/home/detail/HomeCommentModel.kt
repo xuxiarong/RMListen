@@ -6,7 +6,7 @@ import java.io.Serializable
 /**
  * 详情评论列表
  */
-data class HomeCommentViewModel(
+data class HomeCommentBean(
     @SerializedName("list")
     val list_comment: MutableList<CommentList>
 ): Serializable

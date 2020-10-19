@@ -17,33 +17,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/search_result_tv_search"
-            style="@style/BusinessTextStyleFirst_2"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/search_result_back"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_48"
-            android:gravity="center"
-            android:onClick="@{()->viewModel.clickCancelFun()}"
+            android:onClick="@{()->viewModel.finish()}"
             android:paddingStart="@dimen/dp_16"
-            android:paddingTop="@dimen/dp_10"
-            android:paddingEnd="@dimen/dp_16"
-            android:paddingBottom="@dimen/dp_10"
-            android:text="@string/business_cancel"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingEnd="@dimen/dp_8"
+            android:src="@drawable/base_icon_back"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
             android:background="@drawable/business_shape_f7f7f7_12dp"
-            android:paddingStart="@dimen/dp_12"
+            android:paddingStart="@dimen/dp_4"
             android:paddingTop="8dp"
             android:paddingEnd="@dimen/dp_12"
             android:paddingBottom="@dimen/dp_8"
-            app:layout_constraintBottom_toBottomOf="@id/search_result_tv_search"
-            app:layout_constraintEnd_toStartOf="@id/search_result_tv_search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/search_result_tv_search">
+            app:layout_constraintBottom_toBottomOf="@id/search_result_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/search_result_back"
+            app:layout_constraintTop_toTopOf="@id/search_result_back">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -57,17 +54,97 @@
                 afterTextChanged="@{viewModel.inputKeyWord}"
                 bindAction="@{editorInfo.IME_ACTION_SEARCH}"
                 bindBlock="@{viewModel.bindActionListener}"
-                android:layout_width="match_parent"
+                bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"
+                android:layout_weight="1"
                 android:background="@null"
                 android:imeOptions="actionSearch"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:text="@{viewModel.keyWord}" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                isVisible="@{viewModel.keyWord.length()>0}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dp_4"
+                android:onClick="@{()->viewModel.clickClearInput()}"
+                android:src="@drawable/business_icon_cancel" />
+
+            <View
+                android:layout_width="0.1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:background="@color/business_color_80000000" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/BusinessTextStyleFirst_2"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:onClick="@{(view)->viewModel.clickSearchFun(view)}"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingEnd="@dimen/dp_8"
+                android:text="@string/search_search" />
         </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_result_history_text"
+            style="@style/BusinessTextStyleFirst_3"
+            isVisible="@{viewModel.historyVisible}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:gravity="center"
+            android:text="@string/search_history"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_result_back" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/search_result_del_history"
+            isVisible="@{viewModel.historyVisible}"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:onClick="@{()->viewModel.clickClearHistory()}"
+            android:src="@drawable/business_icon_delete"
+            app:layout_constraintBottom_toBottomOf="@id/search_result_history_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_result_back"
+            app:layout_constraintTop_toTopOf="@id/search_result_history_text" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            bindFlexboxLayout="@{viewModel.historyAdapter}"
+            isVisible="@{viewModel.historyVisible}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_result_history_text" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            bindVerticalLayout="@{viewModel.inputAdapter}"
+            isVisible="@{viewModel.suggestIsVisible}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/business_text_color_ffffff"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_result_back" />
 
 
         <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
             android:id="@+id/search_result_tab_layout"
+            isVisible="@{viewModel.contentIsVisible}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45"
             app:bendTabIndicatorAnimation="true"
@@ -79,15 +156,17 @@
             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
             app:bendTabTextSize="@dimen/business_text_size_16sp"
             app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
-            app:layout_constraintTop_toBottomOf="@id/search_result_tv_search" />
+            app:layout_constraintTop_toBottomOf="@id/search_result_back" />
 
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/search_result_view_pager"
+            isVisible="@{viewModel.contentIsVisible}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_result_tab_layout" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

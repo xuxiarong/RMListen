@@ -77,5 +77,6 @@ dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     //implementation rootProject.ext.dependencies["scrolllayout"]
     kapt rootProject.ext.dependencies["router_compiler"]
+    implementation 'com.github.donkingliang:ConsecutiveScroller:4.3.0'//吸顶  https://github.com/donkingliang/ConsecutiveScroller
 
 }

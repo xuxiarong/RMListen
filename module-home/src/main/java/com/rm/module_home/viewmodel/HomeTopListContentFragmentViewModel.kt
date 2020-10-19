@@ -10,9 +10,9 @@ import com.rm.module_home.BR
 import com.rm.module_home.adapter.HomeTopListContentAdapter
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.HomeTopListDataBean
-import com.rm.module_home.repository.HomeTopListRepository
+import com.rm.module_home.repository.HomeRepository
 
-class HomeTopListContentFragmentViewModel(private val repository: HomeTopListRepository) :
+class HomeTopListContentFragmentViewModel(private val repository: HomeRepository) :
     BaseVMViewModel() {
     /**
      * 懒加载构建adapter对象

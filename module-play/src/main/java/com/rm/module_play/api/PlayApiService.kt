@@ -2,12 +2,10 @@ package com.rm.module_play.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.AudioChapterListModel
-import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.bean.HomeDetailBean
 import com.rm.module_play.model.AudioCommentsModel
-import com.rm.module_play.test.ResultData
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
-import com.rm.module_play.test.SearchResultInfo
 import retrofit2.http.*
 
 /**
@@ -93,5 +91,5 @@ interface PlayApiService {
      * 获取听书详情
      */
     @GET("audio/detail")
-    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailModel>
+    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailBean>
 }

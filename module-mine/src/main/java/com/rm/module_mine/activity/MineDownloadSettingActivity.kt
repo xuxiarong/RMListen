@@ -14,7 +14,8 @@ import com.rm.module_mine.viewmodel.MineDownloadSettingViewModel
  * @description 下载设置页面
  *
  */
-class MineDownloadSettingActivity : BaseVMActivity<MineActivityDownloadSettingBinding, MineDownloadSettingViewModel>() {
+class MineDownloadSettingActivity :
+    BaseVMActivity<MineActivityDownloadSettingBinding, MineDownloadSettingViewModel>() {
 
     override fun initModelBrId() = BR.viewModel
 

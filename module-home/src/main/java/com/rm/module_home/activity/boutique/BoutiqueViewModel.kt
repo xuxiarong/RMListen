@@ -8,14 +8,14 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.module_home.bean.CategoryTabBean
-import com.rm.module_home.repository.BoutiqueRepository
+import com.rm.module_home.repository.HomeRepository
 
 /**
  * desc   :
  * date   : 2020/08/24
  * version: 1.0
  */
-class BoutiqueViewModel(private val repository: BoutiqueRepository) :
+class BoutiqueViewModel(private val repository: HomeRepository) :
     BaseVMViewModel() {
     // 类别标签列表
     private val tabList = mutableListOf<CategoryTabBean>()

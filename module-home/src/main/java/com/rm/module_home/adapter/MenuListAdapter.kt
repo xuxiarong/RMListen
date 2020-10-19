@@ -30,7 +30,7 @@ class MenuListAdapter(private val mViewModel: HomeMenuViewModel) :
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
             if (tag != true) {
                 tag = true
-                item.audio_list?.list?.let {
+                item.audio_list?.let {
                     bindGridLayout(
                         CommonBindVMAdapter<AudioBean>(
                             mViewModel,

@@ -2019,8 +2019,10 @@ public class BendTabLayout extends HorizontalScrollView {
                 Path path = new Path();
                 // 移动至第一个控制点 A(ax,ay)
                 path.moveTo(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
-                // 填充二阶贝塞尔曲线的另外两个控制点 B(bx,by) 和 C(cx,cy)，切记顺序不能变
-                path.quadTo(mIndicatorRight - ((mIndicatorRight - mIndicatorLeft) / 2), getBottom(), mIndicatorRight, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
+                // 画横线
+                path.lineTo(mIndicatorRight,getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
+//                // 填充二阶贝塞尔曲线的另外两个控制点 B(bx,by) 和 C(cx,cy)，切记顺序不能变
+//                path.quadTo(mIndicatorRight - ((mIndicatorRight - mIndicatorLeft) / 2), getBottom(), mIndicatorRight, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
                 // 将 贝塞尔曲线 绘制至画布
                 canvas.drawPath(path, mSelectedIndicatorPaint);
             }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="bean"
+            type="com.rm.module_mine.bean.FolloFansList" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mine_detail_anchor_url"
+            bindUrl="@{bean.avatar_url}"
+            isCircle="@{true}"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="@dimen/dp_16"
+            tools:src="@drawable/ic_launcher_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_26"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:background="@drawable/shape_round_empty_ff5e5e"
+            android:button="@null"
+            android:drawableStart="@drawable/home_detail_attention_selected"
+            android:drawablePadding="@dimen/dp_8"
+            android:orientation="horizontal"
+            android:text="关注"
+            android:textColor="@color/home_detail_member_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/mine_detail_anchor_url"
+            app:layout_constraintBottom_toBottomOf="@id/mine_detail_anchor_url"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
