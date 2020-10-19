@@ -152,5 +152,11 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     override fun initModelBrId() = BR.viewModel
 
 
+    override fun onResume() {
+        super.onResume()
+        val playService = RouterHelper.createRouter(PlayService::class.java)
+        rootViewAddView(playService.getGlobalPlay())
+        playService.showView(this)
+    }
 
 }

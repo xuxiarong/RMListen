@@ -10,3 +10,5 @@
 
 /baselib
 /business-lib/src/main/java/com/rm/business_lib/db/HistoryPlayBookDao.java
+/business-lib/src/main/java/com/rm/business_lib/db/DownloadAudioDao.java
+/business-lib/src/main/java/com/rm/business_lib/db/DownloadChapterDao.java

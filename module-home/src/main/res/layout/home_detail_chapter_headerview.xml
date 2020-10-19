@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_20"
             android:enabled="@{!viewModel.hideOr}"
+            bindClick="@{()->viewModel.startDownloadChapterActivity(context)}"
             android:src="@drawable/home_icon_chapter_download"
             app:layout_constraintEnd_toStartOf="@id/home_detail_play_show"
             app:layout_constraintTop_toTopOf="@id/home_detail_play_all_tx" />

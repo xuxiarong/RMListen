@@ -11,9 +11,14 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.*
+import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.bean.DataStr
+import com.rm.business_lib.bean.DetailTags
+import com.rm.business_lib.bean.HomeDetailBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.play.PlayService
@@ -397,6 +402,24 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             }
         }
         chapterAnthologyAdapter.setList(anthologyList)
+    }
+
+    fun startDownloadChapterActivity(context: Context) {
+        var homeDetailModel = detailViewModel.get()
+        if (homeDetailModel != null) {
+            val createRouter = RouterHelper.createRouter(DownloadService::class.java)
+            createRouter.startDownloadChapterSelectionActivity(
+                context,
+                DownloadAudio(
+                    homeDetailModel.list.anchor_id.toLong(),
+                    homeDetailModel.list.audio_name,
+                    homeDetailModel.list.author,
+                    homeDetailModel.list.audio_cover_url,
+                    homeDetailModel.list.status,
+                    homeDetailModel.list.last_sequence.toInt()
+                )
+            )
+        }
     }
 
 }

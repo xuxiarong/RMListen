@@ -11,10 +11,12 @@ package com.rm.business_lib.bean.download
 data class DownloadAudioBean(
     var audioUrl: String,
     var bookId: String,
+    var chapter_id : String,
     var audioName: String,
     var bookName: String,
     var fileSize: Long
 ) : BaseDownloadFileBean {
     override val url = audioUrl
     override val fileName = audioName
+    override val parentFileDir = bookId
 }

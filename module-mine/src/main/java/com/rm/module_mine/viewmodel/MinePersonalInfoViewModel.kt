@@ -110,14 +110,14 @@ class MinePersonalInfoViewModel : BaseVMViewModel() {
      * 生日点击事件
      */
     fun clickBirthday(view: View) {
-        getActivity(view.context)?.let {
-            birthdayDialog.showCommonDialog(
-                it,
-                R.layout.mine_dialog_bottom_select_birthday,
-                this,
-                BR.viewModel
-            )
-        }
+//        getActivity(view.context)?.let {
+//            birthdayDialog.showCommonDialog(
+//                it,
+//                R.layout.mine_dialog_bottom_select_birthday,
+//                this,
+//                BR.viewModel
+//            )
+//        }
     }
 
     /**

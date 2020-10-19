@@ -4,7 +4,10 @@ import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.HomeDetailBean
 import com.rm.module_download.bean.DownloadChapterResponseBean
 import okhttp3.RequestBody
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 
 interface DownloadApiService {
