@@ -19,6 +19,7 @@ import com.rm.module_play.R
 import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.module_play.cache.PlayBookState
 import com.rm.module_play.model.*
+import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -43,7 +44,6 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     val updateThumbText = ObservableField<String>()//更改文字
     var playControlModel = ObservableField<PlayControlModel>()
     var playControlAction = ObservableField<String>()
-    var playControlSubModel = MutableLiveData<PlayControlSubModel>()
     var playControlRecommentListModel =
         MutableLiveData<MutableList<PlayControlRecommentListModel>>()
     val mutableList = MutableLiveData<MutableList<MultiItemEntity>>()
@@ -193,7 +193,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     /**
      * 章节列表
      */
-    fun chapterList(audioId: String, page: Int, page_size: Int, sort: String, anchorURL: String) {
+    fun chapterList(audioId: String, page: Int, page_size: Int, sort: String) {
         launchOnUI {
             repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
                 playBookSate.get()?.audioChapterListModel = it
@@ -287,6 +287,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             commentAudioComments(it.audio_id)
             mutableList.postValue(listValue)
             setHistoryPlayBook(it)
+            GlobalplayHelp.instance.setBooKImage(it.audio_cover_url)
         }
 
     }
@@ -294,7 +295,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     /**
      *评论列表
      */
-    fun commentAudioComments(audioID: String) {
+    private fun commentAudioComments(audioID: String) {
         launchOnIO {
             if (page == 1) {
                 showLoading()

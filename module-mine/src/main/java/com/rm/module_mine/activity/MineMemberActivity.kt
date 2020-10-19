@@ -25,6 +25,16 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
         }
     }
 
+    companion object {
+        const val member_id = "member_id"
+        fun showCommendMoreBook(context: Context, member_id: String) {
+            val intent = Intent(context,MineMemberActivity::class.java).run {
+                putExtra(member_id, member_id)
+            }
+            context.startActivity(intent)
+        }
+    }
+
     override fun initModelBrId() = BR.viewModel
 
     override fun getLayoutId() = R.layout.activity_mine_member_detail

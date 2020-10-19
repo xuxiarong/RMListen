@@ -20,11 +20,11 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
     suspend fun updateUserInfo(bean: UpdateUserInfoBean): BaseResult<Any> {
         return apiCall { service.updateInfo(bean) }
     }
-
+    // 主播/个人信息
     suspend fun memberDetail(member_id: String):BaseResult<MineInfoDetail>{
-        return apiCall { service.MemberDetail(member_id) }
+        return apiCall { service.memberDetail(member_id) }
     }
-
+    //发布书籍/听单/收藏听单列表
     suspend fun memberProfile(member_id:String):BaseResult<MineInfoProfile>{
         return apiCall { service.getMemberProfile(member_id) }
     }

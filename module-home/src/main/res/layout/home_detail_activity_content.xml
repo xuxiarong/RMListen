@@ -218,8 +218,11 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/dp_30"
+                        android:paddingStart="@dimen/dp_20"
+                        android:paddingEnd="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_27"
+                        android:gravity="center"
                         android:background="@drawable/business_select_attention"
                         android:text="@string/home_detail_join_membership"
                         android:textColor="@color/business_color_ff5e5e"
@@ -264,6 +267,8 @@
 
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/detail_anchor_attention"
+                        android:paddingStart="@dimen/dp_14"
+                        android:paddingEnd="@dimen/dp_14"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/dp_26"
                         android:layout_marginEnd="@dimen/dp_16"
@@ -272,7 +277,6 @@
                         android:checked="@={viewModel.isAttention}"
                         android:drawableStart="@drawable/business_attention_selected"
                         android:drawablePadding="@dimen/dp_8"
-                        android:orientation="horizontal"
                         android:text="@{viewModel.getAttentionStr(viewModel.isAttention)}"
                         android:textColor="@color/home_detail_member_color"
                         app:layout_constraintBottom_toBottomOf="@id/home_detail_layout_anchor"

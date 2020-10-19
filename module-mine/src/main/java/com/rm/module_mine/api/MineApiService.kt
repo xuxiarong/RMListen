@@ -63,7 +63,7 @@ interface MineApiService {
      * 用户/主播详情
      */
     @GET("member/detail")
-    suspend fun MemberDetail(@Query ("member_id") member_id: String):BaseResponse<MineInfoDetail>
+    suspend fun memberDetail(@Query ("member_id") member_id: String):BaseResponse<MineInfoDetail>
 
     /**
      * 主页 ->发布书籍/听单/收藏听单列表 : 请求他人数据，不传读取登陆态用户id

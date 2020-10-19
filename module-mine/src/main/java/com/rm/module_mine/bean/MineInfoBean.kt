@@ -14,7 +14,7 @@ data class MineInfoDetail(
     var follows :String ,
     var avatar_url :String ,
     var is_followed : String ,
-    var member_type :String  //1普通用户，2主播
+    var member_type :Int  //1普通用户，2主播
 ):Serializable
 
 /**
