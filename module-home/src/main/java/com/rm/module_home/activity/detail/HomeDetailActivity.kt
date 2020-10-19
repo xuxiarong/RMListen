@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
@@ -26,7 +27,9 @@ import kotlinx.android.synthetic.main.home_detail_chapter_headerview.*
  *  //1、需添加书籍下架的toast提示，然后finish掉详情页
  */
 class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
+    override fun getLayoutId(): Int = R.layout.home_activity_detail_main
 
+    override fun initModelBrId() = BR.viewModel
 
     //播放器路由
     private val playService by lazy {
@@ -54,13 +57,19 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     override fun initView() {
         super.initView()
         setTransparentStatusBar()
+        mDataBind.homeDetailCommentRecycleView.apply {
+            bindVerticalLayout(mViewModel.homeDetailCommentAdapter)
+            mViewModel.createHeader(this)
+        }
 
-        val layoutParams = home_detail_title_cl.layoutParams as ViewGroup.MarginLayoutParams
+
+        val layoutParams = mDataBind.homeDetailTitleCl.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin
             stateHeight = getStateHeight(this@HomeDetailActivity)
             topMargin = stateHeight
         }
+
         audioId = intent?.getStringExtra(AUDIO_ID) ?: ""
         scroll_down_layout?.apply {
             setMinOffset(0)
@@ -69,14 +78,12 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             isAllowHorizontalScroll = true
             setIsSupportExit(true)
             setToOpen()
-            val margin = this.layoutParams as ViewGroup.MarginLayoutParams
-            margin.topMargin = stateHeight + dip(40)
-            this.layoutParams = margin
             setOnScrollChangedListener(mOnScrollChangedListener)
         }
 
-        val contentMargin = home_detail_icon.layoutParams as ViewGroup.MarginLayoutParams
-        contentMargin.topMargin = stateHeight + dip(48)
+//        val contentMargin =
+//            mViewModel.mDataBinding?.homeDetailIcon?.layoutParams as ViewGroup.MarginLayoutParams
+//        contentMargin.topMargin = stateHeight + dip(48)
 
         //audioId = "162163095869968384"
         if (audioId.isNotEmpty()) {
@@ -85,7 +92,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             mViewModel.intDetailInfo(audioId)
             mViewModel.onRefresh() //初始化章节列表
 
-            mViewModel.commentList(audioId, 1, 10)
+            mViewModel.getCommentList(audioId)
 
         }
 
@@ -100,17 +107,12 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             }
         }
 
-        //TODO: 2020/9/28 关注主播
-        detail_anchor_attention.setOnCheckedChangeListener { _, isChecked ->
-            mViewModel.isAttention.set(isChecked)
-        }
-
     }
 
     override fun startObserve() {
 
         mViewModel.actionControl.observe(this, Observer {
-            mViewModel.detailViewModel.get()?.let {
+            mViewModel.detailInfoData.get()?.let {
                 playService.toPlayPage(
                     this@HomeDetailActivity, DetailBookBean(
                         audio_id = it.list.audio_id,
@@ -129,9 +131,9 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         object : ScrollLayout.OnScrollChangedListener {
             override fun onScrollProgressChanged(currentProgress: Float) {
                 if (currentProgress == 0f) {
-                    home_detail_audio_name.visibility = View.VISIBLE
+                    mDataBind.homeDetailTitle.visibility = View.VISIBLE
                 } else {
-                    home_detail_audio_name.visibility = View.GONE
+                    mDataBind.homeDetailTitle.visibility = View.GONE
                 }
             }
 
@@ -146,10 +148,6 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         //mViewModel.intDetailInfo("162163095869968384")
 
     }
-
-    override fun getLayoutId(): Int = R.layout.home_activity_detail_main
-
-    override fun initModelBrId() = BR.viewModel
 
 
     override fun onResume() {

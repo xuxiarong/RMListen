@@ -57,8 +57,5 @@
             android:name=".activity.topic.HomeTopicListActivity"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".activity.detail.HomeDetailActivity1"
-            android:screenOrientation="portrait" />
     </application>
 </manifest>

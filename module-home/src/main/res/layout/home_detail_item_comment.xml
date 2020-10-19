@@ -11,7 +11,7 @@
 
         <variable
             name="commentViewModel"
-            type="com.rm.module_home.viewmodel.HomeDetailViewModel1" />
+            type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
 
         <import type="com.rm.baselisten.util.TimeUtils" />
 

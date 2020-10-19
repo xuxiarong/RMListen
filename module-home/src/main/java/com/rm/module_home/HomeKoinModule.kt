@@ -25,7 +25,6 @@ val viewModelModule = module {
     viewModel { TopListViewModel() }
     viewModel { BoutiqueFragmentViewModel(get()) }
     viewModel { HomeDetailViewModel(get()) }
-    viewModel { HomeDetailViewModel1(get()) }
     viewModel { HomeTopListContentFragmentViewModel(get()) }
     // 专题列表ViewModel
     viewModel { HomeTopicListViewModel(get()) }

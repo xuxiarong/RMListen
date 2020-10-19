@@ -2,10 +2,13 @@ package com.rm.module_home.viewmodel
 
 import android.content.Context
 import android.util.Log
+import android.view.LayoutInflater
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
@@ -25,8 +28,10 @@ import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.databinding.HomeDetailHeaderBinding
 import com.rm.module_home.model.home.detail.CommentList
 import com.rm.module_home.repository.HomeRepository
+import com.rm.module_home.util.HomeCommentDialogHelper
 import com.rm.module_play.enum.Jump
 
 
@@ -36,7 +41,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     private var mPage = 1
 
     //每次加载数据的条数
-    val pageSize = 12
+    private val mPageSize = 12
+
+    private val chapterPageSize = 5
+
+    //评论当前的页码
+    private var commentPage = 1
 
     //上一页页码
     private var upTrackPage = 0
@@ -50,6 +60,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     //主播是否关注
     var isAttention = ObservableBoolean(false)
 
+    //是否订阅
+    val isSubscribed = ObservableField<Boolean>(false)
+
+    //评论加载更多
+    val commentRefreshStateMode = SmartRefreshLayoutStatusModel()
+
+
     var audioId = ObservableField<String>("")
     var sort = ObservableField<String>()
     var total = ObservableField<String>()
@@ -57,7 +74,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     val actionControl = MutableLiveData<String>()
     private val errorTips = ObservableField<String>()
 
-    var detailViewModel = ObservableField<HomeDetailBean>()
+    var detailInfoData = ObservableField<HomeDetailBean>()
+
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
     fun getAttentionStr(isAttention: Boolean): String {
@@ -65,6 +83,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             "已关注"
         } else {
             "关注"
+        }
+    }
+
+    /**
+     * 评论加载更多
+     */
+    fun commentLoadMoreData() {
+        ++commentPage
+        audioId.get()?.let {
+            getCommentList(it)
         }
     }
 
@@ -132,7 +160,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
                     showContentView()
-                    detailViewModel.set(it)
+                    detailInfoData.set(it)
                     isAttention.set(it.list.anchor.status)
 
                     homeDetailTagsAdapter.setList(it.list.tags)
@@ -176,9 +204,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 书籍状态
      */
     private fun showStatus() {
-        when (detailViewModel.get()?.list?.progress) {
+        when (detailInfoData.get()?.list?.progress) {
             0 -> showStatus.set("未开播")
-            1 -> showStatus.set("已连载" + detailViewModel.get()?.list?.last_sequence + "集")
+            1 -> showStatus.set("已连载" + detailInfoData.get()?.list?.last_sequence + "集")
             else -> showStatus.set("已完结")
         }
     }
@@ -194,7 +222,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     //独立刷新事件
     fun onRefresh() {
         launchOnIO {
-            repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
+            repository.chapterList(audioId.get()!!, mPage, chapterPageSize, sort.get()!!).checkResult(
                 onSuccess = {
                     showContentView()
                     total.set("共" + it.total + "集")
@@ -216,7 +244,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             sort.set(mSort)
         }
         launchOnIO {
-            repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
+            repository.chapterList(audioId.get()!!, mPage, chapterPageSize, sort.get()!!).checkResult(
                 onSuccess = {
                     showContentView()
                     setPager(it.total)
@@ -244,19 +272,19 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             page = curTrackPage
         }
         launchOnIO {
-            repository.chapterList(audioId.get()!!, page, pageSize, sort.get()!!).checkResult(
+            repository.chapterList(audioId.get()!!, page, chapterPageSize, sort.get()!!).checkResult(
                 onSuccess = {
                     showContentView()
                     if (isUp) {
                         upTrackPage--
-                        it.list?.let { list -> chapterAdapter.addData(0, list) }
+                        it.list.let { list -> chapterAdapter.addData(0, list) }
                         refreshStatusModel.finishRefresh(true)
                     } else {
                         curTrackPage++
-                        it.list?.let { list -> chapterAdapter.addData(list) }
+                        it.list.let { list -> chapterAdapter.addData(list) }
                         refreshStatusModel.finishLoadMore(true)
                     }
-                    refreshStatusModel.setHasMore(it.list?.size ?: 0 >= pageSize)
+                    refreshStatusModel.setHasMore(it.list.size >= chapterPageSize)
                 }, onError = {
                     showContentView()
                     refreshStatusModel.finishRefresh(false)
@@ -274,7 +302,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         DLog.e("mPage", "" + mPage)
 
         launchOnIO {
-            repository.chapterList(audioId.get()!!, mPage, pageSize, sort.get()!!).checkResult(
+            repository.chapterList(audioId.get()!!, mPage, chapterPageSize, sort.get()!!).checkResult(
                 onSuccess = {
                     showContentView()
                     //当前为1，上一页为0，下一页为2
@@ -284,8 +312,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     upTrackPage--
                     curTrackPage++
 
-                    it.list?.let { list -> chapterAdapter.setList(list) }
-                    refreshStatusModel.setHasMore(it.list?.size ?: 0 >= pageSize)
+                    it.list.let { list -> chapterAdapter.setList(list) }
+                    refreshStatusModel.setHasMore(it.list.size >= chapterPageSize)
                     hideOr.set(false)
 
                 }, onError = {
@@ -310,14 +338,31 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         RouterHelper.createRouter(PlayService::class.java)
     }
 
+    var mDataBinding: HomeDetailHeaderBinding? = null
+
+    /**
+     * 创建头部详细信息
+     */
+    fun createHeader(view: RecyclerView) {
+        mDataBinding = DataBindingUtil.inflate<HomeDetailHeaderBinding>(
+            LayoutInflater.from(view.context),
+            R.layout.home_detail_header,
+            view,
+            false
+        ).apply {
+            homeDetailCommentAdapter.addHeaderView(this.root)
+            setVariable(BR.viewModel, this@HomeDetailViewModel)
+        }
+
+    }
+
     /**
      * 评论列表
      */
-    fun commentList(audio_id: String, page: Int, page_size: Int) {
+    fun getCommentList(audio_id: String) {
         launchOnUI {
-            repository.getCommentInfo(audio_id, page, page_size).checkResult(
+            repository.getCommentInfo(audio_id, commentPage, mPageSize).checkResult(
                 onSuccess = {
-                    showContentView()
                     homeDetailCommentAdapter.setList(it.list_comment)
                     Log.i("commentList", it.toString())
                 }, onError = {
@@ -379,33 +424,33 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
 
         val anthologyList = ArrayList<DataStr>()
 
-        val size = totalCount / pageSize
+        val size = totalCount / chapterPageSize
 
         if (sort.get().equals("desc")) {
             for (i in 0 until size) {
                 anthologyList.add(
                     DataStr(
-                        (totalCount - i * pageSize).toString() + "~" + (totalCount - (i + 1) * pageSize + 1),
+                        (totalCount - i * chapterPageSize).toString() + "~" + (totalCount - (i + 1) * chapterPageSize + 1),
                         i + 1
                     )
                 )
             }
             if (size != 0) {
-                anthologyList.add(DataStr("${totalCount - size * pageSize}-1", size + 1))
+                anthologyList.add(DataStr("${totalCount - size * chapterPageSize}-1", size + 1))
             }
         } else {
             for (i in 0 until size) {
-                anthologyList.add(DataStr("${i * pageSize + 1}-" + (i + 1) * pageSize, i + 1))
+                anthologyList.add(DataStr("${i * chapterPageSize + 1}-" + (i + 1) * chapterPageSize, i + 1))
             }
             if (size != 0) {
-                anthologyList.add(DataStr("${size * pageSize + 1}", size + 1))
+                anthologyList.add(DataStr("${size * chapterPageSize + 1}", size + 1))
             }
         }
         chapterAnthologyAdapter.setList(anthologyList)
     }
 
     fun startDownloadChapterActivity(context: Context) {
-        var homeDetailModel = detailViewModel.get()
+        var homeDetailModel = detailInfoData.get()
         if (homeDetailModel != null) {
             val createRouter = RouterHelper.createRouter(DownloadService::class.java)
             createRouter.startDownloadChapterSelectionActivity(
@@ -422,4 +467,80 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         }
     }
 
+    /**
+     * 关注主播
+     */
+    private fun attentionAnchor(followId: String) {
+        showLoading()
+        launchOnIO {
+            repository.attentionAnchor(followId).checkResult(
+                onSuccess = {
+                    showContentView()
+                    isAttention.set(true)
+                    showToast("关注成功")
+                },
+                onError = {
+                    showContentView()
+                })
+        }
+    }
+
+    /**
+     * 取消关注主播
+     */
+    private fun unAttentionAnchor(followId: String) {
+        showLoading()
+        launchOnIO {
+            repository.unAttentionAnchor(followId).checkResult(
+                onSuccess = {
+                    showContentView()
+                    isAttention.set(false)
+                    showToast("取消关注成功")
+                },
+                onError = {
+                    showContentView()
+                })
+        }
+    }
+
+
+    /**
+     * 关注点击事件
+     */
+    fun clickAttentionFun(context: Context, followId: String) {
+        getActivity(context)?.let {
+            if (!isLogin.get()) {
+                quicklyLogin(it)
+            } else {
+                if (isAttention.get()) {
+                    unAttentionAnchor(followId)
+                } else {
+                    attentionAnchor(followId)
+                }
+            }
+        }
+    }
+
+    /**
+     * 评论点击事件
+     */
+    fun clickCommentFun(context: Context) {
+        getActivity(context)?.let {
+            HomeCommentDialogHelper(this, it).showDialog()
+        }
+    }
+
+    /**
+     * 快捷登陆
+     */
+    private fun quicklyLogin(it: FragmentActivity) {
+        RouterHelper.createRouter(LoginService::class.java)
+            .quicklyLogin(this, it, loginSuccess = {
+                intDetailInfo(audioId.get()!!)
+            })
+    }
+
+//    fun showChaperSelect() {
+//        hideOr.set(true)
+//    }
 }

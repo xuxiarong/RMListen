@@ -26,7 +26,6 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity.Companion.AUDIO_ID
-import com.rm.module_home.activity.detail.HomeDetailActivity1
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.repository.HomeRepository
@@ -112,7 +111,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
      * 分享点击事件
      */
     fun clickShare() {
-        startActivity(HomeDetailActivity1::class.java)
     }
 
     /**

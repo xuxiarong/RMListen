@@ -12,8 +12,8 @@
             android:screenOrientation="portrait" />
         <!-- 精品推荐-->
         <activity
-            android:launchMode="singleTop"
             android:name="com.rm.module_home.activity.boutique.BoutiqueActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!--榜单-->
         <activity
@@ -26,9 +26,6 @@
         <!-- 专题列表 -->
         <activity
             android:name=".activity.topic.HomeTopicListActivity"
-            android:screenOrientation="portrait" />
-          <activity
-            android:name=".activity.detail.HomeDetailActivity1"
             android:screenOrientation="portrait" />
 
     </application>
