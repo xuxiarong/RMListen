@@ -14,7 +14,7 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DataStr
 import com.rm.business_lib.bean.DetailTags
-import com.rm.business_lib.bean.HomeDetailModel
+import com.rm.business_lib.bean.HomeDetailBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -411,12 +411,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             createRouter.startDownloadChapterSelectionActivity(
                 context,
                 DownloadAudio(
-                    homeDetailModel.detaillist.anchor_id.toLong(),
-                    homeDetailModel.detaillist.audio_name,
-                    homeDetailModel.detaillist.author,
-                    homeDetailModel.detaillist.audio_cover_url,
-                    homeDetailModel.detaillist.status,
-                    homeDetailModel.detaillist.last_sequence.toInt()
+                    homeDetailModel.list.anchor_id.toLong(),
+                    homeDetailModel.list.audio_name,
+                    homeDetailModel.list.author,
+                    homeDetailModel.list.audio_cover_url,
+                    homeDetailModel.list.status,
+                    homeDetailModel.list.last_sequence.toInt()
                 )
             )
         }
