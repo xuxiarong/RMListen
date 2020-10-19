@@ -3,6 +3,7 @@ package com.rm.module_play.dialog
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -10,6 +11,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.binding.bindPlayCount
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
@@ -84,7 +86,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             holder.setVisible(R.id.living_img,playChapter)
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
-            holder.setText(R.id.tv_music_play_count, item.play_count)
+            holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCount(item.play_count)
             holder.setText(R.id.tv_music_play_time_count, "${item.duration}")
             holder.setText(R.id.tv_music_play_up_time, item.created_at)
         }

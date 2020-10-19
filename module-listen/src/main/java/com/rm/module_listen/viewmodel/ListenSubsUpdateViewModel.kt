@@ -12,6 +12,7 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -27,6 +28,7 @@ import com.rm.module_listen.model.ListenAudioChapter
 import com.rm.module_listen.model.ListenAudioInfo
 import com.rm.module_listen.model.ListenSubsDateModel
 import com.rm.module_listen.repository.ListenMyListenRepository
+import com.rm.module_play.enum.Jump
 
 /**
  * desc   :
@@ -338,6 +340,21 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     fun onChapterClick(context: Context,model : ListenAudioChapter) {
         val playService = RouterHelper.createRouter(PlayService::class.java)
+        playService.toPlayPage(context = context,book = ChapterList(
+            amount = 2,
+            audio_id = model.audio_id,
+            chapter_name = model.chapter_name,
+            duration = model.duration.toInt(),
+            need_pay = 1,
+            path = model.path,
+            path_url = model.path,
+            play_count = model.play_count.toInt(),
+            sequence = model.sequence.toInt(),
+            size = model.size.toInt(),
+            created_at = "2020-09-09",
+            recentPlay = 0L,
+            chapter_id = model.chapter_id
+        ),from = Jump.CHAPTER.from)
 
     }
 
