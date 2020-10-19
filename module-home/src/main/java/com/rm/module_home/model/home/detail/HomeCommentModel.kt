@@ -12,14 +12,14 @@ data class HomeCommentBean(
 ): Serializable
 
 data class CommentList(
-    val id: Int,
-    val content: String,
-    val member_id: String,
-    val created_at: Long,
-    val is_liked: Boolean,
-    val likes: Int,
-    val member: Member,
-    val is_own: Boolean
+    var id: Int,
+    var content: String,
+    var member_id: String,
+    var created_at: Long,
+    var is_liked: Boolean,
+    var likes: Int,
+    var member: Member,
+    var is_own: Boolean
 ):Serializable
 
 data class Member(

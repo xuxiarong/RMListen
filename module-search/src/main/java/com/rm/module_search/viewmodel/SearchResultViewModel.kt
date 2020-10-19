@@ -73,18 +73,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     }
 
     //搜索历史 adapter
-    val historyAdapter by lazy {
-        CommonBindVMAdapter<String>(
-            this,
-            mutableListOf(),
-            R.layout.search_adapter_result_history,
-            BR.viewModel,
-            BR.historyItem
-        ).apply {
-            val list = HISTORY_KEY.getListString()
-            setList(list)
-        }
-    }
+    val historyList = ObservableField<MutableList<String>>(HISTORY_KEY.getListString())
 
     /**
      * 输入框内容改变
@@ -132,7 +121,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         val dataNotNull = list.size > 0
         //如果搜索记录不为空则显示
         historyVisible.set(dataNotNull)
-        historyAdapter.setList(list)
+        historyList.set(list)
         suggestIsVisible.set(false)
     }
 
@@ -188,7 +177,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
      */
     fun clickClearHistory() {
         HISTORY_KEY.putMMKV(mutableListOf())
-        historyAdapter.setList(null)
+        historyList.set(null)
         historyVisible.set(false)
     }
 
@@ -203,7 +192,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     /**
      * 历史 item 点击事件
      */
-    fun historyItemClickFun(view: View, content: String) {
+    val historyItemClickFun: (View, String) -> Unit = { view, content ->
         searchKeyword.set(content)
         clickSearchFun(view)
     }
@@ -256,13 +245,16 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
             return
         }
         val list = HISTORY_KEY.getListString()
-        if (list.indexOf(keyword) != -1) {
-            return
+        val iterator = list.iterator()
+        if (iterator.hasNext()) {
+            val next = iterator.next()
+            if (next == keyword) {
+                list.remove(next)
+            }
         }
-
         val size = list.size
-        if (size == 8) {
-            list.removeAt(0)
+        if (size == 15) {
+            list.removeAt(size)
         }
         list.add(0, keyword)
         HISTORY_KEY.putMMKV(list)

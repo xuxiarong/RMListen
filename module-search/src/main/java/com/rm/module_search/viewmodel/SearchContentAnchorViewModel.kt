@@ -1,10 +1,15 @@
 package com.rm.module_search.viewmodel
 
-import android.view.View
+import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.mine.MineService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_search.*
 import com.rm.module_search.bean.MemberBean
 import com.rm.module_search.bean.SearchResultBean
@@ -108,8 +113,77 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
     }
 
     /**
+     * 关注主播
+     */
+    private fun attentionAnchor(bean: MemberBean) {
+        showLoading()
+        launchOnIO {
+            repository.attentionAnchor(bean.member_id).checkResult(
+                onSuccess = {
+                    showContentView()
+                    val indexOf = anchorAdapter.data.indexOf(bean)
+                    bean.is_follow = 1
+                    anchorAdapter.notifyItemChanged(indexOf)
+                    showToast("关注成功")
+                },
+                onError = {
+                    showContentView()
+                })
+        }
+    }
+
+    /**
+     * 取消关注主播
+     */
+    private fun unAttentionAnchor(bean: MemberBean) {
+        showLoading()
+        launchOnIO {
+            repository.unAttentionAnchor(bean.member_id).checkResult(
+                onSuccess = {
+                    showContentView()
+                    val indexOf = anchorAdapter.data.indexOf(bean)
+                    bean.is_follow = 0
+                    anchorAdapter.notifyItemChanged(indexOf)
+                    showToast("取消关注成功")
+                },
+                onError = {
+                    showContentView()
+                })
+        }
+    }
+
+
+    /**
      *   item点击事件
      */
-    fun itemClickFun(view: View, bean: MemberBean) {
+    fun itemClickFun(context: Context, bean: MemberBean) {
+        RouterHelper.createRouter(MineService::class.java).toMineMember(context, bean.member_id)
+    }
+
+    /**
+     * 关注点击事件
+     */
+    fun clickAttentionFun(context: Context, bean: MemberBean) {
+        getActivity(context)?.let {
+            if (!isLogin.get()) {
+                quicklyLogin(it)
+            } else {
+                if (bean.is_follow == 1L) {
+                    unAttentionAnchor(bean)
+                } else {
+                    attentionAnchor(bean)
+                }
+            }
+        }
+    }
+
+    /**
+     * 快捷登陆
+     */
+    private fun quicklyLogin(it: FragmentActivity) {
+        RouterHelper.createRouter(LoginService::class.java)
+            .quicklyLogin(this, it, loginSuccess = {
+//                intDetailInfo(audioId.get()!!)
+            })
     }
 }

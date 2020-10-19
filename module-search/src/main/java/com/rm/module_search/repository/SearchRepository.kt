@@ -60,4 +60,21 @@ class SearchRepository(private val service: SearchApiService) : BaseRepository()
         return apiCall { service.searchSuggest(keyword) }
     }
 
+    /**
+     * 关注主播接口
+     * @param follow_id String
+     */
+    suspend fun attentionAnchor(follow_id: String): BaseResult<Any> {
+        return apiCall { service.homeAttentionAnchor(follow_id) }
+    }
+
+    /**
+     * 取消关注主播接口
+     * @param follow_id String
+     */
+    suspend fun unAttentionAnchor(follow_id: String): BaseResult<Any> {
+        return apiCall { service.homeUnAttentionAnchor(follow_id) }
+    }
+
+
 }

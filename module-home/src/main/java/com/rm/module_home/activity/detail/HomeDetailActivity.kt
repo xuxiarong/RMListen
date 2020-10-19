@@ -58,7 +58,9 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         super.initView()
         setTransparentStatusBar()
         mDataBind.homeDetailCommentRecycleView.apply {
-            bindVerticalLayout(mViewModel.homeDetailCommentAdapter)
+            val adapter = mViewModel.homeDetailCommentAdapter
+            adapter.onAttachedToRecyclerView(this)
+            bindVerticalLayout(adapter)
             mViewModel.createHeader(this)
         }
 

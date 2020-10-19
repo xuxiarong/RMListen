@@ -110,7 +110,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
     private fun refreshHistoryData() {
         val list = HISTORY_KEY.getListString()
         mViewModel.historyIsVisible.set(list.size > 0)
-        mViewModel.historyAdapter.setList(list)
+        mViewModel.historyList.set(list)
     }
 
     /**

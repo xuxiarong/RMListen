@@ -16,6 +16,7 @@
         <activity android:name=".activity.MineAccountSecuritySettingActivity" />
         <activity android:name=".activity.MinePersonalSignatureSettingActivity" />
         <activity android:name=".activity.MineNicknameSettingActivity" />
+        <activity android:name=".activity.MineMemberActivity" />
 
     </application>
 

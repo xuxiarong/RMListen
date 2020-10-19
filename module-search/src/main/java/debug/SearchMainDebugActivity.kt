@@ -2,6 +2,7 @@ package debug
 
 import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_search.R
+import kotlinx.android.synthetic.main.search_activity_test.*
 
 /**
  * desc   :
@@ -9,9 +10,40 @@ import com.rm.module_search.R
  * version: 1.0
  */
 class SearchMainDebugActivity : BaseDebugActivity() {
-    override fun getLayoutResId(): Int = R.layout.search_fragment_main
+    override fun getLayoutResId(): Int = R.layout.search_activity_test
 
     override fun initView() {
+
+        tagview.apply {
+            setMaxLine(3)
+            setData(
+                mutableListOf(
+                    "214444",
+                    "as",
+                    "ddd",
+                    "1",
+                    "dddddd",
+                    "dsasdfadgadg",
+                    "214444",
+                    "as",
+                    "ddd",
+                    "1",
+                    "dddddd",
+                    "dsasdfadgadg", "214444",
+                    "as",
+                    "ddd",
+                    "1",
+                    "dddddd",
+                    "dsasdfadgadg",
+                    "214444",
+                    "as",
+                    "ddd",
+                    "1",
+                    "dddddd",
+                    "dsasdfadgadg"
+                )
+            )
+        }
     }
 
     override fun initData() {

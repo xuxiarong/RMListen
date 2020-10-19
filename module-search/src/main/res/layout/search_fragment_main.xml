@@ -152,17 +152,26 @@
                             app:layout_constraintEnd_toStartOf="@id/search_main_del_history"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/search_main_history_rv"
-                            bindFlexboxLayout="@{viewModel.historyAdapter}"
+                        <com.rm.module_search.widget.TagLayout
+                            android:id="@+id/search_main_history_tags"
+                            bindTagClick="@{viewModel.historyItemClickFun}"
+                            bindTagData="@{viewModel.historyList}"
+                            bindTagMaxLine="@{2}"
                             isVisible="@{viewModel.historyIsVisible}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_16"
                             android:layout_marginTop="@dimen/dp_4"
                             android:layout_marginEnd="@dimen/dp_16"
-                            android:paddingBottom="@dimen/dp_16"
                             app:layout_constraintTop_toBottomOf="@id/search_main_history_text" />
+
+                        <Space
+                            android:id="@+id/search_main_history_space"
+                            isVisible="@{viewModel.historyIsVisible}"
+                            android:layout_width="@dimen/line_0.5dp"
+                            android:layout_height="@dimen/dp_16"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/search_main_history_tags" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/search_include_recommend_text"
@@ -175,7 +184,7 @@
                             android:textSize="@dimen/business_text_size_14sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/search_main_history_rv" />
+                            app:layout_constraintTop_toBottomOf="@id/search_main_history_space" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/search_main_recycler_view"

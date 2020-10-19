@@ -54,7 +54,7 @@
             android:layout_marginEnd="@dimen/dp_16"
             android:background="@drawable/shape_round_empty_ff5e5e"
             android:button="@null"
-            android:drawableStart="@drawable/home_detail_attention_selected"
+            android:drawableStart="@drawable/business_attention_selected"
             android:drawablePadding="@dimen/dp_8"
             android:orientation="horizontal"
             android:gravity="center"

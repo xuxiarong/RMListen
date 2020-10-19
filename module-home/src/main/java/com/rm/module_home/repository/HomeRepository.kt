@@ -178,4 +178,34 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
         return apiCall { homeService.homeUnAttentionAnchor(follow_id) }
     }
 
+    /**
+     * 发表评论(听书详情页)
+     * @param content 评论内容
+     * @param audio_id 音频ID
+     * @param anchor_id 音频主播ID
+     */
+    suspend fun homeSendComment(
+        content: String,
+        audio_id: String,
+        anchor_id: String
+    ): BaseResult<Any> {
+        return apiCall { homeService.homeSendComment(content, audio_id, anchor_id) }
+    }
+
+    /**
+     * 评论点赞
+     * @param comment_id 评论ID
+     */
+    suspend fun homeLikeComment(comment_id: String): BaseResult<Any> {
+        return apiCall { homeService.homeLikeComment(comment_id) }
+    }
+
+    /**
+     * 取消点赞
+     * @param comment_id 评论ID
+     */
+    suspend fun homeUnLikeComment(comment_id: String): BaseResult<Any> {
+        return apiCall { homeService.homeUnLikeComment(comment_id) }
+    }
+
 }

@@ -57,11 +57,11 @@
                         tools:src="@drawable/temp_detail_icon" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        bindPlayCount="@{viewModel.detailInfoData.list.play_count}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/dp_2"
                         android:drawableStart="@drawable/home_icon_play_ed"
-                        bindPlayCount="@{viewModel.detailInfoData.list.play_count}"
                         android:textColor="@color/businessWhite"
                         app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
                         app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
@@ -270,7 +270,7 @@
                         android:background="@drawable/business_select_attention"
                         android:button="@null"
                         android:checked="@={viewModel.isAttention}"
-                        android:drawableStart="@drawable/home_detail_attention_selected"
+                        android:drawableStart="@drawable/business_attention_selected"
                         android:drawablePadding="@dimen/dp_8"
                         android:orientation="horizontal"
                         android:text="@{viewModel.getAttentionStr(viewModel.isAttention)}"
