@@ -82,7 +82,7 @@ fun RecyclerView.gridItemDecoration(span: Float) {
 }
 
 @BindingAdapter("bindFlexboxLayout", "bindLayoutManagerMaxLine", requireAll = false)
-fun RecyclerView.bindFlexboxLayout(adapter: RecyclerView.Adapter<*>?, maxLine: Int = 1) {
+fun RecyclerView.bindFlexboxLayout(adapter: RecyclerView.Adapter<*>?, maxLine: Int = 2) {
     if (adapter == null) {
         return
     }

@@ -142,6 +142,13 @@ interface HomeApiService {
     suspend fun homeAddSubscription(@Field("audio_id") audio_id: String): BaseResponse<Any>
 
     /**
+     * 取消订阅
+     * @param audio_id 音频Id
+     */
+    @DELETE("subscription/list")
+    suspend fun homeCancelSubscription(@Query("audio_id") audio_id: String): BaseResponse<Any>
+
+    /**
      * 获取精品列表tab 类别标签列表
      */
     @GET("content/page/boutique")
@@ -159,15 +166,20 @@ interface HomeApiService {
         @Query("page_size") pageSize: Int
     ): BaseResponse<AudioListBean>
 
+
     /**
-     * 关注主播
+     * 关注主播接口
+     * @param follow_id Int
      */
+    @FormUrlEncoded
     @POST("member/follow")
-    suspend fun memberFollow(@Field("follow_id") follow_id: String):BaseResponse<String>
+    suspend fun homeAttentionAnchor(@Field("follow_id") follow_id: String): BaseResponse<Any>
+
     /**
-     * 取消关注主播
+     * 取消关注主播接口
+     * @param follow_id Int
      */
     @DELETE("member/follow")
-    suspend fun deleMemberFollow(@Field("follow_id") follow_id: String):BaseResponse<String>
+    suspend fun homeUnAttentionAnchor(@Query("follow_id") follow_id: String): BaseResponse<Any>
 
 }

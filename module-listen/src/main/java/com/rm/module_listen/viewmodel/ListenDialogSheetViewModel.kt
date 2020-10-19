@@ -1,12 +1,20 @@
 package com.rm.module_listen.viewmodel
 
+import android.widget.ImageView
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.getBooleanMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.IS_FIRST_ADD_SHEET
+import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
+import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.listen.ListenService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
@@ -14,7 +22,10 @@ import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.repository.ListenDialogSheetRepository
 
-class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : BaseVMViewModel() {
+class ListenDialogSheetViewModel(
+   private val mActivity: FragmentActivity,
+    private val baseViewModel: BaseVMViewModel
+) : BaseVMViewModel() {
     private val repository by lazy {
         ListenDialogSheetRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
@@ -39,7 +50,7 @@ class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : B
 
     var dismiss: () -> Unit = {}
 
-    private val pageSize = 10
+    private val pageSize = 12
     private var page = 1
 
     /**
@@ -66,13 +77,12 @@ class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : B
         launchOnIO {
             repository.addSheetList(sheet_id, audio_id).checkResult(
                 onSuccess = {
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_success))
                     baseViewModel.showContentView()
-                    dismissFun()
+                    addSheetSuccess(sheet_id)
                 },
                 onError = {
                     baseViewModel.showContentView()
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_fail))
+                    baseViewModel.showToast("$it")
                 }
             )
         }
@@ -108,6 +118,39 @@ class ListenDialogSheetViewModel(private val baseViewModel: BaseVMViewModel) : B
             refreshStateModel.finishLoadMore(false)
         }
     }
+
+    /**
+     * 添加成功
+     */
+    private fun addSheetSuccess(sheetId: String) {
+        if (IS_FIRST_ADD_SHEET.getBooleanMMKV(true) ) {
+            CustomTipsFragmentDialog().apply {
+                titleText = mActivity.getString(R.string.listen_add_success)
+                contentText = mActivity.getString(R.string.listen_add_success_content)
+                leftBtnText = mActivity.getString(R.string.listen_know)
+                rightBtnText = mActivity.getString(R.string.listen_goto_look)
+                leftBtnTextColor = R.color.business_text_color_333333
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    RouterHelper.createRouter(ListenService::class.java).startMySheetDetail(
+                        mActivity,
+                        sheetId
+                    )
+                    IS_FIRST_ADD_SHEET.putMMKV(false)
+                    dismiss()
+                }
+                customView =
+                    ImageView(mActivity).apply { setImageResource(R.drawable.base_ic_default) }
+            }.show(mActivity)
+        } else {
+            showToast(mActivity.getString(R.string.listen_add_success_tip))
+        }
+        dismissFun()
+    }
+
 
     /**
      * 刷新数据

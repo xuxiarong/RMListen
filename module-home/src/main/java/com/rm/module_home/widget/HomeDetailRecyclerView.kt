@@ -24,9 +24,9 @@ class HomeDetailRecyclerView @JvmOverloads constructor(
     private var params: ConstraintLayout.LayoutParams? = null
 
 
-    override fun onTouchEvent(ev: MotionEvent): Boolean {
+    /*override fun onTouchEvent(ev: MotionEvent): Boolean {
         if (interceptLayout == null) {
-            interceptLayout = parent as HomeDetailInterceptLayout
+            interceptLayout = parent.parent as HomeDetailInterceptLayout
             params = interceptLayout!!.layoutParams as ConstraintLayout.LayoutParams
         }
         //recyclerView是否滑动到顶部
@@ -57,5 +57,5 @@ class HomeDetailRecyclerView @JvmOverloads constructor(
         mDownY = ev.y.toInt()
         return intercept
 //        return super.onTouchEvent(ev)
-    }
+    }*/
 }

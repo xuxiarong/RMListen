@@ -41,4 +41,9 @@ interface ListenService : ApplicationProvider {
      * 跳转到订阅界面
      */
     fun startSubscription(context: Context)
+
+    /**
+     * 跳转到我的听单详情
+     */
+    fun startMySheetDetail(activity: Activity,sheetId:String)
 }

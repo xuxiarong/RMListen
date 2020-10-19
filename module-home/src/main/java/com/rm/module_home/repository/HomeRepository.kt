@@ -56,10 +56,17 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
     }
 
     /**
-     * 订阅听单
+     * 订阅
      */
     suspend fun subscribe(audioId: String): BaseResult<Any> {
         return apiCall { homeService.homeAddSubscription(audioId) }
+    }
+
+    /**
+     * 取消订阅
+     */
+    suspend fun unSubscribe(audioId: String): BaseResult<Any> {
+        return apiCall { homeService.homeCancelSubscription(audioId) }
     }
 
     suspend fun getTabList(): BaseResult<CategoryTabListBean> {
@@ -153,6 +160,22 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
      */
     suspend fun unFavoritesSheet(sheetId: String): BaseResult<Any> {
         return apiCall { homeService.homeUnFavoriteSheet(sheetId) }
+    }
+
+    /**
+     * 关注主播接口
+     * @param follow_id String
+     */
+    suspend fun attentionAnchor(follow_id: String): BaseResult<Any> {
+        return apiCall { homeService.homeAttentionAnchor(follow_id) }
+    }
+
+    /**
+     * 取消关注主播接口
+     * @param follow_id String
+     */
+    suspend fun unAttentionAnchor(follow_id: String): BaseResult<Any> {
+        return apiCall { homeService.homeUnAttentionAnchor(follow_id) }
     }
 
 }

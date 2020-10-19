@@ -8,7 +8,8 @@
     <string name="home_detail_attention">关注</string>
     <string name="home_detail_followed">已关注</string>
 
-    <string name="home_detail_sub">+订阅</string>
+    <string name="home_detail_subscription">+订阅</string>
+    <string name="home_detail_subscribed">已订阅</string>
     <string name="home_detail_brief_introduction">内容简介</string>
     <string name="home_detail_join_membership">开通会员</string>
     <string name="home_detail_comment">评论</string>
@@ -40,10 +41,21 @@
     <string name="home_know">我知道了</string>
     <string name="home_goto_look">去看看</string>
     <string name="home_favorites_success_tip">收藏成功，请在我听-听单中查看</string>
+    <string name="home_subscribe_success_tip">订阅成功，请在我听-听单中查看</string>
     <string name="home_favorites_success_content">可在“我听-听单”中查看</string>
 
     <string name="home_audio_size">共%d本</string>
     <string name="home_play_all">全部播放</string>
-
+    <string name="home_detail_comment_hint">快来发表你的评论吧</string>
+    <string name="home_top_10">TOP10</string>
+    <string name="home_detail_hot_anchor">热门主播</string>
+    <string name="home_vip_free">会员免费</string>
+    <string name="home_hd_text">HD高清</string>
+    <string name="home_money">¥2</string>
+    <string name="home_unit">/ 集</string>
+    <string name="home_comment_dialog_tips">优质评论有机会被推荐置顶</string>
+    <string name="home_comment_dialog_hint">请输入您的评论内容</string>
+    <string name="home_publish">发表</string>
+    <string name="home_comment_input_limit">文字超过最大限制</string>
 </resources>
 

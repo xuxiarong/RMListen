@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_14"
-                android:src="@drawable/business_icon_favorites"
+                android:src="@drawable/business_icon_unfavorites"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_author_name"
                 app:layout_constraintLeft_toRightOf="@id/home_menu_adapter_author_name"
                 app:layout_constraintTop_toTopOf="@id/home_menu_adapter_author_name" />

@@ -64,7 +64,7 @@ fun loadCircleImage(imageView: ImageView, url: String, defaultDrawable: Drawable
 }
 
 fun loadCircleImage(imageView: ImageView, url: String?) {
-    ContextCompat.getDrawable(imageView.context, R.drawable.base_ic_default)?.let {
+    ContextCompat.getDrawable(imageView.context, R.drawable.base_icon_default_circle)?.let {
         loadImageByTransform(
             imageView,
             url,

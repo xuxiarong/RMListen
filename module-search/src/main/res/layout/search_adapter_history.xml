@@ -18,7 +18,7 @@
         style="@style/BusinessTextStyleFirst_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/business_shape_round_f7f7f7_13dp"
+        android:background="@drawable/business_shape_round_f7f7f7_12dp"
         android:gravity="center_vertical"
         android:text="@{historyItem}"
         android:layout_marginEnd="@dimen/dp_8"

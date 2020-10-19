@@ -23,7 +23,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        if (rootProject.ext.isHomeApp){
+        if (rootProject.ext.isHomeApp) {
             //组件模式下设置applicationId
             applicationId "com.rm.module_home"
         }
@@ -77,6 +77,7 @@ dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     //implementation rootProject.ext.dependencies["scrolllayout"]
     kapt rootProject.ext.dependencies["router_compiler"]
-    implementation 'com.github.donkingliang:ConsecutiveScroller:4.3.0'//吸顶  https://github.com/donkingliang/ConsecutiveScroller
+    //吸顶  https://github.com/donkingliang/ConsecutiveScroller
+//    implementation 'com.github.donkingliang:ConsecutiveScroller:4.3.0'
 
 }

@@ -80,7 +80,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
     /**
      * 收藏点击事件
      */
-    fun clickCollectionRelated(view: View) {
+    fun clickCollectionRelated( view: View) {
         if (isLogin.get()) {
             data.get()?.sheet_id?.let {
                 if (isFavor.get() == false) {

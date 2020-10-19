@@ -423,7 +423,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         )
         mViewModel.lastState.set(mViewModel.pathList.size > 0 && mChapterId?.isNotEmpty() == true)
         mViewModel.updatePlayBook(
-            mViewModel.audioChapterModel.get()?.chapter_list?.find { it.chapter_id == mChapterId }
+            mViewModel.audioChapterModel.get()?.list?.find { it.chapter_id == mChapterId }
         )
     }
 
@@ -446,7 +446,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.process.set(currentDurtion.toFloat())
         mViewModel.audioChapterModel.get()?.let {
             mViewModel.updatePlayBookProcess(
-                it.chapter_list.find { it.chapter_id == mChapterId },
+                it.list?.find { it.chapter_id == mChapterId },
                 currentDurtion
             )
         }

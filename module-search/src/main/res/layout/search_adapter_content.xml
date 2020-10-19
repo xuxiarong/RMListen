@@ -42,7 +42,7 @@
             android:layout_marginEnd="@dimen/dp_10"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="@{item.audio_name}"
+            android:text="@{item.keyword}"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_content_num"
             app:layout_constraintEnd_toStartOf="@id/search_adapter_content_icon"
             app:layout_constraintStart_toEndOf="@id/search_adapter_content_num"

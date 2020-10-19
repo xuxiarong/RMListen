@@ -1,6 +1,8 @@
 package com.rm.module_search.viewmodel
 
 import android.view.View
+import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
@@ -8,6 +10,7 @@ import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_search.*
 import com.rm.module_search.bean.MemberBean
+import com.rm.module_search.bean.SearchResultBean
 import com.rm.module_search.bean.SearchSheetBean
 import com.rm.module_search.repository.SearchRepository
 
@@ -21,7 +24,7 @@ import com.rm.module_search.repository.SearchRepository
 class SearchContentAllViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
     val keyword = searchKeyword
 
-    val data = searchResultData
+    val data =  ObservableField<SearchResultBean>()
 
     //书籍adapter
     val bookAdapter by lazy {

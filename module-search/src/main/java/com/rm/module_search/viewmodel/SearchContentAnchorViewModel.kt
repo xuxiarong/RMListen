@@ -38,7 +38,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
     private var mPage = 1
 
     //每页展示数量
-    private var mPageSize = 10
+    private var mPageSize = 12
 
 
     /**

@@ -20,7 +20,7 @@ class SearchRecommendViewModel : BaseVMViewModel() {
      * item点击事件
      */
     fun itemClickFun(bean: SearchHotDetailBean) {
-        searchKeyword.set(bean.audio_name)
+        searchKeyword.set(bean.keyword)
         startActivity(SearchResultActivity::class.java)
     }
 }

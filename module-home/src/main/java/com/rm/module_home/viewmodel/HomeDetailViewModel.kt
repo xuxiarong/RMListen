@@ -36,7 +36,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     private var mPage = 1
 
     //每次加载数据的条数
-    val pageSize = 10
+    val pageSize = 12
 
     //上一页页码
     private var upTrackPage = 0
@@ -71,7 +71,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     //评论dapper
     val homeDetailCommentAdapter by lazy {
         CommonBindAdapter(
-            mutableListOf<CommentList>(), R.layout.home_detail_item_comment, BR.comment_list
+            mutableListOf<CommentList>(), R.layout.home_detail_item_comment, BR.commentItem
         )
     }
 
@@ -199,7 +199,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     showContentView()
                     total.set("共" + it.total + "集")
                     setPager(it.total)
-                    it.chapter_list.let { list -> chapterAdapter.setList(list) }
+                    it.list?.let { list -> chapterAdapter.setList(list) }
                 }, onError = {
                     showContentView()
                     errorTips.set(it)
@@ -222,7 +222,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     setPager(it.total)
                     //upTrackPage = 0
                     //curTrackPage ++
-                    it.chapter_list.let { list -> chapterAdapter.setList(list) }
+                    it.list.let { list -> chapterAdapter.setList(list) }
                 }, onError = {
                     showContentView()
                     errorTips.set(it)
@@ -249,14 +249,14 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     showContentView()
                     if (isUp) {
                         upTrackPage--
-                        it.chapter_list.let { list -> chapterAdapter.addData(0, list) }
+                        it.list?.let { list -> chapterAdapter.addData(0, list) }
                         refreshStatusModel.finishRefresh(true)
                     } else {
                         curTrackPage++
-                        it.chapter_list.let { list -> chapterAdapter.addData(list) }
+                        it.list?.let { list -> chapterAdapter.addData(list) }
                         refreshStatusModel.finishLoadMore(true)
                     }
-                    refreshStatusModel.setHasMore(it.chapter_list.size >= pageSize)
+                    refreshStatusModel.setHasMore(it.list?.size ?: 0 >= pageSize)
                 }, onError = {
                     showContentView()
                     refreshStatusModel.finishRefresh(false)
@@ -284,8 +284,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     upTrackPage--
                     curTrackPage++
 
-                    it.chapter_list.let { list -> chapterAdapter.setList(list) }
-                    refreshStatusModel.setHasMore(it.chapter_list.size >= pageSize)
+                    it.list?.let { list -> chapterAdapter.setList(list) }
+                    refreshStatusModel.setHasMore(it.list?.size ?: 0 >= pageSize)
                     hideOr.set(false)
 
                 }, onError = {

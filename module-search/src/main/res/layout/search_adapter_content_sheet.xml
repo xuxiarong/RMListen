@@ -88,7 +88,7 @@
             bindText="@{item.favour_num}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
-            android:drawableStart="@drawable/business_icon_favorites"
+            android:drawableStart="@drawable/business_icon_unfavorites"
             android:drawablePadding="@dimen/dp_2"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_view"
             app:layout_constraintStart_toEndOf="@id/search_adapter_book_num"

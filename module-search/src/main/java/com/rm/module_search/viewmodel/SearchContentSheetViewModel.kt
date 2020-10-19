@@ -39,7 +39,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
     private var mPage = 1
 
     //每页展示数量
-    private var mPageSize = 10
+    private var mPageSize = 12
 
     /**
      * 刷新

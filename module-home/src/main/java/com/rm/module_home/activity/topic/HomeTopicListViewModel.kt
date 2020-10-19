@@ -20,7 +20,7 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
     var blockId = -1
     var topicId = -1
     var page = 1
-    val pageSize = 10
+    val pageSize = 12
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()

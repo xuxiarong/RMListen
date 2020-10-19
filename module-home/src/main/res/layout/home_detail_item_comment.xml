@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!--        <import type = "com.rm.business_lib.bean.Tags"/>-->
-        <!--        <import type = "com.rm.module_home.model.home.detail.List"/>-->
 
         <variable
-            name="comment_list"
+            name="commentItem"
             type="com.rm.module_home.model.home.detail.CommentList" />
 
+        <variable
+            name="commentViewModel"
+            type="com.rm.module_home.viewmodel.HomeDetailViewModel1" />
+
         <import type="com.rm.baselisten.util.TimeUtils" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,21 +23,21 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/detail_comment_author_img"
-            bindUrl="@{comment_list.member.avatar_url}"
+            bindUrl="@{commentItem.member.avatar_url}"
             isCircle="@{true}"
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/temp_detail_icon" />
+            tools:src="#3f00" />
         <!--bindUrl = "@{viewModel.list.author}"-->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_comment_name_tx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
-            android:text="@{comment_list.member.nickname}"
+            android:text="@{commentItem.member.nickname}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintStart_toEndOf="@+id/detail_comment_author_img"
@@ -46,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
-            android:text="@{TimeUtils.getDateStr(comment_list.created_at)}"
+            android:text="@{TimeUtils.getDateStr(commentItem.created_at)}"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintBottom_toBottomOf="@+id/detail_comment_author_img"
@@ -54,25 +57,18 @@
             app:layout_constraintTop_toBottomOf="@+id/detail_comment_name_tx"
             tools:text="08/20" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/detail_comment_like_img"
-            android:layout_width="@dimen/dp_22"
-            android:layout_height="@dimen/dp_22"
-            android:src="@drawable/icon_detail_comment_like"
-            app:layout_constraintBottom_toBottomOf="@+id/detail_comment_author_img"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/detail_comment_author_img" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_comment_like_count_tx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/str_str+comment_list.likes}"
+            android:drawableEnd="@drawable/icon_detail_comment_like"
+            android:gravity="center"
+            android:text="@{@string/str_str+commentItem.likes}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/detail_comment_like_img"
-            app:layout_constraintEnd_toStartOf="@+id/detail_comment_like_img"
-            app:layout_constraintTop_toTopOf="@+id/detail_comment_like_img"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_comment_author_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/detail_comment_author_img"
             tools:text="100000000" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -80,10 +76,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="@{comment_list.content}"
+            android:text="@{commentItem.content}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
-            app:layout_constraintEnd_toEndOf="@id/detail_comment_like_img"
+            app:layout_constraintEnd_toEndOf="@id/detail_comment_like_count_tx"
             app:layout_constraintStart_toStartOf="@+id/detail_comment_day_tx"
             app:layout_constraintTop_toBottomOf="@id/detail_comment_author_img"
             tools:text="多个内容嵌套且不知道的MMMMMMMM然后才能完全展示美丽地方撒风三大地方撒进范德萨范德萨发带哦" />

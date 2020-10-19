@@ -1,6 +1,7 @@
 package com.rm.module_search.fragment
 
 import androidx.databinding.Observable
+import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_search.BR
 import com.rm.module_search.R
@@ -27,23 +28,19 @@ class SearchContentBooksFragment :
     }
 
     override fun startObserve() {
-        searchResultData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val data = searchResultData.get()!!
-                val list = data.audio_list
-                if (list.isNullOrEmpty()) {
-                    mViewModel.showDataEmpty()
-                } else {
-                    mViewModel.bookAdapter.setList(list)
-                }
+        searchResultData.observe(this) {
+            val list = it.audio_list
+            if (list.isNullOrEmpty()) {
+                mViewModel.showDataEmpty()
             }
-        })
+            mViewModel.bookAdapter.setList(list)
+
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (mViewModel.bookAdapter.data.isEmpty()){
+        if (mViewModel.bookAdapter.data.isEmpty()) {
             mViewModel.showDataEmpty()
         }
     }

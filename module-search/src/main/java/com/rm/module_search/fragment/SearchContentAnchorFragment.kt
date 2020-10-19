@@ -1,6 +1,7 @@
 package com.rm.module_search.fragment
 
 import androidx.databinding.Observable
+import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_search.BR
 import com.rm.module_search.R
@@ -23,22 +24,16 @@ class SearchContentAnchorFragment :
     override fun initModelBrId() = BR.viewModel
 
     override fun initData() {
-
     }
 
     override fun startObserve() {
-        searchResultData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val data = searchResultData.get()!!
-                val list = data.member_list
-                if (list.isNullOrEmpty()) {
-                    mViewModel.showDataEmpty()
-                } else {
-                    mViewModel.anchorAdapter.setList(list)
-                }
+        searchResultData.observe(this) {
+            val list = it.member_list
+            if (list.isNullOrEmpty()) {
+                mViewModel.showDataEmpty()
             }
-        })
+            mViewModel.anchorAdapter.setList(list)
+        }
     }
 
     override fun onResume() {

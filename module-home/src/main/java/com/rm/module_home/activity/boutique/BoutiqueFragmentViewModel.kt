@@ -18,7 +18,7 @@ import com.rm.module_home.repository.HomeRepository
  */
 class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
     private var page = 1
-    private val pageSize = 10
+    private val pageSize = 12
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()

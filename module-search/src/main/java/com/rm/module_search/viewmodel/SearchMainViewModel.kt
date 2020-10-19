@@ -3,9 +3,11 @@ package com.rm.module_search.viewmodel
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getListString
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -94,6 +96,9 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     //推荐内容是否现实
     val recommendVisible = ObservableField<Boolean>(false)
 
+    //清除按钮是否显示
+    val clearVisible = ObservableField<Boolean>(false)
+
     var clearInput: () -> Unit = {}
 
     //搜索是否结束
@@ -153,9 +158,17 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     }
 
     /**
-     * 删除历史点击事件
+     * 清除历史点击事件 清除
      */
     fun clickClearHistory() {
+        clearVisible.set(!clearVisible.get()!!)
+    }
+
+    /**
+     * 删除历史点击事件
+     */
+    fun clickDeleteHistory() {
+        clearVisible.set(false)
         HISTORY_KEY.putMMKV(mutableListOf())
         historyAdapter.setList(null)
         historyIsVisible.set(false)
@@ -215,7 +228,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                     hotRecommend.set(list)
                 },
                 onError = {
-
+                    DLog.i("-------->", "searchHotRecommend:$it")
                 }
             )
         }
@@ -231,7 +244,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                     hintBannerList.set(it.keywords.split(","))
                 },
                 onError = {
-
+                    DLog.i("-------->", "searchHintBanner:$it")
                 }
             )
         }
@@ -249,7 +262,9 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                     recommendVisible.set(true)
                     adapter.setList(split)
                 },
-                onError = {})
+                onError = {
+                    DLog.i("-------->", "searchRecommend:$it")
+                })
         }
     }
 

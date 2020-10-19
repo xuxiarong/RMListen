@@ -12,6 +12,7 @@ import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_listen.activity.ListenMySheetDetailActivity
 import com.rm.module_listen.activity.ListenSheetListActivity
 import com.rm.module_listen.activity.ListenSubscriptionActivity
 import com.rm.module_listen.fragment.ListenMyListenFragment
@@ -42,7 +43,7 @@ class ListenServiceImpl : ListenService {
         activity: FragmentActivity,
         audioId: String
     ) {
-        if (isLogin.get()) {
+        if (!isLogin.get()) {
             ListenDialogSheetHelper(baseViewModel, activity, audioId).showDialog()
         } else {
             RouterHelper.createRouter(LoginService::class.java)
@@ -63,5 +64,9 @@ class ListenServiceImpl : ListenService {
 
     override fun startSubscription(context: Context) {
         ListenSubscriptionActivity.startActivity(context)
+    }
+
+    override fun startMySheetDetail(activity: Activity, sheetId: String) {
+        ListenMySheetDetailActivity.startActivity(activity, sheetId)
     }
 }

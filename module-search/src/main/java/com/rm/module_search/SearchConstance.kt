@@ -23,7 +23,7 @@ const val HISTORY_KEY = "historyKey"//搜索历史键值
 val hotRecommend = ObservableField<MutableList<SearchHotRecommendBean>>()
 
 //全局搜索数据
-val searchResultData = ObservableField<SearchResultBean>()
+val searchResultData = MutableLiveData<SearchResultBean>()
 
 //当前进行搜索的关键字
 val searchKeyword = ObservableField<String>("")

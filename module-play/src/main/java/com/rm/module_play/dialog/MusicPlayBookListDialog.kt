@@ -39,7 +39,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     var mLoad: (types: Int) -> Unit = {}
     var audioChapterListModel: AudioChapterListModel? = null
     private val timeSAdapter by lazy {
-        TimeSAdapter(audioChapterListModel?.chapter_list as MutableList<ChapterList>).apply {
+        TimeSAdapter(audioChapterListModel?.list as MutableList<ChapterList>).apply {
             setOnItemClickListener { adapter, view, position ->
                 mBack(position)
                 dismissAllowingStateLoss()

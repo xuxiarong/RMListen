@@ -11,6 +11,8 @@
         <variable
             name="editorInfo"
             type="android.view.inputmethod.EditorInfo" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -99,18 +101,19 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/search_main_tool_bar"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_20">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/search_main_history_text"
                             style="@style/BusinessTextStyleFirst_3"
+                            isVisible="@{viewModel.historyIsVisible}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_16"
                             android:layout_marginEnd="@dimen/dp_16"
                             android:gravity="center"
-                            isVisible="@{viewModel.historyIsVisible}"
+                            android:minHeight="@dimen/dp_30"
                             android:text="@string/search_history"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -119,14 +122,34 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/search_main_del_history"
+                            isVisible="@{viewModel.historyIsVisible}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_16"
                             android:layout_marginEnd="@dimen/dp_16"
+                            android:minHeight="@dimen/dp_30"
                             android:onClick="@{()->viewModel.clickClearHistory()}"
-                            isVisible="@{viewModel.historyIsVisible}"
-                            android:src="@drawable/business_icon_delete"
+                            android:src="@{viewModel.clearVisible?@drawable/business_icon_delclose:@drawable/business_icon_delete}"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/search_main_clear_history"
+                            isVisible="@{viewModel.clearVisible }"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_4"
+                            android:background="@drawable/business_shape_round_ff5e5e_14dp"
+                            android:gravity="center"
+                            android:onClick="@{()->viewModel.clickDeleteHistory()}"
+                            android:paddingStart="@dimen/dp_17"
+                            android:paddingTop="@dimen/dp_4"
+                            android:paddingEnd="@dimen/dp_17"
+                            android:paddingBottom="@dimen/dp_4"
+                            android:text="@string/search_clearn_all"
+                            android:textColor="@color/business_text_color_ffffff"
+                            android:textSize="@dimen/business_text_size_14sp"
+                            app:layout_constraintEnd_toStartOf="@id/search_main_del_history"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -143,12 +166,12 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/search_include_recommend_text"
+                            isVisible="@{viewModel.recommendVisible}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_16"
                             android:text="@string/search_recommend"
                             android:textColor="@color/business_text_color_333333"
-                            isVisible="@{viewModel.recommendVisible}"
                             android:textSize="@dimen/business_text_size_14sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"

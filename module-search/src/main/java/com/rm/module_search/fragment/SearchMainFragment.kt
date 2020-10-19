@@ -3,6 +3,7 @@ package com.rm.module_search.fragment
 import androidx.databinding.Observable
 import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getListString
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
 import com.rm.module_search.*
@@ -80,6 +81,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
     }
 
     private fun setData() {
+        DLog.i("------->", "setData--->${search_main_view_pager == null}")
         mViewModel.mTabDataList.get()?.let {
             search_main_view_pager?.let { viewPager ->
                 viewPager.adapter = SearchMainAdapter(this, it)

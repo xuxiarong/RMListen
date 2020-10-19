@@ -11,4 +11,5 @@
     <string name="search_anchor_level">LV%d</string>
     <string name="search_attention">关注</string>
     <string name="search_fans">%s粉丝</string>
+    <string name="search_clearn_all">全部清空</string>
 </resources>

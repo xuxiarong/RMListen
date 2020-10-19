@@ -1,6 +1,6 @@
 package com.rm.module_search.fragment
 
-import androidx.databinding.Observable
+import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.bean.AudioBean
 import com.rm.module_search.BR
@@ -31,19 +31,20 @@ class SearchContentAllFragment :
     }
 
     override fun startObserve() {
-        searchResultData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val data = searchResultData.get()!!
-                processAnchorData(data.member_list)
-                processSheetData(data.sheet_list)
-                processBookData(data.audio_list)
-
-                if (data.audio_list.isEmpty() && data.member_list.isEmpty() && data.sheet_list.isEmpty()) {
-                    mViewModel.showDataEmpty()
-                }
+        searchResultData.observe(this) {
+            mViewModel.data.set(it)
+            val memberList = it.member_list
+            val sheetList = it.sheet_list
+            val audioList = it.audio_list
+            processAnchorData(memberList)
+            processSheetData(sheetList)
+            processBookData(audioList)
+            if (audioList.isEmpty() && memberList.isEmpty() && sheetList.isEmpty()) {
+                mViewModel.showDataEmpty()
+            } else {
+                mViewModel.showContentView()
             }
-        })
+        }
     }
 
     /**

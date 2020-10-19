@@ -2,10 +2,7 @@ package com.rm.module_listen.utils
 
 import android.view.Gravity
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.observe
 import com.rm.baselisten.BaseApplication
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
@@ -25,7 +22,7 @@ class ListenDialogSheetHelper(
     /**
      * viewModel对象
      */
-    private val mViewModel by lazy { ListenDialogSheetViewModel(baseViewModel) }
+    private val mViewModel by lazy { ListenDialogSheetViewModel(mActivity,baseViewModel) }
 
     private var dateBinding: ListenDialogSheetListBinding? = null
 

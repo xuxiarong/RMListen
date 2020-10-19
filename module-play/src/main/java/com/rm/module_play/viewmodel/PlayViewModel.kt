@@ -62,7 +62,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
     var page = 1
-    val pageSize = 10
+    val pageSize = 12
     val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
     val curTime = System.currentTimeMillis()
 
@@ -109,7 +109,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                             audioId = it.audio_id,
                             chapterId = it.chapter_id,
                             duration = it.duration,
-                            playCount = it.play_count
+                            playCount = it.play_count.toString()
                         )
                     )
                 }
@@ -199,7 +199,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
                 playBookSate.get()?.audioChapterListModel = it
                 audioChapterModel.set(it)
-                setPlayPath(it.chapter_list, anchorURL)
+                setPlayPath(it.list, anchorURL)
                 showContentView()
             }, onError = {
                 showContentView()
@@ -219,7 +219,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             repository.chapterPageList(audioId, chapterId, sort).checkResult(onSuccess = {
                 playBookSate.get()?.audioChapterListModel = it
                 audioChapterModel.set(it)
-                setPlayPath(it.chapter_list, anchorURL)
+                setPlayPath(it.list, anchorURL)
                 showContentView()
             }, onError = {
                 showContentView()
@@ -259,7 +259,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             seBookDetailBean(it.homeDetailModel)
             it.audioChapterListModel?.let { its ->
                 audioChapterModel.set(its)
-                setPlayPath(its.chapter_list, it.homeDetailModel?.audio_cover_url ?: "")
+                setPlayPath(its.list, it.homeDetailModel?.audio_cover_url ?: "")
             }
         }
 

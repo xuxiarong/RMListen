@@ -48,7 +48,7 @@ class ListenSheetDetailViewModel(private val repository: ListenSheetDetailReposi
     val data = ObservableField<SheetInfoBean>()
 
     //每页加载的条数
-    private val pageSize = 10
+    private val pageSize = 12
 
     //当前请求数据的页码
     private var mPage = 1

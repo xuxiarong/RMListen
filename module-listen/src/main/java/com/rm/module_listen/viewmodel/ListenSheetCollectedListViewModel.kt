@@ -25,7 +25,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenSheetColle
     val refreshStateModel = SmartRefreshLayoutStatusModel()
 
     //每页加载的数据
-    private val pageSize = 10
+    private val pageSize = 12
 
     //当前加载的页码
     private var mPage = 1

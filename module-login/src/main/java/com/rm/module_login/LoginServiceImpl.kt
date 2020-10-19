@@ -35,8 +35,7 @@ class LoginServiceImpl : LoginService {
     ) {
         val loginQuicklyDialogHelper = LoginQuicklyDialogHelper(baseViewModel, fragmentActivity)
         loginQuicklyDialogHelper.loginSuccess = loginSuccess
-        loginQuicklyDialogHelper
-            .show()
+        loginQuicklyDialogHelper.show()
     }
 
     override fun quicklyLogin(baseViewModel: BaseVMViewModel, fragmentActivity: FragmentActivity) {

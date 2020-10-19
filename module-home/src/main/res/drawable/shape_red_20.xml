@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle"
-    >
-    <corners android:radius="@dimen/dp_20"/>
-    <solid android:color="@color/home_detail_sub_color"/>
+    android:shape="rectangle">
+    <corners android:radius="@dimen/dp_20" />
+    <solid android:color="@color/home_detail_sub_color" />
     <padding
-    android:left="@dimen/dp_52"
-    android:top="@dimen/dp_5"
-    android:right="@dimen/dp_52"
-    android:bottom="@dimen/dp_5" />
+        android:bottom="@dimen/dp_5"
+        android:left="@dimen/dp_52"
+        android:right="@dimen/dp_52"
+        android:top="@dimen/dp_5" />
 </shape>

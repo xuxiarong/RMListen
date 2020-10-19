@@ -33,7 +33,7 @@ class ListenSheetMyListViewModel(private val repository: ListenSheetMyListReposi
     //记录点击item对应的实体对象
     private val clickBean = ObservableField<ListenSheetBean>()
 
-    private val pageSize = 10
+    private val pageSize = 12
 
     private var page = 1
 

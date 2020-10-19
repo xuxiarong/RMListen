@@ -5,11 +5,11 @@
 
     <data>
         <variable
-            name = "DetailChapterViewModel"
+            name = "chapterItem"
             type="com.rm.business_lib.bean.ChapterList"
             />
         <variable
-            name = "chapterclick"
+            name = "chapterViewModel"
             type="com.rm.module_home.viewmodel.HomeDetailViewModel1"/>
     </data>
 
@@ -21,7 +21,7 @@
         android:layout_marginBottom="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{(ChapterList)->chapterclick.chapterItemClick(context,DetailChapterViewModel)}"
+        android:onClick="@{()->chapterViewModel.chapterItemClick(context,chapterItem)}"
         >
         <androidx.appcompat.widget.AppCompatTextView
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             android:textSize="@dimen/sp_14"
             android:layout_centerInParent="true"
             tools:text="1"
-            android:text="@{@string/str_str+DetailChapterViewModel.sequence}"
+            android:text="@{@string/str_str+chapterItem.sequence}"
             android:gravity="center_horizontal"
             android:layout_width="50dp"
             android:layout_height="wrap_content" />
@@ -46,7 +46,7 @@
             android:textColor="@color/business_text_color_333333"
             android:id="@+id/detail_chapter_name_tx"
             android:textSize="@dimen/business_text_size_16sp"
-            android:text="@{DetailChapterViewModel.chapter_name}"
+            android:text="@{chapterItem.chapter_name}"
             tools:text="大标题三分地上范德萨发你的"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -69,7 +69,7 @@
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
                 tools:text="14W"
-                android:text="@{@string/str_str+DetailChapterViewModel.play_count}"
+                android:text="@{@string/str_str+chapterItem.play_count}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <androidx.appcompat.widget.AppCompatTextView
@@ -82,7 +82,7 @@
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
                 tools:text="14:00"
-                android:text="@{@string/str_str+DetailChapterViewModel.duration}"
+                android:text="@{@string/str_str+chapterItem.duration}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -93,7 +93,7 @@
                 android:drawableStart="@drawable/home_icon_chapter_day"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
-                android:text="@{DetailChapterViewModel.created_at}"
+                android:text="@{chapterItem.created_at}"
                 tools:text="2020/20/20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

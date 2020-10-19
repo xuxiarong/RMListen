@@ -219,7 +219,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         launchOnIO {
             repository.searchResult(keyword, REQUEST_TYPE_ALL, 1, 10).checkResult(
                 onSuccess = {
-                    searchResultData.set(it)
+                    searchResultData.postValue(it)
                     showContent()
                 },
                 onError = {
@@ -261,10 +261,10 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         }
 
         val size = list.size
-        if (size == 4) {
+        if (size == 8) {
             list.removeAt(0)
         }
-        list.add(keyword)
+        list.add(0, keyword)
         HISTORY_KEY.putMMKV(list)
     }
 

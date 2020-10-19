@@ -1,6 +1,7 @@
 package com.rm.module_search.fragment
 
 import androidx.databinding.Observable
+import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_search.BR
 import com.rm.module_search.R
@@ -27,23 +28,18 @@ class SearchContentSheetFragment :
     }
 
     override fun startObserve() {
-        searchResultData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val data = searchResultData.get()!!
-                val list = data.sheet_list
+        searchResultData.observe(this) {
+                val list = it.sheet_list
                 if (list.isNullOrEmpty()) {
                     mViewModel.showDataEmpty()
-                } else {
-                    mViewModel.sheetAdapter.setList(list)
                 }
+                mViewModel.sheetAdapter.setList(list)
             }
-        })
     }
 
     override fun onResume() {
         super.onResume()
-        if (mViewModel.sheetAdapter.data.isEmpty()){
+        if (mViewModel.sheetAdapter.data.isEmpty()) {
             mViewModel.showDataEmpty()
         }
     }

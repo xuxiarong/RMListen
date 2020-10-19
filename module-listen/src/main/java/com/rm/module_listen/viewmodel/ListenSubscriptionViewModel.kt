@@ -46,7 +46,7 @@ class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepo
     private var mPage = 1
 
     //每次请求数据的条数
-    private val pageSize = 10
+    private val pageSize = 12
 
     /**
      * item点击事件

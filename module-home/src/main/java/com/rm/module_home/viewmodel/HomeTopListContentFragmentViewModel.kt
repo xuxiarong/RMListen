@@ -29,7 +29,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
     private var mPage = 1//当前的页码
 
     //每页加载数据条数
-    private val pageSize = 10
+    private val pageSize = 12
 
     private lateinit var rankType: String
     private lateinit var rankSeg: String
