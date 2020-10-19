@@ -2,6 +2,7 @@ package com.rm.module_listen.viewmodel
 
 import android.content.Context
 import androidx.databinding.ObservableBoolean
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -11,9 +12,11 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.isLogin
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
@@ -37,7 +40,6 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     }
 
     val subsAudioAdapter = CommonMultiVMAdapter(this, mutableListOf(), BR.viewModel, BR.item)
-
     val subsDateAdapter = CommonBindVMAdapter<ListenSubsDateModel>(
         this,
         mutableListOf(),
@@ -52,7 +54,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
-
+    var userLogin = isLogin
     var subsDateVisible = ObservableBoolean(true)
 //    private var allSubsRvList = MutableLiveData<MutableList<MultiItemEntity>>()
 //    private var allAudioList = MutableLiveData<MutableList<ListenAudio>>()
@@ -63,6 +65,14 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     fun init() {
         initSubsRvScrollListen()
+    }
+
+    fun checkLogin(context: Context){
+        if(!isLogin.get()){
+            if(context is FragmentActivity){
+                RouterHelper.createRouter(LoginService::class.java).quicklyLogin(this,context)
+            }
+        }
     }
 
     fun getSubsDataFromService() {

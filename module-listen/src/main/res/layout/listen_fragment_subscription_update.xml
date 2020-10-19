@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,14 +10,49 @@
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
+        <com.rm.business_lib.wedgit.shadow.ShadowLayout
+            isVisible="@{!viewModel.userLogin}"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="@dimen/dp_82"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:gravity="center_horizontal"
+                android:text="@string/business_login_look"
+                android:textColor="@color/business_color_b1b1b1"
+                android:textSize="@dimen/business_text_size_14sp" />
+
+            <com.flyco.roundview.RoundTextView
+                bindClick="@{()->viewModel.checkLogin(context)}"
+                android:layout_width="176dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="55dp"
+                android:gravity="center"
+                android:text="@string/business_login"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_16sp"
+                app:layout_roundRadius="@dimen/dp_8"
+                app:layout_shadowColor="#55b1b1b1"
+                app:rv_backgroundColor="@color/base_ff5e5e"
+                app:rv_isRadiusHalfHeight="true">
+
+            </com.flyco.roundview.RoundTextView>
+        </com.rm.business_lib.wedgit.shadow.ShadowLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listenSubsDataRv"
             bindHorizontalLayout="@{viewModel.subsDateAdapter}"
-            isVisible="@{viewModel.subsDateVisible}"
+            isVisible="@{viewModel.subsDateVisible &amp;&amp; viewModel.userLogin}"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginStart="@dimen/dp_16"
@@ -24,9 +60,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
             bindOnLoadMoreListener="@{viewModel.getSubsDataFromService}"
-            bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
+            isVisible="@{viewModel.userLogin}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="44dp"

@@ -5,8 +5,6 @@ import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.isLogin
-import com.rm.component_comm.login.LoginService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenFragmentSubscriptionUpdateBinding
@@ -43,13 +41,6 @@ class ListenSubscriptionUpdateFragment :
         }
     }
 
-
-
-    open fun checkLogin(){
-        if(!isLogin.get()){
-            RouterHelper.createRouter(LoginService::class.java).quicklyLogin(mViewModel,activity!!)
-        }
-    }
 
     override fun initView() {
         super.initView()

@@ -6,7 +6,6 @@ import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
-import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
@@ -72,22 +71,22 @@ class ListenMyListenFragment :
 
     private fun configTab() {
         listenMyListenRtl.setupWithViewPager(listenMyListenVp)
-        listenMyListenRtl.addOnTabSelectedListener(object :BendTabLayout.OnTabSelectedListener{
-            override fun onTabReselected(tab: BendTabLayout.BendTab?) {
-            }
-
-            override fun onTabUnselected(tab: BendTabLayout.BendTab?) {
-            }
-
-            override fun onTabSelected(tab: BendTabLayout.BendTab?) {
-                if(tab!=null){
-                    if(tab.position == 1){
-                        val subFragment =   mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment
-                        subFragment.checkLogin()
-                    }
-                }
-            }
-        })
+//        listenMyListenRtl.addOnTabSelectedListener(object :BendTabLayout.OnTabSelectedListener{
+//            override fun onTabReselected(tab: BendTabLayout.BendTab?) {
+//            }
+//
+//            override fun onTabUnselected(tab: BendTabLayout.BendTab?) {
+//            }
+//
+//            override fun onTabSelected(tab: BendTabLayout.BendTab?) {
+//                if(tab!=null){
+//                    if(tab.position == 1){
+//                        val subFragment =   mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment
+//                        subFragment.checkLogin()
+//                    }
+//                }
+//            }
+//        })
         listenMyListenVp.setCurrentItem(0, false)
 
     }
