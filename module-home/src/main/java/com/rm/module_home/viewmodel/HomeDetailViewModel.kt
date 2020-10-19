@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.Cxt.Companion.context
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.ChapterList
@@ -24,6 +25,7 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
@@ -66,6 +68,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     //评论加载更多
     val commentRefreshStateMode = SmartRefreshLayoutStatusModel()
 
+    //主播ID
+    val anchor_id = ObservableField<String>()
 
     var audioId = ObservableField<String>("")
     var sort = ObservableField<String>()
@@ -162,7 +166,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     showContentView()
                     detailInfoData.set(it)
                     isAttention.set(it.list.anchor.status)
-
+                    anchor_id.set(it.list.anchor_id)
                     homeDetailTagsAdapter.setList(it.list.tags)
                 }, onError = {
                     showContentView()
@@ -539,7 +543,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 intDetailInfo(audioId.get()!!)
             })
     }
-
 //    fun showChaperSelect() {
 //        hideOr.set(true)
 //    }

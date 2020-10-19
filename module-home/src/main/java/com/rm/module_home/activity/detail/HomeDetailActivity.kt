@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.home_detail_chapter_headerview.*
  *  //1、需添加书籍下架的toast提示，然后finish掉详情页
  */
 class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
+    val memberId : String = ""
     override fun getLayoutId(): Int = R.layout.home_activity_detail_main
 
     override fun initModelBrId() = BR.viewModel

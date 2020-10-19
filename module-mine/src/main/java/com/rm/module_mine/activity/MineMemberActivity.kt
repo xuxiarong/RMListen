@@ -1,5 +1,7 @@
 package com.rm.module_mine.activity
 
+import android.content.Context
+import android.content.Intent
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_mine.BR
@@ -11,6 +13,16 @@ import com.rm.module_mine.viewmodel.MineMemberViewModel
  *  主播/用户详情
  */
 class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineMemberViewModel>() {
+
+    companion object {
+        const val member_id = "member_id"
+        fun showCommendMoreBook(context: Context, member_id: String) {
+            val intent = Intent(context,MineMemberActivity::class.java).run {
+                putExtra(member_id, member_id)
+            }
+            context.startActivity(intent)
+        }
+    }
 
     override fun initModelBrId() = BR.viewModel
 
