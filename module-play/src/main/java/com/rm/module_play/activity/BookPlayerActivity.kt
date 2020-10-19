@@ -326,16 +326,15 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mViewModel.getDetailInfo(audioId)
                 mViewModel.chapterPageList(
                     audioId,
-                    chapterId, "asc",
-                    ""
+                    chapterId, "asc"
                 )
 
 
             }
-            //从详情进来
+            //从详情全部进来
             Jump.DETAILSBOOK.from -> {
                 (intent.getSerializableExtra(chapterListModel) as? DetailBookBean)?.let {
-                    mViewModel.seBookDetailBean(it)
+                    mViewModel.setBookDetailBean(it)
                     mViewModel.chapterList(
                         it.audio_id,
                         1,
@@ -345,7 +344,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     )
                 }
             }
-            //从章节进来
+            //从详情某章节进来
             Jump.CHAPTER.from -> {
                 (intent.getSerializableExtra(chapterListModel) as? ChapterList)?.let {
                     mChapterId = it.chapter_id
@@ -364,7 +363,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             Jump.SUBBOOKS.from -> {
                 mChapterId = intent.getStringExtra(paramChapterId)
                 (intent.getSerializableExtra(chapterListModel) as? List<ChapterList>)?.let {
-                    mViewModel.setPlayPath(it, "url")
+                    mViewModel.setPlayPath(it)
                 }
             }
 
