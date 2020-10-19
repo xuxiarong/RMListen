@@ -32,9 +32,6 @@
             android:value="812" />
 
         <activity
-            android:name=".activity.PlayActivity"
-            android:launchMode="singleTask" /> <!-- 锁屏 -->
-        <activity
             android:name=".activity.MusicLockActivity"
             android:exported="false"
             android:launchMode="singleTask"

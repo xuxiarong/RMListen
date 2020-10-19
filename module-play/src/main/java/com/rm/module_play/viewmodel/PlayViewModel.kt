@@ -96,14 +96,13 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     }
 
 
-    fun setPlayPath(chapterList: List<ChapterList>, headUrl: String) {
+    fun setPlayPath(chapterList: List<ChapterList>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 chapterList.forEach {
                     pathList.add(
                         BaseAudioInfo(
                             audioPath = it.path_url,
-                            audioCover = headUrl,
                             audioName = it.chapter_name,
                             filename = it.created_at,
                             audioId = it.audio_id,
@@ -199,7 +198,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
                 playBookSate.get()?.audioChapterListModel = it
                 audioChapterModel.set(it)
-                setPlayPath(it.list, anchorURL)
+                setPlayPath(it.list)
                 showContentView()
             }, onError = {
                 showContentView()
@@ -213,13 +212,13 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     fun chapterPageList(
         audioId: String,
         chapterId: String,
-        sort: String, anchorURL: String
+        sort: String
     ) {
         launchOnUI {
             repository.chapterPageList(audioId, chapterId, sort).checkResult(onSuccess = {
                 playBookSate.get()?.audioChapterListModel = it
                 audioChapterModel.set(it)
-                setPlayPath(it.list, anchorURL)
+                setPlayPath(it.list)
                 showContentView()
             }, onError = {
                 showContentView()
@@ -234,7 +233,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         launchOnUI {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
-                    seBookDetailBean(
+                    setBookDetailBean(
                         DetailBookBean(
                             audio_id = it.list.audio_id,
                             audio_name = it.list.audio_name,
@@ -244,7 +243,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                         )
                     )
                 }, onError = {
-
+                    it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
                 }
             )
         }
@@ -256,10 +255,10 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     fun initPlayBookSate(playBook: PlayBookState?) {
         playBook?.let {
             this.playBookSate.set(playBook)
-            seBookDetailBean(it.homeDetailModel)
+            setBookDetailBean(it.homeDetailModel)
             it.audioChapterListModel?.let { its ->
                 audioChapterModel.set(its)
-                setPlayPath(its.list, it.homeDetailModel?.audio_cover_url ?: "")
+                setPlayPath(its.list)
             }
         }
 
@@ -279,7 +278,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     /**
      * 书本信息
      */
-    fun seBookDetailBean(homeDetailBean: DetailBookBean?) {
+    fun setBookDetailBean(homeDetailBean: DetailBookBean?) {
         homeDetailBean?.let {
             playBookSate.get()?.homeDetailModel = it
             val listValue = mutableList.value

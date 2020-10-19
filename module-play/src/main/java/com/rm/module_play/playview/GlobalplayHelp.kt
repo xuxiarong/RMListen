@@ -4,7 +4,6 @@ import android.content.Context
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.utilExt.dip
 import com.rm.module_play.activity.BookPlayerActivity
-import com.rm.module_play.activity.PlayActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
@@ -29,10 +28,14 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
             setBarWidth(Cxt.context.dip(2).toFloat())
         }
     }
+
     fun addOnPlayerEventListener() {
         musicPlayerManger.addOnPlayerEventListener(this)
     }
-
+    //设置书籍封面
+    fun setBooKImage(bookUrl: String?){
+        globalView.setBooKImage(bookUrl)
+    }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         ExoplayerLogger.exoLog("playerState=${playerState},message=${message}")
@@ -70,7 +73,7 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         if (!playWhenReady) {
             globalView.pause()
         } else {
-            globalView.play(musicPlayerManger.getCurrentPlayerMusic()?.audioCover)
+            globalView.play()
         }
     }
 

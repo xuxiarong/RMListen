@@ -125,9 +125,17 @@ class GlobalPlay @JvmOverloads constructor(
         invalidate()
     }
 
-    fun play(avatarUrl: String?) {
+    fun play() {
+        isPlaying = true;
+        if (mAnimator?.isStarted == true)
+            mAnimator?.resume()
+        else
+            mAnimator?.start()
+    }
+    //设置书籍封面
+    fun setBooKImage(bookUrl: String?){
         Glide.with(this).asBitmap()
-            .load(avatarUrl)
+            .load(bookUrl)
             .error(R.drawable.base_ic_default)
             .placeholder(R.drawable.base_ic_default)
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
@@ -135,11 +143,6 @@ class GlobalPlay @JvmOverloads constructor(
                 }
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     setBitmap(resource)
-                    isPlaying = true;
-                    if (mAnimator?.isStarted == true)
-                        mAnimator?.resume()
-                    else
-                        mAnimator?.start()
                 }
             })
     }
@@ -188,23 +191,6 @@ class GlobalPlay @JvmOverloads constructor(
         mAnimator?.pause()
     }
 
-    fun setImage(avatarUrl: String?) {
-        Glide.with(this).asBitmap()
-            .load(avatarUrl)
-            .error(R.drawable.base_ic_default)
-            .placeholder(R.drawable.base_ic_default)
-            .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
-                override fun onLoadCleared(placeholder: Drawable?) {
-
-                }
-
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    setBitmap(resource);
-                    invalidate()
-                }
-            })
-
-    }
 
     fun setImage(@DrawableRes res: Int) {
         setBitmap(BitmapFactory.decodeResource(resources, res))

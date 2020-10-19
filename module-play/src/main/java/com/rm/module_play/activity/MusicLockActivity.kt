@@ -68,7 +68,7 @@ class MusicLockActivity : BaseActivity(),
                         musicPlayerManger.playNextMusic()
                     } else if (id == R.id.music_lock_collect) {
                         if (null != music_lock_collect.tag) {
-                            val (audioPath, audioCover) = music_lock_collect.tag as BaseAudioInfo
+//                            val (audioPath, audioCover) = music_lock_collect.tag as BaseAudioInfo
                             if (music_lock_collect.isSelected) {
                                 val isSuccess =
                                     true //"   MusicPlayerManager.Companion.getMusicPlayerManger().unCollectMusic(audioInfo.getAudioId());"

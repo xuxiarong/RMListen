@@ -280,7 +280,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     fun showNotification() {
         getCurrentPlayerMusic()?.let {
-            notificationManger?.showNotification(this, it)
+            notificationManger?.showNotification(this, it,"")
 
         }
 
