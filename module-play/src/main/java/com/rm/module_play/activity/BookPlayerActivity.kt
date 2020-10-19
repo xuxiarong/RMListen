@@ -339,8 +339,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         it.audio_id,
                         1,
                         20,
-                        "asc",
-                        it.audio_cover_url
+                        "asc"
                     )
                 }
             }
@@ -353,8 +352,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         it.audio_id,
                         1,
                         20,
-                        "asc",
-                        "www.baidu.com"
+                        "asc"
                     )
                     mViewModel.getDetailInfo(it.audio_id)
                 }
@@ -465,7 +463,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onViewPositionChanged(fractionAnchor: Float, fractionScreen: Float) {
-        getBaseContainer().background.mutate().alpha= (255*(1-fractionScreen)).toInt()
+        getBaseContainer().background.mutate().alpha = (255 * (1 - fractionScreen)).toInt()
     }
 
 

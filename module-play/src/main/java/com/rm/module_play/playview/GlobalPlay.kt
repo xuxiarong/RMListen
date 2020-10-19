@@ -105,10 +105,14 @@ class GlobalPlay @JvmOverloads constructor(
         mShader?.setLocalMatrix(mMatrix)
         mBpPaint?.shader = mShader
         mBpPaint?.let { canvas.drawCircle(0f, 0f, mRadius - mBarWidth, it) }
+        mPaint?.style = Paint.Style.FILL
         //4.绘制半透明蒙版
+        if (isPlaying){
+            mPaint?.color = context.Color(R.color.business_text_color_ffffff)
+            mPaint?.let { canvas.drawCircle(0f, 0f, (mRadius *0.2).toFloat(), it) }
+        }
         if (isPlaying) return
         mPaint?.color = 0x88ffffff.toInt()
-        mPaint?.style = Paint.Style.FILL
         canvas.drawCircle(0f, 0f, mRadius - mBarWidth, mPaint!!)
         mPaint?.color = mReachedColor.toInt()
         mPaint?.strokeJoin = Paint.Join.ROUND
@@ -118,6 +122,7 @@ class GlobalPlay @JvmOverloads constructor(
         if (mPlayPath != null && mPaint != null) {
             canvas.drawPath(mPlayPath!!, mPaint!!)
         }
+
     }
 
     override fun onAnimationUpdate(animation: ValueAnimator) {
