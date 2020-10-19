@@ -1,10 +1,11 @@
 package com.rm.component_comm.download
 
 import android.content.Context
-import com.rm.business_lib.bean.download.DownloadAudioBean
 import com.rm.business_lib.bean.download.BaseDownloadFileBean
+import com.rm.business_lib.bean.download.DownloadAudioBean
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -21,9 +22,9 @@ interface DownloadService : ApplicationProvider {
 
     /**
      * @param context Context
-     * @param audioId 书籍id
+     * @param audioId 书籍的信息封装类
      */
-    fun startDownloadChapterSelectionActivity(context: Context, audioId: String)
+    fun startDownloadChapterSelectionActivity(context: Context, downloadAudio: DownloadAudio)
 
     /**
      *下载单个音频文件并存储

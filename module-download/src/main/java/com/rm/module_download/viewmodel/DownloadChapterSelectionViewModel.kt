@@ -2,7 +2,6 @@ package com.rm.module_download.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -12,8 +11,6 @@ import com.rm.business_lib.bean.download.DownloadFileBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.RouterHelper
-import com.rm.module_download.BR
-import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.bean.DownloadChapterItemBean
 import com.rm.module_download.bean.DownloadChapterUIStatus
@@ -29,20 +26,12 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     var isCheckAll = ObservableField<Boolean>(false)
 
 
-    fun downloadItem(item: DownloadChapterAdapterBean) {
-        item.downloadChapterItemBean.apply {
-            var downloadAudioBean =
-                DownloadAudioBean(audioUrl = path_url, bookId = audio_id, audioName = chapter_name, bookName = chapter_name, fileSize = size)
-            downloadService.startDownloadWithCache(downloadAudioBean)
-        }
-    }
-
     fun downloadList(list: List<DownloadChapterAdapterBean>) {
         var audioList = mutableListOf<DownloadAudioBean>()
         list.forEach {
             it.downloadChapterItemBean.run {
                 var audioBean =
-                    DownloadAudioBean(audioUrl = path_url, bookId = audio_id, audioName = chapter_name, bookName = chapter_name, fileSize = size)
+                    DownloadAudioBean(audioUrl = path_url, bookId = audio_id, audioName = chapter_name, bookName = chapter_name, fileSize = size,chapter_id = chapter_id.toString())
                 audioList.add(audioBean)
             }
         }
@@ -53,7 +42,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         var fileBeanList = mutableListOf<BaseDownloadFileBean>()
         list.forEach {
             it.downloadChapterItemBean.run {
-                var bean = DownloadFileBean(path_url, chapter_name)
+                var bean = DownloadFileBean(pathUrl = path_url, chapterName = chapter_name,audioName = audio_id)
                 fileBeanList.add(bean)
             }
         }
@@ -87,7 +76,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     private fun wrapChapterList(chapterLis: MutableList<DownloadChapterItemBean>): MutableList<DownloadChapterAdapterBean> {
         var wrappedList = mutableListOf<DownloadChapterAdapterBean>()
         chapterLis.forEach {
-            var downloadFileStatus = downloadService.getDownloadStatus(DownloadFileBean(it.path_url, it.chapter_name))
+            var downloadFileStatus = downloadService.getDownloadStatus(DownloadFileBean(it.path_url, it.chapter_name,it.audio_id))
             wrappedList.add(DownloadChapterAdapterBean(it, convertDownloadStatus(downloadFileStatus)))
         }
         return wrappedList
@@ -104,7 +93,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         }
     }
 
-    fun getDownloadChapterList(audioId: String) {
+    fun getDownloadChapterList(audioId: Long) {
         launchOnIO {
             repository.getDownloadChapterList(page = page, pageSize = pageSize, audioId = audioId).checkResult(
                 onSuccess = {
@@ -120,7 +109,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         }
     }
 
-    fun downloadChapterSelection(audioId: String, sequences: List<Int>) {
+    fun downloadChapterSelection(audioId: Long, sequences: List<Int>) {
         launchOnIO {
             repository.downloadChapterSelection(audioId = audioId, sequences = sequences).checkResult(
                 onSuccess = {
@@ -130,7 +119,8 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                             bookId = chapterBean.audio_id,
                             audioName = chapterBean.chapter_name,
                             bookName = chapterBean.chapter_name,
-                            fileSize = chapterBean.size
+                            fileSize = chapterBean.size,
+                            chapter_id = chapterBean.chapter_id.toString()
                         )
                     }
                     downloadService.startDownloadWithCache(downloadList.toMutableList())

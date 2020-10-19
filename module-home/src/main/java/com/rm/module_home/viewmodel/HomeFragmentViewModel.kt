@@ -162,7 +162,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         )
     }
 
-
     fun collectClick(model: HomeMenuModel) {
         collectItemClickList(model)
         DLog.d("suolong", "model = ${model.menu_name} ")
@@ -185,7 +184,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         const val BLOCK_HOR_GRID = 2
         const val BLOCK_HOR_SINGLE = 3
         const val BLOCK_HOR_VEr = 4
-
     }
 
 }

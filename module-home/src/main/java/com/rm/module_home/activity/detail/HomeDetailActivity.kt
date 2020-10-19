@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dip
@@ -153,5 +152,11 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     override fun initModelBrId() = BR.viewModel
 
 
+    override fun onResume() {
+        super.onResume()
+        val playService = RouterHelper.createRouter(PlayService::class.java)
+        rootViewAddView(playService.getGlobalPlay())
+        playService.showView(this)
+    }
 
 }

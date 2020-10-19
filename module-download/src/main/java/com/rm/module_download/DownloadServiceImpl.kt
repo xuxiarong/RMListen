@@ -2,10 +2,11 @@ package com.rm.module_download
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.business_lib.bean.download.DownloadAudioBean
 import com.rm.business_lib.bean.download.BaseDownloadFileBean
+import com.rm.business_lib.bean.download.DownloadAudioBean
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.ARouterModuleServicePath
@@ -27,8 +28,8 @@ class DownloadServiceImpl : DownloadService {
         DownloadMainActivity.startActivity(context)
     }
 
-    override fun startDownloadChapterSelectionActivity(context: Context, audioId: String) {
-        DownloadChapterSelectionActivity.startActivity(context, audioId)
+    override fun startDownloadChapterSelectionActivity(context: Context, downloadAudio: DownloadAudio) {
+        DownloadChapterSelectionActivity.startActivity(context, downloadAudio)
     }
 
     override fun startDownloadWithCache(audio: DownloadAudioBean) {
