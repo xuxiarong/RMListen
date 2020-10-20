@@ -73,7 +73,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
     fun itemClickFun(bookBean: AudioBean) {
         val hasMap = getHasMap()
         hasMap[AUDIO_ID] = bookBean.audio_id
-        startActivity(HomeDetailActivity::class.java)
+        startActivity(HomeDetailActivity::class.java,hasMap)
     }
 
     /**

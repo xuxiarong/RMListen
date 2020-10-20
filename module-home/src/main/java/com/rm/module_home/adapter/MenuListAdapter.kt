@@ -8,6 +8,7 @@ import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.gridItemDecoration
 import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.bean.SheetInfoBean
+import com.rm.business_lib.bean.SheetMenuInfoBean
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.viewmodel.HomeMenuViewModel
@@ -18,19 +19,19 @@ import com.rm.module_home.viewmodel.HomeMenuViewModel
  * version: 1.0
  */
 class MenuListAdapter(private val mViewModel: HomeMenuViewModel) :
-    BaseBindVMAdapter<SheetInfoBean>(
+    BaseBindVMAdapter<SheetMenuInfoBean>(
         mViewModel,
         mutableListOf(),
         R.layout.home_adapter_menu,
         BR.itemViewModel,
         BR.menuItemBean
     ) {
-    override fun convert(holder: BaseViewHolder, item: SheetInfoBean) {
+    override fun convert(holder: BaseViewHolder, item: SheetMenuInfoBean) {
         super.convert(holder, item)
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
             if (tag != true) {
                 tag = true
-                item.audio_list?.let {
+                item.audio_list.let {
                     bindGridLayout(
                         CommonBindVMAdapter<AudioBean>(
                             mViewModel,

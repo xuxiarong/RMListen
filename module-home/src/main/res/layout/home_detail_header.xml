@@ -33,7 +33,7 @@
                 tools:src="@drawable/temp_detail_icon" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                bindText="@{viewModel.detailInfoData.list.play_count}"
+                bindPlayCount="@{viewModel.detailInfoData.list.play_count}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_2"
@@ -46,7 +46,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_detail_audio_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_12"
                 android:maxLines="2"
@@ -54,6 +54,7 @@
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_18sp"
                 app:layout_constraintStart_toEndOf="@id/home_detail_icon"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/home_detail_icon"
                 tools:text="书名" />
 
@@ -65,7 +66,7 @@
                 android:lines="1"
                 android:paddingTop="@dimen/dp_4"
                 android:paddingBottom="@dimen/dp_6"
-                android:text="@{viewModel.detailInfoData.list.nickname}"
+                android:text="@{viewModel.detailInfoData.list.author}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintStart_toStartOf="@id/home_detail_audio_name"
@@ -78,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/home_detail_icon_anchor_ee"
                 android:lines="1"
-                android:text="@{viewModel.detailInfoData.list.author}"
+                android:text="@{viewModel.detailInfoData.list.anchor.anchor_name}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintStart_toStartOf="@id/home_detail_audio_name"
@@ -90,11 +91,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginTop="@dimen/dp_26"
-                android:background="@drawable/shape_red_20"
+                android:background="@{viewModel.isSubscribed?@drawable/business_un_select_attention:@drawable/business_shape_round_ff5e5e_32dp}"
                 android:gravity="center"
                 android:onClick="@{()->viewModel.clickSubscribeFun(context)}"
-                android:text="@{viewModel.isSubscribed?@string/home_detail_subscription:@string/home_detail_subscribed}"
-                android:textColor="@color/businessWhite"
+                android:paddingStart="@dimen/dp_50"
+                android:paddingTop="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_50"
+                android:paddingBottom="@dimen/dp_5"
+                android:text="@{viewModel.isSubscribed?@string/home_detail_subscribed:@string/home_detail_subscription}"
+                android:textColor="@{viewModel.isSubscribed?@color/business_text_color_b1b1b1:@color/businessWhite}"
                 app:layout_constraintBottom_toBottomOf="@+id/home_detail_icon"
                 app:layout_constraintStart_toStartOf="@id/home_detail_audio_name" />
 
@@ -252,7 +257,6 @@
                 android:id="@+id/home_detail_anchor_url"
                 bindUrl="@{viewModel.detailInfoData.list.anchor.anchor_avatar}"
                 isCircle="@{true}"
-                android:onClick=""
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 app:layout_constraintStart_toStartOf="parent"

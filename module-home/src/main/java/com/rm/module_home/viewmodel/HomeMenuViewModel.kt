@@ -113,7 +113,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
      */
     private fun processFailData() {
         if (mPage == 1) {
-            showServiceError()
+            showContentView()
             refreshStatusModel.finishRefresh(false)
         } else {
             refreshStatusModel.finishLoadMore(false)
@@ -124,7 +124,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
     /**
      * item点击事件
      */
-    fun itemClickFun(bean: SheetInfoBean) {
+    fun itemClickFun(bean: SheetMenuInfoBean) {
         val map = getHasMap()
         map[SHEET_ID] = bean.sheet_id
         map[PAGE_ID] = mPageId
