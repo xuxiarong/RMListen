@@ -690,4 +690,17 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 getCommentList(audioId.get()!!)
             })
     }
+
+    /**
+     * 主播头像点击事件
+     */
+    fun clickMemberFun(context: Context) {
+        if (isLogin.get()) {
+            val get = detailInfoData.get()
+            DLog.i("clickMemberFun","${detailInfoData.get()?.list?.member_id}")
+            RouterHelper.createRouter(MineService::class.java).toMineMember(context, get!!.list.member_id)
+        } else {
+            getActivity(context)?.let { quicklyLogin(it) }
+        }
+    }
 }

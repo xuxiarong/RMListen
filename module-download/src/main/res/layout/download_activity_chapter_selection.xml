@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="com.rm.baselisten.util.SDCardUtils" />
+
+        <import type="com.rm.baselisten.util.ConvertUtils" />
 
         <variable
             name="viewModel"
@@ -10,50 +14,72 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_48"
-            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/download_ic_finish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/base_icon_back" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:text="@string/download_download"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_18sp" />
 
-
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/download_iv_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/download_ic_download"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/download_ic_download" />
-        </LinearLayout>
+
+            <com.flyco.roundview.RoundTextView
+                android:id="@+id/download_chapter_num"
+                isVisible="@{viewModel.selectChapterNum>0}"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:text="@{String.valueOf(viewModel.selectChapterNum)}"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_12sp"
+                app:rv_backgroundColor="@color/base_ff5e5e"
+                app:rv_isRadiusHalfHeight="true" />
+
+        </FrameLayout>
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/download_audio_list_refresh"
+            android:layout_marginTop="@dimen/dp_48"
+            android:layout_marginBottom="80dp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/download_rv_audio_list"
+                bindVerticalLayout="@{viewModel.MAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -61,29 +87,32 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_height="80dp"
             android:orientation="horizontal"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{()->viewModel.checkAllClickFun()}"
-                android:padding="@dimen/dp_16"
-                android:src="@{viewModel.isCheckAll?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:onClick="@{()->viewModel.changeAllChapterSelect()}"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="@dimen/dp_25"
+                android:src="@{viewModel.isSelectAll?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/download_check_all"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_25"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/sp_14" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
                 android:layout_marginLeft="12dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -91,14 +120,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="已选1章/3.4M"
+                    android:text="@{@string/business_select_chapter(viewModel.selectChapterNum,ConvertUtils.byte2FitMemorySize(viewModel.selectChapterSize,1))}"
                     android:textColor="@color/business_text_color_666666"
                     android:textSize="@dimen/business_text_size_12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="剩余可用106G"
+                    android:text="@{@string/business_available_size(ConvertUtils.byte2FitMemorySize(SDCardUtils.getExternalAvailableSize(),1))}"
                     android:textColor="@color/business_text_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_10sp" />
 
@@ -108,6 +137,7 @@
                 android:id="@+id/download_tv_select_chapters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
                 android:background="@drawable/business_shape_stroke_e8e8e8_360dp"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_5"
@@ -120,6 +150,7 @@
             <TextView
                 android:id="@+id/download_tv_download"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="@dimen/dp_16"
@@ -133,24 +164,24 @@
                 android:textSize="@dimen/sp_14" />
 
 
-            <TextView
-                android:id="@+id/download_tv_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="@dimen/dp_16"
-                android:background="@drawable/business_shape_round_ff5e5e"
-                android:paddingLeft="@dimen/dp_10"
-                android:paddingTop="@dimen/dp_5"
-                android:paddingRight="@dimen/dp_10"
-                android:paddingBottom="@dimen/dp_5"
-                android:text="测试清空"
-                android:textColor="@color/business_text_color_ffffff"
-                android:textSize="@dimen/business_text_size_10sp" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/download_tv_clear"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginLeft="12dp"-->
+            <!--                android:layout_marginRight="@dimen/dp_16"-->
+            <!--                android:background="@drawable/business_shape_round_ff5e5e"-->
+            <!--                android:paddingLeft="@dimen/dp_10"-->
+            <!--                android:paddingTop="@dimen/dp_5"-->
+            <!--                android:paddingRight="@dimen/dp_10"-->
+            <!--                android:paddingBottom="@dimen/dp_5"-->
+            <!--                android:text="测试清空"-->
+            <!--                android:textColor="@color/business_text_color_ffffff"-->
+            <!--                android:textSize="@dimen/business_text_size_10sp" />-->
 
         </LinearLayout>
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

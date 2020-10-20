@@ -34,7 +34,6 @@ class DownloadInProgressFragment : BaseVMFragment<DownloadFragmentInProgressBind
 
     override fun initData() {
         mAdapter.setList(mViewModel.getDownloadAudioList())
-        mViewModel.getDownloadFromDao()
     }
 
     override fun initView() {

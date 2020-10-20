@@ -2,6 +2,7 @@ package com.rm.module_download.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.HomeDetailBean
+import com.rm.module_download.bean.DownloadAudioResponseBean
 import com.rm.module_download.bean.DownloadChapterResponseBean
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -30,6 +31,17 @@ interface DownloadApiService {
         @Query("audio_id") audioId: String,
         @Query("sort") sort: String
     ): BaseResponse<DownloadChapterResponseBean>
+
+    /**
+     * 获取章节列表
+     */
+    @GET("audio/chapter/list")
+    suspend fun downloadChapterList(
+        @Query("page") page: Int,
+        @Query("page_size") pageSize: Int,
+        @Query("audio_id") audioId: String,
+        @Query("sort") sort: String
+    ): BaseResponse<DownloadAudioResponseBean>
 
     /**
      * 获取听书详情

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.util.ConvertUtils
 
 /**
  * desc   :
@@ -91,6 +92,10 @@ fun TextView.bindSpanText(content: String?, keyword: String?, @ColorInt spanColo
     } else {
         text = content
     }
+}
 
+@BindingAdapter("bindMemoryText")
+fun TextView.bindMemoryText(size : Long){
+    text = ConvertUtils.byte2FitMemorySize(size,1)
 }
 

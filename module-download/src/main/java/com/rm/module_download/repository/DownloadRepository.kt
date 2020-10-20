@@ -4,6 +4,7 @@ import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.module_download.api.DownloadApiService
+import com.rm.module_download.bean.DownloadAudioResponseBean
 import com.rm.module_download.bean.DownloadChapterRequestBean
 import com.rm.module_download.bean.DownloadChapterResponseBean
 import okhttp3.MediaType.Companion.toMediaType
@@ -70,6 +71,13 @@ class DownloadRepository(private val apiService: DownloadApiService) : BaseRepos
      */
     suspend fun getDownloadChapterList(page: Int, pageSize: Int, audioId: Long): BaseResult<DownloadChapterResponseBean> {
         return apiCall { apiService.downloadGetChapterList(page = page, pageSize = pageSize, audioId = audioId.toString() ,sort = "asc") }
+    }
+
+    /**
+     *  获取章节列表
+     */
+    suspend fun downloadChapterList(page: Int, pageSize: Int, audioId: Long): BaseResult<DownloadAudioResponseBean> {
+        return apiCall { apiService.downloadChapterList(page = page, pageSize = pageSize, audioId = audioId.toString() ,sort = "asc") }
     }
 
 }
