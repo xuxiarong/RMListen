@@ -7,6 +7,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.ARouterModuleServicePath
+import com.rm.module_mine.activity.MineMemberActivity
 import com.rm.module_mine.fragment.MineHomeFragment
 import com.rm.module_mine.login.LoginActivity
 
@@ -20,6 +21,7 @@ class MineServiceImpl : MineService {
     override fun routerLogin(context: Context) {
         context.startActivity(Intent(context, LoginActivity::class.java))
     }
+
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return MineApplicationDelegate::class.java
     }
@@ -30,4 +32,9 @@ class MineServiceImpl : MineService {
     override fun getMineFragment(): Fragment {
         return MineHomeFragment.newInstance()
     }
+
+    override fun toMineMember(context: Context, memberId: String) {
+        MineMemberActivity.newInstance(context, memberId)
+    }
+
 }

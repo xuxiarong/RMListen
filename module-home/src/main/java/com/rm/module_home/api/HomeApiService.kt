@@ -182,4 +182,33 @@ interface HomeApiService {
     @DELETE("member/follow")
     suspend fun homeUnAttentionAnchor(@Query("follow_id") follow_id: String): BaseResponse<Any>
 
+    /**
+     * 发表评论(听书详情页)
+     * @param content 评论内容
+     * @param audio_id 音频ID
+     * @param anchor_id 音频主播ID
+     */
+    @FormUrlEncoded
+    @POST("comment/audio-comments")
+    suspend fun homeSendComment(
+        @Field("content") content: String,
+        @Field("audio_id") audio_id: String,
+        @Field("anchor_id") anchor_id: String
+    ): BaseResponse<Any>
+
+    /**
+     * 评论点赞
+     * @param comment_id 评论Id
+     */
+    @FormUrlEncoded
+    @POST("comment/like")
+    suspend fun homeLikeComment(@Field("comment_id") comment_id: String): BaseResponse<Any>
+
+    /**
+     * 取消点赞
+     * @param comment_id 评论Id
+     */
+    @DELETE("comment/like")
+    suspend fun homeUnLikeComment(@Query("comment_id") comment_id: String): BaseResponse<Any>
+
 }

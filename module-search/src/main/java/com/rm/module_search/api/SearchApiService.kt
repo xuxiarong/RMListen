@@ -4,8 +4,7 @@ import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.module_search.bean.SearchHotRecommendBean
 import com.rm.module_search.bean.SearchCommonBean
 import com.rm.module_search.bean.SearchResultBean
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  *
@@ -55,5 +54,22 @@ interface SearchApiService {
      */
     @GET("search/suggest")
     suspend fun searchSuggest(@Query("keyword") keyword: String): BaseResponse<SearchCommonBean>
+
+
+
+    /**
+     * 关注主播接口
+     * @param follow_id Int
+     */
+    @FormUrlEncoded
+    @POST("member/follow")
+    suspend fun homeAttentionAnchor(@Field("follow_id") follow_id: String): BaseResponse<Any>
+
+    /**
+     * 取消关注主播接口
+     * @param follow_id Int
+     */
+    @DELETE("member/follow")
+    suspend fun homeUnAttentionAnchor(@Query("follow_id") follow_id: String): BaseResponse<Any>
 
 }

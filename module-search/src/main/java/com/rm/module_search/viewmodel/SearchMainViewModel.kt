@@ -3,7 +3,6 @@ package com.rm.module_search.viewmodel
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
@@ -53,19 +52,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     }
 
     //搜索历史 adapter
-    val historyAdapter by lazy {
-        CommonBindVMAdapter<String>(
-            this,
-            mutableListOf(),
-            R.layout.search_adapter_history,
-            BR.viewModel,
-            BR.historyItem
-        ).apply {
-            val list = HISTORY_KEY.getListString()
-            historyIsVisible.set(list.size > 0)
-            setList(list)
-        }
-    }
+    val historyList = ObservableField<MutableList<String>>()
 
     //当前输入框的内容
     var keyWord = ObservableField<String>("")
@@ -93,7 +80,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     //历史是否显示
     val historyIsVisible = ObservableField<Boolean>(false)
 
-    //推荐内容是否现实
+    //推荐内容是否显示
     val recommendVisible = ObservableField<Boolean>(false)
 
     //清除按钮是否显示
@@ -153,7 +140,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     /**
      * 历史 item 点击事件
      */
-    fun historyItemClickFun(content: String) {
+    val historyItemClickFun: (View, String) -> Unit = { _, content ->
         toSearch(content)
     }
 
@@ -170,7 +157,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     fun clickDeleteHistory() {
         clearVisible.set(false)
         HISTORY_KEY.putMMKV(mutableListOf())
-        historyAdapter.setList(null)
+        historyList.set(null)
         historyIsVisible.set(false)
     }
 

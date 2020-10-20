@@ -6,7 +6,7 @@ package com.rm.module_play.enum
  * @data: 10/9/20 6:25 PM
  * @Version: 1.0.0
  */
-enum class Jump(val from:String) {
+enum class Jump(val from: String) {
 
-    DOTS("DOTS"),DETAILSBOOK("DETAILSBOOK"),RECENTPLAY("RECENTPLAY"),CHAPTER("CHAPTER"),SUBBOOKS("SUBBOOKS")
+    DOTS("DOTS"), DETAILSBOOK("DETAILSBOOK"), RECENTPLAY("RECENTPLAY"), CHAPTER("CHAPTER"), SUBBOOKS("SUBBOOKS")
 }

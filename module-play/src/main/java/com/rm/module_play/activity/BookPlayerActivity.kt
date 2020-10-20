@@ -326,26 +326,24 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mViewModel.getDetailInfo(audioId)
                 mViewModel.chapterPageList(
                     audioId,
-                    chapterId, "asc",
-                    ""
+                    chapterId, "asc"
                 )
 
 
             }
-            //从详情进来
+            //从详情全部进来
             Jump.DETAILSBOOK.from -> {
                 (intent.getSerializableExtra(chapterListModel) as? DetailBookBean)?.let {
-                    mViewModel.seBookDetailBean(it)
+                    mViewModel.setBookDetailBean(it)
                     mViewModel.chapterList(
                         it.audio_id,
                         1,
                         20,
-                        "asc",
-                        it.audio_cover_url
+                        "asc"
                     )
                 }
             }
-            //从章节进来
+            //从详情某章节进来
             Jump.CHAPTER.from -> {
                 (intent.getSerializableExtra(chapterListModel) as? ChapterList)?.let {
                     mChapterId = it.chapter_id
@@ -354,8 +352,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         it.audio_id,
                         1,
                         20,
-                        "asc",
-                        "www.baidu.com"
+                        "asc"
                     )
                     mViewModel.getDetailInfo(it.audio_id)
                 }
@@ -364,7 +361,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             Jump.SUBBOOKS.from -> {
                 mChapterId = intent.getStringExtra(paramChapterId)
                 (intent.getSerializableExtra(chapterListModel) as? List<ChapterList>)?.let {
-                    mViewModel.setPlayPath(it, "url")
+                    mViewModel.setPlayPath(it)
                 }
             }
 
@@ -466,7 +463,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onViewPositionChanged(fractionAnchor: Float, fractionScreen: Float) {
-        getBaseContainer().background.mutate().alpha= (255*(1-fractionScreen)).toInt()
+        getBaseContainer().background.mutate().alpha = (255 * (1 - fractionScreen)).toInt()
     }
 
 

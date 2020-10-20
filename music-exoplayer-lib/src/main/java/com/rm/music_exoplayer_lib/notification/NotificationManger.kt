@@ -46,13 +46,13 @@ class NotificationManger constructor(
     /**
      * 构造一个默认的通知栏并显示
      */
-    fun showNotification(context: Context, musicInfo: BaseAudioInfo) {
+    fun showNotification(context: Context, musicInfo: BaseAudioInfo,bookImgUrl:String) {
         if (mNotificationEnable) {
             val manager: NotificationManagerCompat =
                 NotificationManagerCompat.from(context)
             val isOpen: Boolean = manager.areNotificationsEnabled()
             if (isOpen) {
-                buildNotifyInstance(musicInfo)
+                buildNotifyInstance(musicInfo,bookImgUrl)
             }
         }
     }
@@ -80,7 +80,7 @@ class NotificationManger constructor(
      * @param cover 封面
      * @return 通知对象
      */
-    fun buildNotifyInstance(musicInfo: BaseAudioInfo) {
+    fun buildNotifyInstance(musicInfo: BaseAudioInfo,bookImgUrl:String) {
         //8.0及以上系统需创建通知通道
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: String = context.getResources().getString(R.string.music_text_notice_name)
@@ -103,7 +103,7 @@ class NotificationManger constructor(
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "001")
         Glide.with(context)
             .asBitmap()
-            .load(audioInfo.audioCover)
+            .load(bookImgUrl)
             .placeholder(R.drawable.ic_music_default_cover)
             .error(R.drawable.ic_music_default_cover)
             .into(object : SimpleTarget<Bitmap?>(120, 120) {

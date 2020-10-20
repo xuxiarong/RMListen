@@ -119,15 +119,16 @@
             app:layout_constraintTop_toBottomOf="@id/search_result_back"
             app:layout_constraintTop_toTopOf="@id/search_result_history_text" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            bindFlexboxLayout="@{viewModel.historyAdapter}"
+        <com.rm.module_search.widget.TagLayout
+            bindTagClick="@{viewModel.historyItemClickFun}"
+            bindTagData="@{viewModel.historyList}"
+            bindTagMaxLine="@{2}"
             isVisible="@{viewModel.historyVisible}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_4"
             android:layout_marginEnd="@dimen/dp_16"
-            android:paddingBottom="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_result_history_text" />
 

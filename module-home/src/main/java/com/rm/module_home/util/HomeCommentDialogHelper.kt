@@ -15,13 +15,15 @@ import com.rm.module_home.viewmodel.HomeCommentDialogViewModel
  */
 class HomeCommentDialogHelper(
     private val baseViewModel: BaseVMViewModel,
-    private val mActivity: FragmentActivity
+    private val mActivity: FragmentActivity,
+    private val audio: String,
+    private val commentSuccessBlock: () -> Unit
 ) {
     /**
      * viewModel对象
      */
     private val mViewModel by lazy {
-        HomeCommentDialogViewModel(baseViewModel)
+        HomeCommentDialogViewModel(baseViewModel,audio,commentSuccessBlock)
     }
 
     fun showDialog() {

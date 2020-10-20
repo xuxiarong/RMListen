@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.search_fragment_main.*
  *
  */
 class SearchResultActivity : BaseVMActivity<SearchActivityResultBinding, SearchResultViewModel>() {
-
     override fun initModelBrId() = BR.viewModel
 
     override fun getLayoutId() = R.layout.search_activity_result
@@ -34,7 +33,9 @@ class SearchResultActivity : BaseVMActivity<SearchActivityResultBinding, SearchR
     }
 
     override fun initData() {
-        mViewModel.searchResult(searchKeyword.get()!!)
+        searchKeyword.get()?.let {
+            mViewModel.searchResult(it)
+        }
     }
 
     override fun startObserve() { //tab变化监听

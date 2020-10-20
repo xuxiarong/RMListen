@@ -16,7 +16,8 @@
         <activity android:name=".activity.MineAccountSecuritySettingActivity" />
         <activity android:name=".activity.MinePersonalSignatureSettingActivity" />
         <activity android:name=".activity.MineNicknameSettingActivity" />
-
+        <!-- 主播详情 -->
+        <activity android:name=".activity.MineMemberActivity" />
     </application>
 
 </manifest>

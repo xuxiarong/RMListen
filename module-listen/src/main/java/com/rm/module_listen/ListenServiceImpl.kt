@@ -43,7 +43,7 @@ class ListenServiceImpl : ListenService {
         activity: FragmentActivity,
         audioId: String
     ) {
-        if (!isLogin.get()) {
+        if (isLogin.get()) {
             ListenDialogSheetHelper(baseViewModel, activity, audioId).showDialog()
         } else {
             RouterHelper.createRouter(LoginService::class.java)

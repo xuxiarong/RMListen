@@ -18,7 +18,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_20">
+        android:layout_marginBottom="@dimen/dp_20"
+        android:onClick="@{()->viewModel.clickAnchorFun(context,item)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search_adapter_anchor_avatar"
@@ -48,13 +49,13 @@
             bindText="@{@string/search_anchor_level(item.level)}"
             android:layout_width="@dimen/dp_40"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_2"
             android:textColor="@color/business_color_ff5e5e"
             android:textSize="@dimen/business_text_size_10sp"
-            android:layout_marginStart="@dimen/dp_2"
             android:textStyle="italic|bold"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_name"
-            app:layout_constraintTop_toTopOf="@id/search_adapter_anchor_name"
             app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_name"
+            app:layout_constraintTop_toTopOf="@id/search_adapter_anchor_name"
             tools:text="LV5" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -64,8 +65,8 @@
             bindSpanContent="@{item.nickname}"
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
-            android:visibility="gone"
             android:layout_marginTop="@dimen/dp_4"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
             app:layout_constraintTop_toBottomOf="@id/search_adapter_anchor_name"
@@ -76,24 +77,24 @@
             bindText="@{@string/search_fans(item.fans)}"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_4"
+            app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_avatar"
             app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
-            app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_avatar"
             tools:text="1.5w粉丝" />
 
         <androidx.appcompat.widget.AppCompatCheckedTextView
             android:id="@+id/search_adapter_anchor_attention"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/search_select_bg"
-            android:checked="true"
-            android:drawableStart="@drawable/search_icon_attention_ea"
+            android:background="@{item.is_follow==1L ? @drawable/business_un_select_attention  : @drawable/business_select_attention}"
+            android:drawableStart="@{item.is_follow==1L ? @drawable/business_icon_attention_eb : @drawable/business_icon_attention_ea}"
+            android:onClick="@{()->viewModel.clickAttentionFun(context,item)}"
             android:paddingStart="@dimen/sp_14"
             android:paddingTop="5dp"
             android:paddingEnd="@dimen/sp_14"
             android:paddingBottom="@dimen/dp_5"
-            android:text="@string/search_attention"
-            android:textColor="@drawable/search_select_text_color"
+            android:text="@{item.is_follow==1L ? @string/business_followed : @string/business_attention}"
+            android:textColor="@{item.is_follow==1L ? @color/business_text_color_666666 : @color/business_color_ff5e5e}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

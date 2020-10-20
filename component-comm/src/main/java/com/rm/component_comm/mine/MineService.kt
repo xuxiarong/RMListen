@@ -16,4 +16,9 @@ interface MineService : ApplicationProvider {
      * 我的模块主界面
      */
     fun getMineFragment(): Fragment
+
+    /**
+     * 主播/用户详情
+     */
+    fun toMineMember(context: Context,memberId:String)
 }

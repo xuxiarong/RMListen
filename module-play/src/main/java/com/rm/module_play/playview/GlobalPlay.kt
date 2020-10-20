@@ -105,10 +105,14 @@ class GlobalPlay @JvmOverloads constructor(
         mShader?.setLocalMatrix(mMatrix)
         mBpPaint?.shader = mShader
         mBpPaint?.let { canvas.drawCircle(0f, 0f, mRadius - mBarWidth, it) }
+        mPaint?.style = Paint.Style.FILL
         //4.绘制半透明蒙版
+        if (isPlaying){
+            mPaint?.color = context.Color(R.color.business_text_color_ffffff)
+            mPaint?.let { canvas.drawCircle(0f, 0f, (mRadius *0.2).toFloat(), it) }
+        }
         if (isPlaying) return
         mPaint?.color = 0x88ffffff.toInt()
-        mPaint?.style = Paint.Style.FILL
         canvas.drawCircle(0f, 0f, mRadius - mBarWidth, mPaint!!)
         mPaint?.color = mReachedColor.toInt()
         mPaint?.strokeJoin = Paint.Join.ROUND
@@ -118,6 +122,7 @@ class GlobalPlay @JvmOverloads constructor(
         if (mPlayPath != null && mPaint != null) {
             canvas.drawPath(mPlayPath!!, mPaint!!)
         }
+
     }
 
     override fun onAnimationUpdate(animation: ValueAnimator) {
@@ -125,9 +130,17 @@ class GlobalPlay @JvmOverloads constructor(
         invalidate()
     }
 
-    fun play(avatarUrl: String?) {
+    fun play() {
+        isPlaying = true;
+        if (mAnimator?.isStarted == true)
+            mAnimator?.resume()
+        else
+            mAnimator?.start()
+    }
+    //设置书籍封面
+    fun setBooKImage(bookUrl: String?){
         Glide.with(this).asBitmap()
-            .load(avatarUrl)
+            .load(bookUrl)
             .error(R.drawable.base_ic_default)
             .placeholder(R.drawable.base_ic_default)
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
@@ -135,11 +148,6 @@ class GlobalPlay @JvmOverloads constructor(
                 }
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     setBitmap(resource)
-                    isPlaying = true;
-                    if (mAnimator?.isStarted == true)
-                        mAnimator?.resume()
-                    else
-                        mAnimator?.start()
                 }
             })
     }
@@ -188,23 +196,6 @@ class GlobalPlay @JvmOverloads constructor(
         mAnimator?.pause()
     }
 
-    fun setImage(avatarUrl: String?) {
-        Glide.with(this).asBitmap()
-            .load(avatarUrl)
-            .error(R.drawable.base_ic_default)
-            .placeholder(R.drawable.base_ic_default)
-            .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
-                override fun onLoadCleared(placeholder: Drawable?) {
-
-                }
-
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    setBitmap(resource);
-                    invalidate()
-                }
-            })
-
-    }
 
     fun setImage(@DrawableRes res: Int) {
         setBitmap(BitmapFactory.decodeResource(resources, res))
