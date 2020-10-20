@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineMemberViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.tabs.TabLayout
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/tab_mine_member_list"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_45"
+                app:bendTabIndicatorAnimation="true"
+                app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+                app:bendTabIndicatorHeight="@dimen/dp_1"
+                app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+                app:bendTabIndicatorWidth="@dimen/dp_24"
+                app:bendTabMode="scrollable"
+                app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+                app:bendTabTextSize="@dimen/business_text_size_16sp"
+                app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="720dp"
+                android:background="#aabbcc"
+                app:layout_constraintTop_toBottomOf="@+id/tab_mine_member_list"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>
