@@ -1,7 +1,9 @@
 package com.rm.module_mine.viewmodel
 
+import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -14,6 +16,8 @@ class MineMemberViewModel(private val repository: MineRepository): BaseVMViewMod
     var detailInfoData = ObservableField<MineInfoDetail>()
     var memberFans = ObservableField<String>()
     var memberFollows = ObservableField<String>()
+
+    var isVisible = ObservableBoolean(false)
     /**
      * 获取个人/主播详情
      */

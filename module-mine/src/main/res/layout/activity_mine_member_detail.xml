@@ -122,10 +122,17 @@
             app:layout_constraintTop_toTopOf="@id/tx_mine_member_follows"
             tools:text="关注" />
         <com.rm.business_lib.wedgit.DashLineView
+            android:id="@+id/dash_line_view"
             android:layout_marginTop="@dimen/dp_20"
             app:layout_constraintTop_toBottomOf="@id/tx_mine_member_follows"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_1"/>
+        <View
+            android:id="@+id/maskView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="#80000000"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mine_detail_title_cl"
@@ -146,38 +153,34 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_detail_title"
+                android:id="@+id/tx_mime_detail_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_14"
                 android:ellipsize="end"
                 android:maxEms="10"
                 android:maxLines="1"
-                android:textColor="@color/business_text_color_333333"
+                android:text="八嘎呀路"
+                isVisible="@{!viewModel.isVisible}"
+                android:textColor="@color/businessWhite"
                 android:textSize="@dimen/business_text_size_18sp"
-                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/home_detail_back"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/home_detail_back" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/home_detail_share"
+                android:id="@+id/img_mime_detail_member"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/dp_16"
                 android:paddingTop="@dimen/dp_9"
                 android:paddingEnd="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_9"
+                android:visibility="invisible"
                 android:src="@mipmap/mine_ic_launcher"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-            <View
-                android:id="@+id/maskView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0"
-                android:background="#80000000"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     <include
         layout="@layout/activity_mine_member_booklist"

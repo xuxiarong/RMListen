@@ -13,7 +13,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.px2dip
 import com.rm.baselisten.utilExt.screenHeight
@@ -56,7 +55,7 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
     }
 
-    override fun initData() {
+    private fun initParams(){
         setTransparentStatusBar()
         val layoutParams = mDataBind.mineDetailTitleCl.layoutParams
                 as ViewGroup.MarginLayoutParams
@@ -65,21 +64,30 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
             stateHeight = getStateHeight(this@MineMemberActivity)
             topMargin = stateHeight
         }
+
         heightPixels = screenHeight //屏幕高度
 
-        //初始化behaviorHeight的高度
-        val behaviorHeight = px2dip(heightPixels/2 + stateHeight)
-
-        peekHeight =
+        dash_line_view.post{
+            val behaviorHeight = px2dip(heightPixels - dash_line_view.top + stateHeight)
+            DLog.i("dash_line_view","dash_line_view:$behaviorHeight")
+            peekHeight =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 behaviorHeight,
                 resources.displayMetrics).toInt()
 
+        }
+
+
+        DLog.i("peekHeight","peekHeight:$peekHeight")
         home_detail_back.post{
             val lp = home_detail_back.layoutParams as ConstraintLayout.LayoutParams
             marginTop = home_detail_back.height + lp.topMargin + lp.bottomMargin / 2 + screenHeight
             offsetDistance = lp.topMargin
         }
+    }
+
+    override fun initData() {
+        initParams()
         mViewModel.getInfoDetail(intent.getStringExtra(MEMBER_ID))
         mHandler = Handler()
         initBehavior()
@@ -91,6 +99,7 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
         behavior.state = BottomSheetBehavior.STATE_HIDDEN
         behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                //色差值变化
                 var distance: Float = 0F;
                 maskView.alpha = slideOffset
                 distance = offsetDistance * slideOffset
@@ -101,11 +110,21 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 val layoutParams = bottomSheet.layoutParams
-
-                if(bottomSheet.height > heightPixels - stateHeight - dip(48)){
-                    layoutParams.height = heightPixels - stateHeight - dip(48)
+                DLog.i("bottomSheet","height:$bottomSheet.height")
+                if(bottomSheet.height > heightPixels){
+                    layoutParams.height = heightPixels
                     bottomSheet.layoutParams = layoutParams
                 }
+                var state = "null"
+                when (newState) {
+                    1 -> state = "STATE_DRAGGING" //过渡状态此时用户正在向上或者向下拖动bottom sheet
+                    2 -> state = "STATE_SETTLING" // 视图从脱离手指自由滑动到最终停下的这一小段时间
+                    3 -> mViewModel.isVisible.set(false)//处于完全展开的状态
+                    4 -> //默认的折叠状态
+                        mViewModel.isVisible.set(true)
+                    5 -> state = "STATE_HIDDEN" //下滑动完全隐藏 bottom sheet
+                }
+                DLog.i("state","state:$state")
             }
         })
         mHandler.postDelayed({
@@ -135,7 +154,6 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
                 when (tab.position) {
                     0 -> frameLayout.setBackgroundColor(Color.parseColor("#ff0000"))
                     1 -> frameLayout.setBackgroundColor(Color.parseColor("#0000ff"))
-                    2 -> frameLayout.setBackgroundColor(Color.parseColor("#00ff00"))
                 }
             }
         })
