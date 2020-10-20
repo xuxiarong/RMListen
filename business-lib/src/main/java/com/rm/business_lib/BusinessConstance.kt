@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadStatusChangedBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 
 /**
@@ -60,5 +61,6 @@ const val LISTEN_SHEET_LIST_COLLECTED_LIST = 1 //收藏听单
 val downloadStatus = MutableLiveData<DownloadStatusChangedBean>()
 val downloadProgress = MutableLiveData<DownloadProgressUpdateBean>()
 
+var downloadingAudioList = MutableLiveData<MutableList<DownloadAudio>>()
 val downloadingChapterList = MutableLiveData<DownloadChapter>()
 val downloadFinishChapterList = MutableLiveData<DownloadChapter>()

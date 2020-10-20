@@ -6,6 +6,7 @@ import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
+import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
@@ -123,8 +124,8 @@ class ListenMyListenFragment :
             }
         }
         listenDownloadCl.setOnClickListener {
-//            val createRouter = RouterHelper.createRouter(DownloadService::class.java)
-//            createRouter.startDownloadChapterSelectionActivity(it.context, "162163095869968384")
+            val createRouter = RouterHelper.createRouter(DownloadService::class.java)
+            createRouter.startDownloadMainActivity(it.context)
         }
     }
 

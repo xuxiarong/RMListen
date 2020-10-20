@@ -14,6 +14,7 @@ import com.rm.baselisten.databinding.BaseFragmentVmBinding
 import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.model.BaseStatusModel
+import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.dip
@@ -93,7 +94,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
         })
 
         mViewModel.baseTitleModel.observe(this@BaseVMFragment, Observer {
-            setTitle()
+            setTitle(it)
         })
 
         mViewModel.baseToastModel.observe(this, Observer {
@@ -174,12 +175,19 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
     /**
      * 设置标题栏
      */
-    private fun setTitle() {
+    private fun setTitle(titleModel: BaseTitleModel) {
         if (!mBaseBinding.baseTitleLayout.isInflated) {
             mBaseBinding.baseTitleLayout.viewStub?.inflate()
-            if (mChildView != null && context!=null) {
+            if (mChildView != null ) {
                 val layoutParams = mChildView?.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParams.topMargin = dip( 48.0f)
+                layoutParams.topMargin = dip(48.0f)
+                mChildView?.layoutParams = layoutParams
+            }
+        }
+        if(titleModel.noTitle){
+            if (mChildView != null ) {
+                val layoutParams = mChildView?.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.topMargin = dip(0)
                 mChildView?.layoutParams = layoutParams
             }
         }

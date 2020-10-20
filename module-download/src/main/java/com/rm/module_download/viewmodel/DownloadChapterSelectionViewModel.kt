@@ -2,6 +2,8 @@ package com.rm.module_download.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.ktx.addValue
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -9,11 +11,18 @@ import com.rm.business_lib.bean.download.BaseDownloadFileBean
 import com.rm.business_lib.bean.download.DownloadAudioBean
 import com.rm.business_lib.bean.download.DownloadFileBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
+import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_download.BR
+import com.rm.module_download.DownloadConstant
+import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.bean.DownloadChapterItemBean
 import com.rm.module_download.bean.DownloadChapterUIStatus
+import com.rm.module_download.file.DownLoadFileUtils
+import com.rm.module_download.model.DownloadChapterStatusModel
 import com.rm.module_download.repository.DownloadRepository
 
 class DownloadChapterSelectionViewModel(private val repository: DownloadRepository) : BaseVMViewModel() {
@@ -23,7 +32,22 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     private var total = 0
     private val downloadService by lazy { RouterHelper.createRouter(DownloadService::class.java) }
     val itemChange = MutableLiveData<DownloadChapterAdapterBean>()
-    var isCheckAll = ObservableField<Boolean>(false)
+    var isSelectAll = ObservableField<Boolean>(false)
+    var selectChapterNum = ObservableField<Int>(0)
+    var selectChapterSize = ObservableField<Long>(0L)
+
+    var downloadAudio = ObservableField<DownloadAudio>()
+    val audioChapterList = MutableLiveData<MutableList<DownloadChapterStatusModel>>()
+
+     val mAdapter by lazy {
+        CommonBindVMAdapter<DownloadChapterStatusModel>(
+            this,
+            mutableListOf(),
+            R.layout.download_item_chapter_selection,
+            BR.viewModel,
+            BR.itemBean
+        )
+    }
 
 
     fun downloadList(list: List<DownloadChapterAdapterBean>) {
@@ -55,17 +79,46 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         downloadService.deleteAll()
     }
 
-    fun checkAllClickFun() {
-        isCheckAll.set(isCheckAll.get()?.not())
+//    fun checkAllClickFun() {
+//        isSelectAll.set(isSelectAll.get()?.not())
+//    }
+
+    fun itemClickFun(item: DownloadChapterStatusModel) {
+        when (item.status) {
+            DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> return
+            DownloadConstant.CHAPTER_STATUS_UN_SELECT -> {
+                item.status =  DownloadConstant.CHAPTER_STATUS_SELECTED
+                selectChapterNum.set(selectChapterNum.get()?.plus(1))
+                selectChapterSize.set(selectChapterSize.get()?.plus(item.chapter.size))
+            }
+            DownloadConstant.CHAPTER_STATUS_SELECTED -> {
+                item.status = DownloadConstant.CHAPTER_STATUS_UN_SELECT
+                selectChapterNum.set(selectChapterNum.get()?.plus(-1))
+                selectChapterSize.set(selectChapterSize.get()?.plus(-item.chapter.size))
+            }
+        }
+        mAdapter.notifyItemChanged(mAdapter.data.indexOf(item))
     }
 
-    fun itemClickFun(item: DownloadChapterAdapterBean) {
-        when (item.downloadChapterUIStatus) {
-            DownloadChapterUIStatus.COMPLETED, DownloadChapterUIStatus.COMPLETED -> return
-            DownloadChapterUIStatus.CHECKED -> item.downloadChapterUIStatus = DownloadChapterUIStatus.UNCHECK
-            DownloadChapterUIStatus.UNCHECK -> item.downloadChapterUIStatus = DownloadChapterUIStatus.CHECKED
+    fun changeAllChapterSelect(){
+        val selectAll = isSelectAll.get()
+        if(selectAll!=null){
+            mAdapter.data.forEach {
+                if(!selectAll && it.status == DownloadConstant.CHAPTER_STATUS_UN_SELECT){
+                    it.status = DownloadConstant.CHAPTER_STATUS_SELECTED
+                    selectChapterNum.set(selectChapterNum.get()?.plus(1))
+                    selectChapterSize.set(selectChapterSize.get()?.plus(it.chapter.size))
+                }else if(selectAll && it.status == DownloadConstant.CHAPTER_STATUS_SELECTED){
+                    it.status = DownloadConstant.CHAPTER_STATUS_UN_SELECT
+                    selectChapterNum.set(selectChapterNum.get()?.plus(-1))
+                    selectChapterSize.set(selectChapterSize.get()?.plus(-it.chapter.size))
+                }
+            }
+            isSelectAll.set(selectAll.not())
+            mAdapter.notifyDataSetChanged()
+        }else{
+            isSelectAll.set(false)
         }
-        itemChange.value = item
     }
 
     fun hasMore(): Boolean {
@@ -95,11 +148,11 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
 
     fun getDownloadChapterList(audioId: Long) {
         launchOnIO {
-            repository.getDownloadChapterList(page = page, pageSize = pageSize, audioId = audioId).checkResult(
+            repository.downloadChapterList(page = page, pageSize = pageSize, audioId = audioId).checkResult(
                 onSuccess = {
                     page++
                     total = it.total
-                    data.value = wrapChapterList(it.list)
+                    getChapterStatus(it.list)
                 },
                 onError = {
                     showToast("$it")
@@ -107,6 +160,16 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 }
             )
         }
+    }
+
+    fun getChapterStatus(chapterList : List<DownloadChapter>){
+        val chapterStatusList = mutableListOf<DownloadChapterStatusModel>()
+        chapterList.forEach {
+            chapterStatusList.add(
+                DownLoadFileUtils.checkChapterIsDownload(DownloadChapterStatusModel(chapter = it ))
+            )
+        }
+        audioChapterList.addValue(chapterStatusList)
     }
 
     fun downloadChapterSelection(audioId: Long, sequences: List<Int>) {

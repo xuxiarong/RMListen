@@ -103,7 +103,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         createFinder(baseBean.url, baseBean.parentFileDir,baseBean.fileName).run {
             OkDownload.with().downloadDispatcher().cancel(this)
             OkDownload.with().breakpointStore().remove(id)
-            file?.delete()
+            this.file?.delete()
         }.also {
             taskList.remove(baseBean.url)
         }

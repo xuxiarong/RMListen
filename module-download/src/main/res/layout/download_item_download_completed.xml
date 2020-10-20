@@ -8,7 +8,7 @@
 
         <variable
             name="itemBean"
-            type="com.rm.module_download.bean.DownloadChapterItemBean" />
+            type="com.rm.business_lib.db.download.DownloadAudio" />
 
         <variable
             name="viewModel"
@@ -36,6 +36,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/download_iv_book_cover"
             corner="@{4.0f}"
+            bindUrl="@{itemBean.audio_cover_url}"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
             android:src="#999"
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="Lulu Todd"
+            android:text="@{itemBean.audio_name}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_16sp"
             app:layout_constraintLeft_toRightOf="@id/download_iv_book_cover"
@@ -70,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_speaker"
-                android:text="我是中国人"
+                android:text="@{itemBean.author}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
 
@@ -79,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_book_chapter"
-                android:text="23集"
+                android:text="@{String.valueOf(itemBean.last_sequence)}"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
@@ -89,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_downloaded"
-                android:text="8集"
+                android:text="@{String.valueOf(itemBean.chapterList.size())}"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
