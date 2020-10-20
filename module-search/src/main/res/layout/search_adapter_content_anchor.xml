@@ -12,6 +12,8 @@
         <variable
             name="viewModel"
             type="com.rm.module_search.viewmodel.SearchContentAnchorViewModel" />
+
+        <import type="android.text.TextUtils" />
     </data>
 
 
@@ -84,17 +86,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_anchor_attention"
+            isVisible="@{!TextUtils.equals(viewModel.userInfo.id,item.member_id)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@{item.is_follow==1L ? @drawable/business_un_select_attention  : @drawable/business_select_attention}"
             android:drawableStart="@{item.is_follow==1L ? @drawable/business_icon_attention_eb : @drawable/business_icon_attention_ea}"
-            android:text="@{item.is_follow==1L ? @string/business_followed : @string/business_attention}"
-            android:textColor="@{item.is_follow==1L ? @color/business_text_color_666666 : @color/business_color_ff5e5e}"
             android:onClick="@{()->viewModel.clickAttentionFun(context,item)}"
             android:paddingStart="@dimen/sp_14"
             android:paddingTop="5dp"
             android:paddingEnd="@dimen/sp_14"
             android:paddingBottom="@dimen/dp_5"
+            android:text="@{item.is_follow==1L ? @string/business_followed : @string/business_attention}"
+            android:textColor="@{item.is_follow==1L ? @color/business_text_color_666666 : @color/business_color_ff5e5e}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

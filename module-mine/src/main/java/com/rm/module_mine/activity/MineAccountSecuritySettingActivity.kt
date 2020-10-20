@@ -1,7 +1,5 @@
 package com.rm.module_mine.activity
 
-import android.content.Context
-import android.content.Intent
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_mine.BR

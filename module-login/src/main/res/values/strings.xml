@@ -36,4 +36,6 @@
 
     <string name="login_format_verification_phone_tips" formatted="false">验证码已发送至%s</string>
     <string name="login_format_verification_count_down_tips" formatted="false">%s后重新获取</string>
+
+    <string name="login_search_hint">搜索</string>
 </resources>

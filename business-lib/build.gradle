@@ -58,5 +58,6 @@ dependencies {
     // 下拉刷新控件
     api rootProject.ext.dependencies["smartRefreshLayout"]
     implementation  'com.scwang.smart:refresh-header-classics:2.0.1' // 暂时测试用的下拉刷新样式，之后会自定义header 并删除此处的引用
+    implementation rootProject.ext.dependencies["tinypinyin"]
 
 }

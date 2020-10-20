@@ -25,6 +25,7 @@ import com.rm.business_lib.bean.DetailTags
 import com.rm.business_lib.bean.HomeDetailBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.listen.ListenService
@@ -40,6 +41,7 @@ import com.rm.module_home.model.home.detail.HomeCommentBean
 import com.rm.module_home.repository.HomeRepository
 import com.rm.module_home.util.HomeCommentDialogHelper
 import com.rm.module_play.enum.Jump
+import kotlin.math.log
 
 
 class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
@@ -69,6 +71,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
 
     //是否订阅
     val isSubscribed = ObservableField<Boolean>(false)
+
+    val attentionVisibility = ObservableField<Boolean>(true)
 
     //评论加载更多
     val commentRefreshStateMode = SmartRefreshLayoutStatusModel()
@@ -173,7 +177,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
                     showContentView()
-//                    if (it.list)
+                    //如果主播id与当前的用户id一致则隐藏关注按钮
+                    loginUser.get()?.let { user ->
+                        attentionVisibility.set(user.id != it.list.member_id)
+                    }
                     detailInfoData.set(it)
                     isAttention.set(it.list.anchor.status)
                     anchor_id.set(it.list.anchor_id)
@@ -193,7 +200,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 订阅
      */
-    private fun subscribe(context: Context,audioId: String) {
+    private fun subscribe(context: Context, audioId: String) {
         showLoading()
         launchOnIO {
             repository.subscribe(audioId).checkResult(
@@ -651,6 +658,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             if (!isLogin.get()) {
                 quicklyLogin(it)
             } else {
+                DLog.i("--->", "${loginUser.get()!!.id}")
                 if (isAttention.get()) {
                     unAttentionAnchor(followId)
                 } else {
@@ -697,8 +705,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     fun clickMemberFun(context: Context) {
         if (isLogin.get()) {
             val get = detailInfoData.get()
-            DLog.i("clickMemberFun","${detailInfoData.get()?.list?.member_id}")
-            RouterHelper.createRouter(MineService::class.java).toMineMember(context, get!!.list.member_id)
+            DLog.i("clickMemberFun", "${detailInfoData.get()?.list?.member_id}")
+            RouterHelper.createRouter(MineService::class.java)
+                .toMineMember(context, get!!.list.member_id)
         } else {
             getActivity(context)?.let { quicklyLogin(it) }
         }

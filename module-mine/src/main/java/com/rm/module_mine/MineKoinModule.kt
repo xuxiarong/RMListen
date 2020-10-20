@@ -19,12 +19,12 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { MineHomeViewModel() }
     viewModel { MineSettingViewModel() }
-    viewModel { MinePersonalInfoViewModel() }
+    viewModel { MinePersonalInfoViewModel(get()) }
     viewModel { MinePlaySettingViewModel() }
     viewModel { MineDownloadSettingViewModel() }
     viewModel { MineAccountSecuritySettingViewModel() }
-    viewModel { MineNicknameSettingViewModel() }
-    viewModel { MinePersonalSignatureSettingViewModel() }
+    viewModel { MineNicknameSettingViewModel(get()) }
+    viewModel { MinePersonalSignatureSettingViewModel(get()) }
     viewModel { MineMemberViewModel(get()) }
 }
 

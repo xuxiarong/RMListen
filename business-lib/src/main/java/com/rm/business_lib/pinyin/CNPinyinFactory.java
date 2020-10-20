@@ -1,4 +1,4 @@
-package com.rm.module_login.pinyin;
+package com.rm.business_lib.pinyin;
 
 import android.text.TextUtils;
 import android.util.ArrayMap;
@@ -59,9 +59,15 @@ public class CNPinyinFactory {
     }
 
     public static <T extends CN> CNPinyin<T> createCNPinyin(T t) {
-        if (t == null || t.chinese() == null) return null;
+        if (t == null) {
+            return null;
+        } else {
+            t.chinese();
+        }
         String chinese = t.chinese().trim();
-        if (TextUtils.isEmpty(chinese)) return null;
+        if (TextUtils.isEmpty(chinese)) {
+            return null;
+        }
         CNPinyin cnPinyin = new CNPinyin(t);
         char[] chars = chinese.toCharArray();
         String[] charPinyins = new String[chars.length];

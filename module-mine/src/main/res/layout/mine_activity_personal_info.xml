@@ -17,9 +17,9 @@
         <com.rm.module_mine.widget.MineCommonMaterialView
             android:id="@+id/mine_personal_avatar"
             userIcon="@{viewModel.userInfo.avatar_url}"
-            android:onClick="@{(view)->viewModel.clickAvatar(view)}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="@{(view)->viewModel.clickAvatar(view)}"
             app:material_name="@string/mine_avatar" />
 
         <com.rm.module_mine.widget.MineCommonMaterialView
@@ -33,8 +33,8 @@
 
         <com.rm.module_mine.widget.MineCommonMaterialView
             android:id="@+id/mine_personal_sex"
-            userText="@{viewModel.sex}"
             defaultText="@{@string/mine_unfilled}"
+            userText="@{viewModel.sex}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{(view)->viewModel.clickSex(view)}"
@@ -55,7 +55,7 @@
             userText="@{viewModel.userInfo.address}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.clickAddress()}"
+            android:onClick="@{()->viewModel.clickAddress(context)}"
             app:material_name="@string/mine_address" />
 
         <com.rm.module_mine.widget.MineCommonMaterialView

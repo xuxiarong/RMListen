@@ -94,4 +94,11 @@
 
     <string name="mine_certified_anchor">认证主播</string>
 
+    <string name="mine_signature_num" formatted="false">%d</string>
+    <string name="mine_signature_num_text">/50</string>
+
+    <string name="login_input_verification_code">请输入验证码</string>
+    <string name="login_re_get_verify_code">重新获取</string>
+
+
 </resources>

@@ -1,10 +1,10 @@
-package com.rm.module_login.pinyin;
+package com.rm.business_lib.pinyin;
 
 import com.rm.baselisten.util.DLog;
 
 import java.io.Serializable;
 
-import static com.rm.module_login.pinyin.CNPinyinFactory.DEF_CHAR;
+import static com.rm.business_lib.pinyin.CNPinyinFactory.DEF_CHAR;
 
 /**
  * desc   :

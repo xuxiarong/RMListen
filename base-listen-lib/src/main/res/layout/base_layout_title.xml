@@ -140,7 +140,8 @@
                 app:layout_constraintRight_toLeftOf="@+id/base_iv_right"
                 bindText="@{title.rightText}"
                 bindClick="@{title.rightTextClick}"
-                android:textColor="#666666"
+                android:textColor="@{title.rightTextColorRes}"
+                android:enabled="@{title.rightTextEnabled}"
                 android:textSize="14sp"
                 tools:text="右一"/>
 

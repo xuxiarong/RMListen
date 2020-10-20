@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -10,7 +11,7 @@
     </data>
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -18,22 +19,41 @@
         android:paddingEnd="@dimen/dp_16">
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/mine_sign_ed"
             style="@style/BusinessTextStyleFirst_3"
+            afterTextChanged="@{viewModel.inputAction}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_110"
             android:layout_marginTop="@dimen/dp_24"
-            android:gravity="start|top"
             android:background="@drawable/business_shape_f7f7f7_8dp"
+            android:gravity="start|top"
             android:hint="@string/mine_enter_signature"
-            android:padding="@dimen/dp_10" />
+            android:padding="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{@string/mine_signature_num(50-viewModel.inputText.length())}"
+            android:textColor="@{viewModel.inputText.length()>50?@color/business_color_ff5e5e:@color/business_text_color_666666}"
             android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintBottom_toBottomOf="@id/mine_sign_text"
+            app:layout_constraintEnd_toStartOf="@id/mine_sign_text"
+            app:layout_constraintTop_toTopOf="@id/mine_sign_text"
             tools:text="50/50" />
 
-    </LinearLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_sign_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@string/mine_signature_num_text"
+            android:textColor="@color/business_text_color_666666"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mine_sign_ed"
+            tools:text="50/50" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

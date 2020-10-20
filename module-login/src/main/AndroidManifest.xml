@@ -27,5 +27,8 @@
             android:name=".activity.ResetPasswordActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.CountryListActivity"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

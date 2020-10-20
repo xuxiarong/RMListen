@@ -1,7 +1,7 @@
-package com.rm.module_login.bean
+package com.rm.business_lib.bean
 
 import android.text.TextUtils
-import com.rm.module_login.pinyin.CN
+import com.rm.business_lib.pinyin.CN
 import java.util.regex.Pattern
 
 /**

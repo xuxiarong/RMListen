@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineAccountSecuritySettingViewModel" />
     </data>
 
     <LinearLayout
@@ -14,17 +17,20 @@
         <com.rm.module_mine.widget.MineCommonMaterialView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_52"
+            android:onClick="@{()->viewModel.clickChangePsdFun(context)}"
             app:material_name="@string/mine_change_password"
             app:user_text="@string/mine_modify" />
 
         <com.rm.module_mine.widget.MineCommonMaterialView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_52"
+            android:onClick="@{()->viewModel.clickLoginDeviceFun()}"
             app:material_name="@string/mine_recently_logged_device" />
 
         <com.rm.module_mine.widget.MineCommonSettingView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_52"
+            android:onClick="@{()->viewModel.clickLogoutFun()}"
             app:setting_name="@string/mine_logout"
             app:setting_show_icon="true"
             app:setting_show_switch="false"

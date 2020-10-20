@@ -52,12 +52,11 @@ class MineSettingViewModel : BaseVMViewModel() {
      * 个人资料
      */
     fun clickSettingPersonal(context: Context) {
-        if (!isLogin.get()) {
-            RouterHelper.createRouter(LoginService::class.java)
-                .quicklyLogin(this, context as FragmentActivity)
-            return
+        if (isLogin.get()) {
+            startActivity(MinePersonalInfoActivity::class.java)
+        } else {
+            quicklyLogin(context)
         }
-        startActivity(MinePersonalInfoActivity::class.java)
     }
 
     /**
@@ -77,8 +76,19 @@ class MineSettingViewModel : BaseVMViewModel() {
     /**
      * 账号安全设置
      */
-    fun clickAccountSecurity() {
-        startActivity(MineAccountSecuritySettingActivity::class.java)
+    fun clickAccountSecurity(context: Context) {
+        if (isLogin.get()) {
+            startActivity(MineAccountSecuritySettingActivity::class.java)
+        } else {
+            quicklyLogin(context)
+        }
+    }
+
+    private fun quicklyLogin(context: Context) {
+        getActivity(context)?.let {
+            RouterHelper.createRouter(LoginService::class.java)
+                .quicklyLogin(this, it)
+        }
     }
 
 }

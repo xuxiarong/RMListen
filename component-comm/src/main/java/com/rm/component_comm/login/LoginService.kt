@@ -1,5 +1,6 @@
 package com.rm.component_comm.login
 
+import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -32,4 +33,14 @@ interface LoginService : ApplicationProvider {
         baseViewModel: BaseVMViewModel,
         fragmentActivity: FragmentActivity
     )
+
+    /**
+     * 跳转国家选择节目
+     */
+    fun startCountry(activity: Activity,code:Int)
+
+    /**
+     * 输入验证码节目
+     */
+    fun startVerificationInput(context: Context, countryCode: String, phoneNumber: String, type: Int)
 }

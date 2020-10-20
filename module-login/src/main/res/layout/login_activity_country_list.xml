@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_login.viewmodel.LoginCountryListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/business_shape_white_top_radius_12dp"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_16">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/login_activity_country_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/business_shape_f7f7f7_12dp"
+            android:drawableStart="@drawable/business_icon_search"
+            android:hint="@string/login_search_hint"
+            android:paddingStart="@dimen/dp_12"
+            android:paddingTop="8dp"
+            android:paddingEnd="@dimen/dp_12"
+            android:paddingBottom="@dimen/dp_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/login_activity_country_rv"-->
+<!--            bindVerticalLayout="@{viewModel.countryListAdapter}"-->
+<!--            isVisible="@{viewModel.inputText.length()>0}"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/login_activity_country_et" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/login_activity_country_recycler_view"
+            bindVerticalLayout="@{viewModel.countryListAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_30"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_activity_country_et" />
+
+        <com.rm.module_login.widget.sidebar.IndexBar
+            android:id="@+id/login_activity_country_index_bar"
+            android:layout_width="@dimen/dp_144"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <com.rm.module_login.widget.sidebar.LetterBar
+                android:id="@+id/login_activity_country_letter_bar"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="match_parent"
+                app:text_choice_color="@color/business_color_ff5e5e"
+                app:text_color="@color/business_text_color_666666"
+                app:text_margin_top="@dimen/dp_8"
+                app:text_size="@dimen/business_text_size_10sp" />
+        </com.rm.module_login.widget.sidebar.IndexBar>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
