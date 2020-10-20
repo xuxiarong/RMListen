@@ -12,6 +12,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.px2dip
 import com.rm.baselisten.utilExt.screenHeight
@@ -56,7 +58,6 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
     override fun initData() {
         setTransparentStatusBar()
-
         val layoutParams = mDataBind.mineDetailTitleCl.layoutParams
                 as ViewGroup.MarginLayoutParams
         layoutParams.apply {
@@ -64,9 +65,11 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
             stateHeight = getStateHeight(this@MineMemberActivity)
             topMargin = stateHeight
         }
-        heightPixels = screenHeight
+        heightPixels = screenHeight //屏幕高度
 
-        val behaviorHeight = px2dip(heightPixels /2)  //behaviorHeight的高度 = 屏幕高度 - 状态栏高度 - 上面视图的高度
+        //初始化behaviorHeight的高度
+        val behaviorHeight = px2dip(heightPixels/2 + stateHeight)
+
         peekHeight =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 behaviorHeight,
@@ -98,8 +101,9 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 val layoutParams = bottomSheet.layoutParams
-                if(bottomSheet.height > heightPixels - marginTop){
-                    layoutParams.height = heightPixels
+
+                if(bottomSheet.height > heightPixels - stateHeight - dip(48)){
+                    layoutParams.height = heightPixels - stateHeight - dip(48)
                     bottomSheet.layoutParams = layoutParams
                 }
             }
