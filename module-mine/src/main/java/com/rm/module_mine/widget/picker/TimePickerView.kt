@@ -15,7 +15,7 @@ import java.util.*
  * @description
  *
  */
-class TimePickerVIew constructor(
+class TimePickerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -47,10 +47,10 @@ class TimePickerVIew constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        LayoutInflater.from(context).inflate(R.layout.mine_widget_birthday, this)
-        yearView = findViewById(R.id.mine_dialog_birthday_year)
-        monthView = findViewById(R.id.mine_dialog_birthday_month)
-        dayView = findViewById(R.id.mine_dialog_birthday_day)
+        LayoutInflater.from(context).inflate(R.layout.mine_widget_time_picker, this)
+        yearView = findViewById(R.id.mine_time_picker_year)
+        monthView = findViewById(R.id.mine_time_picker_month)
+        dayView = findViewById(R.id.mine_time_picker_day)
         setSolar()
     }
 
@@ -319,7 +319,8 @@ class TimePickerVIew constructor(
         this.mSelectChangeCallback = mSelectChangeCallback
     }
 
-    private fun getTime(): String? {
+
+    fun getTime(): String {
         val sb = StringBuilder()
         if (currentYear == startYear) {
             if (monthView.currentItem + startMonth == startMonth) {
@@ -341,7 +342,7 @@ class TimePickerVIew constructor(
 }
 
 @BindingAdapter("bindDateChangeCallback")
-fun TimePickerVIew.bindDateChangeCallback(dataBlock: ((String) -> Unit)?) {
+fun TimePickerView.bindDateChangeCallback(dataBlock: ((String) -> Unit)?) {
     if (dataBlock == null) {
         return
     }
