@@ -1,7 +1,10 @@
 package com.rm.module_mine
 
+import com.rm.business_lib.net.BusinessRetrofitClient
+import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.login.LoginViewModel
 import com.rm.module_mine.repository.LoginRepository
+import com.rm.module_mine.repository.MineRepository
 import com.rm.module_mine.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -28,6 +31,10 @@ val viewModelModule = module {
 val repositoryModule = module {
     // 所有的Repository都需要在这里声明
     single { LoginRepository(get()) }
+    single { MineRepository(get()) }
+
+    single { BusinessRetrofitClient().getService(MineApiService::class.java) }
+
 }
 
 val mineModules = listOf(viewModelModule, repositoryModule)

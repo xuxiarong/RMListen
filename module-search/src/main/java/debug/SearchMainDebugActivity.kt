@@ -1,6 +1,7 @@
 package debug
 
 import com.rm.baselisten.debug.BaseDebugActivity
+import com.rm.module_search.R
 
 /**
  * desc   :
@@ -8,7 +9,8 @@ import com.rm.baselisten.debug.BaseDebugActivity
  * version: 1.0
  */
 class SearchMainDebugActivity : BaseDebugActivity() {
-    override fun getLayoutResId(): Int = 0
+
+    override fun getLayoutResId(): Int = R.layout.search_activity_result
 
     override fun initView() {
 

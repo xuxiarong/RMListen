@@ -363,7 +363,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     bean.likes = bean.likes + 1
                     //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
                     val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
-                    homeDetailCommentAdapter.notifyItemChanged(indexOf+headerLayoutCount)
+                    homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = {
                     DLog.i("----->", "评论点赞:$it")
@@ -383,7 +383,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     bean.is_liked = false
                     bean.likes = bean.likes - 1
                     val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
-                    homeDetailCommentAdapter.notifyItemChanged(indexOf+headerLayoutCount)
+                    homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = {
                     DLog.i("----->", "评论点赞:$it")
@@ -514,7 +514,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             }
         } else {
             for (i in 0 until size) {
-                anthologyList.add(DataStr("${i * chapterPageSize + 1}-" + (i + 1) * chapterPageSize, i + 1))
+                anthologyList.add(
+                    DataStr(
+                        "${i * chapterPageSize + 1}-" + (i + 1) * chapterPageSize,
+                        i + 1
+                    )
+                )
             }
             if (size != 0) {
                 anthologyList.add(DataStr("${size * chapterPageSize + 1}", size + 1))
@@ -624,5 +629,18 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 commentPage = 1
                 getCommentList(audioId.get()!!)
             })
+    }
+
+    /**
+     * 主播头像点击事件
+     */
+    fun clickMemberFun(context: Context) {
+        if (isLogin.get()) {
+            val get = detailInfoData.get()
+            DLog.i("clickMemberFun","${detailInfoData.get()?.list?.member_id}")
+            RouterHelper.createRouter(MineService::class.java).toMineMember(context, get!!.list.member_id)
+        } else {
+            getActivity(context)?.let { quicklyLogin(it) }
+        }
     }
 }

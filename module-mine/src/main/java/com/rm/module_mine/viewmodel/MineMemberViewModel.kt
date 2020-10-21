@@ -1,26 +1,35 @@
 package com.rm.module_mine.viewmodel
 
+import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.bean.HomeDetailBean
+import com.rm.module_mine.bean.MineInfoDetail
 import com.rm.module_mine.repository.MineRepository
 
-/**
- * 个人主播/详情  /发布书籍/听单/收藏听单列表
- */
 class MineMemberViewModel(private val repository: MineRepository): BaseVMViewModel() {
 
-    val memberId = ObservableField<String>()
-    val getCertistr = ObservableField<Int>()
+    var detailInfoData = ObservableField<MineInfoDetail>()
+    var memberFans = ObservableField<String>()
+    var memberFollows = ObservableField<String>()
+
+    var isVisible = ObservableBoolean(false)
     /**
      * 获取个人/主播详情
      */
-    fun getInfoDetail(){
+    fun getInfoDetail(memberId:String){
         launchOnUI {
-            repository.memberDetail(memberId.get()!!).checkResult(
+            repository.memberDetail(memberId).checkResult(
                 onSuccess = {
                     showContentView()
+                    detailInfoData.set(it)
+                    memberFans.set("粉丝："+it.fans)
+                    memberFollows.set("关注："+it.follows)
+                    DLog.i("getInfoDetail",""+it.toString())
 
                 },onError = {
                     showContentView()
@@ -29,11 +38,11 @@ class MineMemberViewModel(private val repository: MineRepository): BaseVMViewMod
         }
     }
 
-    fun getCertified(){
-        when(getCertistr.get()){
-            1 -> false
-            2 -> true
-        }
+    /**
+     * 获取: 发布书籍/听单/收藏听单列表
+     */
+    fun getmemberProfile(memberId: String){
+
     }
 
 }
