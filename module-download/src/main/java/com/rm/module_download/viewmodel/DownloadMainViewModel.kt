@@ -64,7 +64,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             val allData = DaoUtil(DownloadAudio::class.java, "").queryAll()
             DLog.d("suolong", "${allData?.size}")
             allData?.let {
-                var tempAudioStatusList = mutableListOf<DownloadAudioStatusModel>()
+                val tempAudioStatusList = mutableListOf<DownloadAudioStatusModel>()
                 it.forEach {
                     tempAudioStatusList.add(DownloadAudioStatusModel(audio = it))
                 }
