@@ -9,6 +9,8 @@
     <string name="business_login_look">登录过后才能查看</string>
     <string name="business_available_size">剩余可用%s</string>
     <string name="business_select_chapter">已选%d章/%s</string>
+    <string name="business_down_and_total_size">%s/%s</string>
+    <string name="business_down_speed">%s/s</string>
 
     <string name="business_attention">关注</string>
     <string name="business_followed">已关注</string>

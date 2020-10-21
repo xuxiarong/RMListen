@@ -1,7 +1,6 @@
 package com.rm.module_download
 
 import com.rm.business_lib.net.BusinessRetrofitClient
-import com.rm.component_comm.download.DownloadService
 import com.rm.module_download.api.DownloadApiService
 import com.rm.module_download.repository.DownloadRepository
 import com.rm.module_download.viewmodel.DownloadBookDetailViewModel
@@ -19,7 +18,7 @@ val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
     viewModel { DownloadChapterSelectionViewModel(get()) }
     viewModel { DownloadBookDetailViewModel(get()) }
-    viewModel { DownloadMainViewModel(get()) }
+    single { DownloadMainViewModel(get()) }
 }
 
 val repositoryModule = module {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,11 +8,59 @@
             type="com.rm.module_download.viewmodel.DownloadMainViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/download_rv_download_in_progress"
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_22"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@{@string/download_downloading_number(23)}"
+            />
+        <com.flyco.roundview.RoundFrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="@dimen/dp_16"
+            app:rv_isRadiusHalfHeight="true"
+            android:layout_gravity="end"
+            app:rv_strokeColor="@color/business_color_e8e8e8"
+            app:rv_strokeWidth="@dimen/dp_1"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="33dp"
+                android:text="@string/download_pause_all"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="@dimen/business_text_size_14sp"
+                />
+            
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="end|center_vertical"
+                android:src="@drawable/download_ic_pause_download"
+                />
+        </com.flyco.roundview.RoundFrameLayout>
+        
+        
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/download_rv_download_in_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="64dp"
+            bindVerticalLayout="@{viewModel.downloadingAdapter}"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16" />
+    </FrameLayout>
+
+
 
 </layout>

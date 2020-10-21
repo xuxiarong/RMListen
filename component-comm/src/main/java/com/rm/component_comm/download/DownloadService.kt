@@ -1,8 +1,7 @@
 package com.rm.component_comm.download
 
 import android.content.Context
-import com.rm.business_lib.bean.download.BaseDownloadFileBean
-import com.rm.business_lib.bean.download.DownloadAudioBean
+import com.rm.business_lib.bean.download.DownloadChapterStatusModel
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadAudio
@@ -22,55 +21,55 @@ interface DownloadService : ApplicationProvider {
 
     /**
      * @param context Context
-     * @param audioId 书籍的信息封装类
+     * @param downloadAudio 书籍的信息封装类
      */
     fun startDownloadChapterSelectionActivity(context: Context, downloadAudio: DownloadAudio)
 
     /**
      *下载单个音频文件并存储
      */
-    fun startDownloadWithCache(audio: DownloadAudioBean)
+    fun startDownloadWithCache(chapter: DownloadChapterStatusModel)
 
     /**
      * 下载音频列表并存储
      */
-    fun startDownloadWithCache(audioList: MutableList<DownloadAudioBean>)
+    fun startDownloadWithCache(chapterList: MutableList<DownloadChapterStatusModel>)
 
     /**
      * 暂停下载
      */
-    fun stopDownload(baseBean: BaseDownloadFileBean): Boolean
+    fun pauseDownload(chapter: DownloadChapterStatusModel): Boolean
 
     /**
      * 暂停下载（列表）
      */
-    fun stopDownload(list: MutableList<BaseDownloadFileBean>)
+    fun pauseDownload(chapterList: MutableList<DownloadChapterStatusModel>)
 
 
     /**
      *删除下载（包括下载中,已完成）
      */
-    fun deleteDownload(baseBean: BaseDownloadFileBean)
+    fun deleteDownload(chapter: DownloadChapterStatusModel)
 
     /**
      *删除下载列表
      */
-    fun deleteDownload(list: MutableList<BaseDownloadFileBean>)
+    fun deleteDownload(chapterList: MutableList<DownloadChapterStatusModel>)
 
     /**
      * 获取任务状态
      */
-    fun getDownloadStatus(baseBean: BaseDownloadFileBean): DownloadUIStatus
+    fun getDownloadStatus(chapter: DownloadChapterStatusModel): DownloadUIStatus
 
     /**
      * 获取任务进度信息
      */
-    fun getDownloadProgressInfo(baseBean: BaseDownloadFileBean): DownloadProgressUpdateBean?
+    fun getDownloadProgressInfo(chapter: DownloadChapterStatusModel): DownloadProgressUpdateBean?
 
     /**
      * 获取下载缓存列表
      */
-    fun getDownloadAudioList():MutableList<DownloadAudioBean>
+    fun getDownloadAudioList():MutableList<DownloadChapterStatusModel>
 
     fun stopAll()
 

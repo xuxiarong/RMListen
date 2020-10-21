@@ -27,26 +27,57 @@
         <com.rm.business_lib.wedgit.radiotab.RadioTabLayout
             android:id="@+id/download_radio_tab_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:orientation="horizontal"
-            app:layout_constraintLeft_toRightOf="@id/download_iv_back"
-            app:layout_constraintRight_toLeftOf="@id/download_tv_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
+            android:id="@+id/download_main_tab"
+            android:layout_width="200dp"
+            android:layout_height="@dimen/dp_45"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:bendTabIndicatorAnimation="true"
+            app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+            app:bendTabIndicatorHeight="@dimen/dp_1"
+            app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+            app:bendTabIndicatorWidth="@dimen/dp_24"
+            app:bendTabMode="fixed"
+            app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+            app:bendTabTextSize="@dimen/business_text_size_16sp"
+            app:bendTabUnSelectedTextColor="@color/business_text_color_333333" />
+
         <TextView
-            android:id="@+id/download_tv_edit"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_44"
             android:gravity="center"
-            android:paddingRight="@dimen/dp_16"
-            android:text="@string/download_edit"
-            android:textColor="@color/business_color_ff5e5e"
+            bindClick="@{viewModel.editDownloading}"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:text="@{viewModel.downloadingEdit?@string/download_cancel:@string/download_edit}"
+            isVisible="@{viewModel.downloadingSelected}"
+            android:textColor="@{viewModel.downloadingEdit?@color/business_color_ff5e5e:@color/business_text_color_333333}"
             android:textSize="@dimen/business_text_size_16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/download_detail_view_pager2"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_44"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/dp_16"
+            bindClick="@{viewModel.editDownloadFinish}"
+            android:text="@{viewModel.downloadFinishEdit?@string/download_cancel:@string/download_edit}"
+            isVisible="@{viewModel.downloadFinishSelected}"
+            android:textColor="@{viewModel.downloadFinishEdit?@color/business_color_ff5e5e:@color/business_text_color_333333}"
+            android:textSize="@dimen/business_text_size_16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/download_detail_view_pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
