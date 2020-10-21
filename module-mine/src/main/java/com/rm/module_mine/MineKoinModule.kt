@@ -26,6 +26,8 @@ val viewModelModule = module {
     viewModel { MineNicknameSettingViewModel(get()) }
     viewModel { MinePersonalSignatureSettingViewModel(get()) }
     viewModel { MineMemberViewModel(get()) }
+    viewModel { MineFragmentMemberMainViewMode(get()) }
+    viewModel { MineFragmentMemberCommentViewMode(get()) }
 }
 
 val repositoryModule = module {

@@ -29,7 +29,7 @@
                 style="@style/BusinessTextStyleFirst_6"
                 android:layout_width="match_parent"
                 android:gravity="center"
-                android:onClick="@{()->viewModel.imageDialogCameraFun()}"
+                android:onClick="@{()->viewModel.imageDialogCameraFun(context)}"
                 android:paddingTop="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_16"
                 android:text="@string/mine_shoot" />
@@ -44,7 +44,7 @@
                 style="@style/BusinessTextStyleFirst_6"
                 android:layout_width="match_parent"
                 android:gravity="center"
-                android:onClick="@{()->viewModel.imageDialogAlbumFun()}"
+                android:onClick="@{()->viewModel.imageDialogAlbumFun(context)}"
                 android:paddingTop="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_16"
                 android:text="@string/mine_album" />

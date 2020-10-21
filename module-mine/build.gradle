@@ -22,7 +22,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        if (rootProject.ext.isMineApp){
+        if (rootProject.ext.isMineApp) {
             //组件模式下设置applicationId
             applicationId "com.rm.module_mine"
         }
@@ -80,6 +80,7 @@ dependencies {
     implementation project(path: ':component-comm')
     implementation rootProject.ext.dependencies["material"]
     kapt rootProject.ext.dependencies["router_compiler"]
-    implementation 'com.contrarywind:Android-PickerView:4.1.9'
 
+    //拍照
+    implementation 'org.devio.takephoto:takephoto_library:4.1.0'
 }
