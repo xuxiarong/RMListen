@@ -70,4 +70,21 @@ interface MineApiService {
      */
     @GET("member/profile")
     suspend fun getMemberProfile(@Query("member_id")member_id:String):BaseResponse<MineInfoProfile>
+
+
+    /**
+     * 关注主播接口
+     * @param follow_id Int
+     */
+    @FormUrlEncoded
+    @POST("member/follow")
+    suspend fun homeAttentionAnchor(@Field("follow_id") follow_id: String): BaseResponse<Any>
+
+    /**
+     * 取消关注主播接口
+     * @param follow_id Int
+     */
+    @DELETE("member/follow")
+    suspend fun homeUnAttentionAnchor(@Query("follow_id") follow_id: String): BaseResponse<Any>
+
 }

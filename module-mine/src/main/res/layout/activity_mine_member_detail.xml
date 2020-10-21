@@ -14,126 +14,130 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/img_mine_background"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_160"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@mipmap/img_my_bac" />
+            android:layout_height="wrap_content">
 
-        <View
-            android:id="@+id/mine_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_16"
-            app:layout_constraintTop_toBottomOf="@id/img_mine_background" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_mine_background"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_160"
+                android:scaleType="fitXY"
+                android:src="@mipmap/img_my_bac"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/img_mine_member_icon"
-            bindUrl="@{viewModel.detailInfoData.avatar_url}"
-            isCircle="@{true}"
-            android:layout_width="@dimen/dp_84"
-            android:layout_height="@dimen/dp_84"
-            android:background="@drawable/business_shape_circle_white"
-            app:layout_constraintBottom_toBottomOf="@id/mine_view"
-            app:layout_constraintStart_toStartOf="@id/mine_view"
-            app:layout_constraintTop_toTopOf="@id/mine_view"
-            tools:src="@mipmap/mine_ic_launcher" />
+            <View
+                android:id="@+id/mine_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_16"
+                app:layout_constraintTop_toBottomOf="@id/img_mine_background" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_8"
-            android:text="@{viewModel.detailInfoData.nickname}"
-            android:textColor="@color/business_text_color_333333"
-            android:textSize="@dimen/business_text_size_18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/img_mine_member_icon"
-            app:layout_constraintTop_toBottomOf="@id/mine_view"
-            tools:text="iphone12发布会我不想关注" />
-        <!-- android:text="@{viewModel.detailInfoData.member_intro}" -->
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tx_mine_member_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_4"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:textColor="@color/business_text_color_666666"
-            android:textSize="@dimen/business_text_size_12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
-            app:layout_constraintTop_toBottomOf="@id/img_mine_member_icon"
-            android:text="iphone12发布会我不想关注，我更关注的是iphone12Pro带来视觉，触碰的手感" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_mine_member_icon"
+                bindUrl="@{viewModel.detailInfoData.avatar_url}"
+                isCircle="@{true}"
+                android:layout_width="@dimen/dp_84"
+                android:layout_height="@dimen/dp_84"
+                android:background="@drawable/business_shape_circle_white"
+                app:layout_constraintBottom_toBottomOf="@id/mine_view"
+                app:layout_constraintStart_toStartOf="@id/mine_view"
+                app:layout_constraintTop_toTopOf="@id/mine_view"
+                tools:src="@mipmap/mine_ic_launcher" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_4"
-            android:drawablePadding="@dimen/dp_2"
-            android:drawableStart="@drawable/mine_icon_certification_eh"
-            android:text="@string/mine_certified_anchor"
-            app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
-            app:layout_constraintTop_toBottomOf="@id/tx_mine_member_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="@{viewModel.detailInfoData.nickname}"
+                android:textColor="@color/business_text_color_333333"
+                android:textSize="@dimen/business_text_size_18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/img_mine_member_icon"
+                app:layout_constraintTop_toBottomOf="@id/mine_view"
+                tools:text="iphone12发布会我不想关注" />
+            <!-- android:text="@{viewModel.detailInfoData.member_intro}" -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tx_mine_member_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:text="iphone12发布会我不想关注，我更关注的是iphone12Pro带来视觉，触碰的手感"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="@dimen/business_text_size_12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
+                app:layout_constraintTop_toBottomOf="@id/img_mine_member_icon" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tx_mine_member_follows"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_41"
-            android:text="@{viewModel.memberFollows}"
-            app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
-            app:layout_constraintTop_toBottomOf="@id/tx_mine_member_content"
-            tools:text="关注:456" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:drawableStart="@drawable/mine_icon_certification_eh"
+                android:drawablePadding="@dimen/dp_2"
+                android:text="@string/mine_certified_anchor"
+                app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
+                app:layout_constraintTop_toBottomOf="@id/tx_mine_member_content" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tx_mine_member_fans"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_18"
-            android:layout_marginTop="@dimen/dp_41"
-            android:text="@{viewModel.memberFans}"
-            app:layout_constraintStart_toEndOf="@id/tx_mine_member_follows"
-            app:layout_constraintTop_toBottomOf="@id/tx_mine_member_content"
-            tools:text="粉丝:456" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tx_mine_member_follows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_41"
+                android:text="@{viewModel.memberFollows}"
+                app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
+                app:layout_constraintTop_toBottomOf="@id/tx_mine_member_content"
+                tools:text="关注:456" />
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_26"
-            android:background="@drawable/business_shape_round_ff5e5e"
-            android:button="@null"
-            android:drawableStart="@drawable/mine_member_attention_selected"
-            android:drawablePadding="@dimen/dp_8"
-            android:gravity="center"
-            android:paddingStart="@dimen/dp_14"
-            android:paddingEnd="@dimen/dp_14"
-            android:text="关注"
-            android:textColor="@color/mine_member_color"
-            app:layout_constraintBottom_toBottomOf="@id/tx_mine_member_follows"
-            app:layout_constraintEnd_toEndOf="@id/tx_mine_member_content"
-            app:layout_constraintTop_toTopOf="@id/tx_mine_member_follows"
-            tools:text="关注" />
-        <com.rm.business_lib.wedgit.DashLineView
-            android:id="@+id/dash_line_view"
-            android:layout_marginTop="@dimen/dp_20"
-            app:layout_constraintTop_toBottomOf="@id/tx_mine_member_follows"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"/>
-        <View
-            android:id="@+id/maskView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0"
-            android:background="#80000000"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tx_mine_member_fans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_18"
+                android:layout_marginTop="@dimen/dp_41"
+                android:text="@{viewModel.memberFans}"
+                app:layout_constraintStart_toEndOf="@id/tx_mine_member_follows"
+                app:layout_constraintTop_toBottomOf="@id/tx_mine_member_content"
+                tools:text="粉丝:456" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_26"
+                android:drawablePadding="@dimen/dp_8"
+                android:gravity="center"
+                android:paddingStart="@dimen/dp_14"
+                android:paddingEnd="@dimen/dp_14"
+                android:onClick="@{()->viewModel.clickAttentionFun(context,viewModel.detailInfoData.id)}"
+                android:background="@{viewModel.isAttention ? @drawable/business_un_select_attention  : @drawable/business_select_attention}"
+                android:drawableStart="@{viewModel.isAttention ? @drawable/business_icon_attention_eb : @drawable/business_icon_attention_ea}"
+                isVisible="@{viewModel.attentionVisibility}"
+                android:text="@{viewModel.isAttention ? @string/business_followed : @string/business_attention}"
+                android:textColor="@{viewModel.isAttention ? @color/business_text_color_666666 : @color/business_color_ff5e5e}"
+                app:layout_constraintBottom_toBottomOf="@id/tx_mine_member_follows"
+                app:layout_constraintEnd_toEndOf="@id/tx_mine_member_content"
+                app:layout_constraintTop_toTopOf="@id/tx_mine_member_follows"
+                tools:text="关注" />
+
+            <com.rm.business_lib.wedgit.DashLineView
+                android:id="@+id/dash_line_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_20"
+                app:layout_constraintTop_toBottomOf="@id/tx_mine_member_follows" />
+
+            <View
+                android:id="@+id/maskView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:background="#80000000" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mine_detail_title_cl"
             android:layout_width="match_parent"
@@ -154,6 +158,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tx_mime_detail_title"
+                isVisible="@{!viewModel.isVisible}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_14"
@@ -161,7 +166,6 @@
                 android:maxEms="10"
                 android:maxLines="1"
                 android:text="八嘎呀路"
-                isVisible="@{!viewModel.isVisible}"
                 android:textColor="@color/businessWhite"
                 android:textSize="@dimen/business_text_size_18sp"
                 app:layout_constraintBottom_toBottomOf="@id/home_detail_back"
@@ -171,20 +175,21 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_mime_detail_member"
+                isVisible="@{!viewModel.isVisible}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/dp_16"
                 android:paddingTop="@dimen/dp_9"
                 android:paddingEnd="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_9"
-                isVisible="@{!viewModel.isVisible}"
                 android:src="@mipmap/mine_ic_launcher"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    <include
-        layout="@layout/activity_mine_member_booklist"
-        app:viewModel="@{viewModel}" />
+
+        <include
+            layout="@layout/activity_mine_member_booklist"
+            app:viewModel="@{viewModel}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

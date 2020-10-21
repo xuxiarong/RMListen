@@ -103,8 +103,9 @@
     <string name="mine_signature_num" formatted="false">%d</string>
     <string name="mine_signature_num_text">/50</string>
 
-    <string name="login_input_verification_code">请输入验证码</string>
-    <string name="login_re_get_verify_code">重新获取</string>
+    <string name="mine_release_books">发布的书籍</string>
+    <string name="mine_create_sheet">创建的听单</string>
+    <string name="mine_num">(%d)</string>
 
 
 </resources>

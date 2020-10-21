@@ -3,7 +3,6 @@ package com.rm.module_mine.activity
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Handler
 import android.util.TypedValue
 import android.view.View
@@ -14,7 +13,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.tabs.TabLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.getStateHeight
@@ -41,8 +39,6 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
     private var offsetDistance: Int = 0
     private lateinit var mHandler: Handler
 
-    private val mFragmentManager: FragmentManager? = null
-
     companion object {
         const val MEMBER_ID = "memberId"
         fun newInstance(context: Context, memberId: String) {
@@ -63,7 +59,7 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
     }
 
-    private fun initParams(){
+    private fun initParams() {
         setTransparentStatusBar()
         val layoutParams = mDataBind.mineDetailTitleCl.layoutParams
                 as ViewGroup.MarginLayoutParams
@@ -75,17 +71,17 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
         heightPixels = screenHeight //屏幕高度
 
-        dash_line_view.post{
+        dash_line_view.post {
             val behaviorHeight = px2dip(heightPixels - dash_line_view.top + stateHeight)
-            DLog.i("dash_line_view","dash_line_view:$behaviorHeight")
             peekHeight =
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                behaviorHeight,
-                resources.displayMetrics).toInt()
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    behaviorHeight,
+                    resources.displayMetrics
+                ).toInt()
         }
 
-        DLog.i("peekHeight","peekHeight:$peekHeight")
-        home_detail_back.post{
+        home_detail_back.post {
             val lp = home_detail_back.layoutParams as ConstraintLayout.LayoutParams
             marginTop = home_detail_back.height + lp.topMargin + lp.bottomMargin / 2 + screenHeight
             offsetDistance = lp.topMargin
@@ -94,18 +90,24 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
     override fun initData() {
         initParams()
-        mViewModel.getInfoDetail(intent.getStringExtra(MEMBER_ID))
-        mViewModel.getMemberProfile(intent.getStringExtra(MEMBER_ID))
-        mHandler = Handler()
-        initBehavior()
-        setupViewPager(mine_member_detail_viewpager)
-        tab_mine_member_list!!.setupWithViewPager(mine_member_detail_viewpager)
+        val memberId = intent.getStringExtra(MEMBER_ID)
+        memberId?.let {
+            mViewModel.memberId.set(it)
+            mViewModel.getInfoDetail(it)
+
+            mHandler = Handler()
+            initBehavior()
+            setupViewPager(mine_member_detail_viewpager, memberId)
+            tab_mine_member_list!!.setupWithViewPager(mine_member_detail_viewpager)
+        }
+
     }
-    private fun initBehavior(){
+
+    private fun initBehavior() {
         val behavior = BottomSheetBehavior.from(nestedScrollView)
         behavior.isHideable = false
         behavior.state = BottomSheetBehavior.STATE_HIDDEN
-        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 //色差值变化
                 var distance: Float = 0F;
@@ -118,8 +120,8 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 val layoutParams = bottomSheet.layoutParams
-                DLog.i("bottomSheet","height:$bottomSheet.height")
-                if(bottomSheet.height > heightPixels){
+                DLog.i("bottomSheet", "height:$bottomSheet.height")
+                if (bottomSheet.height > heightPixels) {
                     layoutParams.height = heightPixels
                     bottomSheet.layoutParams = layoutParams
                 }
@@ -132,7 +134,7 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
                         mViewModel.isVisible.set(true)
                     5 -> state = "STATE_HIDDEN" //下滑动完全隐藏 bottom sheet
                 }
-                DLog.i("state","state:$state")
+                DLog.i("state", "state:$state")
             }
         })
         mHandler.postDelayed({
@@ -143,7 +145,8 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
         }, 200)
     }
 
-    internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
+    internal inner class ViewPagerAdapter(manager: FragmentManager) :
+        FragmentPagerAdapter(manager) {
         private val mFragmentList = ArrayList<Fragment>()
         private val mFragmentTitleList = ArrayList<String>()
 
@@ -164,10 +167,11 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
             return mFragmentTitleList[position]
         }
     }
-    private fun setupViewPager(viewPager: ViewPager) {
+
+    private fun setupViewPager(viewPager: ViewPager, memberId: String) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(MineMemberMainFragment(),"主页")
-        adapter.addFragment(MineMemberCommentFragment(), "评论")
+        adapter.addFragment(MineMemberMainFragment.newInstance(memberId), "主页")
+        adapter.addFragment(MineMemberCommentFragment.newInstance(memberId), "评论")
         viewPager.adapter = adapter
     }
 }

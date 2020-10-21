@@ -3,17 +3,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.rm.module_mine.viewmodel.MineMemberViewModel" />
+            type="com.rm.module_mine.viewmodel.MineFragmentMemberCommentViewMode" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:text="评论"
+
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>
