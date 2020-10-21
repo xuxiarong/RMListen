@@ -17,6 +17,7 @@ import com.rm.module_listen.repository.ListenMyListenRepository
 class ListenMyListenViewModel(val repository: ListenMyListenRepository) : BaseVMViewModel() {
 
     var subsNumber = ObservableInt(0)
+    var downloadNumber = ObservableInt(1)
 
     val mSwipeAdapter : CommonMultiSwipeVmAdapter by lazy {
         CommonMultiSwipeVmAdapter(this, mutableListOf(),

@@ -30,10 +30,12 @@
                 android:minHeight="@dimen/dp_45"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-                <LinearLayout
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:background="@drawable/listen_shape_subs_top"
+                    android:elevation="@dimen/dp_2"
                     app:layout_collapseMode="none">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -42,7 +44,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginStart="@dimen/dp_16"
-                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
                         android:text="@string/listen_my_listen_title"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +55,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_16"
+                        android:layout_marginTop="55dp"
                         android:layout_marginEnd="@dimen/dp_16"
+                        android:layout_marginBottom="@dimen/dp_15"
                         android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/listenMyListenTitle">
@@ -104,6 +108,22 @@
                                 app:layout_constraintEnd_toEndOf="@+id/listenDownloadBgView"
                                 app:layout_constraintStart_toStartOf="@+id/listenDownloadBgView"
                                 app:layout_constraintTop_toTopOf="@+id/listenDownloadBgView" />
+
+                            <com.flyco.roundview.RoundTextView
+                                android:id="@+id/download_chapter_num"
+                                isVisible="@{viewModel.downloadNumber>0}"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginTop="2dp"
+                                android:gravity="center"
+                                app:layout_constraintTop_toTopOf="@+id/listenDownloadBgView"
+                                app:layout_constraintEnd_toEndOf="@+id/listenDownloadBgView"
+                                android:text="@{String.valueOf(viewModel.downloadNumber)}"
+                                android:textColor="@color/business_text_color_ffffff"
+                                android:textSize="@dimen/business_text_size_12sp"
+                                app:rv_backgroundColor="@color/base_ff5e5e"
+                                app:rv_isRadiusHalfHeight="true" />
+
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 style="@style/ListenTopText"
@@ -170,16 +190,8 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-<!--                <com.rm.business_lib.wedgit.radiotab.RadioTabLayout-->
-<!--                    android:id="@+id/listenMyListenRtl"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="40dp"-->
-<!--                    android:layout_gravity="center_horizontal|bottom"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    app:layout_collapseMode="pin" />-->
+                </FrameLayout>
 
                 <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
                     android:id="@+id/listenMyListenRtl"
@@ -187,7 +199,6 @@
                     android:layout_height="@dimen/dp_45"
                     android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginTop="10dp"
-                    app:layout_collapseMode="pin"
                     app:bendTabIndicatorAnimation="true"
                     app:bendTabIndicatorColor="@color/business_color_ff5e5e"
                     app:bendTabIndicatorHeight="@dimen/dp_1"
@@ -196,7 +207,8 @@
                     app:bendTabMode="fixed"
                     app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
                     app:bendTabTextSize="@dimen/business_text_size_16sp"
-                    app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1" />
+                    app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
+                    app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
