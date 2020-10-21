@@ -1661,7 +1661,12 @@ public final class TimeUtils {
         return sb.toString();
     }
 
-    public static String getListenHistoryTime(long millis, int precision) {
+    public static String getTimeWithSecond(int millis) {
+        return getTimeWithSecond(millis * 1000L,4);
+    }
+
+
+        public static String getTimeWithSecond(long millis, int precision) {
         if (precision <= 0) return null;
         precision = Math.min(precision, 4);
         String[] units = {":", ":", ":", ":"};
