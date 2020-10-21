@@ -9,6 +9,10 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
@@ -19,6 +23,8 @@ import com.rm.baselisten.utilExt.screenHeight
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.ActivityMineMemberDetailBinding
+import com.rm.module_mine.fragment.MineMemberCommentFragment
+import com.rm.module_mine.fragment.MineMemberMainFragment
 import com.rm.module_mine.viewmodel.MineMemberViewModel
 import kotlinx.android.synthetic.main.activity_mine_member_booklist.*
 import kotlinx.android.synthetic.main.activity_mine_member_detail.*
@@ -34,6 +40,8 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
     private var peekHeight: Int = 0
     private var offsetDistance: Int = 0
     private lateinit var mHandler: Handler
+
+    private val mFragmentManager: FragmentManager? = null
 
     companion object {
         const val MEMBER_ID = "memberId"
@@ -74,9 +82,7 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 behaviorHeight,
                 resources.displayMetrics).toInt()
-
         }
-
 
         DLog.i("peekHeight","peekHeight:$peekHeight")
         home_detail_back.post{
@@ -89,9 +95,11 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
     override fun initData() {
         initParams()
         mViewModel.getInfoDetail(intent.getStringExtra(MEMBER_ID))
+        mViewModel.getMemberProfile(intent.getStringExtra(MEMBER_ID))
         mHandler = Handler()
         initBehavior()
-        initTabFrameData()
+        setupViewPager(mine_member_detail_viewpager)
+        tab_mine_member_list!!.setupWithViewPager(mine_member_detail_viewpager)
     }
     private fun initBehavior(){
         val behavior = BottomSheetBehavior.from(nestedScrollView)
@@ -135,27 +143,31 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
         }, 200)
     }
 
-    //temp test to
-    fun initTabFrameData(){
-        tab_mine_member_list.tabMode = TabLayout.MODE_SCROLLABLE
-        tab_mine_member_list.tabMode = TabLayout.MODE_SCROLLABLE
-        tab_mine_member_list.addTab(tab_mine_member_list.newTab().setText("主页"))
-        tab_mine_member_list.addTab(tab_mine_member_list.newTab().setText("评论"))
-        tab_mine_member_list.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab) {
+    internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
+        private val mFragmentList = ArrayList<Fragment>()
+        private val mFragmentTitleList = ArrayList<String>()
 
-            }
+        override fun getItem(position: Int): Fragment {
+            return mFragmentList[position]
+        }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {
+        override fun getCount(): Int {
+            return mFragmentList.size
+        }
 
-            }
+        fun addFragment(fragment: Fragment, title: String) {
+            mFragmentList.add(fragment)
+            mFragmentTitleList.add(title)
+        }
 
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    0 -> frameLayout.setBackgroundColor(Color.parseColor("#ff0000"))
-                    1 -> frameLayout.setBackgroundColor(Color.parseColor("#0000ff"))
-                }
-            }
-        })
+        override fun getPageTitle(position: Int): CharSequence {
+            return mFragmentTitleList[position]
+        }
+    }
+    private fun setupViewPager(viewPager: ViewPager) {
+        val adapter = ViewPagerAdapter(supportFragmentManager)
+        adapter.addFragment(MineMemberMainFragment(),"主页")
+        adapter.addFragment(MineMemberCommentFragment(), "评论")
+        viewPager.adapter = adapter
     }
 }
