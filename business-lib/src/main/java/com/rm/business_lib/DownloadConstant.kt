@@ -14,6 +14,11 @@ object DownloadConstant {
     const val CHAPTER_SELECTED = 1
 
     /**
+     * 书籍选中状态 ：  0->未选中 1->已选中
+     */
+    const val AUDIO_UN_SELECT = 0
+    const val AUDIO_SELECTED = 1
+    /**
      * 章节下载的状态 ： 0->还没有加入下载队列 1->下载队列中 2->正在下载 3->暂停下载 4->已完成
      */
     const val CHAPTER_STATUS_NOT_DOWNLOAD = 0

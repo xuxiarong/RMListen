@@ -19,7 +19,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="104dp">
+        android:layout_height="104dp"
+        bindClick="@{()->viewModel.chapterClick(context,itemBean)}"
+        >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/downloading_chapter_select"

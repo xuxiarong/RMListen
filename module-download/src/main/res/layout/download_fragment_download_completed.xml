@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,7 +9,7 @@
             type="com.rm.module_download.viewmodel.DownloadMainViewModel" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="@dimen/dp_16"
@@ -18,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_22"
             android:layout_marginTop="@dimen/dp_16"
-            android:text="@{@string/download_downloading_number(23)}"
+            android:text="@{@string/download_downloaded_number(23)}"
             android:textColor="@color/business_color_b3333333"
             android:textSize="@dimen/business_text_size_16sp" />
 
@@ -39,6 +40,60 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="64dp" />
+
+        <FrameLayout
+            isVisible="@{viewModel.downloadFinishEdit}"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_gravity="bottom">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_13"
+                android:onClick="@{()->viewModel.changeDownloadFinishAll()}"
+                android:src="@{viewModel.downloadFinishSelectAll?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="@dimen/dp_14"
+                android:onClick="@{()->viewModel.changeDownloadFinishAll()}"
+                android:text="@string/download_check_all"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="@dimen/business_text_size_14sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginStart="@dimen/dp_72"
+                android:layout_marginTop="@dimen/dp_13"
+                android:onClick="@{()->viewModel.changeSelectListenFinish()}"
+                android:src="@{viewModel.downloadFinishDeleteListenFinish?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_100"
+                android:layout_marginTop="@dimen/dp_14"
+                android:text="@string/download_delete_listen_finish"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="@dimen/business_text_size_14sp" />
+
+            <com.flyco.roundview.RoundTextView
+                android:layout_width="65dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/dp_9"
+                android:gravity="center"
+                android:text="@{viewModel.downloadFinishSelectNum == 0?@string/download_delete:@string/download_delete_number(viewModel.downloadFinishSelectNum)}"
+                android:onClick="@{()->viewModel.changeSelectListenFinish()}"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_14sp"
+                app:rv_backgroundColor="@color/business_color_ff5e5e"
+                app:rv_isRadiusHalfHeight="true" />
+        </FrameLayout>
     </FrameLayout>
 
 

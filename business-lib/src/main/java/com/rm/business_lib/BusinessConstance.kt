@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.ktx.add
 import com.rm.baselisten.ktx.remove
 import com.rm.business_lib.bean.LoginUserBean
+import com.rm.business_lib.bean.download.DownloadAudioStatusModel
 import com.rm.business_lib.bean.download.DownloadChapterStatusModel
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadStatusChangedBean
@@ -66,20 +67,20 @@ val downloadStatus = MutableLiveData<DownloadStatusChangedBean>()
 val downloadProgress = MutableLiveData<DownloadProgressUpdateBean>()
 
 object DownloadMemoryCache{
-    var downloadingAudioList = MutableLiveData<MutableList<DownloadAudio>>()
+    var downloadingAudioList = MutableLiveData<MutableList<DownloadAudioStatusModel>>()
     var downloadingChapterList = MutableLiveData<MutableList<DownloadChapterStatusModel>>()
     var downloadingChapter = MutableLiveData<DownloadChapterStatusModel>()
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapterStatusModel>>()
 
-    fun addAudioToDownloadMemoryCache(audio: DownloadAudio){
+    fun addAudioToDownloadMemoryCache(model: DownloadAudioStatusModel){
         if(null!=downloadingAudioList.value){
-            if(!downloadingAudioList.value!!.contains(element = audio)){
-                downloadingAudioList.add(element = audio)
-                DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(audio)
+            if(!downloadingAudioList.value!!.contains(element = model)){
+                downloadingAudioList.add(element = model)
+                DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(model.audio)
             }
         }else{
-            downloadingAudioList.add(element = audio)
-            DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(audio)
+            downloadingAudioList.add(element = model)
+            DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(model.audio)
         }
     }
 

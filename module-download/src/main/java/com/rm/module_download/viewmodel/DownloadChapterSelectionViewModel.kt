@@ -9,6 +9,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.DownloadMemoryCache
+import com.rm.business_lib.bean.download.DownloadAudioStatusModel
 import com.rm.business_lib.bean.download.DownloadChapterStatusModel
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadAudio
@@ -55,7 +56,9 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 }
             }
             //将音频信息存储
-            downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
+            downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(
+                DownloadAudioStatusModel(audio = it)
+            ) }
             //存储已选择的下载章节
             DownloadMemoryCache.downloadingChapterList.addAll(tempDownloadList)
             //调用下载服务开始下载
