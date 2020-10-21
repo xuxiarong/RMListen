@@ -30,7 +30,7 @@
         <com.rm.module_mine.widget.MineCommonSettingView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_52"
-            android:onClick="@{()->viewModel.clickLogoutFun()}"
+            android:onClick="@{()->viewModel.clickLogoutFun(context)}"
             app:setting_name="@string/mine_logout"
             app:setting_show_icon="true"
             app:setting_show_switch="false"

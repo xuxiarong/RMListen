@@ -7,6 +7,7 @@ import com.rm.module_login.R
 import com.rm.module_login.activity.VerificationInputActivity
 import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_RESET_PWD
 import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.repository.LoginRepository.Companion.CODE_TYPE_FORGET_PWD
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
 
 /**
@@ -35,7 +36,8 @@ class ForgetPasswordViewModel(private val repository: LoginRepository) : BaseVMV
         showLoading()
         // 获取短信验证码
         launchOnIO {
-            repository.sendForgetPasswordVerifyCode(
+            repository.sendMessage(
+                CODE_TYPE_FORGET_PWD,
                 phoneInputViewModel.countryCode.get()!!,
                 phoneInputViewModel.phone.get()!!
             ).checkResult(

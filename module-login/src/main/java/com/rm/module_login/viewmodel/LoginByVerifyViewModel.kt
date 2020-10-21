@@ -8,6 +8,7 @@ import com.rm.module_login.activity.LoginByPasswordActivity
 import com.rm.module_login.activity.VerificationInputActivity
 import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_LOGIN
 import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.repository.LoginRepository.Companion.CODE_TYPE_LOGIN
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
 
 /**
@@ -52,7 +53,8 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
         showLoading()
         // 发送登陆短信验证码
         launchOnIO {
-            repository.sendLoginVerifyCode(
+            repository.sendMessage(
+                CODE_TYPE_LOGIN,
                 phoneInputViewModel.countryCode.get()!!,
                 phoneInputViewModel.phone.get()!!
             ).checkResult(
@@ -84,25 +86,5 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
         // 密码登陆
         startActivity(LoginByPasswordActivity::class.java)
     }
-
-//    fun testClick() {
-//        var currentStatus = loginStatus.get()!!
-//        currentStatus += 1
-//        loginStatus.set(currentStatus % 3)
-//
-//        val newData = testDialogData.value
-//        newData?.add(LoginDialogModel("张三$currentStatus"))
-//        testDialogData.value = newData
-//
-//    }
-//
-//    fun getDialogData() {
-//        testDialogData.value =
-//            mutableListOf(
-//                LoginDialogModel("张三"),
-//                LoginDialogModel("李四"),
-//                LoginDialogModel("王五")
-//            )
-//    }
 
 }

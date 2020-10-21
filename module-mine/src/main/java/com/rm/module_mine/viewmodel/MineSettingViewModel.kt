@@ -33,6 +33,7 @@ class MineSettingViewModel : BaseVMViewModel() {
      */
     fun loginOutClick(context: Context) {
         TipsFragmentDialog().apply {
+            titleText = context.String(R.string.mine_login_out_title)
             contentText = context.String(R.string.mine_login_out_tips)
             leftBtnText = context.String(R.string.mine_login_out_sure)
             rightBtnText = context.String(R.string.mine_login_out_cancel)
