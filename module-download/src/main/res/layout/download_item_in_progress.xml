@@ -1,87 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="com.rm.baselisten.util.SDCardUtils" />
+
+        <import type="com.rm.baselisten.util.ConvertUtils" />
 
         <variable
             name="itemBean"
-            type="com.rm.business_lib.bean.download.DownloadAudioBean" />
+            type="com.rm.business_lib.bean.download.DownloadChapterStatusModel" />
 
         <variable
             name="viewModel"
             type="com.rm.module_download.viewmodel.DownloadMainViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/dp_16"
-        android:paddingTop="10dp"
-        android:paddingRight="@dimen/dp_16"
-        android:paddingBottom="10dp">
+        android:layout_height="104dp">
 
-        <ImageView
-            android:id="@+id/download_iv_check"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/downloading_chapter_select"
+            isVisible="@{viewModel.downloadingEdit}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            isVisible="@{viewModel.isEdit}"
-            android:paddingRight="@dimen/dp_14"
-            android:src="@drawable/download_ic_item_checked"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_14"
+            android:src="@{itemBean.isSelect?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked }"
+            tools:src="@drawable/download_ic_item_checked" />
 
-        <TextView
-            android:id="@+id/download_tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{itemBean.audioName}"
-            android:textColor="@color/business_text_color_333333"
-            android:textSize="@dimen/business_text_size_16sp"
-            app:layout_constraintLeft_toRightOf="@+id/download_iv_check"
-            app:layout_constraintTop_toTopOf="parent" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:layout_toEndOf="@+id/downloading_chapter_select">
 
-        <TextView
-            android:id="@+id/download_tv_book"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{itemBean.audioName}"
-            android:textColor="@color/business_text_color_666666"
-            android:textSize="@dimen/business_text_size_14sp"
-            app:layout_constraintLeft_toRightOf="@id/download_iv_check"
-            app:layout_constraintTop_toBottomOf="@id/download_tv_name" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_40"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@{itemBean.chapter.chapter_name}"
+                android:textColor="@color/business_text_color_333333"
+                android:textSize="@dimen/business_text_size_16sp"
+                tools:text="Douglas Powers  " />
 
-        <ProgressBar
-            android:id="@+id/download_progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/download_iv_check"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/download_tv_book" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="@dimen/dp_36"
+                android:text="@{itemBean.chapter.chapter_name}"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="@dimen/business_text_size_14sp"
+                tools:text="时间简史" />
 
-        <TextView
-            android:id="@+id/download_tv_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="15.5M/32M"
-            android:textColor="@color/business_text_color_b1b1b1"
-            android:textSize="@dimen/business_text_size_12sp"
-            app:layout_constraintLeft_toRightOf="@+id/download_iv_check"
-            app:layout_constraintTop_toBottomOf="@id/download_progress_bar" />
+            <ProgressBar
+                android:id="@+id/baseWebPb"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="64dp"
+                android:max="100"
+                android:progress="50"
+                android:progressDrawable="@drawable/download_progress_bg" />
 
-        <TextView
-            android:id="@+id/download_tv_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1/43MB/s"
-            android:textColor="@color/business_text_color_b1b1b1"
-            android:textSize="@dimen/business_text_size_12sp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/download_progress_bar" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/dp_16"
+                android:src="@drawable/download_ic_pause_download"
+                tools:src="@drawable/download_ic_pause_download" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/dp_11"
+                android:text="@{@string/business_down_and_total_size(ConvertUtils.byte2FitMemorySize(itemBean.chapter.size,1),ConvertUtils.byte2FitMemorySize(itemBean.chapter.size,1))}"
+                android:textColor="@color/business_text_color_b1b1b1"
+                android:textSize="@dimen/business_text_size_12sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="@dimen/dp_11"
+                android:text="@{@string/business_down_speed(ConvertUtils.byte2FitMemorySize(itemBean.speed,1))}"
+                android:textColor="@color/business_text_color_b1b1b1"
+                android:textSize="@dimen/business_text_size_12sp" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/business_color_e8e8e8" />
+    </RelativeLayout>
 </layout>

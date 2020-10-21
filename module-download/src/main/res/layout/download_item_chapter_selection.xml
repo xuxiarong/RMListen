@@ -9,7 +9,7 @@
 
         <variable
             name="itemBean"
-            type="com.rm.module_download.model.DownloadChapterStatusModel" />
+            type="com.rm.business_lib.bean.download.DownloadChapterStatusModel" />
 
         <variable
             name="viewModel"

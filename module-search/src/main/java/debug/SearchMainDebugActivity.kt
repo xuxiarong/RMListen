@@ -9,6 +9,7 @@ import com.rm.module_search.R
  * version: 1.0
  */
 class SearchMainDebugActivity : BaseDebugActivity() {
+
     override fun getLayoutResId(): Int = R.layout.search_activity_result
 
     override fun initView() {

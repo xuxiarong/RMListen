@@ -10,8 +10,11 @@
     <string name="download_cancel">取消</string>
     <string name="download_edit">编辑</string>
     <string name="download_downloading">下载中</string>
+    <string name="download_downloading_number">下载中%d</string>
     <string name="download_downloaded">已下载</string>
     <string name="download_check_all">全选</string>
+    <string name="download_pause_all">全部暂停</string>
     <string name="download_select_chapters_download">选集下载</string>
+    <string name="download_audio_size_and_total_size">听书占用%s剩余可用%s</string>
 
 </resources>

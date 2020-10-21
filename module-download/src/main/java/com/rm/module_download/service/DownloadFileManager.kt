@@ -10,14 +10,14 @@ import com.liulishuo.okdownload.core.listener.DownloadListener4WithSpeed
 import com.liulishuo.okdownload.core.listener.assist.Listener4SpeedAssistExtend
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.DLog
-import com.rm.business_lib.bean.download.BaseDownloadFileBean
+import com.rm.business_lib.DownloadMemoryCache
+import com.rm.business_lib.bean.download.DownloadChapterStatusModel
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadStatusChangedBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.downloadProgress
 import com.rm.business_lib.downloadStatus
 import com.rm.module_download.util.TagUtil
-import com.rm.module_download.util.deleteDir
 import com.rm.module_download.util.getParentFile
 import java.io.File
 
@@ -25,8 +25,6 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
 
     private val taskList = ArrayMap<String, DownloadTask>()
     private val context = BaseApplication.CONTEXT
-
-    private val cacheFile: File by lazy { File(getParentFile(context), cacheFileName) }
 
     private val queueListener: DownloadListener by lazy { this@DownloadFileManager }
 
@@ -37,7 +35,6 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         val INSTANCE: DownloadFileManager by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { DownloadFileManager() }
         const val minIntervalMillisCallbackProcess = 200  //回掉间隔毫秒数
         const val maxParallelRunningCount = 1  //最大并行数
-        const val cacheFileName = "download_cache"  //缓存文件名称
         const val TAG = "DownloadFileManager"
     }
 
@@ -46,8 +43,8 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         DownloadDispatcher.setMaxParallelRunningCount(maxParallelRunningCount)
     }
 
-    private inline fun createTask(url: String, audioName: String,fileName: String): DownloadTask {
-        return DownloadTask.Builder(url, createFileWithAudio(audioName).absolutePath, fileName)
+    private fun createTask(url: String, parentPath: String, fileName: String): DownloadTask {
+        return DownloadTask.Builder(url, createFileWithAudio(parentPath).absolutePath, fileName)
             .setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess)
             .setAutoCallbackToUIThread(true)//是否在UI线程回掉
             .build()
@@ -57,7 +54,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         return File(getParentFile(context), audioName)
     }
 
-    private inline fun createFinder(url: String,audioName: String,fileName: String): DownloadTask {
+    private fun createFinder(url: String, audioName: String, fileName: String): DownloadTask {
         return if (taskList.contains(url)) {
             taskList[url]!!
         } else {
@@ -66,57 +63,57 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     }
 
 
-    fun download(baseBean: BaseDownloadFileBean) {
-        createTask(baseBean.url, baseBean.parentFileDir,baseBean.fileName).also {
-            TagUtil.saveHolder(it, baseBean)
-            taskList[baseBean.url] = it
-            downloadStatus.value=(DownloadStatusChangedBean(baseBean.url, DownloadUIStatus.DOWNLOAD_PENDING))
+    fun download(model: DownloadChapterStatusModel) {
+        createTask(model.chapter.path_url, model.chapter.audio_id.toString(),model.chapter.chapter_name).also {
+            TagUtil.saveHolder(it, model.chapter)
+            taskList[model.chapter.path_url] = it
+            downloadStatus.value=(DownloadStatusChangedBean(model.chapter.path_url, DownloadUIStatus.DOWNLOAD_PENDING))
         }.run {
             enqueue(queueListener)
         }
     }
 
-    fun download(audioList: List<BaseDownloadFileBean>) {
-        var taskList = Array(audioList.size) { index ->
-            createTask(audioList[index].url, audioList[index].parentFileDir,audioList[index].fileName).also {
-                TagUtil.saveHolder(it, audioList[index])
-                taskList[audioList[index].url] = it
-                downloadStatus.value=(DownloadStatusChangedBean(audioList[index].url, DownloadUIStatus.DOWNLOAD_PENDING))
+    fun download(modelList: List<DownloadChapterStatusModel>) {
+        var taskList = Array(modelList.size) { index ->
+            createTask(modelList[index].chapter.path_url, modelList[index].chapter.audio_id.toString(),modelList[index].chapter.chapter_name).also {
+                TagUtil.saveHolder(it, modelList[index])
+                taskList[modelList[index].chapter.path_url] = it
+                downloadStatus.value=(DownloadStatusChangedBean(modelList[index].chapter.path_url, DownloadUIStatus.DOWNLOAD_PENDING))
             }
         }
         DownloadTask.enqueue(taskList, queueListener)
     }
 
-    fun stopDownload(baseBean: BaseDownloadFileBean): Boolean {
-        return OkDownload.with().downloadDispatcher().cancel(createFinder(baseBean.url, baseBean.parentFileDir,baseBean.fileName))
+    fun stopDownload(model: DownloadChapterStatusModel): Boolean {
+        return OkDownload.with().downloadDispatcher().cancel(createFinder(model.chapter.path_url, model.chapter.audio_id.toString(),model.chapter.chapter_name))
     }
 
-    fun stopDownload(baseBean: List<BaseDownloadFileBean>) {
-        var cancelList = arrayListOf<DownloadTask>()
-        baseBean.forEach {
-            taskList[it.url]?.run { cancelList.add(this) }
+    fun stopDownload(modelList: List<DownloadChapterStatusModel>) {
+        val cancelList = arrayListOf<DownloadTask>()
+        modelList.forEach {
+            taskList[it.chapter.path_url]?.run { cancelList.add(this) }
         }
         OkDownload.with().downloadDispatcher().cancel(cancelList.toTypedArray())
     }
 
-    fun delete(baseBean: BaseDownloadFileBean) {
-        createFinder(baseBean.url, baseBean.parentFileDir,baseBean.fileName).run {
+    fun delete(model: DownloadChapterStatusModel) {
+        createFinder(model.chapter.path_url, model.chapter.audio_id.toString(),model.chapter.chapter_name).run {
             OkDownload.with().downloadDispatcher().cancel(this)
             OkDownload.with().breakpointStore().remove(id)
             this.file?.delete()
         }.also {
-            taskList.remove(baseBean.url)
+            taskList.remove(model.chapter.path_url)
         }
     }
 
-    fun delete(list: List<BaseDownloadFileBean>) {
+    fun delete(list: List<DownloadChapterStatusModel>) {
         list.forEach {
             delete(it)
         }
     }
 
-    fun getTaskStatus(baseBean: BaseDownloadFileBean): DownloadUIStatus {
-        return when (StatusUtil.getStatus(createFinder(baseBean.url, baseBean.parentFileDir,baseBean.fileName))) {
+    fun getTaskStatus(model: DownloadChapterStatusModel): DownloadUIStatus {
+        return when (StatusUtil.getStatus(createFinder(model.chapter.path_url, model.chapter.audio_id.toString(),model.chapter.chapter_name))) {
             StatusUtil.Status.COMPLETED -> DownloadUIStatus.DOWNLOAD_COMPLETED
             StatusUtil.Status.PENDING -> DownloadUIStatus.DOWNLOAD_PENDING
             StatusUtil.Status.RUNNING -> DownloadUIStatus.DOWNLOAD_IN_PROGRESS
@@ -125,12 +122,12 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         }
     }
 
-    fun getTaskBreakpointInfo(baseBean: BaseDownloadFileBean): DownloadProgressUpdateBean? {
-        var breakpointInfo = createFinder(baseBean.url, baseBean.parentFileDir,baseBean.fileName).info
+    fun getTaskBreakpointInfo(model: DownloadChapterStatusModel): DownloadProgressUpdateBean? {
+        var breakpointInfo = createFinder(model.chapter.path_url, model.chapter.audio_id.toString(),model.chapter.chapter_name).info
         return if (breakpointInfo == null) {
             null
         } else {
-            DownloadProgressUpdateBean(baseBean.url, breakpointInfo.totalOffset, "0/s")
+            DownloadProgressUpdateBean(model.chapter.path_url, breakpointInfo.totalOffset, "0/s")
         }
     }
 
@@ -144,12 +141,12 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
             OkDownload.with().breakpointStore().remove(it.value.id)
         }.also {
             taskList.clear()
-            deleteDir(cacheFile.absolutePath)
         }
     }
 
     override fun taskStart(task: DownloadTask) {
         DLog.d(TAG," taskStart name = ${task.filename}")
+        DownloadMemoryCache.updateDownloadingChapter(task.url)
     }
 
     override fun blockEnd(task: DownloadTask, blockIndex: Int, info: BlockInfo?, blockSpeed: SpeedCalculator) {
@@ -162,7 +159,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?, taskSpeed: SpeedCalculator) {
         DLog.d(TAG," taskEnd name = ${task.filename} --- cause = $cause --- taskSpeed = ${taskSpeed.speed()}" )
         when (cause) {
-            EndCause.COMPLETED -> downloadStatus.value=(DownloadStatusChangedBean(task.url, DownloadUIStatus.DOWNLOAD_COMPLETED))
+            EndCause.COMPLETED -> DownloadMemoryCache.setDownloadFinishChapter()
             else -> downloadStatus.value=(DownloadStatusChangedBean(task.url, DownloadUIStatus.DOWNLOAD_PAUSED))
         }
     }
@@ -170,6 +167,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
         DLog.d(TAG," progress name = ${task.filename} --- currentOffset = $currentOffset --- taskSpeed = ${taskSpeed.speed()}" )
         downloadProgress.value=(DownloadProgressUpdateBean(task.url, currentOffset, taskSpeed.speed()))
+        DownloadMemoryCache.addChapterToDownloadMemoryCache(url = task.url,speed = currentOffset)
     }
 
     override fun connectEnd(task: DownloadTask, blockIndex: Int, responseCode: Int, responseHeaderFields: MutableMap<String, MutableList<String>>) {
