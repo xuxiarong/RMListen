@@ -177,7 +177,7 @@
                 android:paddingTop="@dimen/dp_9"
                 android:paddingEnd="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_9"
-                android:visibility="invisible"
+                isVisible="@{!viewModel.isVisible}"
                 android:src="@mipmap/mine_ic_launcher"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
