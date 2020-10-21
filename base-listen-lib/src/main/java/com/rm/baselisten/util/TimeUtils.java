@@ -687,27 +687,7 @@ public final class TimeUtils {
         }
     }
 
-    /**
-     * 获取今天，昨天，更早的日期
-     * @param second
-     * @return
-     */
-    public static String getDateStr(final long second) {
-        long millis = second * 1000;
-        // 获取当天 00:00
-        long wee = getWeeOfToday();
-        if (millis >= wee) {
-            return"今天";
-        } else if (millis >= wee - TimeConstants.DAY) {
-            return "昨天";
-        } else {
-            if(isCurrentYear(millis)){
-                return millis2String(millis,"MM/dd") ;
-            }else {
-                return millis2String(millis,"yyyy/MM/dd") ;
-            }
-        }
-    }
+
 
 
     //获取今年是哪一年
@@ -1661,12 +1641,12 @@ public final class TimeUtils {
         return sb.toString();
     }
 
-    public static String getTimeWithSecond(int millis) {
-        return getTimeWithSecond(millis * 1000L,4);
+    public static String getListenDuration(int millis) {
+        return getListenDuration(millis * 1000L,4);
     }
 
 
-        public static String getTimeWithSecond(long millis, int precision) {
+        public static String getListenDuration(long millis, int precision) {
         if (precision <= 0) return null;
         precision = Math.min(precision, 4);
         String[] units = {":", ":", ":", ":"};
@@ -1688,6 +1668,38 @@ public final class TimeUtils {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * 获取今天，昨天，更早的日期
+     * @param second
+     * @return
+     */
+    public static String getListenSubsUpdateTime(final long second) {
+        long millis = second * 1000;
+        // 获取当天 00:00
+        long wee = getWeeOfToday();
+        if (millis >= wee) {
+            return"今天";
+        } else if (millis >= wee - TimeConstants.DAY) {
+            return "昨天";
+        } else {
+            if(isCurrentYear(millis)){
+                return millis2String(millis,"MM/dd") ;
+            }else {
+                return millis2String(millis,"yyyy/MM/dd") ;
+            }
+        }
+    }
+
+    /**
+     * 获取今天，昨天，更早的日期
+     * @param second
+     * @return
+     */
+    public static String getListenYearTime(final long second) {
+        long millis = second * 1000;
+        return millis2String(millis,"yyyy-MM-dd") ;
     }
 
 }

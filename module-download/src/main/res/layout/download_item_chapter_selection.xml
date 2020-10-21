@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:drawableLeft="@drawable/download_ic_duration"
-                android:text="@{TimeUtils.getTimeWithSecond(itemBean.chapter.duration)}"
+                android:text="@{TimeUtils.getListenDuration(itemBean.chapter.duration)}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 

@@ -18,98 +18,74 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_book_adapter_name"
-        android:layout_width="match_parent"
         bindClick="@{()->viewModel.onChapterClick(context,item)}"
+        android:layout_width="match_parent"
         android:layout_height="69dp">
-        
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listenSubsChapterNumber"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            android:text="@{item.sequence}"
             android:layout_width="24dp"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/business_text_size_14sp"
-            android:textColor="@color/business_text_color_666666"
+            android:layout_marginStart="16dp"
             android:gravity="center"
-            tools:text="333"/>
-        <androidx.appcompat.widget.AppCompatTextView
+            android:text="@{item.sequence}"
+            android:textColor="@color/business_text_color_666666"
+            android:textSize="@dimen/business_text_size_14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/listenSubsChapterNumber"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginStart="@dimen/dp_12"
-            android:text="@{item.chapter_name}"
+            tools:text="333" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="22dp"
-            tools:text="第一章-人间烟火"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/listenChapterPlay"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/listenSubsChapterNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:layout_marginStart="@dimen/dp_12"
-            android:src="@drawable/listen_icon_subs_play"/>
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@{item.chapter_name}"
+            app:layout_constraintStart_toEndOf="@+id/listenSubsChapterNumber"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="第一章-人间烟火" />
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listenChapterPlayNum"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/listenChapterPlay"
-            android:layout_marginStart="@dimen/dp_2"
-            android:layout_width="wrap_content"
-            android:layout_height="14dp"
-            android:text="@{String.valueOf(item.play_count)}"
-            android:textColor="@color/business_text_color_b1b1b1"
-            android:textSize="@dimen/business_text_size_12sp"
-            android:layout_marginBottom="14dp"
-            tools:text="14W"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/listenChapterTimeIv"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/listenChapterPlayNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:layout_marginStart="@dimen/dp_12"
-            android:src="@drawable/listen_icon_time_duration"/>
+            android:layout_marginBottom="@dimen/dp_11"
+            android:drawableStart="@drawable/listen_icon_subs_play"
+            bindPlayCount="@{item.play_count}"
+            android:textColor="@color/business_text_color_b1b1b1"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/listenSubsChapterNumber"
+            tools:text="14W" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listenChapterTimeTv"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/listenChapterTimeIv"
-            android:layout_marginStart="@dimen/dp_2"
-            android:layout_width="wrap_content"
-            android:layout_height="14dp"
-            android:text="@{item.duration}"
-            android:textColor="@color/business_text_color_b1b1b1"
-            android:textSize="@dimen/business_text_size_12sp"
-            android:layout_marginBottom="@dimen/dp_14"
-            tools:text="10:23"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/listenSubsUpdateTimeIv"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/listenChapterTimeTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:layout_marginStart="@dimen/dp_12"
-            android:src="@drawable/listen_icon_subs_play"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/listenSubsUpdateTimeIv"
-            android:layout_marginStart="@dimen/dp_2"
-            android:layout_width="wrap_content"
-            android:layout_height="14dp"
+            android:layout_marginBottom="@dimen/dp_11"
+            android:drawableStart="@drawable/listen_icon_time_duration"
+            bindDuration="@{item.duration}"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="@dimen/business_text_size_12sp"
-            android:layout_marginBottom="@dimen/dp_14"
-            tools:text="2020/09/11"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/listenChapterPlayNum"
+            tools:text="10:23" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:layout_marginBottom="@dimen/dp_11"
+            app:layout_constraintStart_toEndOf="@+id/listenChapterTimeTv"
+            android:drawableStart="@drawable/listen_icon_update_day"
+            android:textColor="@color/business_text_color_b1b1b1"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            bindDate="@{item.upgrade_time}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

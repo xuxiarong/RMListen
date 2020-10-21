@@ -104,7 +104,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_create"
             style="@style/BusinessTextStyleSecond_4"
-            bindText="@{item.created_at}"
+            bindDateString="@{item.created_at}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_day"

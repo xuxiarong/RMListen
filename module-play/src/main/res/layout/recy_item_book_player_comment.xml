@@ -48,7 +48,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             tools:text="03/30"
-            android:text="@{itemModel.comments.created_at}"
+            bindDateString="@{itemModel.comments.created_at}"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="14sp"
             app:layout_constraintLeft_toRightOf="@+id/img_comment_book_play"

@@ -164,19 +164,19 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             if (subsDateAdapter.data.size > 0) {
                 var hasAudioDate = false
                 subsDateAdapter.data.forEach { subsDate ->
-                    if (subsDate.date == TimeUtils.getDateStr(audio.info.upgrade_time)) {
+                    if (subsDate.date == TimeUtils.getListenSubsUpdateTime(audio.info.upgrade_time)) {
                         hasAudioDate = true
                     }
                 }
                 if (!hasAudioDate) {
                     subsAudioAdapter.addData(
                         ListenSubsDateModel(
-                            date = TimeUtils.getDateStr(audio.info.upgrade_time)
+                            date = TimeUtils.getListenSubsUpdateTime(audio.info.upgrade_time)
                         )
                     )
                     subsDateAdapter.addData(
                         ListenSubsDateModel(
-                            date = TimeUtils.getDateStr(audio.info.upgrade_time),
+                            date = TimeUtils.getListenSubsUpdateTime(audio.info.upgrade_time),
                             isTopRvItem = true
                         )
                     )
@@ -184,14 +184,14 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             } else {
                 subsDateAdapter.addData(
                     ListenSubsDateModel(
-                        date = TimeUtils.getDateStr(audio.info.upgrade_time),
+                        date = TimeUtils.getListenSubsUpdateTime(audio.info.upgrade_time),
                         isSelected = true,
                         isTopRvItem = true
                     )
                 )
                 subsAudioAdapter.addData(
                     ListenSubsDateModel(
-                        date = TimeUtils.getDateStr(audio.info.upgrade_time)
+                        date = TimeUtils.getListenSubsUpdateTime(audio.info.upgrade_time)
                     )
                 )
             }

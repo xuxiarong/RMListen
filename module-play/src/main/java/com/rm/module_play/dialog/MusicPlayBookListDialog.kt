@@ -11,6 +11,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.binding.bindDateString
+import com.rm.business_lib.binding.bindDuration
 import com.rm.business_lib.binding.bindPlayCount
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
@@ -87,8 +89,8 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
             holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCount(item.play_count)
-            holder.setText(R.id.tv_music_play_time_count, "${item.duration}")
-            holder.setText(R.id.tv_music_play_up_time, item.created_at)
+            holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.duration)
+            holder.getView<TextView>(R.id.tv_music_play_up_time).bindDateString(item.created_at)
         }
 
     }
