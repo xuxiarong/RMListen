@@ -24,6 +24,9 @@ class VerificationInputActivity :
         // 重置密码类型
         const val TYPE_RESET_PWD = 1
 
+        //注销用户
+        const val TYPE_LOGOUT = 2
+
         fun getIntent(countryCode: String, phoneNumber: String, type: Int): HashMap<String, Any> {
             return hashMapOf(
                 Pair("countryCode", countryCode),
@@ -50,8 +53,8 @@ class VerificationInputActivity :
 
     override fun initView() {
         mViewModel.baseTitleModel.value = BaseTitleModel().setLeftIconClick { finish() }
-        mViewModel.getCodeType = intent.getIntExtra("type", 0)
-        mViewModel.countryCode = intent.getStringExtra("countryCode")
+        mViewModel.codeType.set(intent.getIntExtra("type", 0))
+        mViewModel.countryCode = intent.getStringExtra("countryCode") ?: "+86"
     }
 
     override fun initData() {

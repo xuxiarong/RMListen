@@ -33,6 +33,7 @@ class MineSettingViewModel : BaseVMViewModel() {
      */
     fun loginOutClick(context: Context) {
         TipsFragmentDialog().apply {
+            titleText = context.String(R.string.mine_login_out_title)
             contentText = context.String(R.string.mine_login_out_tips)
             leftBtnText = context.String(R.string.mine_login_out_sure)
             rightBtnText = context.String(R.string.mine_login_out_cancel)
@@ -52,12 +53,11 @@ class MineSettingViewModel : BaseVMViewModel() {
      * 个人资料
      */
     fun clickSettingPersonal(context: Context) {
-        if (!isLogin.get()) {
-            RouterHelper.createRouter(LoginService::class.java)
-                .quicklyLogin(this, context as FragmentActivity)
-            return
+        if (isLogin.get()) {
+            startActivity(MinePersonalInfoActivity::class.java)
+        } else {
+            quicklyLogin(context)
         }
-        startActivity(MinePersonalInfoActivity::class.java)
     }
 
     /**
@@ -77,8 +77,19 @@ class MineSettingViewModel : BaseVMViewModel() {
     /**
      * 账号安全设置
      */
-    fun clickAccountSecurity() {
-        startActivity(MineAccountSecuritySettingActivity::class.java)
+    fun clickAccountSecurity(context: Context) {
+        if (isLogin.get()) {
+            startActivity(MineAccountSecuritySettingActivity::class.java)
+        } else {
+            quicklyLogin(context)
+        }
+    }
+
+    private fun quicklyLogin(context: Context) {
+        getActivity(context)?.let {
+            RouterHelper.createRouter(LoginService::class.java)
+                .quicklyLogin(this, it)
+        }
     }
 
 }

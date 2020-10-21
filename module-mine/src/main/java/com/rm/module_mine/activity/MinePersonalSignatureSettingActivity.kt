@@ -5,9 +5,7 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivityPersonalSignatureSettingBinding
-import com.rm.module_mine.databinding.MineActivityPlaySettingBinding
 import com.rm.module_mine.viewmodel.MinePersonalSignatureSettingViewModel
-import com.rm.module_mine.viewmodel.MinePlaySettingViewModel
 
 /**
  *
@@ -34,7 +32,10 @@ class MinePersonalSignatureSettingActivity :
         val titleModel = BaseTitleModel()
             .setLeftIcon(R.drawable.base_icon_back)
             .setTitle(getString(R.string.mine_signature))
+            .setRightText(getString(R.string.business_sure))
             .setLeftIconClick { finish() }
+            .setRightTextColor (R.color.business_text_color_666666)
+            .setRightTextClick { mViewModel.updateUserInfo() }
         mViewModel.baseTitleModel.value = titleModel
 
     }

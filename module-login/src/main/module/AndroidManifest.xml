@@ -62,5 +62,8 @@
             android:name="debug.LoginDebugActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.CountryListActivity"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

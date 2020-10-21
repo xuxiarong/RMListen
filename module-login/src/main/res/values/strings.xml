@@ -18,6 +18,7 @@
     <string name="login_verify_wrong">验证码不正确</string>
 
     <string name="login_input_verification_code">请输入验证码</string>
+    <string name="login_input_verification_code2">此操作需要验证您的身份</string>
     <string name="login_re_get_verify_code">重新获取</string>
     <string name="login_input_right_number_tips">请输入正确的手机号</string>
     <string name="login_send_verify_code">发送验证码</string>
@@ -36,4 +37,6 @@
 
     <string name="login_format_verification_phone_tips" formatted="false">验证码已发送至%s</string>
     <string name="login_format_verification_count_down_tips" formatted="false">%s后重新获取</string>
+
+    <string name="login_search_hint">搜索</string>
 </resources>

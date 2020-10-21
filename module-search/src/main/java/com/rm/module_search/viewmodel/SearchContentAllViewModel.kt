@@ -10,6 +10,7 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.loginUser
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.mine.MineService
@@ -30,7 +31,9 @@ import com.rm.module_search.repository.SearchRepository
 class SearchContentAllViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
     val keyword = searchKeyword
 
-    val data =  ObservableField<SearchResultBean>()
+    val data = ObservableField<SearchResultBean>()
+
+    val userInfo = loginUser
 
     //书籍adapter
     val bookAdapter by lazy {
@@ -90,23 +93,25 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
     /**
      * 全部-书籍点击事件
      */
-    fun clickBookFun(view: View,bean:AudioBean) {
-        RouterHelper.createRouter(HomeService::class.java).toDetailActivity(view.context,bean.audio_id)
+    fun clickBookFun(view: View, bean: AudioBean) {
+        RouterHelper.createRouter(HomeService::class.java)
+            .toDetailActivity(view.context, bean.audio_id)
     }
 
     /**
      * 全部-主播点击事件
      */
-    fun clickAnchorFun(context: Context,bean: MemberBean) {
+    fun clickAnchorFun(context: Context, bean: MemberBean) {
         RouterHelper.createRouter(MineService::class.java).toMineMember(context, bean.member_id)
     }
 
     /**
      * 全部-听单点击事件
      */
-    fun clickSheetFun(view: View,bean:SearchSheetBean) {
+    fun clickSheetFun(view: View, bean: SearchSheetBean) {
         getActivity(view.context)?.let {
-            RouterHelper.createRouter(HomeService::class.java).startHomeSheetDetailActivity(it,bean.sheet_id,0)
+            RouterHelper.createRouter(HomeService::class.java)
+                .startHomeSheetDetailActivity(it, bean.sheet_id, 0)
         }
     }
 
@@ -119,7 +124,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
             if (!isLogin.get()) {
                 quicklyLogin(it)
             } else {
-                if (bean.is_follow==1L) {
+                if (bean.is_follow == 1L) {
                     unAttentionAnchor(bean)
                 } else {
                     attentionAnchor(bean)

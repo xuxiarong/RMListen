@@ -246,10 +246,11 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         }
         val list = HISTORY_KEY.getListString()
         val iterator = list.iterator()
-        if (iterator.hasNext()) {
+        while (iterator.hasNext()) {
             val next = iterator.next()
+            DLog.i("----->", "$next   $keyword")
             if (next == keyword) {
-                list.remove(next)
+                iterator.remove()
             }
         }
         val size = list.size

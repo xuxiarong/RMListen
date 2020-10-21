@@ -28,7 +28,7 @@
                 android:id="@+id/mine_dialog_sex_man"
                 style="@style/BusinessTextStyleFirst_6"
                 android:layout_width="match_parent"
-                android:onClick="@{()->viewModel.sexDialogManFun()}"
+                android:onClick="@{()->viewModel.sexDialogClickManFun(1)}"
                 android:gravity="center"
                 android:paddingTop="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_16"
@@ -44,7 +44,7 @@
                 style="@style/BusinessTextStyleFirst_6"
                 android:layout_width="match_parent"
                 android:gravity="center"
-                android:onClick="@{()->viewModel.sexDialogWoManFun()}"
+                android:onClick="@{()->viewModel.sexDialogClickManFun(2)}"
                 android:paddingTop="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_16"
                 android:text="@string/mine_woman" />
@@ -57,7 +57,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/mine_dialog_sex_secret"
                 style="@style/BusinessTextStyleFirst_6"
-                android:onClick="@{()->viewModel.sexDialogSecretFun()}"
+                android:onClick="@{()->viewModel.sexDialogClickManFun(0)}"
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:paddingTop="@dimen/dp_16"

@@ -7,7 +7,7 @@
 
         <variable
             name="menuItemBean"
-            type="com.rm.business_lib.bean.SheetInfoBean" />
+            type="com.rm.business_lib.bean.SheetMenuInfoBean" />
 
         <variable
             name="itemViewModel"
@@ -20,7 +20,7 @@
         android:layout_marginStart="@dimen/padding_width"
         android:layout_marginEnd="@dimen/padding_width"
         android:layout_marginTop="@dimen/dp_24"
-        android:onClick="@{(SheetInfoBean)->itemViewModel.itemClickFun(menuItemBean)}">
+        android:onClick="@{()->itemViewModel.itemClickFun(menuItemBean)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:id="@+id/home_menu_adapter_total_books_number"
                 style="@style/TextViewSecondStyle"
                 android:drawableEnd="@drawable/business_ic_next"
-                android:text="@{@string/home_audio_size(menuItemBean.audio_list.size())}"
+                android:text="@{@string/home_audio_size(menuItemBean.num_audio)}"
                 android:drawablePadding="@dimen/dp_2"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_name"
                 app:layout_constraintRight_toRightOf="parent"

@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.util.getListString
-import com.rm.module_search.HISTORY_KEY
 import com.rm.module_search.R
 
 /**

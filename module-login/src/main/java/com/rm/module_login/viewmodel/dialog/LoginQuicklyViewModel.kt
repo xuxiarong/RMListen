@@ -9,6 +9,7 @@ import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_login.R
 import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.repository.LoginRepository
+import com.rm.module_login.repository.LoginRepository.Companion.CODE_TYPE_LOGIN
 import com.rm.module_login.viewmodel.view.PhoneInputViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -73,7 +74,8 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
 
         // 发送登陆短信验证码
         mViewModel.launchOnIO {
-            repository.sendLoginVerifyCode(
+            repository.sendMessage(
+                CODE_TYPE_LOGIN,
                 phoneInputViewModel.countryCode.get()!!,
                 phoneInputViewModel.phone.get()!!
             ).checkResult(
@@ -152,7 +154,8 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
         mViewModel.showLoading()
         // 重新获取登陆验证码
         mViewModel.launchOnIO {
-            repository.sendLoginVerifyCode(
+            repository.sendMessage(
+                CODE_TYPE_LOGIN,
                 phoneInputViewModel.countryCode.get()!!,
                 phoneInputViewModel.phone.get()!!
             )

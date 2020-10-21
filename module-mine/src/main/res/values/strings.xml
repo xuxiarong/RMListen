@@ -42,9 +42,15 @@
     <string name="mine_sign_out">退出登录</string>
     <string name="mine_login_and_register">登陆/注册</string>
     <string name="mine_login_tips">登录享受更多功能</string>
+    <string name="mine_login_out_title">退出登录</string>
     <string name="mine_login_out_tips">退出后，将无法收听已购节目\n无法接收订阅更新</string>
     <string name="mine_login_out_sure">坚持退出</string>
     <string name="mine_login_out_cancel">保持登陆</string>
+
+    <string name="mine_loginout_title">注销账号</string>
+    <string name="mine_loginout_tips">确定要注销账号？</string>
+    <string name="mine_loginout_sure">不注销</string>
+    <string name="mine_loginout_cancel">注销</string>
 
     <!--personal info-->
     <string name="mine_avatar">头像</string>
@@ -93,5 +99,12 @@
     <string name="mine_album">本地相册</string>
 
     <string name="mine_certified_anchor">认证主播</string>
+
+    <string name="mine_signature_num" formatted="false">%d</string>
+    <string name="mine_signature_num_text">/50</string>
+
+    <string name="login_input_verification_code">请输入验证码</string>
+    <string name="login_re_get_verify_code">重新获取</string>
+
 
 </resources>

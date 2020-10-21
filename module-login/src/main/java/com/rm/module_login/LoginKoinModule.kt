@@ -33,6 +33,8 @@ val viewModelModule = module {
     viewModel { LoginDebugViewModel() }
     // 快速登陆dialog viewModel
     viewModel { LoginQuicklyViewModel(get()) }
+
+    viewModel { LoginCountryListViewModel() }
 }
 
 val repositoryModule = module {

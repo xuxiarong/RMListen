@@ -12,6 +12,9 @@
         <variable
             name="item"
             type="com.rm.module_search.bean.MemberBean" />
+
+        <import type="android.text.TextUtils" />
+
     </data>
 
 
@@ -84,6 +87,7 @@
 
         <androidx.appcompat.widget.AppCompatCheckedTextView
             android:id="@+id/search_adapter_anchor_attention"
+            isVisible="@{!TextUtils.equals(viewModel.userInfo.id,item.member_id)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@{item.is_follow==1L ? @drawable/business_un_select_attention  : @drawable/business_select_attention}"

@@ -1,6 +1,8 @@
 package com.rm.baselisten.model
 
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.R
 
 /**
@@ -29,6 +31,8 @@ class BaseTitleModel {
     var rightIconClick: (() -> Unit)? = null
     var rightIcon1Click: (() -> Unit)? = null
     var rightTextClick: (() -> Unit)? = null
+    var rightTextColorRes = R.color.base_666666
+    var rightTextEnabled = true
 
 
     fun setHasDivider(hasDivider: Boolean): BaseTitleModel {
@@ -78,7 +82,7 @@ class BaseTitleModel {
         return this
     }
 
-    fun setRightBackground(@DrawableRes rightBackground : Int): BaseTitleModel{
+    fun setRightBackground(@DrawableRes rightBackground: Int): BaseTitleModel {
         this.rightBackground = rightBackground
         return this
     }
@@ -117,6 +121,17 @@ class BaseTitleModel {
 
     fun setRightTextClick(rightTextClick: () -> Unit): BaseTitleModel {
         this.rightTextClick = rightTextClick
+        return this
+    }
+
+    fun setRightTextColor(rightColor: Int): BaseTitleModel {
+        this.rightTextColorRes = ContextCompat.getColor(BaseApplication.CONTEXT, rightColor)
+        return this
+    }
+
+
+    fun setRightEnabled(enabled: Boolean): BaseTitleModel {
+        this.rightTextEnabled = enabled
         return this
     }
 

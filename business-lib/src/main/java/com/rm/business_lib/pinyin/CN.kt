@@ -1,4 +1,4 @@
-package com.rm.module_login.pinyin
+package com.rm.business_lib.pinyin
 
 import java.io.Serializable
 

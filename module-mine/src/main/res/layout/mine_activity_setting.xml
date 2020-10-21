@@ -47,7 +47,7 @@
                 android:id="@+id/mine_setting_account_security"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{()->viewModel.clickAccountSecurity()}"
+                android:onClick="@{()->viewModel.clickAccountSecurity(context)}"
                 app:material_name="@string/mine_account_security" />
 
 

@@ -1,6 +1,7 @@
 package com.rm.module_mine.api
 
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.business_lib.bean.LoginUserBean
 import com.rm.module_mine.bean.MineInfoDetail
 import com.rm.module_mine.bean.MineInfoProfile
 import com.rm.module_mine.bean.UpdateUserInfoBean
@@ -49,8 +50,7 @@ interface MineApiService {
      * 更新用户信息
      */
     @PATCH("member/info")
-    suspend fun updateInfo(@Body bean: UpdateUserInfoBean): BaseResponse<Any>
-
+    suspend fun updateInfo(@Body bean: UpdateUserInfoBean): BaseResponse<LoginUserBean>
 
     /**
      * 上传头像

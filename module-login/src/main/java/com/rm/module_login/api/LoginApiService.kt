@@ -65,7 +65,7 @@ interface LoginApiService {
 
     /**
      * 校验验证码是否正确
-     * @param type String  发送短信类型，"login" = 登陆，"forget_pwd" = 忘记密码,"rebind_phone" = 重新绑定手机
+     * @param type String  发送短信类型，"login" = 登陆，"forget_pwd" = 忘记密码,"rebind_phone" = 重新绑定手机 "close_account"= 销户
      * @param area_code String 手机所在区号(例：+86)
      * @param phone String 接收短信验证码的手机号码
      * @param code String 验证码
@@ -106,4 +106,14 @@ interface LoginApiService {
         @Query("password") password: String,
         @Query("new_password") new_password: String
     ): BaseResponse<Any>
+
+    /**
+     * 注销账户
+     * @param code String
+     * @return BaseResponse<Any>
+     */
+    @POST("member/close-account")
+    suspend fun logout(@Query("code") code: String): BaseResponse<Any>
+
+
 }

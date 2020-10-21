@@ -6,21 +6,15 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.TypedValue
-import android.util.TypedValue.COMPLEX_UNIT_PX
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
-import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.binding.bindUrl
 import com.rm.baselisten.binding.isVisible
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.Drawable
 import com.rm.baselisten.utilExt.dimen
@@ -119,7 +113,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
      */
     fun setMaterialUserIcon(imgUrl: String?) {
         userIcon.visibility = View.VISIBLE
-        userIcon.bindUrl(0f, imgUrl, true,Drawable(R.drawable.business_ic_default_user))
+        userIcon.bindUrl(0f, imgUrl, true, Drawable(R.drawable.business_ic_default_user))
     }
 
     /**
@@ -149,7 +143,5 @@ fun MineCommonMaterialView.userText(userText: String?, defaultText: String?) {
 
 @BindingAdapter("userIcon")
 fun MineCommonMaterialView.userIcon(userIconUrl: String?) {
-    if (!TextUtils.isEmpty(userIconUrl)) {
-        setMaterialUserIcon(userIconUrl)
-    }
+    setMaterialUserIcon(userIconUrl)
 }

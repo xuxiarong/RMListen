@@ -35,6 +35,8 @@ class MineNicknameSettingActivity :
             .setLeftIcon(R.drawable.base_icon_back)
             .setTitle(getString(R.string.mine_change_nickname))
             .setRightText(getString(R.string.business_sure))
+            .setRightTextColor (R.color.business_text_color_666666)
+            .setRightTextClick { mViewModel.updateUserInfo() }
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = titleModel
 

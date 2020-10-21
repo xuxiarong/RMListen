@@ -3,6 +3,7 @@ package com.rm.module_home.viewmodel
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -13,13 +14,18 @@ import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.getBooleanMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.IS_FIRST_SUBSCRIBE
+import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DataStr
 import com.rm.business_lib.bean.DetailTags
 import com.rm.business_lib.bean.HomeDetailBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.listen.ListenService
@@ -35,6 +41,7 @@ import com.rm.module_home.model.home.detail.HomeCommentBean
 import com.rm.module_home.repository.HomeRepository
 import com.rm.module_home.util.HomeCommentDialogHelper
 import com.rm.module_play.enum.Jump
+import kotlin.math.log
 
 
 class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
@@ -64,6 +71,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
 
     //是否订阅
     val isSubscribed = ObservableField<Boolean>(false)
+
+    val attentionVisibility = ObservableField<Boolean>(true)
 
     //评论加载更多
     val commentRefreshStateMode = SmartRefreshLayoutStatusModel()
@@ -168,13 +177,19 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
                     showContentView()
+                    //如果主播id与当前的用户id一致则隐藏关注按钮
+                    loginUser.get()?.let { user ->
+                        attentionVisibility.set(user.id != it.list.member_id)
+                    }
                     detailInfoData.set(it)
                     isAttention.set(it.list.anchor.status)
                     anchor_id.set(it.list.anchor_id)
                     homeDetailTagsAdapter.setList(it.list.tags)
                 }, onError = {
-                    showContentView()
                     errorTips.set(it)
+                    if (it?.contains("下架") == true || it?.contains("违规") == true) {
+                        finish()
+                    }
                     showToast(it.toString())
                 }
             )
@@ -185,19 +200,67 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 订阅
      */
-    private fun subscribe(audioID: String) {
+    private fun subscribe(context: Context, audioId: String) {
         showLoading()
         launchOnIO {
-            repository.subscribe(audioID).checkResult(
+            repository.subscribe(audioId).checkResult(
                 onSuccess = {
                     showContentView()
-                    DLog.i("------->", "订阅成功")
+                    isSubscribed.set(true)
+                    subscribeSuccess(context)
                 },
                 onError = {
                     showContentView()
                     DLog.i("------->", "订阅失败  $it")
                 }
             )
+        }
+    }
+
+    /**
+     * 取消订阅
+     */
+    private fun unSubscribe(audioId: String) {
+        launchOnIO {
+            repository.subscribe(audioId).checkResult(
+                onSuccess = {
+                    isSubscribed.set(false)
+                    showToast("取消订阅成功")
+                },
+                onError = {
+                    showContentView()
+                    DLog.i("------->", "取消订阅  $it")
+                }
+            )
+        }
+    }
+
+    /**
+     * 订阅成功
+     */
+    private fun subscribeSuccess(context: Context) {
+        val activity = getActivity(context)
+        if (IS_FIRST_SUBSCRIBE.getBooleanMMKV(true) && activity != null) {
+            CustomTipsFragmentDialog().apply {
+                titleText = context.getString(R.string.home_favorites_success)
+                contentText = context.getString(R.string.home_favorites_success_content)
+                leftBtnText = context.getString(R.string.home_know)
+                rightBtnText = context.getString(R.string.home_goto_look)
+                leftBtnTextColor = R.color.business_text_color_333333
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    RouterHelper.createRouter(ListenService::class.java).startSubscription(activity)
+                    IS_FIRST_SUBSCRIBE.putMMKV(false)
+                    dismiss()
+                }
+                customView =
+                    ImageView(activity).apply { setImageResource(R.mipmap.home_ic_launcher) }
+            }.show(activity)
+        } else {
+            showToast(context.getString(R.string.home_subscribe_success_tip))
         }
     }
 
@@ -407,7 +470,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         RouterHelper.createRouter(PlayService::class.java)
     }
 
-    var mDataBinding: HomeDetailHeaderBinding? = null
+    private var mDataBinding: HomeDetailHeaderBinding? = null
 
     /**
      * 创建头部详细信息
@@ -484,10 +547,14 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     fun clickSubscribeFun(context: Context) {
         getActivity(context)?.let {
             if (!isLogin.get()) {
-                toLogin(it)
-                return
+                quicklyLogin(it)
+            } else {
+                if (isSubscribed.get() == true) {
+                    audioId.get()?.let { audioId -> unSubscribe(audioId) }
+                } else {
+                    audioId.get()?.let { audioId -> subscribe(context, audioId) }
+                }
             }
-            subscribe(audioId.get()!!)
         }
     }
 
@@ -591,6 +658,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             if (!isLogin.get()) {
                 quicklyLogin(it)
             } else {
+                DLog.i("--->", "${loginUser.get()!!.id}")
                 if (isAttention.get()) {
                     unAttentionAnchor(followId)
                 } else {
@@ -637,8 +705,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     fun clickMemberFun(context: Context) {
         if (isLogin.get()) {
             val get = detailInfoData.get()
-            DLog.i("clickMemberFun","${detailInfoData.get()?.list?.member_id}")
-            RouterHelper.createRouter(MineService::class.java).toMineMember(context, get!!.list.member_id)
+            DLog.i("clickMemberFun", "${detailInfoData.get()?.list?.member_id}")
+            RouterHelper.createRouter(MineService::class.java)
+                .toMineMember(context, get!!.list.member_id)
         } else {
             getActivity(context)?.let { quicklyLogin(it) }
         }

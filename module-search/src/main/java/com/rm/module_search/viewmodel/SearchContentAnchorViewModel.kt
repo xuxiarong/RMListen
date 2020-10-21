@@ -6,6 +6,7 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.mine.MineService
@@ -23,7 +24,10 @@ import com.rm.module_search.repository.SearchRepository
  *
  */
 class SearchContentAnchorViewModel(private val repository: SearchRepository) : BaseVMViewModel() {
+
     val keyword = searchKeyword
+
+    val userInfo = loginUser
 
     //主播adapter
     val anchorAdapter by lazy {
