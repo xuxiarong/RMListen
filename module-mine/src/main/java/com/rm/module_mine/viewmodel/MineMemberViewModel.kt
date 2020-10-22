@@ -11,6 +11,7 @@ import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_mine.activity.MineMemberFollowAndFansActivity
 import com.rm.module_mine.bean.MineInfoDetail
 import com.rm.module_mine.repository.MineRepository
 
@@ -19,15 +20,11 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
     var isAttention = ObservableBoolean(false)
 
     //是否显示关注按钮
-    val attentionVisibility = ObservableField<Boolean>(true)
+    val attentionVisibility = ObservableField<Boolean>(false)
 
     val memberId = ObservableField<String>("")
 
     var detailInfoData = ObservableField<MineInfoDetail>()
-
-    var memberFans = ObservableField<String>()
-
-    var memberFollows = ObservableField<String>()
 
     var isVisible = ObservableBoolean(false)
 
@@ -40,9 +37,9 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     detailInfoData.set(it)
-                    memberFans.set("粉丝：" + it.fans)
-                    memberFollows.set("关注：" + it.follows)
-                    DLog.i("getInfoDetail", "" + it.toString())
+
+                    attentionVisibility.set(it.id != loginUser.get()?.id)
+                    isAttention.set(it.is_followed)
 
                 }, onError = {
                     showContentView()
@@ -65,6 +62,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                 },
                 onError = {
                     showContentView()
+                    DLog.i("--->", "$it")
                 })
         }
     }
@@ -82,6 +80,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     showToast("取消关注成功")
                 },
                 onError = {
+                    DLog.i("--->", "$it")
                     showContentView()
                 })
         }
@@ -96,13 +95,21 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
             if (!isLogin.get()) {
                 quicklyLogin(it)
             } else {
-                DLog.i("--->", "${loginUser.get()!!.id}")
                 if (isAttention.get()) {
                     unAttentionAnchor(followId)
                 } else {
                     attentionAnchor(followId)
                 }
             }
+        }
+    }
+
+    /**
+     * 点击关注/粉丝
+     */
+    fun clickFollowFun(context: Context, type: Int) {
+        detailInfoData.get()?.let {
+            MineMemberFollowAndFansActivity.newInstance(context, it.fans, it.follows, memberId.get()!!, type)
         }
     }
 

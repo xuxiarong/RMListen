@@ -1,5 +1,6 @@
 package com.rm.module_listen.viewmodel
 
+import android.text.TextUtils
 import android.view.View
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
@@ -12,9 +13,9 @@ import com.rm.module_listen.activity.ListenMySheetDetailActivity
 import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.SHEET_ID
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
-import com.rm.module_listen.repository.ListenSheetMyListRepository
+import com.rm.module_listen.repository.ListenRepository
 
-class ListenSheetMyListViewModel(private val repository: ListenSheetMyListRepository) :
+class ListenSheetMyListViewModel(private val repository: ListenRepository) :
     BaseVMViewModel() {
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
@@ -37,10 +38,34 @@ class ListenSheetMyListViewModel(private val repository: ListenSheetMyListReposi
 
     private var page = 1
 
+    var memberId = ""
+
     /**
      * 发起网络请求数据
      */
-    fun getData() {
+    fun getData(memberId: String) {
+        if (TextUtils.isEmpty(memberId)) {
+            getMySheetList()
+        } else {
+            getMySheetList(memberId)
+        }
+
+    }
+
+    private fun getMySheetList(memberId: String) {
+        launchOnIO {
+            repository.getMyList(page, pageSize, memberId).checkResult(
+                onSuccess = {
+                    successData(it)
+                },
+                onError = {
+                    failData()
+                }
+            )
+        }
+    }
+
+    private fun getMySheetList() {
         launchOnIO {
             repository.getMyList(page, pageSize).checkResult(
                 onSuccess = {
@@ -94,7 +119,7 @@ class ListenSheetMyListViewModel(private val repository: ListenSheetMyListReposi
      */
     fun refreshData() {
         page = 1
-        getData()
+        getData(memberId)
     }
 
     /**
@@ -102,7 +127,7 @@ class ListenSheetMyListViewModel(private val repository: ListenSheetMyListReposi
      */
     fun loadData() {
         ++page
-        getData()
+        getData(memberId)
     }
 
     /**

@@ -138,12 +138,11 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
      * 听单音频列表
      */
     suspend fun getAudioList(
-        page_id: String,
         sheetId: String,
         page: Int,
         page_size: Int
     ): BaseResult<AudioListBean> {
-        return apiCall { homeService.homeAudioList(page_id, sheetId, page, page_size) }
+        return apiCall { homeService.homeAudioList( sheetId, page, page_size) }
     }
 
     /**

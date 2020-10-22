@@ -14,9 +14,9 @@ import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.bean.SubscriptionListBean
 import com.rm.module_listen.databinding.ListenDialogBottomSubscriptionBinding
-import com.rm.module_listen.repository.ListenSubscriptionRepository
+import com.rm.module_listen.repository.ListenRepository
 
-class ListenSubscriptionViewModel(private val repository: ListenSubscriptionRepository) :
+class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     BaseVMViewModel() {
 
     /**

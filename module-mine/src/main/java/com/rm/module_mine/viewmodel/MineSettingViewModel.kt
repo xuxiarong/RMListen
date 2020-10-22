@@ -11,10 +11,10 @@ import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.R
-import com.rm.module_mine.activity.MineAccountSecuritySettingActivity
-import com.rm.module_mine.activity.MineDownloadSettingActivity
+import com.rm.module_mine.activity.MineSettingAccountSecurityActivity
+import com.rm.module_mine.activity.MineSettingDownloadActivity
 import com.rm.module_mine.activity.MinePersonalInfoActivity
-import com.rm.module_mine.activity.MinePlaySettingActivity
+import com.rm.module_mine.activity.MineSettingPlayActivity
 
 /**
  *
@@ -64,14 +64,14 @@ class MineSettingViewModel : BaseVMViewModel() {
      * 播放设置
      */
     fun clickPlaySetting() {
-        startActivity(MinePlaySettingActivity::class.java)
+        startActivity(MineSettingPlayActivity::class.java)
     }
 
     /**
      * 下载设置
      */
     fun clickDownloadSetting() {
-        startActivity(MineDownloadSettingActivity::class.java)
+        startActivity(MineSettingDownloadActivity::class.java)
     }
 
     /**
@@ -79,7 +79,7 @@ class MineSettingViewModel : BaseVMViewModel() {
      */
     fun clickAccountSecurity(context: Context) {
         if (isLogin.get()) {
-            startActivity(MineAccountSecuritySettingActivity::class.java)
+            startActivity(MineSettingAccountSecurityActivity::class.java)
         } else {
             quicklyLogin(context)
         }

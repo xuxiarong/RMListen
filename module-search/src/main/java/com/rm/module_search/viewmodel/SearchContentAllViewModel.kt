@@ -111,7 +111,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
     fun clickSheetFun(view: View, bean: SearchSheetBean) {
         getActivity(view.context)?.let {
             RouterHelper.createRouter(HomeService::class.java)
-                .startHomeSheetDetailActivity(it, bean.sheet_id, 0)
+                .startHomeSheetDetailActivity(it, bean.sheet_id)
         }
     }
 

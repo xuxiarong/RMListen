@@ -8,10 +8,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.databinding.Observable
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
@@ -20,17 +17,18 @@ import com.rm.baselisten.utilExt.px2dip
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
-import com.rm.module_mine.databinding.ActivityMineMemberDetailBinding
+import com.rm.module_mine.adapter.MineMemberPageAdapter
+import com.rm.module_mine.databinding.MineActivityMemberDetailBinding
 import com.rm.module_mine.fragment.MineMemberCommentFragment
 import com.rm.module_mine.fragment.MineMemberMainFragment
 import com.rm.module_mine.viewmodel.MineMemberViewModel
-import kotlinx.android.synthetic.main.activity_mine_member_booklist.*
-import kotlinx.android.synthetic.main.activity_mine_member_detail.*
+import kotlinx.android.synthetic.main.mine_activity_member_booklist.*
+import kotlinx.android.synthetic.main.mine_activity_member_detail.*
 
 /**
  *  主播/用户详情
  */
-class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineMemberViewModel>() {
+class MineMemberActivity : BaseVMActivity<MineActivityMemberDetailBinding, MineMemberViewModel>() {
 
     private var stateHeight: Int = 0 //状态栏高度
     private var heightPixels: Int = 0 // 屏幕高度
@@ -53,11 +51,17 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
     override fun initModelBrId() = BR.viewModel
 
-    override fun getLayoutId() = R.layout.activity_mine_member_detail
+    override fun getLayoutId() = R.layout.mine_activity_member_detail
 
     override fun startObserve() {
-
+        mViewModel.detailInfoData.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                createFragment()
+            }
+        })
     }
+
 
     private fun initParams() {
         setTransparentStatusBar()
@@ -97,8 +101,6 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
 
             mHandler = Handler()
             initBehavior()
-            setupViewPager(mine_member_detail_viewpager, memberId)
-            tab_mine_member_list!!.setupWithViewPager(mine_member_detail_viewpager)
         }
 
     }
@@ -111,7 +113,6 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 //色差值变化
                 var distance: Float = 0F;
-                maskView.alpha = slideOffset
                 distance = offsetDistance * slideOffset
                 if (distance > 0) {
                     constraint.translationY = -distance
@@ -145,33 +146,20 @@ class MineMemberActivity : BaseVMActivity<ActivityMineMemberDetailBinding, MineM
         }, 200)
     }
 
-    internal inner class ViewPagerAdapter(manager: FragmentManager) :
-        FragmentPagerAdapter(manager) {
-        private val mFragmentList = ArrayList<Fragment>()
-        private val mFragmentTitleList = ArrayList<String>()
+    private fun createFragment() {
+        val bean = mViewModel.detailInfoData.get()!!
+        val memberId = mViewModel.memberId.get()!!
 
-        override fun getItem(position: Int): Fragment {
-            return mFragmentList[position]
-        }
+        val mainFragment = MineMemberMainFragment.newInstance(memberId)
+        val commentFragment = MineMemberCommentFragment.newInstance(memberId, bean.member_type)
 
-        override fun getCount(): Int {
-            return mFragmentList.size
-        }
+        val list = mutableListOf<MineMemberPageAdapter.MemberPageData>()
+        list.add(MineMemberPageAdapter.MemberPageData(mainFragment, "主页"))
+        list.add(MineMemberPageAdapter.MemberPageData(commentFragment, "评论"))
 
-        fun addFragment(fragment: Fragment, title: String) {
-            mFragmentList.add(fragment)
-            mFragmentTitleList.add(title)
-        }
+        mine_member_detail_viewpager.adapter = MineMemberPageAdapter(list, supportFragmentManager)
+        tab_mine_member_list.setupWithViewPager(mine_member_detail_viewpager)
 
-        override fun getPageTitle(position: Int): CharSequence {
-            return mFragmentTitleList[position]
-        }
     }
 
-    private fun setupViewPager(viewPager: ViewPager, memberId: String) {
-        val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(MineMemberMainFragment.newInstance(memberId), "主页")
-        adapter.addFragment(MineMemberCommentFragment.newInstance(memberId), "评论")
-        viewPager.adapter = adapter
-    }
 }

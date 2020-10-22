@@ -1,5 +1,6 @@
 package com.rm.module_listen.viewmodel
 
+import android.text.TextUtils
 import android.view.View
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -8,11 +9,11 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.adapter.ListenSheetCollectedListAdapter
-import com.rm.module_listen.bean.ListenSheetCollectedBean
-import com.rm.module_listen.bean.ListenSheetCollectedDataBean
-import com.rm.module_listen.repository.ListenSheetCollectedRepository
+import com.rm.business_lib.bean.SheetFavorBean
+import com.rm.business_lib.bean.SheetFavorDataBean
+import com.rm.module_listen.repository.ListenRepository
 
-class ListenSheetCollectedListViewModel(private val repository: ListenSheetCollectedRepository) :
+class ListenSheetCollectedListViewModel(private val repository: ListenRepository) :
     BaseVMViewModel() {
 
     /**
@@ -31,13 +32,35 @@ class ListenSheetCollectedListViewModel(private val repository: ListenSheetColle
     private var mPage = 1
 
     //记录点击的bean对象
-    private var clickBean: ListenSheetCollectedDataBean? = null
+    private var clickBean: SheetFavorDataBean? = null
+
+    var memberId = ""
 
     /**
      * 请求加载数据
      */
-    fun getData() {
-        showLoading()
+    fun getData(memberId: String) {
+        if (TextUtils.isEmpty(memberId)) {
+            getFavorList()
+        } else {
+            getFavorList(memberId)
+        }
+    }
+
+    private fun getFavorList(memberId: String) {
+        launchOnIO {
+            repository.getCollectedList(mPage, pageSize, memberId).checkResult(
+                onSuccess = {
+                    successData(it)
+                },
+                onError = {
+                    failData()
+                }
+            )
+        }
+    }
+
+    private fun getFavorList() {
         launchOnIO {
             repository.getCollectedList(mPage, pageSize).checkResult(
                 onSuccess = {
@@ -53,7 +76,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenSheetColle
     /**
      * 处理成功数据
      */
-    private fun successData(bean: ListenSheetCollectedBean) {
+    private fun successData(bean: SheetFavorBean) {
         if (mPage == 1) {
             //刷新完成
             refreshStateModel.finishRefresh(true)
@@ -89,7 +112,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenSheetColle
      */
     fun refreshData() {
         mPage = 1
-        getData()
+        getData(memberId)
     }
 
     /**
@@ -97,17 +120,17 @@ class ListenSheetCollectedListViewModel(private val repository: ListenSheetColle
      */
     fun loadData() {
         ++mPage
-        getData()
+        getData(memberId)
     }
 
     /**
      * item点击事件
      */
-    fun itemClickFun(view: View, bean: ListenSheetCollectedDataBean) {
+    fun itemClickFun(view: View, bean: SheetFavorDataBean) {
         getActivity(view.context)?.let {
             clickBean = bean
             RouterHelper.createRouter(HomeService::class.java)
-                .startHomeSheetDetailActivity(it, bean.sheet_id.toString(), 100)
+                .startHomeSheetDetailActivity(it, bean.sheet_id.toString())
         }
     }
 

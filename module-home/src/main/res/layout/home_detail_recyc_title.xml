@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_27"
-        android:drawableEnd="@drawable/icon_arrow_right"
+        android:drawableEnd="@drawable/business_icon_arrow_right"
         android:drawablePadding="@dimen/dp_2"
         android:text="@string/home_detail_more"
         android:textColor="@color/business_text_color_333333"

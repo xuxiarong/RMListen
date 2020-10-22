@@ -56,7 +56,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
         userTextStr = ta.getString(R.styleable.MineCommonMaterialView_user_text)
         materialIconRes = ta.getResourceId(
             R.styleable.MineCommonMaterialView_material_icon,
-            R.drawable.icon_arrow_right
+            R.drawable.business_icon_arrow_right
         )
         needLine = ta.getBoolean(R.styleable.MineCommonMaterialView_need_line, false)
         ta.recycle()

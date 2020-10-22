@@ -68,7 +68,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
-            android:background="@drawable/listen_shape_sheet_color_bdbdbd"
+            android:background="@drawable/business_shape_sheet_color_bdbdbd"
             app:layout_constraintBottom_toBottomOf="@id/listen_sheet_adapter_icon"
             app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_icon"
             app:layout_constraintTop_toTopOf="parent" />

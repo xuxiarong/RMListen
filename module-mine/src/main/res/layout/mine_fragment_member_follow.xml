@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- 个人主页：关注与粉丝fragment -->
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineMemberFollowsViewModel" />
+    </data>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore()}"
+        bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess()}"
+        bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
+        bindOnLoadMoreListener="@{viewModel.loadMoreData}"
+        bindOnRefreshListener="@{viewModel.refreshData}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            bindVerticalLayout="@{viewModel.followAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/mine_adapter_member_follow" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</layout>

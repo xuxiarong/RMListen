@@ -6,18 +6,18 @@
         <activity
             android:name=".login.LoginActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".TestNotActivity"></activity>
-        <activity android:name=".TestMineActivity" />
         <activity android:name=".MineActivity" />
         <activity android:name=".activity.MineSettingActivity" />
         <activity android:name=".activity.MinePersonalInfoActivity" />
-        <activity android:name=".activity.MinePlaySettingActivity" />
-        <activity android:name=".activity.MineDownloadSettingActivity" />
-        <activity android:name=".activity.MineAccountSecuritySettingActivity" />
-        <activity android:name=".activity.MinePersonalSignatureSettingActivity" />
-        <activity android:name=".activity.MineNicknameSettingActivity" />
+        <activity android:name=".activity.MineSettingPlayActivity" />
+        <activity android:name=".activity.MineSettingDownloadActivity" />
+        <activity android:name=".activity.MineSettingAccountSecurityActivity" />
+        <activity android:name=".activity.MineSettingPersonalSignatureActivity" />
+        <activity android:name=".activity.MineSettingNicknameActivity" />
         <!-- 主播详情 -->
         <activity android:name=".activity.MineMemberActivity" />
+        <activity android:name=".activity.MineMemberFollowAndFansActivity" />
+        <activity android:name=".activity.MineMemberReleaseBooksActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

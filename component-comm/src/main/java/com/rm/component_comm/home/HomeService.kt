@@ -20,9 +20,8 @@ interface HomeService : ApplicationProvider {
     /**
      * 跳转到听单详情
      * @param sheetId 听单ID
-     * @param pageId 页面Id
      */
-    fun startHomeSheetDetailActivity(context: Activity, sheetId: String,pageId:Int)
+    fun startHomeSheetDetailActivity(context: Activity, sheetId: String)
 
     // 获取主页Fragment
     fun getHomeFragment(): Fragment

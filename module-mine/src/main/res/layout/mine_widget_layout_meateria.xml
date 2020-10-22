@@ -17,7 +17,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:paddingStart="@dimen/dp_16"
-        android:src="@drawable/icon_arrow_right" />
+        android:src="@drawable/business_icon_arrow_right" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/mine_widget_common_material_user_icon"

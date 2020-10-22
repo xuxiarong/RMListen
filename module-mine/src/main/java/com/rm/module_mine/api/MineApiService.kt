@@ -2,10 +2,8 @@ package com.rm.module_mine.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.LoginUserBean
-import com.rm.module_mine.bean.MineInfoDetail
-import com.rm.module_mine.bean.MineInfoProfile
-import com.rm.module_mine.bean.UpdateUserInfoBean
-import com.rm.module_mine.bean.User
+import com.rm.business_lib.bean.SheetFavorBean
+import com.rm.module_mine.bean.*
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -63,13 +61,35 @@ interface MineApiService {
      * 用户/主播详情
      */
     @GET("member/detail")
-    suspend fun memberDetail(@Query ("member_id") member_id: String):BaseResponse<MineInfoDetail>
+    suspend fun memberDetail(@Query("member_id") member_id: String): BaseResponse<MineInfoDetail>
 
     /**
      * 主页 ->发布书籍/听单/收藏听单列表 : 请求他人数据，不传读取登陆态用户id
      */
     @GET("member/profile")
-    suspend fun getMemberProfile(@Query("member_id")member_id:String):BaseResponse<MineInfoProfile>
+    suspend fun getMemberProfile(@Query("member_id") member_id: String): BaseResponse<MineInfoProfileBean>
+
+    /**
+     * 主播详情页评论
+     * @param anchor_id 主播id
+     */
+    @GET("comment/anchor-comments")
+    suspend fun mineAnchorCommentList(
+        @Query("anchor_id") anchor_id: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<MineMemberListBean>
+
+    /**
+     * 用户详情页评论
+     * @param member_id 用户ID
+     */
+    @GET("comment/member-comments")
+    suspend fun mineMemberCommentList(
+        @Query("member_id") member_id: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<MineMemberListBean>
 
 
     /**
@@ -78,13 +98,50 @@ interface MineApiService {
      */
     @FormUrlEncoded
     @POST("member/follow")
-    suspend fun homeAttentionAnchor(@Field("follow_id") follow_id: String): BaseResponse<Any>
+    suspend fun mineAttentionAnchor(@Field("follow_id") follow_id: String): BaseResponse<Any>
 
     /**
      * 取消关注主播接口
      * @param follow_id Int
      */
     @DELETE("member/follow")
-    suspend fun homeUnAttentionAnchor(@Query("follow_id") follow_id: String): BaseResponse<Any>
+    suspend fun mineUnAttentionAnchor(@Query("follow_id") follow_id: String): BaseResponse<Any>
+
+
+    /**
+     * 关注列表
+     * @param member_id Int
+     */
+    @GET("member/follow-list")
+    suspend fun mineMemberFollowList(
+        @Query("member_id") member_id: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<MineMemberFollowBean>
+
+
+    /**
+     * 粉丝列表
+     * @param member_id Int
+     */
+    @GET("member/fans-list")
+    suspend fun mineMemberFansList(
+        @Query("member_id") member_id: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<MineMemberFansBean>
+
+
+    /**
+     * 发布的书籍
+     * @param member_id Int
+     */
+    @GET("audio/publish")
+    suspend fun minePublishList(
+        @Query("member_id") member_id: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<MinePublishBean>
+
 
 }

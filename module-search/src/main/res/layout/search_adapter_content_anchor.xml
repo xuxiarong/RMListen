@@ -89,7 +89,7 @@
             isVisible="@{!TextUtils.equals(viewModel.userInfo.id,item.member_id)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@{item.is_follow==1L ? @drawable/business_un_select_attention  : @drawable/business_select_attention}"
+            android:background="@{item.is_follow==1L ? @drawable/business_attention_un_select  : @drawable/business_attentionselect}"
             android:drawableStart="@{item.is_follow==1L ? @drawable/business_icon_attention_eb : @drawable/business_icon_attention_ea}"
             android:onClick="@{()->viewModel.clickAttentionFun(context,item)}"
             android:paddingStart="@dimen/sp_14"

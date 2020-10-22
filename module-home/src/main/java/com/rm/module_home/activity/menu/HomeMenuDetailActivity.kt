@@ -28,12 +28,10 @@ class HomeMenuDetailActivity :
 
     companion object {
         const val SHEET_ID = "sheetId"
-        const val PAGE_ID = "pageId"
 
-        fun startActivity(context: Activity, sheetId: String, pageId: Int) {
+        fun startActivity(context: Activity, sheetId: String) {
             val intent = Intent(context, HomeMenuDetailActivity::class.java)
             intent.putExtra(SHEET_ID, sheetId)
-            intent.putExtra(PAGE_ID, pageId)
             context.startActivityForResult(intent, 100)
         }
     }
@@ -46,8 +44,6 @@ class HomeMenuDetailActivity :
     override fun initView() {
         super.initView()
         val sheetId = intent.getStringExtra(SHEET_ID) ?: ""
-        val pageId = intent.getIntExtra(PAGE_ID, -1)
-        mViewModel.pageId.set(pageId.toString())
         mViewModel.sheetId.set(sheetId)
 
         setTransparentStatusBar()//设置透明沉浸状态栏

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.baselisten.viewmodel.BaseVMViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mine_member_fans_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.finish()}"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_8"
+            android:paddingBottom="@dimen/dp_8"
+            android:src="@drawable/base_icon_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
+            android:id="@+id/mine_member_fans_tab"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_45"
+            app:bendTabIndicatorAnimation="true"
+            app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+            app:bendTabIndicatorHeight="@dimen/dp_1"
+            app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+            app:bendTabIndicatorWidth="@dimen/dp_24"
+            app:bendTabMode="fixed"
+            app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+            app:bendTabTextSize="@dimen/business_text_size_16sp"
+            app:bendTabTextSelectIsBold="true"
+            app:bendTabUnSelectedTextColor="@color/business_text_color_333333"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/mine_member_fans_back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/mine_member_fans_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mine_member_fans_tab" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
