@@ -2,13 +2,9 @@ package com.rm.module_mine.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
-import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.LoginUserBean
-import com.rm.business_lib.bean.SheetFavorBean
 import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.bean.*
-import retrofit2.http.GET
-import retrofit2.http.Query
 
 /**
  * desc   :

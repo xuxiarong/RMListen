@@ -2,7 +2,6 @@ package com.rm.module_mine.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.LoginUserBean
-import com.rm.business_lib.bean.SheetFavorBean
 import com.rm.module_mine.bean.*
 import okhttp3.MultipartBody
 import retrofit2.http.*

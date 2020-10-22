@@ -4,10 +4,10 @@ import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.module_listen.api.ListenApiService
-import com.rm.business_lib.bean.SheetFavorBean
+import com.rm.module_listen.bean.SheetFavorBean
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
-import com.rm.module_listen.bean.SubscriptionListBean
+import com.rm.module_listen.bean.ListenSubscriptionListBean
 import com.rm.module_listen.model.ListenChapterList
 import com.rm.module_listen.model.ListenSubsNumberModel
 
@@ -147,7 +147,7 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
     suspend fun getSubscriptionList(
         page: Int,
         pageSize: Int
-    ): BaseResult<MutableList<SubscriptionListBean>> {
+    ): BaseResult<MutableList<ListenSubscriptionListBean>> {
         return apiCall { service.listenSubscriptionList(page, pageSize) }
     }
 

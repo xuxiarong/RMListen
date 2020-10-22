@@ -9,7 +9,7 @@ import com.rm.baselisten.binding.gridItemDecoration
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.business_lib.bean.SheetFavorDataBean
+import com.rm.module_listen.bean.SheetFavorDataBean
 
 class ListenSheetCollectedListAdapter(
     viewModel: BaseVMViewModel

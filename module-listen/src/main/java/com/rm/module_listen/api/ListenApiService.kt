@@ -3,9 +3,9 @@ package com.rm.module_listen.api
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
-import com.rm.business_lib.bean.SheetFavorBean
+import com.rm.module_listen.bean.SheetFavorBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
-import com.rm.module_listen.bean.SubscriptionListBean
+import com.rm.module_listen.bean.ListenSubscriptionListBean
 import com.rm.module_listen.model.ListenChapterList
 import com.rm.module_listen.model.ListenSubsNumberModel
 import com.rm.module_listen.repository.ListenPatchSheetBean
@@ -20,7 +20,7 @@ interface ListenApiService {
     suspend fun listenSubscriptionList(
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int
-    ): BaseResponse<MutableList<SubscriptionListBean>>
+    ): BaseResponse<MutableList<ListenSubscriptionListBean>>
 
     /**
      * 置顶

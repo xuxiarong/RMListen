@@ -9,8 +9,8 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.adapter.ListenSheetCollectedListAdapter
-import com.rm.business_lib.bean.SheetFavorBean
-import com.rm.business_lib.bean.SheetFavorDataBean
+import com.rm.module_listen.bean.SheetFavorBean
+import com.rm.module_listen.bean.SheetFavorDataBean
 import com.rm.module_listen.repository.ListenRepository
 
 class ListenSheetCollectedListViewModel(private val repository: ListenRepository) :

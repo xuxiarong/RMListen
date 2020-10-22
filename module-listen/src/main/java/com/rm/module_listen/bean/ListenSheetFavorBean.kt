@@ -1,4 +1,6 @@
-package com.rm.business_lib.bean
+package com.rm.module_listen.bean
+
+import com.rm.business_lib.bean.AudioBean
 
 data class SheetFavorBean(
     var list: List<SheetFavorDataBean>,

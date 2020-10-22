@@ -1,6 +1,6 @@
 package com.rm.module_listen.bean
 
-data class SubscriptionListBean(
+data class ListenSubscriptionListBean(
     var audio_cover: String?,//封面
     var audio_label: String?,//角标
     var audio_name: String?,//书籍名称

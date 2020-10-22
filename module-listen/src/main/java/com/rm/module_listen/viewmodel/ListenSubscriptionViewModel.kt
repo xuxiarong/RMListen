@@ -12,7 +12,7 @@ import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.bean.SubscriptionListBean
+import com.rm.module_listen.bean.ListenSubscriptionListBean
 import com.rm.module_listen.databinding.ListenDialogBottomSubscriptionBinding
 import com.rm.module_listen.repository.ListenRepository
 
@@ -23,7 +23,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * 懒加载创建adapter对象
      */
     val mAdapter by lazy {
-        CommonBindVMAdapter<SubscriptionListBean>(
+        CommonBindVMAdapter<ListenSubscriptionListBean>(
             this,
             mutableListOf(),
             R.layout.listen_adapter_subscription,
@@ -37,10 +37,10 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     private val mDialog by lazy { CommBottomDialog() }
 
     //订阅数据源
-    val data = ObservableField<MutableList<SubscriptionListBean>>()
+    val data = ObservableField<MutableList<ListenSubscriptionListBean>>()
 
     //记录当前点击的实体对象
-    private val subscriptionData = ObservableField<SubscriptionListBean>()
+    private val subscriptionData = ObservableField<ListenSubscriptionListBean>()
 
     //当前请求的页码
     private var mPage = 1
@@ -51,16 +51,16 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     /**
      * item点击事件
      */
-    fun itemClickFun(view: View, bookBean: SubscriptionListBean) {
+    fun itemClickFun(view: View, bookBeanListen: ListenSubscriptionListBean) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bookBean.audio_id.toString())
+            .toDetailActivity(view.context, bookBeanListen.audio_id.toString())
     }
 
     /**
      * 更多点击事件
      */
-    fun itemChildMoreClickFun(view: View, bookBean: SubscriptionListBean) {
-        showBottomDialog(view, bookBean)
+    fun itemChildMoreClickFun(view: View, bookBeanListen: ListenSubscriptionListBean) {
+        showBottomDialog(view, bookBeanListen)
     }
 
     /**
@@ -100,19 +100,19 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     /**
      * 处理成功数据
      */
-    private fun processSuccessData(list: MutableList<SubscriptionListBean>) {
+    private fun processSuccessData(listListen: MutableList<ListenSubscriptionListBean>) {
         showContentView()
         if (mPage == 1) {
             //刷新完成
             refreshStatusModel.finishRefresh(true)
-            mAdapter.setList(list)
+            mAdapter.setList(listListen)
         } else {
             //加载更多完成
             refreshStatusModel.finishLoadMore(true)
-            mAdapter.addData(list)
+            mAdapter.addData(listListen)
         }
         //是否有更多数据
-        refreshStatusModel.setHasMore(list.size >= pageSize)
+        refreshStatusModel.setHasMore(listListen.size >= pageSize)
     }
 
     /**
@@ -249,13 +249,13 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     /**
      * 现实底部弹窗
      */
-    private fun showBottomDialog(view: View, bean: SubscriptionListBean) {
-        subscriptionData.set(bean)
+    private fun showBottomDialog(view: View, beanListen: ListenSubscriptionListBean) {
+        subscriptionData.set(beanListen)
         mDialog.initDialog = {
             val subscriptionBinding =
                 mDialog.mDataBind as ListenDialogBottomSubscriptionBinding
 
-            subscriptionBinding.listenDialogBottomSubscriptionTop.text = if (bean.is_top == 0) {
+            subscriptionBinding.listenDialogBottomSubscriptionTop.text = if (beanListen.is_top == 0) {
                 view.resources.getString(R.string.listen_set_top)
             } else {
                 view.resources.getString(R.string.listen_cancel_top)
