@@ -55,7 +55,7 @@ class ListenServiceImpl : ListenService {
         baseViewModel: BaseVMViewModel,
         activity: FragmentActivity
     ) {
-        ListenDialogCreateSheetHelper(baseViewModel, activity).showDialog()
+        ListenDialogCreateSheetHelper(baseViewModel, activity).showCreateSheetDialog()
     }
 
     override fun startListenSheetList(context: Activity, sheetListType: Int) {

@@ -26,7 +26,12 @@ open class CommonDragMvDialog : BaseMvFragmentDialog() {
         if (dialogHeightIsMatchParent){
             draggableView.addView(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
         }else{
-            draggableView.addView(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+            if(dialogHeight>0){
+                draggableView.addView(view, RelativeLayout.LayoutParams.MATCH_PARENT, dialogHeight)
+
+            }else{
+                draggableView.addView(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+            }
         }
         draggableView.setDialog(dialog)
         draggableView.seDragCloseListener(::dismiss)

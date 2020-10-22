@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="7dp"
-                android:text="定时器"
+                android:text="@string/play_timer"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="14sp" />
 
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="7dp"
-                android:text="倍数"
+                android:text="@string/play_speed"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="14sp" />
         </LinearLayout>

@@ -34,7 +34,7 @@ data class HomeDetailList(
     var nickname: String,                 // 用户名
     val subscription_count: Int,//订阅数
     val last_sequence: Int,
-    val audio_cover_url: String,
+    var audio_cover_url: String,
     val anchor: Anchor,
     val tags: MutableList<DetailTags>,
     val is_subscribe: Boolean,//是否订阅

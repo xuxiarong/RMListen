@@ -128,8 +128,8 @@
 
             <ImageView
                 android:id="@+id/image_music_play_book_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="35dp"
                 android:src="@drawable/music_play_ic_icon_list_ce" />

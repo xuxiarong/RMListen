@@ -1642,6 +1642,9 @@ public final class TimeUtils {
     }
 
     public static String getListenDuration(int millis) {
+        if (millis  <= 0){
+            return "00:00";
+        }
         return getListenDuration(millis * 1000L,4);
     }
 

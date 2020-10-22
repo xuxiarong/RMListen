@@ -226,6 +226,7 @@ public class VerificationCodeView extends LinearLayout implements TextWatcher, V
             //设置第一个editText获取焦点
             if (i == 0) {
                 editText.setFocusable(true);
+                requestFocus();
             }
         }
     }
