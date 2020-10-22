@@ -69,6 +69,10 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             setPlayModel()
         }
 
+        play_drag_chapter_list.seDragCloseListener {
+            dismiss()
+        }
+
         smart_refresh_layout_play.setOnRefreshListener {
             smart_refresh_layout_play.finishRefresh(1500)
             mLoad(0)
