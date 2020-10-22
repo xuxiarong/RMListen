@@ -14,11 +14,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -54,6 +56,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.rm.baselisten.util.DLog;
 import com.rm.business_lib.R;
 
 import java.lang.annotation.Retention;
@@ -188,7 +191,7 @@ public class BendTabLayout extends HorizontalScrollView {
     int mUnSelectedTabTextColor;
     float mTabTextSize;
     float mTabTextMultiLineSize;
-
+    boolean mTabTextSelectIsBold;
     final int mTabBackgroundResId;
 
     int mTabMaxWidth = Integer.MAX_VALUE;
@@ -243,7 +246,7 @@ public class BendTabLayout extends HorizontalScrollView {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BendTabLayout, defStyleAttr, R.style.BendTabLayout_Default_Style);
 
         mTabStrip.setSelectedIndicatorHeight(a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabIndicatorHeight, 0));
-        mTabStrip.setSelectedIndicatorStrokeWidth(a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabIndicatorStrokeWidth,8));
+        mTabStrip.setSelectedIndicatorStrokeWidth(a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabIndicatorStrokeWidth, 8));
         // default value was 28dp
         mTabStrip.setSelectedIndicatorWidth(a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabIndicatorWidth, dpToPx(28)));
         mTabStrip.setSelectedIndicatorColor(a.getColor(R.styleable.BendTabLayout_bendTabIndicatorColor, 0));
@@ -258,6 +261,7 @@ public class BendTabLayout extends HorizontalScrollView {
         mTabPaddingBottom = a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabPaddingBottom, mTabPaddingBottom);
 
         mTabTextSize = a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabTextSize, dpToPx(DEFAULT_TAB_SIZE));
+        mTabTextSelectIsBold = a.getBoolean(R.styleable.BendTabLayout_bendTabTextSelectIsBold, false);
         mSelectedTabTextColor = a.getColor(R.styleable.BendTabLayout_bendTabSelectedTextColor, Color.parseColor("#333333"));
 
         mUnSelectedTabTextColor = a.getColor(R.styleable.BendTabLayout_bendTabUnSelectedTextColor, Color.parseColor("#666666"));
@@ -1465,12 +1469,22 @@ public class BendTabLayout extends HorizontalScrollView {
             // changed
             if (mTextView != null) {
                 mTextView.setSelected(selected);
+                setSelectTextStyle(selected, mTextView);
             }
             if (mIconView != null) {
                 mIconView.setSelected(selected);
             }
             if (mCustomView != null) {
                 mCustomView.setSelected(selected);
+            }
+
+        }
+
+        private void setSelectTextStyle(boolean selected, TextView textView) {
+            if (selected && mTabTextSelectIsBold) {
+                textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            } else {
+                textView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             }
         }
 
@@ -2020,7 +2034,7 @@ public class BendTabLayout extends HorizontalScrollView {
                 // 移动至第一个控制点 A(ax,ay)
                 path.moveTo(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
                 // 画横线
-                path.lineTo(mIndicatorRight,getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
+                path.lineTo(mIndicatorRight, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
 //                // 填充二阶贝塞尔曲线的另外两个控制点 B(bx,by) 和 C(cx,cy)，切记顺序不能变
 //                path.quadTo(mIndicatorRight - ((mIndicatorRight - mIndicatorLeft) / 2), getBottom(), mIndicatorRight, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
                 // 将 贝塞尔曲线 绘制至画布

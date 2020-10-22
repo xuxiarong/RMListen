@@ -44,7 +44,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/BusinessTextStyleSecond_3"
-                    android:drawableEnd="@drawable/icon_arrow_right"
+                    android:drawableEnd="@drawable/business_icon_arrow_right"
                     android:gravity="center"
                     android:text="@string/business_more"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +82,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/BusinessTextStyleSecond_3"
-                    android:drawableEnd="@drawable/icon_arrow_right"
+                    android:drawableEnd="@drawable/business_icon_arrow_right"
                     android:gravity="center"
                     android:text="@string/business_more"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +120,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/BusinessTextStyleSecond_3"
-                    android:drawableEnd="@drawable/icon_arrow_right"
+                    android:drawableEnd="@drawable/business_icon_arrow_right"
                     android:gravity="center"
                     android:text="@string/business_more"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -80,7 +80,6 @@ interface HomeApiService {
      */
     @GET("content/sheet/audio-list")
     suspend fun homeAudioList(
-        @Query("page_id") page_id: String,
         @Query("sheet_id") sheet_id: String,
         @Query("page") page: Int,
         @Query("page_size") page_size: Int

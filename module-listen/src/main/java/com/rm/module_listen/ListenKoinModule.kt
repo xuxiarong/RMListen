@@ -27,11 +27,7 @@ val viewModelModule = module {
 
 val repositoryModule = module {
     // 所有的Repository都需要在这里声明
-    single { ListenSubscriptionRepository(get()) }
-    single { ListenMyListenRepository(get()) }
-    single { ListenSheetMyListRepository(get()) }
-    single { ListenSheetCollectedRepository(get()) }
-    single { ListenSheetDetailRepository(get()) }
+    single { ListenRepository(get()) }
     single { BusinessRetrofitClient().getService(ListenApiService::class.java) }
 }
 

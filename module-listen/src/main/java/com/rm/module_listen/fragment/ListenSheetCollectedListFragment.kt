@@ -1,29 +1,24 @@
 package com.rm.module_listen.fragment
 
 import android.content.Intent
-import androidx.lifecycle.observe
-import com.rm.baselisten.binding.bindVerticalLayout
+import android.os.Bundle
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.dimen
-import com.rm.component_comm.home.HomeService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.adapter.ListenSheetCollectedListAdapter
+import com.rm.module_listen.activity.ListenSheetListActivity.Companion.MEMBER_ID
 import com.rm.module_listen.databinding.ListenFragmentSheetCollectedListBinding
 import com.rm.module_listen.viewmodel.ListenSheetCollectedListViewModel
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
-import kotlinx.android.synthetic.main.listen_activity_subscription.*
-import kotlinx.android.synthetic.main.listen_fragment_sheet_collected_list.*
 
 class ListenSheetCollectedListFragment :
     BaseVMFragment<ListenFragmentSheetCollectedListBinding, ListenSheetCollectedListViewModel>() {
 
     companion object {
-        fun newInstance(): ListenSheetCollectedListFragment {
-            return ListenSheetCollectedListFragment()
+        fun newInstance(memberId: String): ListenSheetCollectedListFragment {
+            val fragment = ListenSheetCollectedListFragment()
+            val bundle = Bundle()
+            bundle.putString(MEMBER_ID, memberId)
+            fragment.arguments = bundle
+            return fragment
         }
     }
 
@@ -33,7 +28,10 @@ class ListenSheetCollectedListFragment :
 
     override fun initData() {
         mViewModel.showLoading()
-        mViewModel.getData()
+        arguments?.getString(MEMBER_ID)?.let {
+            mViewModel.memberId = it
+        }
+        mViewModel.getData(mViewModel.memberId)
     }
 
     override fun startObserve() {

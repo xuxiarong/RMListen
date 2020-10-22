@@ -8,7 +8,6 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity.Companion.AUDIO_ID
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity
-import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.PAGE_ID
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
 import com.rm.module_home.adapter.MenuListAdapter
 import com.rm.module_home.bean.MenuSheetBean
@@ -127,7 +126,6 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
     fun itemClickFun(bean: SheetMenuInfoBean) {
         val map = getHasMap()
         map[SHEET_ID] = bean.sheet_id
-        map[PAGE_ID] = mPageId
         startActivityForResult(HomeMenuDetailActivity::class.java, map, 100)
     }
 

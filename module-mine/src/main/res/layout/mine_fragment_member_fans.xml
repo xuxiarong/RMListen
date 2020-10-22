@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!--  粉丝 -->
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineMemberFansViewModel" />
+    </data>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore()}"
+        bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess()}"
+        bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
+        bindOnLoadMoreListener="@{viewModel.loadMoreData}"
+        bindOnRefreshListener="@{viewModel.refreshData}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            bindVerticalLayout="@{viewModel.fanAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/mine_adapter_member_fans"/>
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</layout>

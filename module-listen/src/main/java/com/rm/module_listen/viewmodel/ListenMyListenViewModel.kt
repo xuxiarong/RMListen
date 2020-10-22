@@ -7,14 +7,14 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.repository.ListenMyListenRepository
+import com.rm.module_listen.repository.ListenRepository
 
 /**
  * desc   :
  * date   : 2020/09/02
  * version: 1.0
  */
-class ListenMyListenViewModel(val repository: ListenMyListenRepository) : BaseVMViewModel() {
+class ListenMyListenViewModel(val repository: ListenRepository) : BaseVMViewModel() {
 
     var subsNumber = ObservableInt(0)
     var downloadNumber = ObservableInt(0)

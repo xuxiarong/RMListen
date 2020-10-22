@@ -7,13 +7,13 @@ import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineMemberActivity.Companion.MEMBER_ID
 import com.rm.module_mine.databinding.MineFragmentMemberMainBinding
-import com.rm.module_mine.viewmodel.MineFragmentMemberMainViewMode
+import com.rm.module_mine.viewmodel.MineFragmentMemberMainViewModel
 
 /**
  * 主播/个人 发布的书籍/创建听单/收藏听单
  */
 class MineMemberMainFragment :
-    BaseVMFragment<MineFragmentMemberMainBinding, MineFragmentMemberMainViewMode>() {
+    BaseVMFragment<MineFragmentMemberMainBinding, MineFragmentMemberMainViewModel>() {
     companion object {
         fun newInstance(memberId: String): Fragment {
             val bundle = Bundle()

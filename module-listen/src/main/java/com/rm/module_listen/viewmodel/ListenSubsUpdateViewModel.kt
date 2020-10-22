@@ -27,7 +27,7 @@ import com.rm.module_listen.model.ListenAudio
 import com.rm.module_listen.model.ListenAudioChapter
 import com.rm.module_listen.model.ListenAudioInfo
 import com.rm.module_listen.model.ListenSubsDateModel
-import com.rm.module_listen.repository.ListenMyListenRepository
+import com.rm.module_listen.repository.ListenRepository
 import com.rm.module_play.enum.Jump
 
 /**
@@ -38,7 +38,7 @@ import com.rm.module_play.enum.Jump
 class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     private val repository by lazy {
-        ListenMyListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
+        ListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
 
     val subsAudioAdapter = CommonMultiVMAdapter(this, mutableListOf(), BR.viewModel, BR.item)

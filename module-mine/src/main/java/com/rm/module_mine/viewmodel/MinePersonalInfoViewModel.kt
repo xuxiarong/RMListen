@@ -23,8 +23,8 @@ import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
-import com.rm.module_mine.activity.MineNicknameSettingActivity
-import com.rm.module_mine.activity.MinePersonalSignatureSettingActivity
+import com.rm.module_mine.activity.MineSettingNicknameActivity
+import com.rm.module_mine.activity.MineSettingPersonalSignatureActivity
 import com.rm.module_mine.bean.UpdateUserInfoBean
 import com.rm.module_mine.databinding.MineDialogBottomSelectBirthdayBinding
 import com.rm.module_mine.repository.MineRepository
@@ -126,7 +126,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      * 昵称点击事件
      */
     fun clickNickname() {
-        startActivity(MineNicknameSettingActivity::class.java)
+        startActivity(MineSettingNicknameActivity::class.java)
     }
 
     /**
@@ -176,7 +176,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      * 个性签名点击事件
      */
     fun clickPersonalSignature() {
-        startActivity(MinePersonalSignatureSettingActivity::class.java)
+        startActivity(MineSettingPersonalSignatureActivity::class.java)
     }
 
     /**

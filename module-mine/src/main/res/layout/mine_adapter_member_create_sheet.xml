@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="createSheetItem"
+            type="com.rm.module_mine.bean.SheetBean" />
+
+        <variable
+            name="createSheetViewModel"
+            type="com.rm.module_mine.viewmodel.MineFragmentMemberMainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_18"
+        android:onClick="@{()->createSheetViewModel.createSheetItemClick(context,createSheetItem)}">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mine_create_sheet_adapter_icon"
+            bindUrl="@{createSheetItem.sheet_cover}"
+            corner="@{4f}"
+            android:layout_width="@dimen/dp_106"
+            android:layout_height="@dimen/dp_106"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="#3f00" />
+
+
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/mine_create_sheet_adapter_label"
+            bindText="@{createSheetItem.sheet_label}"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_16"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_4"
+            android:textColor="@color/businessWhite"
+            android:textSize="@dimen/business_text_size_10sp"
+            app:layout_constraintRight_toRightOf="@id/mine_create_sheet_adapter_icon"
+            app:layout_constraintTop_toTopOf="@id/mine_create_sheet_adapter_icon"
+            app:rv_backgroundColor="@color/business_text_color_333333"
+            app:rv_cornerRadius_BL="@dimen/dp_4"
+            app:rv_cornerRadius_TR="@dimen/dp_4"
+            tools:text="文案" />
+
+        <View
+            android:id="@+id/mine_create_sheet_adapter_view"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/business_shape_sheet_color_bdbdbd"
+            app:layout_constraintBottom_toBottomOf="@id/mine_create_sheet_adapter_icon"
+            app:layout_constraintStart_toEndOf="@id/mine_create_sheet_adapter_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_create_sheet_adapter_sheet_name"
+            style="@style/BusinessTextStyleFirst_2"
+            bindText="@{createSheetItem.sheet_name}"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/dp_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/mine_create_sheet_adapter_icon"
+            app:layout_constraintTop_toTopOf="@id/mine_create_sheet_adapter_view"
+            tools:text="123" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_create_sheet_adapter_create_time"
+            style="@style/BusinessTextStyleSecond_4"
+            bindDateString="@{createSheetItem.created_at}"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:drawableStart="@drawable/business_icon_day"
+            android:drawablePadding="@dimen/dp_2"
+            app:layout_constraintBottom_toBottomOf="@id/mine_create_sheet_adapter_view"
+            app:layout_constraintStart_toEndOf="@id/mine_create_sheet_adapter_icon"
+            tools:text="2020/8/2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_create_sheet_adapter_book_num"
+            style="@style/BusinessTextStyleSecond_4"
+            bindText="@{createSheetItem.num_audio}"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:drawableStart="@drawable/business_icon_book_num"
+            android:drawablePadding="@dimen/dp_2"
+            app:layout_constraintBottom_toBottomOf="@id/mine_create_sheet_adapter_view"
+            app:layout_constraintStart_toEndOf="@id/mine_create_sheet_adapter_create_time"
+            tools:text="124" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_create_sheet_adapter_collected_num"
+            style="@style/BusinessTextStyleSecond_4"
+            bindText="@{createSheetItem.num_favor}"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:drawableStart="@drawable/business_icon_unfavorites"
+            android:drawablePadding="@dimen/dp_2"
+            app:layout_constraintBottom_toBottomOf="@id/mine_create_sheet_adapter_view"
+            app:layout_constraintStart_toEndOf="@id/mine_create_sheet_adapter_book_num"
+            tools:text="124" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -17,10 +17,10 @@ import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenMySheetDetailActivity
 import com.rm.module_listen.databinding.ListenHeaderSheetDetailBinding
-import com.rm.module_listen.repository.ListenSheetDetailRepository
+import com.rm.module_listen.repository.ListenRepository
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 
-class ListenSheetDetailViewModel(private val repository: ListenSheetDetailRepository) :
+class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     BaseVMViewModel() {
 
     /**

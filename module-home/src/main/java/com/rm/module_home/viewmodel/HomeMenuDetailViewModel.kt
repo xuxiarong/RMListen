@@ -42,9 +42,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
     //是否收藏
     val isFavor = ObservableField<Boolean>()
 
-    //页面Id
-    var pageId = ObservableField<String>()
-
     //听单Id
     var sheetId = ObservableField<String>()
 
@@ -174,7 +171,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
      */
     private fun getAudioList() {
         launchOnIO {
-            repository.getAudioList(pageId.get() ?: "", sheetId.get() ?: "", mPage, pageSize)
+            repository.getAudioList( sheetId.get() ?: "", mPage, pageSize)
                 .checkResult(
                     onSuccess = {
                         showContentView()

@@ -11,14 +11,14 @@ import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
 import com.rm.module_listen.databinding.ListenDialogCreateSheetBinding
-import com.rm.module_listen.repository.ListenDialogCreateSheetRepository
 import com.rm.module_listen.repository.ListenPatchSheetBean
+import com.rm.module_listen.repository.ListenRepository
 
 class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewModel) :
     BaseVMViewModel() {
 
     private val repository by lazy {
-        ListenDialogCreateSheetRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
+        ListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
 
     //  输入的密码值

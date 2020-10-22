@@ -704,10 +704,22 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     fun clickMemberFun(context: Context) {
         if (isLogin.get()) {
-            val get = detailInfoData.get()
-            DLog.i("clickMemberFun", "${detailInfoData.get()?.list?.member_id}")
+            detailInfoData.get()?.let {
+                RouterHelper.createRouter(MineService::class.java)
+                    .toMineMember(context, it.list.anchor_id)
+            }
+        } else {
+            getActivity(context)?.let { quicklyLogin(it) }
+        }
+    }
+
+    /**
+     * 评论头像点击事件
+     */
+    fun clickCommentMemberFun(context: Context, memberId: String) {
+        if (isLogin.get()) {
             RouterHelper.createRouter(MineService::class.java)
-                .toMineMember(context, get!!.list.member_id)
+                .toMineMember(context, memberId)
         } else {
             getActivity(context)?.let { quicklyLogin(it) }
         }

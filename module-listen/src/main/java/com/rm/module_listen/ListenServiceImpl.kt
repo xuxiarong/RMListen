@@ -62,6 +62,10 @@ class ListenServiceImpl : ListenService {
         ListenSheetListActivity.startActivity(context, sheetListType)
     }
 
+    override fun startListenSheetList(context: Activity, sheetListType: Int, memberId: String) {
+        ListenSheetListActivity.startActivity(context, sheetListType, memberId)
+    }
+
     override fun startSubscription(context: Context) {
         ListenSubscriptionActivity.startActivity(context)
     }

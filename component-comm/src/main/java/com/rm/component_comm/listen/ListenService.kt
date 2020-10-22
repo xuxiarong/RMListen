@@ -21,14 +21,18 @@ interface ListenService : ApplicationProvider {
      * 我的听单弹窗
      *  @param activity
      */
-    fun showMySheetListDialog(baseViewModel: BaseVMViewModel, activity: FragmentActivity, audioId: String)
+    fun showMySheetListDialog(
+        baseViewModel: BaseVMViewModel,
+        activity: FragmentActivity,
+        audioId: String
+    )
 
     /***
      * 创建听单
      *
      * @param activity FragmentActivity
      */
-    fun showCreateSheetListDialog(baseViewModel: BaseVMViewModel,activity: FragmentActivity)
+    fun showCreateSheetListDialog(baseViewModel: BaseVMViewModel, activity: FragmentActivity)
 
     /**
      * 跳转到 听单界面
@@ -38,6 +42,18 @@ interface ListenService : ApplicationProvider {
     fun startListenSheetList(context: Activity, @ListenSheetListType sheetListType: Int)
 
     /**
+     * 跳转到 听单界面
+     * @param context 上下文
+     * @param sheetListType 指定对应的fragment
+     * @param memberId 主播id
+     */
+    fun startListenSheetList(
+        context: Activity,
+        @ListenSheetListType sheetListType: Int,
+        memberId: String
+    )
+
+    /**
      * 跳转到订阅界面
      */
     fun startSubscription(context: Context)
@@ -45,5 +61,5 @@ interface ListenService : ApplicationProvider {
     /**
      * 跳转到我的听单详情
      */
-    fun startMySheetDetail(activity: Activity,sheetId:String)
+    fun startMySheetDetail(activity: Activity, sheetId: String)
 }

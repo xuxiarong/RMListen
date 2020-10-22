@@ -4,9 +4,7 @@ import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.module_mine.api.MineApiService
-import com.rm.module_mine.bean.MineInfoDetail
-import com.rm.module_mine.bean.MineInfoProfile
-import com.rm.module_mine.bean.UpdateUserInfoBean
+import com.rm.module_mine.bean.*
 
 /**
  * desc   :
@@ -28,7 +26,7 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
     }
 
     //发布书籍/听单/收藏听单列表
-    suspend fun memberProfile(member_id: String): BaseResult<MineInfoProfile> {
+    suspend fun memberProfile(member_id: String): BaseResult<MineInfoProfileBean> {
         return apiCall { service.getMemberProfile(member_id) }
     }
 
@@ -37,7 +35,7 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
      * @param follow_id String
      */
     suspend fun attentionAnchor(follow_id: String): BaseResult<Any> {
-        return apiCall { service.homeAttentionAnchor(follow_id) }
+        return apiCall { service.mineAttentionAnchor(follow_id) }
     }
 
     /**
@@ -45,6 +43,67 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
      * @param follow_id String
      */
     suspend fun unAttentionAnchor(follow_id: String): BaseResult<Any> {
-        return apiCall { service.homeUnAttentionAnchor(follow_id) }
+        return apiCall { service.mineUnAttentionAnchor(follow_id) }
     }
+
+    /**
+     * 用户详情页评论
+     * @param member_id 用户ID
+     */
+    suspend fun mineMemberCommentList(
+        member_id: String,
+        page: Int,
+        pageSize: Int
+    ): BaseResult<MineMemberListBean> {
+        return apiCall { service.mineMemberCommentList(member_id, page, pageSize) }
+    }
+
+    /**
+     * 主播详情页评论
+     * @param anchor_id 主播id
+     */
+    suspend fun mineAnchorCommentList(
+        anchor_id: String,
+        page: Int,
+        pageSize: Int
+    ): BaseResult<MineMemberListBean> {
+        return apiCall { service.mineAnchorCommentList(anchor_id, page, pageSize) }
+    }
+
+    /**
+     * 关注列表
+     * @param member_id Int
+     */
+    suspend fun mineMemberFollowList(
+        member_id: String,
+        page: Int,
+        pageSize: Int
+    ): BaseResult<MineMemberFollowBean> {
+        return apiCall { service.mineMemberFollowList(member_id, page, pageSize) }
+    }
+
+    /**
+     * 粉丝列表
+     * @param member_id Int
+     */
+    suspend fun mineMemberFansList(
+        member_id: String,
+        page: Int,
+        pageSize: Int
+    ): BaseResult<MineMemberFansBean> {
+        return apiCall { service.mineMemberFansList(member_id, page, pageSize) }
+    }
+
+    /**
+     * 发布的书籍
+     * @param member_id Int
+     */
+    suspend fun minePublishList(
+        member_id: String,
+        page: Int,
+        pageSize: Int
+    ): BaseResult<MinePublishBean> {
+        return apiCall { service.minePublishList(member_id, page, pageSize) }
+    }
+
 }

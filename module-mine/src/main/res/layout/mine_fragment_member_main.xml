@@ -8,95 +8,156 @@
 
         <variable
             name="viewModel"
-            type="com.rm.module_mine.viewmodel.MineFragmentMemberMainViewMode" />
+            type="com.rm.module_mine.viewmodel.MineFragmentMemberMainViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/mine_member_book_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mine_release_books"
-                android:textColor="@color/business_text_color_333333"
-                android:textSize="@dimen/business_text_size_16sp"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/business_color_b1b1b1"
-                android:textSize="@dimen/business_text_size_16sp"
-                tools:text="(23)" />
-
-            <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
+                android:id="@+id/mine_member_book_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/icon_arrow_right"
-                android:gravity="center|end"
-                android:text="@string/business_more"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="@dimen/business_text_size_14sp" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:onClick="@{()->viewModel.clickReleaseFun(context)}"
+                isVisible="@{viewModel.releaseSheetVisibility}"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mine_member_book_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mine_member_book_layout" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mine_release_books"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textSize="@dimen/business_text_size_16sp"
+                    android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/mine_member_create_sheet_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/mine_member_book_rv">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/business_color_b1b1b1"
+                    android:text="@{@string/mine_num(viewModel.data.publish_info.total)}"
+                    android:textSize="@dimen/business_text_size_16sp"
+                    tools:text="(23)" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mine_create_sheet"
-                android:textColor="@color/business_text_color_333333"
-                android:textSize="@dimen/business_text_size_16sp"
-                android:textStyle="bold" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/business_icon_arrow_right"
+                    android:gravity="center|end"
+                    android:text="@string/business_more"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="@dimen/business_text_size_14sp" />
+            </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/business_color_b1b1b1"
-                android:textSize="@dimen/business_text_size_16sp"
-                tools:text="(23)" />
-
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine_member_book_rv"
+                isVisible="@{viewModel.releaseSheetVisibility}"
+                bindVerticalLayout="@{viewModel.releaseSheetAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/icon_arrow_right"
-                android:gravity="center|end"
-                android:text="@string/business_more"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="@dimen/business_text_size_14sp" />
-        </LinearLayout>
+                android:layout_marginTop="@dimen/dp_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mine_member_book_layout" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mine_member_create_sheet_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mine_member_create_sheet_layout" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/mine_member_create_sheet_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                isVisible="@{viewModel.createSheetVisibility}"
+                android:onClick="@{()->viewModel.clickCreateFun(context)}"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/mine_member_book_rv">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mine_create_sheet"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textSize="@dimen/business_text_size_16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/business_color_b1b1b1"
+                    android:text="@{@string/mine_num(viewModel.data.sheet_info.total)}"
+                    android:textSize="@dimen/business_text_size_16sp"
+                    tools:text="(23)" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/business_icon_arrow_right"
+                    android:gravity="center|end"
+                    android:text="@string/business_more"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="@dimen/business_text_size_14sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine_member_create_sheet_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                isVisible="@{viewModel.createSheetVisibility}"
+                bindVerticalLayout="@{viewModel.createSheetAdapter}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mine_member_create_sheet_layout" />
+
+            <LinearLayout
+                android:id="@+id/mine_member_favor_sheet_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                android:onClick="@{()->viewModel.clickFavorFun(context)}"
+                android:orientation="horizontal"
+                isVisible="@{viewModel.favorSheetVisibility}"
+                app:layout_constraintTop_toBottomOf="@id/mine_member_create_sheet_rv">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mine_favor_sheet"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textSize="@dimen/business_text_size_16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/mine_num(viewModel.data.favor_sheet_info.total)}"
+                    android:textColor="@color/business_color_b1b1b1"
+                    android:textSize="@dimen/business_text_size_16sp"
+                    tools:text="(23)" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/business_icon_arrow_right"
+                    android:gravity="center|end"
+                    android:text="@string/business_more"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="@dimen/business_text_size_14sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine_member_favor_sheet_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                isVisible="@{viewModel.favorSheetVisibility}"
+                android:layout_marginTop="@dimen/dp_14"
+                bindVerticalLayout="@{viewModel.favorSheetAdapter}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mine_member_favor_sheet_layout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
 

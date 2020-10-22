@@ -11,9 +11,15 @@
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
+        bindOnRefreshListener="@{viewModel.refreshData}"
+        bindOnLoadMoreListener="@{viewModel.loadMoreData}"
+        bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+        bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
+        bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            bindVerticalLayout="@{viewModel.commentAdapter}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

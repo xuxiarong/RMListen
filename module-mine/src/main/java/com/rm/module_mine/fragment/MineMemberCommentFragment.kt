@@ -12,9 +12,12 @@ import com.rm.module_mine.viewmodel.MineFragmentMemberCommentViewMode
 class MineMemberCommentFragment :
     BaseVMFragment<MineFragmentMemberCommentBinding, MineFragmentMemberCommentViewMode>() {
     companion object {
-        fun newInstance(memberId: String): Fragment {
+        const val MEMBER_TYPE = "memberType"
+
+        fun newInstance(memberId: String, memberType: Int): Fragment {
             val bundle = Bundle()
             bundle.putString(MineMemberActivity.MEMBER_ID, memberId)
+            bundle.putInt(MEMBER_TYPE, memberType)
             val fragment = MineMemberCommentFragment()
             fragment.arguments = bundle
             return fragment
@@ -23,14 +26,21 @@ class MineMemberCommentFragment :
 
     override fun initModelBrId() = BR.viewModel
 
-    override fun startObserve() {
+    override fun initLayoutId() = R.layout.mine_fragment_member_comment
+    override fun initView() {
+        super.initView()
+        arguments?.getString(MineMemberActivity.MEMBER_ID)?.let { memberId ->
+            mViewModel.memberId = memberId
+        }
+        arguments?.getInt(MEMBER_TYPE)?.let { memberType ->
+            mViewModel.memberType = memberType
+        }
     }
 
-    override fun initLayoutId() = R.layout.mine_fragment_member_comment
-
     override fun initData() {
-        arguments?.getString(MineMemberActivity.MEMBER_ID)?.let {
-//            mViewModel.getMemberProfile(it)
-        }
+        mViewModel.getData()
+    }
+
+    override fun startObserve() {
     }
 }

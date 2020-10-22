@@ -32,8 +32,8 @@ class HomeServiceImpl : HomeService {
     /**
      * 跳转到home听单详情
      */
-    override fun startHomeSheetDetailActivity(context: Activity, sheetId: String, pageId: Int) {
-        HomeMenuDetailActivity.startActivity(context, sheetId, pageId)
+    override fun startHomeSheetDetailActivity(context: Activity, sheetId: String) {
+        HomeMenuDetailActivity.startActivity(context, sheetId)
     }
 
     override fun toDetailActivity(context: Context, audioID: String) {

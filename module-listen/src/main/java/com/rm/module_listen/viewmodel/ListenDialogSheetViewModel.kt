@@ -9,7 +9,6 @@ import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_ADD_SHEET
-import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -20,14 +19,14 @@ import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
-import com.rm.module_listen.repository.ListenDialogSheetRepository
+import com.rm.module_listen.repository.ListenRepository
 
 class ListenDialogSheetViewModel(
    private val mActivity: FragmentActivity,
     private val baseViewModel: BaseVMViewModel
 ) : BaseVMViewModel() {
     private val repository by lazy {
-        ListenDialogSheetRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
+        ListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
 
     /**
@@ -58,7 +57,7 @@ class ListenDialogSheetViewModel(
      */
     fun getData() {
         launchOnIO {
-            repository.getData(page, pageSize).checkResult(
+            repository.getMyList(page, pageSize).checkResult(
                 onSuccess = {
                     processSuccessData(it)
                 },
