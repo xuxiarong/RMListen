@@ -1,5 +1,6 @@
 package com.rm.module_play.viewmodel
 
+import android.text.TextUtils
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -233,6 +234,9 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
         launchOnUI {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
+                    if(TextUtils.isEmpty(it.list.audio_cover_url)){
+                        it.list.audio_cover_url = ""
+                    }
                     setBookDetailBean(
                         DetailBookBean(
                             audio_id = it.list.audio_id,
@@ -284,6 +288,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
             val listValue = mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
             audioID.set(it.audio_id)
+
             commentAudioComments(it.audio_id)
             mutableList.postValue(listValue)
             setHistoryPlayBook(it)

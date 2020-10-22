@@ -92,7 +92,7 @@ public class DragCloseLayout extends RelativeLayout {
     public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy){
         mTotalDragY += dy;
         if(mTotalDragY>0){
-            float dimAmount = 1.0f - ((float) mTotalDragY) / ((float) mMeasureHeight);
+            float dimAmount = 0.5f - ((float) mTotalDragY) / ((float) mMeasureHeight);
             setupWindowDimAmount(dimAmount);
         }
     }
@@ -115,7 +115,7 @@ public class DragCloseLayout extends RelativeLayout {
     public void onReset() {
         viewDragHelper.settleCapturedViewAt(0, 0);
         ViewCompat.postInvalidateOnAnimation(this);
-        setupWindowDimAmount(1.0f);
+        setupWindowDimAmount(0.5f);
         mTotalDragY = 0;
     }
 

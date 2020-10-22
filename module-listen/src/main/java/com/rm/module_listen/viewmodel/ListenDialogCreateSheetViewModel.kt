@@ -53,11 +53,11 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                         listenDialogCreateSheetTitle.text = titleData.get()
                     }
 
-                    listenDialogCreateSheetTopDragRl.setDialog(dialog)
-
-                    listenDialogCreateSheetTopDragRl.seDragCloseListener {
-                        dismiss()
-                    }
+//                    listenDialogCreateSheetTopDragRl.setDialog(dialog)
+//
+//                    listenDialogCreateSheetTopDragRl.seDragCloseListener {
+//                        dismiss()
+//                    }
                 }
             }
         }

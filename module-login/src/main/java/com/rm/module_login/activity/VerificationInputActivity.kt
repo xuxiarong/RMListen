@@ -2,12 +2,14 @@ package com.rm.module_login.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.WindowManager
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityVerificationCodeInputBinding
 import com.rm.module_login.viewmodel.VerificationInputViewModel
+
 
 /**
  * desc   : 验证码输入界面
@@ -52,6 +54,7 @@ class VerificationInputActivity :
     }
 
     override fun initView() {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) // 设置默认键盘弹出
         mViewModel.baseTitleModel.value = BaseTitleModel().setLeftIconClick { finish() }
         mViewModel.codeType.set(intent.getIntExtra("type", 0))
         mViewModel.countryCode = intent.getStringExtra("countryCode") ?: "+86"

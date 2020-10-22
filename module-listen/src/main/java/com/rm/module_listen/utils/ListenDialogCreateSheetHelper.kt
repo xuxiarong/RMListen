@@ -1,6 +1,9 @@
 package com.rm.module_listen.utils
 
+import android.view.Gravity
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.dialog.CommonDragMvDialog
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -28,6 +31,19 @@ class ListenDialogCreateSheetHelper(
 
     fun showDialog() {
         mViewModel.mDialog.showCommonDialog(
+            mActivity, R.layout.listen_dialog_create_sheet,
+            mViewModel,
+            BR.dialogViewModel
+        )
+    }
+
+    fun showCreateSheetDialog(){
+        CommonDragMvDialog().apply {
+            gravity = Gravity.BOTTOM
+            dialogWidthIsMatchParent = true
+            dialogHeight = mActivity.dip(600)
+            dialogHasBackground = true
+        }.showCommonDialog(
             mActivity, R.layout.listen_dialog_create_sheet,
             mViewModel,
             BR.dialogViewModel

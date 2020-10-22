@@ -162,8 +162,8 @@
 
             <ImageView
                 android:id="@+id/image_music_play_book_list"
-                android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="35dp"
                 android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_PLAY_QUEUE+viewModel.curTime)}"
@@ -172,20 +172,19 @@
             <include
                 layout="@layout/music_paly_control_view"
                 android:layout_width="200dp"
-                android:layout_height="66dp"
+                android:layout_height="82dp"
                 app:viewModel="@{viewModel}" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="35dp"
                 android:orientation="vertical">
 
                 <com.rm.business_lib.wedgit.menupoint.MenuPointView
                     android:id="@+id/music_play_point"
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_PLAY_OPERATING+viewModel.curTime)}"
                     app:menu_number="3"
                     app:menu_point_color="@color/business_text_color_333333"
