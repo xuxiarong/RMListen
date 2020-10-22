@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.rm.business_lib.DownloadConstant
-import com.rm.business_lib.bean.download.DownloadChapterStatusModel
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterUIStatus
 
@@ -18,11 +18,11 @@ fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
 }
 
 @BindingAdapter("bindDownloadStatusSrc")
-fun ImageView.bindDownloadStatusSrc(chapterStatusModel: DownloadChapterStatusModel) {
+fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
     visibility = View.VISIBLE
-    when (chapterStatusModel.downStatus) {
+    when (chapter.down_status) {
         DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD -> {
-            when (chapterStatusModel.chapter.need_pay) {
+            when (chapter.need_pay) {
                 DownloadConstant.CHAPTER_PAY_STATUS_FREE -> {
                     visibility = View.GONE
                     return
@@ -43,21 +43,15 @@ fun ImageView.bindDownloadStatusSrc(chapterStatusModel: DownloadChapterStatusMod
 }
 
 @BindingAdapter("bindDownloadChapterStatus")
-fun ImageView.bindDownloadChapterStatus(chapterStatusModel: DownloadChapterStatusModel) {
+fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter) {
 
-    if (chapterStatusModel.downStatus != DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
+    if (chapter.down_status != DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
         setImageResource(R.drawable.download_ic_item_disable)
+        return
+    }
+    if (chapter.chapter_edit_select) {
+        setImageResource(R.drawable.download_ic_item_checked)
     } else {
-        when (chapterStatusModel.select) {
-            DownloadConstant.CHAPTER_UN_SELECT -> {
-                setImageResource(R.drawable.download_ic_item_unchecked)
-            }
-            DownloadConstant.CHAPTER_SELECTED -> {
-                setImageResource(R.drawable.download_ic_item_checked)
-            }
-            else -> {
-                setImageResource(R.drawable.download_ic_item_unchecked)
-            }
-        }
+        setImageResource(R.drawable.download_ic_item_unchecked)
     }
 }

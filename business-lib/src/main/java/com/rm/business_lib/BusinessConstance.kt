@@ -7,8 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.ktx.add
 import com.rm.baselisten.ktx.remove
 import com.rm.business_lib.bean.LoginUserBean
-import com.rm.business_lib.bean.download.DownloadAudioStatusModel
-import com.rm.business_lib.bean.download.DownloadChapterStatusModel
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadStatusChangedBean
 import com.rm.business_lib.db.DaoUtil
@@ -67,20 +65,20 @@ val downloadStatus = MutableLiveData<DownloadStatusChangedBean>()
 val downloadProgress = MutableLiveData<DownloadProgressUpdateBean>()
 
 object DownloadMemoryCache{
-    var downloadingAudioList = MutableLiveData<MutableList<DownloadAudioStatusModel>>()
-    var downloadingChapterList = MutableLiveData<MutableList<DownloadChapterStatusModel>>()
-    var downloadingChapter = MutableLiveData<DownloadChapterStatusModel>()
-    var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapterStatusModel>>()
+    var downloadingAudioList = MutableLiveData<MutableList<DownloadAudio>>()
+    var downloadingChapterList = MutableLiveData<MutableList<DownloadChapter>>()
+    var downloadingChapter = MutableLiveData<DownloadChapter>()
+    var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>()
 
-    fun addAudioToDownloadMemoryCache(model: DownloadAudioStatusModel){
+    fun addAudioToDownloadMemoryCache(audio: DownloadAudio){
         if(null!=downloadingAudioList.value){
-            if(!downloadingAudioList.value!!.contains(element = model)){
-                downloadingAudioList.add(element = model)
-                DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(model.audio)
+            if(!downloadingAudioList.value!!.contains(element = audio)){
+                downloadingAudioList.add(element = audio)
+                DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(audio)
             }
         }else{
-            downloadingAudioList.add(element = model)
-            DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(model.audio)
+            downloadingAudioList.add(element = audio)
+            DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(audio)
         }
     }
 
@@ -90,14 +88,14 @@ object DownloadMemoryCache{
             updateDownloadingChapter(url)
         }else{
             val chapter = downloadingChapter.value
-            chapter?.speed = speed
+//            chapter?.speed = speed
             downloadingChapter.value = chapter
         }
     }
 
     fun updateDownloadingChapter(url: String){
         downloadingChapterList.value?.forEach {
-            if(it.chapter.path_url == url){
+            if(it.path_url == url){
                 downloadingChapter.value = it
             }
         }
@@ -107,7 +105,7 @@ object DownloadMemoryCache{
         if(downloadingChapter.value!=null){
             downloadingChapterList.remove(downloadingChapter.value!!)
             downloadFinishChapterList.add(downloadingChapter.value!!)
-            DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(downloadingChapter.value!!.chapter)
+            DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(downloadingChapter.value!!)
         }
     }
 }

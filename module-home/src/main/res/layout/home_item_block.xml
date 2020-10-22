@@ -40,20 +40,13 @@
             android:id="@+id/homeItemMoreText"
             bindClick="@{()->viewModel.onBlockClick(item.block)}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_28"
+            android:gravity="center_vertical"
             android:layout_marginEnd="2dp"
             android:text="@string/business_more"
             android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/homeItemIconNext"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/homeItemIconNext"
-            android:layout_width="14dp"
-            android:layout_height="24dp"
-            android:src="@drawable/business_ic_next"
+            android:drawableEnd="@drawable/business_ic_next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

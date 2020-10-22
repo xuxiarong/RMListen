@@ -2,10 +2,10 @@ package com.rm.module_download
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.business_lib.bean.download.DownloadChapterStatusModel
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.ARouterModuleServicePath
@@ -30,40 +30,40 @@ class DownloadServiceImpl : DownloadService {
         DownloadChapterSelectionActivity.startActivity(context, downloadAudio)
     }
 
-    override fun startDownloadWithCache(chapter: DownloadChapterStatusModel) {
+    override fun startDownloadWithCache(chapter: DownloadChapter) {
         DownloadFileManager.INSTANCE.download(chapter)
 //        DownloadDaoUtils.INSTANCE.saveAudio(audio)
     }
 
-    override fun startDownloadWithCache(chapterList: MutableList<DownloadChapterStatusModel>) {
+    override fun startDownloadWithCache(chapterList: MutableList<DownloadChapter>) {
         DownloadFileManager.INSTANCE.download(chapterList)
     }
 
-    override fun pauseDownload(chapter: DownloadChapterStatusModel): Boolean {
+    override fun pauseDownload(chapter: DownloadChapter): Boolean {
         return DownloadFileManager.INSTANCE.stopDownload(chapter)
     }
 
-    override fun pauseDownload(chapterList: MutableList<DownloadChapterStatusModel>) {
+    override fun pauseDownload(chapterList: MutableList<DownloadChapter>) {
         DownloadFileManager.INSTANCE.stopDownload(chapterList)
     }
 
-    override fun deleteDownload(chapter: DownloadChapterStatusModel) {
+    override fun deleteDownload(chapter: DownloadChapter) {
         DownloadFileManager.INSTANCE.delete(chapter)
     }
 
-    override fun deleteDownload(chapterList: MutableList<DownloadChapterStatusModel>) {
+    override fun deleteDownload(chapterList: MutableList<DownloadChapter>) {
         DownloadFileManager.INSTANCE.delete(chapterList)
     }
 
-    override fun getDownloadStatus(chapter: DownloadChapterStatusModel): DownloadUIStatus {
+    override fun getDownloadStatus(chapter: DownloadChapter): DownloadUIStatus {
         return DownloadFileManager.INSTANCE.getTaskStatus(chapter)
     }
 
-    override fun getDownloadProgressInfo(chapter: DownloadChapterStatusModel): DownloadProgressUpdateBean? {
+    override fun getDownloadProgressInfo(chapter: DownloadChapter): DownloadProgressUpdateBean? {
         return DownloadFileManager.INSTANCE.getTaskBreakpointInfo(chapter)
     }
 
-    override fun getDownloadAudioList(): MutableList<DownloadChapterStatusModel> {
+    override fun getDownloadAudioList(): MutableList<DownloadChapter> {
         return mutableListOf()
     }
 

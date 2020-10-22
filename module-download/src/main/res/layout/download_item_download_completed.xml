@@ -8,7 +8,7 @@
 
         <variable
             name="itemBean"
-            type="com.rm.business_lib.bean.download.DownloadAudioStatusModel" />
+            type="com.rm.business_lib.db.download.DownloadAudio" />
 
         <variable
             name="viewModel"
@@ -28,7 +28,7 @@
             android:layout_height="@dimen/dp_22"
             android:paddingEnd="@dimen/dp_14"
             isVisible="@{viewModel.downloadFinishEdit}"
-            android:src="@{itemBean.isSelect?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked }"
+            android:src="@{itemBean.edit_select?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked }"
             tools:visibility="visible"
             tools:src="@drawable/download_ic_item_checked"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +40,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/download_iv_book_cover"
             corner="@{4.0f}"
-            bindUrl="@{itemBean.audio.audio_cover_url}"
+            bindUrl="@{itemBean.audio_cover_url}"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
             android:src="#999"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="@{itemBean.audio.audio_name}"
+            android:text="@{itemBean.audio_name}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_16sp"
             app:layout_constraintLeft_toRightOf="@id/download_iv_book_cover"
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_speaker"
-                android:text="@{itemBean.audio.author}"
+                android:text="@{itemBean.author}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
 
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_book_chapter"
-                android:text="@{String.valueOf(itemBean.audio.last_sequence)}"
+                android:text="@{String.valueOf(itemBean.last_sequence)}"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_downloaded"
-                android:text="@{String.valueOf(itemBean.audio.chapterList.size())}"
+                android:text="@{String.valueOf(itemBean.chapterList.size())}"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />

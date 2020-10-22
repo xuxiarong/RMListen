@@ -4,14 +4,10 @@ import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.DownloadMemoryCache
-import com.rm.business_lib.bean.download.DownloadAudioStatusModel
-import com.rm.business_lib.bean.download.DownloadChapterStatusModel
-import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -25,7 +21,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     private val homeService by lazy { RouterHelper.createRouter(HomeService::class.java) }
 
     val downloadingAdapter by lazy {
-        CommonBindVMAdapter<DownloadChapterStatusModel>(
+        CommonBindVMAdapter<DownloadChapter>(
             this,
             mutableListOf(),
             R.layout.download_item_in_progress,
@@ -35,7 +31,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     val downloadFinishAdapter by lazy {
-        CommonBindVMAdapter<DownloadAudioStatusModel>(
+        CommonBindVMAdapter<DownloadAudio>(
             this,
             mutableListOf(),
             R.layout.download_item_download_completed,
@@ -60,19 +56,15 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
 
     fun getDownloadFromDao() {
-        launchOnIO {
-            val allData = DaoUtil(DownloadAudio::class.java, "").queryAll()
-            DLog.d("suolong", "${allData?.size}")
-            allData?.let {
-                var tempAudioStatusList = mutableListOf<DownloadAudioStatusModel>()
-                it.forEach {
-                    tempAudioStatusList.add(DownloadAudioStatusModel(audio = it))
-                }
-                if (tempAudioStatusList.size > 0) {
-                    downloadAudioList.postValue(tempAudioStatusList)
-                }
-            }
-        }
+//        launchOnIO {
+//            val allData = DaoUtil(DownloadAudio::class.java, "").queryAll()
+//            DLog.d("suolong", "${allData?.size}")
+//            allData?.let {
+//                if (allData.isNotEmpty()) {
+//                    downloadAudioList.postValue(allData.toMutableList())
+//                }
+//            }
+//        }
     }
 
     fun editDownloading() {
@@ -83,80 +75,78 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         downloadFinishEdit.set(downloadFinishEdit.get().not())
     }
 
-    fun changeDownloadingAll(){
-        val selectAll = downloadingSelectAll.get()
+    fun changeDownloadingAll() {
+        val selectAll = downloadingSelectAll.get().not()
+        downloadingSelectAll.set(selectAll)
         downloadingAdapter.data.forEach {
-            if(!selectAll && it.select == DownloadConstant.CHAPTER_UN_SELECT){
-                it.select = DownloadConstant.CHAPTER_SELECTED
-                downloadingSelectNum.set(downloadingSelectNum.get().plus(1))
-            }else if(selectAll && it.select == DownloadConstant.CHAPTER_SELECTED){
-                it.select = DownloadConstant.CHAPTER_UN_SELECT
-                downloadingSelectNum.set(downloadingSelectNum.get().plus(-1))
+            if (selectAll && !it.down_edit_select) {
+                downloadingSelectNum.set(downloadingSelectNum.get()+1)
+                it.down_edit_select = selectAll
+            } else if (!selectAll && it.down_edit_select) {
+                downloadingSelectNum.set(downloadingSelectNum.get()-1)
+                it.down_edit_select = selectAll
             }
         }
-        downloadingSelectAll.set(selectAll.not())
         downloadingAdapter.notifyDataSetChanged()
     }
 
-    fun changeDownloadChapterSelect(model:DownloadChapterStatusModel){
-        if(model.select == DownloadConstant.CHAPTER_UN_SELECT){
-            model.select = DownloadConstant.CHAPTER_SELECTED
-            downloadingSelectNum.set(downloadingSelectNum.get().plus(1))
-        }else if(model.select == DownloadConstant.CHAPTER_SELECTED){
-            model.select = DownloadConstant.CHAPTER_UN_SELECT
-            downloadingSelectNum.set(downloadingSelectNum.get().plus(-1))
+    fun changeDownloadChapterSelect(chapter: DownloadChapter) {
+        if (!chapter.down_edit_select) {
+            downloadingSelectNum.set(downloadingSelectNum.get()+1)
+        } else {
+            downloadingSelectNum.set(downloadingSelectNum.get()-1)
         }
+        chapter.down_edit_select = chapter.down_edit_select.not()
     }
 
-    fun chapterClick(context: Context,model:DownloadChapterStatusModel) {
+    fun chapterClick(context: Context, chapter: DownloadChapter) {
         if (downloadingEdit.get()) {
-            changeDownloadChapterSelect(model = model)
-            downloadingAdapter.notifyItemChanged(downloadingAdapter.data.indexOf(model))
-        }else{
+            changeDownloadChapterSelect(chapter = chapter)
+            downloadingAdapter.notifyItemChanged(downloadingAdapter.data.indexOf(chapter))
+        } else {
 
         }
     }
 
 
-    fun changeDownloadFinishAll(){
-        val selectAll = downloadFinishSelectAll.get()
+    fun changeDownloadFinishAll() {
+        val selectAll = downloadFinishSelectAll.get().not()
+        downloadFinishSelectAll.set(selectAll)
         downloadFinishAdapter.data.forEach {
-            if(!selectAll && it.select == DownloadConstant.AUDIO_UN_SELECT){
-                it.select = DownloadConstant.AUDIO_SELECTED
-                downloadFinishSelectNum.set(downloadFinishSelectNum.get().plus(1))
-            }else if(selectAll && it.select == DownloadConstant.AUDIO_SELECTED){
-                it.select = DownloadConstant.AUDIO_UN_SELECT
-                downloadFinishSelectNum.set(downloadFinishSelectNum.get().plus(-1))
+            if (selectAll && !it.edit_select) {
+                downloadFinishSelectNum.set(downloadFinishSelectNum.get()+1)
+                it.edit_select = it.edit_select.not()
+            } else if (!selectAll && it.edit_select) {
+                downloadFinishSelectNum.set(downloadFinishSelectNum.get()-1)
+                it.edit_select = it.edit_select.not()
             }
         }
-        downloadFinishSelectAll.set(selectAll.not())
         downloadFinishAdapter.notifyDataSetChanged()
     }
 
-    fun changeDownloadFinishSelect(model:DownloadAudioStatusModel){
-        if(model.select == DownloadConstant.AUDIO_UN_SELECT){
-            model.select = DownloadConstant.AUDIO_SELECTED
-            downloadFinishSelectNum.set(downloadFinishSelectNum.get().plus(1))
-        }else if(model.select == DownloadConstant.AUDIO_SELECTED){
-            model.select = DownloadConstant.AUDIO_UN_SELECT
-            downloadFinishSelectNum.set(downloadFinishSelectNum.get().plus(-1))
+    fun changeDownloadFinishSelect(audio: DownloadAudio) {
+        audio.edit_select = audio.edit_select.not()
+        if (audio.edit_select) {
+            downloadFinishSelectNum.set(downloadFinishSelectNum.get()+1)
+        } else {
+            downloadFinishSelectNum.set(downloadFinishSelectNum.get()-1)
         }
     }
 
-    fun changeSelectListenFinish(){
+    fun changeSelectListenFinish() {
         downloadFinishDeleteListenFinish.set(downloadFinishDeleteListenFinish.get().not())
     }
 
-    fun audioClick(context: Context, model: DownloadAudioStatusModel) {
+    fun audioClick(context: Context, audio: DownloadAudio) {
         if (downloadFinishEdit.get()) {
-            changeDownloadFinishSelect(model = model)
-            downloadFinishAdapter.notifyItemChanged(downloadFinishAdapter.data.indexOf(model))
+            changeDownloadFinishSelect(audio = audio)
+            downloadFinishAdapter.notifyItemChanged(downloadFinishAdapter.data.indexOf(audio))
         } else {
-            homeService.toDetailActivity(context, model.audio.audio_id.toString())
+            homeService.toDetailActivity(context, audio.audio_id.toString())
         }
     }
 
-    fun deleteAudio(){
+    fun deleteAudio() {
 
     }
 

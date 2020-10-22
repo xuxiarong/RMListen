@@ -3,19 +3,15 @@ package com.rm.module_download.dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
+import android.view.Gravity
 import android.view.WindowManager
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.marginStart
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.binding.afterTextChanged
 import com.rm.baselisten.dialog.BaseFragmentDialog
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.screenWidth
 import com.rm.module_download.R
-import java.lang.Exception
 
 /**
  * 下载选集弹窗
@@ -40,8 +36,16 @@ class DownloadSelectChaptersDialog(private val endIndex: Int) : BaseFragmentDial
 
     override fun initView() {
         super.initView()
-        dialogWidth = screenWidth * 9 / 10
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        dialogWidth = screenWidth
+        dialogHeight = dip(260)
+        dialog!!.window!!.setGravity(Gravity.BOTTOM)
+        val params: WindowManager.LayoutParams = dialog!!.window!!.attributes
+        params.gravity = Gravity.BOTTOM
+        //设置Dialog外部透明
+        //设置Dialog外部透明
+        params.dimAmount = 0f
+        dialog!!.window!!.attributes = params
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         rootView?.findViewById<AppCompatButton>(R.id.download_btn_download)
             ?.setOnClickListener { downloadClick(etStart?.text.toString().toInt(), etEnd?.text.toString().toInt()) }
         etStart = rootView?.findViewById<EditText>(R.id.download_et_start)?.apply {
