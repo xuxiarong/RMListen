@@ -37,8 +37,6 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
      */
     fun getCode() {
 
-        showToast(R.string.login_agree_deal_tips)
-
         // 网络通过手机获取验证码
         if (!isCheck.get()!!) {
             // 未选中check box
