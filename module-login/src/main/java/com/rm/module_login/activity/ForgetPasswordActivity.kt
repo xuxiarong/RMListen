@@ -20,8 +20,10 @@ class ForgetPasswordActivity :
     BaseVMActivity<LoginActivityForgetPasswordBinding, ForgetPasswordViewModel>() {
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, ForgetPasswordActivity::class.java))
+        fun startActivity(context: Context, phone: String) {
+            context.startActivity(Intent(context, ForgetPasswordActivity::class.java).apply {
+                putExtra("phone", phone)
+            })
         }
     }
 
@@ -35,6 +37,7 @@ class ForgetPasswordActivity :
     override fun initView() {
         super.initView()
         mViewModel.baseTitleModel.value = BaseTitleModel().setLeftIconClick { finish() }
+        mViewModel.phoneInputViewModel.phone.set(intent.getStringExtra("phone"))
         login_include_phone_input_country_code.setOnClickListener {
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
         }

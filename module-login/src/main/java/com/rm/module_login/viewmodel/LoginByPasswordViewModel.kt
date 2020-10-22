@@ -1,5 +1,6 @@
 package com.rm.module_login.viewmodel
 
+import android.content.Context
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -67,8 +68,9 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
     /**
      * 忘记密码
      */
-    fun forgetPassword() {
-        startActivity(ForgetPasswordActivity::class.java)
+    fun forgetPassword(context:Context) {
+        ForgetPasswordActivity.startActivity(context, phoneInputViewModel.phone.get()!!)
+//        startActivity(ForgetPasswordActivity::class.java)
     }
 
     /**
