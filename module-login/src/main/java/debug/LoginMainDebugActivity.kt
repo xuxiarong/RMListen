@@ -33,7 +33,7 @@ class LoginMainDebugActivity : BaseDebugActivity() {
         }
 
         btnForget.setOnClickListener {
-            ForgetPasswordActivity.startActivity(this)
+            ForgetPasswordActivity.startActivity(this,"")
         }
 
         btnReset.setOnClickListener {

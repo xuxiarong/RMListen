@@ -64,7 +64,7 @@
         <TextView
             android:id="@+id/login_bu_password_forget_pwd"
             style="@style/BusinessTextStyleFirst_3"
-            bindClick="@{viewModel.forgetPassword}"
+            android:onClick="@{()->viewModel.forgetPassword(context)}"
             android:layout_marginEnd="@dimen/dp_22"
             android:padding="@dimen/dp_6"
             android:text="@string/login_forget_password"
