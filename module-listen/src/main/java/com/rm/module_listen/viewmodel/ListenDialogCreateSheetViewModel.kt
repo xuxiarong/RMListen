@@ -5,7 +5,6 @@ import androidx.databinding.ObservableField
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_listen.R
@@ -22,7 +21,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
     }
 
     //  输入的密码值
-    private val inputText = ObservableField<String>("")
+    val inputText = ObservableField<String>("")
 
     //标题
     val titleData = ObservableField<String>("")
@@ -34,8 +33,9 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
     val sheetId = ObservableField<String>()
 
     // 监听绑定输入框内容变化
-    val checkInput: (String) -> Unit = { inputChange(it) }
+    val checkInput: (String) -> Unit = { inputText.set(it) }
 
+    var audioId = ""
 
     private var dataBinding: ListenDialogCreateSheetBinding? = null
 
@@ -52,12 +52,6 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                     if (!TextUtils.isEmpty(titleData.get())) {
                         listenDialogCreateSheetTitle.text = titleData.get()
                     }
-
-//                    listenDialogCreateSheetTopDragRl.setDialog(dialog)
-//
-//                    listenDialogCreateSheetTopDragRl.seDragCloseListener {
-//                        dismiss()
-//                    }
                 }
             }
         }
@@ -75,8 +69,35 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
             repository.createSheet(sheet_name, description).checkResult(
                 onSuccess = {
                     baseViewModel.showContentView()
+                    if (TextUtils.isEmpty(audioId)) {
+                        baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_success_tip))
+                        mDialog.dismiss()
+                    } else {
+                        addSheet(it.sheet_id)
+                    }
+                    baseViewModel.showContentView()
+                },
+                onError = {
+                    baseViewModel.showContentView()
+                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_create_failure))
+                }
+            )
+        }
+    }
+
+    /**
+     * 添加到听单列表
+     */
+    private fun addSheet(sheetId: String) {
+        launchOnIO {
+            repository.addSheetList(sheetId, audioId).checkResult(
+                onSuccess = {
+                    baseViewModel.showContentView()
                     baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_success_tip))
-                    mDialog.dismiss()
+                    mDialog.activity?.runOnUiThread{
+                        mDialog.dismiss()
+                    }
+
                 },
                 onError = {
                     baseViewModel.showContentView()
@@ -85,7 +106,6 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
             )
         }
     }
-
 
     /**
      * 编辑听单
@@ -151,24 +171,6 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
      */
     fun clickSureFun() {
         checkText()
-    }
-
-    /**
-     * 文本框发生变化
-     */
-    private fun inputChange(str: String) {
-        if (str.isNotEmpty()) {
-            inputText.set(str)
-            dataBinding?.listenDialogCreateSheetSure?.apply {
-                isEnabled = true
-                setTextColor(Color(R.color.business_color_ff5e5e))
-            }
-        } else {
-            dataBinding?.listenDialogCreateSheetSure?.apply {
-                isEnabled = false
-                setTextColor(Color(R.color.business_color_e8e8e8))
-            }
-        }
     }
 
 

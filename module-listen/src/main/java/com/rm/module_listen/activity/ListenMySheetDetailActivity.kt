@@ -3,15 +3,16 @@ package com.rm.module_listen.activity
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
-import com.rm.baselisten.binding.bindVerticalLayout
+import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
+import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenActivitySheetDetailBinding
+import com.rm.module_listen.databinding.ListenHeaderSheetDetailBinding
 import com.rm.module_listen.viewmodel.ListenSheetDetailViewModel
 import kotlinx.android.synthetic.main.listen_activity_sheet_detail.*
 
@@ -47,13 +48,13 @@ class ListenMySheetDetailActivity :
     //当前听单id
     private var mSheetId: String? = null
 
-    override fun initModelBrId(): Int {
-        return BR.viewModel
-    }
+    private var headerDataBind: ListenHeaderSheetDetailBinding? = null
 
-    override fun getLayoutId(): Int {
-        return R.layout.listen_activity_sheet_detail
-    }
+    override fun initModelBrId() = BR.viewModel
+
+
+    override fun getLayoutId() = R.layout.listen_activity_sheet_detail
+
 
     override fun initView() {
         super.initView()
@@ -74,9 +75,8 @@ class ListenMySheetDetailActivity :
             mSheetId = it.getStringExtra(SHEET_ID)
         }
 
-        mDataBind.listenSheetDetailRecyclerView.apply {
-            bindVerticalLayout(mViewModel.mAdapter)
-            createHeader()
+        mViewModel.blockSuccess = {
+            headerDataBind?.listenSheetDetailDescription?.text = it
         }
 
     }
@@ -84,21 +84,17 @@ class ListenMySheetDetailActivity :
     /**
      * 创建头部
      */
-    private fun createHeader() {
-        mViewModel.dataBinding = DataBindingUtil.inflate(
+    private fun createHeader(bean: SheetInfoBean) {
+        headerDataBind = DataBindingUtil.inflate<ListenHeaderSheetDetailBinding>(
             LayoutInflater.from(this),
             R.layout.listen_header_sheet_detail,
             listen_sheet_detail_recycler_view,
             false
-        )
-
-        mViewModel.dataBinding?.let {
-            it.root.visibility = View.GONE
-            mViewModel.mAdapter.addHeaderView(it.root)
+        ).apply {
+            //头部数据绑定
+            setVariable(BR.item, bean)
+            mViewModel.mAdapter.addHeaderView(root)
         }
-    }
-
-    override fun startObserve() {
     }
 
     override fun initData() {
@@ -107,5 +103,15 @@ class ListenMySheetDetailActivity :
             mViewModel.getSheetInfo(it)
         }
     }
+
+    override fun startObserve() {
+        mViewModel.data.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                createHeader(mViewModel.data.get()!!)
+            }
+        })
+    }
+
 
 }

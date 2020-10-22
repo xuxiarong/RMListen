@@ -51,6 +51,8 @@
     <string name="listen_set_top_success">置顶成功</string>
     <string name="listen_cancel_top_fail">取消置顶失败</string>
     <string name="listen_cancel_top_success">取消置顶成功</string>
+    <string name="listen_create_success">创建成功</string>
+    <string name="listen_create_failure">创建失败</string>
 
 
     <string name="listen_know">我知道了</string>

@@ -48,7 +48,7 @@ class ListenDialogSheetHelper(
      */
     private fun CommonMvFragmentDialog.initView(dateBinding: ListenDialogSheetListBinding) {
         dateBinding.listenDialogSheetCreateBookList.setOnClickListener {
-            ListenDialogCreateSheetHelper(baseViewModel, mActivity).showCreateSheetDialog()
+            ListenDialogCreateSheetHelper(baseViewModel, mActivity).showCreateSheetDialog(audioId)
             dismiss()
         }
         mViewModel.audioId.value = audioId

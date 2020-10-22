@@ -37,14 +37,30 @@ class ListenDialogCreateSheetHelper(
         )
     }
 
-    fun showCreateSheetDialog(){
+    fun showCreateSheetDialog(audioId: String) {
+        mViewModel.audioId = audioId
         CommonDragMvDialog().apply {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
             dialogHeight = mActivity.dip(600)
             dialogHasBackground = true
         }.showCommonDialog(
-            mActivity, R.layout.listen_dialog_create_sheet,
+            mActivity,
+            R.layout.listen_dialog_create_sheet,
+            mViewModel,
+            BR.dialogViewModel
+        )
+    }
+
+    fun showCreateSheetDialog() {
+        CommonDragMvDialog().apply {
+            gravity = Gravity.BOTTOM
+            dialogWidthIsMatchParent = true
+            dialogHeight = mActivity.dip(600)
+            dialogHasBackground = true
+        }.showCommonDialog(
+            mActivity,
+            R.layout.listen_dialog_create_sheet,
             mViewModel,
             BR.dialogViewModel
         )

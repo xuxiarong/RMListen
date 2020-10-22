@@ -9,6 +9,7 @@ import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.bean.ListenSubscriptionListBean
 import com.rm.module_listen.model.ListenChapterList
+import com.rm.module_listen.model.ListenCreateSheetModel
 import com.rm.module_listen.model.ListenSubsNumberModel
 
 /**
@@ -64,7 +65,7 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
      * @param sheet_name 听单名称
      * @param description 听单简介
      */
-    suspend fun createSheet(sheet_name: String, description: String): BaseResult<Any> {
+    suspend fun createSheet(sheet_name: String, description: String): BaseResult<ListenCreateSheetModel> {
         return apiCall { service.listenCreateSheetList(sheet_name, description) }
     }
 

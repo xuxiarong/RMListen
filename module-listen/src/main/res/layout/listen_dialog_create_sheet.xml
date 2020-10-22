@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_60"
-        android:background="@drawable/business_shape_white_top_radius_12dp">
+        android:background="@drawable/business_shape_white_top_radius_12dp"
+        android:paddingBottom="@dimen/dp_20">
 
         <View
             android:id="@+id/listen_dialog_create_sheet_top_drag_line"
@@ -56,14 +57,14 @@
             android:id="@+id/listen_dialog_create_sheet_sure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
+            android:enabled="@{dialogViewModel.inputText.length()>0}"
             android:onClick="@{()->dialogViewModel.clickSureFun()}"
             android:paddingStart="@dimen/dp_16"
             android:paddingTop="@dimen/dp_14"
             android:paddingEnd="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_14"
             android:text="@string/business_sure"
-            android:textColor="@color/business_color_e8e8e8"
+            android:textColor="@{dialogViewModel.inputText.length()>0?@color/business_color_ff5e5e:@color/business_color_e8e8e8}"
             android:textSize="@dimen/business_text_size_16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/listen_dialog_create_sheet_cancel" />

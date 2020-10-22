@@ -7,6 +7,7 @@ import com.rm.module_listen.bean.SheetFavorBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.bean.ListenSubscriptionListBean
 import com.rm.module_listen.model.ListenChapterList
+import com.rm.module_listen.model.ListenCreateSheetModel
 import com.rm.module_listen.model.ListenSubsNumberModel
 import com.rm.module_listen.repository.ListenPatchSheetBean
 import retrofit2.http.*
@@ -154,7 +155,7 @@ interface ListenApiService {
     suspend fun listenCreateSheetList(
         @Field("sheet_name") sheet_name: String,
         @Field("description") description: String
-    ): BaseResponse<Any>
+    ): BaseResponse<ListenCreateSheetModel>
 
 
     /**

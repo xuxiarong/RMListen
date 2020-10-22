@@ -136,7 +136,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_detain_brief_introduction"
-            isVisible="@{viewModel.detailInfoData.list.short_intro.length()>0}"
+            isVisible="@{viewModel.detailInfoData.list.audio_intro.length()>0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
@@ -150,7 +150,7 @@
 
         <com.rm.business_lib.wedgit.expandtextview.ExpandableTextView
             android:id="@+id/home_detail_brief"
-            expandText="@{viewModel.detailInfoData.list.short_intro}"
+            expandText="@{viewModel.detailInfoData.list.audio_intro}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_4"
@@ -163,6 +163,7 @@
             android:id="@+id/home_detail_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_0.5dp"
+            isVisible="@{viewModel.detailInfoData.list.audio_intro.length()>0}"
             android:background="@color/business_color_e8e8e8"
             app:layout_constraintTop_toBottomOf="@id/home_detail_brief" />
 

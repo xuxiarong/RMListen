@@ -35,10 +35,6 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
             BR.item
         )
     }
-
-    //头部dataBinding对象
-    var dataBinding: ListenHeaderSheetDetailBinding? = null
-
     private val mDialog by lazy { CommBottomDialog() }
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
@@ -53,6 +49,9 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     private var mPage = 1
 
     private lateinit var sheetId: String
+
+    //编辑成功
+    var blockSuccess: (String) -> Unit = {}
 
     /**
      * 刷新
@@ -80,20 +79,13 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
                 onSuccess = {
                     showContentView()
                     data.set(it)
-
-                    //头部数据绑定
-                    dataBinding?.let { dataBinding ->
-                        dataBinding.root.visibility = View.VISIBLE
-                        dataBinding.setVariable(BR.item, it)
-                    }
-
                     //刷新完成
                     refreshStateModel.finishRefresh(true)
                     //设置新数据源
                     mAdapter.setList(it.audio_list.list)
 
                     //是否有更多数据
-                    refreshStateModel.setHasMore(it.audio_list.list.size ?: 0 > pageSize)
+                    refreshStateModel.setHasMore(it.audio_list.list.size > pageSize)
                 },
 
                 onError = {
@@ -156,7 +148,10 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     fun dialogSheetDetailEditSheetFun(view: View) {
         data.get()?.let {
             getActivity(view.context)?.let { activity ->
-                ListenDialogCreateSheetHelper(this, activity).setTitle(CONTEXT.getString(R.string.listen_edit_sheet))
+                ListenDialogCreateSheetHelper(
+                    this,
+                    activity
+                ).setTitle(CONTEXT.getString(R.string.listen_edit_sheet))
                     .showEditDialog(
                         it.sheet_id,
                         success = { sheetName ->
@@ -171,8 +166,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
      * 编辑成功
      */
     private fun editSuccess(sheetName: String) {
-        dataBinding?.listenSheetDetailDescription?.text = sheetName
-
+        blockSuccess(sheetName)
         val map = getHasMap()
         map[ListenMySheetDetailActivity.SHEET_ID] = sheetId
         map[ListenMySheetDetailActivity.SHEET_NAME] = sheetName

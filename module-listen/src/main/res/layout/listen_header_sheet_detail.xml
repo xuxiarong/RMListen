@@ -53,7 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/listen_sheet_detail_front_cover"
             app:layout_constraintTop_toBottomOf="@id/listen_sheet_detail_description"
-            tools:text="3.3w" />
+            tools:text="2020-09-20" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_detail_read_num"
