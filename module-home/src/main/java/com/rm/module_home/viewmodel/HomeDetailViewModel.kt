@@ -41,7 +41,6 @@ import com.rm.module_home.model.home.detail.HomeCommentBean
 import com.rm.module_home.repository.HomeRepository
 import com.rm.module_home.util.HomeCommentDialogHelper
 import com.rm.module_play.enum.Jump
-import kotlin.math.log
 
 
 class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
@@ -607,7 +606,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailModel.list.author,
                     homeDetailModel.list.audio_cover_url,
                     homeDetailModel.list.status,
-                    homeDetailModel.list.last_sequence
+                    homeDetailModel.list.last_sequence,
+                    false
                 )
             )
         }

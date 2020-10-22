@@ -45,6 +45,7 @@
             isVisible="@{viewModel.downloadFinishEdit}"
             android:layout_width="match_parent"
             android:layout_height="82dp"
+            android:background="@color/businessWhite"
             android:layout_gravity="bottom">
 
             <androidx.appcompat.widget.AppCompatImageView

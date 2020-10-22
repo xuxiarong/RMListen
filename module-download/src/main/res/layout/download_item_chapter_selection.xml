@@ -10,7 +10,7 @@
         <import type="com.rm.baselisten.util.TimeUtils" />
         <variable
             name="itemBean"
-            type="com.rm.business_lib.bean.download.DownloadChapterStatusModel" />
+            type="com.rm.business_lib.db.download.DownloadChapter" />
 
         <variable
             name="viewModel"
@@ -41,7 +41,7 @@
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_marginRight="@dimen/dp_8"
             android:gravity="center"
-            android:text="@{String.valueOf(itemBean.chapter.sequence)}"
+            android:text="@{String.valueOf(itemBean.sequence)}"
             android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +52,7 @@
             android:id="@+id/download_tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{itemBean.chapter.chapter_name}"
+            android:text="@{itemBean.chapter_name}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_16sp"
             app:layout_constraintLeft_toRightOf="@+id/download_tv_sequence"
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_memory_size"
-                bindMemoryText="@{itemBean.chapter.size}"
+                bindMemoryText="@{itemBean.size}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:drawableLeft="@drawable/download_ic_duration"
-                android:text="@{TimeUtils.getListenDuration(itemBean.chapter.duration)}"
+                android:text="@{TimeUtils.getListenDuration(itemBean.duration)}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 

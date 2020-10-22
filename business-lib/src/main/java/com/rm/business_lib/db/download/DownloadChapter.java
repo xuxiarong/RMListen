@@ -14,6 +14,7 @@ public class DownloadChapter {
     @Id
     private Long chapter_id;
     private Long audio_id ;
+    private String audio_name ;
     private int  sequence;
     private String chapter_name;
     private Long size ; //音频大小
@@ -24,13 +25,23 @@ public class DownloadChapter {
     private String created_at;
     private String file_path;
     private String path_url;
-    @Generated(hash = 1286659517)
-    public DownloadChapter(Long chapter_id, Long audio_id, int sequence,
-            String chapter_name, Long size, int duration, int need_pay, int amount,
-            String play_count, String created_at, String file_path,
-            String path_url) {
+    //下载的状态
+    private int down_status ;
+    //收听的进度
+    private int listen_duration;
+    //章节是否被选中下载
+    private boolean chapter_edit_select;
+    // 处于下载队列是否被选中
+    private boolean down_edit_select;
+    @Generated(hash = 1722729926)
+    public DownloadChapter(Long chapter_id, Long audio_id, String audio_name,
+            int sequence, String chapter_name, Long size, int duration,
+            int need_pay, int amount, String play_count, String created_at,
+            String file_path, String path_url, int down_status, int listen_duration,
+            boolean chapter_edit_select, boolean down_edit_select) {
         this.chapter_id = chapter_id;
         this.audio_id = audio_id;
+        this.audio_name = audio_name;
         this.sequence = sequence;
         this.chapter_name = chapter_name;
         this.size = size;
@@ -41,6 +52,10 @@ public class DownloadChapter {
         this.created_at = created_at;
         this.file_path = file_path;
         this.path_url = path_url;
+        this.down_status = down_status;
+        this.listen_duration = listen_duration;
+        this.chapter_edit_select = chapter_edit_select;
+        this.down_edit_select = down_edit_select;
     }
     @Generated(hash = 1634822403)
     public DownloadChapter() {
@@ -56,6 +71,12 @@ public class DownloadChapter {
     }
     public void setAudio_id(Long audio_id) {
         this.audio_id = audio_id;
+    }
+    public String getAudio_name() {
+        return this.audio_name;
+    }
+    public void setAudio_name(String audio_name) {
+        this.audio_name = audio_name;
     }
     public int getSequence() {
         return this.sequence;
@@ -117,5 +138,29 @@ public class DownloadChapter {
     public void setPath_url(String path_url) {
         this.path_url = path_url;
     }
-
+    public int getDown_status() {
+        return this.down_status;
+    }
+    public void setDown_status(int down_status) {
+        this.down_status = down_status;
+    }
+    public int getListen_duration() {
+        return this.listen_duration;
+    }
+    public void setListen_duration(int listen_duration) {
+        this.listen_duration = listen_duration;
+    }
+    public boolean getChapter_edit_select() {
+        return this.chapter_edit_select;
+    }
+    public void setChapter_edit_select(boolean chapter_edit_select) {
+        this.chapter_edit_select = chapter_edit_select;
+    }
+    public boolean getDown_edit_select() {
+        return this.down_edit_select;
+    }
+    public void setDown_edit_select(boolean down_edit_select) {
+        this.down_edit_select = down_edit_select;
+    }
+    
 }

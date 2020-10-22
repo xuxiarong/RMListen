@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.NonNull
 import com.rm.baselisten.BaseApplication
 import com.rm.business_lib.DownloadConstant
-import com.rm.business_lib.bean.download.DownloadChapterStatusModel
+import com.rm.business_lib.db.download.DownloadChapter
 import java.io.File
 
 /**
@@ -15,19 +15,19 @@ import java.io.File
 object DownLoadFileUtils {
 
 
-    fun  checkChapterIsDownload(chapterStatusModel : DownloadChapterStatusModel) : DownloadChapterStatusModel {
+    fun  checkChapterIsDownload(chapter : DownloadChapter) : DownloadChapter {
         val file = File(
-            createFileWithAudio(chapterStatusModel.chapter.audio_id.toString()).absolutePath,
-            chapterStatusModel.chapter.chapter_name
+            createFileWithAudio(chapter.audio_id.toString()).absolutePath,
+            chapter.chapter_name
         )
         if(file.exists() && file.isFile){
-            if(file.length() >= chapterStatusModel.chapter.size){
-                chapterStatusModel.downStatus = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
+            if(file.length() >= chapter.size){
+                chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
             }else{
-                chapterStatusModel.downStatus = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
+                chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
             }
         }
-        return chapterStatusModel
+        return chapter
     }
 
     private fun createFileWithAudio(audioName :String ) : File {

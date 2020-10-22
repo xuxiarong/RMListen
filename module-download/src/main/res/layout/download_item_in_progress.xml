@@ -10,7 +10,7 @@
 
         <variable
             name="itemBean"
-            type="com.rm.business_lib.bean.download.DownloadChapterStatusModel" />
+            type="com.rm.business_lib.db.download.DownloadChapter" />
 
         <variable
             name="viewModel"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/dp_14"
-            android:src="@{itemBean.isSelect?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked }"
+            android:src="@{itemBean.down_edit_select?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked }"
             tools:src="@drawable/download_ic_item_checked" />
 
         <FrameLayout
@@ -45,7 +45,7 @@
                 android:layout_marginEnd="@dimen/dp_40"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="@{itemBean.chapter.chapter_name}"
+                android:text="@{itemBean.chapter_name}"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_16sp"
                 tools:text="Douglas Powers  " />
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginTop="@dimen/dp_36"
-                android:text="@{itemBean.chapter.chapter_name}"
+                android:text="@{itemBean.audio_name}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_14sp"
                 tools:text="时间简史" />
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/dp_11"
-                android:text="@{@string/business_down_and_total_size(ConvertUtils.byte2FitMemorySize(itemBean.chapter.size,1),ConvertUtils.byte2FitMemorySize(itemBean.chapter.size,1))}"
+                android:text="@{@string/business_down_and_total_size(ConvertUtils.byte2FitMemorySize(itemBean.size,1),ConvertUtils.byte2FitMemorySize(itemBean.size,1))}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="@dimen/dp_11"
-                android:text="@{@string/business_down_speed(ConvertUtils.byte2FitMemorySize(itemBean.speed,1))}"
+                android:text="@{@string/business_down_speed(ConvertUtils.byte2FitMemorySize(1000L,1))}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 
