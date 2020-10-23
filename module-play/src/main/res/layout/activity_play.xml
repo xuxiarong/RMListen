@@ -84,7 +84,7 @@
                 android:id="@+id/tv_music_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="与罗摩相遇 >"
+                android:text="@{viewModel.audioInfo.audio_name}"
                 android:textColor="@color/business_text_color_666666" />
 
             <com.flyco.roundview.RoundTextView

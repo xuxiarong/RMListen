@@ -51,6 +51,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
     val audioCommentList = MutableLiveData<MutableList<Comments>>()
     val playManger: MusicPlayerManager = musicPlayerManger
     val audioID = ObservableField<String>()
+    var audioInfo = ObservableField<DetailBookBean>()
 
     //当前播放的章节ID
     val mChapterId = ObservableField<String>()
@@ -105,7 +106,7 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
                         BaseAudioInfo(
                             audioPath = it.path_url,
                             audioName = it.chapter_name,
-                            filename = it.created_at,
+                            filename = it.chapter_name,
                             audioId = it.audio_id,
                             chapterId = it.chapter_id,
                             duration = it.duration,
@@ -283,6 +284,9 @@ open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel()
      * 书本信息
      */
     fun setBookDetailBean(homeDetailBean: DetailBookBean?) {
+        if(homeDetailBean!=null){
+            audioInfo.set(homeDetailBean)
+        }
         homeDetailBean?.let {
             playBookSate.get()?.homeDetailModel = it
             val listValue = mutableList.value

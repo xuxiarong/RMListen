@@ -2,13 +2,17 @@ package com.rm.module_play.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.util.getObjectMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.HomeDetailBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
+import com.rm.module_play.PlayConstance
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.model.AudioCommentsModel
+import com.rm.module_play.model.PlayLastListenChapterModel
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
 
@@ -49,6 +53,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     suspend fun getDetailInfo(id: String): BaseResult<HomeDetailBean> {
         return apiCall { playApi.homeDetail(id) }
     }
+
     //评论
     suspend fun commentAudioComments(
         audioID: String,
@@ -83,7 +88,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
         chapterId: String,
         sort: String
     ): BaseResult<AudioChapterListModel> {
-        return apiCall { playApi.chapterPage(audioId, chapterId,sort) }
+        return apiCall { playApi.chapterPage(audioId, chapterId, sort) }
     }
 
     var daoUtil: DaoUtil<HistoryPlayBook, Long>? = null
@@ -102,8 +107,13 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
         if (history == null) {
             daoUtil?.save(historyPlayBook)
         }
-
-
+        PlayConstance.PlAY_LAST_LISTEN_CHAPtER.putMMKV(
+            PlayLastListenChapterModel(
+                audioId = historyPlayBook.audio_id,
+                audioName = historyPlayBook.audio_name,
+                audioCoverUrl = historyPlayBook.audio_cover_url
+            )
+        )
     }
 
     /**
@@ -119,20 +129,32 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
             chapterFind.recentPlay = System.currentTimeMillis()
         }
         historyPlayBook?.let { daoUtil?.update(it) }
+
+        val lastPlayModel = PlayConstance.PlAY_LAST_LISTEN_CHAPtER.getObjectMMKV(
+            PlayLastListenChapterModel::class.java,
+            PlayLastListenChapterModel()
+        )
+        lastPlayModel?.chapter = chapter
+        if(lastPlayModel!=null){
+            PlayConstance.PlAY_LAST_LISTEN_CHAPtER.putMMKV(lastPlayModel)
+        }
+
     }
+
     /**
      * 记录播放的章节
      */
-    fun updatePlayBookProcess( chapter: ChapterList,progress:Long=0L) {
+    fun updatePlayBookProcess(chapter: ChapterList, progress: Long = 0L) {
         val historyPlayBook = daoUtil?.querySingle(chapter.audio_id.toLong())
         val chapterFind = historyPlayBook?.listBean?.find { it.chapter_id == chapter?.chapter_id }
         if (chapterFind == null) {
             historyPlayBook?.listBean?.add(chapter)
         } else {
-            chapterFind.progress=progress
+            chapterFind.progress = progress
         }
         historyPlayBook?.let { daoUtil?.update(it) }
     }
+
     /**
      * 查询
      */
