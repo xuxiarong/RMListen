@@ -17,6 +17,7 @@ import com.rm.module_home.model.home.HomeAudioModel
 import com.rm.module_home.model.home.HomeBlockModel
 import com.rm.module_home.model.home.HomeMenuModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
+import kotlinx.android.synthetic.main.home_home_fragment.*
 
 /**
  * desc   :
@@ -38,7 +39,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     }
 
     override fun initView() {
-
+        mDataShowView = homeRv
         setStatusBar(R.color.base_activity_bg_color)
 
         mViewModel.collectItemClickList = { initCollectClick(it) }

@@ -41,6 +41,8 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
      */
     private var mChildView: View? = null
 
+    var mDataShowView: View? = null
+
     /**
      * 定义子类的dataBing对象
      */
@@ -51,8 +53,17 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
         getViewModel(clazz) //koin 注入
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mBaseBinding = DataBindingUtil.inflate<BaseFragmentVmBinding>(inflater, R.layout.base_fragment_vm, container, false).apply {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mBaseBinding = DataBindingUtil.inflate<BaseFragmentVmBinding>(
+            inflater,
+            R.layout.base_fragment_vm,
+            container,
+            false
+        ).apply {
             lifecycleOwner = this@BaseVMFragment
         }
         return mBaseBinding.root
@@ -78,7 +89,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
             mChildView = mBaseBinding.baseChildView.viewStub?.inflate()
             if (mChildView != null) {
                 mDataBind = DataBindingUtil.bind(mChildView!!)!!
-                mDataBind.setVariable(initModelBrId(),mViewModel)
+                mDataBind.setVariable(initModelBrId(), mViewModel)
             }
         }
     }
@@ -98,32 +109,32 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
         })
 
         mViewModel.baseToastModel.observe(this, Observer {
-            if(it.contentId>0){
-                ToastUtil.show(this@BaseVMFragment.activity,getString(it.contentId))
-            }else{
-                ToastUtil.show(this@BaseVMFragment.activity,it.content)
+            if (it.contentId > 0) {
+                ToastUtil.show(this@BaseVMFragment.activity, getString(it.contentId))
+            } else {
+                ToastUtil.show(this@BaseVMFragment.activity, it.content)
             }
         })
 
 
         mViewModel.baseIntentModel.observe(this, Observer {
-            val startIntent = Intent(this@BaseVMFragment.activity,it.clazz)
-            if(it.dataMap!=null && it.dataMap.size>0){
+            val startIntent = Intent(this@BaseVMFragment.activity, it.clazz)
+            if (it.dataMap != null && it.dataMap.size > 0) {
                 it.dataMap.forEach { (key, value) ->
-                    startIntent.putAnyExtras(key,value)
+                    startIntent.putAnyExtras(key, value)
                 }
             }
-            startActivityForResult(startIntent,it.requestCode)
+            startActivityForResult(startIntent, it.requestCode)
         })
         mViewModel.baseFinishModel.observe(this, Observer {
-            if(it.finish){
-                if(it.dataMap!=null && it.dataMap.size>0){
+            if (it.finish) {
+                if (it.dataMap != null && it.dataMap.size > 0) {
                     val finishIntent = Intent()
                     it.dataMap.forEach { (key, value) ->
-                        finishIntent.putAnyExtras(key,value)
+                        finishIntent.putAnyExtras(key, value)
                     }
-                    this@BaseVMFragment.activity?.setResult(it.resultCode,finishIntent)
-                }else{
+                    this@BaseVMFragment.activity?.setResult(it.resultCode, finishIntent)
+                } else {
                     this@BaseVMFragment.activity?.setResult(it.resultCode)
                 }
                 this@BaseVMFragment.activity?.finish()
@@ -142,33 +153,54 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                     mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
                     mBaseBinding.baseEmpty.viewStub?.inflate()
                 }
-                mChildView?.visibility = View.GONE
+                if (mDataShowView != null) {
+                    mDataShowView!!.visibility = View.GONE
+                } else {
+                    mChildView?.visibility = View.GONE
+                }
             }
             BaseNetStatus.BASE_SHOW_SERVICE_ERROR -> {
-                if (!mBaseBinding.baseError.isInflated) {
-                    mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
-                    mBaseBinding.baseError.viewStub?.inflate()
-                }
-                mChildView?.visibility = View.GONE
+                setServiceError()
             }
             BaseNetStatus.BASE_SHOW_LOADING -> {
                 if (!mBaseBinding.baseLoad.isInflated) {
                     mBaseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
                     mBaseBinding.baseLoad.viewStub?.inflate()
                 }
-                mChildView?.visibility = View.VISIBLE
-            }
-            BaseNetStatus.BASE_SHOW_CONTENT -> {
-                mChildView?.visibility = View.VISIBLE
-            }
-            BaseNetStatus.BASE_SHOW_NET_ERROR -> {
-                if(activity is BaseActivity){
-                    (activity as BaseActivity).tipView.showNetError(activity!!)
+                if (mDataShowView != null) {
+                    mDataShowView!!.visibility = View.GONE
+                } else {
+                    mChildView?.visibility = View.GONE
                 }
             }
-            else -> {
-                DLog.d("suolong"," netStatus = ${statusModel.netStatus}")
+            BaseNetStatus.BASE_SHOW_CONTENT -> {
+                if (mDataShowView != null) {
+                    mDataShowView!!.visibility = View.VISIBLE
+                } else {
+                    mChildView?.visibility = View.VISIBLE
+                }
             }
+            BaseNetStatus.BASE_SHOW_NET_ERROR -> {
+                if (activity is BaseActivity) {
+                    (activity as BaseActivity).tipView.showNetError(activity!!)
+                }
+                setServiceError()
+            }
+            else -> {
+                DLog.d("suolong", " netStatus = ${statusModel.netStatus}")
+            }
+        }
+    }
+
+    fun setServiceError(){
+        if (!mBaseBinding.baseError.isInflated) {
+            mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
+            mBaseBinding.baseError.viewStub?.inflate()
+        }
+        if (mDataShowView != null) {
+            mDataShowView!!.visibility = View.GONE
+        } else {
+            mChildView?.visibility = View.GONE
         }
     }
 
@@ -178,14 +210,14 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
     private fun setTitle(titleModel: BaseTitleModel) {
         if (!mBaseBinding.baseTitleLayout.isInflated) {
             mBaseBinding.baseTitleLayout.viewStub?.inflate()
-            if (mChildView != null ) {
+            if (mChildView != null) {
                 val layoutParams = mChildView?.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.topMargin = dip(48.0f)
                 mChildView?.layoutParams = layoutParams
             }
         }
-        if(titleModel.noTitle){
-            if (mChildView != null ) {
+        if (titleModel.noTitle) {
+            if (mChildView != null) {
                 val layoutParams = mChildView?.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.topMargin = dip(0)
                 mChildView?.layoutParams = layoutParams
@@ -197,7 +229,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
      *  初始化子类viewModel的BrId
      * @return Int
      */
-    abstract fun initModelBrId() : Int
+    abstract fun initModelBrId(): Int
 
     /**
      * 开启子类的LiveData观察者

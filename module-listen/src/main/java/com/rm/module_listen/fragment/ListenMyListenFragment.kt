@@ -46,7 +46,7 @@ class ListenMyListenFragment :
 
     override fun initView() {
         super.initView()
-
+        mDataShowView = listenMyListenVp
         //用懒加载的方式切换fragment的时候会报错
         mViewPagerAdapter = ListenMyListenPagerAdapter(fm = activity!!.supportFragmentManager,tabList = tabList, fragmentList = mMyListenFragmentList)
         listenMyListenVp.offscreenPageLimit = 2

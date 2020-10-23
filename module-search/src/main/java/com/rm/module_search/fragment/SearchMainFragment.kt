@@ -1,14 +1,16 @@
 package com.rm.module_search.fragment
 
 import androidx.databinding.Observable
-import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getListString
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
-import com.rm.module_search.*
+import com.rm.module_search.BR
+import com.rm.module_search.HISTORY_KEY
+import com.rm.module_search.R
 import com.rm.module_search.adapter.SearchMainAdapter
 import com.rm.module_search.databinding.SearchFragmentMainBinding
+import com.rm.module_search.hotRecommend
 import com.rm.module_search.viewmodel.SearchMainViewModel
 import kotlinx.android.synthetic.main.search_fragment_main.*
 import java.lang.ref.WeakReference
@@ -31,6 +33,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     override fun initView() {
         super.initView()
+        mDataShowView = search_main_view_pager
         hintTask = AutoTask(this)
 
         mViewModel.clearInput = {
