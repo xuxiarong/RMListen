@@ -83,4 +83,6 @@ dependencies {
 
     //拍照
     implementation 'org.devio.takephoto:takephoto_library:4.1.0'
+    implementation(name:'ucrop_no_native_2.2.3release', ext:'aar')
+
 }
