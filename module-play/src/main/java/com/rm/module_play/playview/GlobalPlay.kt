@@ -5,6 +5,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
@@ -18,7 +19,9 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.DisplayUtils.getDip
+import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.R
+import com.rm.module_play.PlayConstance
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 
@@ -28,18 +31,20 @@ class GlobalPlay @JvmOverloads constructor(
 ) : View(context, attrs), AnimatorUpdateListener, LifecycleEventObserver {
     private var mPaint: Paint? = null
     private var mBpPaint: Paint? = null
-    private var mWidth = 0f
-    private var mHeight = 0f
+    private var mWidth = dip(40).toFloat()
+    private var mHeight = dip(40).toFloat()
     private val mUnreachColor = 0x88a6a6a6
-    private var mReachedColor =0xff5e5e
+    private var mReachedColor = 0xff5e5e
     private var mRadius = 0f
     private var mBarWidth = 0f
     private var mBitmap: Bitmap? = null
     private var mPlayPath: Path? = null
+
     /**
      * 0.0~1.0
      */
     private var mProgress = 0f
+
     /**
      * 矩形范围
      */
@@ -51,7 +56,7 @@ class GlobalPlay @JvmOverloads constructor(
     private var mAnimator: ValueAnimator? = null
     private var mPathEffect: CornerPathEffect? = null
     private fun init() {
-        mReachedColor=context.Color(R.color.business_color_ff5e5e)
+        mReachedColor = context.Color(R.color.business_color_ff5e5e)
         mPaint =
             Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
         mPaint?.color = Color.BLACK
@@ -67,6 +72,8 @@ class GlobalPlay @JvmOverloads constructor(
         mAnimator?.repeatCount = ValueAnimator.INFINITE
         mAnimator?.addUpdateListener(this)
         mPathEffect = CornerPathEffect(getDip(context, 2f))
+
+        setBooKImage(PlayConstance.getLastListenAudioUrl())
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -96,20 +103,25 @@ class GlobalPlay @JvmOverloads constructor(
         //3.画圆形图片
         mMatrix?.setRotate(
             mDegree.toFloat(),
-            (mBitmap?.width?.shr(1) ?: 0).toFloat() ,
+            (mBitmap?.width?.shr(1) ?: 0).toFloat(),
             (mBitmap?.height?.shr(1) ?: 0).toFloat()
         )
-        mMatrix?.postTranslate((-(mBitmap?.width?:0).shr(1)).toFloat(),(-(mBitmap?.height?:0).shr(1)).toFloat())
-        val scale = (mRadius - mBarWidth) * 1.0f / ((mBitmap?.width ?: 0).coerceAtMost(mBitmap?.height ?: 0) shr 1)
+        mMatrix?.postTranslate(
+            (-(mBitmap?.width ?: 0).shr(1)).toFloat(),
+            (-(mBitmap?.height ?: 0).shr(1)).toFloat()
+        )
+        val scale = (mRadius - mBarWidth) * 1.0f / ((mBitmap?.width ?: 0).coerceAtMost(
+            mBitmap?.height ?: 0
+        ) shr 1)
         mMatrix?.postScale(scale, scale)
         mShader?.setLocalMatrix(mMatrix)
         mBpPaint?.shader = mShader
         mBpPaint?.let { canvas.drawCircle(0f, 0f, mRadius - mBarWidth, it) }
         mPaint?.style = Paint.Style.FILL
         //4.绘制半透明蒙版
-        if (isPlaying){
+        if (isPlaying) {
             mPaint?.color = context.Color(R.color.business_text_color_ffffff)
-            mPaint?.let { canvas.drawCircle(0f, 0f, (mRadius *0.2).toFloat(), it) }
+            mPaint?.let { canvas.drawCircle(0f, 0f, (mRadius * 0.2).toFloat(), it) }
         }
         if (isPlaying) return
         mPaint?.color = 0x88ffffff.toInt()
@@ -137,15 +149,25 @@ class GlobalPlay @JvmOverloads constructor(
         else
             mAnimator?.start()
     }
+
     //设置书籍封面
-    fun setBooKImage(bookUrl: String?){
+    fun setBooKImage(bookUrl: String) {
         Glide.with(this).asBitmap()
             .load(bookUrl)
             .error(R.drawable.base_ic_default)
             .placeholder(R.drawable.base_ic_default)
             .into(object : CustomTarget<Bitmap>(mWidth.toInt(), mHeight.toInt()) {
                 override fun onLoadCleared(placeholder: Drawable?) {
+                    ExoplayerLogger.exoLog("")
                 }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    errorDrawable?.let {
+                        setImage(R.drawable.base_ic_default)
+                    }
+                }
+
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     setBitmap(resource)
                 }
@@ -205,6 +227,7 @@ class GlobalPlay @JvmOverloads constructor(
     fun setBitmap(bitmap: Bitmap?) {
         mBitmap = bitmap
         mShader = mBitmap?.let { BitmapShader(it, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP) }
+        if (!isPlaying) postInvalidate()
     }
 
     fun setRadius(radius: Float) {
@@ -268,5 +291,36 @@ class GlobalPlay @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Drawable to bitmap.
+     *
+     * @param drawable The drawable.
+     * @return bitmap
+     */
+    fun drawable2Bitmap(drawable: Drawable): Bitmap? {
+        if (drawable is BitmapDrawable) {
+            val bitmapDrawable = drawable
+            if (bitmapDrawable.bitmap != null) {
+                return bitmapDrawable.bitmap
+            }
+        }
+        val bitmap: Bitmap
+        bitmap = if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
+            Bitmap.createBitmap(
+                1, 1,
+                if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
+            )
+        } else {
+            Bitmap.createBitmap(
+                drawable.intrinsicWidth,
+                drawable.intrinsicHeight,
+                if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
+            )
+        }
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
 
 }

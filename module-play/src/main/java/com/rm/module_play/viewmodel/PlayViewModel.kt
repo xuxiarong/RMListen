@@ -36,7 +36,7 @@ import kotlinx.coroutines.withContext
  * @data: 8/24/20 10:44 AM
  * @Version: 1.0.0
  */
-open class PlayViewModel(val repository: BookPlayRepository) : BaseVMViewModel() {
+open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMViewModel() {
     val playPath = MutableLiveData<List<BaseAudioInfo>>()
     val pathList = ArrayList<BaseAudioInfo>()
     val audioChapterModel = ObservableField<AudioChapterListModel>()
