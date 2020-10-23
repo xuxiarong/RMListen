@@ -151,13 +151,12 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
                 ListenDialogCreateSheetHelper(
                     this,
                     activity
-                ).setTitle(CONTEXT.getString(R.string.listen_edit_sheet))
-                    .showEditDialog(
-                        it.sheet_id,
-                        success = { sheetName ->
-                            editSuccess(sheetName)
-                        }
-                    )
+                ).showEditDialog(
+                    it.sheet_id,
+                    success = { sheetName ->
+                        editSuccess(sheetName)
+                    }
+                )
             }
         }
     }
@@ -166,6 +165,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
      * 编辑成功
      */
     private fun editSuccess(sheetName: String) {
+        mDialog.dismiss()
         blockSuccess(sheetName)
         val map = getHasMap()
         map[ListenMySheetDetailActivity.SHEET_ID] = sheetId
