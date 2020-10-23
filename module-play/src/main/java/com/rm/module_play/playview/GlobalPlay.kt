@@ -164,7 +164,7 @@ class GlobalPlay @JvmOverloads constructor(
                 override fun onLoadFailed(errorDrawable: Drawable?) {
                     super.onLoadFailed(errorDrawable)
                     errorDrawable?.let {
-                        setImage(R.drawable.base_ic_default)
+                        setBitmap(drawable2Bitmap(it))
                     }
                 }
 
@@ -221,7 +221,6 @@ class GlobalPlay @JvmOverloads constructor(
 
     fun setImage(@DrawableRes res: Int) {
         setBitmap(BitmapFactory.decodeResource(resources, res))
-        invalidate()
     }
 
     fun setBitmap(bitmap: Bitmap?) {
