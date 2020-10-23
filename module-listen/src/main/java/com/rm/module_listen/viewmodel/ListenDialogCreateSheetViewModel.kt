@@ -3,7 +3,7 @@ package com.rm.module_listen.viewmodel
 import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
-import com.rm.baselisten.dialog.CommBottomDialog
+import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
@@ -23,9 +23,6 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
     //  输入的密码值
     val inputText = ObservableField<String>("")
 
-    //标题
-    val titleData = ObservableField<String>("")
-
     //编辑成功
     var editSuccess: (String) -> Unit = {}
 
@@ -43,19 +40,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
     /**
      * 懒加载创建dialog对象
      */
-    val mDialog by lazy {
-        CommBottomDialog().apply {
-            initDialog = {
-                dataBinding = mDataBind as ListenDialogCreateSheetBinding
-                dataBinding?.apply {
-
-                    if (!TextUtils.isEmpty(titleData.get())) {
-                        listenDialogCreateSheetTitle.text = titleData.get()
-                    }
-                }
-            }
-        }
-    }
+    var mDialog: CommonDragMvDialog? = null
 
     /**
      * 创建听单
@@ -71,7 +56,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                     baseViewModel.showContentView()
                     if (TextUtils.isEmpty(audioId)) {
                         baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_success_tip))
-                        mDialog.dismiss()
+                        mDialog?.dismiss()
                     } else {
                         addSheet(it.sheet_id)
                     }
@@ -94,10 +79,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                 onSuccess = {
                     baseViewModel.showContentView()
                     baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_success_tip))
-                    mDialog.activity?.runOnUiThread{
-                        mDialog.dismiss()
-                    }
-
+                    mDialog?.dismiss()
                 },
                 onError = {
                     baseViewModel.showContentView()
@@ -120,7 +102,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                     baseViewModel.showContentView()
                     editSuccess(bean.sheet_name)
                     baseViewModel.showToast(CONTEXT.getString(R.string.listen_edit_success_tip))
-                    mDialog.dismiss()
+                    mDialog?.dismiss()
                 },
                 onError = {
                     baseViewModel.showContentView()
@@ -163,7 +145,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
      * 取消点击事件
      */
     fun clickCancelFun() {
-        mDialog.dismiss()
+        mDialog?.dismiss()
     }
 
     /**
