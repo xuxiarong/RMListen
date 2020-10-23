@@ -151,10 +151,9 @@
                             android:textSize="@dimen/business_text_size_14sp"
                             app:layout_constraintEnd_toStartOf="@id/search_main_del_history"
                             app:layout_constraintTop_toTopOf="parent" />
-
+<!--                        bindTagClick="@{viewModel.historyItemClickFun}"-->
                         <com.rm.module_search.widget.TagLayout
                             android:id="@+id/search_main_history_tags"
-                            bindTagClick="@{viewModel.historyItemClickFun}"
                             bindTagData="@{viewModel.historyList}"
                             bindTagMaxLine="@{2}"
                             isVisible="@{viewModel.historyIsVisible}"

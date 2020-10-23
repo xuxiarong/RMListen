@@ -34,7 +34,7 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
     }
     //设置书籍封面
     fun setBooKImage(bookUrl: String?){
-        globalView.setBooKImage(bookUrl)
+        bookUrl?.let { globalView.setBooKImage(it) }
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {

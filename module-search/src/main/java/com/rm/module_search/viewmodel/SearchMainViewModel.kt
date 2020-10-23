@@ -137,12 +137,12 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         startActivity(SearchResultActivity::class.java)
     }
 
-    /**
-     * 历史 item 点击事件
-     */
-    val historyItemClickFun: (View, String) -> Unit = { _, content ->
-        toSearch(content)
-    }
+//    /**
+//     * 历史 item 点击事件
+//     */
+//    val historyItemClickFun: (View, String) -> Unit = { _, content ->
+//        toSearch(content)
+//    }
 
     /**
      * 清除历史点击事件 清除
