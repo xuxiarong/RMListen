@@ -118,22 +118,22 @@ class GlobalPlay @JvmOverloads constructor(
         mBpPaint?.shader = mShader
         mBpPaint?.let { canvas.drawCircle(0f, 0f, mRadius - mBarWidth, it) }
         mPaint?.style = Paint.Style.FILL
-        //4.绘制半透明蒙版
         if (isPlaying) {
             mPaint?.color = context.Color(R.color.business_text_color_ffffff)
             mPaint?.let { canvas.drawCircle(0f, 0f, (mRadius * 0.2).toFloat(), it) }
         }
-        if (isPlaying) return
-        mPaint?.color = 0x88ffffff.toInt()
-        canvas.drawCircle(0f, 0f, mRadius - mBarWidth, mPaint!!)
-        mPaint?.color = mReachedColor.toInt()
-        mPaint?.strokeJoin = Paint.Join.ROUND
-        mPaint?.pathEffect = mPathEffect
-        canvas.translate(mRadius / 2.3f, 0f)
+//        if (isPlaying) return
+        //4.绘制半透明蒙版
+//        mPaint?.color = 0x88ffffff.toInt()
+//        canvas.drawCircle(0f, 0f, mRadius - mBarWidth, mPaint!!)
+//        mPaint?.color = mReachedColor.toInt()
+//        mPaint?.strokeJoin = Paint.Join.ROUND
+//        mPaint?.pathEffect = mPathEffect
+//        canvas.translate(mRadius / 2.3f, 0f)
         //5.绘制开始播放按钮
-        if (mPlayPath != null && mPaint != null) {
-            canvas.drawPath(mPlayPath!!, mPaint!!)
-        }
+//        if (mPlayPath != null && mPaint != null) {
+//            canvas.drawPath(mPlayPath!!, mPaint!!)
+//        }
 
     }
 
