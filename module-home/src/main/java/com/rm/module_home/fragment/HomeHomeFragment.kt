@@ -1,8 +1,11 @@
 package com.rm.module_home.fragment
 
+import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.receiver.NetworkChangeReceiver
 import com.rm.business_lib.isHomeDouClick
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -48,7 +51,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         mViewModel.blockClick = { onBlockClick(it) }
         mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
         isHomeDouClick.observe(this, Observer {
-            if(it){
+            if (it) {
                 mDataBind.homeRv.smoothScrollToPosition(0)
                 isHomeDouClick.value = false
             }
@@ -76,6 +79,20 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     override fun startObserve() {
         mViewModel.homeAllData.observe(this, Observer {
             mHomeAdapter.setList(it)
+        })
+        NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if (NetworkChangeReceiver.isAvailable.get()) {
+                    if (mViewModel.baseStatusModel.value != null) {
+                        if (mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR
+                            || mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR
+                        ) {
+                             mViewModel.getHomeDataFromService()
+                        }
+                    }
+                }
+            }
         })
     }
 
