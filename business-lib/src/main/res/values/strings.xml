@@ -16,6 +16,7 @@
     <string name="business_followed">已关注</string>
     <string name="business_download_wait">等待中</string>
     <string name="business_download_pause">已暂停</string>
+    <string name="business_download_all_exist">你选择的章节都已经在下载列表中</string>
 
 
 </resources>

@@ -82,7 +82,13 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     fun editDownloadFinish() {
+        if(!downloadingEdit.get()){
+            DownloadMemoryCache.pauseDownloadingChapter()
+        }else{
+            DownloadMemoryCache.resumeDownloadingChapter()
+        }
         downloadFinishEdit.set(downloadFinishEdit.get().not())
+
     }
 
     //全选事件

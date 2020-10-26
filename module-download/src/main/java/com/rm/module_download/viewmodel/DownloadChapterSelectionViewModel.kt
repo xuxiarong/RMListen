@@ -155,7 +155,8 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                     onSuccess = {
                         val chapterStatusList = getChapterStatus(it.list)
                         downloadService.startDownloadWithCache(chapterStatusList)
-                        audioChapterList.addAll(chapterStatusList)
+                        DownloadMemoryCache.addDownloadingChapter(it.list)
+//                        audioChapterList.addAll(chapterStatusList)
                     },
                     onError = {
                         DLog.i("download", "$it")

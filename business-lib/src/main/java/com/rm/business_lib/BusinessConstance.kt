@@ -5,11 +5,13 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableLong
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.ktx.add
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.ktx.remove
 import com.rm.baselisten.ktx.removeAll
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
@@ -127,7 +129,7 @@ object DownloadMemoryCache {
         }
     }
 
-    fun addDownloadingChapter(chapterList: List<DownloadChapter>){
+    fun addDownloadingChapter(chapterList: MutableList<DownloadChapter>){
         if(chapterList.isEmpty()){
             return
         }
@@ -137,10 +139,15 @@ object DownloadMemoryCache {
             if(downloadingChapterList.value!=null){
                 downloadingChapterList.value!!.forEach{
                     if(it.path_url == ne.path_url){
-//                        iterator.
+                        iterator.remove()
                     }
                 }
             }
+        }
+        if(chapterList.size == 0){
+            ToastUtil.show(BaseApplication.CONTEXT,BaseApplication.CONTEXT.getString(R.string.business_download_all_exist))
+        }else{
+            downloadingChapterList.addAll(chapterList)
         }
     }
 
