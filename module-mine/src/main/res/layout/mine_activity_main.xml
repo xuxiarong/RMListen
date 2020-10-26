@@ -1,17 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/business_text_color_ffffff">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="这是Mine主页"
-        android:textColor="#000000"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#3f00"
+            app:layout_scrollFlags="scroll" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="自定义标题"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            app:bendTabIndicatorAnimation="true"
+            app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+            app:bendTabIndicatorHeight="@dimen/dp_1"
+            app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+            app:bendTabIndicatorWidth="@dimen/dp_24"
+            app:bendTabMode="fixed"
+            app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+            app:bendTabTextSelectIsBold="true"
+            app:tabMode="scrollable"
+            app:bendTabTextSize="@dimen/business_text_size_16sp"
+            app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--        <android.support.design.widget.TabLayout-->
+        <!--            android:id="@+id/tab_layout_title"-->
+        <!--            style="@style/AppTheme.TabStyle"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:tabGravity="fill"-->
+        <!--            app:tabMode="scrollable" />-->
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/page_collapsing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

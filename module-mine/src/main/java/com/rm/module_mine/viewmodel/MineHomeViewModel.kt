@@ -132,13 +132,5 @@ class MineHomeViewModel : BaseVMViewModel() {
                 BR.viewModel
             )
         }
-//
-//        TimePickerBuilder(context, OnTimeSelectListener { date, v ->
-//            SimpleDateFormat.getDateInstance()
-//
-//            val dateFormat = SimpleDateFormat.getDateInstance()
-//            val format = dateFormat.format(date)
-//            DLog.i("--------->", "format:$format")
-//        }).build().show()
     }
 }

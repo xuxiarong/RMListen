@@ -9,19 +9,39 @@
             type="com.rm.module_mine.viewmodel.MineFragmentMemberCommentViewMode" />
     </data>
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        bindOnRefreshListener="@{viewModel.refreshData}"
-        bindOnLoadMoreListener="@{viewModel.loadMoreData}"
-        bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
-        bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
-        bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            bindVerticalLayout="@{viewModel.commentAdapter}"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
+            bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
+            bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+            bindOnLoadMoreListener="@{viewModel.loadMoreData}"
+            bindOnRefreshListener="@{viewModel.refreshData}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
 
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                bindVerticalLayout="@{viewModel.commentAdapter}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <androidx.core.widget.NestedScrollView
+            isVisible="@{viewModel.isShowNoData}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/business_text_color_ffffff">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:paddingTop="@dimen/dp_20"
+                android:text="这里什么都没有～" />
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
 </layout>

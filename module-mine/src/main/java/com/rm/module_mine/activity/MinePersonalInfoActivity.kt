@@ -1,19 +1,17 @@
 package com.rm.module_mine.activity
 
 import android.content.Intent
-import android.os.Bundle
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.bean.Country
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineCropActivity.Companion.FILE_PATH
+import com.rm.module_mine.activity.MineCropActivity.Companion.RESULT_CODE_CROP
 import com.rm.module_mine.bean.UpdateUserInfoBean
 import com.rm.module_mine.databinding.MineActivityPersonalInfoBinding
 import com.rm.module_mine.viewmodel.MinePersonalInfoViewModel
-import org.devio.takephoto.model.InvokeParam
-import org.devio.takephoto.model.TContextWrap
-import org.devio.takephoto.permission.InvokeListener
-import org.devio.takephoto.permission.PermissionManager
 
 /**
  *
@@ -23,7 +21,7 @@ import org.devio.takephoto.permission.PermissionManager
  *
  */
 class MinePersonalInfoActivity :
-    BaseVMActivity<MineActivityPersonalInfoBinding, MinePersonalInfoViewModel>(), InvokeListener {
+    BaseVMActivity<MineActivityPersonalInfoBinding, MinePersonalInfoViewModel>() {
 
     companion object {
         const val RESULT_CODE_ADDRESS = 200
@@ -34,15 +32,6 @@ class MinePersonalInfoActivity :
     override fun initModelBrId() = BR.viewModel
 
     override fun getLayoutId() = R.layout.mine_activity_personal_info
-    override fun onCreate(savedInstanceState: Bundle?) {
-        mViewModel.setTakePhoto(this, this).onCreate(savedInstanceState)
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        mViewModel.takePhoto?.onSaveInstanceState(outState)
-        super.onSaveInstanceState(outState)
-    }
 
     override fun initView() {
         super.initView()
@@ -64,8 +53,8 @@ class MinePersonalInfoActivity :
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        mViewModel.takePhoto?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+        DLog.i("----->onActivityResult", "requestCode:$requestCode   resultCode:$resultCode ")
         if (requestCode == 100) {
             when (resultCode) {
                 RESULT_CODE_ADDRESS -> {
@@ -75,6 +64,13 @@ class MinePersonalInfoActivity :
 
                 }
                 RESULT_CODE_SIGNATURE -> {
+                }
+                RESULT_CODE_CROP -> {
+
+                    data?.getStringExtra(FILE_PATH)?.let {
+                        DLog.i("----->onActivityResult", "CROP $it")
+                        mViewModel.uploadPic(it)
+                    }
                 }
             }
 
@@ -95,29 +91,6 @@ class MinePersonalInfoActivity :
                 )
             )
         }
-    }
-
-    private var mInvokeParam: InvokeParam? = null
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val type =
-            PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        PermissionManager.handlePermissionsResult(this, type, mInvokeParam, mViewModel)
-
-    }
-
-    override fun invoke(invokeParam: InvokeParam?): PermissionManager.TPermissionType {
-        val type =
-            PermissionManager.checkPermission(TContextWrap.of(this), invokeParam!!.method)
-        if (PermissionManager.TPermissionType.WAIT == type) {
-            mInvokeParam = invokeParam
-        }
-        return type
     }
 
 }

@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -33,6 +34,8 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
     private var mPage = 1
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
+
+    val isShowNoData = ObservableField<Boolean>(false)
 
     val commentAdapter by lazy {
         CommonBindVMAdapter<MineMemberListDetailBean>(
@@ -94,8 +97,10 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
             refreshStateModel.finishRefresh(true)
             if (bean.list.size > 0) {
                 commentAdapter.setList(bean.list)
+                isShowNoData.set(false)
             } else {
-                showDataEmpty()
+//                showDataEmpty()
+                isShowNoData.set(true)
             }
 
         } else {
@@ -135,7 +140,7 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
         getData()
     }
 
-    fun commentBookItemClick(context: Context,audioId:String){
-        RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context,audioId)
+    fun commentBookItemClick(context: Context, audioId: String) {
+        RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
     }
 }

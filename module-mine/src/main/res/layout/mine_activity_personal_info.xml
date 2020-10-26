@@ -16,7 +16,7 @@
 
         <com.rm.module_mine.widget.MineCommonMaterialView
             android:id="@+id/mine_personal_avatar"
-            userIcon="@{viewModel.userInfo.avatar_url}"
+            userIcon="@{viewModel.userIconUrl}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{(view)->viewModel.clickAvatar(view)}"
