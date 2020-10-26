@@ -74,7 +74,8 @@ ext {
             easypermissions           : "3.0.0",
             lottieVersion             : "3.4.2",
             flexbox                   : "2.0.1",
-            lottieVersion             : "3.0.0"
+            lottieVersion             : "3.0.0",
+            palette                   : "1.0.0"
     ]
 
     dependencies = [
@@ -130,7 +131,8 @@ ext {
             xBanner            : "com.github.xiaohaibin:XBanner:androidx_v${version.xBanner}",
             fragment_ktx       : "androidx.fragment:fragment-ktx:${version.androidx_lib_version}@aar",
             flexbox            : "com.google.android:flexbox:${version.flexbox}",
-            constraintLayout   : "androidx.constraintlayout:constraintlayout:${version.constraintLayout}"
+            constraintLayout   : "androidx.constraintlayout:constraintlayout:${version.constraintLayout}",
+            palette            : "androidx.palette:palette:${version.palette}"
     ]
 
 
