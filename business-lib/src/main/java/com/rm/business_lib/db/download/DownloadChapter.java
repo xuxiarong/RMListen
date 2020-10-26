@@ -1,5 +1,7 @@
 package com.rm.business_lib.db.download;
 
+import com.rm.business_lib.DownloadConstant;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
@@ -162,5 +164,8 @@ public class DownloadChapter {
     public void setDown_edit_select(boolean down_edit_select) {
         this.down_edit_select = down_edit_select;
     }
-    
+
+    public boolean isDownloading(){
+        return down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOADING;
+    }
 }

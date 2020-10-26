@@ -2,8 +2,11 @@ package com.rm.module_download.binding
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.util.ConvertUtils
 import com.rm.business_lib.DownloadConstant
+import com.rm.business_lib.DownloadMemoryCache
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterUIStatus
@@ -53,5 +56,28 @@ fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter) {
         setImageResource(R.drawable.download_ic_item_checked)
     } else {
         setImageResource(R.drawable.download_ic_item_unchecked)
+    }
+}
+
+
+@BindingAdapter("bindDownloadText")
+fun TextView.bindDownloadText(chapter: DownloadChapter) {
+
+    when (chapter.down_status){
+        DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD->{
+            text = ""
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT->{
+            text = context.getString(R.string.business_download_wait)
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOADING->{
+            text = ConvertUtils.byte2FitMemorySize(DownloadMemoryCache.downloadingChapterSpeed.get(),1)
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE->{
+            text = context.getString(R.string.business_download_pause)
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH->{
+            text = ""
+        }
     }
 }

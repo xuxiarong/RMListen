@@ -13,6 +13,7 @@ import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
 import com.rm.module_download.R
+import com.rm.module_download.file.DownLoadFileUtils
 import com.rm.module_download.repository.DownloadRepository
 
 class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVMViewModel() {
@@ -68,6 +69,9 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     fun editDownloading() {
+        if (!downloadingEdit.get()) {
+            downloadService.pauseDownload(DownloadMemoryCache.downloadingChapter.value!!)
+        }
         downloadingEdit.set(downloadingEdit.get().not())
     }
 
@@ -75,15 +79,16 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         downloadFinishEdit.set(downloadFinishEdit.get().not())
     }
 
+    //全选事件
     fun changeDownloadingAll() {
         val selectAll = downloadingSelectAll.get().not()
         downloadingSelectAll.set(selectAll)
         downloadingAdapter.data.forEach {
             if (selectAll && !it.down_edit_select) {
-                downloadingSelectNum.set(downloadingSelectNum.get()+1)
+                downloadingSelectNum.set(downloadingSelectNum.get() + 1)
                 it.down_edit_select = selectAll
             } else if (!selectAll && it.down_edit_select) {
-                downloadingSelectNum.set(downloadingSelectNum.get()-1)
+                downloadingSelectNum.set(downloadingSelectNum.get() - 1)
                 it.down_edit_select = selectAll
             }
         }
@@ -92,9 +97,9 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
     fun changeDownloadChapterSelect(chapter: DownloadChapter) {
         if (!chapter.down_edit_select) {
-            downloadingSelectNum.set(downloadingSelectNum.get()+1)
+            downloadingSelectNum.set(downloadingSelectNum.get() + 1)
         } else {
-            downloadingSelectNum.set(downloadingSelectNum.get()-1)
+            downloadingSelectNum.set(downloadingSelectNum.get() - 1)
         }
         chapter.down_edit_select = chapter.down_edit_select.not()
     }
@@ -108,16 +113,32 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         }
     }
 
+    fun deleteSelectChapter() {
+        if (downloadingSelectNum.get() <= 0) {
+            return
+        }
+        val iterator = downloadingAdapter.data.iterator()
+        val tempList = mutableListOf<DownloadChapter>()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            if (next.down_edit_select) {
+                tempList.add(next)
+            }
+        }
+        DownloadMemoryCache.deleteDownloadingChapter(tempList)
+        downloadingSelectNum.set(downloadingSelectNum.get() - tempList.size)
+    }
+
 
     fun changeDownloadFinishAll() {
         val selectAll = downloadFinishSelectAll.get().not()
         downloadFinishSelectAll.set(selectAll)
         downloadFinishAdapter.data.forEach {
             if (selectAll && !it.edit_select) {
-                downloadFinishSelectNum.set(downloadFinishSelectNum.get()+1)
+                downloadFinishSelectNum.set(downloadFinishSelectNum.get() + 1)
                 it.edit_select = it.edit_select.not()
             } else if (!selectAll && it.edit_select) {
-                downloadFinishSelectNum.set(downloadFinishSelectNum.get()-1)
+                downloadFinishSelectNum.set(downloadFinishSelectNum.get() - 1)
                 it.edit_select = it.edit_select.not()
             }
         }
@@ -127,9 +148,9 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     fun changeDownloadFinishSelect(audio: DownloadAudio) {
         audio.edit_select = audio.edit_select.not()
         if (audio.edit_select) {
-            downloadFinishSelectNum.set(downloadFinishSelectNum.get()+1)
+            downloadFinishSelectNum.set(downloadFinishSelectNum.get() + 1)
         } else {
-            downloadFinishSelectNum.set(downloadFinishSelectNum.get()-1)
+            downloadFinishSelectNum.set(downloadFinishSelectNum.get() - 1)
         }
     }
 
@@ -146,8 +167,28 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         }
     }
 
-    fun deleteAudio() {
 
+    fun deleteAudio(audio: DownloadAudio) {
+        DownloadMemoryCache.deleteAudioToDownloadMemoryCache(audio)
+        downloadingSelectNum.set(downloadingSelectNum.get() - 1)
+        DownLoadFileUtils.deleteAudioFile(audio)
+    }
+
+    fun deleteAudio() {
+        if (downloadFinishSelectNum.get() <= 0) {
+            return
+        }
+        val iterator = downloadFinishAdapter.data.iterator()
+        val tempList = mutableListOf<DownloadAudio>()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            if (next.edit_select) {
+                tempList.add(next)
+            }
+        }
+        DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
+        downloadingSelectNum.set(downloadingSelectNum.get() - tempList.size)
+        DownLoadFileUtils.deleteAudioFile(tempList)
     }
 
 }

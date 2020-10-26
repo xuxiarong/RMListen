@@ -3,9 +3,11 @@ package com.rm.business_lib
 import androidx.annotation.IntDef
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableLong
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.ktx.add
 import com.rm.baselisten.ktx.remove
+import com.rm.baselisten.ktx.removeAll
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadStatusChangedBean
@@ -52,7 +54,6 @@ const val IS_FIRST_ADD_SHEET = "is_first_add_sheet"
 const val IS_FIRST_SUBSCRIBE = "is_first_subscribe"
 
 
-
 // ******** 我听 ********
 @IntDef(LISTEN_SHEET_LIST_MY_LIST, LISTEN_SHEET_LIST_COLLECTED_LIST)
 annotation class ListenSheetListType(val type: Int = LISTEN_SHEET_LIST_MY_LIST)
@@ -65,49 +66,103 @@ const val LISTEN_SHEET_LIST_COLLECTED_LIST = 1 //收藏听单
 val downloadStatus = MutableLiveData<DownloadStatusChangedBean>()
 val downloadProgress = MutableLiveData<DownloadProgressUpdateBean>()
 
-object DownloadMemoryCache{
-    var downloadingAudioList = MutableLiveData<MutableList<DownloadAudio>>()
-    var downloadingChapterList = MutableLiveData<MutableList<DownloadChapter>>()
+object DownloadMemoryCache {
+    var downloadingAudioList = MutableLiveData<MutableList<DownloadAudio>>(mutableListOf())
+    var downloadingChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
     var downloadingChapter = MutableLiveData<DownloadChapter>()
-    var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>()
+    var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
+    var downloadingChapterSpeed = ObservableLong(0L)
 
-    fun addAudioToDownloadMemoryCache(audio: DownloadAudio){
-        if(null!=downloadingAudioList.value){
-            if(!downloadingAudioList.value!!.contains(element = audio)){
-                downloadingAudioList.add(element = audio)
-                DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(audio)
-            }
-        }else{
+    fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
+        if (!isDownloadingAudio(audio)) {
             downloadingAudioList.add(element = audio)
             DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(audio)
         }
     }
 
+    fun isDownloadingAudio(audio: DownloadAudio): Boolean {
+        if (null != downloadingAudioList.value) {
+            val audioList = downloadingAudioList.value!!
+            audioList.forEach {
+                if (it.audio_id == audio.audio_id) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
-    fun addChapterToDownloadMemoryCache(url : String,speed : Long){
-        if(downloadingChapter.value == null){
-            updateDownloadingChapter(url)
-        }else{
-            val chapter = downloadingChapter.value
-//            chapter?.speed = speed
-            downloadingChapter.value = chapter
+    fun addAudioToDownloadMemoryCache(audioList: List<DownloadAudio>) {
+        audioList.forEach {
+            addAudioToDownloadMemoryCache(it)
         }
     }
 
-    fun updateDownloadingChapter(url: String){
+    fun deleteAudioToDownloadMemoryCache(audioList: List<DownloadAudio>) {
+        audioList.forEach {
+            deleteAudioToDownloadMemoryCache(it)
+        }
+    }
+
+    fun deleteAudioToDownloadMemoryCache(audio: DownloadAudio) {
+        if (isDownloadingAudio(audio)){
+            downloadingAudioList.remove(audio)
+            DaoUtil(DownloadAudio::class.java, "").delete(audio)
+        }
+    }
+
+
+    fun addChapterToDownloadMemoryCache(url: String, speed: Long) {
+        if (downloadingChapter.value == null) {
+            updateDownloadingChapter(url)
+        } else {
+            val chapter = downloadingChapter.value
+            downloadingChapter.value = chapter
+        }
+        downloadingChapterSpeed.set(speed)
+
+    }
+
+    fun updateDownloadingChapter(url: String) {
         downloadingChapterList.value?.forEach {
-            if(it.path_url == url){
+            if (it.path_url == url) {
                 downloadingChapter.value = it
             }
         }
     }
 
-    fun setDownloadFinishChapter(){
-        if(downloadingChapter.value!=null){
-            downloadingChapterList.remove(downloadingChapter.value!!)
-            downloadFinishChapterList.add(downloadingChapter.value!!)
-            DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(downloadingChapter.value!!)
+    fun editDownloading() {
+        if (downloadingChapter.value != null) {
+            val chapter = downloadingChapter.value!!
+            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+            downloadingChapter.value = chapter
         }
     }
+
+    fun quitEditDownloading() {
+        if (downloadingChapter.value != null) {
+            val chapter = downloadingChapter.value!!
+            chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
+            downloadingChapter.value = chapter
+        }
+    }
+
+
+    fun setDownloadFinishChapter() {
+        downloadingChapterList.remove(downloadingChapter.value!!)
+        downloadFinishChapterList.add(downloadingChapter.value!!)
+        DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(downloadingChapter.value!!)
+    }
+
+    fun deleteDownloadingChapter(chapter: DownloadChapter) {
+        downloadingChapterList.remove(chapter)
+        DaoUtil(DownloadChapter::class.java, "").delete(chapter)
+    }
+
+    fun deleteDownloadingChapter(chapterList: List<DownloadChapter>) {
+        downloadingChapterList.removeAll(chapterList)
+        DaoUtil(DownloadChapter::class.java, "").delete(chapterList)
+    }
+
 }
 
