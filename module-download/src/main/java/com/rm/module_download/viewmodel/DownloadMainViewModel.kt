@@ -57,20 +57,22 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
 
     fun getDownloadFromDao() {
-//        launchOnIO {
-//            val allData = DaoUtil(DownloadAudio::class.java, "").queryAll()
-//            DLog.d("suolong", "${allData?.size}")
-//            allData?.let {
-//                if (allData.isNotEmpty()) {
-//                    downloadAudioList.postValue(allData.toMutableList())
-//                }
-//            }
-//        }
+        if(downloadAudioList.value == null){
+            DownloadMemoryCache.getDownAudioOnAppCreate()
+        }else{
+            val tempList = downloadAudioList.value!!
+            tempList.forEach {
+                it.edit_select = false
+            }
+            DownloadMemoryCache.downloadingAudioList.value = tempList
+        }
     }
 
     fun editDownloading() {
         if (!downloadingEdit.get()) {
-            downloadService.pauseDownload(DownloadMemoryCache.downloadingChapter.value!!)
+            if(DownloadMemoryCache.downloadingChapter.value!=null){
+                downloadService.pauseDownload(DownloadMemoryCache.downloadingChapter.value!!)
+            }
         }
         downloadingEdit.set(downloadingEdit.get().not())
     }

@@ -83,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/dp_11"
+                isVisible="@{itemBean.isDownloading()}"
                 android:text="@{@string/business_down_and_total_size(DownLoadFileUtils.INSTANCE.getChapterFileSize(itemBean),ConvertUtils.byte2FitMemorySize(itemBean.size,1))}"
                 tools:text="144m/200m"
                 android:textColor="@color/business_text_color_b1b1b1"

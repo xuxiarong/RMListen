@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.NonNull
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.ConvertUtils
+import com.rm.baselisten.util.FileUtils
 import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
@@ -73,7 +74,7 @@ object DownLoadFileUtils {
         try {
             val file = File(createFileWithAudio(audio.audio_id.toString()).absolutePath)
             if (file.exists() && file.isDirectory) {
-                return file.delete()
+                return FileUtils.delete(file)
             }
         } catch (e: Exception) {
             e.printStackTrace()

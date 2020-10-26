@@ -9,11 +9,12 @@ import com.rm.baselisten.ktx.add
 import com.rm.baselisten.ktx.remove
 import com.rm.baselisten.ktx.removeAll
 import com.rm.business_lib.bean.LoginUserBean
-import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
-import com.rm.business_lib.bean.download.DownloadStatusChangedBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * desc   : 基础业务常量类
@@ -62,11 +63,8 @@ const val LISTEN_SHEET_LIST_MY_LIST = 0 //我的听单
 const val LISTEN_SHEET_LIST_COLLECTED_LIST = 1 //收藏听单
 
 
-// ******** download ********
-val downloadStatus = MutableLiveData<DownloadStatusChangedBean>()
-val downloadProgress = MutableLiveData<DownloadProgressUpdateBean>()
-
 object DownloadMemoryCache {
+
     var downloadingAudioList = MutableLiveData<MutableList<DownloadAudio>>(mutableListOf())
     var downloadingChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
     var downloadingChapter = MutableLiveData<DownloadChapter>()
@@ -105,31 +103,42 @@ object DownloadMemoryCache {
     }
 
     fun deleteAudioToDownloadMemoryCache(audio: DownloadAudio) {
-        if (isDownloadingAudio(audio)){
+        if (isDownloadingAudio(audio)) {
             downloadingAudioList.remove(audio)
             DaoUtil(DownloadAudio::class.java, "").delete(audio)
         }
     }
 
 
-    fun addChapterToDownloadMemoryCache(url: String, speed: Long) {
-        if (downloadingChapter.value == null) {
-            updateDownloadingChapter(url)
-        } else {
-            val chapter = downloadingChapter.value
-            downloadingChapter.value = chapter
+//    fun addChapterToDownloadMemoryCache(url: String, speed: Long) {
+//        if (downloadingChapter.value == null) {
+//            updateDownloadingChapter(url)
+//        } else {
+//            val chapter = downloadingChapter.value
+//            downloadingChapter.value = chapter
+//        }
+//        downloadingChapterSpeed.set(speed)
+//    }
+
+    fun updateDownloadingChapter(url: String, status: Int) {
+        if (downloadingChapterList.value == null) {
+            downloadingChapterList.value = mutableListOf()
         }
-        downloadingChapterSpeed.set(speed)
-
-    }
-
-    fun updateDownloadingChapter(url: String) {
-        downloadingChapterList.value?.forEach {
+        val tempList = downloadingChapterList.value
+        tempList?.forEach {
             if (it.path_url == url) {
                 downloadingChapter.value = it
+                it.down_status = status
+                downloadingChapterList.value = tempList
+                return
             }
         }
     }
+
+    fun updateDownloadingSpeed(speed: Long) {
+        downloadingChapterSpeed.set(speed)
+    }
+
 
     fun editDownloading() {
         if (downloadingChapter.value != null) {
@@ -149,9 +158,11 @@ object DownloadMemoryCache {
 
 
     fun setDownloadFinishChapter() {
-        downloadingChapterList.remove(downloadingChapter.value!!)
-        downloadFinishChapterList.add(downloadingChapter.value!!)
-        DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(downloadingChapter.value!!)
+        if (downloadingChapter.value != null) {
+            downloadingChapterList.remove(downloadingChapter.value!!)
+            downloadFinishChapterList.add(downloadingChapter.value!!)
+            DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(downloadingChapter.value!!)
+        }
     }
 
     fun deleteDownloadingChapter(chapter: DownloadChapter) {
@@ -162,6 +173,15 @@ object DownloadMemoryCache {
     fun deleteDownloadingChapter(chapterList: List<DownloadChapter>) {
         downloadingChapterList.removeAll(chapterList)
         DaoUtil(DownloadChapter::class.java, "").delete(chapterList)
+    }
+
+    fun getDownAudioOnAppCreate() {
+        GlobalScope.launch(Dispatchers.IO) {
+            val audioList = DaoUtil(DownloadAudio::class.java, "").queryAll()
+            if (audioList != null) {
+                downloadingAudioList.postValue(audioList.toMutableList())
+            }
+        }
     }
 
 }
