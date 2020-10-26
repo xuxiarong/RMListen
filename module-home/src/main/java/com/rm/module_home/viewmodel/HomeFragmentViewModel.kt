@@ -81,7 +81,9 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         allData.add(HomeMenuRvModel())
 
         homeModel.block_list.forEach {
-            setBlockData(allData, it)
+            if(it.audio_list.list.size>0){
+                setBlockData(allData, it)
+            }
         }
         homeMenuList.value = menuList
         homeAllData.value = allData

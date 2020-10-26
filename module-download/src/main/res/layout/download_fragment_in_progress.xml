@@ -27,6 +27,7 @@
             android:layout_marginTop="11dp"
             app:rv_isRadiusHalfHeight="true"
             android:layout_gravity="end"
+            bindClick="@{()->viewModel.operatingAll()}"
             app:rv_strokeColor="@color/business_color_e8e8e8"
             app:rv_strokeWidth="@dimen/dp_1"
             >

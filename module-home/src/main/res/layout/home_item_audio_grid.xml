@@ -29,7 +29,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
             bindUrl="@{item.gridRecommendRvModel.cover_url}"
-            corner="@{8}"
+            corner="@{8.0f}"
             android:layout_width="106dp"
             android:layout_height="106dp"
             android:scaleType="fitXY"

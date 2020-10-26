@@ -55,6 +55,10 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
     var downloadAudioList = DownloadMemoryCache.downloadingAudioList
 
+    fun operatingAll(){
+        DownloadMemoryCache.pauseDownloadingChapter()
+    }
+
 
     fun getDownloadFromDao() {
         if(downloadAudioList.value == null){
@@ -111,7 +115,11 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             changeDownloadChapterSelect(chapter = chapter)
             downloadingAdapter.notifyItemChanged(downloadingAdapter.data.indexOf(chapter))
         } else {
-
+            if(chapter.isDownloading){
+                downloadService.pauseDownload(chapter)
+            }else{
+                downloadService.startDownloadWithCache(chapter)
+            }
         }
     }
 

@@ -607,6 +607,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailModel.list.audio_cover_url,
                     homeDetailModel.list.status,
                     homeDetailModel.list.last_sequence,
+                    0,
+                    0L,
                     false
                 )
             )

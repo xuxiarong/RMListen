@@ -33,7 +33,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         val INSTANCE: DownloadFileManager by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { DownloadFileManager() }
         const val minIntervalMillisCallbackProcess = 200  //回掉间隔毫秒数
         const val maxParallelRunningCount = 1  //最大并行数
-        const val TAG = "DownloadFileManager"
+        const val TAG = "DownloadFileManager_suolong"
     }
 
     init {

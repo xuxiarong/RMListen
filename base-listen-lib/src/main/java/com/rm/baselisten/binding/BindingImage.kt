@@ -83,3 +83,9 @@ fun ImageView.blurUrl(blurUrl: String?) {
     val url = blurUrl ?: ""
     loadBlurImage(this, url)
 }
+
+@BindingAdapter("blurRoundUrl")
+fun ImageView.blurRoundUrl(blurUrl: String?) {
+    val url = blurUrl ?: ""
+    loadRoundCornersImage(8.0f,this, url)
+}

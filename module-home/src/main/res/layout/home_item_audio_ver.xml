@@ -25,12 +25,13 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_book_adapter_icon"
             bindUrl="@{item.verModel.cover_url}"
-            corner="@{8}"
+            corner="@{8.0f}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/home_book_adapter_tips"
