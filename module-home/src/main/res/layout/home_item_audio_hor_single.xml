@@ -25,10 +25,10 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
             bindUrl="@{item.singleModel.cover_url}"
-            corner="@{8}"
+            corner="@{8.0f}"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitXY" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopTag"

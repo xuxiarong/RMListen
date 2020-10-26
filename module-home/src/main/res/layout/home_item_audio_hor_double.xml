@@ -29,7 +29,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
                 bindUrl="@{item.topRecommendModel.cover_url}"
-                corner="@{8}"
+                corner="@{8.0f}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:scaleType="fitXY"
@@ -84,7 +84,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 bindUrl="@{item.bottomRecommendModel.cover_url}"
-                corner="@{8}"
+                corner="@{8.0f}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:scaleType="fitXY"

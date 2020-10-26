@@ -6,8 +6,10 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableLong
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.ktx.add
+import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.ktx.remove
 import com.rm.baselisten.ktx.removeAll
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
@@ -90,6 +92,22 @@ object DownloadMemoryCache {
         return false
     }
 
+    fun updateDownloadingAudio(chapter: DownloadChapter): Boolean {
+        if (null != downloadingAudioList.value) {
+            val audioList = downloadingAudioList.value!!
+            audioList.forEach {
+                if (it.audio_id == chapter.audio_id) {
+                    it.download_num += 1
+                    it.down_size += chapter.size
+                    downloadingAudioList.addAll(audioList)
+                    DLog.d("suolong","name = ${chapter.audio_name}" + it.down_size)
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     fun addAudioToDownloadMemoryCache(audioList: List<DownloadAudio>) {
         audioList.forEach {
             addAudioToDownloadMemoryCache(it)
@@ -109,16 +127,37 @@ object DownloadMemoryCache {
         }
     }
 
+    fun addDownloadingChapter(chapterList: List<DownloadChapter>){
+        if(chapterList.isEmpty()){
+            return
+        }
+        val iterator = chapterList.iterator()
+        while (iterator.hasNext()){
+            val ne = iterator.next()
+            if(downloadingChapterList.value!=null){
+                downloadingChapterList.value!!.forEach{
+                    if(it.path_url == ne.path_url){
+//                        iterator.
+                    }
+                }
+            }
+        }
+    }
 
-//    fun addChapterToDownloadMemoryCache(url: String, speed: Long) {
-//        if (downloadingChapter.value == null) {
-//            updateDownloadingChapter(url)
-//        } else {
-//            val chapter = downloadingChapter.value
-//            downloadingChapter.value = chapter
-//        }
-//        downloadingChapterSpeed.set(speed)
-//    }
+
+    fun addDownloadingChapter(chapter: DownloadChapter) {
+        if(downloadingChapterList.value!=null){
+            val downloadList = downloadingChapterList.value!!
+            downloadList.forEach {
+                if(it.path_url == chapter.path_url){
+                    DLog.d("suolong","${chapter.chapter_name}已存在下载队列中")
+                    return
+                }
+            }
+        }
+        downloadingChapterList.add(chapter)
+    }
+
 
     fun updateDownloadingChapter(url: String, status: Int) {
         if (downloadingChapterList.value == null) {
@@ -139,8 +178,7 @@ object DownloadMemoryCache {
         downloadingChapterSpeed.set(speed)
     }
 
-
-    fun editDownloading() {
+    fun pauseDownloadingChapter() {
         if (downloadingChapter.value != null) {
             val chapter = downloadingChapter.value!!
             chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
@@ -148,12 +186,23 @@ object DownloadMemoryCache {
         }
     }
 
-    fun quitEditDownloading() {
+    fun resumeDownloadingChapter() {
         if (downloadingChapter.value != null) {
             val chapter = downloadingChapter.value!!
-            chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
+            if (chapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE) {
+                chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
+            }
             downloadingChapter.value = chapter
         }
+    }
+
+
+    fun editDownloading() {
+        pauseDownloadingChapter()
+    }
+
+    fun quitEditDownloading() {
+        resumeDownloadingChapter()
     }
 
 
@@ -162,6 +211,8 @@ object DownloadMemoryCache {
             downloadingChapterList.remove(downloadingChapter.value!!)
             downloadFinishChapterList.add(downloadingChapter.value!!)
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(downloadingChapter.value!!)
+            updateDownloadingAudio(chapter = downloadingChapter.value!!)
+
         }
     }
 
