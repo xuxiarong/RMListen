@@ -5,7 +5,6 @@
     <application
         android:name="debug.MineApplication"
         android:icon="@mipmap/mine_ic_launcher"
-        android:label="@string/mine_app_name"
         android:supportsRtl="true"
         android:theme="@style/BusinessAppTheme">
         <!-- ui适配设置-->
@@ -33,6 +32,7 @@
         <activity android:name=".activity.MineMemberActivity" />
         <activity android:name=".activity.MineMemberFollowAndFansActivity" />
         <activity android:name=".activity.MineMemberReleaseBooksActivity" />
+        <activity android:name=".activity.MineCropActivity" />
 
     </application>
 </manifest>

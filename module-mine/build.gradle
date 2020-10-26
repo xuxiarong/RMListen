@@ -79,10 +79,13 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':component-comm')
     implementation rootProject.ext.dependencies["material"]
+    implementation 'androidx.palette:palette:1.0.0'
     kapt rootProject.ext.dependencies["router_compiler"]
 
     //拍照
-    implementation 'org.devio.takephoto:takephoto_library:4.1.0'
-    implementation(name:'ucrop_no_native_2.2.3release', ext:'aar')
+//    implementation 'org.devio.takephoto:takephoto_library:4.1.0'
 
+    implementation 'com.github.BugRui.CameraExtend:cameralibrary:1.1.2'
+
+//    implementation 'com.lzy.widget:imagepicker:0.6.1'
 }

@@ -2,9 +2,16 @@ package com.rm.module_mine.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.util.TimeUtils
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.bean.*
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 /**
  * desc   :
@@ -104,6 +111,22 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         pageSize: Int
     ): BaseResult<MinePublishBean> {
         return apiCall { service.minePublishList(member_id, page, pageSize) }
+    }
+
+    /**
+     * 上传头像
+     * @param filePath Int
+     */
+    suspend fun uploadAvatar(
+        filePath: String
+    ): BaseResult<MineUploadPic> {
+        val file = File(filePath)
+        val img = file.asRequestBody("image/png".toMediaType())
+        val request = MultipartBody.Builder()
+            .addFormDataPart("file", filePath, img)
+            .build()
+
+        return apiCall { service.uploadAvatar(request.parts[0]) }
     }
 
 }

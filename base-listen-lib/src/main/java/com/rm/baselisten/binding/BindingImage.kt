@@ -10,6 +10,7 @@ import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.thridlib.glide.loadCircleImage
 import com.rm.baselisten.thridlib.glide.loadImage
 import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
+import com.rm.baselisten.util.DLog
 
 /**
  * desc   :
@@ -53,6 +54,7 @@ fun ImageView.bindUrl(
     isCircle: Boolean = false,
     defaultIcon: Drawable? = null
 ) {
+    DLog.i("------>bindUrl","$bindUrl")
     val url = bindUrl ?: ""
     when {
         isCircle -> {

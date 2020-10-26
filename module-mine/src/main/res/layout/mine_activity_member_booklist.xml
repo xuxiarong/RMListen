@@ -19,8 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/business_text_color_ffffff"
-            android:paddingTop="@dimen/dp_48">
+            android:background="@drawable/business_shape_white_top_radius_12dp">
 
             <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
                 android:id="@+id/tab_mine_member_list"
@@ -42,7 +41,7 @@
             <com.rm.business_lib.wedgit.NoTouchViewPager
                 android:id="@+id/mine_member_detail_viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="720dp"
+                android:layout_height="500dp"
                 android:layout_marginTop="@dimen/dp_16"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tab_mine_member_list" />

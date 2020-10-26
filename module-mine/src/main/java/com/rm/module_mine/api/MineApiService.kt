@@ -54,7 +54,7 @@ interface MineApiService {
      */
     @Multipart
     @POST("member/avatars")
-    suspend fun uploadAvatar(@Part body: MultipartBody.Part): BaseResponse<Any>
+    suspend fun uploadAvatar(@Part body: MultipartBody.Part): BaseResponse<MineUploadPic>
 
     /**
      * 用户/主播详情

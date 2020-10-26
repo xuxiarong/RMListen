@@ -21,7 +21,7 @@
             android:layout_height="210dp"
             android:background="@color/businessWhite"
             android:orientation="vertical"
-            android:stateListAnimator="@drawable/listen_app_bar_elevation">
+            android:stateListAnimator="@drawable/business_app_bar_elevation">
 
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
