@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.multidex.MultiDex
+import com.rm.baselisten.receiver.NetworkChangeReceiver
 import kotlin.properties.Delegates
 
 /**
@@ -20,7 +21,7 @@ open class BaseApplication : Application(){
     override fun onCreate() {
         super.onCreate()
         CONTEXT = applicationContext
-
+        NetworkChangeReceiver.registerNetWorkReceiver()
     }
 
     override fun attachBaseContext(base: Context?) {

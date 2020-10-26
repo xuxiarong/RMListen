@@ -87,6 +87,7 @@
                 android:gravity="center"
                 app:rv_isRadiusHalfHeight="true"
                 app:rv_backgroundColor="@color/business_color_ff5e5e"
+                android:onClick="@{()->viewModel.deleteSelectChapter()}"
                 android:text="@{viewModel.downloadingSelectNum == 0?@string/download_delete:@string/download_delete_number(viewModel.downloadingSelectNum)}"
                 android:layout_gravity="end"
                 />

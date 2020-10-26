@@ -78,6 +78,8 @@ class DownloadMainActivity :
             finish()
         }
         download_detail_view_pager.setCurrentItem(0,false)
+        mViewModel.downloadingEdit.set(false)
+        mViewModel.downloadFinishEdit.set(false)
         mViewModel.downloadingSelected.set(true)
     }
 }

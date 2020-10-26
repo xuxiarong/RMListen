@@ -79,7 +79,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':component-comm')
     implementation rootProject.ext.dependencies["material"]
-    implementation 'androidx.palette:palette:1.0.0'
     kapt rootProject.ext.dependencies["router_compiler"]
 
     //拍照

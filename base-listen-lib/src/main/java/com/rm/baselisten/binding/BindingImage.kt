@@ -5,7 +5,6 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.R
 import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.thridlib.glide.loadCircleImage
 import com.rm.baselisten.thridlib.glide.loadImage

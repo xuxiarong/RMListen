@@ -52,9 +52,11 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         launchOnIO {
             repository.getHomeData().checkResult(
                 onSuccess = {
+                    showContentView()
                     refreshStatusModel.finishRefresh(true)
                     dealHomeData(it)
                 }, onError = {
+                    showServiceError()
                     refreshStatusModel.finishRefresh(false)
                     DLog.d("suolong ", "error = $it")
                 }

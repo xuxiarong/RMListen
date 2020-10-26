@@ -7,6 +7,7 @@
         <import type="com.rm.baselisten.util.SDCardUtils" />
 
         <import type="com.rm.baselisten.util.ConvertUtils" />
+        <import type="com.rm.module_download.file.DownLoadFileUtils" />
 
         <variable
             name="itemBean"
@@ -74,7 +75,7 @@
                 android:layout_height="@dimen/dp_22"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/dp_16"
-                android:src="@drawable/download_ic_pause_download"
+                android:src="@{itemBean.isDownloading()?@drawable/download_ic_pause_download:@drawable/download_ic_start_download}"
                 tools:src="@drawable/download_ic_pause_download" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -82,7 +83,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/dp_11"
-                android:text="@{@string/business_down_and_total_size(ConvertUtils.byte2FitMemorySize(itemBean.size,1),ConvertUtils.byte2FitMemorySize(itemBean.size,1))}"
+                isVisible="@{itemBean.isDownloading()}"
+                android:text="@{@string/business_down_and_total_size(DownLoadFileUtils.INSTANCE.getChapterFileSize(itemBean),ConvertUtils.byte2FitMemorySize(itemBean.size,1))}"
+                tools:text="144m/200m"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 
@@ -91,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="@dimen/dp_11"
-                android:text="@{@string/business_down_speed(ConvertUtils.byte2FitMemorySize(1000L,1))}"
+                bindDownloadText="@{itemBean}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 

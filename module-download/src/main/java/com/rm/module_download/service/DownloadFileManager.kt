@@ -10,13 +10,11 @@ import com.liulishuo.okdownload.core.listener.DownloadListener4WithSpeed
 import com.liulishuo.okdownload.core.listener.assist.Listener4SpeedAssistExtend
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.DLog
+import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.DownloadMemoryCache
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
-import com.rm.business_lib.bean.download.DownloadStatusChangedBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.downloadProgress
-import com.rm.business_lib.downloadStatus
 import com.rm.module_download.util.TagUtil
 import com.rm.module_download.util.getParentFile
 import java.io.File
@@ -67,7 +65,6 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         createTask(chapter.path_url, chapter.audio_id.toString(),chapter.chapter_name).also {
             TagUtil.saveHolder(it, chapter)
             taskList[chapter.path_url] = it
-            downloadStatus.value=(DownloadStatusChangedBean(chapter.path_url, DownloadUIStatus.DOWNLOAD_PENDING))
         }.run {
             enqueue(queueListener)
         }
@@ -78,7 +75,6 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
             createTask(modelList[index].path_url, modelList[index].audio_id.toString(),modelList[index].chapter_name).also {
                 TagUtil.saveHolder(it, modelList[index])
                 taskList[modelList[index].path_url] = it
-                downloadStatus.value=(DownloadStatusChangedBean(modelList[index].path_url, DownloadUIStatus.DOWNLOAD_PENDING))
             }
         }
         DownloadTask.enqueue(taskList, queueListener)
@@ -146,7 +142,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
 
     override fun taskStart(task: DownloadTask) {
         DLog.d(TAG," taskStart name = ${task.filename}")
-        DownloadMemoryCache.updateDownloadingChapter(task.url)
+        DownloadMemoryCache.updateDownloadingChapter(task.url,DownloadConstant.CHAPTER_STATUS_DOWNLOADING)
     }
 
     override fun blockEnd(task: DownloadTask, blockIndex: Int, info: BlockInfo?, blockSpeed: SpeedCalculator) {
@@ -160,19 +156,17 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         DLog.d(TAG," taskEnd name = ${task.filename} --- cause = $cause --- taskSpeed = ${taskSpeed.speed()}" )
         when (cause) {
             EndCause.COMPLETED -> DownloadMemoryCache.setDownloadFinishChapter()
-            else -> downloadStatus.value=(DownloadStatusChangedBean(task.url, DownloadUIStatus.DOWNLOAD_PAUSED))
+            else -> DownloadMemoryCache.updateDownloadingChapter(task.url,DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
         }
     }
 
     override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
         DLog.d(TAG," progress name = ${task.filename} --- currentOffset = $currentOffset --- taskSpeed = ${taskSpeed.speed()}" )
-        downloadProgress.value=(DownloadProgressUpdateBean(task.url, currentOffset, taskSpeed.speed()))
-        DownloadMemoryCache.addChapterToDownloadMemoryCache(url = task.url,speed = currentOffset)
+        DownloadMemoryCache.updateDownloadingSpeed(speed = currentOffset)
     }
 
     override fun connectEnd(task: DownloadTask, blockIndex: Int, responseCode: Int, responseHeaderFields: MutableMap<String, MutableList<String>>) {
         DLog.d(TAG," connectEnd name = ${task.filename}")
-        downloadStatus.value=(DownloadStatusChangedBean(task.url, DownloadUIStatus.DOWNLOAD_IN_PROGRESS))
     }
 
     override fun connectStart(task: DownloadTask, blockIndex: Int, requestHeaderFields: MutableMap<String, MutableList<String>>) {
