@@ -2,10 +2,8 @@ package com.rm.module_listen.fragment
 
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.business_lib.DownloadMemoryCache
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
 import com.rm.component_comm.download.DownloadService
@@ -65,9 +63,9 @@ class ListenMyListenFragment :
                 }
             }
         })
-        DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
-            mViewModel.downloadNumber.set(it.size)
-        })
+//        DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
+//            mViewModel.downloadNumber.set(it.size)
+//        })
 
     }
 

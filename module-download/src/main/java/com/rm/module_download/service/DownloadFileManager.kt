@@ -11,10 +11,10 @@ import com.liulishuo.okdownload.core.listener.assist.Listener4SpeedAssistExtend
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.DLog
 import com.rm.business_lib.DownloadConstant
-import com.rm.business_lib.DownloadMemoryCache
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.module_download.DownloadMemoryCache
 import com.rm.module_download.util.TagUtil
 import com.rm.module_download.util.getParentFile
 import java.io.File

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
 
     var isSlidingToLeft = false
+    var scrollStopCount = 0
     var lastOpenTime = System.currentTimeMillis()
     if (action == null) {
         return
@@ -39,7 +40,11 @@ fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
                         return
                     }
                     lastOpenTime = System.currentTimeMillis()
-                    action()
+                    if(scrollStopCount>1){
+                        action()
+                    }else{
+                        scrollStopCount++
+                    }
                 }
             }
         }

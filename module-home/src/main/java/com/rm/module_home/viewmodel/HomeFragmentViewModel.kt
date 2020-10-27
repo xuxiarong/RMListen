@@ -81,7 +81,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         allData.add(HomeMenuRvModel())
 
         homeModel.block_list.forEach {
-            if(it.audio_list.list.size>0){
+            if (it.audio_list.list.size > 0) {
                 setBlockData(allData, it)
             }
         }
@@ -114,7 +114,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 //如果板块1的数据是奇数，那么底下的那一行会少一个数据，这里做下处理
                 var doubleModel: HomeAudioHorDoubleModel
                 for (i in 0 until topList.size) {
-                    doubleModel = if (i == topList.size - 1) {
+                    doubleModel = if (i == topList.size - 1 && topList.size > bottomList.size) {
                         HomeAudioHorDoubleModel(topList[i], topList[i], false)
                     } else {
                         HomeAudioHorDoubleModel(topList[i], bottomList[i])
@@ -143,7 +143,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
                 allData.add(HomeAudioHorSingleRvModel(horSingList))
             }
-            BLOCK_HOR_VEr -> {
+            BLOCK_HOR_VER -> {
                 val verSingList = ArrayList<MultiItemEntity>()
                 block.audio_list.list.forEach {
                     verSingList.add(HomeAudioVerModel(it))
@@ -184,10 +184,10 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     }
 
     companion object {
-        const val BLOCK_HOR_DOUBLE = 1
+        const val BLOCK_HOR_SINGLE = 1
         const val BLOCK_HOR_GRID = 2
-        const val BLOCK_HOR_SINGLE = 3
-        const val BLOCK_HOR_VEr = 4
+        const val BLOCK_HOR_DOUBLE = 3
+        const val BLOCK_HOR_VER = 4
     }
 
 }

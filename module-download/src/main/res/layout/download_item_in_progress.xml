@@ -8,7 +8,7 @@
 
         <import type="com.rm.baselisten.util.ConvertUtils" />
         <import type="com.rm.module_download.file.DownLoadFileUtils" />
-        <import type="com.rm.business_lib.DownloadMemoryCache"/>
+        <import type="com.rm.module_download.DownloadMemoryCache"/>
 
         <variable
             name="itemBean"

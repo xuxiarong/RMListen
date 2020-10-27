@@ -5,13 +5,13 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.DownloadMemoryCache
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
+import com.rm.module_download.DownloadMemoryCache
 import com.rm.module_download.R
 import com.rm.module_download.file.DownLoadFileUtils
 import com.rm.module_download.repository.DownloadRepository

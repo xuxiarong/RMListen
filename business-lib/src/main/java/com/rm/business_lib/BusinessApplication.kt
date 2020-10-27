@@ -86,11 +86,4 @@ open class BusinessApplication : BaseApplication() {
             }
         }
     }
-
-    /**
-     * 从数据库获取已下载书籍列表
-     */
-    private fun initAppData(){
-        DownloadMemoryCache.getDownAudioOnAppCreate()
-    }
 }
