@@ -34,4 +34,15 @@ object DownloadConstant {
     const val CHAPTER_PAY_STATUS_NEED_BUY = 1
     const val CHAPTER_PAY_STATUS_VIP = 2
 
+    fun getDownloadText(status : Int) : String{
+       return when(status){
+            CHAPTER_STATUS_NOT_DOWNLOAD-> "未下载"
+            CHAPTER_STATUS_DOWNLOAD_WAIT-> "等待中"
+            CHAPTER_STATUS_DOWNLOADING-> "正在下载"
+            CHAPTER_STATUS_DOWNLOAD_PAUSE-> "暂停下载"
+            CHAPTER_STATUS_DOWNLOAD_FINISH-> "已完成"
+            else ->"未知状态"
+        }
+    }
+
 }

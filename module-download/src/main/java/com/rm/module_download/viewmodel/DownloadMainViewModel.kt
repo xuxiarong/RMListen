@@ -45,6 +45,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     var downloadingEdit = ObservableBoolean(false)
     var downloadingSelectAll = ObservableBoolean(false)
     var downloadingSelectNum = ObservableInt(0)
+    var downloadSpeed = DownloadMemoryCache.downloadingChapterSpeed
 
     var downloadFinishSelected = ObservableBoolean(false)
     var downloadFinishEdit = ObservableBoolean(false)

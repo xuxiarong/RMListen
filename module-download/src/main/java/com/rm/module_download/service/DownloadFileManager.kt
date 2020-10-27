@@ -156,13 +156,14 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         DLog.d(TAG," taskEnd name = ${task.filename} --- cause = $cause --- taskSpeed = ${taskSpeed.speed()}" )
         when (cause) {
             EndCause.COMPLETED -> DownloadMemoryCache.setDownloadFinishChapter()
+            EndCause.CANCELED -> DownloadMemoryCache.pauseDownloadingChapter()
             else -> DownloadMemoryCache.updateDownloadingChapter(task.url,DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
         }
     }
 
     override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
         DLog.d(TAG," progress name = ${task.filename} --- currentOffset = $currentOffset --- taskSpeed = ${taskSpeed.speed()}" )
-        DownloadMemoryCache.updateDownloadingSpeed(speed = currentOffset)
+        DownloadMemoryCache.updateDownloadingSpeed(speed = taskSpeed.speed(),currentOffset = currentOffset,url = task.url)
     }
 
     override fun connectEnd(task: DownloadTask, blockIndex: Int, responseCode: Int, responseHeaderFields: MutableMap<String, MutableList<String>>) {

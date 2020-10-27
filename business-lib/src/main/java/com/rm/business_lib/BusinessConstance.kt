@@ -3,13 +3,13 @@ package com.rm.business_lib
 import androidx.annotation.IntDef
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableLong
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.ktx.add
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.ktx.remove
 import com.rm.baselisten.ktx.removeAll
+import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.bean.LoginUserBean
@@ -73,7 +73,8 @@ object DownloadMemoryCache {
     var downloadingChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
     var downloadingChapter = MutableLiveData<DownloadChapter>()
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
-    var downloadingChapterSpeed = ObservableLong(0L)
+    var downloadingChapterSpeed = ObservableField<String>("")
+    var downloadingChapterCurrentSize = ObservableField<String>("")
 
     fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
         if (!isDownloadingAudio(audio)) {
@@ -181,8 +182,10 @@ object DownloadMemoryCache {
         }
     }
 
-    fun updateDownloadingSpeed(speed: Long) {
+    fun updateDownloadingSpeed(url: String,speed: String,currentOffset : Long) {
         downloadingChapterSpeed.set(speed)
+        downloadingChapterCurrentSize.set(ConvertUtils.byte2FitMemorySize(currentOffset,1))
+//        updateDownloadingChapter(url,DownloadConstant.CHAPTER_STATUS_DOWNLOADING)
     }
 
     fun pauseDownloadingChapter() {

@@ -65,7 +65,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 )
             }
             //存储已选择的下载章节
-            DownloadMemoryCache.downloadingChapterList.addAll(tempDownloadList)
+            DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
             //调用下载服务开始下载
             downloadService.startDownloadWithCache(tempDownloadList)
         }

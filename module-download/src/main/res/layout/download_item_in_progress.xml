@@ -8,6 +8,7 @@
 
         <import type="com.rm.baselisten.util.ConvertUtils" />
         <import type="com.rm.module_download.file.DownLoadFileUtils" />
+        <import type="com.rm.business_lib.DownloadMemoryCache"/>
 
         <variable
             name="itemBean"
@@ -84,7 +85,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/dp_11"
                 isVisible="@{itemBean.isDownloading()}"
-                android:text="@{@string/business_down_and_total_size(DownLoadFileUtils.INSTANCE.getChapterFileSize(itemBean),ConvertUtils.byte2FitMemorySize(itemBean.size,1))}"
+                android:text="@{@string/business_down_and_total_size(DownloadMemoryCache.INSTANCE.downloadingChapterCurrentSize,ConvertUtils.byte2FitMemorySize(itemBean.size,1))}"
                 tools:text="144m/200m"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
@@ -95,6 +96,8 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="@dimen/dp_11"
                 bindDownloadText="@{itemBean}"
+                bindDownloadSpeed="@{viewModel.downloadSpeed}"
+                tools:text="144kb/s"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />
 
