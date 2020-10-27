@@ -1,8 +1,10 @@
-package com.rm.business_lib.binding
+package com.rm.module_home.binding
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.module_home.activity.topic.HomeTopicListActivity
+import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel
 
 
 /**
@@ -11,14 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
  * version: 1.0
  */
 @BindingAdapter("bindLeftScroll")
-fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
+fun RecyclerView.bindLeftScroll(model : HomeAudioHorDoubleRvModel) {
 
     var isSlidingToLeft = false
     var scrollStopCount = 0
     var lastOpenTime = System.currentTimeMillis()
-    if (action == null) {
-        return
-    }
+
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
@@ -41,7 +41,13 @@ fun RecyclerView.bindLeftScroll(action: (() -> Unit)?) {
                     }
                     lastOpenTime = System.currentTimeMillis()
                     if(scrollStopCount>1){
-                        action()
+                        HomeTopicListActivity.startActivity(
+                            context!!,
+                            model.block.page_id,
+                            model.block.block_id,
+                            model.block.topic_id,
+                            model.block.block_name
+                        )
                     }else{
                         scrollStopCount++
                     }

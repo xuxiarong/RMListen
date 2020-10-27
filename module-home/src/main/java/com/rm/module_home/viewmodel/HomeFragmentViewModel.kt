@@ -17,6 +17,7 @@ import com.rm.module_home.model.home.banner.HomeBannerRvModel
 import com.rm.module_home.model.home.collect.HomeMenuRvModel
 import com.rm.module_home.model.home.grid.HomeGridAudioModel
 import com.rm.module_home.model.home.grid.HomeGridAudioRvModel
+import com.rm.module_home.model.home.hordouble.HomeAudioDoubleBlockModel
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleFooterModel
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleModel
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel
@@ -125,7 +126,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     doubleHorList.add(HomeAudioHorDoubleFooterModel())
                 }
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
-                allData.add(HomeAudioHorDoubleRvModel(doubleHorList))
+                allData.add(HomeAudioHorDoubleRvModel(doubleHorList, HomeAudioDoubleBlockModel(page_id = block.page_id,block_id = block.block_id,block_name = block.block_name,topic_id = block.topic_id)))
             }
             BLOCK_HOR_GRID -> {
                 val gridList = ArrayList<MultiItemEntity>()
