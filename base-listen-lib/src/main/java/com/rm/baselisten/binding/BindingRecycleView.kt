@@ -15,6 +15,7 @@ import com.rm.baselisten.decoration.GridSpaceItemDecoration
 import com.rm.baselisten.decoration.LinearItemDecoration
 import com.rm.baselisten.utilExt.dip
 
+
 /**
  * desc   :
  * date   : 2020/08/04
@@ -54,6 +55,22 @@ fun RecyclerView.bindHorizontalLayout(adapter: RecyclerView.Adapter<*>?) {
     this.adapter = adapter
     overScrollMode = View.OVER_SCROLL_NEVER
 }
+
+@BindingAdapter("bindHorizontalLayoutNoScroll")
+fun RecyclerView.bindHorizontalLayoutNoScroll(adapter: RecyclerView.Adapter<*>?) {
+    if (adapter == null) return
+    val layoutManager: LinearLayoutManager = object :
+        LinearLayoutManager(context, HORIZONTAL, false) {
+        override fun canScrollHorizontally(): Boolean {
+            return false
+        }
+    }
+    setLayoutManager(layoutManager)
+    itemAnimator = DefaultItemAnimator()
+    this.adapter = adapter
+    overScrollMode = View.OVER_SCROLL_NEVER
+}
+
 
 @BindingAdapter("bindText")
 fun RecyclerView.bindText(visible: Int) {

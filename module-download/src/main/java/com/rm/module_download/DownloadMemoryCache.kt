@@ -105,6 +105,7 @@ object DownloadMemoryCache {
         if(chapterList.size == 0){
             ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_all_exist))
         }else{
+            ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
             downloadingChapterList.addAll(chapterList)
         }
     }
@@ -123,6 +124,13 @@ object DownloadMemoryCache {
         downloadingChapterList.add(chapter)
     }
 
+
+    /**
+     * 停止当前章节，开始下载下一个任务
+     */
+    fun pauseCurrentAndDownNextChapter(){
+
+    }
 
     fun updateDownloadingChapter(url: String, status: Int) {
         if (downloadingChapterList.value == null) {
