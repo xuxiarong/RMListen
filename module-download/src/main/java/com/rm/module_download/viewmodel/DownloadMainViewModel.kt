@@ -56,7 +56,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     var downloadAudioList = DownloadMemoryCache.downloadingAudioList
 
     fun operatingAll(){
-        DownloadMemoryCache.pauseDownloadingChapter()
+        DownloadMemoryCache.operatingAll()
     }
 
 

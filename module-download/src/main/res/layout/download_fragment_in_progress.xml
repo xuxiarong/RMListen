@@ -2,6 +2,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.rm.module_download.DownloadMemoryCache"/>
 
         <variable
             name="viewModel"
@@ -27,6 +28,7 @@
             android:layout_marginTop="11dp"
             app:rv_isRadiusHalfHeight="true"
             android:layout_gravity="end"
+            isVisible="@{!viewModel.downloadingEdit}"
             bindClick="@{()->viewModel.operatingAll()}"
             app:rv_strokeColor="@color/business_color_e8e8e8"
             app:rv_strokeWidth="@dimen/dp_1"
@@ -37,7 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="33dp"
-                android:text="@string/download_pause_all"
+                bindDownAll="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_14sp"
                 />
@@ -47,7 +49,7 @@
                 android:layout_height="@dimen/dp_22"
                 android:layout_marginEnd="8dp"
                 android:layout_gravity="end|center_vertical"
-                android:src="@drawable/download_ic_pause_download"
+                bindDownAll="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
                 />
         </com.flyco.roundview.RoundFrameLayout>
         

@@ -125,6 +125,37 @@ object DownloadMemoryCache {
         downloadingChapterList.add(chapter)
     }
 
+    fun downFinishAndAutoDownNext(){
+        if(downloadingChapterList.value == null){
+            return
+        }
+
+        if(downloadingChapterList.value!= null){
+            val downList = downloadingChapterList.value!!
+            when (downList.size) {
+                0 -> {
+                    return
+                }
+                1 -> {
+                    downloadService.pauseDownload(downList[0])
+                }
+                else -> {
+                    if(downloadingChapter.get()!=null){
+                        val downloadChapter = downloadingChapter.get()!!
+                        for (i in 0 until downList.size){
+                            if(downList[i].chapter_id == downloadChapter.chapter_id){
+                                if(i == downList.size -1){
+                                    downloadService.startDownloadWithCache(downList[0])
+                                }else{
+                                    downloadService.startDownloadWithCache(downList[i+1])
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * 停止当前章节，开始下载下一个任务
@@ -245,6 +276,24 @@ object DownloadMemoryCache {
         resumeDownloadingChapter()
     }
 
+    fun operatingAll(){
+        if(downloadingChapter.get()!=null){
+            val chapter = downloadingChapter.get()!!
+            if(chapter.isDownloading){
+                downloadService.pauseDownload(chapter)
+            }else{
+                downloadService.startDownloadWithCache(chapter)
+            }
+        }else{
+            if(downloadingChapterList.value!=null){
+                val chapterList = downloadingChapterList.value!!
+                if(chapterList.size>0){
+                    downloadService.startDownloadWithCache(chapterList[0])
+                }
+            }
+        }
+    }
+
 
     fun setDownloadFinishChapter() {
         val finishChapter = downloadingChapter.get()
@@ -254,6 +303,7 @@ object DownloadMemoryCache {
             finishChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(finishChapter)
             updateDownloadingAudio(chapter = finishChapter)
+            downFinishAndAutoDownNext()
         }
     }
 

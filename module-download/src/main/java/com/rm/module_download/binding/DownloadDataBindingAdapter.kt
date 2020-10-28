@@ -20,6 +20,32 @@ fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
     }
 }
 
+@BindingAdapter("bindDownAll")
+fun TextView.bindDownAll(chapter: DownloadChapter?){
+    if(chapter ==null){
+        text = context.getText(R.string.download_continue_down)
+        return
+    }
+    text = if (chapter.isDownloading) {
+        context.getText(R.string.download_pause_all)
+    }else{
+        context.getText(R.string.download_continue_down)
+    }
+}
+@BindingAdapter("bindDownAll")
+fun ImageView.bindDownAll(chapter: DownloadChapter?){
+    if(chapter ==null){
+        setImageResource(R.drawable.download_ic_start_download)
+        return
+    }
+    if (chapter.isDownloading) {
+        setImageResource(R.drawable.download_ic_pause_download)
+    }else{
+        setImageResource(R.drawable.download_ic_start_download)
+    }
+}
+
+
 @BindingAdapter("bindDownloadingSize")
 fun TextView.bindDownloadingSize(downList : List<DownloadChapter>?){
     if(downList == null){
@@ -104,7 +130,6 @@ fun ProgressBar.bindDownProgressChapter(
     downloadChapter: DownloadChapter?
 ) {
     if(downloadChapter ==null){
-        visibility = View.GONE
         return
     }
     if (chapter.chapter_id == downloadChapter.chapter_id) {
@@ -115,11 +140,7 @@ fun ProgressBar.bindDownProgressChapter(
 
     when (chapter.down_status) {
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING,DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
-            visibility = View.VISIBLE
             progress = (chapter.current_offset/(chapter.size/100)).toInt()
-        }
-        else -> {
-            visibility = View.GONE
         }
     }
 }
