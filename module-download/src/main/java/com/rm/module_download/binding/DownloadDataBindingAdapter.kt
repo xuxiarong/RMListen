@@ -2,9 +2,10 @@ package com.rm.module_download.binding
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ConvertUtils
 import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.module_download.R
@@ -44,6 +45,8 @@ fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
     }
 }
 
+
+
 @BindingAdapter("bindDownloadChapterStatus")
 fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter) {
 
@@ -58,24 +61,124 @@ fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter) {
     }
 }
 
+@BindingAdapter("bindItemChapter", "bindDownChapter")
+fun ImageView.bindDownOrPause(
+    chapter: DownloadChapter,
+    downloadChapter: DownloadChapter?
+) {
+    if(downloadChapter ==null){
+        return
+    }
+    if(chapter.chapter_id == downloadChapter.chapter_id){
+        chapter.down_status = downloadChapter.down_status
+    }
+    when (chapter.down_status) {
+        DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
+            setImageResource(R.drawable.download_ic_pause_download)
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE ->{
+            setImageResource(R.drawable.download_ic_start_download)
+        }
+    }
+}
 
-@BindingAdapter("bindDownloadText","bindDownloadSpeed")
-fun TextView.bindDownloadText(chapter: DownloadChapter,speed : String) {
-    DLog.d("suolong","chapter name = ${chapter.chapter_name} speed = $speed" + " status = ${DownloadConstant.getDownloadText(chapter.down_status)}")
-    when (chapter.down_status){
-        DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD->{
+
+@BindingAdapter("bindDownChapter", "bindDownProgressChapter")
+fun ProgressBar.bindDownProgressChapter(
+    chapter: DownloadChapter,
+    downloadChapter: DownloadChapter?
+) {
+    if(downloadChapter ==null){
+        visibility = View.GONE
+        return
+    }
+    if (chapter.chapter_id == downloadChapter.chapter_id) {
+        chapter.down_status = downloadChapter.down_status
+        chapter.down_speed = downloadChapter.down_speed
+        chapter.current_offset = downloadChapter.current_offset
+    }
+
+    when (chapter.down_status) {
+        DownloadConstant.CHAPTER_STATUS_DOWNLOADING,DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
+            visibility = View.VISIBLE
+            progress = (chapter.current_offset/(chapter.size/100)).toInt()
+        }
+        else -> {
+            visibility = View.GONE
+        }
+    }
+}
+
+
+@BindingAdapter("bindDownloadItem", "bindDownloadChapter")
+fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: DownloadChapter?) {
+    if (downloadChapter != null && chapter.chapter_id == downloadChapter.chapter_id) {
+        chapter.down_status = downloadChapter.down_status
+        chapter.down_speed = downloadChapter.down_speed
+        chapter.current_offset = downloadChapter.current_offset
+    }
+    visibility = View.GONE
+
+    when (chapter.down_status) {
+        DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD -> {
             text = ""
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT->{
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
             text = context.getString(R.string.business_download_wait)
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOADING->{
-            text = speed
+        DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
+            if (downloadChapter != null) {
+                visibility = View.VISIBLE
+                chapter.current_offset = chapter.current_offset
+                val currentSize = ConvertUtils.byte2FitMemorySize(chapter.current_offset, 1)
+                val totalSize = ConvertUtils.byte2FitMemorySize(chapter.size, 1)
+                text = String.format(
+                    context.getString(R.string.business_down_and_total_size),
+                    currentSize,
+                    totalSize
+                )
+            }
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE->{
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
+            text = context.getString(R.string.business_download_pause)
+            visibility = View.VISIBLE
+            val currentSize = ConvertUtils.byte2FitMemorySize(chapter.current_offset, 1)
+            val totalSize = ConvertUtils.byte2FitMemorySize(chapter.size, 1)
+            text = String.format(
+                context.getString(R.string.business_down_and_total_size),
+                currentSize,
+                totalSize
+            )
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {
+            text = ""
+        }
+    }
+}
+
+@BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter")
+fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?) {
+    if (downloadChapter != null && chapter.chapter_id == downloadChapter.chapter_id) {
+        chapter.down_status = downloadChapter.down_status
+        chapter.down_speed = downloadChapter.down_speed
+    }
+
+    when (chapter.down_status) {
+        DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD -> {
+            text = ""
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
+            text = context.getString(R.string.business_download_wait)
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
+            if (downloadChapter != null) {
+                text = chapter.down_speed
+            }
+        }
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
             text = context.getString(R.string.business_download_pause)
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH->{
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {
             text = ""
         }
     }

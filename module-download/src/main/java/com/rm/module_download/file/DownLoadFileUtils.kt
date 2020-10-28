@@ -3,7 +3,6 @@ package com.rm.module_download.file
 import android.content.Context
 import androidx.annotation.NonNull
 import com.rm.baselisten.BaseApplication
-import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.FileUtils
 import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.db.download.DownloadAudio
@@ -25,28 +24,10 @@ object DownLoadFileUtils {
         )
         if (file.exists() && file.isFile) {
             if (file.length() >= chapter.size) {
-                chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
-            } else {
                 chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
             }
         }
         return chapter
-    }
-
-    fun getChapterFileSize(chapter: DownloadChapter): String {
-        val file = File(
-            createFileWithAudio(chapter.audio_id.toString()).absolutePath,
-            chapter.chapter_name
-        )
-        if (file.exists() && file.isFile) {
-            if (file.length() >= chapter.size) {
-                chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
-            } else {
-                chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
-            }
-            return ConvertUtils.byte2FitMemorySize(file.length(), 1)
-        }
-        return ""
     }
 
     fun deleteChapterFile(chapter: DownloadChapter): Boolean {
