@@ -59,7 +59,7 @@ object DownloadMemoryCache {
                 if (it.audio_id == chapter.audio_id) {
                     it.download_num += 1
                     it.down_size += chapter.size
-                    downloadingAudioList.addAll(audioList)
+//                    downloadingAudioList.add(it)
                     DLog.d("suolong","name = ${chapter.audio_name}" + it.down_size)
                     return true
                 }
@@ -130,7 +130,40 @@ object DownloadMemoryCache {
      * 停止当前章节，开始下载下一个任务
      */
     fun pauseCurrentAndDownNextChapter(){
+        if(downloadingChapterList.value == null){
+            return
+        }
 
+        if(downloadingChapterList.value!= null){
+            val downList = downloadingChapterList.value!!
+            when (downList.size) {
+                0 -> {
+                    return
+                }
+                1 -> {
+                    downloadService.pauseDownload(downList[0])
+                }
+                else -> {
+                    if(downloadingChapter.get()!=null){
+                        val downloadChapter = downloadingChapter.get()!!
+                        downloadChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+                        downloadingChapter.set(downloadChapter)
+                        downloadingChapter.notifyChange()
+                        downloadService.pauseDownload(downloadChapter)
+
+                        for (i in 0 until downList.size){
+                            if(downList[i].chapter_id == downloadChapter.chapter_id){
+                                if(i == downList.size -1){
+                                    downloadService.startDownloadWithCache(downList[0])
+                                }else{
+                                    downloadService.startDownloadWithCache(downList[i+1])
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun updateDownloadingChapter(url: String, status: Int) {
@@ -156,6 +189,19 @@ object DownloadMemoryCache {
         }
     }
 
+    fun downloadClickChapter(clickChapter: DownloadChapter){
+        if(downloadingChapter.get()!=null){
+            val chapter = downloadingChapter.get()!!
+            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+            downloadingChapter.set(chapter)
+            downloadService.pauseDownload(chapter)
+            downloadService.startDownloadWithCache(clickChapter)
+        }else{
+            downloadingChapter.set(clickChapter)
+            downloadService.startDownloadWithCache(clickChapter)
+        }
+    }
+
     fun updateDownloadingSpeed(url: String,speed: String,currentOffset : Long) {
         if(downloadingChapter.get()!=null){
             val chapter = downloadingChapter.get()!!
@@ -174,6 +220,7 @@ object DownloadMemoryCache {
             chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
             downloadingChapter.set(chapter)
             downloadingChapter.notifyChange()
+            downloadService.pauseDownload(chapter)
         }
     }
 
@@ -185,6 +232,7 @@ object DownloadMemoryCache {
             }
             downloadingChapter.set(chapter)
             downloadingChapter.notifyChange()
+            downloadService.startDownloadWithCache(chapter)
         }
     }
 

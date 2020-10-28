@@ -73,10 +73,10 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     fun editDownloading() {
-        if (!downloadingEdit.get()) {
-            if(DownloadMemoryCache.downloadingChapter.get()!=null){
-                downloadService.pauseDownload(DownloadMemoryCache.downloadingChapter.get()!!)
-            }
+        if (downloadingEdit.get()) {
+            DownloadMemoryCache.resumeDownloadingChapter()
+        }else{
+            DownloadMemoryCache.pauseDownloadingChapter()
         }
         downloadingEdit.set(downloadingEdit.get().not())
     }
@@ -122,9 +122,9 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             downloadingAdapter.notifyItemChanged(downloadingAdapter.data.indexOf(chapter))
         } else {
             if(chapter.isDownloading){
-                downloadService.pauseDownload(chapter)
+                DownloadMemoryCache.pauseCurrentAndDownNextChapter()
             }else{
-                downloadService.startDownloadWithCache(chapter)
+                DownloadMemoryCache.downloadClickChapter(chapter)
             }
         }
     }

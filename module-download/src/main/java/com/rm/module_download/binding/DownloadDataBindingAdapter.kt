@@ -20,6 +20,21 @@ fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
     }
 }
 
+@BindingAdapter("bindDownloadingSize")
+fun TextView.bindDownloadingSize(downList : List<DownloadChapter>?){
+    if(downList == null){
+        visibility = View.GONE
+        return
+    }
+    if(downList.isEmpty()){
+        visibility = View.GONE
+        return
+    }
+    visibility = View.GONE
+    text = String.format(context.getString(R.string.download_downloading_number),downList.size)
+}
+
+
 @BindingAdapter("bindDownloadStatusSrc")
 fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
     visibility = View.VISIBLE
