@@ -13,6 +13,7 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
 import com.rm.module_download.DownloadMemoryCache
 import com.rm.module_download.R
+import com.rm.module_download.activity.DownloadBookDetailActivity
 import com.rm.module_download.file.DownLoadFileUtils
 import com.rm.module_download.repository.DownloadRepository
 
@@ -179,7 +180,8 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             changeDownloadFinishSelect(audio = audio)
             downloadFinishAdapter.notifyItemChanged(downloadFinishAdapter.data.indexOf(audio))
         } else {
-            homeService.toDetailActivity(context, audio.audio_id.toString())
+//            homeService.toDetailActivity(context, audio.audio_id.toString())
+            DownloadBookDetailActivity.startActivity(context,audio = audio)
         }
     }
 

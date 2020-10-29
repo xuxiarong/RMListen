@@ -5,6 +5,7 @@ import android.view.View
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.HistoryPlayBook
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -28,6 +29,8 @@ interface PlayService : ApplicationProvider {
     //通过订阅
     fun toPlayPage(context: Context, book: MutableList<ChapterList>,from:String,chapterId: String)
 
+    //通过本地下载列表跳转过来
+    fun toPlayPage(context: Context, audio : DownloadAudio,chapterId: String,from:String)
 
     //播放历史
     fun queryPlayBookList(): List<HistoryPlayBook>?

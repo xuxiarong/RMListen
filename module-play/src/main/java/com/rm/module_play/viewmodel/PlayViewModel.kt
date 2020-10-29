@@ -298,9 +298,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             setHistoryPlayBook(it)
             GlobalplayHelp.instance.setBooKImage(it.audio_cover_url)
         }
-
     }
-
     /**
      *评论列表
      */

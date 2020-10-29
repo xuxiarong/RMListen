@@ -350,7 +350,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             path_url = model.path,
             play_count = model.play_count.toInt(),
             sequence = model.sequence.toInt(),
-            size = model.size.toInt(),
+            size = model.size.toLong(),
             created_at = "2020-09-09",
             recentPlay = 0L,
             chapter_id = model.chapter_id

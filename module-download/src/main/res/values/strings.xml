@@ -21,6 +21,7 @@
     <string name="download_delete">删除</string>
     <string name="download_delete_number">删除%d</string>
     <string name="download_delete_listen_finish">仅删除已听完</string>
-
+    <string name="download_listen_finish">已听完</string>
+    <string name="download_listen_progress">已听%d</string>
 
 </resources>

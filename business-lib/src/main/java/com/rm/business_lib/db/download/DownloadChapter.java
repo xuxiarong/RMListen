@@ -3,8 +3,10 @@ package com.rm.business_lib.db.download;
 import com.rm.business_lib.DownloadConstant;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+
+import java.io.Serializable;
 
 /**
  * desc   :
@@ -12,7 +14,8 @@ import org.greenrobot.greendao.annotation.Generated;
  * version: 1.0
  */
 @Entity
-public class DownloadChapter {
+public class DownloadChapter implements Serializable {
+    private static final long serialVersionUID = -4795622106216659705L;
     @Id
     private Long chapter_id;
     private Long audio_id ;
@@ -173,7 +176,7 @@ public class DownloadChapter {
     }
 
     public String getFile_path() {
-        return this.file_path;
+        return this.file_path == null?"":file_path;
     }
 
     public void setFile_path(String file_path) {

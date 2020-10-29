@@ -1,9 +1,11 @@
 package com.rm.module_download.binding
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
 import com.rm.business_lib.DownloadConstant
@@ -217,5 +219,27 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
         DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {
             text = ""
         }
+    }
+}
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("bindDownloadListen")
+fun TextView.bindDownloadListen(chapter : DownloadChapter){
+    text = ""
+    try {
+        var result = ((chapter.listen_duration * 1.0f) / (chapter.duration * 1000L) * 100).toInt()
+        if(result <= 0){
+            result =1
+        }
+        if(result == 100){
+            text = context.getString(R.string.download_listen_finish)
+            setTextColor(ContextCompat.getColor(context,R.color.business_color_b1b1b1))
+        }else {
+            setTextColor(ContextCompat.getColor(context,R.color.business_color_ffba56))
+            text = "${String.format(context.getString(R.string.download_listen_progress),result)}%"
+        }
+
+    }catch (e : Exception){
+        e.printStackTrace()
     }
 }

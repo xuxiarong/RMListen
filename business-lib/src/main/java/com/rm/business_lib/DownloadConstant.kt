@@ -1,5 +1,8 @@
 package com.rm.business_lib
 
+import com.rm.baselisten.util.ConvertUtils
+import com.rm.business_lib.db.download.DownloadAudio
+
 /**
  * desc   :
  * date   : 2020/10/19
@@ -18,6 +21,7 @@ object DownloadConstant {
      */
     const val AUDIO_UN_SELECT = 0
     const val AUDIO_SELECTED = 1
+
     /**
      * 章节下载的状态 ： 0->还没有加入下载队列 1->下载队列中 2->正在下载 3->暂停下载 4->已完成
      */
@@ -34,15 +38,27 @@ object DownloadConstant {
     const val CHAPTER_PAY_STATUS_NEED_BUY = 1
     const val CHAPTER_PAY_STATUS_VIP = 2
 
-    fun getDownloadText(status : Int) : String{
-       return when(status){
-            CHAPTER_STATUS_NOT_DOWNLOAD-> "未下载"
-            CHAPTER_STATUS_DOWNLOAD_WAIT-> "等待中"
-            CHAPTER_STATUS_DOWNLOADING-> "正在下载"
-            CHAPTER_STATUS_DOWNLOAD_PAUSE-> "暂停下载"
-            CHAPTER_STATUS_DOWNLOAD_FINISH-> "已完成"
-            else ->"未知状态"
+    fun getDownloadText(status: Int): String {
+        return when (status) {
+            CHAPTER_STATUS_NOT_DOWNLOAD -> "未下载"
+            CHAPTER_STATUS_DOWNLOAD_WAIT -> "等待中"
+            CHAPTER_STATUS_DOWNLOADING -> "正在下载"
+            CHAPTER_STATUS_DOWNLOAD_PAUSE -> "暂停下载"
+            CHAPTER_STATUS_DOWNLOAD_FINISH -> "已完成"
+            else -> "未知状态"
         }
+    }
+
+    fun getAudioSize(audio: DownloadAudio?): String {
+        var result = 0L
+        try {
+            audio?.chapterList?.forEach{
+                result+=it.size
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return ConvertUtils.byte2FitMemorySize(result,1)
     }
 
 }
