@@ -62,3 +62,8 @@ fun SmartRefreshLayout.bindIsLoadMoreSuccess(isSuccess: Boolean?, isHasMoreData:
         finishLoadMoreWithNoMoreData()
     }
 }
+
+@BindingAdapter("bindCanRefresh")
+fun SmartRefreshLayout.bindCanRefresh(canRefresh: Boolean?) {
+    setEnableRefresh(canRefresh ?: false)
+}

@@ -3,18 +3,16 @@ package com.rm.module_mine.behavior;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.OverScroller;
-
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.rm.module_mine.R;
-
 import java.lang.reflect.Field;
 
 /**
@@ -150,6 +148,7 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
     @Override
     public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int type) {
         //如果是从初始状态转换到展开状态过程触发收起动画
+        Log.i("onStopNestedScroll: ", child.getTranslationY() + "     " + contentTransY);
         if (child.getTranslationY() > contentTransY) {
             restore();
         }

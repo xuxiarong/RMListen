@@ -12,10 +12,15 @@ import kotlin.properties.Delegates
  * date   : 2020/08/05
  * version: 1.0
  */
-open class BaseApplication : Application(){
+open class BaseApplication : Application() {
 
     companion object {
         var CONTEXT: Context by Delegates.notNull()
+
+        @JvmStatic
+        fun getContext(): Context {
+            return CONTEXT
+        }
     }
 
     override fun onCreate() {
@@ -32,7 +37,7 @@ open class BaseApplication : Application(){
 
     override fun onTerminate() {
         super.onTerminate()
-        Log.i("BaseApplication","${onTerminate()}")
+        Log.i("BaseApplication", "${onTerminate()}")
     }
 
 

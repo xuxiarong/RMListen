@@ -142,7 +142,7 @@ class ListenDialogSheetViewModel(
                     dismiss()
                 }
                 customView =
-                    ImageView(mActivity).apply { setImageResource(R.drawable.base_ic_default) }
+                    ImageView(mActivity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(mActivity)
         } else {
             showToast(mActivity.getString(R.string.listen_add_success_tip))

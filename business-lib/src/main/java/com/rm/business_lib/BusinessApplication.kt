@@ -37,7 +37,7 @@ open class BusinessApplication : BaseApplication() {
         //设置全局的Footer构建器
         SmartRefreshLayout.setDefaultRefreshFooterCreator { context, layout ->
             layout.setPrimaryColorsId(R.color.base_activity_bg_color) //全局设置主题颜色
-            layout.setEnableLoadMoreWhenContentNotFull(false)
+            layout.setEnableLoadMoreWhenContentNotFull(true)
             layout.setEnableFooterFollowWhenNoMoreData(true)
             layout.setEnableAutoLoadMore(true)
 //            layout.setEnableLoadMore(true)
