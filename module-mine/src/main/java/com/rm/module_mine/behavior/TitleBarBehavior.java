@@ -2,11 +2,13 @@ package com.rm.module_mine.behavior;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.math.MathUtils;
+import androidx.core.view.ViewCompat;
 
 import com.rm.module_mine.R;
 
@@ -86,3 +88,4 @@ public class TitleBarBehavior extends CoordinatorLayout.Behavior<View> {
         child.layout(left, top, right, bottom);
     }
 }
+

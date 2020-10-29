@@ -254,7 +254,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                     dismiss()
                 }
                 customView =
-                    ImageView(activity).apply { setImageResource(R.mipmap.home_ic_launcher) }
+                    ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(activity)
         } else {
             showToast(context.getString(R.string.home_favorites_success_tip))

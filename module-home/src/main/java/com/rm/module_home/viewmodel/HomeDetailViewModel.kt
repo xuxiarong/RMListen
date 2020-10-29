@@ -256,7 +256,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     dismiss()
                 }
                 customView =
-                    ImageView(activity).apply { setImageResource(R.mipmap.home_ic_launcher) }
+                    ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(activity)
         } else {
             showToast(context.getString(R.string.home_subscribe_success_tip))
@@ -555,6 +555,14 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 }
             }
         }
+    }
+
+    /**
+     * 分享
+     */
+    fun clickShare() {
+        val canRefresh = refreshStatusModel.canRefresh.get()!!
+        refreshStatusModel.setCanRefresh(!canRefresh)
     }
 
     /**
