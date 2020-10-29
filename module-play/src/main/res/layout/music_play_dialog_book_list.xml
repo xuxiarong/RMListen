@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/play_drag_chapter_list"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="550dp"
     android:maxHeight="500dp"
+    android:elevation="5dp"
     >
 
     <com.flyco.roundview.RoundLinearLayout
         android:id="@+id/content_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="550dp"
         android:orientation="vertical"
         app:rv_backgroundColor="@android:color/white"
-        app:rv_cornerRadius_TL="10dp"
-        app:rv_cornerRadius_TR="10dp"
+        app:rv_cornerRadius_TL="24dp"
+        app:rv_cornerRadius_TR="24dp"
         tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,13 +104,12 @@
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/smart_refresh_layout_play"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="480dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_music_play_book_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxHeight="500dp"
+                android:layout_height="480dp"
                 android:overScrollMode="never" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

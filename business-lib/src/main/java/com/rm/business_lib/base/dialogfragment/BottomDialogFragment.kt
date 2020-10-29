@@ -25,6 +25,7 @@ open class BottomDialogFragment : RMSupportDialogFragment() {
             val params = attributes
             params.gravity = Gravity.BOTTOM
             params.width = WindowManager.LayoutParams.MATCH_PARENT
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT
             params.dimAmount = getBackgroundAlpha()
             attributes = params
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
