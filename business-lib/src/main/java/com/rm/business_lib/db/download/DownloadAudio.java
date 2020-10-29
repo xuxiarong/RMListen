@@ -29,25 +29,22 @@ public class DownloadAudio implements Serializable {
     private int status;
     private int last_sequence;
     private int download_num;
-    private Long down_size;
+    private long down_size;
     private boolean edit_select;
 
     @ToMany(referencedJoinProperty = "audio_id")
     private List<DownloadChapter> chapterList;
-    /**
-     * Used to resolve relations
-     */
+    /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /**
-     * Used for active entity operations.
-     */
+    /** Used for active entity operations. */
     @Generated(hash = 265156160)
     private transient DownloadAudioDao myDao;
 
-    @Generated(hash = 1479396334)
-    public DownloadAudio(Long audio_id, String audio_name, String author, String audio_cover_url,
-                         int status, int last_sequence, int download_num, Long down_size, boolean edit_select) {
+    @Generated(hash = 1285355693)
+    public DownloadAudio(Long audio_id, String audio_name, String author,
+            String audio_cover_url, int status, int last_sequence, int download_num,
+            long down_size, boolean edit_select) {
         this.audio_id = audio_id;
         this.audio_name = audio_name;
         this.author = author;
@@ -111,6 +108,30 @@ public class DownloadAudio implements Serializable {
         this.last_sequence = last_sequence;
     }
 
+    public int getDownload_num() {
+        return this.download_num;
+    }
+
+    public void setDownload_num(int download_num) {
+        this.download_num = download_num;
+    }
+
+    public long getDown_size() {
+        return this.down_size;
+    }
+
+    public void setDown_size(long down_size) {
+        this.down_size = down_size;
+    }
+
+    public boolean getEdit_select() {
+        return this.edit_select;
+    }
+
+    public void setEdit_select(boolean edit_select) {
+        this.edit_select = edit_select;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
@@ -134,9 +155,7 @@ public class DownloadAudio implements Serializable {
         return chapterList;
     }
 
-    /**
-     * Resets a to-many relationship, making the next get call to query for a fresh result.
-     */
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     @Generated(hash = 1743307878)
     public synchronized void resetChapterList() {
         chapterList = null;
@@ -178,49 +197,14 @@ public class DownloadAudio implements Serializable {
         myDao.update(this);
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 584871444)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDownloadAudioDao() : null;
     }
 
-    public boolean getEdit_select() {
-        return this.edit_select;
-    }
 
-    public void setEdit_select(boolean edit_select) {
-        this.edit_select = edit_select;
-    }
 
-    public int getDownload_num() {
-        return this.download_num;
-    }
-
-    public void setDownload_num(int download_num) {
-        this.download_num = download_num;
-    }
-
-    public Long getDown_size() {
-        return this.down_size;
-    }
-
-    public void setDown_size(Long down_size) {
-        this.down_size = down_size;
-    }
-
-    public int getDownloadNum() {
-        return this.chapterList.size();
-    }
-
-    public Long getDownloadSize() {
-        Long result = 0L;
-        for (DownloadChapter downloadChapter : this.chapterList) {
-            result += downloadChapter.getSize();
-        }
-        return result;
-    }
 
 }

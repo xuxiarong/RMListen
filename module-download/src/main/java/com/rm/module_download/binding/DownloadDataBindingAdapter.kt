@@ -10,8 +10,10 @@ import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
 import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterUIStatus
+import com.rm.module_download.file.DownLoadFileUtils
 
 @BindingAdapter("bindDownloadCheckSrc")
 fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
@@ -23,43 +25,44 @@ fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
 }
 
 @BindingAdapter("bindDownAll")
-fun TextView.bindDownAll(chapter: DownloadChapter?){
-    if(chapter ==null){
+fun TextView.bindDownAll(chapter: DownloadChapter?) {
+    if (chapter == null) {
         text = context.getText(R.string.download_continue_down)
         return
     }
     text = if (chapter.isDownloading) {
         context.getText(R.string.download_pause_all)
-    }else{
+    } else {
         context.getText(R.string.download_continue_down)
     }
 }
+
 @BindingAdapter("bindDownAll")
-fun ImageView.bindDownAll(chapter: DownloadChapter?){
-    if(chapter ==null){
+fun ImageView.bindDownAll(chapter: DownloadChapter?) {
+    if (chapter == null) {
         setImageResource(R.drawable.download_ic_start_download)
         return
     }
     if (chapter.isDownloading) {
         setImageResource(R.drawable.download_ic_pause_download)
-    }else{
+    } else {
         setImageResource(R.drawable.download_ic_start_download)
     }
 }
 
 
 @BindingAdapter("bindDownloadingSize")
-fun TextView.bindDownloadingSize(downList : List<DownloadChapter>?){
-    if(downList == null){
+fun TextView.bindDownloadingSize(downList: List<DownloadChapter>?) {
+    if (downList == null) {
         visibility = View.GONE
         return
     }
-    if(downList.isEmpty()){
+    if (downList.isEmpty()) {
         visibility = View.GONE
         return
     }
     visibility = View.GONE
-    text = String.format(context.getString(R.string.download_downloading_number),downList.size)
+    text = String.format(context.getString(R.string.download_downloading_number), downList.size)
 }
 
 
@@ -89,7 +92,6 @@ fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
 }
 
 
-
 @BindingAdapter("bindDownloadChapterStatus")
 fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter) {
 
@@ -109,17 +111,17 @@ fun ImageView.bindDownOrPause(
     chapter: DownloadChapter,
     downloadChapter: DownloadChapter?
 ) {
-    if(downloadChapter ==null){
+    if (downloadChapter == null) {
         return
     }
-    if(chapter.chapter_id == downloadChapter.chapter_id){
+    if (chapter.chapter_id == downloadChapter.chapter_id) {
         chapter.down_status = downloadChapter.down_status
     }
     when (chapter.down_status) {
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
             setImageResource(R.drawable.download_ic_pause_download)
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE ->{
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
             setImageResource(R.drawable.download_ic_start_download)
         }
     }
@@ -131,7 +133,7 @@ fun ProgressBar.bindDownProgressChapter(
     chapter: DownloadChapter,
     downloadChapter: DownloadChapter?
 ) {
-    if(downloadChapter ==null){
+    if (downloadChapter == null) {
         return
     }
     if (chapter.chapter_id == downloadChapter.chapter_id) {
@@ -141,8 +143,8 @@ fun ProgressBar.bindDownProgressChapter(
     }
 
     when (chapter.down_status) {
-        DownloadConstant.CHAPTER_STATUS_DOWNLOADING,DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
-            progress = (chapter.current_offset/(chapter.size/100)).toInt()
+        DownloadConstant.CHAPTER_STATUS_DOWNLOADING, DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
+            progress = (chapter.current_offset / (chapter.size / 100)).toInt()
         }
     }
 }
@@ -224,22 +226,38 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
 
 @SuppressLint("SetTextI18n")
 @BindingAdapter("bindDownloadListen")
-fun TextView.bindDownloadListen(chapter : DownloadChapter){
+fun TextView.bindDownloadListen(chapter: DownloadChapter) {
     text = ""
     try {
         var result = ((chapter.listen_duration * 1.0f) / (chapter.duration * 1000L) * 100).toInt()
-        if(result <= 0){
-            result =1
+        if (result <= 0) {
+            result = 1
         }
-        if(result == 100){
+        if (result == 100) {
             text = context.getString(R.string.download_listen_finish)
-            setTextColor(ContextCompat.getColor(context,R.color.business_color_b1b1b1))
-        }else {
-            setTextColor(ContextCompat.getColor(context,R.color.business_color_ffba56))
-            text = "${String.format(context.getString(R.string.download_listen_progress),result)}%"
+            setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
+        } else {
+            setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
+            text = "${String.format(context.getString(R.string.download_listen_progress), result)}%"
         }
 
-    }catch (e : Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+@BindingAdapter("bindDownloadStatusChapter", "bindCurrentDownChapter")
+fun DownloadStatusView.bindDownloadStatusChapter(
+    chapter: DownloadChapter,
+    downloadChapter: DownloadChapter?
+) {
+    DownLoadFileUtils.checkChapterIsDownload(chapter)
+
+    if (downloadChapter != null && chapter.chapter_id == downloadChapter.chapter_id) {
+        chapter.down_status = downloadChapter.down_status
+        chapter.down_speed = downloadChapter.down_speed
+        chapter.current_offset = downloadChapter.current_offset
+    }
+    setDownloadStatus(chapter)
+
 }

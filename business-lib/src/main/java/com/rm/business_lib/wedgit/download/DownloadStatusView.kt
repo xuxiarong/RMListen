@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.layout_download_status_view.view.*
  * date   : 2020/10/29
  * version: 1.0
  */
-class DownloadStatusView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+class DownloadStatusView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     FrameLayout(context, attrs, defStyleAttr) {
 
     init {

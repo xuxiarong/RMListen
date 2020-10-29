@@ -43,6 +43,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     private fun createTask(url: String, parentPath: String, fileName: String): DownloadTask {
         return DownloadTask.Builder(url, createFileWithAudio(parentPath).absolutePath, fileName)
             .setMinIntervalMillisCallbackProcess(minIntervalMillisCallbackProcess)
+            .setPreAllocateLength(false)
             .setAutoCallbackToUIThread(true)//是否在UI线程回掉
             .build()
     }

@@ -1,5 +1,6 @@
 package com.rm.module_download
 
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
@@ -31,7 +32,10 @@ object DownloadMemoryCache {
     var downloadingChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
     var downloadingChapter = ObservableField<DownloadChapter>()
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
+    var downloadPauseAll = ObservableBoolean(false)
+
     val downloadService = RouterHelper.createRouter(DownloadService::class.java)
+
 
     fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
         if (!isDownloadingAudio(audio)) {
@@ -59,8 +63,9 @@ object DownloadMemoryCache {
                 if (it.audio_id == chapter.audio_id) {
                     it.download_num += 1
                     it.down_size += chapter.size
-//                    downloadingAudioList.add(it)
-                    DLog.d("suolong","name = ${chapter.audio_name}" + it.down_size)
+                    DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(it)
+                    downloadingAudioList.postValue(audioList)
+                    DLog.d("suolong","name = ${chapter.chapter_name}" + it.down_size + "audioDownNum = ${it.download_num}")
                     return true
                 }
             }
@@ -82,8 +87,12 @@ object DownloadMemoryCache {
 
     fun deleteAudioToDownloadMemoryCache(audio: DownloadAudio) {
         if (isDownloadingAudio(audio)) {
+
             downloadingAudioList.remove(audio)
             DaoUtil(DownloadAudio::class.java, "").delete(audio)
+            audio.chapterList.forEach {
+                DaoUtil(DownloadChapter::class.java, "").delete(it)
+            }
         }
     }
 
@@ -149,6 +158,7 @@ object DownloadMemoryCache {
                                 }else{
                                     downloadService.startDownloadWithCache(downList[i+1])
                                 }
+                                return
                             }
                         }
                     }
@@ -189,6 +199,7 @@ object DownloadMemoryCache {
                                 }else{
                                     downloadService.startDownloadWithCache(downList[i+1])
                                 }
+                                return
                             }
                         }
                     }
@@ -298,13 +309,13 @@ object DownloadMemoryCache {
     fun setDownloadFinishChapter(filePath : String) {
         val finishChapter = downloadingChapter.get()
         if ( finishChapter!= null) {
-            downloadingChapterList.remove(finishChapter)
             downloadFinishChapterList.add(finishChapter)
             finishChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
             finishChapter.file_path = filePath
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(finishChapter)
             updateDownloadingAudio(chapter = finishChapter)
             downFinishAndAutoDownNext()
+            downloadingChapterList.remove(finishChapter)
         }
     }
 
@@ -324,8 +335,8 @@ object DownloadMemoryCache {
             val downChapterList = mutableListOf<DownloadChapter>()
             if (audioList != null) {
                 downloadingAudioList.postValue(audioList.toMutableList())
-                audioList.forEach{
-                    val chapterList = it.chapterList
+                audioList.forEach{audio ->
+                    val chapterList = audio.chapterList
                     chapterList.forEach { chapter ->
                         if(!chapter.isDownloadFinish){
                            downChapterList.add(chapter)

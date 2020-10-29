@@ -15,31 +15,30 @@
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd="@dimen/dp_16">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_22"
-            android:layout_marginTop="@dimen/dp_16"
-            android:text="@{@string/download_downloaded_number(23)}"
-            android:textColor="@color/business_color_b3333333"
-            android:textSize="@dimen/business_text_size_16sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/dp_22"-->
+<!--            android:layout_marginTop="@dimen/dp_16"-->
+<!--            android:text="@{@string/download_downloaded_number(23)}"-->
+<!--            android:textColor="@color/business_color_b3333333"-->
+<!--            android:textSize="@dimen/business_text_size_16sp" />-->
 
-        <!--                    android:text="@{@string/download_audio_size_and_total_size(viewModel.selectChapterNum,ConvertUtils.byte2FitMemorySize(viewModel.selectChapterSize,1))}"
-        -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_22"
-            android:layout_gravity="end"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_16"
-            android:text="听书占用1.6G  剩余可用106.4G"
-            android:textColor="@color/business_text_color_666666"
-            android:textSize="@dimen/business_text_size_12sp" />
+<!--        &lt;!&ndash;                    android:text="@{@string/download_audio_size_and_total_size(viewModel.selectChapterNum,ConvertUtils.byte2FitMemorySize(viewModel.selectChapterSize,1))}"-->
+<!--        &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/dp_22"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:layout_marginTop="@dimen/dp_16"-->
+<!--            android:text="听书占用1.6G  剩余可用106.4G"-->
+<!--            android:textColor="@color/business_text_color_666666"-->
+<!--            android:textSize="@dimen/business_text_size_12sp" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             bindVerticalLayout="@{viewModel.downloadFinishAdapter}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="64dp" />
+            android:layout_height="match_parent" />
 
         <FrameLayout
             isVisible="@{viewModel.downloadFinishEdit}"

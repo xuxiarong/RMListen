@@ -5,7 +5,7 @@
 
     <data>
 
-
+        <import type="com.rm.baselisten.util.ConvertUtils" />
         <variable
             name="itemBean"
             type="com.rm.business_lib.db.download.DownloadAudio" />
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_downloaded"
-                android:text="@{String.valueOf(itemBean.chapterList.size())}"
+                android:text="@{String.valueOf(itemBean.download_num)}"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
