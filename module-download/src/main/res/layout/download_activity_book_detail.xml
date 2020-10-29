@@ -1,18 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.rm.business_lib.DownloadConstant"/>
         <variable
             name="viewModel"
             type="com.rm.module_download.viewmodel.DownloadBookDetailViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/download_rv_book_detail"
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16" />
+        android:layout_marginTop="@dimen/dp_8"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_width="@dimen/dp_144"
+            android:layout_height="@dimen/dp_144"
+            bindUrl="@{viewModel.downloadAudio.audio_cover_url}"
+            corner="@{8}"
+            android:scaleType="fitXY"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textStyle="bold"
+            android:layout_marginStart="172dp"
+            android:lineSpacingExtra="@dimen/dp_5"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/business_text_size_18sp"
+            android:text="@{viewModel.downloadAudio.audio_name}"
+            tools:text = "乐于揪头发，勇于照镜子"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
+            android:src="@drawable/business_anchor"
+            android:layout_marginStart="172dp"
+            android:layout_marginTop="@dimen/dp_58"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_17"
+            android:src="@drawable/business_anchor"
+            android:layout_marginStart="190dp"
+            android:layout_marginTop="@dimen/dp_56"
+            android:textSize="@dimen/business_text_size_12sp"
+            android:textColor="@color/base_666666"
+            android:lines="1"
+            android:ellipsize="end"
+            android:text="@{viewModel.downloadAudio.author}"
+            tools:text="小丸子的朋友小丸子的朋友小丸子的朋友小丸子的朋友小丸子的朋友"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
+            android:src="@drawable/download_ic_memory_size_dark"
+            android:layout_marginStart="172dp"
+            android:layout_marginTop="@dimen/dp_82"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_17"
+            android:src="@drawable/business_anchor"
+            android:layout_marginStart="190dp"
+            android:layout_marginTop="@dimen/dp_80"
+            android:textSize="@dimen/business_text_size_12sp"
+            android:textColor="@color/base_666666"
+            android:lines="1"
+            android:ellipsize="end"
+            android:text="@{DownloadConstant.INSTANCE.getAudioSize(viewModel.downloadAudio)}"
+            tools:text="156M"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="168dp"
+            android:textStyle="bold"
+            android:textColor="@color/business_text_color_333333"
+            android:layout_marginStart="@dimen/dp_16"
+            android:textSize="@dimen/business_text_size_18sp"
+            android:text="@{@string/download_downloading_number(viewModel.downloadAudio.chapterList.size())}"
+            tools:text = "已下载(23)"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="208dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            bindVerticalLayout="@{viewModel.downloadingAdapter}"
+            />
+
+    </FrameLayout>
+
+
 
 </layout>

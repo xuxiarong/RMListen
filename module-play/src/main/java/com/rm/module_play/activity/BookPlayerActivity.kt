@@ -10,8 +10,10 @@ import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
@@ -133,6 +135,28 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
         }
 
+
+        const val downloadAudio = "download_audio"
+
+        /**
+         * 从本地列表过来
+         */
+        fun startActivity(
+            context: Context,
+            audio: DownloadAudio,
+            chapterId: String,
+            from: String
+        ) {
+            val intent = Intent(context, BookPlayerActivity::class.java)
+            intent.putAnyExtras(paramChapterId, chapterId)
+            intent.putAnyExtras(fromJump, from)
+            intent.putAnyExtras(paramAudioId, audio.audio_id)
+            intent.putAnyExtras(downloadAudio, audio)
+            context.startActivity(intent)
+            (context as Activity).overridePendingTransition(activity_top_open, 0)
+
+        }
+
     }
 
     override fun finish() {
@@ -218,6 +242,19 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     }
                     Jump.SUBBOOKS.from -> {
 
+                    }
+                    Jump.DOWNLOAD.from -> {
+                        mChapterId?.let {
+                            if (musicPlayerManger.isPlaying()) {
+                                if (musicPlayerManger.getCurrentPlayerMusic()?.chapterId != mChapterId) {
+                                    musicPlayerManger.updateMusicPlayerData(it1, it)
+                                    musicPlayerManger.startPlayMusic(it)
+                                }
+                            } else {
+                                musicPlayerManger.updateMusicPlayerData(it1, it)
+                                musicPlayerManger.startPlayMusic(it)
+                            }
+                        }
                     }
                     else -> {
 
@@ -365,6 +402,36 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 }
             }
 
+            //从下载进来
+            Jump.DOWNLOAD.from -> {
+                mChapterId = intent.getStringExtra(paramChapterId)
+                val audio: DownloadAudio =
+                    intent.getSerializableExtra(downloadAudio) as DownloadAudio
+
+                mViewModel.setBookDetailBean(
+                    DetailBookBean(
+                        audio_id = audio.audio_id.toString(),
+                        audio_cover_url = audio.audio_cover_url,
+                        audio_name = audio.audio_name,
+                        author = audio.author,
+                        original_name = audio.audio_name
+                    )
+                )
+
+
+                val chapterList = arrayListOf<ChapterList>()
+                audio.chapterList.forEach {
+                    chapterList.add(ChapterList.copyFromDownload(it))
+                }
+                mViewModel.setPlayPath(chapterList)
+
+                mViewModel.audioChapterModel.set(AudioChapterListModel(
+                    list = chapterList,
+                    total = chapterList.size,
+                    Anthology_list = mutableListOf()
+                ))
+            }
+
             else -> {
 
             }
@@ -377,8 +444,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun onPause() {
         super.onPause()
         fromGlobalCache.putMMKV(mViewModel.playBookSate.get())
-
-
     }
 
     override fun initData() {

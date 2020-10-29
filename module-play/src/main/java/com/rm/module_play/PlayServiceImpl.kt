@@ -5,10 +5,11 @@ import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.baselisten.util.setOnClickNotDoubleListener
 import com.rm.business_lib.bean.ChapterList
-import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
+import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
@@ -55,6 +56,10 @@ class PlayServiceImpl : PlayService {
         chapterId: String
     ) {
         BookPlayerActivity.startActivity(context, book,chapterId, from)
+    }
+
+    override fun toPlayPage(context: Context, audio : DownloadAudio,chapterId: String,from:String){
+        BookPlayerActivity.startActivity(context = context,audio = audio,chapterId = chapterId,from = from)
     }
 
 

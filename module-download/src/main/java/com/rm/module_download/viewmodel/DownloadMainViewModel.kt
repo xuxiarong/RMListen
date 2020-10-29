@@ -5,14 +5,15 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.DownloadMemoryCache
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
+import com.rm.module_download.DownloadMemoryCache
 import com.rm.module_download.R
+import com.rm.module_download.activity.DownloadBookDetailActivity
 import com.rm.module_download.file.DownLoadFileUtils
 import com.rm.module_download.repository.DownloadRepository
 
@@ -56,7 +57,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     var downloadAudioList = DownloadMemoryCache.downloadingAudioList
 
     fun operatingAll(){
-        DownloadMemoryCache.pauseDownloadingChapter()
+        DownloadMemoryCache.operatingAll()
     }
 
 
@@ -73,16 +74,22 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     fun editDownloading() {
-        if (!downloadingEdit.get()) {
-            if(DownloadMemoryCache.downloadingChapter.value!=null){
-                downloadService.pauseDownload(DownloadMemoryCache.downloadingChapter.value!!)
-            }
+        if (downloadingEdit.get()) {
+            DownloadMemoryCache.resumeDownloadingChapter()
+        }else{
+            DownloadMemoryCache.pauseDownloadingChapter()
         }
         downloadingEdit.set(downloadingEdit.get().not())
     }
 
     fun editDownloadFinish() {
+        if(!downloadingEdit.get()){
+            DownloadMemoryCache.pauseDownloadingChapter()
+        }else{
+            DownloadMemoryCache.resumeDownloadingChapter()
+        }
         downloadFinishEdit.set(downloadFinishEdit.get().not())
+
     }
 
     //全选事件
@@ -116,9 +123,9 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             downloadingAdapter.notifyItemChanged(downloadingAdapter.data.indexOf(chapter))
         } else {
             if(chapter.isDownloading){
-                downloadService.pauseDownload(chapter)
+                DownloadMemoryCache.pauseCurrentAndDownNextChapter()
             }else{
-                downloadService.startDownloadWithCache(chapter)
+                DownloadMemoryCache.downloadClickChapter(chapter)
             }
         }
     }
@@ -173,7 +180,8 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             changeDownloadFinishSelect(audio = audio)
             downloadFinishAdapter.notifyItemChanged(downloadFinishAdapter.data.indexOf(audio))
         } else {
-            homeService.toDetailActivity(context, audio.audio_id.toString())
+//            homeService.toDetailActivity(context, audio.audio_id.toString())
+            DownloadBookDetailActivity.startActivity(context,audio = audio)
         }
     }
 

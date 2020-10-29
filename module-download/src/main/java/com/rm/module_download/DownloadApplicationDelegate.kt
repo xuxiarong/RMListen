@@ -14,6 +14,7 @@ class DownloadApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG,"Module Download onCreate()!!!")
         loadKoinModules(downloadModules)
+        initAppData()
     }
 
     override fun onTerminate() {
@@ -28,4 +29,12 @@ class DownloadApplicationDelegate : IApplicationDelegate {
     override fun onTrimMemory(level: Int) {
         DLog.d(TAG,"Module Download onTrimMemory(),---level--->>>$level")
     }
+
+    /**
+     * 从数据库获取已下载书籍列表
+     */
+    private fun initAppData(){
+        DownloadMemoryCache.getDownAudioOnAppCreate()
+    }
+
 }

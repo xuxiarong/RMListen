@@ -14,30 +14,20 @@
 
         <variable
             name="viewModel"
-            type="com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel" />
+            type="com.rm.module_download.viewmodel.DownloadBookDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:onClick="@{()->viewModel.itemClickFun(itemBean)}"
+        android:onClick="@{()->viewModel.downloadChapterClick(context,itemBean)}"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_69"
         android:paddingLeft="@dimen/dp_16"
         android:paddingRight="@dimen/dp_16">
 
-        <ImageView
-            android:id="@+id/download_iv_check"
-            bindDownloadChapterStatus="@{itemBean}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/download_tv_sequence"
             android:layout_width="@dimen/dp_36"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_8"
             android:layout_marginRight="@dimen/dp_8"
             android:gravity="center"
             android:text="@{String.valueOf(itemBean.sequence)}"
@@ -45,7 +35,7 @@
             android:textSize="@dimen/business_text_size_14sp"
             tools:text="1542"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/download_iv_check"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -58,7 +48,9 @@
             android:textSize="@dimen/business_text_size_16sp"
             android:layout_marginStart="@dimen/dp_6"
             app:layout_constraintLeft_toRightOf="@+id/download_tv_sequence"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Mabelle French"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -77,6 +69,7 @@
                 android:drawableLeft="@drawable/download_ic_memory_size"
                 bindMemoryText="@{itemBean.size}"
                 android:textColor="@color/business_text_color_b1b1b1"
+                tools:text="156M"
                 android:textSize="@dimen/business_text_size_12sp" />
 
             <TextView
@@ -87,26 +80,21 @@
                 android:drawableLeft="@drawable/download_ic_duration"
                 android:text="@{TimeUtils.getListenDuration(itemBean.duration)}"
                 android:textColor="@color/business_text_color_b1b1b1"
+                tools:text="15:14"
                 android:textSize="@dimen/business_text_size_12sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_12"
+                android:textSize="@dimen/business_text_size_12sp"
+                tools:text="已听完"
+                bindDownloadListen="@{itemBean}"
+                />
 
         </LinearLayout>
 
 
-        <ImageView
-            bindDownloadStatusSrc="@{itemBean}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-<!--        <ProgressBar-->
-<!--            android:layout_width="23dp"-->
-<!--            android:layout_height="23dp"-->
-<!--            isVisible="@{itemBean.downloadChapterUIStatus==DownloadChapterUIStatus.DOWNLOADING}"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
         <View
             android:layout_width="match_parent"
             app:layout_constraintStart_toStartOf="parent"

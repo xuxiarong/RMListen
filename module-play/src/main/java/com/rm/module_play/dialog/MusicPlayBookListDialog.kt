@@ -51,7 +51,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         }
     }
 
-
+//    override fun getBackgroundAlpha() = 0f
     override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_book_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

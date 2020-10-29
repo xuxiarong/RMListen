@@ -17,7 +17,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
     viewModel { DownloadChapterSelectionViewModel(get()) }
-    viewModel { DownloadBookDetailViewModel(get()) }
+    viewModel { DownloadBookDetailViewModel() }
     single { DownloadMainViewModel(get()) }
 }
 

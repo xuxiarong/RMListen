@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.binding.bindHorizontalLayout
+import com.rm.baselisten.binding.bindHorizontalLayoutNoScroll
 import com.rm.business_lib.binding.paddingBindData
 import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
@@ -50,7 +51,11 @@ class HomeAdapter(
                             BR.viewModel,
                             BR.item
                         )
-                    homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayout(homeCollectAdapter)
+                    if(homeCollectAdapter.data.size<=3){
+                        homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayoutNoScroll(homeCollectAdapter)
+                    }else{
+                        homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayout(homeCollectAdapter)
+                    }
                 }
             }
         }

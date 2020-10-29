@@ -17,6 +17,7 @@ import com.rm.module_home.model.home.banner.HomeBannerRvModel
 import com.rm.module_home.model.home.collect.HomeMenuRvModel
 import com.rm.module_home.model.home.grid.HomeGridAudioModel
 import com.rm.module_home.model.home.grid.HomeGridAudioRvModel
+import com.rm.module_home.model.home.hordouble.HomeAudioDoubleBlockModel
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleFooterModel
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleModel
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel
@@ -81,7 +82,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         allData.add(HomeMenuRvModel())
 
         homeModel.block_list.forEach {
-            if(it.audio_list.list.size>0){
+            if (it.audio_list.list.size > 0) {
                 setBlockData(allData, it)
             }
         }
@@ -114,7 +115,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 //如果板块1的数据是奇数，那么底下的那一行会少一个数据，这里做下处理
                 var doubleModel: HomeAudioHorDoubleModel
                 for (i in 0 until topList.size) {
-                    doubleModel = if (i == topList.size - 1) {
+                    doubleModel = if (i == topList.size - 1 && topList.size > bottomList.size) {
                         HomeAudioHorDoubleModel(topList[i], topList[i], false)
                     } else {
                         HomeAudioHorDoubleModel(topList[i], bottomList[i])
@@ -125,7 +126,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     doubleHorList.add(HomeAudioHorDoubleFooterModel())
                 }
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
-                allData.add(HomeAudioHorDoubleRvModel(doubleHorList))
+                allData.add(HomeAudioHorDoubleRvModel(doubleHorList, HomeAudioDoubleBlockModel(page_id = block.page_id,block_id = block.block_id,block_name = block.block_name,topic_id = block.topic_id)))
             }
             BLOCK_HOR_GRID -> {
                 val gridList = ArrayList<MultiItemEntity>()
@@ -143,7 +144,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
                 allData.add(HomeAudioHorSingleRvModel(horSingList))
             }
-            BLOCK_HOR_VEr -> {
+            BLOCK_HOR_VER -> {
                 val verSingList = ArrayList<MultiItemEntity>()
                 block.audio_list.list.forEach {
                     verSingList.add(HomeAudioVerModel(it))
@@ -184,10 +185,10 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     }
 
     companion object {
-        const val BLOCK_HOR_DOUBLE = 1
+        const val BLOCK_HOR_SINGLE = 1
         const val BLOCK_HOR_GRID = 2
-        const val BLOCK_HOR_SINGLE = 3
-        const val BLOCK_HOR_VEr = 4
+        const val BLOCK_HOR_DOUBLE = 3
+        const val BLOCK_HOR_VER = 4
     }
 
 }

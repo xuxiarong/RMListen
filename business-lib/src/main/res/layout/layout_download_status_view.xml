@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_24"
+    android:layout_height="@dimen/dp_24"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="false">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/businessDownIv"
+        android:layout_width="@dimen/dp_22"
+        android:layout_height="@dimen/dp_22"
+        android:layout_gravity="center"
+        android:src="@drawable/business_download_start"
+        tools:ignore="UnusedAttribute" />
+
+    <com.rm.business_lib.wedgit.progressbar.CircularProgressView
+        android:id="@+id/businessDownProgress"
+        android:layout_width="@dimen/dp_22"
+        android:layout_height="@dimen/dp_22"
+        android:layout_gravity="center"
+        app:backColor="@color/base_666666"
+        app:backWidth="1.5dp"
+        app:progColor="@color/base_ff5e5e"
+        app:progWidth="1.5dp"
+        app:progress="65" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/businessDownWaitLv"
+        android:layout_width="@dimen/dp_22"
+        android:layout_height="@dimen/dp_22"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_fileName="base_pull_refresh.json"
+        />
+
+</FrameLayout>

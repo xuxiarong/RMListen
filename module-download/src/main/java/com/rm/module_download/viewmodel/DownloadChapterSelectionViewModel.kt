@@ -11,13 +11,13 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.DownloadConstant
-import com.rm.business_lib.DownloadMemoryCache
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
+import com.rm.module_download.DownloadMemoryCache
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.bean.DownloadChapterUIStatus
@@ -65,7 +65,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 )
             }
             //存储已选择的下载章节
-            DownloadMemoryCache.downloadingChapterList.addAll(tempDownloadList)
+            DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
             //调用下载服务开始下载
             downloadService.startDownloadWithCache(tempDownloadList)
         }
@@ -155,7 +155,8 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                     onSuccess = {
                         val chapterStatusList = getChapterStatus(it.list)
                         downloadService.startDownloadWithCache(chapterStatusList)
-                        audioChapterList.addAll(chapterStatusList)
+                        DownloadMemoryCache.addDownloadingChapter(it.list)
+//                        audioChapterList.addAll(chapterStatusList)
                     },
                     onError = {
                         DLog.i("download", "$it")
