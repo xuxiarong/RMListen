@@ -10,6 +10,7 @@ import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.download.DownloadAudio
@@ -405,8 +406,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             Jump.DOWNLOAD.from -> {
                 mChapterId = intent.getStringExtra(paramChapterId)
                 val audio: DownloadAudio =
-                intent.getSerializableExtra(downloadAudio) as DownloadAudio
-                mViewModel.audioInfo.set(
+                    intent.getSerializableExtra(downloadAudio) as DownloadAudio
+
+                mViewModel.setBookDetailBean(
                     DetailBookBean(
                         audio_id = audio.audio_id.toString(),
                         audio_cover_url = audio.audio_cover_url,
@@ -415,11 +417,19 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         original_name = audio.audio_name
                     )
                 )
+
+
                 val chapterList = arrayListOf<ChapterList>()
                 audio.chapterList.forEach {
                     chapterList.add(ChapterList.copyFromDownload(it))
                 }
                 mViewModel.setPlayPath(chapterList)
+
+                mViewModel.audioChapterModel.set(AudioChapterListModel(
+                    list = chapterList,
+                    total = chapterList.size,
+                    Anthology_list = mutableListOf()
+                ))
             }
 
             else -> {

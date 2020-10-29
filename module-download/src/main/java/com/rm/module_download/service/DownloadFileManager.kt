@@ -187,7 +187,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     ) {
         DLog.d(TAG, " taskEnd name = ${task.filename} --- cause = $cause --- taskSpeed = ${taskSpeed.speed()}")
         when (cause) {
-            EndCause.COMPLETED -> DownloadMemoryCache.setDownloadFinishChapter()
+            EndCause.COMPLETED -> DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
             EndCause.CANCELED -> DownloadMemoryCache.pauseDownloadingChapter()
             else -> {
                 DownloadMemoryCache.pauseCurrentAndDownNextChapter()

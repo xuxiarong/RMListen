@@ -295,12 +295,13 @@ object DownloadMemoryCache {
     }
 
 
-    fun setDownloadFinishChapter() {
+    fun setDownloadFinishChapter(filePath : String) {
         val finishChapter = downloadingChapter.get()
         if ( finishChapter!= null) {
             downloadingChapterList.remove(finishChapter)
             downloadFinishChapterList.add(finishChapter)
             finishChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
+            finishChapter.file_path = filePath
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(finishChapter)
             updateDownloadingAudio(chapter = finishChapter)
             downFinishAndAutoDownNext()

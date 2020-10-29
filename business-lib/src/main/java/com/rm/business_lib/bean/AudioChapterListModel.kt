@@ -46,7 +46,7 @@ data class ChapterList(
                 duration = chapter.duration,
                 need_pay = chapter.need_pay,
                 path = chapter.file_path,
-                path_url = chapter.path_url,
+                path_url = chapter.file_path,
                 play_count = chapter.play_count.toInt(),
                 sequence = chapter.sequence,
                 progress = chapter.listen_duration.toLong(),
