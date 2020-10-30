@@ -12,12 +12,12 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.DownloadConstant
+import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.module_download.BR
-import com.rm.module_download.DownloadMemoryCache
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.bean.DownloadChapterUIStatus
@@ -57,7 +57,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 }
             }
             if(tempDownloadList.size == 0){
-                ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_add_cache))
+                ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist))
                 return
             }
 

@@ -1,7 +1,7 @@
 package com.rm.module_download
 
-import com.liulishuo.okdownload.OkDownload
 import com.rm.baselisten.util.DLog
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.component_comm.base.IApplicationDelegate
 import org.koin.core.context.loadKoinModules
 
@@ -18,7 +18,6 @@ class DownloadApplicationDelegate : IApplicationDelegate {
     }
 
     override fun onTerminate() {
-        OkDownload.with().downloadDispatcher().cancelAll()
         DLog.d(TAG,"Module Download onTerminate()!!!")
     }
 

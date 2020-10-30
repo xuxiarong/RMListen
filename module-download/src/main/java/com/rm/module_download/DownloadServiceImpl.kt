@@ -2,16 +2,12 @@ package com.rm.module_download
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
-import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadAudio
-import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_download.activity.DownloadChapterSelectionActivity
 import com.rm.module_download.activity.DownloadMainActivity
-import com.rm.module_download.service.DownloadFileManager
 
 /**
  * desc   : download module 路由服务实现类
@@ -30,50 +26,50 @@ class DownloadServiceImpl : DownloadService {
         DownloadChapterSelectionActivity.startActivity(context, downloadAudio)
     }
 
-    override fun startDownloadWithCache(chapter: DownloadChapter) {
-        DownloadFileManager.INSTANCE.download(chapter)
-//        DownloadDaoUtils.INSTANCE.saveAudio(audio)
-    }
-
-    override fun startDownloadWithCache(chapterList: MutableList<DownloadChapter>) {
-        DownloadFileManager.INSTANCE.download(chapterList)
-    }
-
-    override fun pauseDownload(chapter: DownloadChapter): Boolean {
-        return DownloadFileManager.INSTANCE.stopDownload(chapter)
-    }
-
-    override fun pauseDownload(chapterList: MutableList<DownloadChapter>) {
-        DownloadFileManager.INSTANCE.stopDownload(chapterList)
-    }
-
-    override fun deleteDownload(chapter: DownloadChapter) {
-        DownloadFileManager.INSTANCE.delete(chapter)
-    }
-
-    override fun deleteDownload(chapterList: MutableList<DownloadChapter>) {
-        DownloadFileManager.INSTANCE.delete(chapterList)
-    }
-
-    override fun getDownloadStatus(chapter: DownloadChapter): DownloadUIStatus {
-        return DownloadFileManager.INSTANCE.getTaskStatus(chapter)
-    }
-
-    override fun getDownloadProgressInfo(chapter: DownloadChapter): DownloadProgressUpdateBean? {
-        return DownloadFileManager.INSTANCE.getTaskBreakpointInfo(chapter)
-    }
-
-    override fun getDownloadAudioList(): MutableList<DownloadChapter> {
-        return mutableListOf()
-    }
-
-    override fun stopAll() {
-        DownloadFileManager.INSTANCE.stopAll()
-    }
-
-    override fun deleteAll() {
-        DownloadFileManager.INSTANCE.deleteAll()
-    }
+//    override fun startDownloadWithCache(chapter: DownloadChapter) {
+//        DownloadFileManager.INSTANCE.startDownloadWithCache(chapter)
+////        DownloadDaoUtils.INSTANCE.saveAudio(audio)
+//    }
+//
+//    override fun startDownloadWithCache(chapterList: MutableList<DownloadChapter>) {
+//        DownloadFileManager.INSTANCE.startDownloadWithCache(chapterList)
+//    }
+//
+//    override fun pauseDownload(chapter: DownloadChapter): Boolean {
+//        return DownloadFileManager.INSTANCE.pauseDownload(chapter)
+//    }
+//
+//    override fun pauseDownload(chapterList: MutableList<DownloadChapter>) {
+//        DownloadFileManager.INSTANCE.pauseDownload(chapterList)
+//    }
+//
+//    override fun deleteDownload(chapter: DownloadChapter) {
+//        DownloadFileManager.INSTANCE.deleteDownload(chapter)
+//    }
+//
+//    override fun deleteDownload(chapterList: MutableList<DownloadChapter>) {
+//        DownloadFileManager.INSTANCE.deleteDownload(chapterList)
+//    }
+//
+//    override fun getDownloadStatus(chapter: DownloadChapter): DownloadUIStatus {
+//        return DownloadFileManager.INSTANCE.getTaskStatus(chapter)
+//    }
+//
+//    override fun getDownloadProgressInfo(chapter: DownloadChapter): DownloadProgressUpdateBean? {
+//        return DownloadFileManager.INSTANCE.getTaskBreakpointInfo(chapter)
+//    }
+//
+//    override fun getDownloadAudioList(): MutableList<DownloadChapter> {
+//        return mutableListOf()
+//    }
+//
+//    override fun stopAll() {
+//        DownloadFileManager.INSTANCE.stopAll()
+//    }
+//
+//    override fun deleteAll() {
+//        DownloadFileManager.INSTANCE.deleteAll()
+//    }
 
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {

@@ -2,7 +2,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.rm.module_download.DownloadMemoryCache"/>
+        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
 
         <variable
             name="viewModel"
