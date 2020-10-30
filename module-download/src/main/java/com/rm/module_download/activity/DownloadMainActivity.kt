@@ -7,6 +7,7 @@ import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
 import com.rm.module_download.BR
+import com.rm.module_download.DownloadMemoryCache
 import com.rm.module_download.R
 import com.rm.module_download.adapter.DownloadDetailPagerAdapter
 import com.rm.module_download.databinding.DownloadActivityDownloadMainBinding
@@ -81,7 +82,7 @@ class DownloadMainActivity :
         mViewModel.downloadingEdit.set(false)
         mViewModel.downloadFinishEdit.set(false)
         mViewModel.downloadingSelected.set(true)
-
+        DownloadMemoryCache.initDownOrPauseAll()
 
     }
 }

@@ -45,22 +45,25 @@ object DownloadMemoryCache {
     }
 
     fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
-        if (!isDownloadingAudio(audio)) {
+        val cacheAudio = getAudioFromCache(audio)
+        if (cacheAudio == null) {
+            audio.download_num = 0
+            audio.down_size = 0L
             downloadingAudioList.add(element = audio)
             DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(audio)
         }
     }
 
-    fun isDownloadingAudio(audio: DownloadAudio): Boolean {
+    fun getAudioFromCache(audio: DownloadAudio): DownloadAudio? {
         if (null != downloadingAudioList.value) {
             val audioList = downloadingAudioList.value!!
             audioList.forEach {
                 if (it.audio_id == audio.audio_id) {
-                    return true
+                    return it
                 }
             }
         }
-        return false
+        return null
     }
 
     fun updateDownloadingAudio(chapter: DownloadChapter): Boolean {
@@ -93,9 +96,9 @@ object DownloadMemoryCache {
     }
 
     fun deleteAudioToDownloadMemoryCache(audio: DownloadAudio) {
-        if (isDownloadingAudio(audio)) {
-
-            downloadingAudioList.remove(audio)
+        val cacheAudio = getAudioFromCache(audio)
+        if (cacheAudio!=null) {
+            downloadingAudioList.remove(cacheAudio)
             DaoUtil(DownloadAudio::class.java, "").delete(audio)
             audio.chapterList.forEach {
                 DaoUtil(DownloadChapter::class.java, "").delete(it)
@@ -312,7 +315,9 @@ object DownloadMemoryCache {
         if(downloadingChapter.get()!=null){
             val chapter = downloadingChapter.get()!!
             if(chapter.isDownloading){
-                downloadService.pauseDownload(chapter)
+                pauseDownloadingChapter()
+            }else{
+                resumeDownloadingChapter()
             }
         }else{
             if(downloadingChapterList.value!=null){
@@ -326,7 +331,6 @@ object DownloadMemoryCache {
 
 
     fun setDownloadFinishChapter(filePath : String) {
-
         val finishChapter = downloadingChapter.get()
         if ( finishChapter!= null) {
             downloadFinishChapterList.add(finishChapter)
