@@ -116,6 +116,7 @@ object DownloadMemoryCache {
         }else{
             ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
             downloadingChapterList.addAll(chapterList)
+            downloadService.startDownloadWithCache(chapterList)
         }
     }
 

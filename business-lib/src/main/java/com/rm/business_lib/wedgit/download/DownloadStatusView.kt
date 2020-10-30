@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.R
 import com.rm.business_lib.db.download.DownloadChapter
@@ -41,6 +42,7 @@ class DownloadStatusView@JvmOverloads constructor(context: Context, attrs: Attri
                 businessDownIv.visibility = View.GONE
                 businessDownProgress.visibility = View.VISIBLE
                 businessDownProgress.progress = (chapter.current_offset / (chapter.size / 100)).toInt()
+                DLog.d("suolong","progress = ${businessDownProgress.progress}")
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
             }

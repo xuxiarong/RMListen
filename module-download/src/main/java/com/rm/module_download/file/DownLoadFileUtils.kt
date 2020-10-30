@@ -19,11 +19,8 @@ import java.io.File
  */
 object DownLoadFileUtils {
 
-
     fun checkChapterIsDownload(chapter: DownloadChapter): DownloadChapter {
-        if(chapter.down_status!=DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD){
-            return chapter
-        }
+
         val file = File(
             createFileWithAudio(chapter.audio_id.toString()).absolutePath,
             chapter.chapter_name
@@ -36,11 +33,14 @@ object DownLoadFileUtils {
             val list = qb?.list()
             if(list!=null && list.size>0){
                 chapter.down_status = list[0].down_status
+            }else{
+                chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
             }
             val end = System.currentTimeMillis()
             DLog.d("suolong","cost time = ${end-start}")
-            if (file.length() >= chapter.size) {
-                chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+        }else{
+            if(chapter.down_status != DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT){
+                chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
             }
         }
         return chapter

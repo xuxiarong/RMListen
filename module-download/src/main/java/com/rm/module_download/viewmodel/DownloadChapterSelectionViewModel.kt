@@ -14,8 +14,6 @@ import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.component_comm.download.DownloadService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
 import com.rm.module_download.DownloadMemoryCache
 import com.rm.module_download.R
@@ -30,7 +28,6 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     var page = 1
     private val pageSize = 12
     private var total = 0
-    private val downloadService by lazy { RouterHelper.createRouter(DownloadService::class.java) }
     var isSelectAll = ObservableBoolean(false)
     var selectChapterNum = ObservableInt(0)
     var selectChapterSize = ObservableLong(0L)
@@ -67,7 +64,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             //存储已选择的下载章节
             DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
             //调用下载服务开始下载
-            downloadService.startDownloadWithCache(tempDownloadList)
+            mAdapter.notifyDataSetChanged()
         }
     }
 
@@ -141,8 +138,10 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
 
     private fun getChapterStatus(chapterList: List<DownloadChapter>): MutableList<DownloadChapter> {
         val audioName = downloadAudio.get()?.audio_name
+        val audioId = downloadAudio.get()?.audio_id
         chapterList.forEach {
             it.audio_name = audioName
+            it.audio_id = audioId
             DownLoadFileUtils.checkChapterIsDownload(chapter = it)
         }
         return chapterList.toMutableList()
@@ -154,7 +153,6 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 .checkResult(
                     onSuccess = {
                         val chapterStatusList = getChapterStatus(it.list)
-                        downloadService.startDownloadWithCache(chapterStatusList)
                         DownloadMemoryCache.addDownloadingChapter(it.list)
 //                        audioChapterList.addAll(chapterStatusList)
                     },

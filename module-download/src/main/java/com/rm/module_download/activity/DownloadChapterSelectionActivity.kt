@@ -45,6 +45,11 @@ class DownloadChapterSelectionActivity : BaseVMActivity<DownloadActivityChapterS
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        mViewModel.mAdapter.notifyDataSetChanged()
+    }
+
     override fun initData() {
         mViewModel.downloadAudio.set(downloadAudio)
         mViewModel.getDownloadChapterList(downloadAudio.audio_id)
