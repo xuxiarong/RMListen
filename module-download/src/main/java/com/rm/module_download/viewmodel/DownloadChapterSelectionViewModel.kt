@@ -5,10 +5,12 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.databinding.ObservableLong
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.bean.download.DownloadUIStatus
@@ -19,7 +21,6 @@ import com.rm.module_download.DownloadMemoryCache
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.bean.DownloadChapterUIStatus
-import com.rm.module_download.file.DownLoadFileUtils
 import com.rm.module_download.repository.DownloadRepository
 
 class DownloadChapterSelectionViewModel(private val repository: DownloadRepository) :
@@ -50,11 +51,16 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             val tempDownloadList = mutableListOf<DownloadChapter>()
             //筛选已选择的章节
             audioChapterList.value!!.forEach {
-                if (it.chapter_edit_select) {
+                if (it.chapter_edit_select && it.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
                     it.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
                     tempDownloadList.add(it)
                 }
             }
+            if(tempDownloadList.size == 0){
+                ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_add_cache))
+                return
+            }
+
             //将音频信息存储
             downloadAudio.get()?.let {
                 DownloadMemoryCache.addAudioToDownloadMemoryCache(
@@ -142,7 +148,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         chapterList.forEach {
             it.audio_name = audioName
             it.audio_id = audioId
-            DownLoadFileUtils.checkChapterIsDownload(chapter = it)
+//            DownLoadFileUtils.checkChapterIsDownload(chapter = it)
         }
         return chapterList.toMutableList()
     }
@@ -153,7 +159,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 .checkResult(
                     onSuccess = {
                         val chapterStatusList = getChapterStatus(it.list)
-                        DownloadMemoryCache.addDownloadingChapter(it.list)
+                        DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
 //                        audioChapterList.addAll(chapterStatusList)
                     },
                     onError = {

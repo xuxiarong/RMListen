@@ -31,15 +31,19 @@ object DownLoadFileUtils {
             qb?.where(DownloadChapterDao.Properties.Chapter_id.eq(chapter.chapter_id))
             qb?.where(DownloadChapterDao.Properties.Audio_id.eq(chapter.audio_id))
             val list = qb?.list()
+            val end = System.currentTimeMillis()
             if(list!=null && list.size>0){
+                DLog.d("suolong","文件存在 --- 已查询到 name = ${chapter.chapter_name} + 原状态 =  ${DownloadConstant.getDownloadText(chapter.down_status)} cost time = ${end-start} ")
                 chapter.down_status = list[0].down_status
+                DLog.d("suolong","文件存在 --- 已查询到 name = ${chapter.chapter_name} + 数据库 = ${DownloadConstant.getDownloadText(list[0].down_status)} cost time = ${end-start} ")
             }else{
                 chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
+                DLog.d("suolong","文件不存在数据库 --- 原状态 =  ${DownloadConstant.getDownloadText(chapter.down_status)} cost time = ${end-start} ")
             }
-            val end = System.currentTimeMillis()
-            DLog.d("suolong","cost time = ${end-start}")
         }else{
-            if(chapter.down_status != DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT){
+            DLog.d("suolong","文件不存本地 --- 原状态 =  ${DownloadConstant.getDownloadText(chapter.down_status)}  ")
+            if(chapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
+                ||chapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE){
                 chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
             }
         }

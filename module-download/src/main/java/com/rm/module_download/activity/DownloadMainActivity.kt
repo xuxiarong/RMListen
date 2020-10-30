@@ -81,5 +81,7 @@ class DownloadMainActivity :
         mViewModel.downloadingEdit.set(false)
         mViewModel.downloadFinishEdit.set(false)
         mViewModel.downloadingSelected.set(true)
+
+
     }
 }

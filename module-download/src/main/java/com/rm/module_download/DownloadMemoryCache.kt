@@ -32,10 +32,17 @@ object DownloadMemoryCache {
     var downloadingChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
     var downloadingChapter = ObservableField<DownloadChapter>()
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
-    var downloadPauseAll = ObservableBoolean(false)
+    var isPauseAll = ObservableBoolean(false)
 
     val downloadService = RouterHelper.createRouter(DownloadService::class.java)
 
+    fun initDownOrPauseAll(){
+        if(downloadingChapter.get()!=null){
+            isPauseAll.set(false)
+        }else{
+            isPauseAll.set(true)
+        }
+    }
 
     fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
         if (!isDownloadingAudio(audio)) {
@@ -107,6 +114,8 @@ object DownloadMemoryCache {
                 downloadingChapterList.value!!.forEach{
                     if(it.path_url == ne.path_url){
                         iterator.remove()
+                    }else{
+                        DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(it)
                     }
                 }
             }
@@ -147,7 +156,16 @@ object DownloadMemoryCache {
                     return
                 }
                 1 -> {
-                    downloadService.pauseDownload(downList[0])
+                    if(downloadingChapter.get()!=null){
+                        if(downList[0].chapter_id == downloadingChapter.get()!!.chapter_id){
+
+                            val chapter = downloadingChapter.get()!!
+                            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
+                            downloadingChapter.set(chapter)
+                            downloadingChapter.notifyChange()
+                            downloadingChapterList.remove(downList[0])
+                        }
+                    }
                 }
                 else -> {
                     if(downloadingChapter.get()!=null){
@@ -288,13 +306,13 @@ object DownloadMemoryCache {
         resumeDownloadingChapter()
     }
 
+
+
     fun operatingAll(){
         if(downloadingChapter.get()!=null){
             val chapter = downloadingChapter.get()!!
             if(chapter.isDownloading){
                 downloadService.pauseDownload(chapter)
-            }else{
-                downloadService.startDownloadWithCache(chapter)
             }
         }else{
             if(downloadingChapterList.value!=null){
@@ -308,6 +326,7 @@ object DownloadMemoryCache {
 
 
     fun setDownloadFinishChapter(filePath : String) {
+
         val finishChapter = downloadingChapter.get()
         if ( finishChapter!= null) {
             downloadFinishChapterList.add(finishChapter)
@@ -323,11 +342,14 @@ object DownloadMemoryCache {
     fun deleteDownloadingChapter(chapter: DownloadChapter) {
         downloadingChapterList.remove(chapter)
         DaoUtil(DownloadChapter::class.java, "").delete(chapter)
+        downloadService.deleteDownload(chapter)
+
     }
 
     fun deleteDownloadingChapter(chapterList: List<DownloadChapter>) {
         downloadingChapterList.removeAll(chapterList)
         DaoUtil(DownloadChapter::class.java, "").delete(chapterList)
+        downloadService.deleteDownload(chapterList.toMutableList())
     }
 
     fun getDownAudioOnAppCreate() {

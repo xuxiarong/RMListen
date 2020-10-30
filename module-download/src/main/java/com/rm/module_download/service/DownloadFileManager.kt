@@ -188,13 +188,19 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     ) {
         DLog.d(TAG, " taskEnd name = ${task.filename} --- cause = $cause --- taskSpeed = ${taskSpeed.speed()}")
         when (cause) {
-            EndCause.COMPLETED -> DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
-            EndCause.CANCELED -> DownloadMemoryCache.pauseDownloadingChapter()
+            EndCause.COMPLETED -> {
+                DLog.d(TAG, "下载完成")
+                DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
+            }
+            EndCause.CANCELED -> { DLog.d(TAG, "下载失败,原因是:任务被取消")
+//                DownloadMemoryCache.pauseDownloadingChapter()
+            }
+            EndCause.SAME_TASK_BUSY,EndCause.FILE_BUSY->{
+                DLog.d(TAG, "下载失败,原因是 EndCause.SAME_TASK_BUSY ${realCause?.message}")
+            }
             else -> {
                 DownloadMemoryCache.pauseCurrentAndDownNextChapter()
-                if(realCause!=null){
-                    DLog.d(TAG, "下载失败,原因是 ${realCause.message}")
-                }
+                DLog.d(TAG, "下载失败,原因是${cause.ordinal.toString()} ${realCause?.message}")
             }
         }
     }
