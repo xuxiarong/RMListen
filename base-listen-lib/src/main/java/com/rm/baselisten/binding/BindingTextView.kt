@@ -1,5 +1,6 @@
 package com.rm.baselisten.binding
 
+import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
@@ -17,12 +18,20 @@ import com.rm.baselisten.util.ConvertUtils
  */
 @BindingAdapter("bindText")
 fun TextView.bindText(content: Any?) {
-
     visibility = if (TextUtils.isEmpty(content.toString())) {
         View.GONE
     } else {
         text = content.toString()
         View.VISIBLE
+    }
+}
+
+@BindingAdapter("bindIsBold")
+fun TextView.bindIsBold(bindIsBold: Boolean?) {
+    typeface = if (bindIsBold == true) {
+        Typeface.defaultFromStyle(Typeface.BOLD)
+    } else {
+        Typeface.defaultFromStyle(Typeface.NORMAL)
     }
 }
 
@@ -95,7 +104,7 @@ fun TextView.bindSpanText(content: String?, keyword: String?, @ColorInt spanColo
 }
 
 @BindingAdapter("bindMemoryText")
-fun TextView.bindMemoryText(size : Long){
-    text = ConvertUtils.byte2FitMemorySize(size,1)
+fun TextView.bindMemoryText(size: Long) {
+    text = ConvertUtils.byte2FitMemorySize(size, 1)
 }
 

@@ -33,6 +33,7 @@ class BaseTitleModel {
     var rightTextClick: (() -> Unit)? = null
     var rightTextColorRes = R.color.base_666666
     var rightTextEnabled = true
+    var titleIsBold = false
 
 
     fun setHasDivider(hasDivider: Boolean): BaseTitleModel {
@@ -143,6 +144,11 @@ class BaseTitleModel {
 
     fun setSubTitle(subTitle: String): BaseTitleModel {
         this.subTitle = subTitle
+        return this
+    }
+
+    fun setTitleStyle(titleIsBold: Boolean): BaseTitleModel {
+        this.titleIsBold = titleIsBold
         return this
     }
 }

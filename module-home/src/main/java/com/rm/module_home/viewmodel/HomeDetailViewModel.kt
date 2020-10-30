@@ -252,7 +252,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 }
                 rightBtnClick = {
                     RouterHelper.createRouter(ListenService::class.java).startSubscription(activity)
-                    IS_FIRST_SUBSCRIBE.putMMKV(false)
                     dismiss()
                 }
                 customView =
@@ -261,6 +260,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         } else {
             showToast(context.getString(R.string.home_subscribe_success_tip))
         }
+        IS_FIRST_SUBSCRIBE.putMMKV(false)
     }
 
     /**

@@ -250,7 +250,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                         activity,
                         LISTEN_SHEET_LIST_COLLECTED_LIST
                     )
-                    IS_FIRST_FAVORITES.putMMKV(false)
                     dismiss()
                 }
                 customView =
@@ -259,6 +258,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
         } else {
             showToast(context.getString(R.string.home_favorites_success_tip))
         }
+        IS_FIRST_FAVORITES.putMMKV(false)
     }
 
 }

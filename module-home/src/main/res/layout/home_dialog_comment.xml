@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
-            isVisible="@{homeCommentDialogViewModel.inputComment.length()>20}"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
@@ -39,13 +39,12 @@
             android:paddingEnd="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_dialog_comment_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/business_shape_f7f7f7_8dp"
                 android:minHeight="@dimen/dp_120"
-                android:orientation="vertical"
                 android:padding="@dimen/dp_12"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -54,21 +53,35 @@
                     afterTextChanged="@{homeCommentDialogViewModel.inputText}"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:background="@null"
-                    android:gravity="top|start"
+                    android:gravity="start|top"
                     android:hint="@string/home_comment_dialog_hint"
                     android:textColor="@color/business_text_color_333333"
                     android:textSize="@dimen/business_text_size_14sp"
+                    app:layout_constraintBottom_toTopOf="@id/home_dialog_comment_text"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/home_dialog_comment_text_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
-                    tools:text="20/20" />
-            </LinearLayout>
+                    android:text="@{@string/home_comment_num(200-homeCommentDialogViewModel.inputComment.length())}"
+                    android:textColor="@{homeCommentDialogViewModel.inputComment.length()>200?@color/business_color_ff5e5e:@color/business_text_color_666666}"
+                    android:textSize="@dimen/business_text_size_12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/home_dialog_comment_text"
+                    tools:text="40" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_dialog_comment_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_comment_num_text"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="@dimen/business_text_size_12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"

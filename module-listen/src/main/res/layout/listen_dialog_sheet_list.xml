@@ -22,6 +22,7 @@
             android:paddingBottom="@dimen/dp_15"
             android:paddingTop="@dimen/dp_15"
             android:text="@string/listen_add_to_book_list"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,6 +32,7 @@
             android:paddingBottom="@dimen/dp_15"
             android:paddingTop="@dimen/dp_15"
             android:text="@string/listen_create_book_list"
+            android:textStyle="bold"
             android:textColor="@color/business_color_ff5e5e"
             app:layout_constraintBottom_toBottomOf="@id/listen_dialog_sheet_text"
             app:layout_constraintEnd_toEndOf="parent"

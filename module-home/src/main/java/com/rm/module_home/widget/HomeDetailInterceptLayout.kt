@@ -90,17 +90,24 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         mBottomHeight = headerLayout.height
-
         params = layoutParams as ConstraintLayout.LayoutParams
         criticalPoint = screenHeight / 2
         //根据实际情况计算
-        mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_216) + getStateHeight(context)
+        mCenterHeight =
+            resources.getDimensionPixelSize(R.dimen.dp_216) + getStateHeight(context) - 10
 
-        mTopHeight = resources.getDimensionPixelSize(R.dimen.dp_40) + getStateHeight(context)
+        mTopHeight =
+            resources.getDimensionPixelSize(R.dimen.dp_40) + getStateHeight(context) - 10
 
-        DLog.i("------------->", "$mTopHeight     $mCenterHeight    $screenHeight")
-        params.height = screenHeight - mCenterHeight + getStateHeight(context)
-        this.layoutParams = params
+        if (mCurType == TYPE_CENTER) {
+            params.height = screenHeight - mCenterHeight
+            this.layoutParams = params
+
+            val layoutParams = mRecyclerView.layoutParams
+            layoutParams.height = screenHeight - mTopHeight
+            mRecyclerView.layoutParams = layoutParams
+        }
+
     }
 
     override fun onFinishInflate() {
@@ -120,6 +127,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> {
                 mPrevMotionX = x
                 mPrevMotionY = y
+                downY = ev.rawY.toInt()
             }
             MotionEvent.ACTION_MOVE -> {
                 val dx = x - mPrevMotionX.toFloat()
@@ -164,23 +172,30 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
         return !mRecyclerView.canScrollVertically(direction)
     }
 
-    private var offsetY = 0
+    private var downY = 0
+    private var upY = 0
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var intercept = false
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 mPrevMotionY = event.rawY.toInt()
+                downY = event.rawY.toInt()
                 intercept = true
             }
             MotionEvent.ACTION_MOVE -> {
-                offsetY = event.rawY.toInt() - mPrevMotionY
+                val offsetY = event.rawY.toInt() - mPrevMotionY
                 changeParams(offsetY)
                 mPrevMotionY = event.rawY.toInt()
                 intercept = true
             }
             MotionEvent.ACTION_UP -> {
                 intercept = false
+                upY = event.rawY.toInt()
                 moveEnd()
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                startScrollAnim(top, mCenterHeight)
             }
         }
         return intercept
@@ -199,24 +214,30 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
      * 滑动结束
      */
     private fun moveEnd() {
+        val offsetY = upY - downY
+        DLog.i("------>moveEnd", "$mCurType")
         when (mCurType) {
             TYPE_TOP -> {
-                if (offsetY > 0) {
+                if (offsetY >= 0) {
+                    DLog.i("------>moveEnd", "111111")
                     mCurType = TYPE_CENTER
                     startScrollAnim(top, mCenterHeight)
                 }
             }
             TYPE_CENTER -> {
-                if (offsetY > 0) {
+                if (offsetY >= 0) {
                     mCurType = TYPE_BOTTOM
+                    DLog.i("------>moveEnd", "22222")
                     startScrollAnim(top, bottom - mBottomHeight)
                 } else {
                     mCurType = TYPE_TOP
+                    DLog.i("------>moveEnd", "33333")
                     startScrollAnim(top, mTopHeight)
                 }
             }
             TYPE_BOTTOM -> {
-                if (offsetY < 0) {
+                if (offsetY <= 0) {
+                    DLog.i("------>moveEnd", "44444")
                     mCurType = TYPE_CENTER
                     startScrollAnim(top, mCenterHeight)
                 }
@@ -230,6 +251,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
         animator.duration = 100
         animator.addUpdateListener { valueAnimator: ValueAnimator ->
             val values = valueAnimator.animatedValue as Int
+            DLog.i("------>moveEnd", "values:$values")
             layout(0, values, right, bottom)
         }
         animator.start()

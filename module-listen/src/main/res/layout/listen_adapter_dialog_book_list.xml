@@ -25,12 +25,22 @@
             android:id="@+id/home_menu_detail_book_adapter_icon"
             bindUrl="@{dialogItem.sheet_cover}"
             corner="@{4f}"
-            android:layout_width="@dimen/dp_106"
-            android:layout_height="@dimen/dp_106"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            isVisible="@{dialogItem.created_from==3}"
+            android:src="@drawable/business_icon_love"
+            app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_book_adapter_icon"
+            app:layout_constraintEnd_toEndOf="@id/home_menu_detail_book_adapter_icon"
+            app:layout_constraintStart_toStartOf="@id/home_menu_detail_book_adapter_icon"
+            app:layout_constraintTop_toTopOf="@id/home_menu_detail_book_adapter_icon" />
 
         <View
             android:id="@+id/home_menu_detail_book_adapter_view"
@@ -57,11 +67,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_book_adapter_author"
             style="@style/BusinessTextStyleThird_4"
+            bindText="@{dialogItem.num_audio}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
-            bindText="@{dialogItem.num_audio}"
+            android:drawableStart="@drawable/business_icon_book_eb"
             android:drawablePadding="@dimen/dp_2"
-            android:drawableStart="@drawable/business_icon_book_num"
             app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_book_adapter_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_view"

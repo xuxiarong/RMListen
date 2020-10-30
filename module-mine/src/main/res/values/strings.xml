@@ -40,7 +40,7 @@
     <string name="mine_favorable_comment">给个好评</string>
     <string name="mine_free_book">免费求书</string>
     <string name="mine_sign_out">退出登录</string>
-    <string name="mine_login_and_register">登陆/注册</string>
+    <string name="mine_login_and_register">登录/注册</string>
     <string name="mine_login_tips">登录享受更多功能</string>
     <string name="mine_login_out_title">退出登录</string>
     <string name="mine_login_out_tips">退出后，将无法收听已购节目\n无法接收订阅更新</string>

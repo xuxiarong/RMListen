@@ -10,6 +10,8 @@
         <variable
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
+
+        <import type="com.rm.business_lib.wedgit.ShadowDrawableUtil" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,20 +92,25 @@
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
         <com.rm.module_home.widget.HomeDetailInterceptLayout
+            android:id="@+id/home_detail_intercept_layout"
             bindCanLoadMore="@{viewModel.refreshStatusModel.isHasMore()}"
             bindCanRefresh="@{viewModel.refreshStatusModel.canRefresh}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            bindShadow="@{true}"
+            bindShadowColor="@{@color/business_text_color_999999}"
+            bindShadowRadius="@{4}"
+            bindShadowType="@{ShadowDrawableUtil.TypeEnum.TOP}"
+            bindShapeColor="@{@color/business_text_color_ffffff}"
+            bindShapeRadius="@{24}"
+            bindShapeType="@{ShadowDrawableUtil.SHAPE_ROUND_PART}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_detail_chapter_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/business_text_color_ffffff">
+                android:layout_height="wrap_content">
 
                 <View
                     android:layout_width="@dimen/dp_50"
