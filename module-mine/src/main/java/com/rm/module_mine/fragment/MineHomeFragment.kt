@@ -4,13 +4,11 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.binding.bindUrl
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
 import com.rm.business_lib.loginUser
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineFragmentHomeBinding
 import com.rm.module_mine.viewmodel.MineHomeViewModel
-import com.tencent.bugly.crashreport.CrashReport
 
 /**
  *
@@ -35,6 +33,7 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
 
     override fun initData() {
         mViewModel.getData()
+
     }
 
     override fun startObserve() {
