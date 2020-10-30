@@ -8,6 +8,8 @@
             name = "DetailChapterViewModel"
             type="com.rm.business_lib.bean.ChapterList"
             />
+        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
+
         <variable
             name = "chapterclick"
             type="com.rm.module_home.viewmodel.HomeDetailViewModel"/>
@@ -99,15 +101,17 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.download.DownloadStatusView
             android:id="@+id/detail_chapter_download_img"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="@dimen/dp_10"
+            bindChapterList="@{DetailChapterViewModel}"
+            bindCurrentDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
             android:src="@drawable/home_icon_chapter_download"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/detail_chapter_vip_img"
