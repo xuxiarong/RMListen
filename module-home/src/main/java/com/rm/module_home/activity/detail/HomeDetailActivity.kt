@@ -3,6 +3,7 @@ package com.rm.module_home.activity.detail
 import android.content.Context
 import android.content.Intent
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
@@ -69,6 +70,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             stateHeight = getStateHeight(this@HomeDetailActivity)
             topMargin = stateHeight
         }
+
         audioId = intent?.getStringExtra(AUDIO_ID) ?: ""
         if (audioId.isNotEmpty()) {
             mViewModel.audioId.set(audioId)
@@ -88,6 +90,14 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
                 mViewModel.sort.set("asc")
                 mViewModel.getTrackList("asc")
             }
+        }
+
+        mDataBind.homeDetailChapterHeader.post {
+            val measuredHeight = mDataBind.homeDetailChapterHeader.measuredHeight
+            val params =
+                mDataBind.homeDetailCommentRefresh.layoutParams as ConstraintLayout.LayoutParams
+            params.bottomMargin = measuredHeight + 20
+            mDataBind.homeDetailCommentRefresh.layoutParams = params
         }
     }
 

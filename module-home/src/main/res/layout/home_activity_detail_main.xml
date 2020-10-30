@@ -71,13 +71,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/home_detail_comment_refresh"
             bindIsHasMoreData="@{viewModel.commentRefreshStateMode.isHasMore()}"
             bindIsLoadMoreSuccess="@{viewModel.commentRefreshStateMode.isLoadMoreSuccess()}"
             bindOnLoadMoreListener="@{viewModel.commentLoadMoreData}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/home_detail_title_cl"
-            android:layout_marginBottom="@dimen/dp_50"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_title_cl"
             app:srlEnableRefresh="false">
@@ -95,22 +95,25 @@
             android:id="@+id/home_detail_intercept_layout"
             bindCanLoadMore="@{viewModel.refreshStatusModel.isHasMore()}"
             bindCanRefresh="@{viewModel.refreshStatusModel.canRefresh}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
             bindShadowColor="@{@color/business_text_color_999999}"
             bindShadowRadius="@{4}"
             bindShadowType="@{ShadowDrawableUtil.TypeEnum.TOP}"
             bindShapeColor="@{@color/business_text_color_ffffff}"
             bindShapeRadius="@{24}"
             bindShapeType="@{ShadowDrawableUtil.SHAPE_ROUND_PART}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_title_cl">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_detail_chapter_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <View
                     android:layout_width="@dimen/dp_50"
@@ -197,7 +200,8 @@
                 isVisible="@{viewModel.hideOr}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/businessWhite" />
+                android:background="@color/businessWhite"
+                app:layout_constraintTop_toBottomOf="@id/home_detail_chapter_header" />
 
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:id="@+id/home_chapter_detail_refresh"
@@ -208,8 +212,10 @@
                 bindOnLoadMoreListener="@{viewModel.loadData}"
                 bindOnRefreshListener="@{viewModel.refreshData}"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:background="@color/businessWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_detail_chapter_header"
                 app:srlEnableLoadMoreWhenContentNotFull="true">
 
                 <androidx.recyclerview.widget.RecyclerView

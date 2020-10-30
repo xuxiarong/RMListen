@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.animation.AccelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
-import com.rm.business_lib.wedgit.shadow.ShadowLinearLayout
 import com.rm.module_home.R
 import kotlin.math.abs
 
@@ -28,7 +28,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ShadowLinearLayout(context, attrs, defStyleAttr) {
+) : ConstraintLayout(context, attrs, defStyleAttr) {
     /**
      * 最高位置（往上滑动不能超过该位置）
      */
@@ -49,16 +49,6 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
      * 当前停留的top
      */
     private var mCurType = TYPE_CENTER
-
-    /**
-     * 父容器 LayoutParams对象
-     */
-    private lateinit var params: ConstraintLayout.LayoutParams
-
-    /**
-     * 用来控制手指松开后滑动的方向
-     */
-    private var criticalPoint = 0
 
     /**
      * 记录手指的位置
@@ -90,25 +80,16 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         mBottomHeight = headerLayout.height
-        params = layoutParams as ConstraintLayout.LayoutParams
-        criticalPoint = screenHeight / 2
         //根据实际情况计算
-        mCenterHeight =
-            resources.getDimensionPixelSize(R.dimen.dp_216) + getStateHeight(context) - 10
+        mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_176)  - 14
 
-        mTopHeight =
-            resources.getDimensionPixelSize(R.dimen.dp_40) + getStateHeight(context) - 10
+        mTopHeight = -14
 
         if (mCurType == TYPE_CENTER) {
-            params.height = screenHeight - mCenterHeight
-            this.layoutParams = params
-
-            val layoutParams = mRecyclerView.layoutParams
-            layoutParams.height = screenHeight - mTopHeight
-            mRecyclerView.layoutParams = layoutParams
+            translationY = mCenterHeight.toFloat()
         }
-
     }
+
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -205,8 +186,8 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
      * 动态改变其位置（随手指）
      */
     private fun changeParams(offsetY: Int) {
-        if (top + offsetY > mTopHeight && top + offsetY < bottom - mBottomHeight) {
-            layout(0, top + offsetY, right, bottom)
+        if (translationY + offsetY > mTopHeight && translationY + offsetY < screenHeight - mBottomHeight) {
+            translationY += offsetY
         }
     }
 
@@ -215,44 +196,46 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
      */
     private fun moveEnd() {
         val offsetY = upY - downY
-        DLog.i("------>moveEnd", "$mCurType")
+        DLog.i("------>moveEnd", "$mCurType    $translationY")
         when (mCurType) {
             TYPE_TOP -> {
                 if (offsetY >= 0) {
                     DLog.i("------>moveEnd", "111111")
                     mCurType = TYPE_CENTER
-                    startScrollAnim(top, mCenterHeight)
+                    startScrollAnim(translationY.toInt(), mCenterHeight)
                 }
             }
             TYPE_CENTER -> {
                 if (offsetY >= 0) {
                     mCurType = TYPE_BOTTOM
                     DLog.i("------>moveEnd", "22222")
-                    startScrollAnim(top, bottom - mBottomHeight)
+                    startScrollAnim(translationY.toInt(), height - mBottomHeight)
                 } else {
+                    // 615.0
                     mCurType = TYPE_TOP
                     DLog.i("------>moveEnd", "33333")
-                    startScrollAnim(top, mTopHeight)
+                    startScrollAnim(translationY.toInt(), mTopHeight)
                 }
             }
             TYPE_BOTTOM -> {
                 if (offsetY <= 0) {
                     DLog.i("------>moveEnd", "44444")
                     mCurType = TYPE_CENTER
-                    startScrollAnim(top, mCenterHeight)
+                    startScrollAnim(translationY.toInt(), mCenterHeight)
                 }
             }
         }
     }
 
     private fun startScrollAnim(start: Int, end: Int) {
+        DLog.i("------>startScrollAnim", "$start   $end    {Log.getStackTraceString(Throwable())}")
         val animator = ObjectAnimator.ofInt(start, end)
         animator.interpolator = AccelerateInterpolator()
         animator.duration = 100
         animator.addUpdateListener { valueAnimator: ValueAnimator ->
             val values = valueAnimator.animatedValue as Int
-            DLog.i("------>moveEnd", "values:$values")
-            layout(0, values, right, bottom)
+            DLog.i("------>startScrollAnim","$values")
+            translationY = values.toFloat()
         }
         animator.start()
     }
