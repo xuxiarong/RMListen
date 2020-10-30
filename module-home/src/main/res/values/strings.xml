@@ -53,5 +53,9 @@
     <string name="home_comment_dialog_hint">请输入您的评论内容</string>
     <string name="home_publish">发表</string>
     <string name="home_comment_input_limit">文字超过最大限制</string>
+
+    <string name="home_comment_num" formatted="false">%d</string>
+    <string name="home_comment_num_text">/200</string>
+
 </resources>
 

@@ -2,9 +2,11 @@ package com.rm.baselisten
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.multidex.MultiDex
 import com.rm.baselisten.receiver.NetworkChangeReceiver
+import com.tencent.bugly.crashreport.CrashReport
 import kotlin.properties.Delegates
 
 /**
@@ -27,6 +29,7 @@ open class BaseApplication : Application() {
         super.onCreate()
         CONTEXT = applicationContext
         NetworkChangeReceiver.registerNetWorkReceiver()
+        CrashReport.initCrashReport(applicationContext,"7eeebc3f3a",true)
     }
 
     override fun attachBaseContext(base: Context?) {

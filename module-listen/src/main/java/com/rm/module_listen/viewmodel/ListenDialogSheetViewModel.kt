@@ -138,7 +138,6 @@ class ListenDialogSheetViewModel(
                         mActivity,
                         sheetId
                     )
-                    IS_FIRST_ADD_SHEET.putMMKV(false)
                     dismiss()
                 }
                 customView =
@@ -148,6 +147,7 @@ class ListenDialogSheetViewModel(
             showToast(mActivity.getString(R.string.listen_add_success_tip))
         }
         dismissFun()
+        IS_FIRST_ADD_SHEET.putMMKV(false)
     }
 
 

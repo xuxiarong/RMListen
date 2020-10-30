@@ -17,6 +17,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+//        ndk{
+//            abiFilters 'armeabi'
+//        }
     }
 
     buildTypes {
@@ -87,4 +91,6 @@ dependencies {
 
 //    implementation 'com.dacui.library:spannable-helper:1.0.1'
     api rootProject.ext.androidx["flexbox"]
+    api rootProject.ext.dependencies["bugly"]
+    api rootProject.ext.dependencies["bugly_native"]
 }

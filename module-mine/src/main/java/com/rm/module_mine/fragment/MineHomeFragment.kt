@@ -10,6 +10,7 @@ import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineFragmentHomeBinding
 import com.rm.module_mine.viewmodel.MineHomeViewModel
+import com.tencent.bugly.crashreport.CrashReport
 
 /**
  *

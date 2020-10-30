@@ -31,7 +31,7 @@ class HomeCommentDialogViewModel(
     }
     private var dataBinding: HomeDialogCommentBinding? = null
 
-    val inputText: (String) -> Unit = { inputComment.set(it) }
+    val inputText: (String) -> Unit = { inputChange(it) }
 
     val inputComment = ObservableField<String>()
 
@@ -48,7 +48,9 @@ class HomeCommentDialogViewModel(
             }
         }
     }
-
+  private fun inputChange(content: String){
+       inputComment.set(content)
+   }
 
     fun clickSend(view: View) {
         val imm =
@@ -74,7 +76,7 @@ class HomeCommentDialogViewModel(
                     mDialog.dismiss()
                 },
                 onError = {
-                    mDialog.dismiss()
+//                    mDialog.dismiss()
                     baseViewModel.showToast("$it")
                 }
             )

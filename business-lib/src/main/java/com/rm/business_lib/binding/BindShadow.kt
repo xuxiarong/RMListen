@@ -13,16 +13,31 @@ import com.rm.business_lib.wedgit.ShadowDrawableUtil
  * @description
  *
  */
-@BindingAdapter("bindShadowColor","","","")
-fun View.bindShadow(boolean: Boolean) {
+@BindingAdapter(
+    "bindShapeType",
+    "bindShadowType",
+    "bindShapeColor",
+    "bindShadowColor",
+    "bindShapeRadius",
+    "bindShadowRadius",
+    requireAll = false
+)
+fun View.bindShadow(
+    bindShapeType: Int?,
+    bindShadowType: ShadowDrawableUtil.TypeEnum?,
+    bindShapeColor: Int?,
+    bindShadowColor: Int?,
+    bindShapeRadius: Int?,
+    bindShadowRadius: Int?
+) {
     ShadowDrawableUtil.setShadowDrawable(
         this,
-        ShadowDrawableUtil.SHAPE_ROUND_PART,
-        ShadowDrawableUtil.TypeEnum.TOP,
-        Color(R.color.business_text_color_ffffff),
-        24,
-        Color(R.color.business_text_color_999999),
-        10
+        bindShapeType ?: ShadowDrawableUtil.SHAPE_ROUND_PART,
+        bindShadowType ?: ShadowDrawableUtil.TypeEnum.TOP,
+        bindShapeColor ?: Color(R.color.business_text_color_ffffff),
+        bindShapeRadius ?: 24,
+        bindShadowColor ?: Color(R.color.business_text_color_999999),
+        bindShadowRadius ?: 10
     )
 
 }

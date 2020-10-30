@@ -52,6 +52,7 @@ class HomeTopicListActivity :
 
         val baseTitleModel = BaseTitleModel()
             .setTitle(intent.getStringExtra("topicName"))
+            .setTitleStyle(true)
             .setLeftIconClick {
                 finish()
             }

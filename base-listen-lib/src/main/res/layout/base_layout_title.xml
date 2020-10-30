@@ -4,57 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="title"
             type="com.rm.baselisten.model.BaseTitleModel" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        isVisible="@{!title.noTitle}"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        isVisible="@{!title.noTitle}"
-        >
+        android:paddingEnd="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/base_iv_left"
+            bindClick="@{title.leftIconClick}"
+            bindSrc="@{title.leftIcon}"
+            isVisible="@{!title.noBack}"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="6dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/base_icon_back"
             app:layout_constraintBottom_toBottomOf="parent"
-            bindSrc="@{title.leftIcon}"
-            isVisible="@{!title.noBack}"
-            bindClick="@{title.leftIconClick}"
-            android:src="@drawable/base_icon_back" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/base_tv_left"
+            bindClick="@{title.leftTextClick}"
+            bindText="@{title.leftText}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/base_iv_left"
             android:textColor="#0f0f0f"
             android:textSize="16sp"
-            bindClick="@{title.leftTextClick}"
-            bindText="@{title.leftText}"
-            tools:text="左一"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/base_iv_left"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="左一" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/base_iv_left1"
+            bindClick="@{title.leftIcon1Click}"
+            bindSrc="@{title.leftIcon1}"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/base_tv_left"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            bindSrc="@{title.leftIcon1}"
-            bindClick="@{title.leftIcon1Click}"
             tools:src="@drawable/base_icon_back" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,112 +63,110 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/base_iv_left1"
             app:layout_constraintRight_toLeftOf="@+id/base_cl_right"
-            >
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/base_tv_main_title"
+                bindIsBold="@{title.titleIsBold}"
+                bindText="@{title.mainTitle}"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="#0f0f0f"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintVertical_weight="4"
-                bindText="@{title.mainTitle}"
-                android:textSize="18sp"
-                android:textColor="#0f0f0f"
                 tools:text="图片浏览器" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/base_tv_sub_title"
+                bindText="@{title.subTitle}"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/base_tv_main_title"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintVertical_weight="2"
                 android:layout_marginTop="3dp"
                 android:textColor="#888888"
                 android:textSize="14sp"
-                bindText="@{title.subTitle}"
-                tools:visibility="visible"
-                tools:text="时间:2020-08-12" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/base_tv_main_title"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintVertical_weight="2"
+                tools:text="时间:2020-08-12"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/base_cl_right"
+            bindBackground="@{title.rightBackground}"
+            bindClick="@{title.rightContainerClick}"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="3dp"
-            android:paddingEnd="13dp"
             android:paddingStart="9dp"
-            bindBackground = "@{title.rightBackground}"
-            bindClick="@{title.rightContainerClick}"
-            >
+            android:paddingEnd="13dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/base_iv_right2"
+                bindClick="@{title.rightIconClick}"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="4dp"
                 app:bindSrc="@{title.rightIcon}"
-                bindClick="@{title.rightIconClick}"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/base_tv_right"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/base_icon_back" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/base_tv_right"
+                bindClick="@{title.rightTextClick}"
+                bindText="@{title.rightText}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/base_iv_right"
-                bindText="@{title.rightText}"
-                bindClick="@{title.rightTextClick}"
-                android:textColor="@{title.rightTextColorRes}"
                 android:enabled="@{title.rightTextEnabled}"
+                android:textColor="@{title.rightTextColorRes}"
                 android:textSize="14sp"
-                tools:text="右一"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/base_iv_right"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="右一" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/base_iv_right"
+                bindClick="@{title.rightIcon1Click}"
+                bindSrc="@{title.rightIcon1}"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="4dp"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                bindSrc="@{title.rightIcon1}"
-                bindClick="@{title.rightIcon1Click}"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/base_icon_back" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            isVisible="@{title.hasDivider}"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="#000"
             android:layout_marginStart="-10dp"
             android:layout_marginEnd="-10dp"
-            isVisible="@{title.hasDivider}"
-            />
+            android:background="#000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
