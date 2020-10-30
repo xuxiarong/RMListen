@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.rm.baselisten.util.DLog
-import com.rm.business_lib.DownloadConstant
+import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.R
 import com.rm.business_lib.db.download.DownloadChapter
 import kotlinx.android.synthetic.main.layout_download_status_view.view.*

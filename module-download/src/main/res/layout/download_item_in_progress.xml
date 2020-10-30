@@ -7,8 +7,8 @@
         <import type="com.rm.baselisten.util.SDCardUtils" />
 
         <import type="com.rm.baselisten.util.ConvertUtils" />
-        <import type="com.rm.module_download.file.DownLoadFileUtils" />
-        <import type="com.rm.module_download.DownloadMemoryCache"/>
+        <import type="com.rm.business_lib.download.file.DownLoadFileUtils" />
+        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
 
         <variable
             name="itemBean"

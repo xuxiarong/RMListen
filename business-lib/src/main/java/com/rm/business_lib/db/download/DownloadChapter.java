@@ -1,6 +1,6 @@
 package com.rm.business_lib.db.download;
 
-import com.rm.business_lib.DownloadConstant;
+import com.rm.business_lib.download.DownloadConstant;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;

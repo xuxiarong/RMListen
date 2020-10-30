@@ -1,7 +1,10 @@
-package com.rm.module_download.service
+package com.rm.business_lib.download.service
 
 import android.util.ArrayMap
-import com.liulishuo.okdownload.*
+import com.liulishuo.okdownload.DownloadTask
+import com.liulishuo.okdownload.OkDownload
+import com.liulishuo.okdownload.SpeedCalculator
+import com.liulishuo.okdownload.StatusUtil
 import com.liulishuo.okdownload.core.breakpoint.BlockInfo
 import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo
 import com.liulishuo.okdownload.core.cause.EndCause
@@ -10,13 +13,13 @@ import com.liulishuo.okdownload.core.listener.DownloadListener4WithSpeed
 import com.liulishuo.okdownload.core.listener.assist.Listener4SpeedAssistExtend
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.DLog
-import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.module_download.DownloadMemoryCache
-import com.rm.module_download.util.TagUtil
-import com.rm.module_download.util.getParentFile
+import com.rm.business_lib.download.DownloadConstant
+import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.download.file.DownLoadFileUtils.getParentFile
+import com.rm.business_lib.download.util.TagUtil
 import java.io.File
 
 class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
@@ -24,7 +27,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     private val taskList = ArrayMap<String, DownloadTask>()
     private val context = BaseApplication.CONTEXT
 
-    private val queueListener: DownloadListener by lazy { this@DownloadFileManager }
+    private val queueListener: DownloadListener4WithSpeed by lazy { this@DownloadFileManager }
 
 
     companion object {
@@ -61,7 +64,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     }
 
 
-    fun download(chapter: DownloadChapter) {
+    fun startDownloadWithCache(chapter: DownloadChapter) {
         createTask(chapter.path_url, chapter.audio_id.toString(), chapter.chapter_name).also {
             TagUtil.saveHolder(it, chapter)
             taskList[chapter.path_url] = it
@@ -70,7 +73,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         }
     }
 
-    fun download(modelList: List<DownloadChapter>) {
+    fun startDownloadWithCache(modelList: List<DownloadChapter>) {
         var taskList = Array(modelList.size) { index ->
             createTask(
                 modelList[index].path_url,
@@ -84,7 +87,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         DownloadTask.enqueue(taskList, queueListener)
     }
 
-    fun stopDownload(chapter: DownloadChapter): Boolean {
+    fun pauseDownload(chapter: DownloadChapter): Boolean {
         return OkDownload.with().downloadDispatcher().cancel(
             createFinder(
                 chapter.path_url,
@@ -94,7 +97,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         )
     }
 
-    fun stopDownload(modelList: List<DownloadChapter>) {
+    fun pauseDownload(modelList: List<DownloadChapter>) {
         val cancelList = arrayListOf<DownloadTask>()
         modelList.forEach {
             taskList[it.path_url]?.run { cancelList.add(this) }
@@ -102,7 +105,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         OkDownload.with().downloadDispatcher().cancel(cancelList.toTypedArray())
     }
 
-    fun delete(chapter: DownloadChapter) {
+    fun deleteDownload(chapter: DownloadChapter) {
         createFinder(chapter.path_url, chapter.audio_id.toString(), chapter.chapter_name).run {
             OkDownload.with().downloadDispatcher().cancel(this)
             OkDownload.with().breakpointStore().remove(id)
@@ -112,9 +115,9 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         }
     }
 
-    fun delete(list: List<DownloadChapter>) {
+    fun deleteDownload(list: List<DownloadChapter>) {
         list.forEach {
-            delete(it)
+            deleteDownload(it)
         }
     }
 

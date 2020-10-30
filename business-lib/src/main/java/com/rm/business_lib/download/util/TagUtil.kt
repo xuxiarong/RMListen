@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.rm.module_download.util
+package com.rm.business_lib.download.util
 
 import com.liulishuo.okdownload.DownloadTask
 

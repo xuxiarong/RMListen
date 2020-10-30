@@ -3,7 +3,7 @@ package com.rm.module_download.fragment
 import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_download.BR
-import com.rm.module_download.DownloadMemoryCache
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadFragmentInProgressBinding
 import com.rm.module_download.viewmodel.DownloadMainViewModel

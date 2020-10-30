@@ -1,4 +1,4 @@
-package com.rm.module_download
+package com.rm.business_lib.download
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -10,13 +10,11 @@ import com.rm.baselisten.ktx.remove
 import com.rm.baselisten.ktx.removeAll
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
-import com.rm.business_lib.DownloadConstant
 import com.rm.business_lib.R
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.component_comm.download.DownloadService
-import com.rm.component_comm.router.RouterHelper
+import com.rm.business_lib.download.service.DownloadFileManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -34,7 +32,7 @@ object DownloadMemoryCache {
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
     var isPauseAll = ObservableBoolean(false)
 
-    val downloadService = RouterHelper.createRouter(DownloadService::class.java)
+    val downloadService = DownloadFileManager.INSTANCE
 
     fun initDownOrPauseAll(){
         if(downloadingChapter.get()!=null){
@@ -45,7 +43,10 @@ object DownloadMemoryCache {
     }
 
     fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
-        val cacheAudio = getAudioFromCache(audio)
+        val cacheAudio =
+            getAudioFromCache(
+                audio
+            )
         if (cacheAudio == null) {
             audio.download_num = 0
             audio.down_size = 0L
@@ -85,18 +86,25 @@ object DownloadMemoryCache {
 
     fun addAudioToDownloadMemoryCache(audioList: List<DownloadAudio>) {
         audioList.forEach {
-            addAudioToDownloadMemoryCache(it)
+            addAudioToDownloadMemoryCache(
+                it
+            )
         }
     }
 
     fun deleteAudioToDownloadMemoryCache(audioList: List<DownloadAudio>) {
         audioList.forEach {
-            deleteAudioToDownloadMemoryCache(it)
+            deleteAudioToDownloadMemoryCache(
+                it
+            )
         }
     }
 
     fun deleteAudioToDownloadMemoryCache(audio: DownloadAudio) {
-        val cacheAudio = getAudioFromCache(audio)
+        val cacheAudio =
+            getAudioFromCache(
+                audio
+            )
         if (cacheAudio!=null) {
             downloadingAudioList.remove(cacheAudio)
             DaoUtil(DownloadAudio::class.java, "").delete(audio)
@@ -337,7 +345,9 @@ object DownloadMemoryCache {
             finishChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
             finishChapter.file_path = filePath
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(finishChapter)
-            updateDownloadingAudio(chapter = finishChapter)
+            updateDownloadingAudio(
+                chapter = finishChapter
+            )
             downFinishAndAutoDownNext()
             downloadingChapterList.remove(finishChapter)
         }

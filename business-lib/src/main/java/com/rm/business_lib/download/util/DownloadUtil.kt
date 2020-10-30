@@ -1,10 +1,8 @@
-package com.rm.module_download.util
+package com.rm.business_lib.download.util
 
 import android.content.Context
 import android.widget.ProgressBar
 import androidx.annotation.NonNull
-import com.rm.business_lib.bean.download.DownloadUIStatus
-import com.rm.module_download.bean.DownloadChapterUIStatus
 import java.io.File
 
 const val URL = "https://cdn.llscdn.com/yy/files/tkzpx40x-lls-LLS-5.7-785-20171108-111118.apk"
@@ -33,12 +31,7 @@ fun deleteDir(path: String): Boolean {
     return true
 }
 
-fun DownloadUIStatus.toDownloadChapterStatus():DownloadChapterUIStatus{
-  return  when(this){
-        DownloadUIStatus.DOWNLOAD_COMPLETED -> DownloadChapterUIStatus.COMPLETED
-        else -> DownloadChapterUIStatus.COMPLETED
-    }
-}
+
 
 fun calcProgressToView(progressBar: ProgressBar, offset: Long, total: Long) {
     val percent = offset.toFloat() / total

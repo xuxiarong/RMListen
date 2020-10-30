@@ -7,19 +7,17 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
-import com.rm.module_download.DownloadMemoryCache
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.module_download.R
 import com.rm.module_download.activity.DownloadBookDetailActivity
-import com.rm.module_download.file.DownLoadFileUtils
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.module_download.repository.DownloadRepository
 
 class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVMViewModel() {
 
-    private val downloadService by lazy { RouterHelper.createRouter(DownloadService::class.java) }
     private val homeService by lazy { RouterHelper.createRouter(HomeService::class.java) }
 
     val downloadingAdapter by lazy {

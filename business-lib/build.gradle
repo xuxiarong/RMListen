@@ -59,4 +59,14 @@ dependencies {
     api rootProject.ext.dependencies["smartRefreshLayout"]
     implementation  'com.scwang.smart:refresh-header-classics:2.0.1' // 暂时测试用的下拉刷新样式，之后会自定义header 并删除此处的引用
     implementation rootProject.ext.dependencies["tinypinyin"]
+
+    // core
+    implementation 'com.liulishuo.okdownload:okdownload:1.0.7'
+// provide sqlite to store breakpoints
+    implementation 'com.liulishuo.okdownload:sqlite:1.0.7'
+// provide okhttp to connect to backend
+// and then please import okhttp dependencies by yourself
+    implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
+// provide interface for kotlin extension
+    implementation 'com.liulishuo.okdownload:ktx:1.0.7'
 }
