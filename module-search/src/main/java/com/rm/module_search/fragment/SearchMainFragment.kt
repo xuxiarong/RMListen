@@ -1,5 +1,6 @@
 package com.rm.module_search.fragment
 
+import android.view.ViewTreeObserver
 import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.DLog
@@ -39,7 +40,16 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         mViewModel.clearInput = {
             mDataBind.searchMainEditText.setText("")
         }
+        activity?.apply {
+            window.decorView.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
+        }
+
     }
+
+    private val windowListener = ViewTreeObserver.OnGlobalLayoutListener {
+
+    }
+
 
     override fun initData() {
         mViewModel.searchHotRecommend()
@@ -107,6 +117,13 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         stopHintBanner()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        activity?.apply {
+            window.decorView.viewTreeObserver.removeOnGlobalLayoutListener(windowListener)
+        }
+    }
+
     /**
      * 刷新搜索历史
      */
@@ -148,5 +165,6 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
             }
         }
     }
+
 
 }

@@ -15,6 +15,8 @@
 
         <import type="com.rm.baselisten.util.TimeUtils" />
 
+        <import type="android.text.TextUtils" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,12 +47,34 @@
             app:layout_constraintTop_toTopOf="@+id/detail_comment_author_img"
             tools:text="开发者名称" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/detail_comment_hot_label"
+            isVisible="@{TextUtils.equals(commentItem.topped,@string/home_comment_topped)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:src="@mipmap/business_invalid_top"
+            app:layout_constraintBottom_toBottomOf="@id/detail_comment_name_tx"
+            app:layout_constraintStart_toEndOf="@+id/detail_comment_name_tx"
+            app:layout_constraintTop_toTopOf="@+id/detail_comment_name_tx" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/detail_comment_top_label"
+            isVisible="@{commentItem.is_hot}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:src="@mipmap/business_invalid_hot"
+            app:layout_constraintBottom_toBottomOf="@id/detail_comment_name_tx"
+            app:layout_constraintStart_toEndOf="@+id/detail_comment_hot_label"
+            app:layout_constraintTop_toTopOf="@+id/detail_comment_name_tx" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_comment_day_tx"
+            bindDate="@{commentItem.created_at}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
-            bindDate="@{commentItem.created_at}"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintBottom_toBottomOf="@+id/detail_comment_author_img"

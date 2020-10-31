@@ -53,10 +53,12 @@
     <string name="listen_cancel_top_success">取消置顶成功</string>
     <string name="listen_create_success">创建成功</string>
     <string name="listen_create_failure">创建失败</string>
+    <string name="listen_book_num">共%d本</string>
 
 
     <string name="listen_know">我知道了</string>
     <string name="listen_goto_look">去看看</string>
     <string name="listen_add_success_content">可在“我听-听单”中查看</string>
+
 
 </resources>

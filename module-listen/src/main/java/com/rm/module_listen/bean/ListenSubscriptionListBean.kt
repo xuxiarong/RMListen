@@ -31,8 +31,4 @@ data class ListenSubscriptionListBean(
         }
     }
 
-    fun getUnreadStr(): String {
-        return (unread - last_unread).toString()
-    }
-
 }

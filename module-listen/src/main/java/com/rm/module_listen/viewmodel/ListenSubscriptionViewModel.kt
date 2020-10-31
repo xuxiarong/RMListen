@@ -12,6 +12,7 @@ import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.adapter.ListenSubscriptionAdapter
 import com.rm.module_listen.bean.ListenSubscriptionListBean
 import com.rm.module_listen.databinding.ListenDialogBottomSubscriptionBinding
 import com.rm.module_listen.repository.ListenRepository
@@ -23,13 +24,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * 懒加载创建adapter对象
      */
     val mAdapter by lazy {
-        CommonBindVMAdapter<ListenSubscriptionListBean>(
-            this,
-            mutableListOf(),
-            R.layout.listen_adapter_subscription,
-            BR.click,
-            BR.item
-        )
+        ListenSubscriptionAdapter(this, BR.click, BR.item)
     }
 
     var refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -255,11 +250,12 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
             val subscriptionBinding =
                 mDialog.mDataBind as ListenDialogBottomSubscriptionBinding
 
-            subscriptionBinding.listenDialogBottomSubscriptionTop.text = if (beanListen.is_top == 0) {
-                view.resources.getString(R.string.listen_set_top)
-            } else {
-                view.resources.getString(R.string.listen_cancel_top)
-            }
+            subscriptionBinding.listenDialogBottomSubscriptionTop.text =
+                if (beanListen.is_top == 0) {
+                    view.resources.getString(R.string.listen_set_top)
+                } else {
+                    view.resources.getString(R.string.listen_cancel_top)
+                }
         }
         getActivity(view.context)?.let {
             mDialog.showCommonDialog(

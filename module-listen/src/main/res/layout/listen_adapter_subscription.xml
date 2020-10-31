@@ -26,8 +26,8 @@
             android:id="@+id/listen_subscription_adapter_icon"
             bindUrl="@{item.cover_url}"
             corner="@{4f}"
-            android:layout_width="@dimen/dp_106"
-            android:layout_height="@dimen/dp_106"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +45,7 @@
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintEnd_toEndOf="@id/listen_subscription_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/listen_subscription_adapter_icon"
-            app:rv_backgroundColor="@color/business_text_color_333333"
+            app:rv_backgroundColor="@color/business_color_ff5e5e"
             app:rv_cornerRadius_BL="@dimen/dp_4"
             app:rv_cornerRadius_TR="@dimen/dp_4"
             tools:text="文案" />
@@ -53,17 +53,17 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_num"
             style="@style/BusinessTextStyleFourth_3"
+            bindText="@{item.unread}"
             isVisible="@{item.unread>item.last_unread}"
-            android:layout_width="@dimen/dp_18"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_18"
             android:background="@drawable/business_shape_circle_ff5e5e"
             android:gravity="center"
-            android:text="@{item.getUnreadStr()}"
-            android:visibility="visible"
+            android:minWidth="@dimen/dp_18"
             app:layout_constraintBottom_toBottomOf="@id/listen_subscription_adapter_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/listen_subscription_adapter_title"
-            tools:text="99" />
+            tools:text="9" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_subscription_adapter_more"
@@ -103,7 +103,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_create"
-            style="@style/BusinessTextStyleSecond_4"
+            style="@style/BusinessTextStyleThird_4"
             bindDateString="@{item.created_at}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"

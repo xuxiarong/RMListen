@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableField
+import com.hjq.toast.ToastUtils
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -12,6 +13,7 @@ import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.databinding.HomeDialogCommentBinding
 import com.rm.module_home.repository.HomeRepository
+import kotlinx.android.synthetic.main.home_dialog_comment.*
 
 /**
  *
@@ -43,14 +45,19 @@ class HomeCommentDialogViewModel(
             initDialog = {
                 dataBinding = mDataBind as HomeDialogCommentBinding
                 dataBinding?.apply {
-
+                    initDialog = {
+                        val inputManager =
+                            home_dialog_comment_ed.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputManager.showSoftInput(home_dialog_comment_ed, 0)
+                    }
                 }
             }
         }
     }
-  private fun inputChange(content: String){
-       inputComment.set(content)
-   }
+
+    private fun inputChange(content: String) {
+        inputComment.set(content.trim().trimEnd())
+    }
 
     fun clickSend(view: View) {
         val imm =

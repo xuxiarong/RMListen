@@ -45,7 +45,7 @@ class BoutiqueFragment(
 
         headView.findViewById<XBanner>(R.id.home_head_banner).apply {
             setIsClipChildrenMode(false)
-            paddingBindData(bannerList)
+            paddingBindData(bannerList,true)
             setOnItemClickListener { _, _, _, position ->
                 BannerJumpUtils.onBannerClick(context,bannerList[position].banner_jump)
             }
