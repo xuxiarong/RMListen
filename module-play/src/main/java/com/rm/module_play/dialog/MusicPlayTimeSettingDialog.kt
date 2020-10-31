@@ -45,8 +45,7 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
                 notifyDataSetChanged()
                 checkbox_music_play_time_setting_check.isChecked = false
                 setCheckBox()
-
-
+                dismissAllowingStateLoss()
             }
         }
 
