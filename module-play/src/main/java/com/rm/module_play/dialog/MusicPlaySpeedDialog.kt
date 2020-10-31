@@ -8,8 +8,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
+import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.SAVA_SPEED
+
 import com.rm.business_lib.base.dialogfragment.SuperBottomSheetDialogFragment
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
@@ -49,6 +50,9 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
             setOnItemClickListener { _, _, position ->
                 timeSet[data[position]]?.let {
                     musicPlayerManger.setPlayerMultiple(it)
+                    SAVA_SPEED.putMMKV(it)
+                    dismissAllowingStateLoss()
+
                 }
                 notifyDataSetChanged()
 

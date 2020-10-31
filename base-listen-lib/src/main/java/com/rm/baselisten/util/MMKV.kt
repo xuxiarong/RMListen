@@ -44,6 +44,8 @@ fun String.getLongMMKV(defaultValue: Long = 0L) = mmkv.getLong(this, defaultValu
 @JvmOverloads
 fun String.getBooleanMMKV(defaultValue: Boolean = false) = mmkv.getBoolean(this, defaultValue)
 
+@JvmOverloads
+fun String.getFloattMMKV(defaultValue: Float = 0f) = mmkv.getFloat(this, defaultValue)
 /****************************获取对象************************************/
 inline fun <reified T : Any> String.getAnyMMKVNotNull(defaultValue: T): T {
     return getAnyMMKV() ?: defaultValue
