@@ -24,8 +24,12 @@ class LoginByPasswordActivity :
     BaseVMActivity<LoginActivityLoginByPassowrdBinding, LoginByPasswordViewModel>() {
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, LoginByPasswordActivity::class.java))
+        fun startActivity(context: Context, inputPhone: String) {
+            context.startActivity(
+                Intent(
+                    context,
+                    LoginByPasswordActivity::class.java
+                ).apply { putExtra("phone", inputPhone) })
         }
     }
 
@@ -48,6 +52,9 @@ class LoginByPasswordActivity :
     }
 
     override fun initData() {
+
+        mViewModel.phoneInputViewModel.phone.set(intent.getStringExtra("phone"))
+
         // 设置checkbox选择协议相关文本
         SpannableHelper.with(
             login_by_password_tips,

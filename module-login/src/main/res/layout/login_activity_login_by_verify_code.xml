@@ -85,7 +85,7 @@
 
         <TextView
             style="@style/BusinessTextStyleFirst_3"
-            bindClick="@{viewModel.loginByPassword}"
+            android:onClick="@{()->viewModel.loginByPassword(context)}"
             android:layout_marginBottom="@dimen/dp_44"
             android:padding="@dimen/dp_5"
             android:text="@string/login_password_login"
