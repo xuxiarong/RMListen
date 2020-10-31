@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
+import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.SAVA_SPEED
+
+import com.rm.business_lib.base.dialogfragment.SuperBottomSheetDialogFragment
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.*
@@ -36,7 +39,7 @@ internal val timeSet by lazy {
     )
 }
 
-class MusicPlaySpeedDialog : BottomDialogFragment() {
+class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
 
     private val timeSAdapter by lazy {
         val timeList = mutableListOf<String>()
@@ -47,6 +50,9 @@ class MusicPlaySpeedDialog : BottomDialogFragment() {
             setOnItemClickListener { _, _, position ->
                 timeSet[data[position]]?.let {
                     musicPlayerManger.setPlayerMultiple(it)
+                    SAVA_SPEED.putMMKV(it)
+                    dismissAllowingStateLoss()
+
                 }
                 notifyDataSetChanged()
 
@@ -56,15 +62,14 @@ class MusicPlaySpeedDialog : BottomDialogFragment() {
     }
 
 
-    override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_speed_setting
+    override fun getLayoutResId(): Int = R.layout.music_play_dialog_speed_setting
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onInitialize() {
         rv_music_play_time_setting.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_music_play_time_setting.adapter = timeSAdapter
-
     }
+
 
     internal class TimeSAdapter(list: MutableList<String>) :
         BaseQuickAdapter<String, BaseViewHolder>(R.layout.rv_item_speed_setting, list) {

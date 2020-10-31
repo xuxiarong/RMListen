@@ -1,8 +1,8 @@
 package com.rm.module_play
 
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
-import com.rm.baselisten.util.Cxt
-import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.*
+import com.rm.business_lib.SAVA_SPEED
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -22,6 +22,7 @@ class PlayApplicationDelegate : IApplicationDelegate {
         MusicPlayerManager.musicPlayerManger.initialize(
             CONTEXT,
             MusicInitializeCallBack {})
+        SAVA_SPEED.getFloattMMKV(1f)?.let { MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it) }
         CacheUtils.instance.initSharedPreferencesConfig(CONTEXT)
 
     }

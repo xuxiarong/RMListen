@@ -198,6 +198,13 @@
         <attr name="progress" format="integer" />       <!--圆环进度-->
     </declare-styleable>
 
+    <declare-styleable name="RealtimeBlurView">
+        <attr name="realtimeBlurRadios" format="dimension" />
+        <attr name="realtimeDownsampleFactor" format="float" />
+        <attr name="realtimeOverlayColor" format="color" />
+        <attr name="realtimeBlurRoundCornerRadius" format="dimension" />
+        <attr name="realtimeIcon" format="reference" />
+    </declare-styleable>
 
     <declare-styleable name="XBanner">
         <attr name="isAutoPlay" format="boolean" />

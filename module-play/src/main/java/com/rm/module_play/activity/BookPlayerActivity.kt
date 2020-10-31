@@ -8,12 +8,16 @@ import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.getAnyMMKV
+import com.rm.baselisten.util.getFloattMMKV
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
@@ -24,10 +28,7 @@ import com.rm.module_play.R.anim.activity_top_open
 import com.rm.module_play.cache.PlayBookState
 import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
-import com.rm.module_play.dialog.showMusicPlayMoreDialog
-import com.rm.module_play.dialog.showMusicPlaySpeedDialog
-import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
-import com.rm.module_play.dialog.showPlayBookListDialog
+import com.rm.module_play.dialog.*
 import com.rm.module_play.enum.Jump
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.viewmodel.PlayViewModel
@@ -40,6 +41,7 @@ import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_book_player.*
 
@@ -162,7 +164,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun finish() {
         super.finish()
         overridePendingTransition(0, R.anim.activity_bottom_close)
-
     }
 
     override fun getLayoutId(): Int = R.layout.activity_book_player
@@ -180,6 +181,15 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun startObserve() {
+        DownloadMemoryCache.downloadingChapter.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(MusicPlayBookListDialog.isShowing && MusicPlayBookListDialog.musicDialog!=null){
+                    MusicPlayBookListDialog.musicDialog!!.notifyDialog()
+                }
+            }
+        })
+
         mViewModel.playPath.observe(this, Observer { it ->
             it?.let { it1 ->
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
@@ -278,7 +288,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     controlTime?.contains(ACTION_PLAY_QUEUE) == true -> {
                         //调整播放列表
                         mViewModel.audioChapterModel.get()?.let { it ->
-                            showPlayBookListDialog(it, {
+                            showPlayBookListDialog(mViewModel.getHomeDetailListModel(),it, {
                                 mChapterId?.let {
                                     musicPlayerManger.startPlayMusic(it)
                                 }
@@ -448,6 +458,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun initData() {
         getIntentParams()
+        SAVA_SPEED.getFloattMMKV(1f)?.let { MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it) }
 
     }
 

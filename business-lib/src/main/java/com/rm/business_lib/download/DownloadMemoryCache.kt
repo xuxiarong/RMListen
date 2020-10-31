@@ -49,6 +49,19 @@ object DownloadMemoryCache {
         }
     }
 
+    fun initDownloadingList(){
+        downloadingChapterList.value?.forEach {
+            it.chapter_edit_select = false
+            it.down_edit_select = false
+        }
+    }
+
+    fun initData(){
+        initDownOrPauseAll()
+        initDownloadingList()
+    }
+
+
     fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
         val cacheAudio =
             getAudioFromCache(
@@ -228,7 +241,8 @@ object DownloadMemoryCache {
                     return
                 }
                 1 -> {
-                    downloadService.pauseDownload(downList[0])
+                    pauseDownloadingChapter()
+//                    downloadService.pauseDownload(downList[0])
                 }
                 else -> {
                     if(downloadingChapter.get()!=null){

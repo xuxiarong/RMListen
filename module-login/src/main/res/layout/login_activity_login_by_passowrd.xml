@@ -64,8 +64,8 @@
         <TextView
             android:id="@+id/login_bu_password_forget_pwd"
             style="@style/BusinessTextStyleFirst_3"
-            android:onClick="@{()->viewModel.forgetPassword(context)}"
             android:layout_marginEnd="@dimen/dp_22"
+            android:onClick="@{()->viewModel.forgetPassword(context)}"
             android:padding="@dimen/dp_6"
             android:text="@string/login_forget_password"
             app:layout_constraintRight_toRightOf="@id/login_include_password_input_lay"
@@ -75,6 +75,7 @@
             android:id="@+id/login_by_password_login_btn"
             style="@style/ButtonStyle"
             bindClick="@{viewModel.login}"
+            bindCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
             bindPasswordEnable="@{viewModel.passwordInputViewModel.password}"
             bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
             android:layout_width="0dp"

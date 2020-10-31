@@ -25,7 +25,7 @@ class LoginMainDebugActivity : BaseDebugActivity() {
         }
 
         btnPassword.setOnClickListener {
-            LoginByPasswordActivity.startActivity(this)
+            LoginByPasswordActivity.startActivity(this,"13888888888")
         }
 
         btnVerifyInput.setOnClickListener {

@@ -6,6 +6,7 @@ import com.flyco.roundview.RoundTextView
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.HomeDetailList
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 
@@ -40,7 +41,8 @@ fun RoundTextView.bindDownloadNum(num : Int?){
         return
     }
 
-    if(num == 0){
+    if(num <= 0){
+        DownloadMemoryCache.downloadingNum.set(0)
         visibility = View.GONE
         return
     }

@@ -1,16 +1,11 @@
 package com.rm.baselisten.binding
 
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.KeyboardShortcutGroup
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.helper.KeyboardStatusDetector
 
@@ -34,6 +29,42 @@ fun EditText.afterTextChanged(action: ((String) -> Unit)?) {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             action(s.toString())
+
+        }
+    })
+}
+
+/**
+ * 不允许空格输入
+ */
+@BindingAdapter(value = ["afterTextChangedNoSpace"])
+fun EditText.afterTextChangedNoSpace(action: ((String) -> Unit)?) {
+    if (action == null) {
+        return
+    }
+
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s.toString().contains(" ")) {
+                // 这里处理的是，允许输入空格
+                val str: List<String> = s.toString().split(" ")
+                var str1 = ""
+                for (i in str.indices) {
+                    str1 += str[i]
+                }
+                setText(str1)
+                setSelection(start)
+                action(str1.toString())
+            }else{
+                action(s.toString())
+            }
+
         }
     })
 }

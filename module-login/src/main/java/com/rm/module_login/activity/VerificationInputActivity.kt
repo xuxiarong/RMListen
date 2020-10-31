@@ -29,6 +29,9 @@ class VerificationInputActivity :
         //注销用户
         const val TYPE_LOGOUT = 2
 
+        // 忘记密码
+        const val TYPE_FORGET_PWD = 3
+
         fun getIntent(countryCode: String, phoneNumber: String, type: Int): HashMap<String, Any> {
             return hashMapOf(
                 Pair("countryCode", countryCode),
@@ -61,16 +64,23 @@ class VerificationInputActivity :
     }
 
     override fun initData() {
-        mViewModel.phone = intent.getStringExtra("phone") as String
+        val phone = intent.getStringExtra("phone") as String
+        mViewModel.phone = phone
+        var hidePhone = phone
+        hidePhone = if (phone.length == 11) {
+            phone.replace("(\\d{3})\\d{4}(\\d{4})".toRegex(), "$1****$2")
+        } else {
+            phone.replace(
+                mViewModel.phone.substring(
+                    3,
+                    7
+                ), "****"
+            )
+        }
         mViewModel.phoneStr.set(
             resources.getString(
                 R.string.login_format_verification_phone_tips,
-                mViewModel.countryCode + " " + mViewModel.phone.replace(
-                    mViewModel.phone.substring(
-                        3,
-                        7
-                    ), "****"
-                )
+                mViewModel.countryCode + " " + hidePhone
             )
         )
 
