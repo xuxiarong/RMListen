@@ -10,7 +10,7 @@
             type="com.rm.module_login.viewmodel.VerificationInputViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -19,50 +19,74 @@
         android:paddingEnd="@dimen/dp_22">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/loginVerificationTopTips"
             style="@style/BusinessTextStyleFirst_0"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/dp_20"
-            android:text="@{viewModel.codeType==2?@string/login_input_verification_code2:@string/login_input_verification_code}" />
+            android:text="@{viewModel.codeType==2?@string/login_input_verification_code2:@string/login_input_verification_code}"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/loginVerificationPhone"
             style="@style/BusinessTextStyleSecond_3"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/dp_8"
             android:singleLine="true"
             android:text="@{viewModel.phoneStr}"
+            app:layout_constraintTop_toBottomOf="@id/loginVerificationTopTips"
             tools:text="验证码已发送至+86 134****7856" />
 
         <com.rm.module_login.widget.verification.VerificationCodeView
+            android:id="@+id/loginVerificationCodeInput"
             inputTextChange="@{viewModel.completeInput}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_54"
             android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/loginVerificationPhone"
             app:vcv_et_bg="@drawable/business_shape_stroke_rect_b1b1b1"
             app:vcv_et_cursor_visible="false"
             app:vcv_et_height="@dimen/dp_50"
             app:vcv_et_inputType="number"
-            app:vcv_et_text_size = "@dimen/business_text_size_8sp"
             app:vcv_et_number="6"
             app:vcv_et_text_color="@color/business_text_color_333333"
+            app:vcv_et_text_size="@dimen/business_text_size_8sp"
             app:vcv_et_width="@dimen/dp_46" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/BusinessTextStyleErrorTips"
+            bindText="@{viewModel.errorTips}"
+            android:layout_marginStart="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loginVerificationCodeInput"
+            tools:text="手机号有误" />
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/BusinessTextStyleTips"
             bindText="@{viewModel.countDownTime + @string/login_count_down_tips}"
             isVisible="@{viewModel.countDownTime > 0}"
             android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_12"
             android:gravity="center"
+            android:textSize="@dimen/business_text_size_14sp"
+            app:layout_constraintRight_toRightOf="@id/loginVerificationCodeInput"
+            app:layout_constraintTop_toBottomOf="@id/loginVerificationCodeInput"
             tools:text="52s后重新获取" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/BusinessTextStyleFirst_2"
+            style="@style/BusinessTextStyleFirst_3"
             bindClick="@{viewModel.reGetVerifyCode}"
             isVisible="@{viewModel.countDownTime == 0}"
             android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginEnd="@dimen/dp_12"
             android:gravity="center"
             android:padding="@dimen/dp_5"
-            android:text="@string/login_re_get_verify_code" />
+            android:text="@string/login_re_get_verify_code"
+            android:textColor="@color/business_color_789dcb"
+            app:layout_constraintRight_toRightOf="@id/loginVerificationCodeInput"
+            app:layout_constraintTop_toBottomOf="@id/loginVerificationCodeInput" />
 
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
