@@ -26,11 +26,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/download_tv_sequence"
-            android:layout_width="@dimen/dp_36"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_8"
-            android:gravity="center"
-            android:text="@{String.valueOf(itemBean.sequence)}"
+            android:gravity="left|center_vertical"
+            android:text="@{String.valueOf(viewModel.downloadingAdapter.data.indexOf(itemBean)+1)}"
             android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_14sp"
             tools:text="1542"

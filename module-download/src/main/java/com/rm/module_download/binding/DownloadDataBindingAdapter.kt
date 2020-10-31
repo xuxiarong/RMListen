@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
+import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.file.DownLoadFileUtils
@@ -121,7 +122,7 @@ fun ImageView.bindDownOrPause(
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
             setImageResource(R.drawable.download_ic_pause_download)
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE,DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
             setImageResource(R.drawable.download_ic_start_download)
         }
     }
@@ -261,4 +262,15 @@ fun DownloadStatusView.bindDownloadStatusChapter(
     setDownloadStatus(chapter)
 }
 
-
+@BindingAdapter("bindChapterList", "bindCurrentDownChapter")
+fun DownloadStatusView.bindChapterList(
+    chapter: ChapterList,
+    downloadChapter: DownloadChapter?
+) {
+    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(ChapterList.toDownChapter(chapter))
+    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
+        chapter.down_status = downloadChapter.down_status
+        chapter.current_offset = downloadChapter.current_offset
+    }
+    setDownloadStatus(checkChapter)
+}

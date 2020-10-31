@@ -104,7 +104,7 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getAudio_name() {
-        return this.audio_name;
+        return this.audio_name == null?"":this.audio_name;
     }
 
     public void setAudio_name(String audio_name) {
@@ -120,7 +120,7 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getChapter_name() {
-        return this.chapter_name;
+        return this.chapter_name == null?"":this.chapter_name;
     }
 
     public void setChapter_name(String chapter_name) {
@@ -128,7 +128,7 @@ public class DownloadChapter implements Serializable {
     }
     
     public String getDown_speed() {
-        return this.down_speed;
+        return this.down_speed == null?"":this.down_speed;
     }
 
     public void setDown_speed(String down_speed) {
@@ -184,7 +184,7 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getPath_url() {
-        return this.path_url;
+        return this.path_url==null?"":this.path_url;
     }
 
     public void setPath_url(String path_url) {

@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.DownloadAudioDao
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.module_download.BR
 import com.rm.module_download.R
@@ -30,9 +32,17 @@ class DownloadBookDetailActivity :
     override fun initData() {
         if(intent!=null){
             val audio = intent.getSerializableExtra("download_audio") as DownloadAudio
-            mViewModel.downloadAudio.set(audio)
-            mViewModel.downloadingAdapter.setList(audio.chapterList)
-
+            val qb = DaoUtil(DownloadAudio::class.java, "").queryBuilder()
+            qb?.where(DownloadAudioDao.Properties.Audio_id.eq(audio.audio_id))
+            val list = qb?.list()
+            val end = System.currentTimeMillis()
+            if(list!=null && list.size>0){
+                mViewModel.downloadAudio.set(list[0])
+                mViewModel.downloadingAdapter.setList(list[0].chapterList)
+            }else{
+                mViewModel.downloadAudio.set(audio)
+                mViewModel.downloadingAdapter.setList(audio.chapterList)
+            }
         }
     }
 

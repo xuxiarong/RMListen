@@ -78,7 +78,6 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/dp_16"
                 isVisible="@{!viewModel.downloadingEdit}"
-                android:src="@drawable/download_ic_start_download"
                 bindItemChapter="@{itemBean}"
                 bindDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
                 tools:src="@drawable/download_ic_pause_download" />

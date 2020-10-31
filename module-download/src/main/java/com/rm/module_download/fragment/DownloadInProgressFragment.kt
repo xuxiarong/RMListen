@@ -1,12 +1,14 @@
 package com.rm.module_download.fragment
 
+import android.view.View
 import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.module_download.BR
 import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadFragmentInProgressBinding
 import com.rm.module_download.viewmodel.DownloadMainViewModel
+import kotlinx.android.synthetic.main.download_fragment_in_progress.*
 
 class DownloadInProgressFragment :
     BaseVMFragment<DownloadFragmentInProgressBinding, DownloadMainViewModel>() {
@@ -21,16 +23,41 @@ class DownloadInProgressFragment :
 
     override fun startObserve() {
         DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
-            mViewModel.downloadingAdapter.setList(it)
+            if (it.size > 0) {
+                showData()
+                mViewModel.downloadingAdapter.setList(it)
+            } else {
+                showEmpty()
+            }
         })
     }
 
     override fun initLayoutId(): Int = R.layout.download_fragment_in_progress
 
     override fun initData() {
-        DownloadMemoryCache.downloadingChapterList.value?.let {
-            mViewModel.downloadingAdapter.setList(it)
+
+        if (DownloadMemoryCache.downloadingChapterList.value == null) {
+            showEmpty()
+        } else {
+            DownloadMemoryCache.downloadingChapterList.value?.let {
+                if (it.size > 0) {
+                    showData()
+                    mViewModel.downloadingAdapter.setList(it)
+                } else {
+                    showEmpty()
+                }
+            }
         }
+    }
+
+    fun showData(){
+        downloadEmpty.visibility = View.GONE
+        downloadContent.visibility = View.VISIBLE
+    }
+
+    fun showEmpty(){
+        downloadEmpty.visibility = View.VISIBLE
+        downloadContent.visibility = View.GONE
     }
 
 }

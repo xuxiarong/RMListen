@@ -18,6 +18,6 @@
     <string name="business_download_pause">已暂停</string>
     <string name="business_download_all_exist">你选择的章节都已经在下载列表中</string>
     <string name="business_download_add_cache">已添加到下载队列</string>
-
+    <string name="download_delete_number">删除%d</string>
 
 </resources>

@@ -3,8 +3,10 @@ package com.rm.module_download.viewmodel
 import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
+import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -72,6 +74,9 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     fun editDownloading() {
+        if(downloadingAdapter.data.isEmpty()){
+            return
+        }
         if (downloadingEdit.get()) {
             DownloadMemoryCache.resumeDownloadingChapter()
         }else{
@@ -81,11 +86,19 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     fun editDownloadFinish() {
-        if(!downloadingEdit.get()){
-            DownloadMemoryCache.pauseDownloadingChapter()
-        }else{
-            DownloadMemoryCache.resumeDownloadingChapter()
+        if(downloadFinishAdapter.data.isEmpty()){
+            return
         }
+        if(!downloadFinishEdit.get()){
+            downloadFinishSelectAll.set(false)
+            downloadFinishDeleteListenFinish.set(false)
+        }else{
+            downloadFinishAdapter.data.forEach {
+                it.edit_select = false
+            }
+            downloadFinishAdapter.notifyDataSetChanged()
+        }
+        downloadFinishSelectNum.set(0)
         downloadFinishEdit.set(downloadFinishEdit.get().not())
 
     }
@@ -118,13 +131,9 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     fun chapterClick(context: Context, chapter: DownloadChapter) {
         if (downloadingEdit.get()) {
             changeDownloadChapterSelect(chapter = chapter)
-            downloadingAdapter.notifyItemChanged(downloadingAdapter.data.indexOf(chapter))
+            downloadingAdapter.notifyDataSetChanged()
         } else {
-            if(chapter.isDownloading){
-                DownloadMemoryCache.pauseCurrentAndDownNextChapter()
-            }else{
-                DownloadMemoryCache.downloadClickChapter(chapter)
-            }
+            DownloadMemoryCache.downloadingChapterClick(chapter)
         }
     }
 
@@ -146,15 +155,19 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
 
     fun changeDownloadFinishAll() {
+        if(downloadFinishSelectAll.get()){
+            return
+        }
         val selectAll = downloadFinishSelectAll.get().not()
         downloadFinishSelectAll.set(selectAll)
+        if(selectAll){
+            downloadFinishSelectNum.set(0)
+            downloadFinishDeleteListenFinish.set(false)
+        }
         downloadFinishAdapter.data.forEach {
-            if (selectAll && !it.edit_select) {
+            if (selectAll) {
                 downloadFinishSelectNum.set(downloadFinishSelectNum.get() + 1)
-                it.edit_select = it.edit_select.not()
-            } else if (!selectAll && it.edit_select) {
-                downloadFinishSelectNum.set(downloadFinishSelectNum.get() - 1)
-                it.edit_select = it.edit_select.not()
+                it.edit_select = true
             }
         }
         downloadFinishAdapter.notifyDataSetChanged()
@@ -170,13 +183,37 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     fun changeSelectListenFinish() {
+        if(downloadFinishDeleteListenFinish.get()){
+            return
+        }
+
+        if(!downloadFinishDeleteListenFinish.get()){
+            downloadFinishSelectAll.set(false)
+            downloadFinishSelectNum.set(0)
+            downloadFinishAdapter.data.forEach {
+                if(it.listen_finish){
+                    it.edit_select = true
+                    downloadFinishSelectNum.set(downloadFinishSelectNum.get() + 1)
+                }else{
+                    it.edit_select = false
+                }
+            }
+            downloadFinishAdapter.notifyDataSetChanged()
+        }
         downloadFinishDeleteListenFinish.set(downloadFinishDeleteListenFinish.get().not())
+    }
+
+    fun selectFinishDelete(){
+        if(!downloadFinishDeleteListenFinish.get()){
+            downloadFinishDeleteListenFinish.set(true)
+            downloadFinishSelectAll.set(false)
+        }
     }
 
     fun audioClick(context: Context, audio: DownloadAudio) {
         if (downloadFinishEdit.get()) {
             changeDownloadFinishSelect(audio = audio)
-            downloadFinishAdapter.notifyItemChanged(downloadFinishAdapter.data.indexOf(audio))
+            downloadFinishAdapter.notifyDataSetChanged()
         } else {
 //            homeService.toDetailActivity(context, audio.audio_id.toString())
             DownloadBookDetailActivity.startActivity(context,audio = audio)
@@ -190,21 +227,36 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         DownLoadFileUtils.deleteAudioFile(audio)
     }
 
-    fun deleteAudio() {
+    fun deleteAudio(context: Context) {
         if (downloadFinishSelectNum.get() <= 0) {
             return
         }
-        val iterator = downloadFinishAdapter.data.iterator()
-        val tempList = mutableListOf<DownloadAudio>()
-        while (iterator.hasNext()) {
-            val next = iterator.next()
-            if (next.edit_select) {
-                tempList.add(next)
+        TipsFragmentDialog().apply {
+            titleText = "删除提醒"
+            contentText = "确定要删除所选内容吗"
+            leftBtnText = "取消"
+            rightBtnText = "确定"
+            leftBtnTextColor = R.color.business_text_color_333333
+            rightBtnTextColor = R.color.business_color_ff5e5e
+            leftBtnClick = {
+                dismiss()
             }
-        }
-        DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
-        downloadFinishSelectNum.set(downloadFinishSelectNum.get() - tempList.size)
-        DownLoadFileUtils.deleteAudioFile(tempList)
+            rightBtnClick = {
+                val iterator = downloadFinishAdapter.data.iterator()
+                val tempList = mutableListOf<DownloadAudio>()
+                while (iterator.hasNext()) {
+                    val next = iterator.next()
+                    if (next.edit_select) {
+                        tempList.add(next)
+                    }
+                }
+                DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
+                downloadFinishSelectNum.set(downloadFinishSelectNum.get() - tempList.size)
+                DownLoadFileUtils.deleteAudioFile(tempList)
+                dismiss()
+                editDownloadFinish()
+            }
+        }.show(context as FragmentActivity)
     }
 
 }

@@ -31,6 +31,7 @@ public class DownloadAudio implements Serializable {
     private int download_num;
     private long down_size;
     private boolean edit_select;
+    private boolean listen_finish;
 
     @ToMany(referencedJoinProperty = "audio_id")
     private List<DownloadChapter> chapterList;
@@ -41,10 +42,10 @@ public class DownloadAudio implements Serializable {
     @Generated(hash = 265156160)
     private transient DownloadAudioDao myDao;
 
-    @Generated(hash = 1285355693)
-    public DownloadAudio(Long audio_id, String audio_name, String author,
-            String audio_cover_url, int status, int last_sequence, int download_num,
-            long down_size, boolean edit_select) {
+    @Generated(hash = 990684679)
+    public DownloadAudio(Long audio_id, String audio_name, String author, String audio_cover_url,
+            int status, int last_sequence, int download_num, long down_size, boolean edit_select,
+            boolean listen_finish) {
         this.audio_id = audio_id;
         this.audio_name = audio_name;
         this.author = author;
@@ -54,6 +55,7 @@ public class DownloadAudio implements Serializable {
         this.download_num = download_num;
         this.down_size = down_size;
         this.edit_select = edit_select;
+        this.listen_finish = listen_finish;
     }
 
     @Generated(hash = 1552335181)
@@ -202,6 +204,14 @@ public class DownloadAudio implements Serializable {
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDownloadAudioDao() : null;
+    }
+
+    public boolean getListen_finish() {
+        return this.listen_finish;
+    }
+
+    public void setListen_finish(boolean listen_finish) {
+        this.listen_finish = listen_finish;
     }
 
 

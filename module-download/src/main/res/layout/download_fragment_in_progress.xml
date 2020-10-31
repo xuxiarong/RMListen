@@ -16,85 +16,113 @@
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd="@dimen/dp_16">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_22"
-            android:layout_marginTop="@dimen/dp_16"
-            android:text="@{@string/download_downloading_number(DownloadMemoryCache.INSTANCE.downloadingNum)}"
-            />
-        <com.flyco.roundview.RoundFrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_marginTop="11dp"
-            app:rv_isRadiusHalfHeight="true"
-            android:layout_gravity="end"
-            isVisible="@{!viewModel.downloadingEdit}"
-            bindClick="@{()->viewModel.operatingAll()}"
-            app:rv_strokeColor="@color/business_color_e8e8e8"
-            app:rv_strokeWidth="@dimen/dp_1"
-            >
+        <FrameLayout
+            android:id="@+id/downloadContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="33dp"
-                bindDownAll="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="@dimen/business_text_size_14sp"
-                />
-            
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/dp_22"
                 android:layout_height="@dimen/dp_22"
-                android:layout_marginEnd="8dp"
-                android:layout_gravity="end|center_vertical"
-                bindDownAll="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
+                android:layout_marginTop="@dimen/dp_16"
+                android:text="@{@string/download_downloading_number(DownloadMemoryCache.INSTANCE.downloadingNum)}"
                 />
-        </com.flyco.roundview.RoundFrameLayout>
-        
-        
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/download_rv_download_in_progress"
+            <com.flyco.roundview.RoundFrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginTop="11dp"
+                app:rv_isRadiusHalfHeight="true"
+                android:layout_gravity="end"
+                isVisible="@{!viewModel.downloadingEdit}"
+                bindClick="@{()->viewModel.operatingAll()}"
+                app:rv_strokeColor="@color/business_color_e8e8e8"
+                app:rv_strokeWidth="@dimen/dp_1"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="33dp"
+                    bindDownAll="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="@dimen/business_text_size_14sp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/dp_22"
+                    android:layout_height="@dimen/dp_22"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="end|center_vertical"
+                    bindDownAll="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
+                    />
+            </com.flyco.roundview.RoundFrameLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/download_rv_download_in_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="64dp"
+                bindVerticalLayout="@{viewModel.downloadingAdapter}" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="bottom"
+                isVisible="@{viewModel.downloadingEdit}"
+                android:layout_height="82dp">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/dp_22"
+                    android:layout_height="@dimen/dp_22"
+                    android:onClick="@{()->viewModel.changeDownloadingAll()}"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:src="@{viewModel.downloadingSelectAll?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="@dimen/business_text_size_14sp"
+                    android:text="@string/download_check_all"
+                    android:layout_marginStart="28dp"
+                    />
+                <com.flyco.roundview.RoundTextView
+                    android:layout_width="65dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="@dimen/dp_9"
+                    android:textColor="@color/business_text_color_ffffff"
+                    android:textSize="@dimen/business_text_size_14sp"
+                    android:gravity="center"
+                    app:rv_isRadiusHalfHeight="true"
+                    app:rv_backgroundColor="@color/business_color_ff5e5e"
+                    android:onClick="@{()->viewModel.deleteSelectChapter()}"
+                    bindDownDeleteNum="@{viewModel.downloadingSelectNum}"
+                    android:layout_gravity="end"
+                    />
+            </FrameLayout>
+        </FrameLayout>
+        <LinearLayout
+            android:id="@+id/downloadEmpty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="64dp"
-            bindVerticalLayout="@{viewModel.downloadingAdapter}" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_gravity="bottom"
-            isVisible="@{viewModel.downloadingEdit}"
-            android:layout_height="82dp">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/dp_22"
-                android:layout_height="@dimen/dp_22"
-                android:onClick="@{()->viewModel.changeDownloadingAll()}"
-                android:layout_marginTop="@dimen/dp_13"
-                android:src="@{viewModel.downloadingSelectAll?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
-            <androidx.appcompat.widget.AppCompatTextView
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/base_no_data" />
+
+            <TextView
+                android:id="@+id/tv_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_14"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="@dimen/business_text_size_14sp"
-                android:text="@string/download_check_all"
-                android:layout_marginStart="28dp"
-                />
-            <com.flyco.roundview.RoundTextView
-                android:layout_width="65dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="@dimen/dp_9"
-                android:textColor="@color/business_text_color_ffffff"
-                android:textSize="@dimen/business_text_size_14sp"
-                android:gravity="center"
-                app:rv_isRadiusHalfHeight="true"
-                app:rv_backgroundColor="@color/business_color_ff5e5e"
-                android:onClick="@{()->viewModel.deleteSelectChapter()}"
-                android:text="@{viewModel.downloadingSelectNum == 0?@string/download_delete:@string/download_delete_number(viewModel.downloadingSelectNum)}"
-                android:layout_gravity="end"
-                />
-        </FrameLayout>
+                android:text="@string/base_fine_no_data"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/base_b1b1b1"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
 
     </FrameLayout>
 

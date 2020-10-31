@@ -32,22 +32,10 @@ object DownloadMemoryCache {
     var downloadingChapter = ObservableField<DownloadChapter>()
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
     var isPauseAll = ObservableBoolean(false)
+    var isDownAll = ObservableBoolean(false)
 
     var downloadingNum = ObservableInt(0)
     val downloadService = DownloadFileManager.INSTANCE
-
-
-    fun initDownOrPauseAll(){
-        if(downloadingChapter.get()!=null){
-            if(downloadingChapter.get()!!.isDownloading){
-                isPauseAll.set(false)
-            }else{
-                isPauseAll.set(true)
-            }
-        }else{
-            isPauseAll.set(true)
-        }
-    }
 
     fun initDownloadingList(){
         downloadingChapterList.value?.forEach {
@@ -57,7 +45,6 @@ object DownloadMemoryCache {
     }
 
     fun initData(){
-        initDownOrPauseAll()
         initDownloadingList()
     }
 
@@ -154,6 +141,7 @@ object DownloadMemoryCache {
         if(chapterList.size == 0){
             ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_all_exist))
         }else{
+            isDownAll.set(true)
             ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
             downloadingChapterList.addAll(chapterList)
             downloadingNum.set(downloadingNum.get()+chapterList.size)
@@ -163,6 +151,7 @@ object DownloadMemoryCache {
 
 
     fun addDownloadingChapter(chapter: DownloadChapter) {
+        isDownAll.set(false)
         if(downloadingChapterList.value!=null){
             val downloadList = downloadingChapterList.value!!
             downloadList.forEach {
@@ -196,10 +185,11 @@ object DownloadMemoryCache {
                 1 -> {
                     if(downloadingChapter.get()!=null){
                         if(downList[0].chapter_id == downloadingChapter.get()!!.chapter_id){
-
-                            val chapter = downloadingChapter.get()!!
-                            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
-                            downloadingChapter.set(chapter)
+                            val tempChapter = DownloadChapter()
+                            tempChapter.audio_id = 0L
+                            tempChapter.chapter_id = 0L
+                            tempChapter.path_url = ""
+                            downloadingChapter.set(tempChapter)
                             downloadingChapter.notifyChange()
                             downloadingChapterList.remove(downList[0])
                             downloadingNum.set(downloadingNum.get()-1)
@@ -222,6 +212,28 @@ object DownloadMemoryCache {
                     }
                 }
             }
+        }
+    }
+
+
+    fun downloadingChapterClick(chapter: DownloadChapter){
+        val downloadChapter = downloadingChapter.get()
+        if(downloadChapter!=null){
+            if(chapter.chapter_id == downloadChapter.chapter_id){
+                if(downloadChapter.isDownloading){
+                    isPauseAll.set(false)
+                    pauseDownloadingChapter()
+                }else{
+                    isDownAll.set(false)
+                    downloadService.startDownloadWithCache(chapter)
+                }
+            }else{
+                isDownAll.set(false)
+                pauseDownloadingChapter()
+                downloadService.startDownloadWithCache(chapter)
+            }
+        }else{
+            addDownloadingChapter(chapter)
         }
     }
 
@@ -359,15 +371,25 @@ object DownloadMemoryCache {
     }
 
 
+    fun pauseAllDownload(){
+
+    }
+
+    fun startDownAllAndAutoNext(){
+
+    }
+
 
     fun operatingAll(){
         if(downloadingChapter.get()!=null){
             val chapter = downloadingChapter.get()!!
             if(chapter.isDownloading){
                 isPauseAll.set(true)
+                isDownAll.set(false)
                 pauseAllChapter()
             }else{
                 isPauseAll.set(false)
+                isDownAll.set(true)
                 resumeDownloadingChapter()
             }
         }else{
@@ -392,8 +414,9 @@ object DownloadMemoryCache {
             updateDownloadingAudio(
                 chapter = finishChapter
             )
-
-            downFinishAndAutoDownNext()
+            if(isDownAll.get()){
+                downFinishAndAutoDownNext()
+            }
 
             if(downloadingChapterList.value!=null){
                 val value = downloadingChapterList.value!!
@@ -402,7 +425,6 @@ object DownloadMemoryCache {
                     downloadingNum.set(downloadingNum.get()-1)
                 }
             }
-
         }
     }
 
@@ -428,6 +450,9 @@ object DownloadMemoryCache {
             val downChapterList = mutableListOf<DownloadChapter>()
             if (audioList != null) {
                 downloadingAudioList.postValue(audioList.toMutableList())
+                if (audioList.size >=2) {
+                    audioList[1].listen_finish = true
+                }
                 audioList.forEach{audio ->
                     audio.edit_select = false
                     val chapterList = audio.chapterList
@@ -440,6 +465,7 @@ object DownloadMemoryCache {
                     }
                 }
                 if(downChapterList.size>0){
+                    isDownAll.set(true)
                     downloadService.startDownloadWithCache(downChapterList)
                     downloadingChapterList.postValue(downChapterList)
                 }

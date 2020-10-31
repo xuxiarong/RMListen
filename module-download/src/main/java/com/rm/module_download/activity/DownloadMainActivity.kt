@@ -82,10 +82,11 @@ class DownloadMainActivity :
         mViewModel.downloadingEdit.set(false)
         mViewModel.downloadFinishEdit.set(false)
         mViewModel.downloadingSelected.set(true)
+        mViewModel.downloadFinishSelected.set(false)
         mViewModel.downloadingSelectNum.set(0)
         mViewModel.downloadFinishSelectNum.set(0)
 
-        DownloadMemoryCache.initDownOrPauseAll()
+        DownloadMemoryCache.initData()
 
     }
 }

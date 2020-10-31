@@ -40,7 +40,7 @@
             android:layout_width="140dp"
             android:layout_height="28dp"
             android:layout_marginTop="112dp"
-            android:background="@drawable/home_shape_gradient_0000000_66000000"
+            android:background="@drawable/business_shape_gradient_0000000_66000000"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView

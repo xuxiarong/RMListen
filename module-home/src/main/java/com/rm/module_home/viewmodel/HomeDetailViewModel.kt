@@ -606,19 +606,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         val homeDetailModel = detailInfoData.get()
         if (homeDetailModel != null) {
             val createRouter = RouterHelper.createRouter(DownloadService::class.java)
+            val downloadAudio = DownloadAudio()
+            downloadAudio.audio_id =homeDetailModel.list.audio_id.toLong()
+            downloadAudio.audio_name =homeDetailModel.list.audio_name
+            downloadAudio.author =homeDetailModel.list.author
+            downloadAudio.audio_cover_url =homeDetailModel.list.audio_cover_url
+            downloadAudio.status =homeDetailModel.list.status
+            downloadAudio.last_sequence =homeDetailModel.list.last_sequence
             createRouter.startDownloadChapterSelectionActivity(
                 context,
-                DownloadAudio(
-                    homeDetailModel.list.audio_id.toLong(),
-                    homeDetailModel.list.audio_name,
-                    homeDetailModel.list.author,
-                    homeDetailModel.list.audio_cover_url,
-                    homeDetailModel.list.status,
-                    homeDetailModel.list.last_sequence,
-                    0,
-                    0L,
-                    false
-                )
+                downloadAudio
             )
         }
     }

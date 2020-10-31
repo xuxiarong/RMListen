@@ -1,12 +1,14 @@
 package com.rm.module_download.fragment
 
+import android.view.View
 import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadFragmentDownloadCompletedBinding
 import com.rm.module_download.viewmodel.DownloadMainViewModel
+import kotlinx.android.synthetic.main.download_fragment_download_completed.*
 
 class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadCompletedBinding, DownloadMainViewModel>() {
 
@@ -22,15 +24,34 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
 
     override fun startObserve() {
         mViewModel.downloadAudioList.observe(this, Observer {
-            DLog.d("suolong","size = ${it.size}")
-            mViewModel.downloadFinishAdapter.setList(it)
+            if(it.size>0){
+                showData()
+                mViewModel.downloadFinishAdapter.setList(it)
+            }else{
+                showEmpty()
+            }
         })
     }
 
     override fun initLayoutId(): Int = R.layout.download_fragment_download_completed
 
     override fun initData() {
+
+
+        if (DownloadMemoryCache.downloadingAudioList.value == null) {
+            showEmpty()
+        }
         mViewModel.getDownloadFromDao()
+    }
+
+    fun showData(){
+        downFinishContent.visibility = View.VISIBLE
+        downFinishEmpty.visibility = View.GONE
+    }
+
+    fun showEmpty(){
+        downFinishContent.visibility = View.GONE
+        downFinishEmpty.visibility = View.VISIBLE
     }
 
 }

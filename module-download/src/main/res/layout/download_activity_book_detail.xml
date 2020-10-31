@@ -86,7 +86,7 @@
             android:textColor="@color/business_text_color_333333"
             android:layout_marginStart="@dimen/dp_16"
             android:textSize="@dimen/business_text_size_18sp"
-            android:text="@{@string/download_downloading_number(viewModel.downloadAudio.chapterList.size())}"
+            android:text="@{@string/download_downloaded_number(viewModel.downloadAudio.chapterList.size())}"
             tools:text = "已下载(23)"
             />
 
@@ -94,8 +94,6 @@
             android:layout_marginTop="208dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_16"
             bindVerticalLayout="@{viewModel.downloadingAdapter}"
             />
 

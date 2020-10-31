@@ -1,8 +1,10 @@
 package com.rm.business_lib.binding
 
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.flyco.roundview.RoundTextView
+import com.rm.business_lib.R
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.HomeDetailList
 import com.rm.business_lib.db.download.DownloadChapter
@@ -54,4 +56,18 @@ fun RoundTextView.bindDownloadNum(num : Int?){
         text = num.toString()
     }
 
+}
+
+@BindingAdapter("bindDownDeleteNum")
+fun TextView.bind(num : Int?){
+    if(num == null){
+        visibility = View.GONE
+        return
+    }
+    if(num == 0){
+        visibility = View.GONE
+        return
+    }
+    visibility = View.VISIBLE
+    text = String.format(context.getString(R.string.download_delete_number),num)
 }
