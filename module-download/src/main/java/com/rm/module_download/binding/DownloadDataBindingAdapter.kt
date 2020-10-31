@@ -69,14 +69,10 @@ fun TextView.bindDownloadingSize(downList: List<DownloadChapter>?) {
 
 @BindingAdapter("bindDownloadStatusSrc")
 fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
-    visibility = View.VISIBLE
+    visibility = View.GONE
     when (chapter.down_status) {
         DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD -> {
             when (chapter.need_pay) {
-                DownloadConstant.CHAPTER_PAY_STATUS_FREE -> {
-                    visibility = View.GONE
-                    return
-                }
                 DownloadConstant.CHAPTER_PAY_STATUS_NEED_BUY -> {
                     setImageResource(R.drawable.business_ic_pay)
                 }
@@ -85,10 +81,6 @@ fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
                 }
             }
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> setImageResource(R.drawable.download_ic_download_completed)
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> setImageResource(R.drawable.shape_base_net_error_loading)
-        DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> setImageResource(R.drawable.shape_base_net_error_loading)
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> setImageResource(R.drawable.shape_base_net_error_loading)
     }
 }
 

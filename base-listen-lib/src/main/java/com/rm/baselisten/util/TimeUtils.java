@@ -1701,8 +1701,9 @@ public final class TimeUtils {
      * @return
      */
     public static String getListenYearTime(final long second) {
-        long millis = second * 1000;
-        return millis2String(millis,"yyyy-MM-dd") ;
+//        long millis = second * 1000;
+//        return millis2String(millis,"yyyy-MM-dd") ;
+        return getListenSubsUpdateTime(second);
     }
 
 }

@@ -40,6 +40,7 @@ class DownloadStatusView@JvmOverloads constructor(context: Context, attrs: Attri
                         val downloadAudio = DownloadAudio()
                         downloadAudio.download_num = 0
                         downloadAudio.audio_id = audio!!.audio_id.toLong()
+                        downloadAudio.audio_name = audio!!.audio_name
                         downloadAudio.audio_cover_url = audio!!.audio_cover_url
                         downloadAudio.down_size = 0L
                         downloadAudio.last_sequence = audio!!.last_sequence

@@ -88,76 +88,116 @@
 
         <TextView
             android:id="@+id/fl_music_playe_page"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:text="@{viewModel.playControlModel.baseAudioInfo.audioName}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="18sp"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
+            android:lines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fl_img_layout"
             tools:ignore="MissingConstraints"
-            tools:text="《与罗摩相遇》第一章" />
+            tools:text="《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章" />
 
         <RelativeLayout
             android:id="@+id/rl_music_play_titles"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:layout_marginTop="@dimen/dp_11"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fl_music_playe_page"
             tools:ignore="MissingConstraints">
 
+            <View
+                android:id="@+id/playCenter"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/playChapterNext"
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_22"
+                android:src="@drawable/business_ic_next"
+                android:onClick="@{(Context)->viewModel.audioNameClick(context)}"
+                android:layout_marginEnd="12dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/playCenter"
+                />
+
             <TextView
                 android:id="@+id/tv_music_title"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dp_80"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:lines="1"
+                android:ellipsize="end"
+                android:onClick="@{(Context)->viewModel.audioNameClick(context)}"
+                android:layout_toLeftOf="@+id/playChapterNext"
                 android:text="@{viewModel.audioInfo.audio_name}"
                 android:textColor="@color/business_text_color_666666"
-                tools:text="与罗摩相遇 >" />
+                tools:text="《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章 >" />
 
-            <com.flyco.roundview.RoundTextView
-                android:layout_width="80dp"
+
+            <com.flyco.roundview.RoundFrameLayout
+                android:layout_width="82dp"
                 android:layout_height="26dp"
-                android:layout_marginStart="32dp"
-                android:layout_toEndOf="@+id/tv_music_title"
-                android:gravity="center"
-                android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_JOIN_LISTEN+viewModel.curTime)}"
-                android:text="加入听单"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="12sp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/playCenter"
                 app:rv_cornerRadius="18dp"
                 app:rv_strokeColor="@color/stroke_color"
-                app:rv_strokeWidth="1dp" />
+                app:rv_strokeWidth="1dp"
+                android:layout_marginStart="12dp">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/business_icon_unfavorites"
+                    android:layout_centerVertical="true"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_marginStart="24dp"
+                    android:gravity="center"
+                    android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_JOIN_LISTEN+viewModel.curTime)}"
+                    android:text="@string/business_join_listen_list"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="12sp" />
+
+            </com.flyco.roundview.RoundFrameLayout>
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_music_play_process"
+        <include
+            layout="@layout/music_play_process_time"
+            android:id="@+id/music_play_process_time"
+            app:viewModel="@{viewModel}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_music_play_titles"
-            tools:ignore="MissingConstraints">
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"/>
 
-            <include
-                layout="@layout/music_play_process_time"
-                app:viewModel="@{viewModel}" />
-
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="82dp"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rl_music_play_process"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/music_play_process_time"
             tools:ignore="MissingConstraints">
 
             <ImageView
@@ -171,13 +211,14 @@
 
             <include
                 layout="@layout/music_paly_control_view"
-                android:layout_width="200dp"
+                android:layout_width="210dp"
                 android:layout_height="82dp"
                 app:viewModel="@{viewModel}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
+                android:layout_marginStart="34dp"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 

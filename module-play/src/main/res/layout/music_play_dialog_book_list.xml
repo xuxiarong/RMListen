@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="550dp"
     android:maxHeight="500dp"
-    android:elevation="5dp"
+    android:elevation="10dp"
     >
 
     <com.flyco.roundview.RoundLinearLayout

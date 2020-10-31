@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.ktx.putAnyExtras
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.*
-import com.rm.business_lib.SAVA_SPEED
+import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.util.getObjectMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
@@ -20,6 +23,7 @@ import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
+import com.rm.module_play.PlayConstance
 import com.rm.module_play.R
 import com.rm.module_play.R.anim.activity_top_open
 import com.rm.module_play.cache.PlayBookState
@@ -38,7 +42,6 @@ import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_book_player.*
 
@@ -97,6 +100,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
         //全局原点
         fun startActivity(context: Context, fromGlobal: String) {
+
+            if(TextUtils.isEmpty(PlayConstance.getLastListenAudioUrl())){
+                (context as BaseActivity).tipView.showTipView(context,context.getString(com.rm.business_lib.R.string.business_no_content))
+                return
+            }
             val intent = Intent(context, BookPlayerActivity::class.java)
             intent.putAnyExtras(fromJump, fromGlobal)
             context.startActivity(intent)

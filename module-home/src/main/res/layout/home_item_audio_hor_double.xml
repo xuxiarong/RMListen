@@ -16,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="12dp">
+        android:paddingStart="@dimen/dp_16">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/homehorSingleItemRecommendHorDoubleTop"
             app:layout_constraintTop_toTopOf="parent"

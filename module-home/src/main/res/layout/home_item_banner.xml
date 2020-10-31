@@ -16,8 +16,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.stx.xhb.androidx.XBanner
+        android:layout_height="wrap_content"
+        >
+        <com.rm.business_lib.xbanner.XBanner
             android:id="@+id/mainBanner"
             android:layout_width="match_parent"
             android:layout_height="176dp"
@@ -25,6 +26,7 @@
             app:clipChildrenTopBottomMargin="0dp"
             app:pageChangeDuration="1000"
             app:pointsPosition="CENTER"
+            android:elevation="5dp"
             app:viewPagerClipChildren="true" />
     </FrameLayout>
 

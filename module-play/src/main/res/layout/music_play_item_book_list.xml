@@ -36,10 +36,12 @@
 
     <TextView
         android:id="@+id/tv_music_play_chapter_title"
-        android:layout_width="wrap_content"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="13dp"
-        tools:text="Albert Castillo"
+        android:lines="1"
+        android:ellipsize="end"
+        tools:text="Albert CastilloAlbert CastilloAlbert CastilloAlbert CastilloAlbert CastilloAlbert Castillo"
         android:textColor="@color/business_text_color_333333"
         android:textSize="16sp"
         app:layout_constraintLeft_toRightOf="@+id/music_play_book_list_position"
@@ -59,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/music_play_ic_icon_play_eb"
-            android:text="14w"
+            tools:text="14w"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="12sp" />
 

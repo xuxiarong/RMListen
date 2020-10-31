@@ -71,7 +71,7 @@ public class DownloadAudio implements Serializable {
     }
 
     public String getAudio_name() {
-        return this.audio_name;
+        return this.audio_name == null ?"":this.audio_name;
     }
 
     public void setAudio_name(String audio_name) {
@@ -79,7 +79,7 @@ public class DownloadAudio implements Serializable {
     }
 
     public String getAuthor() {
-        return this.author;
+        return this.author == null ? "" : this.author;
     }
 
     public void setAuthor(String author) {
@@ -87,7 +87,7 @@ public class DownloadAudio implements Serializable {
     }
 
     public String getAudio_cover_url() {
-        return this.audio_cover_url;
+        return this.audio_cover_url == null ?"" :  this.audio_cover_url;
     }
 
     public void setAudio_cover_url(String audio_cover_url) {

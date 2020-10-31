@@ -410,6 +410,8 @@ object DownloadMemoryCache {
             downloadFinishChapterList.add(finishChapter)
             finishChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
             finishChapter.file_path = filePath
+            downloadingChapter.set(finishChapter)
+            downloadingChapter.notifyChange()
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(finishChapter)
             updateDownloadingAudio(
                 chapter = finishChapter

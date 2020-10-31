@@ -12,13 +12,19 @@ import androidx.databinding.BindingAdapter
 @SuppressLint("SetTextI18n")
 @BindingAdapter("bindPlayCount")
 fun TextView.bindPlayCount(count :Int){
-    text = if (count<10000){
-        count.toString()
-    }else{
-        val wan = count/10000
-        val qian = count%10000/1000
-        val bai = count%1000/100
-        "$wan"+"."+"$qian"+"$bai"+"w"
+    text = when {
+        count<10000 -> {
+            count.toString()
+        }
+        count > 99999999 -> {
+            "9999w+"
+        }
+        else -> {
+            val wan = count/10000
+            val qian = count%10000/1000
+            val bai = count%1000/100
+            "$wan"+"."+"$qian"+"w"
+        }
     }
 }
 @BindingAdapter("bindPlayCountString")

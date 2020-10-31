@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.google.gson.Gson
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
@@ -18,6 +17,7 @@ import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
@@ -248,6 +248,13 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     //精品详情
     fun playBoutiqueDetails(model: PlayControlRecommentListModel) {
         Log.i("", "playBoutiqueDetails")
+    }
+
+    fun audioNameClick(context: Context){
+        val audioId = audioID.get()
+        if(audioId!=null){
+            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context,audioId)
+        }
     }
 
     /**

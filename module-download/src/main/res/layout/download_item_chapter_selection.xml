@@ -93,23 +93,23 @@
         </LinearLayout>
 
 
-<!--        <ImageView-->
-<!--            bindDownloadStatusSrc="@{itemBean}"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <com.rm.business_lib.wedgit.download.DownloadStatusView
-            android:layout_width="@dimen/dp_24"
-            android:layout_height="@dimen/dp_24"
+        <ImageView
+            bindDownloadStatusSrc="@{itemBean}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            bindDownloadStatusChapter="@{itemBean}"
-            bindCurrentDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <com.rm.business_lib.wedgit.download.DownloadStatusView-->
+<!--            android:layout_width="@dimen/dp_24"-->
+<!--            android:layout_height="@dimen/dp_24"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            bindDownloadStatusChapter="@{itemBean}"-->
+<!--            bindCurrentDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"-->
+<!--            />-->
 
 <!--        <ProgressBar-->
 <!--            android:layout_width="23dp"-->

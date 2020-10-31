@@ -16,8 +16,11 @@ import com.rm.business_lib.binding.bindChapterList
 import com.rm.business_lib.binding.bindDateString
 import com.rm.business_lib.binding.bindDuration
 import com.rm.business_lib.binding.bindPlayCount
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.wedgit.download.DownloadStatusView
+import com.rm.component_comm.download.DownloadService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
@@ -69,7 +72,8 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         }
     }
 
-//    override fun getBackgroundAlpha() = 0f
+    override fun getBackgroundAlpha() = 0f
+
     override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_book_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,7 +92,18 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             }
             setPlayModel()
         }
-
+        music_play_download_de.setOnClickListener {
+            val downloadService = RouterHelper.createRouter(DownloadService::class.java)
+            if(activity!=null && !activity!!.isFinishing && downloadAudio!=null){
+                val audio = DownloadAudio()
+                audio.audio_name = downloadAudio!!.audio_name
+                audio.audio_id = downloadAudio!!.audio_id.toLong()
+                audio.author = downloadAudio!!.author
+                audio.audio_cover_url = downloadAudio!!.audio_cover_url
+                audio.last_sequence = downloadAudio!!.last_sequence
+                downloadService.startDownloadChapterSelectionActivity(context = context!!,downloadAudio = audio)
+            }
+        }
         play_drag_chapter_list.seDragCloseListener {
             dismiss()
             isShowing = false
@@ -113,7 +128,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             holder.setVisible(R.id.music_play_book_list_position,!playChapter)
             holder.setVisible(R.id.living_img,playChapter)
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
-            holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
+            holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name+"sadadasdasdasdaskjdskljdfjkldfjkldfsjkladfsjkldsjkl")
             holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCount(item.play_count)
             holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.duration)
             holder.getView<TextView>(R.id.tv_music_play_up_time).bindDateString(item.created_at)

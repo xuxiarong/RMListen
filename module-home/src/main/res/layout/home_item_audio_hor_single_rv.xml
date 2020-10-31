@@ -18,8 +18,7 @@
         android:id="@+id/homeRvRecommendHorSingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginStart="16dp"
+        android:paddingEnd="@dimen/dp_16"
         bindHorizontalLayout="@{viewModel.getAdapterWithList(item.data)}"
         />
 </layout>

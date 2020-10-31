@@ -6,6 +6,7 @@
     <string name="business_delete">删除</string>
     <string name="business_sure">确定</string>
     <string name="business_login">登录</string>
+    <string name="business_join_listen_list">加入听单</string>
     <string name="business_login_look">登录过后才能查看</string>
     <string name="business_available_size">剩余可用%s</string>
     <string name="business_select_chapter">已选%d章/%s</string>
@@ -19,5 +20,6 @@
     <string name="business_download_all_exist">你选择的章节都已经在下载列表中</string>
     <string name="business_download_add_cache">已添加到下载队列</string>
     <string name="download_delete_number">删除%d</string>
+    <string name="business_no_content">当前无播放内容</string>
 
 </resources>
