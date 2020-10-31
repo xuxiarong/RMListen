@@ -31,9 +31,10 @@ data class ChapterList(
     var sequence: Int,
     var progress: Long = 0L,
     var recentPlay: Long,
-    var size: Long
-
-
+    var size: Long,
+    var audio_name : String = "",
+    var current_offset : Long = 0L,
+    var down_status : Int = 0
 ) : Serializable {
     companion object {
         fun copyFromDownload(chapter: DownloadChapter): ChapterList {
@@ -54,6 +55,25 @@ data class ChapterList(
                 recentPlay = chapter.listen_duration.toLong()
             )
         }
+
+        fun toDownChapter(chapter: ChapterList) : DownloadChapter{
+            val downloadChapter = DownloadChapter()
+            downloadChapter.audio_id = chapter.audio_id.toLong()
+            downloadChapter.chapter_id = chapter.chapter_id.toLong()
+            downloadChapter.audio_name = chapter.audio_name
+            downloadChapter.sequence = chapter.sequence
+            downloadChapter.chapter_name = chapter.chapter_name
+            downloadChapter.size = chapter.size
+            downloadChapter.current_offset = chapter.current_offset
+            downloadChapter.duration = chapter.duration
+            downloadChapter.amount = chapter.amount
+            downloadChapter.play_count = chapter.play_count.toString()
+            downloadChapter.created_at = chapter.created_at
+            downloadChapter.path_url = chapter.path_url
+            downloadChapter.down_status = chapter.down_status
+            return downloadChapter
+        }
+
     }
 }
 

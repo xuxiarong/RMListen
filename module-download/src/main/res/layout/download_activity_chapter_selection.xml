@@ -5,7 +5,7 @@
     <data>
 
         <import type="com.rm.baselisten.util.SDCardUtils" />
-
+        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
         <import type="com.rm.baselisten.util.ConvertUtils" />
 
         <variable
@@ -55,13 +55,12 @@
 
             <com.flyco.roundview.RoundTextView
                 android:id="@+id/download_chapter_num"
-                isVisible="@{viewModel.selectChapterNum>0}"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="right"
                 android:layout_marginTop="2dp"
                 android:gravity="center"
-                android:text="@{String.valueOf(viewModel.selectChapterNum)}"
+                bindDownloadNum="@{DownloadMemoryCache.INSTANCE.downloadingNum}"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:rv_backgroundColor="@color/base_ff5e5e"

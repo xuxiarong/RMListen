@@ -8,12 +8,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
-import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.download.DownloadConstant
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterUIStatus
-import com.rm.business_lib.download.file.DownLoadFileUtils
 
 @BindingAdapter("bindDownloadCheckSrc")
 fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
@@ -259,5 +259,6 @@ fun DownloadStatusView.bindDownloadStatusChapter(
         chapter.current_offset = downloadChapter.current_offset
     }
     setDownloadStatus(chapter)
-
 }
+
+

@@ -138,7 +138,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     }
 
     fun getTaskBreakpointInfo(chapter: DownloadChapter): DownloadProgressUpdateBean? {
-        var breakpointInfo =
+        val breakpointInfo =
             createFinder(chapter.path_url, chapter.audio_id.toString(), chapter.chapter_name).info
         return if (breakpointInfo == null) {
             null
@@ -174,10 +174,10 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         info: BlockInfo?,
         blockSpeed: SpeedCalculator
     ) {
-        DLog.d(
-            TAG,
-            " blockEnd name = ${task.filename} --- blockIndex = $blockIndex --- blockSpeed = ${blockSpeed.speed()}"
-        )
+//        DLog.d(
+//            TAG,
+//            " blockEnd name = ${task.filename} --- blockIndex = $blockIndex --- blockSpeed = ${blockSpeed.speed()}"
+//        )
     }
 
     /**
@@ -202,17 +202,19 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
                 DLog.d(TAG, "下载失败,原因是 EndCause.SAME_TASK_BUSY ${realCause?.message}")
             }
             else -> {
-                DownloadMemoryCache.pauseCurrentAndDownNextChapter()
+//                if(!DownloadMemoryCache.isPauseAll.get()){
+//                    DownloadMemoryCache.pauseCurrentAndDownNextChapter()
+//                }
                 DLog.d(TAG, "下载失败,原因是${cause.ordinal.toString()} ${realCause?.message}")
             }
         }
     }
 
     override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
-        DLog.d(
-            TAG,
-            " progress name = ${task.filename} --- currentOffset = $currentOffset --- taskSpeed = ${taskSpeed.speed()}"
-        )
+//        DLog.d(
+//            TAG,
+//            " progress name = ${task.filename} --- currentOffset = $currentOffset --- taskSpeed = ${taskSpeed.speed()}"
+//        )
         DownloadMemoryCache.updateDownloadingSpeed(
             speed = taskSpeed.speed(),
             currentOffset = currentOffset,
@@ -226,7 +228,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         responseCode: Int,
         responseHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        DLog.d(TAG, " connectEnd name = ${task.filename}")
+//        DLog.d(TAG, " connectEnd name = ${task.filename}")
     }
 
     override fun connectStart(
@@ -234,7 +236,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         blockIndex: Int,
         requestHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        DLog.d(TAG, " connectStart name = ${task.filename}")
+//        DLog.d(TAG, " connectStart name = ${task.filename}")
     }
 
     override fun infoReady(
@@ -243,7 +245,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         fromBreakpoint: Boolean,
         model: Listener4SpeedAssistExtend.Listener4SpeedModel
     ) {
-        DLog.d(TAG, " infoReady name = ${task.filename}")
+//        DLog.d(TAG, " infoReady name = ${task.filename}")
 
     }
 
@@ -253,7 +255,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         currentBlockOffset: Long,
         blockSpeed: SpeedCalculator
     ) {
-        DLog.d(TAG, " progressBlock name = ${task.filename}")
+//        DLog.d(TAG, " progressBlock name = ${task.filename}")
     }
 
 }

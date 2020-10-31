@@ -2,6 +2,7 @@ package com.rm.business_lib.download
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.ktx.add
@@ -32,11 +33,17 @@ object DownloadMemoryCache {
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
     var isPauseAll = ObservableBoolean(false)
 
+    var downloadingNum = ObservableInt(0)
     val downloadService = DownloadFileManager.INSTANCE
+
 
     fun initDownOrPauseAll(){
         if(downloadingChapter.get()!=null){
-            isPauseAll.set(false)
+            if(downloadingChapter.get()!!.isDownloading){
+                isPauseAll.set(false)
+            }else{
+                isPauseAll.set(true)
+            }
         }else{
             isPauseAll.set(true)
         }
@@ -136,6 +143,7 @@ object DownloadMemoryCache {
         }else{
             ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
             downloadingChapterList.addAll(chapterList)
+            downloadingNum.set(downloadingNum.get()+chapterList.size)
             downloadService.startDownloadWithCache(chapterList)
         }
     }
@@ -153,9 +161,15 @@ object DownloadMemoryCache {
         }
         ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
         downloadingChapterList.add(chapter)
+        downloadingNum.set(downloadingNum.get()+1)
+        downloadService.startDownloadWithCache(chapter)
     }
 
+    /**
+     * 下载完成，自动下载下一章节
+     */
     fun downFinishAndAutoDownNext(){
+        DLog.d("suolong下载","下载完成，自动下载下一章节")
         if(downloadingChapterList.value == null){
             return
         }
@@ -175,6 +189,7 @@ object DownloadMemoryCache {
                             downloadingChapter.set(chapter)
                             downloadingChapter.notifyChange()
                             downloadingChapterList.remove(downList[0])
+                            downloadingNum.set(downloadingNum.get()-1)
                         }
                     }
                 }
@@ -201,6 +216,7 @@ object DownloadMemoryCache {
      * 停止当前章节，开始下载下一个任务
      */
     fun pauseCurrentAndDownNextChapter(){
+        DLog.d("suolong下载","停止当前章节，开始下载下一个任务")
         if(downloadingChapterList.value == null){
             return
         }
@@ -296,6 +312,17 @@ object DownloadMemoryCache {
         }
     }
 
+    fun pauseAllChapter() {
+        if(downloadingChapter.get()!=null){
+            val chapter = downloadingChapter.get()!!
+            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+            downloadingChapter.set(chapter)
+            downloadingChapter.notifyChange()
+            downloadService.stopAll()
+        }
+    }
+
+
     fun resumeDownloadingChapter() {
         if(downloadingChapter.get()!=null){
             val chapter = downloadingChapter.get()!!
@@ -323,14 +350,17 @@ object DownloadMemoryCache {
         if(downloadingChapter.get()!=null){
             val chapter = downloadingChapter.get()!!
             if(chapter.isDownloading){
-                pauseDownloadingChapter()
+                isPauseAll.set(true)
+                pauseAllChapter()
             }else{
+                isPauseAll.set(false)
                 resumeDownloadingChapter()
             }
         }else{
             if(downloadingChapterList.value!=null){
                 val chapterList = downloadingChapterList.value!!
                 if(chapterList.size>0){
+                    isPauseAll.set(false)
                     downloadService.startDownloadWithCache(chapterList[0])
                 }
             }
@@ -348,13 +378,24 @@ object DownloadMemoryCache {
             updateDownloadingAudio(
                 chapter = finishChapter
             )
+
             downFinishAndAutoDownNext()
-            downloadingChapterList.remove(finishChapter)
+
+            if(downloadingChapterList.value!=null){
+                val value = downloadingChapterList.value!!
+                if(value.size>0){
+                    downloadingChapterList.remove(finishChapter)
+                    downloadingNum.set(downloadingNum.get()-1)
+                }
+            }
+
         }
     }
 
     fun deleteDownloadingChapter(chapter: DownloadChapter) {
         downloadingChapterList.remove(chapter)
+        downloadingNum.set(downloadingNum.get()-1)
+
         DaoUtil(DownloadChapter::class.java, "").delete(chapter)
         downloadService.deleteDownload(chapter)
 
@@ -362,6 +403,7 @@ object DownloadMemoryCache {
 
     fun deleteDownloadingChapter(chapterList: List<DownloadChapter>) {
         downloadingChapterList.removeAll(chapterList)
+        downloadingNum.set(downloadingNum.get()-chapterList.size)
         DaoUtil(DownloadChapter::class.java, "").delete(chapterList)
         downloadService.deleteDownload(chapterList.toMutableList())
     }
@@ -373,8 +415,11 @@ object DownloadMemoryCache {
             if (audioList != null) {
                 downloadingAudioList.postValue(audioList.toMutableList())
                 audioList.forEach{audio ->
+                    audio.edit_select = false
                     val chapterList = audio.chapterList
                     chapterList.forEach { chapter ->
+                        chapter.chapter_edit_select = false
+                        chapter.down_edit_select = false
                         if(!chapter.isDownloadFinish){
                            downChapterList.add(chapter)
                        }

@@ -13,6 +13,8 @@
         <variable
             name="item"
             type="com.rm.module_home.model.home.more.HomeBlockModel" />
+
+
     </data>
 
     <FrameLayout

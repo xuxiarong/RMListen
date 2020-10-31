@@ -1,5 +1,5 @@
 <resources>
     <string name="play_app_name">Play</string>
-    <string name="play_speed">倍数</string>
+    <string name="play_speed">倍速</string>
     <string name="play_timer">定时器</string>
 </resources>
