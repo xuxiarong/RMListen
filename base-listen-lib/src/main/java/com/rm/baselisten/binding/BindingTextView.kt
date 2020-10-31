@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
+import com.rm.baselisten.util.DLog
 
 /**
  * desc   :

@@ -10,7 +10,7 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.bean.CategoryTabBean
 import com.rm.module_home.databinding.HomeFragmentBoutiqueBinding
-import com.stx.xhb.androidx.XBanner
+import com.rm.business_lib.xbanner.XBanner
 
 /**
  * desc   : 精品Fragment

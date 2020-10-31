@@ -13,7 +13,7 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.rm.module_home.viewmodel.HomeMenuViewModel
-import com.stx.xhb.androidx.XBanner
+import com.rm.business_lib.xbanner.XBanner
 
 class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuViewModel>() {
 

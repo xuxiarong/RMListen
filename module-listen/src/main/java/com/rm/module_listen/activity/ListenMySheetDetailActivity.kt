@@ -108,7 +108,9 @@ class ListenMySheetDetailActivity :
         mViewModel.data.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                createHeader(mViewModel.data.get()!!)
+                if (mViewModel.mAdapter.headerLayoutCount == 0) {
+                    createHeader(mViewModel.data.get()!!)
+                }
             }
         })
     }

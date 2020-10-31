@@ -25,7 +25,7 @@ import kotlin.random.Random
  * @description
  *
  */
-class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainViewModel>() {
+class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainViewModel>(){
     private var hintTask: AutoTask? = null
 
     override fun initModelBrId() = BR.viewModel
@@ -44,7 +44,9 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
             window.decorView.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
         }
 
+        mDataBind.root.setOnTouchListener(this)
     }
+
 
     private val windowListener = ViewTreeObserver.OnGlobalLayoutListener {
 

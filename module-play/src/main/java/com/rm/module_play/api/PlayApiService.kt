@@ -92,4 +92,20 @@ interface PlayApiService {
      */
     @GET("audio/detail")
     suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailBean>
+
+    /**
+     * 评论点赞
+     * @param comment_id 评论Id
+     */
+    @FormUrlEncoded
+    @POST("comment/like")
+    suspend fun homeLikeComment(@Field("comment_id") comment_id: String): BaseResponse<Any>
+
+    /**
+     * 取消点赞
+     * @param comment_id 评论Id
+     */
+    @DELETE("comment/like")
+    suspend fun homeUnLikeComment(@Query("comment_id") comment_id: String): BaseResponse<Any>
+
 }

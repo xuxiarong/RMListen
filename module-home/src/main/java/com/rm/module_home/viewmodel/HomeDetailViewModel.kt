@@ -439,7 +439,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     private fun unLikeComment(bean: CommentList) {
         launchOnIO {
-            repository.homeLikeComment(bean.id.toString()).checkResult(
+            repository.homeUnLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = false

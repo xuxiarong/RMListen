@@ -1,20 +1,27 @@
 package com.rm.module_play.viewmodel
 
+import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import androidx.databinding.ObservableField
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.google.gson.Gson
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
+import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.adapter.BookPlayerAdapter
@@ -132,13 +139,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
     /**
-     * 点赞或者取消评论
-     */
-    fun likeComment() {
-
-    }
-
-    /**
      * 初始化数据
      */
     fun initPlayerAdapterModel() {
@@ -170,13 +170,32 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
     //点赞
-    fun playLikeBook(model: Comments) {
-
+    fun playLikeBook(context: Context, bean: Comments) {
+        if (isLogin.get()) {
+            if (bean.is_liked) {
+                unLikeComment(bean)
+            } else {
+                likeComment(bean)
+            }
+        } else {
+            getActivity(context)?.let { quicklyLogin(it) }
+        }
     }
 
     //精品详情
     fun playBoutiqueDetails(model: PlayControlRecommentListModel) {
         Log.i("", "playBoutiqueDetails")
+    }
+
+    /**
+     * 快捷登陆
+     */
+    private fun quicklyLogin(it: FragmentActivity) {
+        RouterHelper.createRouter(LoginService::class.java)
+            .quicklyLogin(this, it, loginSuccess = {
+                //todo 登陆成功回调
+//                getCommentList(audioId.get()!!)
+            })
     }
 
     /**
@@ -235,7 +254,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnUI {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
-                    if(TextUtils.isEmpty(it.list.audio_cover_url)){
+                    if (TextUtils.isEmpty(it.list.audio_cover_url)) {
                         it.list.audio_cover_url = ""
                     }
                     setBookDetailBean(
@@ -252,8 +271,68 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 }
             )
         }
+    }
 
+    /**
+     * 取消评论点赞
+     */
+    private fun unLikeComment(bean: Comments) {
+        launchOnIO {
+            repository.homeUnLikeComment(bean.id.toString()).checkResult(
+                onSuccess = {
+                    mutableList.value?.let {
+                        it.forEachIndexed { index, multiItemEntity ->
+                            if (multiItemEntity.itemType == BookPlayerAdapter.ITEM_TYPE_COMMENR_LIST) {
+                                val comment = (it[index] as PlayControlCommentListModel).comments
 
+                                if (TextUtils.equals(comment?.id, bean.id)) {
+                                    bean.is_liked = false
+                                    bean.likes = bean.likes + -1
+                                    mBookPlayerAdapter.data[index] =
+                                        PlayControlCommentListModel(comments = bean)
+                                    val headerLayoutCount = mBookPlayerAdapter.headerLayoutCount
+                                    mBookPlayerAdapter.notifyItemChanged(index + headerLayoutCount)
+                                }
+                            }
+                        }
+                    }
+
+                },
+                onError = {
+                    DLog.i("----->", "评论点赞:$it")
+                }
+            )
+        }
+    }
+
+    /**
+     * 评论点赞
+     */
+    private fun likeComment(bean: Comments) {
+        launchOnIO {
+            repository.homeLikeComment(bean.id.toString()).checkResult(
+                onSuccess = {
+                    mutableList.value?.let {
+                        it.forEachIndexed { index, multiItemEntity ->
+                            if (multiItemEntity.itemType == BookPlayerAdapter.ITEM_TYPE_COMMENR_LIST) {
+                                val comment = (it[index] as PlayControlCommentListModel).comments
+
+                                if (TextUtils.equals(comment?.id, bean.id)) {
+                                    bean.is_liked = true
+                                    bean.likes = bean.likes + 1
+                                    mBookPlayerAdapter.data[index] =
+                                        PlayControlCommentListModel(comments = bean)
+                                    val headerLayoutCount = mBookPlayerAdapter.headerLayoutCount
+                                    mBookPlayerAdapter.notifyItemChanged(index + headerLayoutCount)
+                                }
+                            }
+                        }
+                    }
+                },
+                onError = {
+                    DLog.i("----->", "评论点赞:$it")
+                })
+        }
     }
 
     //设置上次播放缓存的数据
@@ -284,7 +363,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 书本信息
      */
     fun setBookDetailBean(homeDetailBean: DetailBookBean?) {
-        if(homeDetailBean!=null){
+        if (homeDetailBean != null) {
             audioInfo.set(homeDetailBean)
         }
         homeDetailBean?.let {
@@ -299,6 +378,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             GlobalplayHelp.instance.setBooKImage(it.audio_cover_url)
         }
     }
+
     /**
      *评论列表
      */

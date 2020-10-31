@@ -46,9 +46,12 @@ class HomeCommentDialogViewModel(
                 dataBinding = mDataBind as HomeDialogCommentBinding
                 dataBinding?.apply {
                     initDialog = {
+                        home_dialog_comment_ed.isFocusable = true
+                        home_dialog_comment_ed.requestFocus()
+                        home_dialog_comment_ed.isFocusableInTouchMode = true;
                         val inputManager =
                             home_dialog_comment_ed.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        inputManager.showSoftInput(home_dialog_comment_ed, 0)
+                        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
                     }
                 }
             }

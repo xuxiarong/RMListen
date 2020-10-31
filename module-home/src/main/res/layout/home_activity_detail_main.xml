@@ -47,9 +47,9 @@
                 android:ellipsize="end"
                 android:maxEms="10"
                 android:maxLines="1"
+                android:text="@{viewModel.detailInfoData.list.audio_name}"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_18sp"
-                android:text="@{viewModel.detailInfoData.list.audio_name}"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/home_detail_back"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -200,9 +200,11 @@
                 bindGridLayout="@{viewModel.chapterAnthologyAdapter}"
                 isVisible="@{viewModel.hideOr}"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:background="@color/businessWhite"
-                app:layout_constraintTop_toBottomOf="@id/home_detail_chapter_header" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_detail_chapter_header"
+                app:srlEnableLoadMoreWhenContentNotFull="true" />
 
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:id="@+id/home_chapter_detail_refresh"
@@ -212,6 +214,7 @@
                 bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
                 bindOnLoadMoreListener="@{viewModel.loadData}"
                 bindOnRefreshListener="@{viewModel.refreshData}"
+                isVisible="@{!viewModel.hideOr}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/businessWhite"

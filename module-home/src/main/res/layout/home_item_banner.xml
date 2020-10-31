@@ -17,7 +17,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.stx.xhb.androidx.XBanner
+        <com.rm.business_lib.xbanner.XBanner
             android:id="@+id/mainBanner"
             android:layout_width="match_parent"
             android:layout_height="176dp"

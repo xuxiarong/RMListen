@@ -21,6 +21,7 @@
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_8"
+            android:focusable="false"
             android:background="@drawable/business_shape_white_16dp"
             android:gravity="center"
             android:paddingTop="@dimen/dp_16"
@@ -36,6 +37,7 @@
             android:background="@color/business_text_color_ffffff"
             android:paddingStart="@dimen/dp_16"
             android:paddingTop="@dimen/dp_16"
+            android:focusable="false"
             android:paddingEnd="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -53,6 +55,8 @@
                     afterTextChanged="@{homeCommentDialogViewModel.inputText}"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:background="@null"
                     android:gravity="start|top"
                     android:hint="@string/home_comment_dialog_hint"
@@ -89,6 +93,7 @@
                 android:text="@string/home_comment_dialog_tips"
                 android:textColor="@color/business_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
+                android:focusable="false"
                 app:layout_constraintBottom_toBottomOf="@id/home_dialog_comment_publish"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/home_dialog_comment_publish" />
@@ -107,6 +112,7 @@
                 android:paddingEnd="@dimen/dp_20"
                 android:paddingBottom="@dimen/dp_6"
                 android:text="@string/home_publish"
+                android:focusable="false"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintBottom_toBottomOf="parent"

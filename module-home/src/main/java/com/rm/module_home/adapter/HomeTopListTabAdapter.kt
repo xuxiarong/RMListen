@@ -1,5 +1,6 @@
 package com.rm.module_home.adapter
 
+import android.graphics.Typeface
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -41,6 +42,8 @@ class HomeTopListTabAdapter :
                 )
                 setBackgroundResource(R.drawable.home_top_list_tab_bg)
                 elevation = resources.getDimension(R.dimen.dp_2)
+
+                textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
             }
         } else {
             textView?.apply {
@@ -50,7 +53,9 @@ class HomeTopListTabAdapter :
                     0,
                     0
                 )
+                setBackgroundResource(R.drawable.home_top_list_tab_un_bg)
                 elevation = 0f
+                textView.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
             }
         }
     }

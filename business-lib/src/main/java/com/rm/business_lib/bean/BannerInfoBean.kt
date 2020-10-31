@@ -1,6 +1,6 @@
 package com.rm.business_lib.bean
 
-import com.stx.xhb.androidx.entity.BaseBannerInfo
+import com.rm.business_lib.xbanner.entity.BaseBannerInfo
 
 /**
  * desc   : XBanner所需数据对象

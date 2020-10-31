@@ -25,7 +25,6 @@
             app:bendTabIndicatorHeight="@dimen/dp_1"
             app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
             app:bendTabPaddingStart="@dimen/dp_10"
-            app:bendTabPaddingEnd="@dimen/dp_10"
             app:bendTabMode="scrollable"
             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
             app:bendTabTextSelectIsBold="true"

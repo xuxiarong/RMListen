@@ -2,22 +2,17 @@ package com.rm.business_lib.binding
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.text.TextUtils
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.google.gson.Gson
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
-import com.rm.business_lib.R
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.bean.BannerJumpBean
-import com.stx.xhb.androidx.XBanner
+import com.rm.business_lib.xbanner.XBanner
 
 
 /**
