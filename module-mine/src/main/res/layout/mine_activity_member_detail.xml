@@ -237,7 +237,7 @@
             <com.rm.business_lib.wedgit.NoTouchViewPager
                 android:id="@+id/mine_member_detail_viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="0dp"
                 android:layout_marginTop="@dimen/dp_16"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tab_mine_member_list" />

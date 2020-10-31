@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableField
-import com.hjq.toast.ToastUtils
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.net.BusinessRetrofitClient
@@ -71,7 +71,6 @@ class HomeCommentDialogViewModel(
         inputComment.get()?.let {
             sendComment(it, audioId, loginUser.get()!!.id)
         }
-
     }
 
     private fun sendComment(
