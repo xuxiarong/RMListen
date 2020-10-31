@@ -41,6 +41,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
     // 倒计时时间
     var countDownTime = ObservableField(-1)
 
+    val errorTips = ObservableField<String>("")
+
     // 监听绑定输入框内容变化
     var completeInput: (String) -> Unit = {
         completeInput(it)
@@ -86,7 +88,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 },
                 onError = {
                     showContentView()
-                    it?.let { showToast(it) }
+//                    it?.let { showToast(it) }
+                    errorTips.set(it)
                 })
         }
     }
@@ -109,7 +112,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     },
                     onError = {
                         showContentView()
-                        it?.let { showToast(it) }
+                        errorTips.set(it)
+//                        it?.let { showToast(it) }
                     }
                 )
         }
@@ -123,7 +127,8 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
             repository.logout(code).checkResult(onSuccess = {
                 loginOut()
             }, onError = {
-                showToast("$it")
+//                showToast("$it")
+                errorTips.set(it)
             })
         }
     }
