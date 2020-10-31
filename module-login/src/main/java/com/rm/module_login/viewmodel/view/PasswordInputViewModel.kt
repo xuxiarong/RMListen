@@ -22,7 +22,9 @@ class PasswordInputViewModel {
     var isShowPasswordText = ObservableField<Boolean>(false)
 
     // 密码的正则表达式
-    private val passwordRegex = Regex("^(?![0-9]+\$)(?![a-zA-Z]+\$)[0-9A-Za-z]{6,16}\$")
+//    private val passwordRegex = Regex("^(?![0-9]+\$)(?![a-zA-Z]+\$)[0-9A-Za-z]{6,16}\$")
+    // 密码的正则表达式(至少包含字母/数字/特殊字符 其中两种类型组合)
+    private val passwordRegex = Regex("(?!^\\d+\$)(?!^[A-Za-z]+\$)(?!^[^A-Za-z0-9]+\$)(?!^.*[\\u4E00-\\u9FA5].*\$)^\\S{6,16}\$")
 
     // 监听绑定输入框内容变化
     val checkInput: (String) -> Unit = { inputChange() }
