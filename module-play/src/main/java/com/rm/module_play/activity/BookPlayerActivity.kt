@@ -101,8 +101,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         //全局原点
         fun startActivity(context: Context, fromGlobal: String) {
 
-            if(TextUtils.isEmpty(PlayConstance.getLastListenAudioUrl())){
-                (context as BaseActivity).tipView.showTipView(context,context.getString(com.rm.business_lib.R.string.business_no_content))
+            if (TextUtils.isEmpty(PlayConstance.getLastListenAudioUrl())) {
+                (context as BaseActivity).tipView.showTipView(
+                    context,
+                    context.getString(com.rm.business_lib.R.string.business_no_content)
+                )
                 return
             }
             val intent = Intent(context, BookPlayerActivity::class.java)
@@ -189,7 +192,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         DownloadMemoryCache.downloadingChapter.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(MusicPlayBookListDialog.isShowing && MusicPlayBookListDialog.musicDialog!=null){
+                if (MusicPlayBookListDialog.isShowing && MusicPlayBookListDialog.musicDialog != null) {
                     MusicPlayBookListDialog.musicDialog!!.notifyDialog()
                 }
             }
@@ -293,17 +296,19 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     controlTime?.contains(ACTION_PLAY_QUEUE) == true -> {
                         //调整播放列表
                         mViewModel.audioChapterModel.get()?.let { it ->
-                            showPlayBookListDialog(mViewModel.getHomeDetailListModel(),it, {
-                                mChapterId?.let {
-                                    musicPlayerManger.startPlayMusic(it)
-                                }
-                            }, { type ->
-                                if (type == 0) {
-                                    //                                    ToastUtil.show(this@BookPlayerActivity, "刷新")
-                                } else {
-                                    //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
-                                }
-                            })
+                            showPlayBookListDialog(
+                                downloadAudio = mViewModel.getHomeDetailListModel(),
+                                audioListModel = it,
+                                back = {
+                                    musicPlayerManger.startPlayMusic(it.toString())
+                                },
+                                mLoad = { type ->
+                                    if (type == 0) {
+                                        //                                    ToastUtil.show(this@BookPlayerActivity, "刷新")
+                                    } else {
+                                        //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
+                                    }
+                                })
                         }
                     }
                     controlTime?.contains(ACTION_PLAY_OPERATING) == true -> {
@@ -440,11 +445,13 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 }
                 mViewModel.setPlayPath(chapterList)
 
-                mViewModel.audioChapterModel.set(AudioChapterListModel(
-                    list = chapterList,
-                    total = chapterList.size,
-                    Anthology_list = mutableListOf()
-                ))
+                mViewModel.audioChapterModel.set(
+                    AudioChapterListModel(
+                        list = chapterList,
+                        total = chapterList.size,
+                        Anthology_list = mutableListOf()
+                    )
+                )
             }
 
             else -> {
@@ -466,8 +473,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
-        if (playerState==-1){
-            ToastUtil.show(this,msg = message)
+        if (playerState == -1) {
+            ToastUtil.show(this, msg = message)
         }
 
     }

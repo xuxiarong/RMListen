@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
 fun FragmentActivity.showPlayBookListDialog(
     downloadAudio : HomeDetailList?,
     audioListModel: AudioChapterListModel,
-    back: (position: Int) -> Unit,
+    back: (chapterId: String) -> Unit,
     mLoad: (types: Int) -> Unit
 ) {
     MusicPlayBookListDialog().apply {
@@ -48,14 +48,14 @@ fun FragmentActivity.showPlayBookListDialog(
 }
 
 class MusicPlayBookListDialog : BottomDialogFragment() {
-    var mBack: (position: Int) -> Unit = {}
+    var mBack: (chapterId: String) -> Unit = {}
     var mLoad: (types: Int) -> Unit = {}
     var audioChapterListModel: AudioChapterListModel? = null
     var downloadAudio: HomeDetailList? = null
     private val timeSAdapter by lazy {
         TimeSAdapter(downloadAudio,audioChapterListModel?.list as MutableList<ChapterList>).apply {
             setOnItemClickListener { adapter, view, position ->
-                mBack(position)
+                mBack(data[position].chapter_id)
                 dismissAllowingStateLoss()
             }
         }
@@ -110,6 +110,12 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             musicDialog = null
         }
 
+        play_change_data_sort.setOnClickListener {
+            timeSAdapter.data.reverse()
+            timeSAdapter.notifyDataSetChanged()
+        }
+
+
         smart_refresh_layout_play.setOnRefreshListener {
             smart_refresh_layout_play.finishRefresh(1500)
             mLoad(0)
@@ -139,7 +145,6 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
                 DownloadMemoryCache.downloadingChapter.get()
             )
         }
-
     }
 
     /**

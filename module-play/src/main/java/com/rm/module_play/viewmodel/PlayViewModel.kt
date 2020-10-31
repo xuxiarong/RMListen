@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableFloat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -45,8 +46,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     val playPath = MutableLiveData<List<BaseAudioInfo>>()
     val pathList = ArrayList<BaseAudioInfo>()
     val audioChapterModel = ObservableField<AudioChapterListModel>()
-    val process = ObservableField<Float>()//进度条
-    val maxProcess = ObservableField<Float>()//最大进度
+    val process = ObservableFloat(0f)//进度条
+    val maxProcess = ObservableFloat(0f)//最大进度
     val updateThumbText = ObservableField<String>()//更改文字
     var playControlModel = ObservableField<PlayControlModel>()
     var playControlAction = ObservableField<String>()

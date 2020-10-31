@@ -60,6 +60,7 @@
                     android:src="@drawable/music_play_ic_icon_download_de" />
 
                 <ImageView
+                    android:id="@+id/play_change_data_sort"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
