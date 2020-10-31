@@ -16,6 +16,14 @@
         android:layout_height="match_parent"
         tools:visibility="visible">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/login_ic_top_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             layout="@layout/login_include_layout_top_logo"
