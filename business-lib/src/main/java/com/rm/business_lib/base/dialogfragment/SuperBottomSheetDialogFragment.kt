@@ -45,6 +45,10 @@ abstract class SuperBottomSheetDialogFragment : BottomSheetDialogFragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val lp = dialog?.window?.attributes
+        lp?.dimAmount = 0.6f
+        dialog?.window?.attributes = lp
+        (dialog?.window?.findViewById(R.id.design_bottom_sheet) as View).setBackgroundResource(android.R.color.transparent)
         onInitialize()
         initBottomSheetBehavior()
     }
@@ -57,44 +61,42 @@ abstract class SuperBottomSheetDialogFragment : BottomSheetDialogFragment() {
         dialog.setCanceledOnTouchOutside(getCanceled())
 
         val bottomSheetLayout = getBottomSheetLayout()
-        if (bottomSheetLayout != null) {
-            val layoutParams = bottomSheetLayout.layoutParams as? CoordinatorLayout.LayoutParams
-            val height = getMaxHeight()
-            if (height > 0) {
-                //设置高度
-                layoutParams?.height = getMaxHeight()
-            }
-            val state = if (isExpandedState()) {
-                BottomSheetBehavior.STATE_EXPANDED
-            } else {
-                BottomSheetBehavior.STATE_COLLAPSED
-            }
-
-            //设置展开状态
-            val behavior = BottomSheetBehavior.from(bottomSheetLayout)
-            val peekHeight = getPeekHeight()
-            if (peekHeight > 0) {
-                //设置Peek高度
-                behavior.peekHeight = peekHeight
-            }
-            behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, state: Int) {
-                    if (state == BottomSheetBehavior.STATE_DRAGGING) {
-                        //判断为向下拖动行为时，则强制设定状态为展开
-                        if (!isCanSlideClose()) {
-                            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                        }
-                    } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
-                        dismissAllowingStateLoss()
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-                }
-            })
-            behavior.state = state
+        val layoutParams = bottomSheetLayout.layoutParams as? CoordinatorLayout.LayoutParams
+        val height = getMaxHeight()
+        if (height > 0) {
+            //设置高度
+            layoutParams?.height = getMaxHeight()
         }
+        val state = if (isExpandedState()) {
+            BottomSheetBehavior.STATE_EXPANDED
+        } else {
+            BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        //设置展开状态
+        val behavior = BottomSheetBehavior.from(bottomSheetLayout)
+        val peekHeight = getPeekHeight()
+        if (peekHeight > 0) {
+            //设置Peek高度
+            behavior.peekHeight = peekHeight
+        }
+        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, state: Int) {
+                if (state == BottomSheetBehavior.STATE_DRAGGING) {
+                    //判断为向下拖动行为时，则强制设定状态为展开
+                    if (!isCanSlideClose()) {
+                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
+                    dismissAllowingStateLoss()
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+        })
+        behavior.state = state
     }
 
     /**
