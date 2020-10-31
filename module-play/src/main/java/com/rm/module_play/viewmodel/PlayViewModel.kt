@@ -9,9 +9,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.AudioChapterListModel
-import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.DetailBookBean
+import com.rm.business_lib.bean.*
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -95,6 +93,71 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         const val ACTION_JOIN_LISTEN = "ACTION_JOIN_LISTEN"//加入听单
         const val ACTION_MORE_COMMENT = "ACTION_MORE_COMMENT"//更多评论
         const val ACTION_MORE_FINSH = "ACTION_MORE_FINSH"//关闭
+    }
+
+    fun getHomeDetailListModel() : HomeDetailList?{
+        val audioBean = audioInfo.get()
+        if(audioBean!=null){
+            return HomeDetailList(
+                audio_id=audioBean.audio_id,
+                audio_type=0,
+                audio_name=audioBean.audio_name,
+                original_name=audioBean.original_name,
+                status=1,
+                author_intro="",
+                anchor_id="",
+                short_intro="",
+                audio_intro="",
+                audio_cover="",
+                cover_url="",
+                audio_label="",
+                quality=0,
+                progress=0,
+                play_count=0,
+                created_at="11111",
+                chapter_updated_at="11111",
+                author=audioBean.author,
+                member_id="",
+                nickname="",
+                subscription_count=0,
+                last_sequence=0,
+                audio_cover_url=audioBean.audio_cover_url,
+                anchor=Anchor("","","",false),
+                tags= mutableListOf<DetailTags>(),
+                is_subscribe=false,
+                is_fav=false
+            )
+        }else{
+            return HomeDetailList(
+                audio_id=audioID.get()!!,
+                        audio_type=0,
+                        audio_name="",
+                        original_name="",
+                        status=1,
+                        author_intro="",
+                        anchor_id="",
+                        short_intro="",
+                        audio_intro="",
+                        audio_cover="",
+                        cover_url="",
+                        audio_label="",
+                        quality=0,
+                        progress=0,
+                        play_count=0,
+                        created_at="11111",
+                        chapter_updated_at="11111",
+                        author="",
+                        member_id="",
+                        nickname="",
+                        subscription_count=0,
+                        last_sequence=0,
+                        audio_cover_url="",
+                        anchor= Anchor("","","",false),
+                        tags= mutableListOf<DetailTags>(),
+                        is_subscribe=false,
+                        is_fav=false
+            )
+        }
     }
 
 

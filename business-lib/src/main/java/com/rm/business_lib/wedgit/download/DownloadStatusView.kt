@@ -77,7 +77,7 @@ class DownloadStatusView@JvmOverloads constructor(context: Context, attrs: Attri
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    DownloadMemoryCache.downloadService.deleteDownload(chapter)
+                    DownloadMemoryCache.resumeDownloadingChapter()
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {

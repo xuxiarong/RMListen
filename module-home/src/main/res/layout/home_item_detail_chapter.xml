@@ -110,7 +110,6 @@
             bindDownloadAudio="@{chapterclick.detailInfoData.list}"
             bindDownloadStatusChapter="@{DetailChapterViewModel}"
             bindCurrentDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
-            android:src="@drawable/home_icon_chapter_download"
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24" />
 

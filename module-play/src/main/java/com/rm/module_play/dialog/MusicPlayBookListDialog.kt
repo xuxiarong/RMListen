@@ -11,9 +11,13 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.bean.HomeDetailList
+import com.rm.business_lib.binding.bindChapterList
 import com.rm.business_lib.binding.bindDateString
 import com.rm.business_lib.binding.bindDuration
 import com.rm.business_lib.binding.bindPlayCount
+import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
@@ -27,6 +31,7 @@ import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
  * @Version: 1.0.0
  */
 fun FragmentActivity.showPlayBookListDialog(
+    downloadAudio : HomeDetailList?,
     audioListModel: AudioChapterListModel,
     back: (position: Int) -> Unit,
     mLoad: (types: Int) -> Unit
@@ -35,6 +40,7 @@ fun FragmentActivity.showPlayBookListDialog(
         this.audioChapterListModel = audioListModel
         this.mBack = back
         this.mLoad = mLoad
+        this.downloadAudio = downloadAudio
     }.show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
@@ -42,8 +48,9 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     var mBack: (position: Int) -> Unit = {}
     var mLoad: (types: Int) -> Unit = {}
     var audioChapterListModel: AudioChapterListModel? = null
+    var downloadAudio: HomeDetailList? = null
     private val timeSAdapter by lazy {
-        TimeSAdapter(audioChapterListModel?.list as MutableList<ChapterList>).apply {
+        TimeSAdapter(downloadAudio,audioChapterListModel?.list as MutableList<ChapterList>).apply {
             setOnItemClickListener { adapter, view, position ->
                 mBack(position)
                 dismissAllowingStateLoss()
@@ -51,10 +58,23 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         }
     }
 
+    companion object{
+        var musicDialog : MusicPlayBookListDialog? = null
+        var isShowing = false
+    }
+
+    fun notifyDialog(){
+        if(musicDialog!=null){
+            timeSAdapter.notifyDataSetChanged()
+        }
+    }
+
 //    override fun getBackgroundAlpha() = 0f
     override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_book_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        isShowing = true
+        musicDialog = this@MusicPlayBookListDialog
         super.onViewCreated(view, savedInstanceState)
         rv_music_play_book_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -71,6 +91,8 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
 
         play_drag_chapter_list.seDragCloseListener {
             dismiss()
+            isShowing = false
+            musicDialog = null
         }
 
         smart_refresh_layout_play.setOnRefreshListener {
@@ -84,7 +106,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     }
 
 
-    internal class TimeSAdapter(list: MutableList<ChapterList>) :
+    internal class TimeSAdapter(var downloadAudio : HomeDetailList?,list: MutableList<ChapterList>) :
         BaseQuickAdapter<ChapterList, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
         override fun convert(holder: BaseViewHolder, item: ChapterList) {
             val playChapter=item.chapter_id== musicPlayerManger.getCurrentPlayerMusic()?.chapterId
@@ -95,6 +117,12 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCount(item.play_count)
             holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.duration)
             holder.getView<TextView>(R.id.tv_music_play_up_time).bindDateString(item.created_at)
+            val downloadStatusView = holder.getView<DownloadStatusView>(R.id.image_music_play_down)
+            downloadStatusView.bindChapterList(
+                downloadAudio,
+                item,
+                DownloadMemoryCache.downloadingChapter.get()
+            )
         }
 
     }
