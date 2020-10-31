@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
+import com.rm.business_lib.base.dialogfragment.SuperBottomSheetDialogFragment
 import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.module_play.R
@@ -33,7 +34,7 @@ fun FragmentActivity.showMusicPlayTimeSettingDialog() {
     MusicPlayTimeSettingDialog().show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
-class MusicPlayTimeSettingDialog : BottomDialogFragment() {
+class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
     private val timeSAdapter by lazy {
         TimeSAdapter(timeList).apply {
             setOnItemClickListener { _, _, position ->
@@ -70,10 +71,8 @@ class MusicPlayTimeSettingDialog : BottomDialogFragment() {
         mutableListOf("10", "20", "30", "40", "60", "1", "2", "3", "4", "5")
     }
 
-    override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_time_setting
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun getLayoutResId(): Int = R.layout.music_play_dialog_time_setting
+    override fun onInitialize() {
         rv_music_play_time_setting.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_music_play_time_setting.adapter = timeSAdapter

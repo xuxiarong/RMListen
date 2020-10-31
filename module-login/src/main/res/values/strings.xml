@@ -24,7 +24,7 @@
     <string name="login_send_verify_code">发送验证码</string>
     <string name="login_send_verify_code_tips">发送短信验证码至以下手机</string>
     <string name="login_reset_password">重新设置密码</string>
-    <string name="login_reset_password_tips">密码为6&#8211;16位，需要包含数字、字母组合</string>
+    <string name="login_reset_password_tips">密码为8&#8211;16位，需要包含数字、字母组合</string>
     <string name="login_reset_password_error_tips">密码必须是包含数字、字母组合</string>
     <string name="login_modify">修改</string>
     <string name="login_send_success">已发送验证码</string>

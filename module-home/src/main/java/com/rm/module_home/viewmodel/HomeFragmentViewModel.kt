@@ -1,5 +1,6 @@
 package com.rm.module_home.viewmodel
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
@@ -41,6 +42,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     var homeMenuList = MutableLiveData<MutableList<MultiItemEntity>>()
     var collectItemClickList: (HomeMenuModel) -> Unit = {}
     var doubleRvLeftScrollOpenDetail: () -> Unit = {}
+    var errorMsg = ObservableField<String>()
 
 
     var homeAllData = MutableLiveData<MutableList<MultiItemEntity>>()
@@ -58,6 +60,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     dealHomeData(it)
                 }, onError = {
                     showServiceError()
+                    errorMsg.set(it)
                     refreshStatusModel.finishRefresh(false)
                     DLog.d("suolong ", "error = $it")
                 }

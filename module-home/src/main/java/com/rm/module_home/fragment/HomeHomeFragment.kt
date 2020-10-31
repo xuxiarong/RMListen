@@ -1,9 +1,11 @@
 package com.rm.module_home.fragment
 
 import androidx.databinding.Observable
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseNetStatus
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.receiver.NetworkChangeReceiver
 import com.rm.business_lib.isHomeDouClick
@@ -80,6 +82,16 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         mViewModel.homeAllData.observe(this, Observer {
             mHomeAdapter.setList(it)
         })
+
+        mViewModel.errorMsg.addOnPropertyChangedCallback(object :Observable.OnPropertyChangedCallback(){
+
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(mViewModel.errorMsg.get()!=null){
+                    (activity as BaseActivity).tipView.showTipView(activity = activity as FragmentActivity,tipText = mViewModel.errorMsg.get()!!)
+                }
+            }
+        })
+
         NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {

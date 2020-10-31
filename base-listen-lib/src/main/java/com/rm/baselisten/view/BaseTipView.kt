@@ -30,13 +30,13 @@ class BaseTipView constructor(
     }
     var isAdd = false
     private val showAnim by lazy {
-        ObjectAnimator.ofFloat(this, "translationY", 0f, dip(64).toFloat()).apply {
+        ObjectAnimator.ofFloat(this, "translationY", 0f, dip(96).toFloat()).apply {
             duration = 200
         }
     }
 
     private val hideAnim by lazy {
-        ObjectAnimator.ofFloat(this, "translationY", dip(64).toFloat(), 0f).apply {
+        ObjectAnimator.ofFloat(this, "translationY", dip(96).toFloat(), 0f).apply {
             duration = 200
         }
     }

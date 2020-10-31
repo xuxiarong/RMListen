@@ -22,7 +22,7 @@
         android:layout_marginStart="20dp"
         android:onClick="@{() -> viewModel.collectClick(item)}">
 
-        <com.rm.business_lib.wedgit.shadow.ShadowLayout
+        <androidx.cardview.widget.CardView
             android:id="@+id/homeItemCollectIcon"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_44"
@@ -38,11 +38,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    app:layout_shadowColor="#0a000000"
                     android:src="@drawable/home_icon_menu_boutique"
                     android:background="@drawable/business_selector_ff5e5e_white_8dp"
                     />
-        </com.rm.business_lib.wedgit.shadow.ShadowLayout>
+        </androidx.cardview.widget.CardView>
 
 
         <androidx.appcompat.widget.AppCompatTextView

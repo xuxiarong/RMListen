@@ -8,12 +8,14 @@ import com.rm.business_lib.*
 import com.rm.business_lib.helpter.loginIn
 import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
+import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_FORGET_PWD
 import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_LOGIN
 import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_LOGOUT
 import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_RESET_PWD
 import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.repository.LoginRepository.Companion.CODE_TYPE_CHANGE_PWD
 import com.rm.module_login.repository.LoginRepository.Companion.CODE_TYPE_CLOSE_ACCOUNT
+import com.rm.module_login.repository.LoginRepository.Companion.CODE_TYPE_FORGET_PWD
 import com.rm.module_login.repository.LoginRepository.Companion.CODE_TYPE_LOGIN
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -157,6 +159,9 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
             }
             TYPE_LOGOUT -> {
                 sendCodeMessage(CODE_TYPE_CLOSE_ACCOUNT)
+            }
+            TYPE_FORGET_PWD->{
+                sendCodeMessage(CODE_TYPE_FORGET_PWD)
             }
         }
     }

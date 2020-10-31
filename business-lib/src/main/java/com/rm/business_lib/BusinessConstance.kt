@@ -53,5 +53,5 @@ const val LISTEN_SHEET_LIST_MY_LIST = 0 //我的听单
 const val LISTEN_SHEET_LIST_COLLECTED_LIST = 1 //收藏听单
 
 
-
+val SAVA_SPEED="savaSpeed"
 

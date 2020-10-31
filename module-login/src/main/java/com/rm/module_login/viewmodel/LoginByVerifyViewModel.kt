@@ -1,5 +1,6 @@
 package com.rm.module_login.viewmodel
 
+import android.content.Context
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -80,9 +81,9 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
     /**
      * 密码登陆入口
      */
-    fun loginByPassword() {
+    fun loginByPassword(context: Context) {
         // 密码登陆
-        startActivity(LoginByPasswordActivity::class.java)
+        LoginByPasswordActivity.startActivity(context,phoneInputViewModel.phone.get()!!)
     }
 
 }

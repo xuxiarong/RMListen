@@ -8,8 +8,11 @@ import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.getAnyMMKV
+import com.rm.baselisten.util.getFloattMMKV
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
@@ -38,6 +41,7 @@ import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_book_player.*
 
@@ -454,6 +458,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun initData() {
         getIntentParams()
+        SAVA_SPEED.getFloattMMKV(1f)?.let { MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it) }
 
     }
 
