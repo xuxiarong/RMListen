@@ -29,6 +29,9 @@ class VerificationInputActivity :
         //注销用户
         const val TYPE_LOGOUT = 2
 
+        // 忘记密码
+        const val TYPE_FORGET_PWD = 3
+
         fun getIntent(countryCode: String, phoneNumber: String, type: Int): HashMap<String, Any> {
             return hashMapOf(
                 Pair("countryCode", countryCode),
