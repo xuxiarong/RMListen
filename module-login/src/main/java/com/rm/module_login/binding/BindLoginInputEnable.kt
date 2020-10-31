@@ -18,8 +18,8 @@ fun View.bindLoginPhoneAndPasswordEnable(countryCode: String?, phone: String?, p
     } else if (phone != null && password == null) {
         // 只是验证电话是否ok
         if (countryCode != null && TextUtils.equals(countryCode, "+86")) {
-            // 如果是中国区的电话号码，则必须11位数
-            phone.length == 11
+            // 如果是中国区的电话号码，则必须11位数 且 必须是1开头的
+            phone.length == 11 && phone.startsWith("1")
         } else {
             !TextUtils.isEmpty(phone)
         }
@@ -39,7 +39,7 @@ fun View.bindLoginPhoneAndPasswordEnable(countryCode: String?, phone: String?, p
             Regex("(?!^\\d+\$)(?!^[A-Za-z]+\$)(?!^[^A-Za-z0-9]+\$)(?!^.*[\\u4E00-\\u9FA5].*\$)^\\S{8,16}\$")
         if (phone != null && countryCode != null && TextUtils.equals(countryCode, "+86")) {
             // 如果是中国区的电话号码，则必须11位数
-            phone.length == 11 && passwordRegex.matches(password!!)
+            phone.length == 11 && phone.startsWith("1") && passwordRegex.matches(password!!)
         } else {
             !TextUtils.isEmpty(phone) && passwordRegex.matches(password!!)
         }
