@@ -37,7 +37,7 @@ fun TextView.bindDateString(time: String) {
 }
 
 @BindingAdapter("bindDuration")
-fun TextView.bindDuration(duration: Int) {
+fun TextView.bindDuration(duration: Long) {
     try{
         text = TimeUtils.getListenDuration(duration)
     }catch (e : Exception){

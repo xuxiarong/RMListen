@@ -1,5 +1,6 @@
 package com.rm.module_home.widget
 
+import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
@@ -66,6 +67,11 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
      */
     private var canRefreshData = true
 
+    /**
+     * 滚动到顶部监听
+     */
+    private var topListener: ScrollTopListener? = null
+
     private lateinit var headerLayout: ConstraintLayout
     private lateinit var mRecyclerView: RecyclerView
 
@@ -81,7 +87,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         mBottomHeight = headerLayout.height
         //根据实际情况计算
-        mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_176)  - 14
+        mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_176) - 14
 
         mTopHeight = -14
 
@@ -234,12 +240,34 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
         animator.duration = 100
         animator.addUpdateListener { valueAnimator: ValueAnimator ->
             val values = valueAnimator.animatedValue as Int
-            DLog.i("------>startScrollAnim","$values")
             translationY = values.toFloat()
         }
+        animator.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                topListener?.toTop(mCurType == TYPE_TOP)
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+                topListener?.toTop(mCurType == TYPE_TOP)
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+            }
+        })
         animator.start()
     }
 
+    fun setScrollTopListener(topListener: ScrollTopListener) {
+        this.topListener = topListener
+    }
+
+    interface ScrollTopListener {
+        fun toTop(isTop: Boolean)
+    }
 }
 
 @BindingAdapter("bindCanLoadMore", "bindCanRefresh", requireAll = false)

@@ -12,16 +12,16 @@ data class AudioCommentsModel(
 
 
 data class Comments(
-    val audio_id: String,
-    val comment_id: String,
-    val content: String,
-    val created_at: String,
-    val id: String,
-    val is_liked: Boolean,
-    val is_own: Boolean,
-    val likes: String,
-    val member: Member,
-    val member_id: String
+    var audio_id: String,
+    var comment_id: String,
+    var content: String,
+    var created_at: String,
+    var id: String,
+    var is_liked: Boolean,
+    var is_own: Boolean,
+    var likes: Int,
+    var member: Member,
+    var member_id: String
 )
 
 data class Member(

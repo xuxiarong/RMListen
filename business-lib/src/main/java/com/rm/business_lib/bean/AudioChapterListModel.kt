@@ -23,7 +23,7 @@ data class ChapterList(
     var chapter_id: String,
     var chapter_name: String,
     var created_at: String,
-    var duration: Int,
+    var duration: Long,
     var need_pay: Int,
     var path: String,
     var path_url: String,

@@ -102,10 +102,10 @@ class HomeMenuDetailActivity :
                 //减去该Item还未移出屏幕的部分可得出滑动的距离
                 val iResult = iPosition - itemTop
 
-                val height = home_menu_detail_iv_bg.height
+//                val height = home_menu_detail_iv_bg.height
 
-                val fl = iResult.toFloat() / height.toFloat()
-                home_menu_detail_iv_bg.alpha = 1f - fl
+//                val fl = iResult.toFloat() / height.toFloat()
+//                home_menu_detail_iv_bg.alpha = 1f - fl
             }
         })
     }

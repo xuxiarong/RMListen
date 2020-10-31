@@ -159,4 +159,21 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
      * 查询
      */
     fun queryPlayBookList(): List<HistoryPlayBook>? = daoUtil?.queryAll()
+
+
+    /**
+     * 评论点赞
+     * @param comment_id 评论ID
+     */
+    suspend fun homeLikeComment(comment_id: String): BaseResult<Any> {
+        return apiCall { playApi.homeLikeComment(comment_id) }
+    }
+
+    /**
+     * 取消点赞
+     * @param comment_id 评论ID
+     */
+    suspend fun homeUnLikeComment(comment_id: String): BaseResult<Any> {
+        return apiCall { playApi.homeUnLikeComment(comment_id) }
+    }
 }

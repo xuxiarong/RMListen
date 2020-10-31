@@ -14,12 +14,9 @@
             type="com.rm.module_home.model.home.banner.HomeBannerRvModel" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="176dp"
-        android:elevation="6dp"
-        app:cardElevation="@dimen/dp_5"
-        app:cardCornerRadius="@dimen/dp_5">
+        android:layout_height="wrap_content">
         <com.stx.xhb.androidx.XBanner
             android:id="@+id/mainBanner"
             android:layout_width="match_parent"
@@ -29,6 +26,6 @@
             app:pageChangeDuration="1000"
             app:pointsPosition="CENTER"
             app:viewPagerClipChildren="true" />
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
 </layout>

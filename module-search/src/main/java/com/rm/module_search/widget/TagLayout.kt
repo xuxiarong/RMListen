@@ -170,7 +170,11 @@ class TagLayout @JvmOverloads constructor(
             this,
             false
         ) as TextView
-        view.text = content
+        if (content.length > 10) {
+            view.text = "${content.substring(0, 9)}..."
+        } else {
+            view.text = content
+        }
         view.setOnClickListener {
             itemClick(it, content)
         }

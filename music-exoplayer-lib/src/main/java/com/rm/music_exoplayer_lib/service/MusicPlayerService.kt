@@ -20,7 +20,6 @@ import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.util.Util.getUserAgent
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.*
@@ -44,7 +43,7 @@ import java.util.*
  */
 internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     //更新播放进度时间频率
-    val UPDATE_PROGRESS_DELAY = 1000L
+    val UPDATE_PROGRESS_DELAY = 500L
     private val mOnPlayerEventListeners = arrayListOf<MusicPlayerEventListener>()
     private val mEventListener = ExoPlayerEventListener()
 
@@ -119,7 +118,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private val mUpdateProgressHandler = object : Handler() {
 
         override fun handleMessage(msg: Message) {
-            val duration = mExoPlayer.contentDuration
+            val duration = (getCurrentPlayerMusic()?.duration?.times(1000) ?:mExoPlayer.contentDuration)
             val currentPosition = mExoPlayer.contentPosition
             onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
@@ -175,9 +174,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private fun registerReceiver() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
-//        intentFilter.addAction(Intent.ACTION_SCREEN_OFF)
-//        intentFilter.addAction(Intent.ACTION_SCREEN_ON)
-//        intentFilter.addAction(Intent.ACTION_USER_PRESENT)
         intentFilter.addAction(ACTION_ALARM_REPLENISH_STOCK)
         intentFilter.addAction(ACTION_ALARM_SYNCHRONIZE)
         intentFilter.addAction(MUSIC_INTENT_ACTION_ROOT_VIEW)
@@ -542,7 +538,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      */
     override fun setPlayerAlarmModel(model: Int) {
         mMusicAlarmModel = model
-        if (mRemainingSet <= 0) {
+        if (mRemainingSet < 10) {
             mRemainingSet = model
         }
         alarmTimes = 0L
@@ -684,6 +680,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             mMusicPlayerState = MUSIC_PLAYER_ERROR
             showNotification()
             exoLog("onPlayerError===>${error.message}")
+            mOnPlayerEventListeners.forEach {
+                it.onMusicPlayerState(-1,error.message)
+            }
 
         }
 

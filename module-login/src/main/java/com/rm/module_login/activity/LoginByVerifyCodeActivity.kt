@@ -53,6 +53,7 @@ class LoginByVerifyCodeActivity :
 
     override fun initView() {
         super.initView()
+        setTransparentStatusBar()
         login_include_phone_input_country_code.setOnClickListener {
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
         }

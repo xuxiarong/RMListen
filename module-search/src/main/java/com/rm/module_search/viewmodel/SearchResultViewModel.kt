@@ -72,7 +72,6 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         )
     }
 
-    //搜索历史 adapter
     val historyList = ObservableField<MutableList<String>>(HISTORY_KEY.getListString())
 
     /**
@@ -255,7 +254,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         }
         val size = list.size
         if (size == 15) {
-            list.removeAt(size)
+            list.removeAt(size - 1)
         }
         list.add(0, keyword)
         HISTORY_KEY.putMMKV(list)

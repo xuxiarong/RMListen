@@ -34,6 +34,7 @@
             android:paddingStart="@dimen/dp_16"
             android:paddingTop="@dimen/dp_14"
             android:paddingEnd="@dimen/dp_16"
+            android:textStyle="bold"
             android:paddingBottom="@dimen/dp_14"
             android:text="@string/business_cancel"
             android:textColor="@color/business_text_color_333333"
@@ -46,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/listen_create_sheet_list"
+            android:textStyle="bold"
             android:textColor="@color/business_color_0f0f0f"
             android:textSize="@dimen/business_text_size_18sp"
             app:layout_constraintBottom_toBottomOf="@id/listen_dialog_create_sheet_cancel"
@@ -73,7 +75,7 @@
         <View
             android:id="@+id/listen_dialog_create_sheet_line"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
+            android:layout_height="0.1dp"
             android:background="@color/business_color_e8e8e8"
             app:layout_constraintTop_toBottomOf="@id/listen_dialog_create_sheet_cancel" />
 
@@ -97,6 +99,7 @@
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_4"
             android:layout_marginEnd="@dimen/dp_16"
+            android:textSize="@dimen/business_text_size_14sp"
             android:background="@drawable/business_shape_stroke_e8e8e8_8dp"
             android:hint="@string/listen_input_title"
             android:paddingStart="@dimen/dp_10"
@@ -125,6 +128,7 @@
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_4"
             android:layout_marginEnd="@dimen/dp_16"
+            android:textSize="@dimen/business_text_size_14sp"
             android:background="@drawable/business_shape_stroke_e8e8e8_8dp"
             android:gravity="start|top"
             android:hint="@string/listen_input_optional"

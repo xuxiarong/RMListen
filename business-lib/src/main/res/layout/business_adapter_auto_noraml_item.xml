@@ -41,6 +41,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:singleLine="true"
+            android:textStyle="bold"
             android:text="@{audioItem.audio_name}"
             app:layout_constraintLeft_toRightOf="@id/home_book_adapter_icon"
             app:layout_constraintRight_toRightOf="parent"

@@ -35,7 +35,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.1dp"
                 android:background="@color/business_color_80111111" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -50,7 +50,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.1dp"
                 android:background="@color/business_color_80111111" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -66,7 +66,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.1dp"
                 android:background="@color/business_color_80111111" />
 
             <androidx.appcompat.widget.AppCompatTextView

@@ -9,5 +9,5 @@ import com.rm.module_play.adapter.BookPlayerAdapter
  * @data: 9/9/20 5:44 PM
  * @Version: 1.0.0
  */
-class PlayControlCommentListModel(override val itemType: Int= BookPlayerAdapter.ITEM_TYPE_COMMENR_LIST, val comments: Comments? = null) : MultiItemEntity {
+class PlayControlCommentListModel(override val itemType: Int= BookPlayerAdapter.ITEM_TYPE_COMMENR_LIST, var comments: Comments? = null) : MultiItemEntity {
 }

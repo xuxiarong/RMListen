@@ -21,7 +21,7 @@ data class ListenAudioChapter(
     val chapter_name: String,
     val chapter_id: String,
     val cover_url: String,
-    val duration: Int,
+    val duration: Long,
     val path: String,
     val play_count: Int,
     val sequence: String,

@@ -155,6 +155,7 @@
                         <com.rm.module_search.widget.TagLayout
                             android:id="@+id/search_main_history_tags"
                             bindTagData="@{viewModel.historyList}"
+                            bindTagClick="@{viewModel.historyItemClickFun}"
                             bindTagMaxLine="@{2}"
                             isVisible="@{viewModel.historyIsVisible}"
                             android:layout_width="match_parent"

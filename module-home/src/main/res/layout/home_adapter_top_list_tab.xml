@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_top_list_tab_adapter_tv"
-    style="@style/BusinessTextStyleFirst_2"
+    style="@style/BusinessTextStyleSecond_3"
     android:layout_marginTop="@dimen/dp_14"
     android:layout_marginEnd="@dimen/dp_2"
     android:layout_marginBottom="@dimen/dp_2"
+    android:drawableStart="@drawable/business_shape_circle_ff5e5e"
     android:background="@drawable/home_top_list_tab_bg"
+    tools:text="11111"
     android:drawablePadding="@dimen/dp_6" />
 
 

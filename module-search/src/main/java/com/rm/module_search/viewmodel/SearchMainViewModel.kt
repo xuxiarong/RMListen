@@ -92,10 +92,18 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     private var resultIsEnd = true
 
     /**
+     * 历史 item 点击事件
+     */
+    val historyItemClickFun: (View, String) -> Unit = { _, content ->
+        searchKeyword.set(content)
+        startActivity(SearchResultActivity::class.java)
+    }
+
+    /**
      * 输入框内容改变
      */
     private fun inputContentChangeListener(content: String) {
-        keyWord.set(content)
+        keyWord.set(content.trimEnd().trim())
         suggestIsVisible.set(true)
         //如果请求没有结束则不会去搜索
         if (resultIsEnd && content.isNotEmpty()) {

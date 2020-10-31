@@ -8,10 +8,7 @@ import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.getAnyMMKV
-import com.rm.baselisten.util.getFloattMMKV
-import com.rm.baselisten.util.getObjectMMKV
-import com.rm.baselisten.util.putMMKV
+import com.rm.baselisten.util.*
 import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
@@ -458,11 +455,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun initData() {
         getIntentParams()
-        SAVA_SPEED.getFloattMMKV(1f)?.let { MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it) }
-
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
+        if (playerState==-1){
+            ToastUtil.show(this,msg = message)
+        }
 
     }
 

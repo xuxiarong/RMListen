@@ -2,6 +2,7 @@ package com.rm.module_home.activity.detail
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.viewmodel.HomeDetailViewModel
+import com.rm.module_home.widget.HomeDetailInterceptLayout
 import com.rm.module_play.enum.Jump
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
 
@@ -80,7 +82,7 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             mViewModel.getCommentList(audioId)
 
         }
-//        // TODO: 2020/9/28 章节排序
+        // TODO: 2020/9/28 章节排序
         home_detail_play_sort.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 mViewModel.sort.set("desc")
@@ -98,6 +100,17 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             params.bottomMargin = measuredHeight + 20
             mDataBind.homeDetailCommentRefresh.layoutParams = params
         }
+
+        mDataBind.homeDetailInterceptLayout.setScrollTopListener(object :
+            HomeDetailInterceptLayout.ScrollTopListener {
+            override fun toTop(isTop: Boolean) {
+                if (isTop) {
+                    mDataBind.homeDetailTitle.visibility = View.VISIBLE
+                } else {
+                    mDataBind.homeDetailTitle.visibility = View.INVISIBLE
+                }
+            }
+        })
     }
 
     override fun startObserve() {

@@ -10,6 +10,7 @@ import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.ListenSheetListType
 import com.rm.business_lib.loginUser
+import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
 import com.rm.module_listen.R
 import com.rm.module_listen.adapter.ListenSheetListPagerAdapter
 import com.rm.module_listen.fragment.ListenSheetCollectedListFragment
@@ -86,14 +87,19 @@ ListenSheetListActivity : BaseActivity() {
     }
 
     private fun configTab() {
-        mListTabText.forEach {
-            listen_sheet_list_tab.addTab(it)
-        }
-        listen_sheet_list_tab.bindViewPager2(listen_sheet_list_view_pager)
         listen_sheet_list_view_pager.setCurrentItem(sheetType, false)
+        attachViewPager()
     }
 
     override fun initData() {
+
+    }
+
+    private fun attachViewPager() {
+        BendTabLayoutMediator(listen_sheet_list_tab, listen_sheet_list_view_pager,
+            BendTabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                tab.text = mListTabText[position]
+            }).attach()
 
     }
 

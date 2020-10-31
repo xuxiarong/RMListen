@@ -1,9 +1,14 @@
 package com.rm.baselisten.mvvm
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.IBinder
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -20,6 +25,7 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.reflect.KClass
+
 
 /**
  * desc   :包含网络状态，数据状态的基类Activity T:对应界面布局的dataBind对象 VM:对应界面的ViewModel对象
@@ -80,6 +86,55 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         //添加通用的提示框
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (ev?.action == MotionEvent.ACTION_DOWN) {
+            //得到当前页面的焦点,ps:有输入框的页面焦点一般会被输入框占据
+            val currentFocus = currentFocus
+            //判断用户点击的是否是输入框以外的区域
+            if (isShouldHideKeyboard(currentFocus, ev)) {
+                hideKeyboard(currentFocus?.windowToken);   //收起键盘
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
+    /**
+     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
+     *
+     * @param v
+     * @param event
+     * @return
+     */
+    private fun isShouldHideKeyboard(
+        v: View?,
+        event: MotionEvent
+    ): Boolean {
+        if (v != null && v is EditText) {  //判断得到的焦点控件是否包含EditText
+            val l = intArrayOf(0, 0)
+            v.getLocationInWindow(l)
+            val left = l[0]
+            //得到输入框在屏幕中上下左右的位置
+            val top = l[1]
+            val bottom = top + v.getHeight()
+            val right = left + v.getWidth()
+            return !(event.x > left && event.x < right && event.y > top && event.y < bottom)
+        }
+        // 如果焦点不是EditText则忽略
+        return false
+    }
+
+    /**
+     * 获取InputMethodManager，隐藏软键盘
+     * @param token
+     */
+    private fun hideKeyboard(token: IBinder?) {
+        if (token != null) {
+            val im: InputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
+    }
+
     /**
      * 初始化子类布局
      */
@@ -93,7 +148,8 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             }
         }
     }
-     fun getBaseContainer(): ConstraintLayout =mBaseBinding.clBaseContainer
+
+    fun getBaseContainer(): ConstraintLayout = mBaseBinding.clBaseContainer
 
     /**
      * 开始监控baseViewModel的数据变化，包含网络状态，标题栏，以及错误类的布局加载
@@ -199,14 +255,14 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
     private fun setTitle(titleModel: BaseTitleModel) {
         if (!mBaseBinding.baseTitleLayout.isInflated) {
             mBaseBinding.baseTitleLayout.viewStub?.inflate()
-            if (mChildView != null ) {
+            if (mChildView != null) {
                 val layoutParams = mChildView?.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.topMargin = dip(48.0f)
                 mChildView?.layoutParams = layoutParams
             }
         }
-        if(titleModel.noTitle){
-            if (mChildView != null ) {
+        if (titleModel.noTitle) {
+            if (mChildView != null) {
                 val layoutParams = mChildView?.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.topMargin = dip(0)
                 mChildView?.layoutParams = layoutParams

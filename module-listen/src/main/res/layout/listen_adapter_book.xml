@@ -75,6 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/dp_12"
                 android:singleLine="true"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@id/listen_book_adapter_icon"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/listen_book_adapter_icon"

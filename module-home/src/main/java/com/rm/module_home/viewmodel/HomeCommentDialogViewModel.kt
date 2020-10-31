@@ -6,12 +6,14 @@ import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableField
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.databinding.HomeDialogCommentBinding
 import com.rm.module_home.repository.HomeRepository
+import kotlinx.android.synthetic.main.home_dialog_comment.*
 
 /**
  *
@@ -43,14 +45,22 @@ class HomeCommentDialogViewModel(
             initDialog = {
                 dataBinding = mDataBind as HomeDialogCommentBinding
                 dataBinding?.apply {
-
+                    initDialog = {
+                        home_dialog_comment_ed.isFocusable = true
+                        home_dialog_comment_ed.requestFocus()
+                        home_dialog_comment_ed.isFocusableInTouchMode = true;
+                        val inputManager =
+                            home_dialog_comment_ed.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+                    }
                 }
             }
         }
     }
-  private fun inputChange(content: String){
-       inputComment.set(content)
-   }
+
+    private fun inputChange(content: String) {
+        inputComment.set(content.trim().trimEnd())
+    }
 
     fun clickSend(view: View) {
         val imm =
@@ -61,7 +71,6 @@ class HomeCommentDialogViewModel(
         inputComment.get()?.let {
             sendComment(it, audioId, loginUser.get()!!.id)
         }
-
     }
 
     private fun sendComment(
