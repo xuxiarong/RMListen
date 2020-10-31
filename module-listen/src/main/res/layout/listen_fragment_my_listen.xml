@@ -5,6 +5,7 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
 
         <variable
             name="viewModel"
@@ -111,7 +112,7 @@
 
                             <com.flyco.roundview.RoundTextView
                                 android:id="@+id/download_chapter_num"
-                                isVisible="@{viewModel.downloadNumber>0}"
+                                bindDownloadNum="@{DownloadMemoryCache.INSTANCE.downloadingNum}"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_marginTop="2dp"

@@ -7,7 +7,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.component_comm.play.PlayService
@@ -138,7 +137,11 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
     override fun initData() {
         //mViewModel.intDetailInfo("162163095869968384")
+    }
 
+    override fun onStart() {
+        super.onStart()
+        mViewModel.chapterAdapter.notifyDataSetChanged()
     }
 
 

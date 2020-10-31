@@ -2,11 +2,6 @@ package com.rm.module_home.activity.menu
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.renderscript.Allocation
-import android.renderscript.Element
-import android.renderscript.RenderScript
-import android.renderscript.ScriptIntrinsicBlur
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -124,5 +119,10 @@ class HomeMenuDetailActivity :
             val favorite = data?.getBooleanExtra("isFavorite", false)
             mViewModel.setFavorState(favorite == true)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 }

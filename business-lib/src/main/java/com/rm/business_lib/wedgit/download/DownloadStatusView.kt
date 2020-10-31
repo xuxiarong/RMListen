@@ -4,10 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import com.rm.baselisten.util.DLog
-import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.R
+import com.rm.business_lib.bean.HomeDetailList
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.download.DownloadConstant
+import com.rm.business_lib.download.DownloadMemoryCache
 import kotlinx.android.synthetic.main.layout_download_status_view.view.*
 
 /**
@@ -22,6 +24,9 @@ class DownloadStatusView@JvmOverloads constructor(context: Context, attrs: Attri
         View.inflate(context, R.layout.layout_download_status_view, this)
     }
 
+    var audio: HomeDetailList? =null
+
+
     fun setDownloadStatus(chapter: DownloadChapter) {
         when (chapter.down_status) {
             DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD -> {
@@ -30,21 +35,40 @@ class DownloadStatusView@JvmOverloads constructor(context: Context, attrs: Attri
                 businessDownProgress.visibility = View.GONE
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
-
+                setOnClickListener {
+                    if(audio!=null){
+                        val downloadAudio = DownloadAudio()
+                        downloadAudio.download_num = 0
+                        downloadAudio.audio_id = audio!!.audio_id.toLong()
+                        downloadAudio.audio_cover_url = audio!!.audio_cover_url
+                        downloadAudio.down_size = 0L
+                        downloadAudio.last_sequence = audio!!.last_sequence
+                        downloadAudio.author = audio!!.author
+                        downloadAudio.status = audio!!.status
+                        DownloadMemoryCache.addAudioToDownloadMemoryCache(downloadAudio)
+                    }
+                    DownloadMemoryCache.addDownloadingChapter(chapter)
+                }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
                 businessDownIv.visibility = View.GONE
                 businessDownProgress.visibility = View.GONE
                 businessDownWaitLv.visibility = View.VISIBLE
                 businessDownWaitLv.playAnimation()
+                setOnClickListener {
+                    DownloadMemoryCache.addDownloadingChapter(chapter)
+                }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
                 businessDownIv.visibility = View.GONE
                 businessDownProgress.visibility = View.VISIBLE
                 businessDownProgress.progress = (chapter.current_offset / (chapter.size / 100)).toInt()
-                DLog.d("suolong","progress = ${businessDownProgress.progress}")
+//                DLog.d("suolong","progress = ${businessDownProgress.progress}")
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
+                setOnClickListener {
+                    DownloadMemoryCache.pauseCurrentAndDownNextChapter()
+                }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
                 businessDownIv.visibility = View.VISIBLE
@@ -52,6 +76,9 @@ class DownloadStatusView@JvmOverloads constructor(context: Context, attrs: Attri
                 businessDownProgress.visibility = View.GONE
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
+                setOnClickListener {
+                    DownloadMemoryCache.downloadService.deleteDownload(chapter)
+                }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {
                 businessDownIv.visibility = View.VISIBLE
