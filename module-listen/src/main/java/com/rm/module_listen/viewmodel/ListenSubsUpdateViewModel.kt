@@ -344,7 +344,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             amount = 2,
             audio_id = model.audio_id,
             chapter_name = model.chapter_name,
-            duration = model.duration.toInt(),
+            duration = model.duration,
             need_pay = 1,
             path = model.path,
             path_url = model.path,

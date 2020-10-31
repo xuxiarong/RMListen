@@ -1641,7 +1641,7 @@ public final class TimeUtils {
         return sb.toString();
     }
 
-    public static String getListenDuration(int millis) {
+    public static String getListenDuration(long millis) {
         if (millis  <= 0){
             return "00:00";
         }
