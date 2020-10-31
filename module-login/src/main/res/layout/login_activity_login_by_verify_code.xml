@@ -48,6 +48,7 @@
             android:id="@+id/login_by_verify_code_get_btn"
             style="@style/ButtonStyle"
             bindClick="@{viewModel.getCode}"
+            bindCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
             bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_56"

@@ -10,14 +10,19 @@ import androidx.databinding.BindingAdapter
  * version: 1.0
  */
 //@BindingAdapter("bindPoneStatusEnable")
-@BindingAdapter("bindPhoneEnable", "bindPasswordEnable",requireAll = false)
-fun View.bindLoginPhoneAndPasswordEnable(phone: String?, password: String?) {
+@BindingAdapter("bindCountryCode", "bindPhoneEnable", "bindPasswordEnable", requireAll = false)
+fun View.bindLoginPhoneAndPasswordEnable(countryCode: String?, phone: String?, password: String?) {
     isEnabled = if (phone == null && password == null) {
         // 都为空
         false
     } else if (phone != null && password == null) {
         // 只是验证电话是否ok
-        !TextUtils.isEmpty(phone)
+        if (countryCode != null && TextUtils.equals(countryCode, "+86")) {
+            // 如果是中国区的电话号码，则必须11位数
+            phone.length == 11
+        } else {
+            !TextUtils.isEmpty(phone)
+        }
     } else if (phone == null && password != null) {
         // 只是验证密码是否ok
         // 密码验证规则正则表达式
@@ -25,6 +30,11 @@ fun View.bindLoginPhoneAndPasswordEnable(phone: String?, password: String?) {
         passwordRegex.matches(password)
     } else {
         val passwordRegex = Regex("^(?![0-9]+\$)(?![a-zA-Z]+\$)[0-9A-Za-z]{6,16}\$")
-        !TextUtils.isEmpty(phone) && passwordRegex.matches(password!!)
+        if (phone != null && countryCode != null && TextUtils.equals(countryCode, "+86")) {
+            // 如果是中国区的电话号码，则必须11位数
+            phone.length == 11 && passwordRegex.matches(password!!)
+        } else {
+            !TextUtils.isEmpty(phone) && passwordRegex.matches(password!!)
+        }
     }
 }
