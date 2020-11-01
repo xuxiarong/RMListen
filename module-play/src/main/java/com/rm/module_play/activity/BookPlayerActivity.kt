@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
@@ -184,7 +185,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.initPlayerAdapterModel()
         swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)
         swipe_back_layout.setOnSwipeBackListener(this)
-
+        DLog.d("suolong","'${System.currentTimeMillis()}")
 
     }
 
@@ -480,6 +481,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPrepared(totalDurtion: Long) {
+        DLog.d("suolong","'${System.currentTimeMillis()}")
         mViewModel.maxProcess.set(totalDurtion.toFloat())
     }
 
@@ -548,7 +550,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         mViewModel.playSate.set(playWhenReady)
-
+        mViewModel.playStatus.set(playbackState)
+        DLog.d("suolong" , " playWhenReady = $playWhenReady --- status = ${playbackState} --- time = ${System.currentTimeMillis()}" )
     }
 
     override fun onViewPositionChanged(fractionAnchor: Float, fractionScreen: Float) {

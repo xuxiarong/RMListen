@@ -49,6 +49,13 @@ data class DetailTags(
 data class Anchor(
     val anchor_name: String,
     val anchor_avatar: String,
-    val anchor_follows: String,
+    val anchor_follows: Int,
     val status: Boolean
-)
+): Serializable{
+
+    companion object{
+        fun getDefault() : Anchor{
+            return  Anchor("","",0,false)
+        }
+    }
+}

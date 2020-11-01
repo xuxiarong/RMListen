@@ -11,8 +11,8 @@
         android:layout_height="180dp"
         android:orientation="horizontal"
         app:rv_backgroundColor="@android:color/white"
-        app:rv_cornerRadius_TL="10dp"
-        app:rv_cornerRadius_TR="10dp"
+        app:rv_cornerRadius_TL="24dp"
+        app:rv_cornerRadius_TR="24dp"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -59,17 +59,16 @@
             <com.flyco.roundview.RoundFrameLayout
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-
                 app:rv_cornerRadius="48dp"
                 app:rv_strokeColor="@color/business_color_e8e8e8"
                 app:rv_strokeWidth="1dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="1X"
-                    android:textSize="25sp" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_44"
+                android:layout_height="@dimen/dp_24"
+                android:layout_gravity="center"
+                android:src="@drawable/play_ic_spped_1x"
+                />
             </com.flyco.roundview.RoundFrameLayout>
 
             <TextView

@@ -123,7 +123,8 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
                         audio_name = it.list.audio_name,
                         original_name = it.list.original_name,
                         author = it.list.author,
-                        audio_cover_url = it.list.audio_cover_url
+                        audio_cover_url = it.list.audio_cover_url,
+                        anchor = it.list.anchor
                     ), Jump.DETAILSBOOK.from
                 )
             }

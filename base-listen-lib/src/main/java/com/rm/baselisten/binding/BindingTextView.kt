@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
-import com.rm.baselisten.util.DLog
 
 /**
  * desc   :
@@ -19,6 +18,10 @@ import com.rm.baselisten.util.DLog
  */
 @BindingAdapter("bindText")
 fun TextView.bindText(content: Any?) {
+    if(content == null){
+        visibility = View.GONE
+        return
+    }
     visibility = if (TextUtils.isEmpty(content.toString())) {
         View.GONE
     } else {

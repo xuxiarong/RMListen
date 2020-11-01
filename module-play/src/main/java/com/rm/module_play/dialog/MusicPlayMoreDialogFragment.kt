@@ -36,4 +36,6 @@ class MusicPlayMoreDialogFragment : BottomDialogFragment() {
 
     }
 
+    override fun getBackgroundAlpha() = 0f
+
 }

@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@+id/iv_book_play_hot_recommended"
-            android:text="我是黄花菜"
+            bindText="@{viewModel.audioInfo.anchor.anchor_name}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="16sp" />
 

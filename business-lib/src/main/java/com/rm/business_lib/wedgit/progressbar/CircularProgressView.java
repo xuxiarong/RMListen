@@ -16,6 +16,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -212,5 +213,40 @@ public class CircularProgressView extends View {
             mColorArray[index] = ContextCompat.getColor(getContext(), colorArray[index]);
         mProgPaint.setShader(new LinearGradient(0, 0, 0, getMeasuredWidth(), mColorArray, null, Shader.TileMode.MIRROR));
         invalidate();
+    }
+
+    private CountDownTimer countDownTimer;
+
+    public void startAutoProgress(){
+        setVisibility(View.VISIBLE);
+        mProgress = 0;
+        if(countDownTimer!=null){
+            countDownTimer.cancel();
+        }else {
+            countDownTimer =  new CountDownTimer(500,16) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    mProgress+=16;
+                    if(mProgress>=95){
+                        mProgress = 95;
+                    }
+                    setProgress(mProgress);
+                }
+
+                @Override
+                public void onFinish() {
+                    setProgress(99);
+                }
+            };
+        }
+        countDownTimer.start();
+    }
+
+    public void stopAutoProgress(){
+        setVisibility(View.GONE);
+        mProgress =0 ;
+        if(countDownTimer!=null){
+            countDownTimer.cancel();
+        }
     }
 }

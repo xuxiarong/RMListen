@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableFloat
+import androidx.databinding.ObservableInt
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -65,6 +66,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     //播放状态进度条，0是播放2是加载中1是暂停
     val playSate = ObservableField<Boolean>()
+    var playStatus = ObservableInt(0)
     val lastState = ObservableField<Boolean>()
 
     // 下拉刷新和加载更多控件状态控制Model
@@ -130,7 +132,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 subscription_count=0,
                 last_sequence=0,
                 audio_cover_url=audioBean.audio_cover_url,
-                anchor=Anchor("","","",false),
+                anchor=Anchor.getDefault(),
                 tags= mutableListOf<DetailTags>(),
                 is_subscribe=false,
                 is_fav=false
@@ -160,7 +162,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         subscription_count=0,
                         last_sequence=0,
                         audio_cover_url="",
-                        anchor= Anchor("","","",false),
+                        anchor= Anchor.getDefault(),
                         tags= mutableListOf<DetailTags>(),
                         is_subscribe=false,
                         is_fav=false
@@ -209,6 +211,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playControlModel.set(PlayControlModel())
         mutableList.value = mutableListOf(
             playControlModel.get()!!,
+            PlayControlSubModel(),
             PlayControlCommentTitleModel()
         )
 
@@ -334,7 +337,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                             audio_name = it.list.audio_name,
                             original_name = it.list.original_name,
                             author = it.list.author,
-                            audio_cover_url = it.list.audio_cover_url
+                            audio_cover_url = it.list.audio_cover_url,
+                            anchor = it.list.anchor
                         )
                     )
                 }, onError = {
@@ -441,6 +445,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             playBookSate.get()?.homeDetailModel = it
             val listValue = mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
+            listValue?.set(1,PlayControlSubModel(anchor = it.anchor))
             audioID.set(it.audio_id)
 
             commentAudioComments(it.audio_id)

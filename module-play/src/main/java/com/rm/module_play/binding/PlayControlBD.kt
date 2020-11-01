@@ -1,17 +1,13 @@
 package com.rm.module_play.binding
 
-import android.animation.ValueAnimator.AnimatorUpdateListener
-import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
+import com.rm.business_lib.wedgit.progressbar.CircularProgressView
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
-import com.rm.module_play.model.PlayControlModel
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
-import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 
 /**
@@ -90,4 +86,13 @@ fun ImageView.bindLastSrc(state: Boolean=true) {
     }
     setImageResource(resourceId)
 
+}
+
+@BindingAdapter("bindPlayPrepareProgress")
+fun CircularProgressView.bindPlayPrepareProgress(playStatus : Int){
+    if(playStatus == 2){
+        startAutoProgress()
+    }else{
+        stopAutoProgress()
+    }
 }
