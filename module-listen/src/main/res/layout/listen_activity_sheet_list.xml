@@ -26,6 +26,7 @@
         app:bendTabIndicatorWidth="@dimen/dp_24"
         app:bendTabMode="fixed"
         app:bendTabPaddingEnd="@dimen/dp_20"
+        app:bendTabBackground="@null"
         app:bendTabPaddingStart="@dimen/dp_20"
         app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
         app:bendTabTextSelectIsBold="true"

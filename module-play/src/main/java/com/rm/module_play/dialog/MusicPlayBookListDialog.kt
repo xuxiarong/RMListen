@@ -18,6 +18,7 @@ import com.rm.business_lib.binding.bindDuration
 import com.rm.business_lib.binding.bindPlayCount
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.wedgit.LivingView
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.RouterHelper
@@ -37,13 +38,15 @@ fun FragmentActivity.showPlayBookListDialog(
     downloadAudio : HomeDetailList?,
     audioListModel: AudioChapterListModel,
     back: (chapterId: String) -> Unit,
-    mLoad: (types: Int) -> Unit
+    mLoad: (types: Int) -> Unit,
+    isPlay : Boolean
 ) {
     MusicPlayBookListDialog().apply {
         this.audioChapterListModel = audioListModel
         this.mBack = back
         this.mLoad = mLoad
         this.downloadAudio = downloadAudio
+        this.isPlay = isPlay
     }.show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
@@ -52,8 +55,10 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     var mLoad: (types: Int) -> Unit = {}
     var audioChapterListModel: AudioChapterListModel? = null
     var downloadAudio: HomeDetailList? = null
+    var isPlay : Boolean =false
+
     private val timeSAdapter by lazy {
-        TimeSAdapter(downloadAudio,audioChapterListModel?.list as MutableList<ChapterList>).apply {
+        TimeSAdapter(downloadAudio,audioChapterListModel?.list as MutableList<ChapterList>,isPlay).apply {
             setOnItemClickListener { adapter, view, position ->
                 mBack(data[position].chapter_id)
                 dismissAllowingStateLoss()
@@ -127,12 +132,20 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     }
 
 
-    internal class TimeSAdapter(var downloadAudio : HomeDetailList?,list: MutableList<ChapterList>) :
+    internal class TimeSAdapter(var downloadAudio : HomeDetailList?,list: MutableList<ChapterList>,var isPlay: Boolean) :
         BaseQuickAdapter<ChapterList, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
         override fun convert(holder: BaseViewHolder, item: ChapterList) {
             val playChapter=item.chapter_id== musicPlayerManger.getCurrentPlayerMusic()?.chapterId
             holder.setVisible(R.id.music_play_book_list_position,!playChapter)
-            holder.setVisible(R.id.living_img,playChapter)
+            if(playChapter){
+                if(isPlay){
+                    holder.getView<LivingView>(R.id.living_img).startAnim()
+                }else{
+                    holder.getView<LivingView>(R.id.living_img).pauseAnim()
+                }
+            }else{
+                holder.getView<LivingView>(R.id.living_img).visibility = View.GONE
+            }
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name+"sadadasdasdasdaskjdskljdfjkldfjkldfsjkladfsjkldsjkl")
             holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCount(item.play_count)

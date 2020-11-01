@@ -2,6 +2,7 @@ package com.rm.module_play.playview
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.*
@@ -17,6 +18,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.DisplayUtils.getDip
 import com.rm.baselisten.utilExt.dip
@@ -320,6 +322,14 @@ class GlobalPlay @JvmOverloads constructor(
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
         return bitmap
+    }
+
+    fun showPlayError(){
+        if(context is Activity){
+            (context as BaseActivity).tipView.showTipView(context as Activity,context.getString(com.rm.module_play.R.string.business_play_error))
+        }else{
+//            ToastUtil.show(context = context!!,msg = context.getString(R.string.play),)
+        }
     }
 
 }

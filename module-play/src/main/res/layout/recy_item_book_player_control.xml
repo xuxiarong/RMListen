@@ -62,7 +62,7 @@
             <ImageView
                 android:id="@+id/iv_img_layout"
                 bindUrl="@{itemModel.homeDetailModel.audio_cover_url}"
-                corner="@{@dimen/dp_4}"
+                corner="@{8f}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_GET_PLAYINFO_LIST+viewModel.curTime)}"
@@ -81,10 +81,12 @@
                 android:layout_height="@dimen/dp_28"
                 android:layout_gravity="bottom|right"
                 android:layout_marginRight="8dp"
+                android:gravity="center_vertical"
                 android:drawablePadding="3dp"
                 bindPlayCountString="@{viewModel.playControlModel.baseAudioInfo.playCount}"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="12sp"
+                tools:text="133"
                 tools:ignore="MissingConstraints,RtlHardcoded"
                 android:drawableStart="@drawable/ic_icon_play_ed" />
         </FrameLayout>
@@ -104,7 +106,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fl_img_layout"
             tools:ignore="MissingConstraints"
-            tools:text="《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章" />
+            tools:text="与罗摩相遇" />
 
         <RelativeLayout
             android:id="@+id/rl_music_play_titles"

@@ -3,7 +3,6 @@ package com.rm.business_lib.wedgit
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
@@ -11,9 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.Transformation
 import androidx.annotation.ColorInt
-import androidx.core.view.isVisible
 import com.rm.business_lib.R
-import java.util.*
 
 
 /**
@@ -62,8 +59,6 @@ class LivingView
         lineWidth = typedArray.getDimension(R.styleable.living_style_line_width, 0f)
         line_duration = typedArray.getFloat(R.styleable.living_style_line_duration, 1.8f)
         typedArray.recycle()
-
-        startAnim()
     }
 
     @SuppressLint("DrawAllocation")
@@ -136,27 +131,20 @@ class LivingView
         startAnim()
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        if (isVisible) startAnim()
-
-    }
-
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         clearAnimation()
     }
 
-    override fun setVisibility(visibility: Int) {
-        if (visibility == View.VISIBLE && getVisibility() != View.VISIBLE) {
-            startAnim()
-        } else if (visibility == View.INVISIBLE || visibility == View.GONE) {
-            showLiving(false)
-        }
-        super.setVisibility(visibility)
-        invalidate()
-
-    }
+//    override fun setVisibility(visibility: Int) {
+//        if (visibility == VISIBLE && getVisibility() != VISIBLE) {
+//            startAnim()
+//            super.setVisibility(visibility)
+//        } else if (visibility == INVISIBLE || visibility == GONE) {
+//            showLiving(false)
+//        }
+//        invalidate()
+//    }
 
     /**
      * 开启动画与关闭动画
@@ -165,13 +153,15 @@ class LivingView
         if (isLiving) {
             if (animation == null) {
                 startAnim()
-
             }
-        } else
+        } else{
+            pauseAnim()
+        }
             clearAnimation()
     }
 
-    private fun startAnim() {
+    fun startAnim() {
+        visibility = VISIBLE
         val animation = object : Animation() {
             override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
                 super.applyTransformation(interpolatedTime, t)
@@ -184,4 +174,20 @@ class LivingView
         animation.repeatCount = Animation.INFINITE
         startAnimation(animation)
     }
+
+    fun pauseAnim() {
+        visibility = VISIBLE
+        val animation = object : Animation() {
+            override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
+                super.applyTransformation(interpolatedTime, t)
+                interpolated = interpolatedTime
+                invalidate()
+            }
+        }
+        animation.interpolator = LinearInterpolator()
+        animation.duration = (line_duration * 10).toInt().toLong()
+        animation.repeatCount = 0
+        startAnimation(animation)
+    }
+
 }

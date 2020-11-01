@@ -44,6 +44,7 @@
             app:bendTabIndicatorHeight="@dimen/dp_1"
             app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
             app:bendTabIndicatorWidth="@dimen/dp_24"
+            app:bendTabBackground="@null"
             app:bendTabMode="fixed"
             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
             app:bendTabTextSelectIsBold="true"

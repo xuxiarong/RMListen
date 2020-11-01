@@ -37,7 +37,7 @@ class CommentCenterActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayView
 
     override fun startObserve() {
         mViewModel.audioCommentList.observe(this, Observer {
-            mViewModel.mAdapter.setList(it)
+            mViewModel.commentAdapter.setList(it)
         })
     }
 

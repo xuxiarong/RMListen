@@ -64,10 +64,11 @@
                 app:rv_strokeWidth="1dp">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/playSpeedSettingIv"
                 android:layout_width="@dimen/dp_44"
                 android:layout_height="@dimen/dp_24"
                 android:layout_gravity="center"
-                android:src="@drawable/play_ic_spped_1x"
+                android:src="@drawable/play_ic_speed_1x"
                 />
             </com.flyco.roundview.RoundFrameLayout>
 

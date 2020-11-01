@@ -23,12 +23,12 @@
 
         <ImageView
             android:id="@+id/iv_music_play_left"
-            bindLastSrc="@{viewModel.lastState}"
+            bindPlayPreSrc="@{viewModel.hasPreChapter}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            app:bindClick="@{viewModel.playManger.playLastMusic}"
+            android:onClick="@{()->viewModel.playPreClick()}"
             tools:ignore="MissingConstraints" />
 
         <FrameLayout
@@ -43,12 +43,12 @@
                 bindPlayPrepareProgress="@{viewModel.playStatus}"
                 android:layout_width="66dp"
                 android:layout_height="66dp"
+                android:layout_gravity="center"
                 app:backColor="@color/business_color_f7f7f7"
                 app:backWidth="1dp"
                 app:progColor="@color/base_ff5e5e"
                 app:progWidth="1dp"
-                tools:progress="65"
-                android:layout_gravity="center" />
+                tools:progress="65" />
 
             <com.flyco.roundview.RoundFrameLayout
                 android:layout_width="56dp"
@@ -70,13 +70,13 @@
 
         <ImageView
             android:id="@+id/iv_music_play_right"
-            bindClick="@{viewModel.playManger.playNextMusic}"
+            android:onClick="@{()->viewModel.playNextClick()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:src="@drawable/music_play_ic_icon_bc"
+            bindPlayNextSrc="@{viewModel.hasNextChapter}"
             tools:ignore="MissingConstraints" />
 
     </RelativeLayout>

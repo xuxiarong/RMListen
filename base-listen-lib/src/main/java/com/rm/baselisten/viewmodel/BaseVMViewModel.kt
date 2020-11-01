@@ -73,6 +73,15 @@ open class BaseVMViewModel : BaseViewModel() {
     }
 
 
+    fun <T> launchOnIO(block: suspend CoroutineScope.() -> T,netErrorBlock :()->Unit = {}) {
+        if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+            viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
+        }else{
+            netErrorBlock()
+            showNetError()
+        }
+    }
+
     fun startActivity(clazz: Class<*>) {
         baseIntentModel.postValue(BaseIntentModel(clazz = clazz))
     }

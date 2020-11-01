@@ -21,4 +21,9 @@ interface MineService : ApplicationProvider {
      * 主播/用户详情
      */
     fun toMineMember(context: Context,memberId:String)
+
+    /**
+     * 主播/用户详情,并且跳转到评论页面
+     */
+    fun toMineCommentFragment(context: Context,memberId:String)
 }

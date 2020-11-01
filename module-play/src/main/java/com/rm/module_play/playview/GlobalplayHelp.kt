@@ -1,9 +1,7 @@
 package com.rm.module_play.playview
 
-import android.content.Context
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.utilExt.dip
-import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
@@ -38,6 +36,7 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
+        globalView.showPlayError()
         ExoplayerLogger.exoLog("playerState=${playerState},message=${message}")
     }
 

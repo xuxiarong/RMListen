@@ -11,16 +11,15 @@
             type="com.rm.baselisten.viewmodel.BaseVMViewModel" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:id="@+id/baseTipViewContainer"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
+        android:background="@drawable/base_shape_round_ffffff_16dp"
         android:layout_height="52dp"
-        android:background="#fff"
-        app:cardCornerRadius="16dp"
-        android:elevation="5dp"
+        android:elevation="6dp"
         >
         <LinearLayout
             android:layout_width="wrap_content"
@@ -65,7 +64,7 @@
                 />
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
 
 </layout>

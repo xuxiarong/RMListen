@@ -1,7 +1,5 @@
 package com.rm.module_play.dialog
 
-import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -10,7 +8,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.SAVA_SPEED
-
 import com.rm.business_lib.base.dialogfragment.SuperBottomSheetDialogFragment
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
@@ -85,8 +82,6 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
                 )
             holder.setText(R.id.tv_music_play_setting_time, item)
         }
-
-
     }
 
 }

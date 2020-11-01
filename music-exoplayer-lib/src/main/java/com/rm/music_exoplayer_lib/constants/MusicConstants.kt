@@ -82,3 +82,29 @@ const val MUSIC_MODEL_SINGLE = 1 //单曲模式
 
 const val MUSIC_MODEL_ORDER = 2 //顺序播放
 
+
+/**
+ * 以下状态是Google的播放器原生状态，请不要随意修改
+ */
+/**
+ * The player does not have any media to play.(空闲中)
+ */
+var STATE_IDLE = 1
+
+/**
+ * The player is not able to immediately play from its current position. This state typically
+ * occurs when more data needs to be loaded.
+ */
+var STATE_BUFFERING = 2
+
+/**
+ * The player is able to immediately play from its current position. The player will be playing if
+ * [.getPlayWhenReady] is true, and paused otherwise.
+ */
+var STATE_READY = 3
+
+/**
+ * The player has finished playing the media.
+ */
+var STATE_ENDED = 4
+

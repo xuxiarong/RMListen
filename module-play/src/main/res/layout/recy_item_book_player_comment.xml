@@ -25,7 +25,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             bindUrl="@{itemModel.comments.member.avatar_url}"
-            corner="@{@dimen/dp_4}"
+            android:onClick="@{()->viewModel.commentAvatarClick(context,itemModel.comments.member_id)}"
+            isCircle="@{true}"
             tools:ignore="MissingConstraints" />
 
         <TextView

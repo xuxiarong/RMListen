@@ -52,7 +52,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
 
     fun getHomeDataFromService() {
         refreshStatusModel.setHasMore(false)
-        launchOnIO {
+        launchOnIO(block = {
             repository.getHomeData().checkResult(
                 onSuccess = {
                     showContentView()
@@ -65,7 +65,9 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     DLog.d("suolong ", "error = $it")
                 }
             )
-        }
+        },netErrorBlock = {
+            refreshStatusModel.finishRefresh(false)
+        })
     }
 
     private fun dealHomeData(homeModel: HomeModel) {

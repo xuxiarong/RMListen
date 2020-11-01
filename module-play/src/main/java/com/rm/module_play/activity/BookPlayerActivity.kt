@@ -11,7 +11,6 @@ import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.bean.AudioChapterListModel
@@ -32,6 +31,7 @@ import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
 import com.rm.module_play.dialog.*
 import com.rm.module_play.enum.Jump
+import com.rm.module_play.model.PlayControlModel
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
@@ -41,6 +41,7 @@ import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_FINSH
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_OPERATING
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
@@ -185,7 +186,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.initPlayerAdapterModel()
         swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)
         swipe_back_layout.setOnSwipeBackListener(this)
-        DLog.d("suolong","'${System.currentTimeMillis()}")
 
     }
 
@@ -199,24 +199,36 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
         })
 
-        mViewModel.playPath.observe(this, Observer { it ->
-            it?.let { it1 ->
+        mViewModel.playPath.observe(this, Observer { playPath ->
+            playPath?.let { it1 ->
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
                 GlobalplayHelp.instance.addOnPlayerEventListener()
                 isResumePlay = true
+                if(playPath.size<=1){
+                    mViewModel.hasNextChapter.set(false)
+                    mViewModel.hasPreChapter.set(false)
+                }
                 when (fromJumpType) {
                     Jump.DOTS.from -> {
+                        if(musicPlayerManger.getCurrentPlayerMusic()!=null){
+                            val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()!!
+                            mChapterId = currentPlayerMusic.chapterId
+                            val playControl = mViewModel.playControlModel.get()
+                            if(playControl!=null){
+                                mViewModel.playControlModel.set(PlayControlModel(baseAudioInfo = currentPlayerMusic,homeDetailModel = playControl.homeDetailModel))
+                            }else{
+                                mViewModel.playControlModel.set(PlayControlModel(baseAudioInfo = currentPlayerMusic))
+                            }
+                        }
                         mChapterId?.let {
                             if (!musicPlayerManger.isPlaying()) {
                                 musicPlayerManger.updateMusicPlayerData(it1, it)
                                 musicPlayerManger.startPlayMusic(it)
                             }
-
                         }
-
                     }
                     Jump.DETAILSBOOK.from -> {
-                        mChapterId = it.getOrNull(0)?.chapterId
+                        mChapterId = playPath.getOrNull(0)?.chapterId
                         mChapterId?.let {
                             if (musicPlayerManger.isPlaying()) {
                                 if (musicPlayerManger.getCurrentPlayerMusic()?.chapterId != mChapterId) {
@@ -309,7 +321,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                     } else {
                                         //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
                                     }
-                                })
+                                },isPlay = mViewModel.playSate.get())
                         }
                     }
                     controlTime?.contains(ACTION_PLAY_OPERATING) == true -> {
@@ -355,6 +367,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.mutableList.observe(this, Observer {
             mViewModel.mBookPlayerAdapter.setList(it)
         })
+
         mViewModel.playBookSate.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
@@ -475,7 +488,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         if (playerState == -1) {
-            ToastUtil.show(this, msg = message)
+//            ToastUtil.show(this, msg = message)
+            tipView.showTipView(this,this.getString(R.string.business_play_error))
+            mViewModel.playManger.pause()
         }
 
     }
@@ -493,6 +508,23 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
         getRecentPlayBook(musicInfo)
+        val playList = mViewModel.playManger.getCurrentPlayList()
+        if(playList!=null && playList.isNotEmpty()){
+            val size = playList.size
+            if(position == 0){
+                mViewModel.hasPreChapter.set(false)
+            }else{
+                mViewModel.hasPreChapter.set(true)
+            }
+            if(position == size -1){
+                mViewModel.hasNextChapter.set(false)
+            }else{
+                mViewModel.hasNextChapter.set(true)
+            }
+        }else{
+            mViewModel.hasNextChapter.set(false)
+            mViewModel.hasNextChapter.set(false)
+        }
     }
 
     /**
@@ -509,13 +541,13 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             playerControl?.baseAudioInfo?.audioId ?: "",
             playerControl?.baseAudioInfo?.chapterId ?: ""
         )
-        mViewModel.lastState.set(mViewModel.pathList.size > 0 && mChapterId?.isNotEmpty() == true)
         mViewModel.updatePlayBook(
             mViewModel.audioChapterModel.get()?.list?.find { it.chapter_id == mChapterId }
         )
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
+
     }
 
     override fun onTaskRuntime(
@@ -549,8 +581,16 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        mViewModel.playSate.set(playWhenReady)
         mViewModel.playStatus.set(playbackState)
+        //播放完成并且没有下一任务，停止播放
+        if(playbackState == STATE_ENDED && !mViewModel.hasNextChapter.get()){
+            mViewModel.playSate.set(false)
+            mViewModel.playManger.pause()
+        }else{
+            mViewModel.playSate.set(playWhenReady)
+        }
+
+
         DLog.d("suolong" , " playWhenReady = $playWhenReady --- status = ${playbackState} --- time = ${System.currentTimeMillis()}" )
     }
 

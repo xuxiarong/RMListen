@@ -21,5 +21,6 @@
     <string name="business_download_add_cache">已添加到下载队列</string>
     <string name="download_delete_number">删除%d</string>
     <string name="business_no_content">当前无播放内容</string>
+    <string name="business_play_error">播放源解析失败，请检查资源来源，稍后重试</string>
 
 </resources>

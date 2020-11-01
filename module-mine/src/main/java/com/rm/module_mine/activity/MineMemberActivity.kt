@@ -25,7 +25,18 @@ class MineMemberActivity : BaseVMActivity<MineActivityMemberDetailBinding, MineM
 
     companion object {
         const val MEMBER_ID = "memberId"
+        var isNavToCommentFragment = false
         fun newInstance(context: Context, memberId: String) {
+            context.startActivity(
+                Intent(
+                    context,
+                    MineMemberActivity::class.java
+                ).putExtra(MEMBER_ID, memberId)
+            )
+        }
+
+        fun toMineCommentFragment(context: Context, memberId: String) {
+            isNavToCommentFragment = true
             context.startActivity(
                 Intent(
                     context,
@@ -60,6 +71,10 @@ class MineMemberActivity : BaseVMActivity<MineActivityMemberDetailBinding, MineM
         }
     }
 
+    override fun initView() {
+        super.initView()
+    }
+
     override fun initData() {
         initParams()
         val memberId = intent.getStringExtra(MEMBER_ID)
@@ -75,7 +90,6 @@ class MineMemberActivity : BaseVMActivity<MineActivityMemberDetailBinding, MineM
     private fun createFragment() {
         val bean = mViewModel.detailInfoData.get()!!
         val memberId = mViewModel.memberId.get()!!
-
         val mainFragment = MineMemberMainFragment.newInstance(memberId)
         val commentFragment = MineMemberCommentFragment.newInstance(memberId, bean.member_type)
 
@@ -86,6 +100,14 @@ class MineMemberActivity : BaseVMActivity<MineActivityMemberDetailBinding, MineM
         mDataBind.mineMemberDetailViewpager.adapter =
             MineMemberPageAdapter(list, supportFragmentManager)
         mDataBind.tabMineMemberList.setupWithViewPager(mDataBind.mineMemberDetailViewpager)
+        mDataBind.mineMemberDetailViewpager.setCurrentItem(
+            if (isNavToCommentFragment) {
+                1
+            } else {
+                0
+            }, false
+        )
+
 
     }
 

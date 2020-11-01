@@ -3,8 +3,11 @@ package com.rm.module_play.dialog
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.util.getFloattMMKV
+import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.module_play.R
+import com.rm.module_play.binding.bindPlaySpeedSrc
 import kotlinx.android.synthetic.main.music_play_dialog_more_setting.*
 
 /**
@@ -33,6 +36,7 @@ class MusicPlayMoreDialogFragment : BottomDialogFragment() {
             mBack(1)
             dismiss()
         }
+        playSpeedSettingIv.bindPlaySpeedSrc(SAVA_SPEED.getFloattMMKV())
 
     }
 

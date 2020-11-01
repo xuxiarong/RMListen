@@ -3,6 +3,7 @@ package com.rm.module_play.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableFloat
 import androidx.databinding.ObservableInt
@@ -21,6 +22,7 @@ import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -65,9 +67,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var playBookSate = ObservableField<PlayBookState>()
 
     //播放状态进度条，0是播放2是加载中1是暂停
-    val playSate = ObservableField<Boolean>()
+    val playSate = ObservableBoolean(false)
     var playStatus = ObservableInt(0)
-    val lastState = ObservableField<Boolean>()
+    var hasPreChapter = ObservableBoolean(false)
+    var hasNextChapter = ObservableBoolean(false)
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -86,7 +89,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         BookPlayerAdapter(this, BR.viewModel, BR.itemModel)
 
     }
-    val mAdapter by lazy {
+    val commentAdapter by lazy {
         CommonBindVMAdapter<Comments>(
             this,
             mutableListOf(),
@@ -549,5 +552,22 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun queryPlayBookList(): List<HistoryPlayBook>? =
         DaoUtil(HistoryPlayBook::class.java, "").queryAll()
+
+
+    fun playPreClick(){
+        if(hasPreChapter.get()){
+            playManger.playLastMusic()
+        }
+    }
+
+    fun playNextClick(){
+        if(hasNextChapter.get()){
+            playManger.playNextMusic()
+        }
+    }
+
+    fun commentAvatarClick(context: Context,member_id : String){
+        RouterHelper.createRouter(MineService::class.java).toMineCommentFragment(context = context,memberId = member_id)
+    }
 
 }

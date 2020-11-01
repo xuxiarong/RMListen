@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
+import android.util.Log
 import com.example.music_exoplayer_lib.manager.BookAlarmManger
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -367,26 +368,31 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun getCurrentPlayerID(): Long {
-        TODO("Not yet implemented")
+        return 0L
     }
 
     override fun seekTo(currentTime: Long) {
-        mExoPlayer.seekTo(currentTime)
+        if(currentTime<=0){
+            mExoPlayer.seekTo(0L)
+        }else{
+            mExoPlayer.seekTo(currentTime)
+        }
+        Log.d("suolong","currentTime = $currentTime}")
     }
 
     override fun getCurrentPlayerMusic(): BaseAudioInfo? =
         mAudios.getOrNull(mCurrentPlayIndex) as? BaseAudioInfo
 
     override fun getCurrentPlayList(): List<*> {
-        TODO("Not yet implemented")
+        return mAudios
     }
 
     override fun setPlayInfoListener(listener: MusicPlayerInfoListener) {
-        TODO("Not yet implemented")
+
     }
 
     override fun removePlayInfoListener() {
-        TODO("Not yet implemented")
+
     }
 
     override fun addOnPlayerEventListener(listener: MusicPlayerEventListener) {
