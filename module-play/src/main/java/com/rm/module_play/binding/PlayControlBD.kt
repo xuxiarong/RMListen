@@ -1,8 +1,11 @@
 package com.rm.module_play.binding
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
+import com.rm.baselisten.util.TimeUtils
 import com.rm.business_lib.wedgit.progressbar.CircularProgressView
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
@@ -103,6 +106,46 @@ fun CircularProgressView.bindPlayPrepareProgress(playStatus: Int) {
     } else {
         stopAutoProgress()
     }
+}
+
+@BindingAdapter("bindPlayTimeCountText")
+fun TextView.bindPlayTimeCountText(timeCount: Long) {
+    if (timeCount <= 0) {
+        visibility = View.GONE
+        return
+    } else {
+        visibility = View.VISIBLE
+        text = TimeUtils.getListenDuration(timeCount)
+    }
+}
+
+@BindingAdapter("bindPlaySpeedText")
+fun TextView.bindPlaySpeedText(float: Float?) {
+    if (float == null) {
+        visibility = View.GONE
+        return
+    }
+    if (float <= 0) {
+        visibility = View.GONE
+        return
+    }
+
+    text = (
+        if (0F < float && float <= 0.5F) {
+            "0.5x"
+        } else if (0.5F < float && float <= 0.75F) {
+            "0.75x"
+        } else if (0.75F < float && float <= 1.0F) {
+            "1.0x"
+        } else if (1.0F < float && float <= 1.25F) {
+            "1.25x"
+        } else if (1.25F < float && float <= 1.5F) {
+            "1.5x"
+        } else {
+            "2.0x"
+        }
+    )
+
 }
 
 @BindingAdapter("bindPlaySpeedSrc")

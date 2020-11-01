@@ -3,6 +3,8 @@ package com.rm.business_lib
 import androidx.annotation.IntDef
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableFloat
+import androidx.databinding.ObservableLong
 import androidx.lifecycle.MutableLiveData
 import com.rm.business_lib.bean.LoginUserBean
 
@@ -32,6 +34,13 @@ var isLogin = ObservableBoolean(false)
 var loginUser = ObservableField<LoginUserBean>()
 
 var isHomeDouClick = MutableLiveData(false)
+
+object PlayGlobalData{
+    //全局播放器定时时间
+    var playTimerDuration = ObservableLong(0L)
+    //全局播放器播放速度
+    var playSpeed = ObservableFloat(1.0f)
+}
 
 
 // ******** home ********

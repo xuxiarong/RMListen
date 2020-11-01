@@ -46,7 +46,7 @@ fun TextView.bindDuration(duration: Long) {
 }
 @BindingAdapter("bindDuration")
 fun TextView.bindDuration(duration: Int?) {
-    duration?.let { bindDuration(it) }
+    duration?.let { bindDuration(it.toLong()) }
 }
 
 //@BindingAdapter("bindDateStr")

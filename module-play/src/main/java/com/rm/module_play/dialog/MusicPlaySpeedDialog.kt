@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.util.putMMKV
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.base.dialogfragment.SuperBottomSheetDialogFragment
 import com.rm.module_play.R
@@ -48,6 +49,7 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
                 timeSet[data[position]]?.let {
                     musicPlayerManger.setPlayerMultiple(it)
                     SAVA_SPEED.putMMKV(it)
+                    PlayGlobalData.playSpeed.set(it)
                     dismissAllowingStateLoss()
 
                 }

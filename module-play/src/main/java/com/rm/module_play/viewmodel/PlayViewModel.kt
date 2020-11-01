@@ -15,6 +15,7 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.bean.*
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
@@ -78,6 +79,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     val pageSize = 12
     val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
     val curTime = System.currentTimeMillis()
+
+    var playTimerDuration = PlayGlobalData.playTimerDuration
+    var playSpeed = PlayGlobalData.playSpeed
 
     init {
         updateThumbText.set("0/0")

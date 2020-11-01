@@ -2,7 +2,6 @@ package com.rm.module_play.dialog
 
 import android.content.DialogInterface
 import android.graphics.Rect
-import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.ImageView
@@ -13,14 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.utilExt.dip
-import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialogfragment.SuperBottomSheetDialogFragment
 import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.module_play.R
 import com.rm.music_exoplayer_lib.constants.MUSIC_ALARM_MODEL_0
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import com.rm.music_exoplayer_lib.utils.CacheUtils
 import kotlinx.android.synthetic.main.music_play_dialog_time_setting.*
 
 
@@ -124,6 +122,7 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
 
             override fun onTick(millisUntilFinished: Long) {
                 timeSAdapter.notifyChange(millisUntilFinished)
+                PlayGlobalData.playTimerDuration.set(millisUntilFinished)
             }
 
         }

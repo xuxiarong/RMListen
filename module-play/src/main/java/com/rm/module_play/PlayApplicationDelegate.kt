@@ -1,13 +1,14 @@
 package com.rm.module_play
 
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
-import com.rm.baselisten.util.*
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.getFloattMMKV
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.utils.CacheUtils
-import kotlinx.coroutines.*
 import org.koin.core.context.loadKoinModules
 
 /**
@@ -22,7 +23,10 @@ class PlayApplicationDelegate : IApplicationDelegate {
         MusicPlayerManager.musicPlayerManger.initialize(
             CONTEXT,
             MusicInitializeCallBack {})
-        SAVA_SPEED.getFloattMMKV(1f)?.let { MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it) }
+        SAVA_SPEED.getFloattMMKV(1f)?.let {
+            MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it)
+            PlayGlobalData.playSpeed.set(it)
+        }
         CacheUtils.instance.initSharedPreferencesConfig(CONTEXT)
 
     }

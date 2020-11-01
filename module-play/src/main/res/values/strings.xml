@@ -3,4 +3,5 @@
     <string name="play_speed">倍速</string>
     <string name="play_timer">定时器</string>
     <string name="play_subs_anchor">+订阅</string>
+    <string name="play_speed_text">%fx</string>
 </resources>
