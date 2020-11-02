@@ -265,18 +265,14 @@
                     app:menu_type="horizontal"
                     tools:visibility="visible" />
 
-                <com.flyco.roundview.RoundTextView
-                    android:layout_width="@dimen/dp_24"
-                    android:layout_height="@dimen/dp_14"
+                <TextView
+                    android:layout_width="9dp"
+                    android:layout_height="18dp"
                     android:gravity="center"
-                    app:rv_strokeWidth="@dimen/dp_1"
-                    app:rv_cornerRadius="@dimen/dp_2"
-                    app:rv_strokeColor="@color/business_text_color_b1b1b1"
-                    android:textSize="@dimen/business_text_size_8sp"
+                    android:text="@{viewModel.countdownTime}"
                     android:textColor="@color/business_text_color_b1b1b1"
-                    bindPlayTimeCountText="@{viewModel.playTimerDuration}"
-                    tools:text="18:23"
-                    />
+                    android:textSize="@dimen/business_text_size_10sp"
+                    tools:text="18:23" />
 
             </LinearLayout>
         </LinearLayout>

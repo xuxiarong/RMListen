@@ -3,10 +3,7 @@ package com.rm.module_play.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.databinding.ObservableFloat
-import androidx.databinding.ObservableInt
+import androidx.databinding.*
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,6 +17,8 @@ import com.rm.business_lib.bean.*
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.utils.mmSS
+import com.rm.business_lib.utils.time2format
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.login.LoginService
@@ -29,6 +28,7 @@ import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.module_play.cache.PlayBookState
+import com.rm.module_play.cache.PlayState
 import com.rm.module_play.model.*
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.repository.BookPlayRepository
@@ -36,9 +36,8 @@ import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 /**
  *
@@ -48,7 +47,7 @@ import kotlinx.coroutines.withContext
  */
 open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMViewModel() {
     val playPath = MutableLiveData<List<BaseAudioInfo>>()
-    val pathList = ArrayList<BaseAudioInfo>()
+    private val pathList = ArrayList<BaseAudioInfo>()
     val audioChapterModel = ObservableField<AudioChapterListModel>()
     val process = ObservableFloat(0f)//进度条
     val maxProcess = ObservableFloat(0f)//最大进度
@@ -67,14 +66,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     val mChapterId = ObservableField<String>()
     var playBookSate = ObservableField<PlayBookState>()
 
-    //播放状态进度条，0是播放2是加载中1是暂停
-    val playSate = ObservableBoolean(false)
-    var playStatus = ObservableInt(0)
+    //播放状态进度条，0是播放2是加载中1是暂停,false是暂停
+    var playStatusBean = ObservableField<PlayState>(PlayState())
     var hasPreChapter = ObservableBoolean(false)
     var hasNextChapter = ObservableBoolean(false)
     var sortType = ObservableField<String>("")
     var isDragSeek = ObservableBoolean(false)
     var seekText = ObservableField<String>("")
+
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -115,67 +114,67 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         const val ACTION_MORE_FINSH = "ACTION_MORE_FINSH"//关闭
     }
 
-    fun getHomeDetailListModel() : HomeDetailList?{
+    fun getHomeDetailListModel(): HomeDetailList? {
         val audioBean = audioInfo.get()
-        if(audioBean!=null){
+        if (audioBean != null) {
             return HomeDetailList(
-                audio_id=audioBean.audio_id,
-                audio_type=0,
-                audio_name=audioBean.audio_name,
-                original_name=audioBean.original_name,
-                status=1,
-                author_intro="",
-                anchor_id="",
-                short_intro="",
-                audio_intro="",
-                audio_cover="",
-                cover_url="",
-                audio_label="",
-                quality=0,
-                progress=0,
-                play_count=0,
-                created_at="11111",
-                chapter_updated_at="11111",
-                author=audioBean.author,
-                member_id="",
-                nickname="",
-                subscription_count=0,
-                last_sequence=0,
-                audio_cover_url=audioBean.audio_cover_url,
-                anchor=Anchor.getDefault(),
-                tags= mutableListOf<DetailTags>(),
-                is_subscribe=false,
-                is_fav=false
+                audio_id = audioBean.audio_id,
+                audio_type = 0,
+                audio_name = audioBean.audio_name,
+                original_name = audioBean.original_name,
+                status = 1,
+                author_intro = "",
+                anchor_id = "",
+                short_intro = "",
+                audio_intro = "",
+                audio_cover = "",
+                cover_url = "",
+                audio_label = "",
+                quality = 0,
+                progress = 0,
+                play_count = 0,
+                created_at = "11111",
+                chapter_updated_at = "11111",
+                author = audioBean.author,
+                member_id = "",
+                nickname = "",
+                subscription_count = 0,
+                last_sequence = 0,
+                audio_cover_url = audioBean.audio_cover_url,
+                anchor = Anchor.getDefault(),
+                tags = mutableListOf<DetailTags>(),
+                is_subscribe = false,
+                is_fav = false
             )
-        }else{
+        } else {
             return HomeDetailList(
-                audio_id=audioID.get()!!,
-                        audio_type=0,
-                        audio_name="",
-                        original_name="",
-                        status=1,
-                        author_intro="",
-                        anchor_id="",
-                        short_intro="",
-                        audio_intro="",
-                        audio_cover="",
-                        cover_url="",
-                        audio_label="",
-                        quality=0,
-                        progress=0,
-                        play_count=0,
-                        created_at="11111",
-                        chapter_updated_at="11111",
-                        author="",
-                        member_id="",
-                        nickname="",
-                        subscription_count=0,
-                        last_sequence=0,
-                        audio_cover_url="",
-                        anchor= Anchor.getDefault(),
-                        tags= mutableListOf<DetailTags>(),
-                        is_subscribe=false,
-                        is_fav=false
+                audio_id = audioID.get()!!,
+                audio_type = 0,
+                audio_name = "",
+                original_name = "",
+                status = 1,
+                author_intro = "",
+                anchor_id = "",
+                short_intro = "",
+                audio_intro = "",
+                audio_cover = "",
+                cover_url = "",
+                audio_label = "",
+                quality = 0,
+                progress = 0,
+                play_count = 0,
+                created_at = "11111",
+                chapter_updated_at = "11111",
+                author = "",
+                member_id = "",
+                nickname = "",
+                subscription_count = 0,
+                last_sequence = 0,
+                audio_cover_url = "",
+                anchor = Anchor.getDefault(),
+                tags = mutableListOf<DetailTags>(),
+                is_subscribe = false,
+                is_fav = false
             )
         }
     }
@@ -264,17 +263,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         Log.i("", "playBoutiqueDetails")
     }
 
-    fun audioNameClick(context: Context){
+    fun audioNameClick(context: Context) {
         val audioId = audioID.get()
-        if(audioId!=null){
-            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context,audioId)
+        if (audioId != null) {
+            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
         }
     }
 
     /**
      * 快捷登陆
      */
-     fun quicklyLogin(it: FragmentActivity) {
+    fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
             .quicklyLogin(this, it, loginSuccess = {
                 //todo 登陆成功回调
@@ -455,7 +454,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             playBookSate.get()?.homeDetailModel = it
             val listValue = mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
-            listValue?.set(1,PlayControlSubModel(anchor = it.anchor))
+            listValue?.set(1, PlayControlSubModel(anchor = it.anchor))
             audioID.set(it.audio_id)
 
             commentAudioComments(it.audio_id)
@@ -561,20 +560,51 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         DaoUtil(HistoryPlayBook::class.java, "").queryAll()
 
 
-    fun playPreClick(){
-        if(hasPreChapter.get()){
+    fun playPreClick() {
+        if (hasPreChapter.get()) {
             playManger.playLastMusic()
         }
     }
 
-    fun playNextClick(){
-        if(hasNextChapter.get()){
+    fun playNextClick() {
+        if (hasNextChapter.get()) {
             playManger.playNextMusic()
         }
     }
 
-    fun commentAvatarClick(context: Context,member_id : String){
-        RouterHelper.createRouter(MineService::class.java).toMineCommentFragment(context = context,memberId = member_id)
+    fun commentAvatarClick(context: Context, member_id: String) {
+        RouterHelper.createRouter(MineService::class.java)
+            .toMineCommentFragment(context = context, memberId = member_id)
+    }
+
+    val countdownTime = ObservableField<String>()
+
+    //倒计时
+    private var countdownScope: Job? = null
+    fun countdown() {
+        if (countdownScope?.isActive == true) {
+            countdownScope?.cancel()
+        }
+        val times = (musicPlayerManger.getPlayerAlarmTime() - System.currentTimeMillis() )/ 1000
+        if (times > 0) {
+            countdownScope = viewModelScope.launch {
+                flow {
+                    (times downTo 0).forEach { it ->
+                        delay(1000)
+                        emit(it)
+                    }
+                }.flowOn(Dispatchers.Default).onStart {
+                    // 倒计时开始
+                }.onCompletion {
+                    // 倒计时结束
+                    countdownTime.set("")
+                }.collect {
+                    countdownTime.set(mmSS.time2format(it * 1000))
+                }
+            }
+        }
+
+
     }
 
 }

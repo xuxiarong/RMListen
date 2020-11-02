@@ -13,6 +13,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Message
 import android.util.Log
+import android.widget.Toast
 import com.example.music_exoplayer_lib.manager.BookAlarmManger
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -33,6 +34,7 @@ import com.rm.music_exoplayer_lib.notification.NOTIFICATION_ID
 import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 import com.rm.music_exoplayer_lib.utils.CacheUtils
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import java.util.*
 
@@ -44,7 +46,7 @@ import java.util.*
  */
 internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     //更新播放进度时间频率
-    val UPDATE_PROGRESS_DELAY = 500L
+    val UPDATE_PROGRESS_DELAY = 1000L
     private val mOnPlayerEventListeners = arrayListOf<MusicPlayerEventListener>()
     private val mEventListener = ExoPlayerEventListener()
 
@@ -71,7 +73,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private var mMusicAlarmModel = MUSIC_ALARM_MODEL_0
 
     //定时剩余集数
-    private var mRemainingSet = 0
+    private var mRemainingSet = -1
 
     //闹钟总时长
     var alarmTimes = 0L
@@ -309,7 +311,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 if (mCurrentPlayIndex > 0) {
                     mCurrentPlayIndex--
                 }
-                resetMusicAlarmModel()
+//                resetMusicAlarmModel()
                 startPlayMusic(mCurrentPlayIndex)
             }
             //单曲循环
@@ -318,7 +320,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 if (mCurrentPlayIndex < 0) {
                     mCurrentPlayIndex = mAudios.size - 1
                 }
-                resetMusicAlarmModel()
+//                resetMusicAlarmModel()
                 startPlayMusic(mCurrentPlayIndex)
             }
             else -> {
@@ -429,7 +431,19 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     /**
      * 播放完成
      */
-    private fun onCompletionPlay() {
+    private fun onFinishPlay() {
+        mUpdateProgressHandler.removeMessages(0)
+        if (mMusicAlarmModel in 1..5) {
+            mRemainingSet--
+            //定时集已经播完
+            if (mRemainingSet <= 0) {
+                setPlayerAlarmModel(MUSIC_ALARM_MODEL_0)
+            }
+            mOnPlayerEventListeners.forEach {
+                it.onCompletionPlay()
+            }
+            return
+        }
         when (mPlayModel) {
             //顺序播放
             MUSIC_MODEL_ORDER -> {
@@ -442,7 +456,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             MUSIC_MODEL_SINGLE -> {
                 startPlayMusic(mCurrentPlayIndex)
             }
-
         }
         showNotification()
 
@@ -543,11 +556,11 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      * 设置闹钟模式
      */
     override fun setPlayerAlarmModel(model: Int) {
-        mMusicAlarmModel = model
-        if (mRemainingSet < 10) {
-            mRemainingSet = model
-        }
+        mMusicAlarmModel = model//倒计时模式
         alarmTimes = 0L
+        if (model < 10) {
+            mRemainingSet = model//集数记录
+        }
         when (model) {
             MUSIC_ALARM_MODEL_20,
             MUSIC_ALARM_MODEL_30,
@@ -558,18 +571,18 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 alarmManger.setAlarm(alarmTimes)
             }
 
-            MUSIC_ALARM_MODEL_EPISODE_ONE,
-            MUSIC_ALARM_MODEL_EPISODE_TWO,
-            MUSIC_ALARM_MODEL_EPISODE_THREE,
-            MUSIC_ALARM_MODEL_EPISODE_FOUR,
-            MUSIC_ALARM_MODEL_EPISODE_FIVE -> {
-                for (index in 1..mRemainingSet) {
-                    alarmTimes += (mAudios.getOrNull(index - 1 + mCurrentPlayIndex) as BaseAudioInfo).duration * 1000
-                }
-                alarmTimes += System.currentTimeMillis()
-                alarmManger.setAlarm(alarmTimes)
-
-            }
+//            MUSIC_ALARM_MODEL_EPISODE_ONE,
+//            MUSIC_ALARM_MODEL_EPISODE_TWO,
+//            MUSIC_ALARM_MODEL_EPISODE_THREE,
+//            MUSIC_ALARM_MODEL_EPISODE_FOUR,
+//            MUSIC_ALARM_MODEL_EPISODE_FIVE -> {
+//                for (index in 1..mRemainingSet) {
+//                    alarmTimes += (mAudios.getOrNull(index - 1 + mCurrentPlayIndex) as BaseAudioInfo).duration * 1000
+//                }
+//                alarmTimes += System.currentTimeMillis()
+//                alarmManger.setAlarm(100000)
+//
+//            }
 
             MUSIC_ALARM_MODEL_0 -> {
                 alarmManger.cancelAlarm()
@@ -644,16 +657,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 }
                 //播放结束
                 Player.STATE_ENDED -> {
-                    mUpdateProgressHandler.removeMessages(0)
-                    mRemainingSet--
-                    if (mMusicAlarmModel in 1..5) {
-                        if (mRemainingSet <= 0) {
-                            mRemainingSet = 0
-                            alarmManger.cancelAlarm()
-                            setPlayerAlarmModel(MUSIC_ALARM_MODEL_0)
-                        }
-                    }
-                    onCompletionPlay()
+                    onFinishPlay()
                 }
 
                 Player.STATE_IDLE -> {

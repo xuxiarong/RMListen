@@ -76,5 +76,8 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         }
     }
 
+    override fun onCompletionPlay() {
+    }
+
 
 }
