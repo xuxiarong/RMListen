@@ -49,11 +49,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
             android:hint="@string/login_input_number_hint"
             android:paddingStart="@dimen/dp_12"
             android:paddingEnd="0dp"
-            android:text="@={phoneInputViewModel.phone}" />
+            android:text="@={phoneInputViewModel.phone}"
+            android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             bindClick="@{phoneInputViewModel.clearInput}"

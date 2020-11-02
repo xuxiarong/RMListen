@@ -189,7 +189,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.initPlayerAdapterModel()
         swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)
         swipe_back_layout.setOnSwipeBackListener(this)
-        mViewModel.quicklyLogin(this)
 
     }
 

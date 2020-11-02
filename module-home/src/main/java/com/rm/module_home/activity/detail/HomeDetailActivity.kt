@@ -96,9 +96,9 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         mDataBind.homeDetailChapterHeader.post {
             val measuredHeight = mDataBind.homeDetailChapterHeader.measuredHeight
             val params =
-                mDataBind.homeDetailCommentRefresh.layoutParams as ConstraintLayout.LayoutParams
+                mDataBind.homeDetailChapterHeader.layoutParams as ConstraintLayout.LayoutParams
             params.bottomMargin = measuredHeight + 20
-            mDataBind.homeDetailCommentRefresh.layoutParams = params
+            mDataBind.homeDetailChapterHeader.layoutParams = params
         }
 
         mDataBind.homeDetailInterceptLayout.setScrollTopListener(object :
