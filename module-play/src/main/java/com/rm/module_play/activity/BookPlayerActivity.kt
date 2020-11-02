@@ -27,6 +27,7 @@ import com.rm.module_play.PlayConstance
 import com.rm.module_play.R
 import com.rm.module_play.R.anim.activity_top_open
 import com.rm.module_play.cache.PlayBookState
+import com.rm.module_play.cache.PlayState
 import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
 import com.rm.module_play.dialog.*
@@ -76,7 +77,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             context: Context,
             homeDetailBean: DetailBookBean?,
             from: String,
-            sortType:String
+            sortType: String
         ) {
             homeDetailBean?.let {
                 val intent = Intent(context, BookPlayerActivity::class.java)
@@ -92,7 +93,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             context: Context,
             chapter: ChapterList?,
             from: String,
-            sortType:String
+            sortType: String
         ) {
             chapter?.let {
                 val intent = Intent(context, BookPlayerActivity::class.java)
@@ -207,19 +208,24 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
                 GlobalplayHelp.instance.addOnPlayerEventListener()
                 isResumePlay = true
-                if(playPath.size<=1){
+                if (playPath.size <= 1) {
                     mViewModel.hasNextChapter.set(false)
                     mViewModel.hasPreChapter.set(false)
                 }
                 when (fromJumpType) {
                     Jump.DOTS.from -> {
-                        if(musicPlayerManger.getCurrentPlayerMusic()!=null){
+                        if (musicPlayerManger.getCurrentPlayerMusic() != null) {
                             val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()!!
                             mChapterId = currentPlayerMusic.chapterId
                             val playControl = mViewModel.playControlModel.get()
-                            if(playControl!=null){
-                                mViewModel.playControlModel.set(PlayControlModel(baseAudioInfo = currentPlayerMusic,homeDetailModel = playControl.homeDetailModel))
-                            }else{
+                            if (playControl != null) {
+                                mViewModel.playControlModel.set(
+                                    PlayControlModel(
+                                        baseAudioInfo = currentPlayerMusic,
+                                        homeDetailModel = playControl.homeDetailModel
+                                    )
+                                )
+                            } else {
                                 mViewModel.playControlModel.set(PlayControlModel(baseAudioInfo = currentPlayerMusic))
                             }
                         }
@@ -324,13 +330,21 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                     } else {
                                         //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
                                     }
-                                },isPlay = mViewModel.playSate.get())
+                                }, isPlay = mViewModel.playStatusBean.get()?.read==true
+                            )
                         }
                     }
                     controlTime?.contains(ACTION_PLAY_OPERATING) == true -> {
                         showMusicPlayMoreDialog { it1 ->
                             if (it1 == 0) {
-                                showMusicPlayTimeSettingDialog()
+                                showMusicPlayTimeSettingDialog {
+                                    if (it) {
+                                        mViewModel.countdown()
+                                        if (mViewModel.playManger.getRemainingSetInt() > 0) {
+                                            mViewModel.countdownTime.set("${mViewModel.playManger.getRemainingSetInt()}集")
+                                        }
+                                    }
+                                }
                             } else {
                                 showMusicPlaySpeedDialog()
                             }
@@ -376,6 +390,13 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
 
             }
+        })
+        mViewModel.countdownTime.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+
+            }
+
         })
     }
 
@@ -486,20 +507,20 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun initData() {
+        mViewModel.countdown()
         getIntentParams()
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         if (playerState == -1) {
-//            ToastUtil.show(this, msg = message)
-            tipView.showTipView(this,this.getString(R.string.business_play_error))
+            tipView.showTipView(this, this.getString(R.string.business_play_error))
             mViewModel.playManger.pause()
         }
 
     }
 
     override fun onPrepared(totalDurtion: Long) {
-        DLog.d("suolong","'${System.currentTimeMillis()}")
+        DLog.d("suolong", "'${System.currentTimeMillis()}")
         mViewModel.maxProcess.set(totalDurtion.toFloat())
     }
 
@@ -512,19 +533,19 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
         getRecentPlayBook(musicInfo)
         val playList = mViewModel.playManger.getCurrentPlayList()
-        if(playList!=null && playList.isNotEmpty()){
+        if (playList != null && playList.isNotEmpty()) {
             val size = playList.size
-            if(position == 0){
+            if (position == 0) {
                 mViewModel.hasPreChapter.set(false)
-            }else{
+            } else {
                 mViewModel.hasPreChapter.set(true)
             }
-            if(position == size -1){
+            if (position == size - 1) {
                 mViewModel.hasNextChapter.set(false)
-            }else{
+            } else {
                 mViewModel.hasNextChapter.set(true)
             }
-        }else{
+        } else {
             mViewModel.hasNextChapter.set(false)
             mViewModel.hasNextChapter.set(false)
         }
@@ -584,17 +605,36 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        mViewModel.playStatus.set(playbackState)
+        mViewModel.playStatusBean.set(
+            PlayState(
+                state = playbackState,
+                        read = playWhenReady
+            )
+        )
+
         //播放完成并且没有下一任务，停止播放
-        if(playbackState == STATE_ENDED && !mViewModel.hasNextChapter.get()){
-            mViewModel.playSate.set(false)
-            mViewModel.playManger.pause()
-        }else{
-            mViewModel.playSate.set(playWhenReady)
+//        if (playbackState == STATE_ENDED && !mViewModel.hasNextChapter.get()) {
+//            mViewModel.playSate.set(false)
+//        } else {
+//
+//        }
+
+
+        DLog.d(
+            "suolong",
+            " playWhenReady = $playWhenReady --- status = ${playbackState} --- time = ${System.currentTimeMillis()}"
+        )
+    }
+
+    //播放完成
+    override fun onCompletionPlay() {
+        if (mViewModel.playManger.getPlayerAlarmModel() < 10) {
+            if (mViewModel.playManger.getRemainingSetInt() > 0) {
+                mViewModel.countdownTime.set("${mViewModel.playManger.getRemainingSetInt()}集")
+            } else {
+                mViewModel.countdownTime.set("")
+            }
         }
-
-
-        DLog.d("suolong" , " playWhenReady = $playWhenReady --- status = ${playbackState} --- time = ${System.currentTimeMillis()}" )
     }
 
     override fun onViewPositionChanged(fractionAnchor: Float, fractionScreen: Float) {

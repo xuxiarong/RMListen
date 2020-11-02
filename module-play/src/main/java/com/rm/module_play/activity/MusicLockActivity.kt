@@ -344,5 +344,8 @@ class MusicLockActivity : BaseActivity(),
     ) {
     }
 
+    override fun onCompletionPlay() {
+    }
+
 
 }

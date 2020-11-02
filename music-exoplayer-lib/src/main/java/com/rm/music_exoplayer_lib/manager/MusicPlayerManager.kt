@@ -45,6 +45,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
         override fun onServiceDisconnected(name: ComponentName?) {
         }
+
     }
 
     fun initialize(

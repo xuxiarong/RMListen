@@ -127,4 +127,7 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
 
     }
 
+    override fun onCompletionPlay() {
+    }
+
 }

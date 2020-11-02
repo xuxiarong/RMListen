@@ -9,6 +9,7 @@ import com.rm.baselisten.util.TimeUtils
 import com.rm.business_lib.wedgit.progressbar.CircularProgressView
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
+import com.rm.module_play.cache.PlayState
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
@@ -66,11 +67,11 @@ fun BubbleSeekBar.updateThumbText(str: String) {
 
 
 @BindingAdapter("playState")
-fun LottieAnimationView.startLottieAnimation(state: Boolean) {
-    if (state) {
-        setAnimation("play_stop.json")
-    } else {
+fun LottieAnimationView.startLottieAnimation(state: PlayState) {
+    if (!state.read || state.state==4) {
         setAnimation("stop_play.json")
+    } else {
+        setAnimation("play_stop.json")
     }
     playAnimation()
 
@@ -100,8 +101,8 @@ fun ImageView.bindPlayNextSrc(hasNext: Boolean) {
 
 
 @BindingAdapter("bindPlayPrepareProgress")
-fun CircularProgressView.bindPlayPrepareProgress(playStatus: Int) {
-    if (playStatus == 2) {
+fun CircularProgressView.bindPlayPrepareProgress(playStatus: PlayState) {
+    if (playStatus.state == 2) {
         startAutoProgress()
     } else {
         stopAutoProgress()

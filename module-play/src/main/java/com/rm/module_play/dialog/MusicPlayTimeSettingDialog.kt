@@ -28,8 +28,10 @@ import kotlinx.android.synthetic.main.music_play_dialog_time_setting.*
  * @data: 8/26/20 6:46 PM
  * @Version: 1.0.0
  */
-fun FragmentActivity.showMusicPlayTimeSettingDialog() {
-    MusicPlayTimeSettingDialog().show(supportFragmentManager, "MusicPlayTimeSettingDialog")
+fun FragmentActivity.showMusicPlayTimeSettingDialog(callbacks: (types: Boolean) -> Unit) {
+    MusicPlayTimeSettingDialog().apply {
+        mBack = callbacks
+    }.show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
 class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
@@ -38,10 +40,12 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
             setOnItemClickListener { _, _, position ->
                 val itemPos = (data.getOrNull(position) ?: "0").toInt()
                 musicPlayerManger.setPlayerAlarmModel(itemPos)
-                val countTime = musicPlayerManger.getPlayerAlarmTime() - System.currentTimeMillis()
-                timerTask(countTime)
-                notifyDataSetChanged()
                 checkbox_music_play_time_setting_check.isChecked = false
+                if (itemPos>=10){
+                    val countTime = musicPlayerManger.getPlayerAlarmTime() - System.currentTimeMillis()
+                    timerTask(countTime)
+                }
+                notifyDataSetChanged()
                 setCheckBox()
                 dismissAllowingStateLoss()
             }
@@ -67,7 +71,7 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
         //占位 add
         mutableListOf("10", "20", "30", "40", "60", "1", "2", "3", "4", "5")
     }
-
+    var mBack: (type: Boolean) -> Unit = {}//选择回调
     override fun getLayoutResId(): Int = R.layout.music_play_dialog_time_setting
     override fun onInitialize() {
         rv_music_play_time_setting.layoutManager =
@@ -88,10 +92,12 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
                 musicPlayerManger.setPlayerAlarmModel(MUSIC_ALARM_MODEL_0)
 
             }
+            dismissAllowingStateLoss()
         }
     }
 
-    fun setCheckBox() {
+    private fun setCheckBox() {
+        mBack(!checkbox_music_play_time_setting_check.isChecked)
         checkbox_music_play_time_setting_check.background =
             if (checkbox_music_play_time_setting_check.isChecked) {
                 ContextCompat.getDrawable(
@@ -108,7 +114,7 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
     }
 
     var timerTask: CountDownTimer? = null
-    fun timerTask(position: Long) {
+    private fun timerTask(position: Long) {
         timerTask?.let {
             it.cancel()
             timerTask = null
@@ -138,7 +144,7 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
     }
 
     /**
-     * 倒计时adpeter
+     * 倒计时adpater
      */
     internal class TimeSAdapter(list: MutableList<String>) :
         BaseQuickAdapter<String, BaseViewHolder>(R.layout.rv_item_times_page, list) {
