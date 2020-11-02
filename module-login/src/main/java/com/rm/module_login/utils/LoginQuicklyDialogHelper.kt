@@ -1,8 +1,10 @@
 package com.rm.module_login.utils
 
+import android.content.Context
 import android.view.Gravity
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
@@ -112,6 +114,7 @@ class LoginQuicklyDialogHelper constructor(
                             )
                             // 验证码输入框请求输入法的焦点
                             dialogBinding.loginQuicklyVerifyCodeInputEt.requestFocus()
+
                         }
                     }
                 })

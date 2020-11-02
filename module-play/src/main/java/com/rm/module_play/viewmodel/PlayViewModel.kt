@@ -272,7 +272,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 快捷登陆
      */
-    private fun quicklyLogin(it: FragmentActivity) {
+     fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
             .quicklyLogin(this, it, loginSuccess = {
                 //todo 登陆成功回调

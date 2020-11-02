@@ -83,5 +83,7 @@ dependencies {
     kapt rootProject.ext.dependencies["router_compiler"]
     //吸顶  https://github.com/donkingliang/ConsecutiveScroller
 //    implementation 'com.github.donkingliang:ConsecutiveScroller:4.3.0'
+    implementation project(path: ':business-lib')
+
 
 }

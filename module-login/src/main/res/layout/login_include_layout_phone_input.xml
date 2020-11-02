@@ -43,10 +43,11 @@
             android:layout_height="@dimen/dp_30"
             android:background="@color/business_color_e8e8e8" />
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <EditText
             android:id="@+id/login_by_verify_code_input"
             style="@style/PhoneInputTextStyle"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
             android:hint="@string/login_input_number_hint"
