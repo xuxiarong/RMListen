@@ -115,7 +115,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             musicDialog = null
         }
 
-        play_change_data_sort.setOnClickListener {
+        cb_sort_songs_list.setOnClickListener {
             timeSAdapter.data.reverse()
             timeSAdapter.notifyDataSetChanged()
         }
