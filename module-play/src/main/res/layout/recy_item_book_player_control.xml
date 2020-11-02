@@ -112,6 +112,7 @@
             android:id="@+id/rl_music_play_titles"
             android:layout_width="match_parent"
             android:layout_height="26dp"
+            isVisible="@{!viewModel.isDragSeek}"
             android:layout_marginTop="@dimen/dp_11"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_16"
@@ -149,7 +150,7 @@
                 android:layout_toLeftOf="@+id/playChapterNext"
                 android:text="@{viewModel.audioInfo.audio_name}"
                 android:textColor="@color/business_text_color_666666"
-                tools:text="《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章 >" />
+                tools:text="《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章 " />
 
 
             <com.flyco.roundview.RoundFrameLayout
@@ -183,6 +184,17 @@
             </com.flyco.roundview.RoundFrameLayout>
 
         </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fl_music_playe_page"
+            android:layout_marginTop="@dimen/dp_20"
+            tools:text="00:12/00:12"
+            android:text="@{viewModel.seekText}"
+            isVisible="@{viewModel.isDragSeek}"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_25"/>
 
         <include
             layout="@layout/music_play_process_time"

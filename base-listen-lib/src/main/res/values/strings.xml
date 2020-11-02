@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RMListen</string>
+    <string name="app_name">雷漫听书</string>
     <string name="net_error">当前无网络，请检查网络设置</string>
     <string name="data_empty">没有任何内容</string>
     <string name="net_service_error">服务器连接失败</string>

@@ -1,6 +1,5 @@
 package com.rm.module_home
 
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_home.activity.boutique.BoutiqueFragmentViewModel
 import com.rm.module_home.activity.boutique.BoutiqueViewModel

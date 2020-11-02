@@ -35,13 +35,13 @@ fun BubbleSeekBar.progressChangedListener(pos: Int) {
                 )}"
 //            music_play_bubbleSeekBar.updateThumbText(str)
 //            bubbleFl.text = str
-            MusicPlayerManager.musicPlayerManger.seekTo(progress.toLong())
         }
 
         override fun onStartTrackingTouch(bubbleSeekBar: BubbleSeekBar?) {
         }
 
-        override fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?) {
+        override fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?,progress : Float) {
+            MusicPlayerManager.musicPlayerManger.seekTo(progress.toLong())
         }
 
     })

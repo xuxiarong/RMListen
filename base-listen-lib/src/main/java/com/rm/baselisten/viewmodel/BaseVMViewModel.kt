@@ -78,7 +78,6 @@ open class BaseVMViewModel : BaseViewModel() {
             viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
         }else{
             netErrorBlock()
-            showNetError()
         }
     }
 

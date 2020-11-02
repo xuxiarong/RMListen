@@ -1,32 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rm.module_home">
 
     <application>
-        <!-- 听单-->
+
+        <!-- 听单 -->
         <activity
-            android:name="com.rm.module_home.activity.menu.HomeMenuActivity"
-            android:screenOrientation="portrait" />
-        <!--听单详情-->
+            android:name=".activity.menu.HomeMenuActivity"
+            android:screenOrientation="portrait" /> <!-- 听单详情 -->
         <activity
-            android:name="com.rm.module_home.activity.menu.HomeMenuDetailActivity"
-            android:screenOrientation="portrait" />
-        <!-- 精品推荐-->
+            android:name=".activity.menu.HomeMenuDetailActivity"
+            android:screenOrientation="portrait" /> <!-- 精品推荐 -->
         <activity
-            android:name="com.rm.module_home.activity.boutique.BoutiqueActivity"
+            android:name=".activity.boutique.BoutiqueActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <!--榜单-->
+            android:screenOrientation="portrait" /> <!-- 榜单 -->
         <activity
-            android:name="com.rm.module_home.activity.HomeTopListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 书籍详情 -->
+            android:name=".activity.HomeTopListActivity"
+            android:screenOrientation="portrait" /> <!-- 书籍详情 -->
         <activity
-            android:name="com.rm.module_home.activity.detail.HomeDetailActivity"
-            android:screenOrientation="portrait" />
-        <!-- 专题列表 -->
+            android:name=".activity.detail.HomeDetailActivity"
+            android:screenOrientation="portrait" /> <!-- 专题列表 -->
         <activity
             android:name=".activity.topic.HomeTopicListActivity"
             android:screenOrientation="portrait" />
-
     </application>
+
 </manifest>

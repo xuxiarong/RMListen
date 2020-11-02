@@ -73,6 +73,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var hasPreChapter = ObservableBoolean(false)
     var hasNextChapter = ObservableBoolean(false)
     var sortType = ObservableField<String>("")
+    var isDragSeek = ObservableBoolean(false)
+    var seekText = ObservableField<String>("")
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()

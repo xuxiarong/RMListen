@@ -1,5 +1,6 @@
 package com.rm.module_main
 
+import com.rm.module_main.viewmodel.HomeSplashViewModel
 import debug.repository.DemoMultiRepository
 import debug.viewmodel.DemoMultiClickViewModel
 import debug.viewmodel.DemoSingClickViewModel
@@ -18,6 +19,7 @@ val viewModelModule = module {
     viewModel { DemoSingClickViewModel() }
     viewModel { DemoMultiClickViewModel(get()) }
     viewModel { DemoSwipeViewModel() }
+    viewModel { HomeSplashViewModel() }
 }
 
 val repositoryModule = module {

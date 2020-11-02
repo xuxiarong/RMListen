@@ -52,7 +52,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     //每次加载数据的条数
     private val mPageSize = 12
 
-    private val chapterPageSize = 5
+    private val chapterPageSize = 15
 
     //评论当前的页码
     private var commentPage = 1

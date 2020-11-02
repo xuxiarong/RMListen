@@ -92,6 +92,15 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             }
         })
 
+        mViewModel.showNetError.addOnPropertyChangedCallback(object :Observable.OnPropertyChangedCallback(){
+
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(mViewModel.showNetError.get()){
+                    (activity as BaseActivity).tipView.showNetError(activity = activity as FragmentActivity)
+                }
+            }
+        })
+
         NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {

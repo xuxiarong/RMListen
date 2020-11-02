@@ -1,6 +1,5 @@
 package com.rm.business_lib.wedgit.seekbar
 
-import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
@@ -8,12 +7,15 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.util.AttributeSet
-import android.view.*
-import android.view.WindowManager.*
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager.LayoutParams
 import android.view.WindowManager.LayoutParams.*
-import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.Nullable
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.R
 import java.io.File
 import java.io.FileInputStream
@@ -72,8 +74,6 @@ class BubbleSeekBar @JvmOverloads constructor(
     private val mPaint: Paint by lazy {
         Paint()
     }
-    private val mWindowManager: WindowManager
-    private val mBubbleFL: FrameLayout?
     private val mLayoutParams: LayoutParams
 
     /**
@@ -94,8 +94,6 @@ class BubbleSeekBar @JvmOverloads constructor(
         } else {
             mLayoutParams.type = TYPE_TOAST
         }
-
-        mWindowManager.addView(mBubbleFL, mLayoutParams)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -122,95 +120,99 @@ class BubbleSeekBar @JvmOverloads constructor(
                 performClick()
                 isThumbOnDragging = true
                 mOnProgressChangedListener?.onStartTrackingTouch(this)
-                showBubble()
+                DLog.d("suolong","开始按下")
+//                showBubble()
             }
             MotionEvent.ACTION_MOVE -> {
+                DLog.d("suolong","正在拖动")
+
                 mThumbOffset = event.x.toInt() - mThumbWidth / 2
                 if (mThumbOffset < 0) mThumbOffset =
                     0 else if (mThumbOffset > mTrackLength) mThumbOffset = mTrackLength
                 mProgress =
                     if (mTrackLength != 0) mMin + (mMax - mMin) * mThumbOffset / mTrackLength else mMin
-                calculateBubble()
+//                calculateBubble()
                 postInvalidate()
                 mOnProgressChangedListener?.onProgressChanged(this, getProgress(), true)
 
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                mOnProgressChangedListener?.onStopTrackingTouch(this)
+                DLog.d("suolong","手指离开")
+                mOnProgressChangedListener?.onStopTrackingTouch(this,getProgress())
                 isThumbOnDragging = false
-                hideBubble()
+//                hideBubble()
             }
         }
-        return isThumbOnDragging or super.onTouchEvent(event)
+        return true
     }
 
-    /**
-     * 计算Bubble
-     */
-    private fun calculateBubble() {
-        mLayoutParams.x = mPoint[0] + mThumbOffset - (mBubbleFL?.width ?: 0 - mThumbWidth) / 2
-        mLayoutParams.y =
-            mPoint[1] - (mBubbleFL?.height ?: 0) - (mThumbHeight shr 1) - mBubbleOffset
-        mWindowManager.updateViewLayout(mBubbleFL, mLayoutParams)
-    }
-
-    /**
-     * 显示弹出框
-     */
-    private fun showBubble() {
-        calculateBubble()
-        if (mBubbleFL == null) return
-        mBubbleFL.alpha = 0f
-        mBubbleFL.animate().alpha(1f).setDuration(200)
-            .setListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) {
-                    mBubbleFL.visibility = VISIBLE
-                }
-
-                override fun onAnimationEnd(animation: Animator) {}
-                override fun onAnimationCancel(animation: Animator) {}
-                override fun onAnimationRepeat(animation: Animator) {}
-            }).start()
-    }
-
-    /**
-     * 隐藏弹出框
-     */
-    private fun hideBubble() {
-        if (mBubbleFL == null) return
-        mBubbleFL.alpha = 1f
-        mBubbleFL.animate().alpha(0f).setDuration(200)
-            .setListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) {}
-                override fun onAnimationEnd(animation: Animator) {
-                    mBubbleFL.visibility = GONE
-                }
-
-                override fun onAnimationCancel(animation: Animator) {}
-                override fun onAnimationRepeat(animation: Animator) {}
-            }).start()
-    }
-
-    /**
-     * 增加自定义气泡弹出框
-     *
-     * @param view
-     */
-    fun addBubbleFL(view: View?) {
-        view?.let {
-            view.parent?.let {
-                (it as? FrameLayout)?.let {
-                    it.removeView(view)
-                }
-            }
-        }
-        mBubbleFL?.addView(view)
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-//        mWindowManager.removeView(mBubbleFL)
-    }
+//    /**
+//     * 计算Bubble
+//     */
+//    private fun calculateBubble() {
+//        mLayoutParams.x = mPoint[0] + mThumbOffset - (mBubbleFL?.width ?: 0 - mThumbWidth) / 2
+//        mLayoutParams.y =
+//            mPoint[1] - (mBubbleFL?.height ?: 0) - (mThumbHeight shr 1) - mBubbleOffset
+//        mWindowManager.updateViewLayout(mBubbleFL, mLayoutParams)
+//    }
+//
+//    /**
+//     * 显示弹出框
+//     */
+//    private fun showBubble() {
+//        calculateBubble()
+//        if (mBubbleFL == null) return
+//        mBubbleFL.alpha = 0f
+//        mBubbleFL.animate().alpha(1f).setDuration(200)
+//            .setListener(object : Animator.AnimatorListener {
+//                override fun onAnimationStart(animation: Animator) {
+//                    mBubbleFL.visibility = VISIBLE
+//                }
+//
+//                override fun onAnimationEnd(animation: Animator) {}
+//                override fun onAnimationCancel(animation: Animator) {}
+//                override fun onAnimationRepeat(animation: Animator) {}
+//            }).start()
+//    }
+//
+//    /**
+//     * 隐藏弹出框
+//     */
+//    private fun hideBubble() {
+//        if (mBubbleFL == null) return
+//        mBubbleFL.alpha = 1f
+//        mBubbleFL.animate().alpha(0f).setDuration(200)
+//            .setListener(object : Animator.AnimatorListener {
+//                override fun onAnimationStart(animation: Animator) {}
+//                override fun onAnimationEnd(animation: Animator) {
+//                    mBubbleFL.visibility = GONE
+//                }
+//
+//                override fun onAnimationCancel(animation: Animator) {}
+//                override fun onAnimationRepeat(animation: Animator) {}
+//            }).start()
+//    }
+//
+//    /**
+//     * 增加自定义气泡弹出框
+//     *
+//     * @param view
+//     */
+//    fun addBubbleFL(view: View?) {
+//        view?.let {
+//            view.parent?.let {
+//                (it as? FrameLayout)?.let {
+//                    it.removeView(view)
+//                }
+//            }
+//        }
+//        mBubbleFL?.addView(view)
+//    }
+//
+//    override fun onDetachedFromWindow() {
+//        super.onDetachedFromWindow()
+////        mWindowManager.removeView(mBubbleFL)
+//    }
 
     /**
      * 设置最大值
@@ -255,7 +257,10 @@ class BubbleSeekBar @JvmOverloads constructor(
      */
     fun updateThumbText(thumbText: String) {
         mThumbText = thumbText
-        invalidate()
+        if(!isThumbOnDragging){
+            invalidate()
+            DLog.d("suolong","updateThumbText")
+        }
     }
 
     /**
@@ -266,7 +271,10 @@ class BubbleSeekBar @JvmOverloads constructor(
      */
     fun setThumbHeight(height: Int) {
         mThumbHeight = height
-        invalidate()
+        if(!isThumbOnDragging){
+            invalidate()
+            DLog.d("suolong","setThumbHeight")
+        }
     }
 
     /**
@@ -405,11 +413,15 @@ class BubbleSeekBar @JvmOverloads constructor(
     fun setProgress(progress: Float) {
         mProgress = progress
         mOnProgressChangedListener?.onProgressChanged(this, mProgress, false)
-        postInvalidate()
+        if(!isThumbOnDragging){
+            postInvalidate()
+        }
     }
     fun setNoListenerProgress(progress: Float) {
         mProgress = progress
-        postInvalidate()
+        if(!isThumbOnDragging){
+            postInvalidate()
+        }
     }
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -507,7 +519,7 @@ class BubbleSeekBar @JvmOverloads constructor(
         )
 
         fun onStartTrackingTouch(bubbleSeekBar: BubbleSeekBar?)
-        fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?)
+        fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?,progress: Float)
     }
 
     /**
@@ -571,10 +583,6 @@ class BubbleSeekBar @JvmOverloads constructor(
         mSecondTrack = a.getDrawable(R.styleable.DaXuBubbleSeekBar_secondTrack)
         mBubbleOffset = a.getDimensionPixelOffset(R.styleable.DaXuBubbleSeekBar_bubbleOffset, 10)
         mThumb = a.getDrawable(R.styleable.DaXuBubbleSeekBar_thumb)
-        mBubbleFL = FrameLayout(getContext())
-        mBubbleFL.visibility = GONE
-        mBubbleFL.setBackgroundDrawable(a.getDrawable(R.styleable.DaXuBubbleSeekBar_bubbleBackgroud))
-        mWindowManager = getContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         mLayoutParams = LayoutParams()
         mLayoutParams.x = 0
         mLayoutParams.y = 0

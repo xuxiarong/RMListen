@@ -4,4 +4,5 @@
     <string name="main_tab_search">搜索</string>
     <string name="main_tab_my_listen">我听</string>
     <string name="main_tab_user">个人</string>
+    <string name="splash_skip">%ds\n跳过</string>
 </resources>

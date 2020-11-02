@@ -57,6 +57,9 @@
     <string name="home_comment_num" formatted="false">%d</string>
     <string name="home_comment_num_text">/200</string>
     <string name="home_comment_topped">1</string>
+    <string name="title_activity_splash">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>
 
