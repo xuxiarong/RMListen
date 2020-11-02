@@ -515,7 +515,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         } else {
             homeDetailCommentAdapter.addData(bean.list_comment)
         }
-        commentRefreshStateMode.setHasMore(bean.list_comment.size > 0)
+        commentRefreshStateMode.setHasMore(bean.list_comment.size >= mPageSize)
     }
 
     /**

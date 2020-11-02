@@ -44,12 +44,14 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="@dimen/dp_8"
             android:textStyle="bold"
-            android:maxLines="1"
+            android:lines="1"
+            android:paddingEnd="@dimen/dp_50"
+            android:ellipsize="end"
             android:textColor="@color/business_text_color_333333"
             android:id="@+id/detail_chapter_name_tx"
             android:textSize="@dimen/business_text_size_16sp"
             android:text="@{DetailChapterViewModel.chapter_name}"
-            tools:text="大标题三分地上范德萨发你的"
+            tools:text="大标题三分地上范德萨发你的大标题三分地上范德萨发你的大标题三分地上范德萨发你的大标题三分地上范德萨发你的"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

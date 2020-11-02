@@ -59,6 +59,7 @@
                 style="@style/ButtonStyle"
                 bindClick="@{viewModel.getCode}"
                 bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
+                bindCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_52"
                 android:layout_marginTop="@dimen/dp_40"
