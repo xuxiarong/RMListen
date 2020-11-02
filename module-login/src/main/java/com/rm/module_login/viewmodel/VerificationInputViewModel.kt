@@ -1,6 +1,7 @@
 package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -29,7 +30,7 @@ import kotlinx.coroutines.flow.flow
  */
 class VerificationInputViewModel(private val repository: LoginRepository) : BaseVMViewModel() {
     // 获取验证码的类型,0 = 登陆类型，1=重置密码类型
-    var codeType = ObservableField<Int>(0)
+    var codeType = ObservableInt(0)
 
     // 发送验证码的手机号码
     var phone = ""
@@ -54,12 +55,12 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
     private fun completeInput(content: String) {
         // 验证码输入完成
         showLoading()
-        when (codeType.get()!!) {
+        when (codeType.get()) {
             TYPE_LOGIN -> {
                 // 登录类型,验证码登陆
                 loginByVerifyCode(content)
             }
-            TYPE_RESET_PWD -> {
+            TYPE_RESET_PWD,TYPE_FORGET_PWD -> {
                 // 重置密码类型，校验验证码是否正确
                 verificationCode(content)
             }
