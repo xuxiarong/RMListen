@@ -42,6 +42,11 @@ object PlayGlobalData{
     var playSpeed = ObservableFloat(1.0f)
 }
 
+object AudioSortType{
+    const val SORT_DESC = "desc"
+    const val SORT_ASC = "asc"
+
+}
 
 // ******** home ********
 //是否是第首次收藏

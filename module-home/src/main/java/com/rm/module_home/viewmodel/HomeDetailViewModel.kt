@@ -17,6 +17,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.ChapterList
@@ -80,7 +81,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     val anchor_id = ObservableField<String>()
 
     var audioId = ObservableField<String>("")
-    var sort = ObservableField<String>()
+    var sort = ObservableField<String>(AudioSortType.SORT_ASC)
     var total = ObservableField<String>()
     var showStatus = ObservableField<String>()
     val actionControl = MutableLiveData<String>()
@@ -460,7 +461,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     fun itemClick(context: Context, bean: ChapterList) {
         playService.toPlayPage(
-            context, bean, Jump.CHAPTER.from
+            context, bean, Jump.CHAPTER.from,sort.get()!!
         )
     }
 

@@ -118,14 +118,14 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         mViewModel.actionControl.observe(this, Observer {
             mViewModel.detailInfoData.get()?.let {
                 playService.toPlayPage(
-                    this@HomeDetailActivity, DetailBookBean(
+                    context = this@HomeDetailActivity, bean = DetailBookBean(
                         audio_id = it.list.audio_id,
                         audio_name = it.list.audio_name,
                         original_name = it.list.original_name,
                         author = it.list.author,
                         audio_cover_url = it.list.audio_cover_url,
                         anchor = it.list.anchor
-                    ), Jump.DETAILSBOOK.from
+                    ), from = Jump.DETAILSBOOK.from, sortType = mViewModel.sort.get()!!
                 )
             }
         })

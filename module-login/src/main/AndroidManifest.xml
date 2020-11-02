@@ -11,7 +11,8 @@
         <activity
             android:name=".activity.LoginByPasswordActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <!-- 验证码输入界面 -->
         <activity
             android:name=".activity.VerificationInputActivity"

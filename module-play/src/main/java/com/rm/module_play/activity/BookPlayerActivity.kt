@@ -65,6 +65,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     //是否重置播放
     var isResumePlay = false
 
+
     companion object {
         const val chapterListModel = "chapterListModel"
         const val fromJump = "fromJump"
@@ -74,7 +75,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         fun startActivity(
             context: Context,
             homeDetailBean: DetailBookBean?,
-            from: String
+            from: String,
+            sortType:String
         ) {
             homeDetailBean?.let {
                 val intent = Intent(context, BookPlayerActivity::class.java)
@@ -89,7 +91,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         fun startActivity(
             context: Context,
             chapter: ChapterList?,
-            from: String
+            from: String,
+            sortType:String
         ) {
             chapter?.let {
                 val intent = Intent(context, BookPlayerActivity::class.java)

@@ -12,6 +12,7 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.net.BusinessRetrofitClient
@@ -354,7 +355,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             created_at = "2020-09-09",
             recentPlay = 0L,
             chapter_id = model.chapter_id
-        ),from = Jump.CHAPTER.from)
+        ),from = Jump.CHAPTER.from,sortType = AudioSortType.SORT_DESC)
 
     }
 

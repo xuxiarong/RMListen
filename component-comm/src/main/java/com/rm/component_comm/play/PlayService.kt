@@ -21,16 +21,28 @@ interface PlayService : ApplicationProvider {
     fun showView(context: Context)
 
     //跳转到播放器页面
-    fun toPlayPage(context: Context, bean: DetailBookBean,from:String)
+    fun toPlayPage(
+        context: Context, bean: DetailBookBean, from: String, sortType: String
+    )
+
     //从播放历史和最近播放进入播放页面
-    fun toPlayPage(context: Context, chapterId: String, audioId: String,from: String)
+    fun toPlayPage(
+        context: Context, chapterId: String, audioId: String, from: String
+    )
+
     //通过传入章节进来
-    fun toPlayPage(context: Context, book: ChapterList,from:String)
+    fun toPlayPage(context: Context, book: ChapterList, from: String, sortType: String)
+
     //通过订阅
-    fun toPlayPage(context: Context, book: MutableList<ChapterList>,from:String,chapterId: String)
+    fun toPlayPage(
+        context: Context,
+        book: MutableList<ChapterList>,
+        from: String,
+        chapterId: String
+    )
 
     //通过本地下载列表跳转过来
-    fun toPlayPage(context: Context, audio : DownloadAudio,chapterId: String,from:String)
+    fun toPlayPage(context: Context, audio: DownloadAudio, chapterId: String, from: String)
 
     //播放历史
     fun queryPlayBookList(): List<HistoryPlayBook>?

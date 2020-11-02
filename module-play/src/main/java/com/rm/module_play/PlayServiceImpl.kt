@@ -1,7 +1,6 @@
 package com.rm.module_play
 
 import android.content.Context
-import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.baselisten.util.setOnClickNotDoubleListener
@@ -34,19 +33,21 @@ class PlayServiceImpl : PlayService {
         }
     }
 
-    override fun toPlayPage(context: Context, bean: DetailBookBean, from: String) {
-        BookPlayerActivity.startActivity(context, bean, from)
+    override fun toPlayPage(
+        context: Context, bean: DetailBookBean, from: String, sortType: String
+    ) {
+        BookPlayerActivity.startActivity(context, bean, from,sortType)
 
     }
 
 
-    override fun toPlayPage(context: Context, chapterId: String, audioId: String,from: String) {
-        BookPlayerActivity.startActivity(context, chapterId,audioId, from)
+    override fun toPlayPage(context: Context, chapterId: String, audioId: String, from: String) {
+        BookPlayerActivity.startActivity(context, chapterId, audioId, from)
 
     }
 
-    override fun toPlayPage(context: Context, book: ChapterList, from: String) {
-        BookPlayerActivity.startActivity(context, book, from)
+    override fun toPlayPage(context: Context, book: ChapterList, from: String,sortType: String) {
+        BookPlayerActivity.startActivity(context, book, from,sortType)
 
     }
 
@@ -56,11 +57,21 @@ class PlayServiceImpl : PlayService {
         from: String,
         chapterId: String
     ) {
-        BookPlayerActivity.startActivity(context, book,chapterId, from)
+        BookPlayerActivity.startActivity(context, book, chapterId, from)
     }
 
-    override fun toPlayPage(context: Context, audio : DownloadAudio,chapterId: String,from:String){
-        BookPlayerActivity.startActivity(context = context,audio = audio,chapterId = chapterId,from = from)
+    override fun toPlayPage(
+        context: Context,
+        audio: DownloadAudio,
+        chapterId: String,
+        from: String
+    ) {
+        BookPlayerActivity.startActivity(
+            context = context,
+            audio = audio,
+            chapterId = chapterId,
+            from = from
+        )
     }
 
 
@@ -68,7 +79,7 @@ class PlayServiceImpl : PlayService {
         DaoUtil(HistoryPlayBook::class.java, "").queryAll()
 
     override fun toCommentCenterActivity(context: Context, audioID: String) {
-        CommentCenterActivity.toCommentCenterActivity(context,audioID)
+        CommentCenterActivity.toCommentCenterActivity(context, audioID)
     }
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
