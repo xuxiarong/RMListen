@@ -597,7 +597,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     // 倒计时开始
                 }.onCompletion {
                     // 倒计时结束
-                    countdownTime.set("")
+                    if (playManger.getRemainingSetInt() <= 0) {
+                        countdownTime.set("")
+                    }
                 }.collect {
                     countdownTime.set(mmSS.time2format(it * 1000))
                 }

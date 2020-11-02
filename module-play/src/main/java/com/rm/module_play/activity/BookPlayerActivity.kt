@@ -385,19 +385,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             mViewModel.mBookPlayerAdapter.setList(it)
         })
 
-        mViewModel.playBookSate.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
 
-            }
-        })
-        mViewModel.countdownTime.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-
-            }
-
-        })
     }
 
     /**
