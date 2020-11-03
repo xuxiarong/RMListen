@@ -241,18 +241,17 @@
                 android:orientation="vertical">
 
                 <com.flyco.roundview.RoundTextView
+                    bindPlaySpeedText="@{viewModel.playSpeed}"
                     android:layout_width="@dimen/dp_24"
-                    android:layout_height="@dimen/dp_14"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_15"
-                    app:rv_strokeWidth="@dimen/dp_1"
+                    android:gravity="center"
+                    android:textColor="@color/business_text_color_b1b1b1"
+                    android:textSize="@dimen/business_text_size_8sp"
                     app:rv_cornerRadius="@dimen/dp_2"
                     app:rv_strokeColor="@color/business_text_color_b1b1b1"
-                    android:textSize="@dimen/business_text_size_8sp"
-                    android:textColor="@color/business_text_color_b1b1b1"
-                    bindPlaySpeedText="@{viewModel.playSpeed}"
-                    tools:text="HD"
-                    />
+                    app:rv_strokeWidth="@dimen/dp_1"
+                    tools:text="HD" />
 
                 <com.rm.business_lib.wedgit.menupoint.MenuPointView
                     android:id="@+id/music_play_point"
@@ -266,7 +265,7 @@
                     tools:visibility="visible" />
 
                 <TextView
-                    android:layout_width="9dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="18dp"
                     android:gravity="center"
                     android:text="@{viewModel.countdownTime}"

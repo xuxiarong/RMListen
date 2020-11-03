@@ -560,6 +560,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         alarmTimes = 0L
         if (model < 10) {
             mRemainingSet = model//集数记录
+        }else{
+            mRemainingSet=-1
         }
         when (model) {
             MUSIC_ALARM_MODEL_20,
@@ -571,18 +573,14 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 alarmManger.setAlarm(alarmTimes)
             }
 
-//            MUSIC_ALARM_MODEL_EPISODE_ONE,
-//            MUSIC_ALARM_MODEL_EPISODE_TWO,
-//            MUSIC_ALARM_MODEL_EPISODE_THREE,
-//            MUSIC_ALARM_MODEL_EPISODE_FOUR,
-//            MUSIC_ALARM_MODEL_EPISODE_FIVE -> {
-//                for (index in 1..mRemainingSet) {
-//                    alarmTimes += (mAudios.getOrNull(index - 1 + mCurrentPlayIndex) as BaseAudioInfo).duration * 1000
-//                }
-//                alarmTimes += System.currentTimeMillis()
-//                alarmManger.setAlarm(100000)
-//
-//            }
+            MUSIC_ALARM_MODEL_EPISODE_ONE,
+            MUSIC_ALARM_MODEL_EPISODE_TWO,
+            MUSIC_ALARM_MODEL_EPISODE_THREE,
+            MUSIC_ALARM_MODEL_EPISODE_FOUR,
+            MUSIC_ALARM_MODEL_EPISODE_FIVE -> {
+                alarmTimes=-1
+                alarmManger.cancelAlarm()
+            }
 
             MUSIC_ALARM_MODEL_0 -> {
                 alarmManger.cancelAlarm()

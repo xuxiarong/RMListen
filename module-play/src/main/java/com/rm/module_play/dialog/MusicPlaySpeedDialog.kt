@@ -73,7 +73,7 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
     internal class TimeSAdapter(list: MutableList<String>) :
         BaseQuickAdapter<String, BaseViewHolder>(R.layout.rv_item_speed_setting, list) {
         override fun convert(holder: BaseViewHolder, item: String) {
-            val isCheckPos = musicPlayerManger.getPlayerMultiple()
+            val isCheckPos = PlayGlobalData.playSpeed.get()
             holder.getView<ImageView>(R.id.music_play_speed_setting_check).background =
                 if (isCheckPos == timeSet[item]) ContextCompat.getDrawable(
                     context,

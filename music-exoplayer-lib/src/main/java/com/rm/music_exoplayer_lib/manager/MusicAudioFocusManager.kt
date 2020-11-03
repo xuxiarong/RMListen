@@ -2,9 +2,12 @@ package com.rm.music_exoplayer_lib.manager
 
 import android.content.Context
 import android.media.AudioAttributes
+import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.AudioManager.OnAudioFocusChangeListener
+import android.os.Build
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
+
 
 /**
  *音频监听器，当音频输出焦点被其他 MediaPlayer 实例抢占，则暂停播放，重新获取到音频输出焦点，自动恢复播放
@@ -14,6 +17,7 @@ import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
  */
 class MusicAudioFocusManager constructor(val context: Context) {
     private var mVolumeWhenFocusLossTransientCanDuck = 0
+    private var mFocusRequest: AudioFocusRequest? = null
     private val mAudioManager by lazy {
         context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     }
@@ -29,11 +33,22 @@ class MusicAudioFocusManager constructor(val context: Context) {
      */
     fun requestAudioFocus(focusListener: OnAudioFocusListener): Int {
         mFocusListener = focusListener
-        return mAudioManager.requestAudioFocus(
-            onAudioFocusChangeListener,
-            AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK,
-            AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mFocusRequest = onAudioFocusChangeListener?.let {
+                AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(playbackAttributes)
+                    .setWillPauseWhenDucked(true)
+                    .setOnAudioFocusChangeListener(it)
+                    .build()
+            }
+           return mFocusRequest?.let { mAudioManager.requestAudioFocus(it) }!!
+        } else {
+            return mAudioManager.requestAudioFocus(
+                onAudioFocusChangeListener,
+                AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
+            )
+        }
+
     }
 
     /**
@@ -44,7 +59,7 @@ class MusicAudioFocusManager constructor(val context: Context) {
     }
 
     private val onAudioFocusChangeListener: OnAudioFocusChangeListener? =
-        OnAudioFocusChangeListener { focusChange ->
+        AudioManager.OnAudioFocusChangeListener { focusChange ->
             exoLog(
                 "onAudioFocusChange:focusChange:$focusChange"
             )
@@ -73,7 +88,7 @@ class MusicAudioFocusManager constructor(val context: Context) {
                 }
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                     exoLog("瞬间失去焦点")
-                    if (mFocusListener?.isPlaying==true) {
+                    if (mFocusListener?.isPlaying == true) {
                         volume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
                         if (volume > 0) {
                             mVolumeWhenFocusLossTransientCanDuck = volume
