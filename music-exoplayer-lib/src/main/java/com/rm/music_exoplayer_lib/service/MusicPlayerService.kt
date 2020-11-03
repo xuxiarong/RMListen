@@ -13,7 +13,6 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Message
 import android.util.Log
-import android.widget.Toast
 import com.example.music_exoplayer_lib.manager.BookAlarmManger
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -34,7 +33,6 @@ import com.rm.music_exoplayer_lib.notification.NOTIFICATION_ID
 import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 import com.rm.music_exoplayer_lib.utils.CacheUtils
-import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
 import java.util.*
 
@@ -91,7 +89,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
         }
     }
-    val alarmManger by lazy {
+    private val alarmManger by lazy {
         BookAlarmManger(this)
     }
 
@@ -107,21 +105,23 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
     }
     private val dataSourceFactory: DataSource.Factory by lazy {
+
         DefaultDataSourceFactory(
             this,
             getUserAgent(this, this.packageName)
         )
     }
-
-    //音频管理
-    private var mAudioFocusManager: MusicAudioFocusManager? = null
+    val mAudioFocusManager by lazy {
+        MusicAudioFocusManager(applicationContext)
+    }
 
     //进度条消息
     @SuppressLint("HandlerLeak")
     private val mUpdateProgressHandler = object : Handler() {
 
         override fun handleMessage(msg: Message) {
-            val duration = (getCurrentPlayerMusic()?.duration?.times(1000) ?:mExoPlayer.contentDuration)
+            val duration =
+                (getCurrentPlayerMusic()?.duration?.times(1000) ?: mExoPlayer.contentDuration)
             val currentPosition = mExoPlayer.contentPosition
             onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
@@ -136,10 +136,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     //Service委托代理人
     private var mPlayerBinder: MusicPlayerBinder? = null
 
+
     override fun onCreate() {
         super.onCreate()
-        mAudioFocusManager = MusicAudioFocusManager(this.applicationContext)
-        requestAudioFocus = mAudioFocusManager?.requestAudioFocus(
+        mAudioFocusManager.setFocusListener(
             object : MusicAudioFocusManager.OnAudioFocusListener {
                 /**
                  * 恢复音频输出焦点，这里恢复播放需要和用户调用恢复播放有区别
@@ -160,14 +160,19 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                     passivePause()
                 }
 
+                override fun onFocusSeize(i: Int) {
+                    //音频被抢占
+                    passivePause()
+                    requestAudioFocus = i
+                }
+
                 /**
                  * 返回播放器是否正在播放
                  * @return 为true正在播放
                  */
                 override val isPlaying: Boolean
                     get() = isPlaying()
-            }) ?: -1
-
+            })
         registerReceiver()
         initPlayerConfig()
         initAlarmConfig()
@@ -279,7 +284,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     fun showNotification() {
         getCurrentPlayerMusic()?.let {
-            notificationManger?.showNotification(this, it,"")
+            notificationManger?.showNotification(this, it, "")
 
         }
 
@@ -301,7 +306,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mUpdateProgressHandler.removeMessages(0)
         mExoPlayer.release()
         mExoPlayer.removeListener(mEventListener)
-        mAudioFocusManager?.releaseAudioFocus()
+        mAudioFocusManager.releaseAudioFocus()
     }
 
     override fun playLastMusic() {
@@ -374,12 +379,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun seekTo(currentTime: Long) {
-        if(currentTime<=0){
+        if (currentTime <= 0) {
             mExoPlayer.seekTo(0L)
-        }else{
+        } else {
             mExoPlayer.seekTo(currentTime)
         }
-        Log.d("suolong","currentTime = $currentTime}")
+        Log.d("suolong", "currentTime = $currentTime}")
     }
 
     override fun getCurrentPlayerMusic(): BaseAudioInfo? =
@@ -547,7 +552,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun getPlayerModel(): Int = mPlayModel
 
     //初始化闹钟
-    fun initAlarmConfig() {
+    private fun initAlarmConfig() {
         alarmManger.setAlarm(alarmTimes)
 
     }
@@ -560,8 +565,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         alarmTimes = 0L
         if (model < 10) {
             mRemainingSet = model//集数记录
-        }else{
-            mRemainingSet=-1
+        } else {
+            mRemainingSet = -1
         }
         when (model) {
             MUSIC_ALARM_MODEL_20,
@@ -578,7 +583,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             MUSIC_ALARM_MODEL_EPISODE_THREE,
             MUSIC_ALARM_MODEL_EPISODE_FOUR,
             MUSIC_ALARM_MODEL_EPISODE_FIVE -> {
-                alarmTimes=-1
+                alarmTimes = -1
                 alarmManger.cancelAlarm()
             }
 
@@ -609,6 +614,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun getRemainingSetInt(): Int = mRemainingSet
     override fun getPlayerMultiple(): Float = playerMultiples
     override fun resumePlayState(state: Boolean) {
+        if (requestAudioFocus != 1) {
+            requestAudioFocus = mAudioFocusManager.requestAudioFocus()
+        }
         showState = state
     }
 
@@ -630,6 +638,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      * 更新播放进度
      */
     private fun onUpdateProgress(currentPosition: Long, duration: Long) {
+
         mOnPlayerEventListeners.forEach {
             it.onTaskRuntime(duration, currentPosition, 0, 0)
         }
@@ -689,7 +698,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             showNotification()
             exoLog("onPlayerError===>${error.message}")
             mOnPlayerEventListeners.forEach {
-                it.onMusicPlayerState(-1,error.message)
+                it.onMusicPlayerState(-1, error.message)
             }
 
         }
