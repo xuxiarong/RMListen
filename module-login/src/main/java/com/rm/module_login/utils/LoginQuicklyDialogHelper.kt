@@ -1,10 +1,8 @@
 package com.rm.module_login.utils
 
-import android.content.Context
 import android.view.Gravity
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
@@ -17,6 +15,7 @@ import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.LoginPhoneReminder
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginDialogQuicklyLoginBinding
@@ -132,7 +131,7 @@ class LoginQuicklyDialogHelper constructor(
 
     fun show() {
         loginQuicklyModel.clear()
-
+        loginQuicklyModel.phoneInputViewModel.phone.set(LoginPhoneReminder.getCurrentActivityInputPhone(context = fragmentActivity))
         quicklyLoginDialog.showCommonDialog(
             fragmentActivity,
             R.layout.login_dialog_quickly_login,

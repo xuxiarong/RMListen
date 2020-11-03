@@ -53,6 +53,7 @@
             android:paddingStart="@dimen/dp_12"
             android:paddingEnd="0dp"
             android:text="@={phoneInputViewModel.phone}"
+            afterTextChanged="@{phoneInputViewModel.phoneChangeVar}"
             android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e" />
 
         <androidx.appcompat.widget.AppCompatImageButton

@@ -102,4 +102,5 @@ abstract class BaseActivity : FragmentActivity() {
             setMargins(0, 0, 0, dip(25))
         }
     }
+
 }

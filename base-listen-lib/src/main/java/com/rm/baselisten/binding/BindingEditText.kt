@@ -1,5 +1,6 @@
 package com.rm.baselisten.binding
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
@@ -33,6 +34,27 @@ fun EditText.afterTextChanged(action: ((String) -> Unit)?) {
         }
     })
 }
+
+@BindingAdapter(value = ["afterTextChanged"])
+fun EditText.afterTextChanged(action: ((Context, String) -> Unit)?) {
+    if (action == null) {
+        return
+    }
+
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            action(context,s.toString())
+            context.applicationContext
+        }
+    })
+}
+
 
 /**
  * 不允许空格输入

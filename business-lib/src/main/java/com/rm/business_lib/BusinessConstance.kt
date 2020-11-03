@@ -1,5 +1,6 @@
 package com.rm.business_lib
 
+import android.content.Context
 import androidx.annotation.IntDef
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -48,6 +49,22 @@ object AudioSortType{
 
 }
 
+object LoginPhoneReminder{
+    var phoneMap  = hashMapOf<Int,String>()
+
+    fun getCurrentActivityInputPhone(context: Context) : String{
+        if(phoneMap.size>0 && phoneMap[context.applicationContext.hashCode()]!=null){
+           return phoneMap[context.applicationContext.hashCode()]!!
+        }
+        return ""
+    }
+
+    fun putCurrentActivityInputPhone(context: Context,phone : String){
+        phoneMap.clear()
+        phoneMap[context.applicationContext.hashCode()] = phone
+    }
+
+}
 // ******** home ********
 //是否是第首次收藏
 const val IS_FIRST_FAVORITES = "is_first_favorites"
