@@ -9,6 +9,8 @@
             android:exported="true" />
         <receiver android:name=".receiver.AlarmBroadcastReceiver"/>
 
+
+
     </application>
 
 </manifest>

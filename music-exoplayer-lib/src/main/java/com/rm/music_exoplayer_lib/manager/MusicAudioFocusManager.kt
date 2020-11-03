@@ -37,12 +37,14 @@ class MusicAudioFocusManager constructor(val context: Context) {
      */
     fun requestAudioFocus(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mFocusRequest = onAudioFocusChangeListener?.let {
-                AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                    .setAudioAttributes(playbackAttributes)
-                    .setWillPauseWhenDucked(true)
-                    .setOnAudioFocusChangeListener(it)
-                    .build()
+            if (mFocusRequest==null){
+                mFocusRequest = onAudioFocusChangeListener?.let {
+                    AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                        .setAudioAttributes(playbackAttributes)
+                        .setWillPauseWhenDucked(true)
+                        .setOnAudioFocusChangeListener(it)
+                        .build()
+                }
             }
             mFocusRequest?.let {
                 mAudioManager.requestAudioFocus(it)
