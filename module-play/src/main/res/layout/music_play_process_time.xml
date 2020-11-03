@@ -31,7 +31,6 @@
         <com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
             android:id="@+id/music_play_bubbleSeekBar"
             android:layout_width="260dp"
-            app:progressChangedListener="@{1}"
             app:setProgress="@{viewModel.process}"
             app:setProgressMax="@{viewModel.maxProcess}"
             app:updateThumbText="@{viewModel.updateThumbText}"

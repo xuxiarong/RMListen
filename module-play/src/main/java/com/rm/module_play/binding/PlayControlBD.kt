@@ -10,7 +10,6 @@ import com.rm.business_lib.wedgit.progressbar.CircularProgressView
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
 import com.rm.module_play.cache.PlayState
-import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
 
@@ -22,20 +21,18 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
  */
 
 @BindingAdapter("progressChangedListener")
-fun BubbleSeekBar.progressChangedListener(pos: Int) {
+fun BubbleSeekBar.progressChangedListener(action : (String)->Unit) {
     setOnProgressChangedListener(object :
         BubbleSeekBar.OnProgressChangedListener {
         override fun onProgressChanged(
             bubbleSeekBar: BubbleSeekBar?,
             progress: Float,
+            thumbText: String,
             fromUser: Boolean
         ) {
-            val str =
-                "${formatTimeInMillisToString(progress.toLong())}/${formatTimeInMillisToString(
-                    bubbleSeekBar?.getMax()?.toLong() ?: 0
-                )}"
-//            music_play_bubbleSeekBar.updateThumbText(str)
-//            bubbleFl.text = str
+            if(fromUser){
+                action(thumbText)
+            }
         }
 
         override fun onStartTrackingTouch(bubbleSeekBar: BubbleSeekBar?) {
@@ -43,8 +40,8 @@ fun BubbleSeekBar.progressChangedListener(pos: Int) {
 
         override fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?,progress : Float) {
             MusicPlayerManager.musicPlayerManger.seekTo(progress.toLong())
+            action("")
         }
-
     })
 }
 
