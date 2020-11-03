@@ -24,13 +24,14 @@
             android:drawablePadding="3dp"
             android:gravity="center"
             android:onClick="@{()->viewModel.playManger.seekTo(viewModel.playManger.getCurDurtion() - 1000 * 15)}"
-            android:text="15s"
+            android:text="@string/play_skip_15_second"
             android:textColor="@color/business_text_color_666666"
             android:textSize="10sp" />
 
         <com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
             android:id="@+id/music_play_bubbleSeekBar"
             android:layout_width="260dp"
+            app:progressChangedListener="@{viewModel.seekChangeVar}"
             app:setProgress="@{viewModel.process}"
             app:setProgressMax="@{viewModel.maxProcess}"
             app:updateThumbText="@{viewModel.updateThumbText}"
@@ -56,7 +57,7 @@
             android:drawablePadding="3dp"
             android:gravity="center"
             android:onClick="@{()->viewModel.playManger.seekTo(viewModel.playManger.getCurDurtion() + 1000 * 15)}"
-            android:text="15s"
+            android:text="@string/play_skip_15_second"
             android:textColor="@color/business_text_color_666666"
             android:textSize="10sp" />
     </RelativeLayout>

@@ -3,7 +3,9 @@ package com.rm.module_play.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-import androidx.databinding.*
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableFloat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -71,9 +73,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var hasPreChapter = ObservableBoolean(false)
     var hasNextChapter = ObservableBoolean(false)
     var sortType = ObservableField<String>("")
-    var isDragSeek = ObservableBoolean(false)
     var seekText = ObservableField<String>("")
-
+    var seekChangeVar : (String)->Unit = {seekTextChange(it)}
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -570,6 +571,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (hasNextChapter.get()) {
             playManger.playNextMusic()
         }
+    }
+
+    fun seekTextChange(changeText : String){
+        this.seekText.set(changeText)
     }
 
     fun commentAvatarClick(context: Context, member_id: String) {

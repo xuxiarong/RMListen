@@ -58,7 +58,7 @@
 
 
         <TextView
-            android:id="@+id/fl_music_playe_page"
+            android:id="@+id/playChapterName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
@@ -71,13 +71,13 @@
             tools:ignore="MissingConstraints" />
 
         <RelativeLayout
-            android:id="@+id/rl_music_play_titles"
+            android:id="@+id/playAudioName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fl_music_playe_page"
+            app:layout_constraintTop_toBottomOf="@+id/playChapterName"
             tools:ignore="MissingConstraints">
 
             <TextView
@@ -109,7 +109,7 @@
             android:layout_marginTop="30dp"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rl_music_play_titles"
+            app:layout_constraintTop_toBottomOf="@+id/playAudioName"
             tools:ignore="MissingConstraints">
 
             <include layout="@layout/music_play_process_time" />

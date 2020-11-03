@@ -9,6 +9,7 @@
             name="viewModel"
             type="com.rm.module_play.viewmodel.PlayViewModel" />
 
+        <import type="android.text.TextUtils"/>
         <variable
             name="itemModel"
             type="com.rm.module_play.model.PlayControlModel" />
@@ -51,7 +52,7 @@
 
 
         <FrameLayout
-            android:id="@+id/fl_img_layout"
+            android:id="@+id/playAudioCover"
             android:layout_width="match_parent"
             android:layout_height="280dp"
             android:layout_marginLeft="48dp"
@@ -92,32 +93,33 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/fl_music_playe_page"
+            android:id="@+id/playChapterName"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:text="@{viewModel.playControlModel.baseAudioInfo.audioName}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="18sp"
+            android:gravity="center"
             android:lines="1"
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fl_img_layout"
+            app:layout_constraintTop_toBottomOf="@+id/playAudioCover"
             tools:ignore="MissingConstraints"
             tools:text="与罗摩相遇" />
 
         <RelativeLayout
-            android:id="@+id/rl_music_play_titles"
+            android:id="@+id/playAudioName"
             android:layout_width="match_parent"
             android:layout_height="26dp"
-            isVisible="@{!viewModel.isDragSeek}"
+            isVisible="@{TextUtils.isEmpty(viewModel.seekText)}"
             android:layout_marginTop="@dimen/dp_11"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fl_music_playe_page"
+            app:layout_constraintTop_toBottomOf="@+id/playChapterName"
             tools:ignore="MissingConstraints">
 
             <View
@@ -187,18 +189,22 @@
         <androidx.appcompat.widget.AppCompatTextView
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fl_music_playe_page"
-            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@id/playChapterName"
+            android:layout_marginTop="@dimen/dp_11"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
             tools:text="00:12/00:12"
             android:text="@{viewModel.seekText}"
-            isVisible="@{viewModel.isDragSeek}"
+            android:gravity="center"
+            android:textSize="@dimen/business_text_size_18sp"
+            isVisible="@{!TextUtils.isEmpty(viewModel.seekText)}"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_25"/>
+            android:layout_height="@dimen/dp_26"/>
 
         <com.rm.module_play.view.BubbleSeekBar
             android:id="@+id/bsb"
             android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@+id/rl_music_play_titles"
+            app:layout_constraintTop_toBottomOf="@+id/playAudioName"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
             android:paddingTop="7dp"
@@ -230,8 +236,8 @@
             android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@+id/rl_music_play_titles"
+            android:layout_marginTop="@dimen/dp_48"
+            app:layout_constraintTop_toBottomOf="@+id/playChapterName"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"/>
 
