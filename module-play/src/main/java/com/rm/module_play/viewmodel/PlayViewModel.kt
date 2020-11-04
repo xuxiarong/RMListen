@@ -19,6 +19,7 @@ import com.rm.business_lib.bean.*
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -30,7 +31,6 @@ import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.module_play.cache.PlayBookState
-import com.rm.module_play.cache.PlayState
 import com.rm.module_play.model.*
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.repository.BookPlayRepository
@@ -69,7 +69,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var playBookSate = ObservableField<PlayBookState>()
 
     //播放状态进度条，0是播放2是加载中1是暂停,false是暂停
-    var playStatusBean = ObservableField<PlayState>(PlayState())
+    var playStatusBean = ObservableField<PlayState>(
+        PlayState()
+    )
     var hasPreChapter = ObservableBoolean(false)
     var hasNextChapter = ObservableBoolean(false)
     var sortType = ObservableField<String>("")
@@ -268,6 +270,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         val audioId = audioID.get()
         if (audioId != null) {
             RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
+            finish()
         }
     }
 

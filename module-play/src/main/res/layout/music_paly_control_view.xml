@@ -41,7 +41,7 @@
             <com.rm.business_lib.wedgit.progressbar.CircularProgressView
                 android:id="@+id/progress_play"
                 bindPlayPrepareProgress="@{viewModel.playStatusBean}"
-                android:layout_width="49dp"
+                android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:layout_gravity="center"
                 app:backColor="@color/business_color_f7f7f7"
@@ -51,18 +51,18 @@
                 tools:progress="65" />
 
             <com.flyco.roundview.RoundFrameLayout
-                android:layout_width="66dp"
-                android:layout_height="66dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_gravity="center"
                 app:rv_backgroundColor="@color/business_color_ff5e5e"
-                app:rv_cornerRadius="40dp">
+                app:rv_isRadiusHalfHeight="true">
 
-                <com.airbnb.lottie.LottieAnimationView
+                <com.rm.module_play.view.PlayControlView
                     android:id="@+id/animation_view"
-                    bindClick="@{viewModel.playManger.playOrPause}"
-                    playState="@{viewModel.playStatusBean}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    bindPlayControlClick="@{viewModel.playManger.playOrPause}"
+                    bindPlayControl="@{viewModel.playStatusBean}"
+                    android:layout_width="@dimen/dp_56"
+                    android:layout_height="@dimen/dp_56"
                     android:layout_gravity="center" />
             </com.flyco.roundview.RoundFrameLayout>
 

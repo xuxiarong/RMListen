@@ -21,6 +21,7 @@ class SplashActivity :BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewMo
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if(mViewModel.isSkipAd.get()){
                     MainMainActivity.startMainActivity(this@SplashActivity)
+                    finish()
                 }
             }
         })

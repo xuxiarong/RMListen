@@ -1,15 +1,19 @@
 package com.rm.module_play.binding
 
+import android.animation.Animator
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
+import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.wedgit.progressbar.CircularProgressView
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
-import com.rm.module_play.cache.PlayState
+import com.rm.module_play.view.PlayControlView
+import com.rm.music_exoplayer_lib.constants.STATE_BUFFERING
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
 
@@ -63,16 +67,93 @@ fun BubbleSeekBar.updateThumbText(str: String) {
 }
 
 
-@BindingAdapter("playState")
-fun LottieAnimationView.startLottieAnimation(state: PlayState) {
-    if (!state.read || state.state==4) {
-        setAnimation("stop_play.json")
-    } else {
-        setAnimation("play_stop.json")
+@BindingAdapter("bindPlayOrPause")
+fun LottieAnimationView.bindPlayOrPause(state: PlayState) {
+    var playAnimName = ""
+    var playFinish = true
+
+    if(isAnimating ){
+        DLog.d("suolongg","z正在动画中，退出")
+        return
     }
-    playAnimation()
+
+    if (!state.read && (state.state==4 || state.state == 3) && playFinish && (playAnimName == "play_start.json"||playAnimName == "")) {
+        setAnimation("play_pause.json")
+        addAnimatorListener(object : Animator.AnimatorListener{
+            override fun onAnimationRepeat(animation: Animator?) {
+                playAnimName = "play_pause.json"
+                playFinish = false
+                DLog.d("suolong","play_pause onAnimationRepeat")
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                playFinish = true
+                playAnimName = "play_pause.json"
+                DLog.d("suolong","play_pause onAnimationEnd")
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+                playAnimName = "play_pause.json"
+                playFinish = true
+                DLog.d("suolong","play_pause onAnimationCancel")
+
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+                playFinish = false
+                playAnimName = "play_pause.json"
+                DLog.d("suolong","play_pause onAnimationStart")
+            }
+        })
+        playAnimation()
+
+    } else if(state.read && state.state == 3 && playFinish && playAnimName == "play_pause.json"||playAnimName == "") {
+        setAnimation("play_start.json")
+        addAnimatorListener(object : Animator.AnimatorListener{
+            override fun onAnimationRepeat(animation: Animator?) {
+                playAnimName = "play_start.json"
+                playFinish = false
+                DLog.d("suolong","play_start onAnimationRepeat")
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                playAnimName = "play_start.json"
+                playFinish = true
+                DLog.d("suolong","play_start onAnimationEnd")
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+                playAnimName = "play_start.json"
+                playFinish = true
+                DLog.d("suolong","play_start onAnimationCancel")
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+                playFinish = false
+                DLog.d("suolong","play_start onAnimationStart")
+            }
+        })
+        playAnimation()
+    }
 
 }
+
+@BindingAdapter("bindPlayControl")
+fun PlayControlView.bindPlayControl(playState: PlayState){
+    startOrPause(playState = playState)
+}
+
+@BindingAdapter("bindPlayControlClick")
+fun PlayControlView.bindPlayControlClick(action: (() -> Unit)?) {
+    if (action != null) {
+        setOnClickListener {
+            if(playFinish){
+                action()
+            }
+        }
+    }
+}
+
 
 @BindingAdapter("bindPlayPreSrc")
 fun ImageView.bindPlayPreSrc(hasPre: Boolean) {
@@ -99,7 +180,7 @@ fun ImageView.bindPlayNextSrc(hasNext: Boolean) {
 
 @BindingAdapter("bindPlayPrepareProgress")
 fun CircularProgressView.bindPlayPrepareProgress(playStatus: PlayState) {
-    if (playStatus.state == 2) {
+    if (playStatus.state == STATE_BUFFERING) {
         startAutoProgress()
     } else {
         stopAutoProgress()

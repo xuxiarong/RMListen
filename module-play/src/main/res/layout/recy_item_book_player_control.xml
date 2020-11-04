@@ -271,6 +271,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
                 android:layout_marginStart="34dp"
+                android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_PLAY_OPERATING+viewModel.curTime)}"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -291,7 +292,6 @@
                     android:id="@+id/music_play_point"
                     android:layout_width="@dimen/dp_24"
                     android:layout_height="@dimen/dp_24"
-                    android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_PLAY_OPERATING+viewModel.curTime)}"
                     app:menu_number="3"
                     app:menu_point_color="@color/business_text_color_666666"
                     app:menu_point_width="3dp"

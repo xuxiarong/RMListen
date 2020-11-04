@@ -16,9 +16,9 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
-import com.rm.business_lib.coroutinepermissions.requestPermissionsForResult
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
@@ -28,7 +28,6 @@ import com.rm.module_play.PlayConstance
 import com.rm.module_play.R
 import com.rm.module_play.R.anim.activity_top_open
 import com.rm.module_play.cache.PlayBookState
-import com.rm.module_play.cache.PlayState
 import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
 import com.rm.module_play.dialog.*
@@ -43,12 +42,10 @@ import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_FINSH
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_OPERATING
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
-import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_book_player.*
-import java.util.jar.Manifest
 
 
 @Suppress(
@@ -181,6 +178,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         super.onResume()
         mViewModel.playManger.resumePlayState(true)
     }
+
     override fun finish() {
         super.finish()
         overridePendingTransition(0, R.anim.activity_bottom_close)
@@ -336,7 +334,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                     } else {
                                         //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
                                     }
-                                }, isPlay = mViewModel.playStatusBean.get()?.read==true
+                                }, isPlay = mViewModel.playStatusBean.get()?.read == true
                             )
                         }
                     }
@@ -600,21 +598,26 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        mViewModel.playStatusBean.set(
-            PlayState(
-                state = playbackState,
+        val currentStatus = mViewModel.playStatusBean.get()
+        if (currentStatus != null) {
+            if(currentStatus.read == playWhenReady && currentStatus.state == playbackState){
+                return
+            }else{
+                mViewModel.playStatusBean.set(
+                    PlayState(
+                        state = playbackState,
                         read = playWhenReady
+                    )
+                )
+            }
+        } else {
+            mViewModel.playStatusBean.set(
+                PlayState(
+                    state = playbackState,
+                    read = playWhenReady
+                )
             )
-        )
-
-        //播放完成并且没有下一任务，停止播放
-//        if (playbackState == STATE_ENDED && !mViewModel.hasNextChapter.get()) {
-//            mViewModel.playSate.set(false)
-//        } else {
-//
-//        }
-
-
+        }
         DLog.d(
             "suolong",
             " playWhenReady = $playWhenReady --- status = ${playbackState} --- time = ${System.currentTimeMillis()}"
