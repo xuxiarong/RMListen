@@ -53,7 +53,6 @@ fun ImageView.bindUrl(
     isCircle: Boolean = false,
     defaultIcon: Drawable? = null
 ) {
-    DLog.i("------>bindUrl","$bindUrl")
     val url = bindUrl ?: ""
     when {
         isCircle -> {

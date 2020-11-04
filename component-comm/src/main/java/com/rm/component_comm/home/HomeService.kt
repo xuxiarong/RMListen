@@ -3,6 +3,8 @@ package com.rm.component_comm.home
 import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -29,5 +31,20 @@ interface HomeService : ApplicationProvider {
     /**
      * 跳转详情页
      */
-    fun toDetailActivity(context: Context,audioID:String)
+    fun toDetailActivity(context: Context, audioID: String)
+
+    /**
+     * 弹出评论dialog
+     * @param baseViewModel viewMode对象
+     * @param mActivity activity 对象
+     * @param audio 音频Id
+     * @param commentSuccessBlock 评论成功回调
+     */
+    fun showCommentDialog(
+        baseViewModel: BaseVMViewModel,
+        mActivity: FragmentActivity,
+        audio: String,
+        commentSuccessBlock: () -> Unit
+    )
+
 }

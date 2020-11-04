@@ -18,7 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_18"
         android:onClick="@{(view)->click.itemClickFun(view,item)}">
 
 
@@ -26,6 +26,7 @@
             android:id="@+id/listen_subscription_adapter_icon"
             bindUrl="@{item.cover_url}"
             corner="@{4f}"
+            android:layout_marginStart="@dimen/dp_16"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
             android:scaleType="fitXY"
@@ -60,6 +61,7 @@
             android:background="@drawable/business_shape_circle_ff5e5e"
             android:gravity="center"
             android:minWidth="@dimen/dp_18"
+            android:layout_marginEnd="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="@id/listen_subscription_adapter_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/listen_subscription_adapter_title"
@@ -72,6 +74,7 @@
             android:onClick="@{(view)->click.itemChildMoreClickFun(view,item)}"
             android:src="@drawable/business_icon_more"
             android:visibility="visible"
+            android:layout_marginEnd="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="@id/listen_subscription_adapter_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/listen_subscription_adapter_num" />
@@ -109,10 +112,25 @@
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_day"
             android:drawablePadding="@dimen/dp_2"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/listen_subscription_adapter_icon"
             app:layout_constraintEnd_toStartOf="@id/listen_subscription_adapter_more"
             app:layout_constraintStart_toEndOf="@id/listen_subscription_adapter_icon"
             tools:text="2020/08/20" />
+
+        <View
+            android:id="@+id/listen_subscription_adapter_view1"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:background="@color/business_text_color_ffffff"
+            app:layout_constraintTop_toBottomOf="@id/listen_subscription_adapter_icon" />
+
+        <View
+            android:id="@+id/listen_subscription_adapter_view2"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/business_color_f7f7f7"
+            app:layout_constraintTop_toBottomOf="@id/listen_subscription_adapter_view1" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

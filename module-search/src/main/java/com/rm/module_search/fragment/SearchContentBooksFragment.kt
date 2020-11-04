@@ -24,7 +24,9 @@ class SearchContentBooksFragment :
     override fun initModelBrId() = BR.viewModel
 
     override fun initData() {
-
+        mViewModel.loadErrorBlock = {
+            shtTip(it)
+        }
     }
 
     override fun startObserve() {
@@ -32,8 +34,12 @@ class SearchContentBooksFragment :
             val list = it.audio_list
             if (list.isNullOrEmpty()) {
                 mViewModel.showDataEmpty()
+            } else {
+                mViewModel.mPage = 1
+                mViewModel.showContentView()
+                mViewModel.bookAdapter.setList(list)
             }
-            mViewModel.bookAdapter.setList(list)
+
 
         }
     }

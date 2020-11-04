@@ -61,10 +61,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
 
     var mChapterId: String? = null
-    var fromJumpType: String? = null
+    private var fromJumpType: String? = null
 
     //是否重置播放
-    var isResumePlay = false
+    private var isResumePlay = false
 
 
     companion object {
@@ -330,7 +330,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                     } else {
                                         //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
                                     }
-                                }, isPlay = mViewModel.playStatusBean.get()?.read==true
+                                }, isPlay = mViewModel.playStatusBean.get()?.read == true
                             )
                         }
                     }
@@ -596,7 +596,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.playStatusBean.set(
             PlayState(
                 state = playbackState,
-                        read = playWhenReady
+                read = playWhenReady
             )
         )
 

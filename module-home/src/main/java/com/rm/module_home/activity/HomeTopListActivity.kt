@@ -134,7 +134,7 @@ class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListVi
         mPopupWindow?.showAtLocation(home_top_list_title_cl, Gravity.CENTER_HORIZONTAL or Gravity.TOP, 0, y)
 
         //改变标题栏中的图标
-        home_top_list_title_icon.setImageResource(R.drawable.business_ic_up)
+        home_top_list_title_icon.setImageResource(R.drawable.business_icon_unfold_dc)
     }
 
     /**
@@ -179,7 +179,7 @@ class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListVi
             isTouchable = true
 
             setOnDismissListener {
-                home_top_list_title_icon.setImageResource( R.drawable.business_ic_down)
+                home_top_list_title_icon.setImageResource( R.drawable.business_icon_unfold_db)
             }
         }
     }

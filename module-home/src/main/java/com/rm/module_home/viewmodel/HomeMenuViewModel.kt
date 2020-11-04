@@ -103,7 +103,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
         }
 
         //没用更多数据
-        refreshStatusModel.setHasMore(bean.list?.size ?: 0 > pageSize)
+        refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
 
     }
 

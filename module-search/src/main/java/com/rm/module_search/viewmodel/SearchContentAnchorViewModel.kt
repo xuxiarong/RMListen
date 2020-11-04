@@ -3,10 +3,10 @@ package com.rm.module_search.viewmodel
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
-import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.mine.MineService
@@ -27,8 +27,6 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
 
     val keyword = searchKeyword
 
-    val userInfo = loginUser
-
     //主播adapter
     val anchorAdapter by lazy {
         CommonBindVMAdapter<MemberBean>(
@@ -44,10 +42,13 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
     val refreshStateMode = SmartRefreshLayoutStatusModel()
 
     //页码
-    private var mPage = 1
+    var mPage = 1
 
     //每页展示数量
-    private var mPageSize = 12
+    private val mPageSize = 12
+
+    //加载失败
+    var loadErrorBlock: (String) -> Unit = {}
 
 
     /**
@@ -76,12 +77,13 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
                     onSuccess = {
                         successData(it)
                     },
-                    onError = {
-                        failData()
+                    onError = { msg ->
+                        failData(msg)
                     }
                 )
         }
     }
+
 
     /**
      * 成功数据
@@ -102,18 +104,20 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
             }
         } else {
             bean.member_list.let { anchorAdapter.addData(it) }
+
         }
     }
 
     /**
      * 失败数据
      */
-    private fun failData() {
+    private fun failData(msg: String?) {
         if (mPage == 1) {
             refreshStateMode.finishRefresh(false)
         } else {
             refreshStateMode.finishLoadMore(false)
         }
+        loadErrorBlock("$msg")
     }
 
     /**

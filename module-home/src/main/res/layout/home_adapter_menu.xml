@@ -70,7 +70,7 @@
 
             <TextView
                 android:id="@+id/home_menu_adapter_author_name"
-                style="@style/TextViewSmallStyle"
+                style="@style/BusinessTextStyleSecond_4"
                 android:layout_marginStart="@dimen/dp_6"
                 android:text="@{menuItemBean.nickname}"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_author_icon"
@@ -83,14 +83,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_14"
-                android:src="@drawable/business_icon_unfavorites"
+                android:src="@drawable/business_icon_favorites_ee"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_author_name"
                 app:layout_constraintLeft_toRightOf="@id/home_menu_adapter_author_name"
                 app:layout_constraintTop_toTopOf="@id/home_menu_adapter_author_name" />
 
             <TextView
                 android:id="@+id/home_menu_adapter_collection_number"
-                style="@style/TextViewSmallStyle"
+                style="@style/BusinessTextStyleSecond_4"
                 bindText="@{menuItemBean.num_favor}"
                 android:layout_marginStart="@dimen/dp_2"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_collection_number_img"

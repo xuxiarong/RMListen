@@ -20,11 +20,13 @@ data class SearchResultBean(
 
 data class MemberBean(
     var avatar: String,//头像
+    var avatar_url: String,//头像url
     var fans: String,//粉丝数
     var is_follow: Long,//是否已经关注，0:未关注；1:已经关注，未登陆默认返回0
     var level: Long,//等级
     var member_id: String,//主播用户id
-    var nickname: String///主播名
+    var nickname: String,//主播名
+    var member_intro: String//简介
 )
 
 data class SearchSheetBean(

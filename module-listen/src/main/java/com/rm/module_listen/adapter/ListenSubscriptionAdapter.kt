@@ -1,5 +1,6 @@
 package com.rm.module_listen.adapter
 
+import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
@@ -25,6 +26,7 @@ class ListenSubscriptionAdapter(
     viewModelBrId,
     vmDataBrId
 ) {
+    private var topSize = 0
     override fun convert(holder: BaseViewHolder, item: ListenSubscriptionListBean) {
         super.convert(holder, item)
         val view = holder.getView<AppCompatTextView>(R.id.listen_subscription_adapter_num)
@@ -33,5 +35,17 @@ class ListenSubscriptionAdapter(
         } else {
             view.width = view.resources.getDimensionPixelSize(R.dimen.dp_18)
         }
+
+        if (topSize > 0 && topSize != itemCount && topSize-1  == holder.adapterPosition) {
+            holder.getView<View>(R.id.listen_subscription_adapter_view1).visibility = View.VISIBLE
+            holder.getView<View>(R.id.listen_subscription_adapter_view2).visibility = View.VISIBLE
+        } else {
+            holder.getView<View>(R.id.listen_subscription_adapter_view1).visibility = View.GONE
+            holder.getView<View>(R.id.listen_subscription_adapter_view2).visibility = View.GONE
+        }
+    }
+
+    fun setTopSize(topSize: Int) {
+        this.topSize = topSize
     }
 }

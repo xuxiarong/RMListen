@@ -8,8 +8,9 @@ import java.io.Serializable
  */
 data class HomeCommentBean(
     @SerializedName("list")
-    val list_comment: MutableList<CommentList>
-): Serializable
+    val list_comment: MutableList<CommentList>,
+    val total: Int
+) : Serializable
 
 data class CommentList(
     var id: Int,
@@ -23,10 +24,10 @@ data class CommentList(
     var is_hot: Boolean,//是否为热门评论
     var topped: String//是否置顶评论，0否1是
 
-):Serializable
+) : Serializable
 
 data class Member(
     val avatar_url: String,
     val id: String,
     val nickname: String
-):Serializable
+) : Serializable

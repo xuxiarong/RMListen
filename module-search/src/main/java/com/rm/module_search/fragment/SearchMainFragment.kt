@@ -6,12 +6,9 @@ import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getListString
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
-import com.rm.module_search.BR
-import com.rm.module_search.HISTORY_KEY
-import com.rm.module_search.R
+import com.rm.module_search.*
 import com.rm.module_search.adapter.SearchMainAdapter
 import com.rm.module_search.databinding.SearchFragmentMainBinding
-import com.rm.module_search.hotRecommend
 import com.rm.module_search.viewmodel.SearchMainViewModel
 import kotlinx.android.synthetic.main.search_fragment_main.*
 import java.lang.ref.WeakReference
@@ -109,7 +106,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         super.onResume()
         mViewModel.clickClearInput()
         mViewModel.hintBannerList.get()?.let { startHintBanner() }
-
+        curType.postValue(REQUEST_TYPE_ALL)
         refreshHistoryData()
     }
 

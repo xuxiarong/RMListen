@@ -22,9 +22,11 @@ class ListenSubscriptionActivity :
         }
     }
 
-    override fun initModelBrId(): Int {
-        return BR.viewModel
-    }
+    override fun getLayoutId() = R.layout.listen_activity_subscription
+
+
+    override fun initModelBrId() = BR.viewModel
+
 
     override fun initView() {
         super.initView()
@@ -35,17 +37,11 @@ class ListenSubscriptionActivity :
         mViewModel.baseTitleModel.value = baseTitleModel
     }
 
-
-
-
     override fun initData() {
         mViewModel.showLoading()
         mViewModel.getData()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.listen_activity_subscription
-    }
 
     override fun startObserve() {
 

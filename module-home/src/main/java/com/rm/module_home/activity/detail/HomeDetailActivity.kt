@@ -63,8 +63,6 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
             mViewModel.createHeader(this)
         }
 
-        mDataBind.homeChapterDetailRefresh.setEnableLoadMoreWhenContentNotFull(true)
-
         val layoutParams = mDataBind.homeDetailTitleCl.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin
@@ -96,9 +94,10 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         mDataBind.homeDetailChapterHeader.post {
             val measuredHeight = mDataBind.homeDetailChapterHeader.measuredHeight
             val params =
-                mDataBind.homeDetailChapterHeader.layoutParams as ConstraintLayout.LayoutParams
+                mDataBind.homeDetailCommentRefresh.layoutParams as ConstraintLayout.LayoutParams
+
             params.bottomMargin = measuredHeight + 20
-            mDataBind.homeDetailChapterHeader.layoutParams = params
+            mDataBind.homeDetailCommentRefresh.layoutParams = params
         }
 
         mDataBind.homeDetailInterceptLayout.setScrollTopListener(object :

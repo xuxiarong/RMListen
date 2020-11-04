@@ -31,6 +31,24 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#2ff0" />
 
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/search_adapter_content_books_label"
+            bindText="@{item.audio_label}"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_16"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_4"
+            android:textColor="@color/businessWhite"
+            android:textSize="@dimen/business_text_size_10sp"
+            app:layout_constraintEnd_toEndOf="@id/search_adapter_content_books_icon"
+            app:layout_constraintTop_toTopOf="@id/search_adapter_content_books_icon"
+            app:rv_backgroundColor="@color/business_color_ff5e5e"
+            app:rv_cornerRadius_BL="@dimen/dp_4"
+            app:rv_cornerRadius_TR="@dimen/dp_4"
+            tools:text="文案" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_content_books_title"
             style="@style/BusinessTextStyleFirst_3"

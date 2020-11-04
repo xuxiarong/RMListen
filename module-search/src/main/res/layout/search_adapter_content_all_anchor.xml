@@ -26,7 +26,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search_adapter_anchor_avatar"
-            bindUrl="@{item.avatar}"
+            bindUrl="@{item.avatar_url}"
             isCircle="@{true}"
             android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_60"
@@ -65,11 +65,10 @@
             android:id="@+id/search_adapter_anchor_tip"
             style="@style/BusinessTextStyleSecond_4"
             bindSpanColor="@{@color/base_ff5e5e}"
-            bindSpanContent="@{item.nickname}"
+            bindSpanContent="@{item.member_intro}"
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_4"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
             app:layout_constraintTop_toBottomOf="@id/search_adapter_anchor_name"
@@ -85,9 +84,9 @@
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
             tools:text="1.5w粉丝" />
 
+        <!--        isVisible="@{!TextUtils.equals(viewModel.userInfo.id,item.member_id)}"-->
         <androidx.appcompat.widget.AppCompatCheckedTextView
             android:id="@+id/search_adapter_anchor_attention"
-            isVisible="@{!TextUtils.equals(viewModel.userInfo.id,item.member_id)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@{item.is_follow==1L ? @drawable/business_attention_un_select  : @drawable/business_attentionselect}"
@@ -99,6 +98,7 @@
             android:paddingBottom="@dimen/dp_5"
             android:text="@{item.is_follow==1L ? @string/business_followed : @string/business_attention}"
             android:textColor="@{item.is_follow==1L ? @color/business_text_color_666666 : @color/business_color_ff5e5e}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

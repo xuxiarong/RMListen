@@ -25,9 +25,10 @@
             android:id="@+id/listen_sheet_adapter_icon"
             bindUrl="@{item.sheet_cover}"
             corner="@{4f}"
-            android:layout_width="@dimen/dp_106"
-            android:layout_height="@dimen/dp_106"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
             android:scaleType="fitXY"
+            android:foreground="@{item.created_from==3?@color/business_color_0f000000:@color/business_transparent}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
@@ -57,7 +58,7 @@
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintRight_toRightOf="@id/listen_sheet_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/listen_sheet_adapter_icon"
-            app:rv_backgroundColor="@color/business_text_color_333333"
+            app:rv_backgroundColor="@color/business_color_ff5e5e"
             app:rv_cornerRadius_BL="@dimen/dp_4"
             app:rv_cornerRadius_TR="@dimen/dp_4"
             tools:text="文案" />
@@ -80,26 +81,26 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_icon"
+            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_view"
             app:layout_constraintTop_toTopOf="@id/listen_sheet_adapter_view"
             tools:text="123" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_adapter_create"
-            style="@style/BusinessTextStyleSecond_4"
+            style="@style/BusinessTextStyleThird_4"
             bindDateString="@{item.created_at}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_day"
             android:drawablePadding="@dimen/dp_2"
             app:layout_constraintBottom_toBottomOf="@id/listen_sheet_adapter_view"
-            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_icon"
+            app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_view"
             tools:text="2020/8/2" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_adapter_book_num"
-            style="@style/BusinessTextStyleSecond_4"
+            style="@style/BusinessTextStyleThird_4"
             bindText="@{item.num_audio}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
@@ -111,7 +112,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_adapter_collected"
-            style="@style/BusinessTextStyleSecond_4"
+            style="@style/BusinessTextStyleThird_4"
             bindText="@{item.num_favor}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"

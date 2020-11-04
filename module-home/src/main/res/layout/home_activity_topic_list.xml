@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,18 +9,51 @@
             type="com.rm.module_home.activity.topic.HomeTopicListViewModel" />
     </data>
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
-        bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
-        bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess}"
-        bindOnLoadMoreListener="@{viewModel.getTopicList}"
-        bindOnRefreshListener="@{viewModel.refresh}"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            bindVerticalLayout="@{viewModel.mAdapter}"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_topic_back"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_48"
+            android:onClick="@{()->viewModel.finish()}"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_8"
+            android:src="@drawable/business_icon_return_bc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_topic_title"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_48"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/business_color_0f0f0f"
+            android:textSize="@dimen/business_text_size_18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/home_topic_back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
+            bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
+            bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess}"
+            bindOnLoadMoreListener="@{viewModel.getTopicList}"
+            bindOnRefreshListener="@{viewModel.refresh}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/home_topic_back">
+
+            <androidx.recyclerview.widget.RecyclerView
+                bindVerticalLayout="@{viewModel.mAdapter}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

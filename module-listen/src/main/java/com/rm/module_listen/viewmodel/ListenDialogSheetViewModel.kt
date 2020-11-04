@@ -4,11 +4,13 @@ import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_ADD_SHEET
+import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -22,7 +24,7 @@ import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.repository.ListenRepository
 
 class ListenDialogSheetViewModel(
-   private val mActivity: FragmentActivity,
+    private val mActivity: FragmentActivity,
     private val baseViewModel: BaseVMViewModel
 ) : BaseVMViewModel() {
     private val repository by lazy {
@@ -81,7 +83,15 @@ class ListenDialogSheetViewModel(
                 },
                 onError = {
                     baseViewModel.showContentView()
-                    baseViewModel.showToast("$it")
+                    if (mActivity is BaseActivity) {
+                        mActivity.tipView.showTipView(
+                            mActivity,
+                            tipText = "$it",
+                            tipColor = R.color.business_color_ff5e5e
+                        )
+                    } else {
+                        baseViewModel.showToast("$it")
+                    }
                 }
             )
         }
@@ -122,7 +132,7 @@ class ListenDialogSheetViewModel(
      * 添加成功
      */
     private fun addSheetSuccess(sheetId: String) {
-        if (IS_FIRST_ADD_SHEET.getBooleanMMKV(true) ) {
+        if (IS_FIRST_ADD_SHEET.getBooleanMMKV(true)) {
             CustomTipsFragmentDialog().apply {
                 titleText = mActivity.getString(R.string.listen_add_success)
                 contentText = mActivity.getString(R.string.listen_add_success_content)
@@ -134,9 +144,9 @@ class ListenDialogSheetViewModel(
                     dismiss()
                 }
                 rightBtnClick = {
-                    RouterHelper.createRouter(ListenService::class.java).startMySheetDetail(
+                    RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
                         mActivity,
-                        sheetId
+                        LISTEN_SHEET_LIST_MY_LIST
                     )
                     dismiss()
                 }
@@ -144,7 +154,11 @@ class ListenDialogSheetViewModel(
                     ImageView(mActivity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(mActivity)
         } else {
-            showToast(mActivity.getString(R.string.listen_add_success_tip))
+            if (mActivity is BaseActivity) {
+                mActivity.tipView.showTipView(mActivity, "添加成功")
+            } else {
+                baseViewModel.showToast(mActivity.getString(R.string.listen_add_success_tip))
+            }
         }
         dismissFun()
         IS_FIRST_ADD_SHEET.putMMKV(false)

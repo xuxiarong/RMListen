@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -74,12 +75,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var isDragSeek = ObservableBoolean(false)
     var seekText = ObservableField<String>("")
 
+    /**
+     * 评论数量
+     */
+    var commentTotal = ObservableField(0)
+
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
     var page = 1
-    val pageSize = 12
-    val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
+    private val pageSize = 12
+    private val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
     val curTime = System.currentTimeMillis()
 
     var playTimerDuration = PlayGlobalData.playTimerDuration
@@ -205,15 +211,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
 
     /**
-     * 获取评论列表
-     */
-    fun getCommentList() {
-        launchOnIO {
-
-        }
-    }
-
-    /**
      * 初始化数据
      */
     fun initPlayerAdapterModel() {
@@ -273,11 +270,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 快捷登陆
      */
-    fun quicklyLogin(it: FragmentActivity) {
+    private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
             .quicklyLogin(this, it, loginSuccess = {
-                //todo 登陆成功回调
-//                getCommentList(audioId.get()!!)
+                page = 1
+                commentAudioComments(audioID.get()!!)
             })
     }
 
@@ -366,7 +363,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 onSuccess = {
                     mutableList.value?.let {
                         it.forEachIndexed { index, multiItemEntity ->
-                            if (multiItemEntity.itemType == BookPlayerAdapter.ITEM_TYPE_COMMENR_LIST) {
+                            if (multiItemEntity.itemType == BookPlayerAdapter.ITEM_TYPE_COMMENT_LIST) {
                                 val comment = (it[index] as PlayControlCommentListModel).comments
 
                                 if (TextUtils.equals(comment?.id, bean.id)) {
@@ -398,7 +395,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 onSuccess = {
                     mutableList.value?.let {
                         it.forEachIndexed { index, multiItemEntity ->
-                            if (multiItemEntity.itemType == BookPlayerAdapter.ITEM_TYPE_COMMENR_LIST) {
+                            if (multiItemEntity.itemType == BookPlayerAdapter.ITEM_TYPE_COMMENT_LIST) {
                                 val comment = (it[index] as PlayControlCommentListModel).comments
 
                                 if (TextUtils.equals(comment?.id, bean.id)) {
@@ -474,6 +471,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             }
             repository.commentAudioComments(audioID, page, pageSize)
                 .checkResult(onSuccess = {
+                    commentTotal.set(it.total)
                     it.list.forEach {
                         mutableList.value?.add(PlayControlCommentListModel(comments = it))
                     }
@@ -495,7 +493,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     } else {
                         refreshStatusModel.finishLoadMore(false)
                     }
-
                 })
         }
     }
@@ -510,6 +507,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             }
             repository.commentAudioComments(audioID, page, pageSize)
                 .checkResult(onSuccess = {
+                    commentTotal.set(it.total)
                     (audioCommentList.value as ArrayList<Comments>).addAll(it.list)
                     audioCommentList.postValue(audioCommentList.value)
                     if (page == 1) {
@@ -553,6 +551,30 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
+
+    /**
+     * 评论点击事件
+     */
+    fun clickCommentFun(context: Context) {
+        getActivity(context)?.let {
+            if (isLogin.get()) {
+                audioID.get()?.let { audioId ->
+                    RouterHelper.createRouter(HomeService::class.java)
+                        .showCommentDialog(this, it, audioId) {
+                            if (it is BaseActivity){
+                                it.tipView.showTipView(it,"评论成功")
+                            }
+                            page = 1
+                            commentAudioComments(audioId)
+                        }
+                }
+
+            } else {
+                quicklyLogin(it)
+            }
+        }
+    }
+
     /**
      * 查询
      */
@@ -585,7 +607,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (countdownScope?.isActive == true) {
             countdownScope?.cancel()
         }
-        val times = (musicPlayerManger.getPlayerAlarmTime() - System.currentTimeMillis() )/ 1000
+        val times = (musicPlayerManger.getPlayerAlarmTime() - System.currentTimeMillis()) / 1000
         if (times > 0) {
             countdownScope = viewModelScope.launch {
                 flow {

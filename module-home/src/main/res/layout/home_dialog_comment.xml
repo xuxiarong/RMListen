@@ -12,32 +12,55 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:onClick="@{()->homeCommentDialogViewModel.mDialog.dismiss()}">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:visibility="visible"
+        <LinearLayout
+            android:id="@+id/home_dialog_comment_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:focusable="false"
-            android:background="@drawable/business_shape_white_16dp"
-            android:gravity="center"
-            android:paddingTop="@dimen/dp_16"
-            android:paddingBottom="@dimen/dp_16"
-            android:text="@string/home_comment_input_limit"
-            android:textColor="@color/business_color_ff5e5e"
-            android:textSize="@dimen/business_text_size_16sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="52dp"
+            android:layout_margin="8dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/base_shape_round_ffffff_16dp"
+            android:elevation="6dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/home_dialog_comment_progress"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginEnd="2dp"
+                android:indeterminateDrawable="@drawable/shape_base_tip_loading"
+                android:rotation="90"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/home_dialog_comment_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginTop="15dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="@color/base_ff5e5e"
+                android:textSize="16sp"
+                tools:text="文字超过最大限制文字超过最" />
+        </LinearLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/business_text_color_ffffff"
+            android:focusable="false"
             android:paddingStart="@dimen/dp_16"
             android:paddingTop="@dimen/dp_16"
-            android:focusable="false"
             android:paddingEnd="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -50,14 +73,14 @@
                 android:padding="@dimen/dp_12"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/home_dialog_comment_ed"
                     afterTextChanged="@{homeCommentDialogViewModel.inputText}"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:background="@null"
                     android:gravity="start|top"
                     android:hint="@string/home_comment_dialog_hint"
                     android:textColor="@color/business_text_color_333333"
@@ -90,10 +113,10 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:text="@string/home_comment_dialog_tips"
                 android:textColor="@color/business_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
-                android:focusable="false"
                 app:layout_constraintBottom_toBottomOf="@id/home_dialog_comment_publish"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/home_dialog_comment_publish" />
@@ -106,13 +129,13 @@
                 android:layout_marginBottom="@dimen/dp_16"
                 android:background="@{homeCommentDialogViewModel.inputComment.length()>0?@drawable/shape_red_20:@drawable/business_shape_round_e8e8e8_20dp}"
                 android:clickable="@{homeCommentDialogViewModel.inputComment.length()>0 &amp;&amp; homeCommentDialogViewModel.inputComment.length()&lt;=200}"
+                android:focusable="false"
                 android:onClick="@{(view)->homeCommentDialogViewModel.clickSend(view)}"
                 android:paddingStart="@dimen/dp_20"
                 android:paddingTop="@dimen/dp_6"
                 android:paddingEnd="@dimen/dp_20"
                 android:paddingBottom="@dimen/dp_6"
                 android:text="@string/home_publish"
-                android:focusable="false"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
