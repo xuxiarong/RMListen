@@ -20,12 +20,12 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_adapter_content_rv"
+            bindVerticalLayout="@{viewModel.sheetAdapter}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_10"
-            android:paddingTop="@dimen/dp_6"
-            bindVerticalLayout="@{viewModel.sheetAdapter}"
             android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_6"
             android:paddingEnd="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_6" />
 

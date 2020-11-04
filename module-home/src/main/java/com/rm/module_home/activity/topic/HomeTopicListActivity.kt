@@ -7,6 +7,8 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityTopicListBinding
+import kotlinx.android.synthetic.main.home_activity_main.view.*
+import kotlinx.android.synthetic.main.home_activity_topic_list.*
 
 /**
  * desc   : 专题列表界面
@@ -50,13 +52,8 @@ class HomeTopicListActivity :
         mViewModel.blockId = intent.getIntExtra("blockId", -1)
         mViewModel.topicId = intent.getIntExtra("topicId", -1)
 
-        val baseTitleModel = BaseTitleModel()
-            .setTitle(intent.getStringExtra("topicName"))
-            .setTitleStyle(true)
-            .setLeftIconClick {
-                finish()
-            }
-        mViewModel.baseTitleModel.value = baseTitleModel
+        val stringExtra = intent.getStringExtra("topicName")
+        home_topic_title.text= stringExtra
 
     }
 

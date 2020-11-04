@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.base_tip_view.view.*
  * date   : 2020/10/13
  * version: 1.0
  */
-class BaseTipView constructor(
+class BaseTipView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -28,6 +28,7 @@ class BaseTipView constructor(
     init {
         View.inflate(context, R.layout.base_tip_view, this)
     }
+
     var isAdd = false
     private val showAnim by lazy {
         ObjectAnimator.ofFloat(this, "translationY", 0f, dip(96).toFloat()).apply {
@@ -42,7 +43,13 @@ class BaseTipView constructor(
     }
 
     fun showNetError(activity: Activity) {
-        showTipView(activity = activity,tipText = activity.getString(R.string.net_error),tipColor = R.color.base_ff5e5e,tipProgress = false,netError = true)
+        showTipView(
+            activity = activity,
+            tipText = activity.getString(R.string.net_error),
+            tipColor = R.color.base_ff5e5e,
+            tipProgress = false,
+            netError = true
+        )
     }
 
     fun showTipView(
@@ -61,20 +68,20 @@ class BaseTipView constructor(
             baseNetErrorProgress.visibility = View.VISIBLE
         } else {
             baseNetErrorProgress.visibility = View.GONE
-            setOnClickListener{}
+            setOnClickListener {}
         }
 
         if (tipProgress) {
             baseTipProgress.visibility = View.VISIBLE
         } else {
-             baseTipProgress.visibility = View.GONE
+            baseTipProgress.visibility = View.GONE
         }
         clearAnimation()
         showAnim.start()
         handler.removeCallbacksAndMessages(null)
         handler.postDelayed({
             hideTipView(activity)
-        },3000)
+        }, 3000)
 
     }
 

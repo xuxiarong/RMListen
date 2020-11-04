@@ -75,7 +75,11 @@ ListenSheetListActivity : BaseActivity() {
             memberId = ""
 //            memberId = loginUser.get()!!.id
         }
-
+        if (TextUtils.isEmpty(memberId) || memberId == loginUser.get()?.id) {
+            mListTabText[0] = CONTEXT.getString(R.string.listen_my_sheet)
+        } else {
+            mListTabText[0] =  CONTEXT.getString(R.string.listen_create_sheet)
+        }
         mListTabFragment = mutableListOf(
             ListenSheetMyListFragment.newInstance(memberId!!),
             ListenSheetCollectedListFragment.newInstance(memberId!!)

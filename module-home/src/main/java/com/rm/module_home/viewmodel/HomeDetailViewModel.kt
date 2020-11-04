@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
@@ -88,6 +89,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     private val errorTips = ObservableField<String>()
 
     var detailInfoData = ObservableField<HomeDetailBean>()
+
+    /**
+     * 评论数量
+     */
+    var commentTotal = ObservableField(0)
 
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
@@ -461,7 +467,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     fun itemClick(context: Context, bean: ChapterList) {
         playService.toPlayPage(
-            context, bean, Jump.CHAPTER.from,sort.get()!!
+            context, bean, Jump.CHAPTER.from, sort.get()!!
         )
     }
 
@@ -495,6 +501,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         launchOnUI {
             repository.getCommentInfo(audio_id, commentPage, mPageSize).checkResult(
                 onSuccess = {
+                    commentTotal.set(it.total)
                     processCommentData(it)
                     Log.i("commentList", it.toString())
                 }, onError = {
@@ -608,12 +615,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         if (homeDetailModel != null) {
             val createRouter = RouterHelper.createRouter(DownloadService::class.java)
             val downloadAudio = DownloadAudio()
-            downloadAudio.audio_id =homeDetailModel.list.audio_id.toLong()
-            downloadAudio.audio_name =homeDetailModel.list.audio_name
-            downloadAudio.author =homeDetailModel.list.author
-            downloadAudio.audio_cover_url =homeDetailModel.list.audio_cover_url
-            downloadAudio.status =homeDetailModel.list.status
-            downloadAudio.last_sequence =homeDetailModel.list.last_sequence
+            downloadAudio.audio_id = homeDetailModel.list.audio_id.toLong()
+            downloadAudio.audio_name = homeDetailModel.list.audio_name
+            downloadAudio.author = homeDetailModel.list.author
+            downloadAudio.audio_cover_url = homeDetailModel.list.audio_cover_url
+            downloadAudio.status = homeDetailModel.list.status
+            downloadAudio.last_sequence = homeDetailModel.list.last_sequence
             createRouter.startDownloadChapterSelectionActivity(
                 context,
                 downloadAudio
@@ -686,6 +693,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     HomeCommentDialogHelper(this, it, audioId) {
                         commentPage = 1
                         getCommentList(audioId)
+                        if (it is BaseActivity){
+                            it.tipView.showTipView(it,"评论成功")
+                        }
                     }.showDialog()
                 }
 

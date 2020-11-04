@@ -35,10 +35,10 @@ class BookPlayerAdapter(
         val ITEM_TYPE_FOLLOW = R.layout.recy_item_book_player_hot_sub
 
         //评论标题
-        val ITEM_TYPE_COMMENR_TITLE = R.layout.recy_item_comment_more_book_play
+        val ITEM_TYPE_COMMENT_TITLE = R.layout.recy_item_comment_more_book_play
 
         //评论列表
-        val ITEM_TYPE_COMMENR_LIST = R.layout.recy_item_book_player_comment
+        val ITEM_TYPE_COMMENT_LIST = R.layout.recy_item_book_player_comment
     }
 
     override fun convert(holder: BaseViewHolder, item: MultiItemEntity) {

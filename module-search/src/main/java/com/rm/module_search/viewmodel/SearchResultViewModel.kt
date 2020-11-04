@@ -203,9 +203,8 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     fun searchResult(keyword: String) {
         oldKeyword = keyword
         saveHistory(keyword)
-
         launchOnIO {
-            repository.searchResult(keyword, REQUEST_TYPE_ALL, 1, 10).checkResult(
+            repository.searchResult(keyword, REQUEST_TYPE_ALL, 1, 12).checkResult(
                 onSuccess = {
                     searchResultData.postValue(it)
                     showContent()

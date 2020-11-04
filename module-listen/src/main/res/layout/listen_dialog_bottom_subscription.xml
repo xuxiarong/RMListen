@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_8"
-            android:background="@drawable/business_shape_round_c7f9f9f9_14dp"
+            android:background="@drawable/business_shape_round_ffffff_14dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/listen_dialog_bottom_subscription_cancel">
 
@@ -35,8 +35,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/business_color_80111111" />
+                android:layout_height="0.5pt"
+                android:background="@color/business_color_e8e8e8" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_dialog_bottom_subscription_share"
@@ -50,8 +50,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/business_color_80111111" />
+                android:layout_height="0.5pt"
+                android:background="@color/business_color_e8e8e8" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_dialog_bottom_subscription_find_similar"
@@ -66,8 +66,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/business_color_80111111" />
+                android:layout_height="0.5pt"
+                android:visibility="gone"
+                android:background="@color/business_color_e8e8e8" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_dialog_bottom_subscription_unsubscribe"
@@ -85,6 +86,8 @@
             android:id="@+id/listen_dialog_bottom_subscription_cancel"
             style="@style/BusinessTextStyleFirst_6"
             android:layout_width="match_parent"
+            android:paddingTop="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_16"
             android:background="@drawable/business_shape_round_ffffff_14dp"
             android:gravity="center"
             android:onClick="@{()->viewModel.dialogCancelFun()}"

@@ -2,12 +2,9 @@ package com.rm.baselisten
 
 import android.app.Application
 import android.content.Context
-import android.os.Build
 import android.util.Log
 import androidx.multidex.MultiDex
-import com.hjq.toast.ToastUtils
 import com.rm.baselisten.receiver.NetworkChangeReceiver
-import com.rm.baselisten.util.ToastUtil
 import com.tencent.bugly.crashreport.CrashReport
 import kotlin.properties.Delegates
 
@@ -32,7 +29,6 @@ open class BaseApplication : Application() {
         CONTEXT = applicationContext
         NetworkChangeReceiver.registerNetWorkReceiver()
         CrashReport.initCrashReport(applicationContext,"7eeebc3f3a",true)
-        ToastUtils.init(this)
     }
 
     override fun attachBaseContext(base: Context?) {

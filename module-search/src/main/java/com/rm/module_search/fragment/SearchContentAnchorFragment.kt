@@ -1,6 +1,5 @@
 package com.rm.module_search.fragment
 
-import androidx.databinding.Observable
 import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_search.BR
@@ -24,6 +23,9 @@ class SearchContentAnchorFragment :
     override fun initModelBrId() = BR.viewModel
 
     override fun initData() {
+        mViewModel.loadErrorBlock = {
+            shtTip(it)
+        }
     }
 
     override fun startObserve() {
@@ -31,8 +33,11 @@ class SearchContentAnchorFragment :
             val list = it.member_list
             if (list.isNullOrEmpty()) {
                 mViewModel.showDataEmpty()
+            } else {
+                mViewModel.mPage = 1
+                mViewModel.showContentView()
+                mViewModel.anchorAdapter.setList(list)
             }
-            mViewModel.anchorAdapter.setList(list)
         }
     }
 

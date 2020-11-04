@@ -1,7 +1,9 @@
 package com.rm.module_search.viewmodel
 
+import android.content.Context
 import android.view.View
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -36,10 +38,13 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
     val refreshStateMode = SmartRefreshLayoutStatusModel()
 
     //页码
-    private var mPage = 1
+    var mPage = 1
 
     //每页展示数量
-    private var mPageSize = 12
+    private val mPageSize = 12
+
+    //加载失败
+    var loadErrorBlock: (String) -> Unit = {}
 
     /**
      * 刷新
@@ -67,8 +72,8 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
                     onSuccess = {
                         successData(it)
                     },
-                    onError = {
-                        failData()
+                    onError = { msg ->
+                        failData(msg)
                     }
                 )
         }
@@ -100,12 +105,14 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
     /**
      * 失败数据
      */
-    private fun failData() {
+    private fun failData(msg: String?) {
         if (mPage == 1) {
             refreshStateMode.finishRefresh(false)
         } else {
             refreshStateMode.finishLoadMore(false)
         }
+
+        loadErrorBlock("$msg")
     }
 
     /**

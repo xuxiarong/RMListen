@@ -19,15 +19,7 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
 
     //懒加载头部banner
     private val headView by lazy {
-        View.inflate(this, R.layout.home_header_banner, null).apply {
-            setPadding(
-                paddingLeft,
-                dip(14f),
-                paddingRight,
-                paddingBottom
-            )
-
-        }
+        View.inflate(this, R.layout.home_header_banner, null)
     }
 
     companion object {
@@ -45,7 +37,7 @@ class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuV
             //设置banner数据源
             headView.findViewById<XBanner>(R.id.home_head_banner).apply {
                 paddingBindData(it.banner_list)
-                setIsClipChildrenMode(false)
+//                setIsClipChildrenMode(false)
                 setOnItemClickListener { _, _, _, position ->
                     BannerJumpUtils.onBannerClick(context,it.banner_list!![position].banner_jump)
                 }

@@ -1,19 +1,32 @@
 package com.rm.module_listen.viewmodel
 
 import android.text.TextUtils
+import android.widget.ImageView
 import androidx.databinding.ObservableField
+import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommonDragMvDialog
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.getBooleanMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.IS_FIRST_ADD_SHEET
+import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
+import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.net.BusinessRetrofitClient
+import com.rm.component_comm.listen.ListenService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
 import com.rm.module_listen.databinding.ListenDialogCreateSheetBinding
 import com.rm.module_listen.repository.ListenPatchSheetBean
 import com.rm.module_listen.repository.ListenRepository
 
-class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewModel) :
+class ListenDialogCreateSheetViewModel(
+    private val mActivity: FragmentActivity,
+    private val baseViewModel: BaseVMViewModel
+) :
     BaseVMViewModel() {
 
     private val repository by lazy {
@@ -34,7 +47,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
 
     var audioId = ""
 
-    private var dataBinding: ListenDialogCreateSheetBinding? = null
+    var dataBinding: ListenDialogCreateSheetBinding? = null
 
 
     /**
@@ -64,7 +77,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                 },
                 onError = {
                     baseViewModel.showContentView()
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_create_failure))
+                    showErrorTip(it)
                 }
             )
         }
@@ -78,14 +91,62 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
             repository.addSheetList(sheetId, audioId).checkResult(
                 onSuccess = {
                     baseViewModel.showContentView()
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_success_tip))
-                    mDialog?.dismiss()
+                    addSheetSuccess(sheetId)
                 },
                 onError = {
                     baseViewModel.showContentView()
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_fail))
+
+                    showErrorTip(it)
                 }
             )
+        }
+    }
+
+    /**
+     * 添加成功
+     */
+    private fun addSheetSuccess(sheetId: String) {
+        if (IS_FIRST_ADD_SHEET.getBooleanMMKV(true)) {
+            CustomTipsFragmentDialog().apply {
+                titleText = mActivity.getString(R.string.listen_add_success)
+                contentText = mActivity.getString(R.string.listen_add_success_content)
+                leftBtnText = mActivity.getString(R.string.listen_know)
+                rightBtnText = mActivity.getString(R.string.listen_goto_look)
+                leftBtnTextColor = R.color.business_text_color_333333
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
+                        mActivity,
+                        LISTEN_SHEET_LIST_MY_LIST
+                    )
+                    dismiss()
+                }
+                customView =
+                    ImageView(mActivity).apply { setImageResource(R.mipmap.business_img_dycg) }
+            }.show(mActivity)
+        } else {
+            if (mActivity is BaseActivity) {
+                mActivity.tipView.showTipView(mActivity, "添加成功")
+            } else {
+                baseViewModel.showToast(mActivity.getString(R.string.listen_add_success_tip))
+            }
+        }
+        mDialog?.dismiss()
+        IS_FIRST_ADD_SHEET.putMMKV(false)
+    }
+
+    private fun showErrorTip(msg: String?) {
+        if (mActivity is BaseActivity) {
+            mActivity.tipView.showTipView(
+                mActivity,
+                tipText = "$msg",
+                tipColor = R.color.business_color_ff5e5e
+            )
+        } else {
+            baseViewModel.showToast("$msg")
         }
     }
 
@@ -106,7 +167,7 @@ class ListenDialogCreateSheetViewModel(private val baseViewModel: BaseVMViewMode
                 },
                 onError = {
                     baseViewModel.showContentView()
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_edit_fail))
+                    showErrorTip(it)
                 }
             )
         }

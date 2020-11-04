@@ -3,7 +3,6 @@ package com.rm.module_listen.viewmodel
 import android.view.View
 import androidx.databinding.ObservableField
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -63,6 +62,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      */
     fun refreshData() {
         mPage = 1
+        topSize = 0
         getData()
     }
 
@@ -81,7 +81,6 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
         launchOnIO {
             repository.getSubscriptionList(mPage, pageSize).checkResult(
                 onSuccess = {
-                    data.set(it)
                     processSuccessData(it)
                 },
                 onError = {
@@ -100,14 +99,26 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
         if (mPage == 1) {
             //刷新完成
             refreshStatusModel.finishRefresh(true)
+            test(listListen)
             mAdapter.setList(listListen)
         } else {
             //加载更多完成
             refreshStatusModel.finishLoadMore(true)
+            test(listListen)
             mAdapter.addData(listListen)
         }
         //是否有更多数据
         refreshStatusModel.setHasMore(listListen.size >= pageSize)
+    }
+
+    private var topSize = 0
+    private fun test(listListen: MutableList<ListenSubscriptionListBean>) {
+        listListen.forEach {
+            if (it.is_top == 1) {
+                topSize++
+            }
+        }
+        mAdapter.setTopSize(topSize)
     }
 
     /**
@@ -168,6 +179,9 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                 onSuccess = {
                     showContentView()
                     mDialog.dismiss()
+                    if (subscriptionData.get()!!.is_top == 1) {
+                        mAdapter.setTopSize(--topSize )
+                    }
                     mAdapter.remove(subscriptionData.get()!!)
                 },
                 onError = {
@@ -203,7 +217,9 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
         showToast(CONTEXT.getString(R.string.listen_set_top_success))
         subscriptionData.get()?.let {
             mAdapter.remove(it)
+            it.is_top = 1
             mAdapter.data.add(0, it)
+            mAdapter.setTopSize(++topSize)
             mAdapter.notifyDataSetChanged()
         }
         mDialog.dismiss()
@@ -235,7 +251,9 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
         showToast(CONTEXT.getString(R.string.listen_cancel_top_success))
         subscriptionData.get()?.let {
             mAdapter.remove(it)
+            it.is_top = 0
             mAdapter.data.add(mAdapter.data.lastIndex + 1, it)
+            mAdapter.setTopSize(--topSize)
             mAdapter.notifyDataSetChanged()
         }
         mDialog.dismiss()

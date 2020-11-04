@@ -2,7 +2,9 @@ package com.rm.module_home
 
 import android.app.Activity
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.ARouterModuleServicePath
@@ -10,6 +12,7 @@ import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuActivity
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity
 import com.rm.module_home.fragment.HomeHomeFragment
+import com.rm.module_home.util.HomeCommentDialogHelper
 
 /**
  * desc   : Home module 路由实现接口
@@ -42,6 +45,15 @@ class HomeServiceImpl : HomeService {
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
         return HomeApplicationDelegate::class.java
+    }
+
+    override fun showCommentDialog(
+        baseViewModel: BaseVMViewModel,
+        mActivity: FragmentActivity,
+        audio: String,
+        commentSuccessBlock: () -> Unit
+    ) {
+        HomeCommentDialogHelper(baseViewModel, mActivity, audio, commentSuccessBlock).showDialog()
     }
 
     override fun init(context: Context?) {

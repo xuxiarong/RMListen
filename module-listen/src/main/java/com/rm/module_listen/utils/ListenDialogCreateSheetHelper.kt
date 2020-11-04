@@ -23,7 +23,7 @@ class ListenDialogCreateSheetHelper(
      * viewModel对象
      */
     private val mViewModel by lazy {
-        ListenDialogCreateSheetViewModel(baseViewModel)
+        ListenDialogCreateSheetViewModel(mActivity, baseViewModel)
     }
 
 
@@ -40,7 +40,11 @@ class ListenDialogCreateSheetHelper(
             R.layout.listen_dialog_create_sheet,
             mViewModel,
             BR.dialogViewModel
-        )
+        ).apply {
+            initDialog = {
+                mViewModel.dataBinding = mDataBind as ListenDialogCreateSheetBinding
+            }
+        }
     }
 
     fun showCreateSheetDialog() {
@@ -54,7 +58,11 @@ class ListenDialogCreateSheetHelper(
             R.layout.listen_dialog_create_sheet,
             mViewModel,
             BR.dialogViewModel
-        )
+        ).apply {
+            initDialog = {
+                mViewModel.dataBinding = mDataBind as ListenDialogCreateSheetBinding
+            }
+        }
     }
 
     fun showEditDialog(sheetId: String, success: (String) -> Unit) {
@@ -65,7 +73,8 @@ class ListenDialogCreateSheetHelper(
             dialogWidthIsMatchParent = true
             dialogHeight = mActivity.dip(600)
             dialogHasBackground = true
-            initDialog={
+            initDialog = {
+                mViewModel.dataBinding = mDataBind as ListenDialogCreateSheetBinding
                 (mDataBind as ListenDialogCreateSheetBinding).listenDialogCreateSheetTitle.text =
                     (BaseApplication.CONTEXT.getString(R.string.listen_edit_sheet))
             }

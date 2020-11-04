@@ -20,16 +20,20 @@ abstract class BaseFragment : Fragment() {
         ImmersionBarHelper.create(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(initLayoutId(), container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        DLog.d(javaClass.simpleName," --- onViewCreated")
+        DLog.d(javaClass.simpleName, " --- onViewCreated")
     }
 
-    protected abstract fun initLayoutId() : Int
+    protected abstract fun initLayoutId(): Int
 
     protected open fun initView() {}
 
@@ -66,5 +70,12 @@ abstract class BaseFragment : Fragment() {
 
     protected open fun setTransparentStatusBarWhiteFont() {
         immersionBarHelper.defaultInitWhiteFont()
+    }
+
+    fun shtTip(content: String) {
+        if (activity is BaseActivity) {
+            val baseActivity = activity as BaseActivity
+            baseActivity.tipView.showTipView(baseActivity, content)
+        }
     }
 }
