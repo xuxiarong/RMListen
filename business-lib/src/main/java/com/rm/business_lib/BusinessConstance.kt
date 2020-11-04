@@ -8,6 +8,7 @@ import androidx.databinding.ObservableFloat
 import androidx.databinding.ObservableLong
 import androidx.lifecycle.MutableLiveData
 import com.rm.business_lib.bean.LoginUserBean
+import com.rm.business_lib.play.PlayState
 
 /**
  * desc   : 基础业务常量类
@@ -37,10 +38,38 @@ var loginUser = ObservableField<LoginUserBean>()
 var isHomeDouClick = MutableLiveData(false)
 
 object PlayGlobalData{
+
+    /**
+     * 以下状态是Google的播放器原生状态，请不要随意修改
+     */
+    /**
+     * The player does not have any media to play.(空闲中)
+     */
+    var STATE_IDLE = 1
+
+    /**
+     * The player is not able to immediately play from its current position. This state typically
+     * occurs when more data needs to be loaded.
+     */
+    var STATE_BUFFERING = 2
+
+    /**
+     * The player is able to immediately play from its current position. The player will be playing if
+     * [.getPlayWhenReady] is true, and paused otherwise.
+     */
+    var STATE_READY = 3
+
+    /**
+     * The player has finished playing the media.
+     */
+    var STATE_ENDED = 4
+
     //全局播放器定时时间
     var playTimerDuration = ObservableLong(0L)
     //全局播放器播放速度
     var playSpeed = ObservableFloat(1.0f)
+
+    var playState = ObservableField<PlayState>(PlayState())
 }
 
 object AudioSortType{

@@ -3,7 +3,9 @@ package com.rm.module_play.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-import androidx.databinding.*
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableFloat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -18,6 +20,7 @@ import com.rm.business_lib.bean.*
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -29,7 +32,6 @@ import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.module_play.cache.PlayBookState
-import com.rm.module_play.cache.PlayState
 import com.rm.module_play.model.*
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.repository.BookPlayRepository
@@ -68,18 +70,19 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var playBookSate = ObservableField<PlayBookState>()
 
     //播放状态进度条，0是播放2是加载中1是暂停,false是暂停
-    var playStatusBean = ObservableField<PlayState>(PlayState())
+    var playStatusBean = ObservableField<PlayState>(
+        PlayState()
+    )
     var hasPreChapter = ObservableBoolean(false)
     var hasNextChapter = ObservableBoolean(false)
     var sortType = ObservableField<String>("")
-    var isDragSeek = ObservableBoolean(false)
     var seekText = ObservableField<String>("")
+    var seekChangeVar : (String)->Unit = {seekTextChange(it)}
 
     /**
      * 评论数量
      */
     var commentTotal = ObservableField(0)
-
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -264,6 +267,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         val audioId = audioID.get()
         if (audioId != null) {
             RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
+            finish()
         }
     }
 
@@ -592,6 +596,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (hasNextChapter.get()) {
             playManger.playNextMusic()
         }
+    }
+
+    fun seekTextChange(changeText : String){
+        this.seekText.set(changeText)
     }
 
     fun commentAvatarClick(context: Context, member_id: String) {

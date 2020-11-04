@@ -1664,7 +1664,11 @@ public final class TimeUtils {
             if (millis >= unitLen[i]) {
                 long mode = millis / unitLen[i];
                 millis -= mode * unitLen[i];
-                sb.append(mode);
+                if(mode<10){
+                    sb.append(0).append(mode);
+                }else {
+                    sb.append(mode);
+                }
                 if(i < precision-1){
                     sb.append(units[i]);
                 }

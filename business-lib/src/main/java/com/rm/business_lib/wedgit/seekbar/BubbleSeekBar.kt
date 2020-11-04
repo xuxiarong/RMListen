@@ -20,7 +20,11 @@ import com.rm.business_lib.R
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.io.UnsupportedEncodingException
+import java.nio.charset.Charset
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 /**
  *
@@ -118,27 +122,35 @@ class BubbleSeekBar @JvmOverloads constructor(
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 performClick()
+                parent.requestDisallowInterceptTouchEvent(true)
+
                 isThumbOnDragging = true
                 mOnProgressChangedListener?.onStartTrackingTouch(this)
-                DLog.d("suolong","开始按下")
+                DLog.d("suolong", "开始按下")
 //                showBubble()
             }
             MotionEvent.ACTION_MOVE -> {
-                DLog.d("suolong","正在拖动")
+                DLog.d("suolong", "正在拖动")
 
                 mThumbOffset = event.x.toInt() - mThumbWidth / 2
                 if (mThumbOffset < 0) mThumbOffset =
                     0 else if (mThumbOffset > mTrackLength) mThumbOffset = mTrackLength
                 mProgress =
                     if (mTrackLength != 0) mMin + (mMax - mMin) * mThumbOffset / mTrackLength else mMin
+                mThumbText =
+                    "${formatTimeInMillisToString(mProgress.toLong())}/${formatTimeInMillisToString(
+                        getMax().toLong()
+                    )}"
+                mOnProgressChangedListener?.onProgressChanged(this, getProgress(), mThumbText,true)
 //                calculateBubble()
                 postInvalidate()
-                mOnProgressChangedListener?.onProgressChanged(this, getProgress(), true)
 
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                DLog.d("suolong","手指离开")
-                mOnProgressChangedListener?.onStopTrackingTouch(this,getProgress())
+                parent.requestDisallowInterceptTouchEvent(false)
+
+                DLog.d("suolong", "手指离开")
+                mOnProgressChangedListener?.onStopTrackingTouch(this, getProgress())
                 isThumbOnDragging = false
 //                hideBubble()
             }
@@ -256,10 +268,9 @@ class BubbleSeekBar @JvmOverloads constructor(
      * @param thumbText
      */
     fun updateThumbText(thumbText: String) {
-        mThumbText = thumbText
-        if(!isThumbOnDragging){
+        if (!isThumbOnDragging) {
+            mThumbText = thumbText
             invalidate()
-            DLog.d("suolong","updateThumbText")
         }
     }
 
@@ -271,9 +282,8 @@ class BubbleSeekBar @JvmOverloads constructor(
      */
     fun setThumbHeight(height: Int) {
         mThumbHeight = height
-        if(!isThumbOnDragging){
+        if (!isThumbOnDragging) {
             invalidate()
-            DLog.d("suolong","setThumbHeight")
         }
     }
 
@@ -411,18 +421,20 @@ class BubbleSeekBar @JvmOverloads constructor(
      * @param progress
      */
     fun setProgress(progress: Float) {
-        mProgress = progress
-        mOnProgressChangedListener?.onProgressChanged(this, mProgress, false)
-        if(!isThumbOnDragging){
+        mOnProgressChangedListener?.onProgressChanged(this, mProgress, mThumbText,false)
+        if (!isThumbOnDragging) {
+            mProgress = progress
             postInvalidate()
         }
     }
+
     fun setNoListenerProgress(progress: Float) {
-        mProgress = progress
-        if(!isThumbOnDragging){
+        if (!isThumbOnDragging) {
+            mProgress = progress
             postInvalidate()
         }
     }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         mThumbOffset = (mTrackLength * (mProgress - mMin) / (mMax - mMin)).toInt()
@@ -487,6 +499,31 @@ class BubbleSeekBar @JvmOverloads constructor(
         canvas.restoreToCount(save)
     }
 
+    fun formatTimeInMillisToString(timeInMillis: Long): String {
+        var timeInMillis = timeInMillis
+        var sign = ""
+        if (timeInMillis < 0) {
+            sign = "-"
+            timeInMillis = abs(timeInMillis)
+        }
+
+        val minutes = timeInMillis / TimeUnit.MINUTES.toMillis(1)
+        val seconds = timeInMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1)
+
+        val formatted = StringBuilder(20)
+        formatted.append(sign)
+        formatted.append(String.format("%02d", minutes))
+        formatted.append(String.format(":%02d", seconds))
+
+        return try {
+            String(formatted.toString().toByteArray(), Charset.forName("UTF-8"))
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            "00:00"
+        }
+
+    }
+
     private val mPoint = IntArray(2)
     override fun onLayout(
         changed: Boolean,
@@ -515,11 +552,12 @@ class BubbleSeekBar @JvmOverloads constructor(
         fun onProgressChanged(
             bubbleSeekBar: BubbleSeekBar?,
             progress: Float,
+            thumbText: String,
             fromUser: Boolean
         )
 
         fun onStartTrackingTouch(bubbleSeekBar: BubbleSeekBar?)
-        fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?,progress: Float)
+        fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?, progress: Float)
     }
 
     /**

@@ -20,7 +20,8 @@
             android:screenOrientation="portrait" /> <!-- 书籍详情 -->
         <activity
             android:name=".activity.detail.HomeDetailActivity"
-            android:screenOrientation="portrait" /> <!-- 专题列表 -->
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/> <!-- 专题列表 -->
         <activity
             android:name=".activity.topic.HomeTopicListActivity"
             android:screenOrientation="portrait" />

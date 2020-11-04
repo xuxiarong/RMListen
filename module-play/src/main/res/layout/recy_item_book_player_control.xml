@@ -9,6 +9,7 @@
             name="viewModel"
             type="com.rm.module_play.viewmodel.PlayViewModel" />
 
+        <import type="android.text.TextUtils"/>
         <variable
             name="itemModel"
             type="com.rm.module_play.model.PlayControlModel" />
@@ -51,7 +52,7 @@
 
 
         <FrameLayout
-            android:id="@+id/fl_img_layout"
+            android:id="@+id/playAudioCover"
             android:layout_width="match_parent"
             android:layout_height="280dp"
             android:layout_marginLeft="48dp"
@@ -91,34 +92,34 @@
                 android:drawableStart="@drawable/ic_icon_play_ed" />
         </FrameLayout>
 
-
         <TextView
-            android:id="@+id/fl_music_playe_page"
+            android:id="@+id/playChapterName"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:text="@{viewModel.playControlModel.baseAudioInfo.audioName}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="18sp"
+            android:gravity="center"
             android:lines="1"
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fl_img_layout"
+            app:layout_constraintTop_toBottomOf="@+id/playAudioCover"
             tools:ignore="MissingConstraints"
             tools:text="与罗摩相遇" />
 
         <RelativeLayout
-            android:id="@+id/rl_music_play_titles"
+            android:id="@+id/playAudioName"
             android:layout_width="match_parent"
             android:layout_height="26dp"
-            isVisible="@{!viewModel.isDragSeek}"
+            isVisible="@{TextUtils.isEmpty(viewModel.seekText)}"
             android:layout_marginTop="@dimen/dp_11"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fl_music_playe_page"
+            app:layout_constraintTop_toBottomOf="@+id/playChapterName"
             tools:ignore="MissingConstraints">
 
             <View
@@ -188,22 +189,55 @@
         <androidx.appcompat.widget.AppCompatTextView
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fl_music_playe_page"
-            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@id/playChapterName"
+            android:layout_marginTop="@dimen/dp_11"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
             tools:text="00:12/00:12"
             android:text="@{viewModel.seekText}"
-            isVisible="@{viewModel.isDragSeek}"
+            android:gravity="center"
+            android:textSize="@dimen/business_text_size_18sp"
+            isVisible="@{!TextUtils.isEmpty(viewModel.seekText)}"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_25"/>
+            android:layout_height="@dimen/dp_26"/>
+
+        <com.rm.module_play.view.BubbleSeekBar
+            android:id="@+id/bsb"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/playAudioName"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            android:paddingTop="7dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:bsb_hide_bubble="true"
+            app:bsb_bubble_color="@color/base_b1b1b1"
+            app:bsb_bubble_text_color="@color/business_text_color_ffffff"
+            app:bsb_max="100"
+            app:bsb_min="0"
+            app:bsb_progress="0"
+            app:bsb_thumb_radius="@dimen/dp_8"
+            app:bsb_second_track_color="@color/base_ff5e5e"
+            app:bsb_section_text_position="bottom_sides"
+            app:bsb_show_progress_in_float="true"
+            app:bsb_show_section_text="true"
+            app:bsb_show_thumb_text="true"
+            app:bsb_second_track_size="4.5dp"
+            app:bsb_track_size="4.5dp"
+            app:bsb_track_color="@color/business_color_f0f0f0"/>
 
         <include
             layout="@layout/music_play_process_time"
             android:id="@+id/music_play_process_time"
             app:viewModel="@{viewModel}"
+            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@+id/rl_music_play_titles"
+            android:layout_marginTop="@dimen/dp_48"
+            app:layout_constraintTop_toBottomOf="@+id/playChapterName"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"/>
 
@@ -237,6 +271,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
                 android:layout_marginStart="34dp"
+                android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_PLAY_OPERATING+viewModel.curTime)}"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -257,7 +292,6 @@
                     android:id="@+id/music_play_point"
                     android:layout_width="@dimen/dp_24"
                     android:layout_height="@dimen/dp_24"
-                    android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_PLAY_OPERATING+viewModel.curTime)}"
                     app:menu_number="3"
                     app:menu_point_color="@color/business_text_color_666666"
                     app:menu_point_width="3dp"
