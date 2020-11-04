@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY
+import android.view.KeyEvent
 import android.widget.Toast
 import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
@@ -16,6 +17,7 @@ import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
  * @data: 8/22/20 3:22 PM
  * @Version: 1.0.0
  */
+@Suppress("DEPRECATED_IDENTITY_EQUALS")
 class AlarmBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         var action = intent?.action
@@ -30,6 +32,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             //通知栏操作
             //耳机拔出
             ACTION_AUDIO_BECOMING_NOISY -> {
+                musicPlayerManger.pause()
                 ExoplayerLogger.exoLog("耳机拔出")
             }
             //前台进程-通知栏根点击事件
@@ -46,7 +49,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             }
             //前台进程-暂停、开始
             MUSIC_INTENT_ACTION_CLICK_PAUSE -> {
-              musicPlayerManger.playOrPause()
+                musicPlayerManger.playOrPause()
             }
             //前台进程关闭进程
             MUSIC_INTENT_ACTION_CLICK_CLOSE -> {

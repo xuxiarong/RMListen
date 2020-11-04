@@ -28,45 +28,65 @@ class MusicAudioFocusManager constructor(val context: Context) {
             .build();
     }
 
+    fun setFocusListener(focusListener: OnAudioFocusListener) {
+        mFocusListener = focusListener
+    }
+
     /**
      * 请求音频焦点
      */
-    fun requestAudioFocus(focusListener: OnAudioFocusListener): Int {
-        mFocusListener = focusListener
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mFocusRequest = onAudioFocusChangeListener?.let {
-                AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                    .setAudioAttributes(playbackAttributes)
-                    .setWillPauseWhenDucked(true)
-                    .setOnAudioFocusChangeListener(it)
-                    .build()
+    fun requestAudioFocus(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (mFocusRequest==null){
+                mFocusRequest = onAudioFocusChangeListener?.let {
+                    AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                        .setAudioAttributes(playbackAttributes)
+                        .setWillPauseWhenDucked(true)
+                        .setOnAudioFocusChangeListener(it)
+                        .build()
+                }
             }
-           return mFocusRequest?.let { mAudioManager.requestAudioFocus(it) }!!
+            mFocusRequest?.let {
+                mAudioManager.requestAudioFocus(it)
+            }?:-1
         } else {
-            return mAudioManager.requestAudioFocus(
+            mAudioManager.requestAudioFocus(
                 onAudioFocusChangeListener,
                 AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
             )
         }
 
     }
+    //重新获取
+    fun cxAudioFocus(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mFocusRequest?.let {
+                mAudioManager.requestAudioFocus(it)
+            }?:-1
+        } else {
+            mAudioManager.requestAudioFocus(
+                onAudioFocusChangeListener,
+                AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
+            )
+        }
+    }
 
     /**
      * 停止播放释放音频焦点
      */
     fun releaseAudioFocus() {
-        mAudioManager.abandonAudioFocus(onAudioFocusChangeListener)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mFocusRequest?.let { mAudioManager.abandonAudioFocusRequest(it) }
+        } else {
+            mAudioManager.abandonAudioFocus(onAudioFocusChangeListener)
+        }
     }
 
     private val onAudioFocusChangeListener: OnAudioFocusChangeListener? =
-        AudioManager.OnAudioFocusChangeListener { focusChange ->
-            exoLog(
-                "onAudioFocusChange:focusChange:$focusChange"
-            )
+        OnAudioFocusChangeListener { focusChange ->
             val volume: Int
             when (focusChange) {
                 AudioManager.AUDIOFOCUS_GAIN, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK -> {
-                    exoLog("重新获取到了焦点")
                     volume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
                     if (mVolumeWhenFocusLossTransientCanDuck > 0 && volume == mVolumeWhenFocusLossTransientCanDuck / 2) {
                         // 恢复音量
@@ -80,7 +100,8 @@ class MusicAudioFocusManager constructor(val context: Context) {
                 }
                 AudioManager.AUDIOFOCUS_LOSS -> {
                     exoLog("被其他播放器抢占")
-                    mFocusListener?.onFocusOut()
+                    mFocusListener?.onFocusSeize(focusChange)
+                    releaseAudioFocus()
                 }
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                     exoLog("暂时失去焦点")
@@ -113,6 +134,8 @@ class MusicAudioFocusManager constructor(val context: Context) {
          * 失去焦点
          */
         fun onFocusOut()
+
+        fun onFocusSeize(i: Int)
 
         /**
          * 内部播放器是否正在播放

@@ -41,6 +41,11 @@ val MUSIC_INTENT_ACTION_CLICK_CLOSE = "IMUSIC_INTENT_ACTION_CLICK_CLOSE"
 //收藏
 val MUSIC_INTENT_ACTION_CLICK_COLLECT = "IMUSIC_INTENT_ACTION_CLICK_COLLECT"
 
+/**
+ * Broadcast Action:  The "Media Button" was pressed.  Includes a single
+ * extra field, [.EXTRA_KEY_EVENT], containing the key event that
+ * caused the broadcast.
+ */
 //参数传入
 val MUSIC_KEY_MEDIA_ID = "MUSIC_KEY_MEDIA_ID"
 var BASE_SCREEN_WIDTH = 1080.0.toFloat()

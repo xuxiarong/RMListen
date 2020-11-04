@@ -16,6 +16,7 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.bean.AudioChapterListModel
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
+import com.rm.business_lib.coroutinepermissions.requestPermissionsForResult
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
@@ -47,6 +48,7 @@ import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_book_player.*
+import java.util.jar.Manifest
 
 
 @Suppress(
@@ -175,6 +177,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        mViewModel.playManger.resumePlayState(true)
+    }
     override fun finish() {
         super.finish()
         overridePendingTransition(0, R.anim.activity_bottom_close)
@@ -590,6 +596,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
+
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
