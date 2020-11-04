@@ -35,7 +35,7 @@
             android:background="@drawable/business_shape_f7f7f7_12dp"
             android:paddingStart="@dimen/dp_4"
             android:paddingTop="8dp"
-            android:paddingEnd="@dimen/dp_12"
+            android:layout_marginEnd="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_8"
             app:layout_constraintBottom_toBottomOf="@id/search_result_back"
             app:layout_constraintEnd_toEndOf="parent"
@@ -133,6 +133,7 @@
             app:layout_constraintTop_toBottomOf="@id/search_result_history_text" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_result_suggest_rv"
             bindVerticalLayout="@{viewModel.inputAdapter}"
             isVisible="@{viewModel.suggestIsVisible}"
             android:layout_width="match_parent"

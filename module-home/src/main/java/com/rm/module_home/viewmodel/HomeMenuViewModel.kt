@@ -94,17 +94,33 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
         showContentView()
         if (mPage == 1) {
             //刷新完成
-            menuAdapter.setList(bean.list)
+            menuAdapter.setList(processList(bean.list))
+            processList(bean.list)
             refreshStatusModel.finishRefresh(true)
         } else {
             //加载完成
-            bean.list?.let { menuAdapter.addData(it) }
+            bean.list?.let {
+                menuAdapter.addData(processList(it)!!)
+            }
             refreshStatusModel.finishLoadMore(true)
         }
 
         //没用更多数据
         refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
+    }
 
+    /**
+     * 处理数据，如果书单音频书不足三本则移除
+     */
+    private fun processList(list: MutableList<SheetMenuInfoBean>?): MutableList<SheetMenuInfoBean>? {
+        val iterator = list?.iterator()
+        while (iterator?.hasNext() == true) {
+            val next = iterator.next()
+            if (next.audio_list.size < 3) {
+                iterator.remove()
+            }
+        }
+        return list
     }
 
     /**

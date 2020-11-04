@@ -91,11 +91,12 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
      * 键盘的显示隐藏监听
      */
     private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
-        val keywordNotNull = keyWord.get()!!.isEmpty()
+        val get = keyWord.get()!!
+        val keywordNull = get.isEmpty()
         //键盘是否显示
         if (keyboardVisibility) {
             //如果输入框内容为空则显示搜索历史，否则现实联想
-            if (keywordNotNull) {
+            if (keywordNull) {
                 showHistory()
             } else {
                 //显示联想内容
@@ -103,7 +104,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
             }
             contentIsVisible.set(false)
         } else {
-            if (keywordNotNull) {
+            if (!keywordNull) {
                 showSuggest(keyWord.get()!!)
             } else {
                 showContent()
@@ -153,6 +154,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         inputAdapter.setList(null)
         suggestIsVisible.set(false)
         historyVisible.set(false)
+        contentIsVisible.set(true)
     }
 
     /**

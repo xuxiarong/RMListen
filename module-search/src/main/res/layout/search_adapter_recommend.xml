@@ -17,6 +17,7 @@
         style="@style/BusinessTextStyleFirst_4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:paddingBottom="@dimen/dp_8"
         android:paddingTop="@dimen/dp_8"
         android:text="@{recommend}" />

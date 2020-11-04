@@ -1,6 +1,7 @@
 package com.rm.module_home.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
@@ -668,16 +669,18 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 关注点击事件
      */
-    fun clickAttentionFun(context: Context, followId: String) {
+    fun clickAttentionFun(context: Context, followId: String?) {
+        if (TextUtils.isEmpty(followId)) {
+            return
+        }
         getActivity(context)?.let {
             if (!isLogin.get()) {
                 quicklyLogin(it)
             } else {
-                DLog.i("--->", "${loginUser.get()!!.id}")
                 if (isAttention.get()) {
-                    unAttentionAnchor(followId)
+                    unAttentionAnchor(followId!!)
                 } else {
-                    attentionAnchor(followId)
+                    attentionAnchor(followId!!)
                 }
             }
         }
@@ -693,8 +696,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     HomeCommentDialogHelper(this, it, audioId) {
                         commentPage = 1
                         getCommentList(audioId)
-                        if (it is BaseActivity){
-                            it.tipView.showTipView(it,"评论成功")
+                        if (it is BaseActivity) {
+                            it.tipView.showTipView(it, "评论成功")
                         }
                     }.showDialog()
                 }
@@ -734,10 +737,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 评论头像点击事件
      */
-    fun clickCommentMemberFun(context: Context, memberId: String) {
+    fun clickCommentMemberFun(context: Context, memberId: String?) {
+        if (TextUtils.isEmpty(memberId)) {
+            return
+        }
         if (isLogin.get()) {
             RouterHelper.createRouter(MineService::class.java)
-                .toMineMember(context, memberId)
+                .toMineMember(context, memberId!!)
         } else {
             getActivity(context)?.let { quicklyLogin(it) }
         }

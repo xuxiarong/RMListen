@@ -233,6 +233,7 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_main_suggest_rv"
             bindVerticalLayout="@{viewModel.inputAdapter}"
             isVisible="@{viewModel.suggestIsVisible}"
             android:layout_width="match_parent"

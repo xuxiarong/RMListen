@@ -32,10 +32,15 @@ class MenuListAdapter(private val mViewModel: HomeMenuViewModel) :
             if (tag != true) {
                 tag = true
                 item.audio_list.let {
+                    val list = if (it.size > 3) {
+                        it.subList(0, 3)
+                    } else {
+                        it
+                    }
                     bindGridLayout(
                         CommonBindVMAdapter<AudioBean>(
                             mViewModel,
-                            it,
+                            list,
                             R.layout.home_adapter_menu_book,
                             BR.audioViewModel,
                             BR.audioBean
