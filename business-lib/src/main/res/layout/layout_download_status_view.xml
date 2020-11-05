@@ -14,7 +14,7 @@
         android:src="@drawable/business_download_start"
         tools:ignore="UnusedAttribute" />
 
-    <com.rm.business_lib.wedgit.progressbar.CircularProgressView
+    <com.rm.baselisten.view.progressbar.CircularProgressView
         android:id="@+id/businessDownProgress"
         android:layout_width="@dimen/dp_22"
         android:layout_height="@dimen/dp_22"

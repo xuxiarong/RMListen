@@ -1,4 +1,4 @@
-package com.rm.business_lib.wedgit.progressbar;
+package com.rm.baselisten.view.progressbar;
 
 /**
  * desc   :
@@ -25,7 +25,8 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import com.rm.business_lib.R;
+import com.rm.baselisten.R;
+
 
 /**
  * 圆形进度条控件

@@ -38,7 +38,7 @@
             android:layout_centerInParent="true"
             tools:ignore="MissingConstraints">
 
-            <com.rm.business_lib.wedgit.progressbar.CircularProgressView
+            <com.rm.baselisten.view.progressbar.CircularProgressView
                 android:id="@+id/progress_play"
                 bindPlayPrepareProgress="@{viewModel.playStatusBean}"
                 android:layout_width="66dp"
