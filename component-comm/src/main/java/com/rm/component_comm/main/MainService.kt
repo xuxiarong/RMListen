@@ -12,5 +12,5 @@ interface MainService : ApplicationProvider {
     /**
      *  跳转到首页
      */
-    fun startMainActivity(context: Context)
+    fun startMainActivity(context: Context,selectTab : Int = 0)
 }

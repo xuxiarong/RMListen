@@ -1,5 +1,6 @@
 package com.rm.module_home.bean
 
+import com.google.gson.annotations.SerializedName
 import com.rm.business_lib.bean.BannerInfoBean
 
 /**
@@ -8,8 +9,12 @@ import com.rm.business_lib.bean.BannerInfoBean
  * version: 1.0
  */
 data class CategoryTabListBean(
-    val page_id: Int,
-    val page_name: String,
-    val banner_list: List<BannerInfoBean>,
-    val class_list: List<CategoryTabBean>
+    @SerializedName("page_id")
+    var page_id: Int,
+    @SerializedName("page_name")
+    var page_name: String,
+    @SerializedName("banner_list")
+    var banner_list: List<BannerInfoBean> = listOf(),
+    @SerializedName("class_list")
+    var class_list: List<CategoryTabBean> = listOf()
 )

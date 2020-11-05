@@ -2,10 +2,7 @@ package com.rm.business_lib
 
 import android.content.Context
 import androidx.annotation.IntDef
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.databinding.ObservableFloat
-import androidx.databinding.ObservableLong
+import androidx.databinding.*
 import androidx.lifecycle.MutableLiveData
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.play.PlayState
@@ -35,7 +32,11 @@ var isLogin = ObservableBoolean(false)
 // 当前登陆的用户信息
 var loginUser = ObservableField<LoginUserBean>()
 
-var isHomeDouClick = MutableLiveData(false)
+object HomeGlobalData{
+    var isHomeDouClick = MutableLiveData(false)
+    var homeGlobalSelectTab = ObservableInt(0)
+}
+
 
 object PlayGlobalData {
 

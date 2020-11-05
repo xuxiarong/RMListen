@@ -21,11 +21,7 @@ class MainServiceImpl : MainService {
     override fun init(context: Context?) {
     }
 
-    override fun startMainActivity(context: Context) {
-        //如果context 已经是MainMainActivity，则不需要跳转了
-        if(context is MainMainActivity){
-            return
-        }
-        MainMainActivity.startMainActivity(context = context)
+    override fun startMainActivity(context: Context,selectTab : Int) {
+        MainMainActivity.startMainActivity(context = context,selectTab = selectTab)
     }
 }

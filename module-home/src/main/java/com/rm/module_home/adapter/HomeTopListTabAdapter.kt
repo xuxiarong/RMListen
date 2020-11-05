@@ -40,7 +40,7 @@ class HomeTopListTabAdapter :
                     0,
                     0
                 )
-                setBackgroundResource(R.drawable.home_top_list_tab_bg)
+                setBackgroundResource(R.drawable.home_rank_class)
                 elevation = resources.getDimension(R.dimen.dp_2)
 
                 textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)

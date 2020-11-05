@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import com.rm.business_lib.isHomeDouClick
+import com.rm.business_lib.HomeGlobalData.isHomeDouClick
 import com.rm.module_main.R
 import com.rm.module_main.customview.bottomtab.internal.RoundMessageView
 
