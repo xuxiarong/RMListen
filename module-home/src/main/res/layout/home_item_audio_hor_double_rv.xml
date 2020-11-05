@@ -14,7 +14,7 @@
             type="com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.rm.business_lib.wedgit.recycler.LeftAutoScrollRecyclerView
         android:id="@+id/homeRvRecommendHorDouble"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

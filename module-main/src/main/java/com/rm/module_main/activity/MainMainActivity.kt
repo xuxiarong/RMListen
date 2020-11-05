@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.component_comm.play.PlayService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_main.BR
 import com.rm.module_main.R
 import com.rm.module_main.adapter.MyViewPagerAdapter
@@ -119,15 +121,15 @@ class MainMainActivity : BaseVMActivity<MainActivityMainBindingImpl,HomeMainView
 
     }
 
-//    override fun onResume() {
-////        super.onResume()
-////        val playService = RouterHelper.createRouter(PlayService::class.java)
-////        rootViewAddView(playService.getGlobalPlay())
-////        playService.showView(this)
-////        if(view_pager.currentItem!= currentTab){
-////            view_pager.setCurrentItem(currentTab,false)
-////        }
-//    }
+    override fun onResume() {
+        super.onResume()
+        val playService = RouterHelper.createRouter(PlayService::class.java)
+        rootViewAddView(playService.getGlobalPlay())
+        playService.showView(this)
+        if(view_pager.currentItem!= currentTab){
+            view_pager.setCurrentItem(currentTab,false)
+        }
+    }
 
     override fun initData() {
 
@@ -135,7 +137,7 @@ class MainMainActivity : BaseVMActivity<MainActivityMainBindingImpl,HomeMainView
 
     companion object{
 
-        var currentTab = 0;
+        var currentTab = 0
 
         fun startMainActivity(context: Context,selectTab : Int = 0){
             //如果context 已经是MainMainActivity，而且想跳转tab等于当前tab则不需要跳转了

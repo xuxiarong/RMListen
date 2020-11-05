@@ -1,8 +1,10 @@
 package com.rm.module_home.binding
 
+import android.os.SystemClock
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.business_lib.wedgit.recycler.LeftAutoScrollRecyclerView
 import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel
 
@@ -13,12 +15,9 @@ import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel
  * version: 1.0
  */
 @BindingAdapter("bindLeftScroll")
-fun RecyclerView.bindLeftScroll(model : HomeAudioHorDoubleRvModel) {
+fun LeftAutoScrollRecyclerView.bindLeftScroll(model: HomeAudioHorDoubleRvModel) {
 
-    var isSlidingToLeft = false
-    var scrollStopCount = 0
-    var lastOpenTime = System.currentTimeMillis()
-
+    blockName = model.block.block_name
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
@@ -28,36 +27,31 @@ fun RecyclerView.bindLeftScroll(model : HomeAudioHorDoubleRvModel) {
                 // 获取最后一个完全显示的itemPosition
                 val lastItemPosition = manager!!.findLastCompletelyVisibleItemPosition()
                 val itemCount = manager.itemCount
-                if(lastItemPosition<3){
-                    return
-                }
                 // 判断是否滑动到了最后一个Item，并且是向左滑动
-                if (lastItemPosition == itemCount - 1 && isSlidingToLeft) {
-                    // 加载更多
-                    //修复连续滑动打开执行多次回调的bug
-                    if(System.currentTimeMillis() - lastOpenTime < 500){
-                        lastOpenTime = System.currentTimeMillis()
+                if (firstScrollLast && lastItemPosition == itemCount - 1 && blockName == model.block.block_name) {
+                    val openTime = SystemClock.currentThreadTimeMillis()
+                    if(openTime - lastOpenTime <=100){
+                        lastOpenTime =  openTime
                         return
                     }
-                    lastOpenTime = System.currentTimeMillis()
-                    if(scrollStopCount>1){
-                        HomeTopicListActivity.startActivity(
-                            context!!,
-                            model.block.page_id,
-                            model.block.block_id,
-                            model.block.topic_id,
-                            model.block.block_name
-                        )
-                    }else{
-                        scrollStopCount++
-                    }
+                    lastOpenTime =  openTime
+                    HomeTopicListActivity.startActivity(
+                        context!!,
+                        model.block.page_id,
+                        model.block.block_id,
+                        model.block.topic_id,
+                        model.block.block_name
+                    )
                 }
+                firstScrollLast = lastItemPosition == itemCount - 1
             }
         }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            isSlidingToLeft = dx>10
+            isSlidingToLeft = dx > 10
+            firstScrollLast = false
         }
     })
+
 }

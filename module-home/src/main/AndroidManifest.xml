@@ -24,7 +24,9 @@
             android:launchMode="singleTask"/> <!-- 专题列表 -->
         <activity
             android:name=".activity.topic.HomeTopicListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            />
     </application>
 
 </manifest>

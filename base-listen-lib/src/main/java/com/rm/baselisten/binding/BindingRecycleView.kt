@@ -71,6 +71,13 @@ fun RecyclerView.bindHorizontalLayoutNoScroll(adapter: RecyclerView.Adapter<*>?)
     overScrollMode = View.OVER_SCROLL_NEVER
 }
 
+@BindingAdapter("bindRecyclerViewLargeCache")
+fun RecyclerView.bindRecyclerViewLargeCache(cacheSize : Int){
+    val pool = RecyclerView.RecycledViewPool()
+    pool.setMaxRecycledViews(0, cacheSize) //TYPE为0，缓存数量为20
+    setRecycledViewPool(pool) //给Recycleview设置缓存池对象
+}
+
 
 @BindingAdapter("bindText")
 fun RecyclerView.bindText(visible: Int) {
