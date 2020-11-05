@@ -91,7 +91,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         mBottomHeight = headerLayout.height
         //根据实际情况计算
-        mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_176) - 14
+        mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_180) - 14
 
         mTopHeight = -14
 

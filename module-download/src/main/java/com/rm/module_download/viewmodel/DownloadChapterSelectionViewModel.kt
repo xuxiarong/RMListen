@@ -56,8 +56,11 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                     tempDownloadList.add(it)
                 }
             }
-            if(tempDownloadList.size == 0){
-                ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist))
+            if (tempDownloadList.size == 0) {
+                ToastUtil.show(
+                    BaseApplication.CONTEXT,
+                    BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist)
+                )
                 return
             }
 
@@ -132,7 +135,9 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                     onSuccess = {
                         page++
                         total = it.total
-                        audioChapterList.addAll(getChapterStatus(it.list))
+                        it.list?.let { list ->
+                            audioChapterList.addAll(getChapterStatus(list))
+                        }
                     },
                     onError = {
                         showToast("$it")
@@ -158,8 +163,10 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             repository.downloadChapterSelection(audioId = audioId, sequences = sequences)
                 .checkResult(
                     onSuccess = {
-                        val chapterStatusList = getChapterStatus(it.list)
-                        DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
+                        it.list?.let { list ->
+                            val chapterStatusList = getChapterStatus(list)
+                            DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
+                        }
 //                        audioChapterList.addAll(chapterStatusList)
                     },
                     onError = {

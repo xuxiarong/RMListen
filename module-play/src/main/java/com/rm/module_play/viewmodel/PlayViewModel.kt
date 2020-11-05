@@ -77,7 +77,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var hasNextChapter = ObservableBoolean(false)
     var sortType = ObservableField<String>("")
     var seekText = ObservableField<String>("")
-    var seekChangeVar : (String)->Unit = {seekTextChange(it)}
+    var seekChangeVar: (String) -> Unit = { seekTextChange(it) }
 
     /**
      * 评论数量
@@ -303,7 +303,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
                 playBookSate.get()?.audioChapterListModel = it
                 audioChapterModel.set(it)
-                setPlayPath(it.list)
+                it.list?.let { list -> setPlayPath(list) }
                 showContentView()
             }, onError = {
                 showContentView()
@@ -323,7 +323,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             repository.chapterPageList(audioId, chapterId, sort).checkResult(onSuccess = {
                 playBookSate.get()?.audioChapterListModel = it
                 audioChapterModel.set(it)
-                setPlayPath(it.list)
+                it.list?.let { list -> setPlayPath(list) }
                 showContentView()
             }, onError = {
                 showContentView()
@@ -427,7 +427,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             setBookDetailBean(it.homeDetailModel)
             it.audioChapterListModel?.let { its ->
                 audioChapterModel.set(its)
-                setPlayPath(its.list)
+                its.list?.let { list -> setPlayPath(list) }
             }
         }
 
@@ -565,8 +565,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 audioID.get()?.let { audioId ->
                     RouterHelper.createRouter(HomeService::class.java)
                         .showCommentDialog(this, it, audioId) {
-                            if (it is BaseActivity){
-                                it.tipView.showTipView(it,"评论成功")
+                            if (it is BaseActivity) {
+                                it.tipView.showTipView(it, "评论成功")
                             }
                             page = 1
                             commentAudioComments(audioId)
@@ -598,7 +598,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-    fun seekTextChange(changeText : String){
+    fun seekTextChange(changeText: String) {
         this.seekText.set(changeText)
     }
 
