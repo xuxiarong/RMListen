@@ -34,6 +34,13 @@ fun View.setOnClickNotDoubleListener(duration: Long = 1500, tag: String = "defau
 }
 
 /**
+ * View扩展方法防止双击
+ */
+fun View.setPlayOnClickNotDoubleListener(duration: Long = 500, tag: String = "default", isNotDoubleClick: (View) -> Unit = {}) {
+    setOnClickListener { if (!isOnDoubleClick(duration, tag)) isNotDoubleClick(it) }
+}
+
+/**
  * 移除双击事件
  */
 fun clearDoubleCheck(tag: String = "default") = lastTimeMap.remove(tag)

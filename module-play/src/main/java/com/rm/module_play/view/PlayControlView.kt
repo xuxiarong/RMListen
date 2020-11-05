@@ -20,7 +20,6 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
     var playFinish = true
 
     fun startOrPause(playState: PlayState){
-
         //代表播放列表已经播放完
         if(playState.state == STATE_ENDED){
             setAnimation("play_pause.json")
@@ -91,6 +90,19 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
             })
             playAnimation()
         }
+    }
+
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        playAnimName = ""
+        playFinish = true
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        playAnimName = ""
+        playFinish = true
     }
 
 }

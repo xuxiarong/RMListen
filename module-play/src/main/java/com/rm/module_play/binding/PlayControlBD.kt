@@ -8,8 +8,9 @@ import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
-import com.rm.business_lib.play.PlayState
+import com.rm.baselisten.util.setPlayOnClickNotDoubleListener
 import com.rm.baselisten.view.progressbar.CircularProgressView
+import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
 import com.rm.module_play.view.PlayControlView
@@ -146,7 +147,7 @@ fun PlayControlView.bindPlayControl(playState: PlayState){
 @BindingAdapter("bindPlayControlClick")
 fun PlayControlView.bindPlayControlClick(action: (() -> Unit)?) {
     if (action != null) {
-        setOnClickListener {
+        setPlayOnClickNotDoubleListener {
             if(playFinish){
                 action()
             }

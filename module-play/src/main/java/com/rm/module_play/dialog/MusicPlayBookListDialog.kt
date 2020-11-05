@@ -169,9 +169,8 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_SINGLE) {
             res = R.drawable.music_play_ic_icon_single_de
             music_play_order_play.text = "单集播放"
-        }
-        if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_ORDER) {
-            res = R.drawable.music_play_ic_icon_random_de
+        }else if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_ORDER) {
+            res = R.drawable.business_play_mode_order
             music_play_order_play.text = "顺序播放"
         }
         val resDrawable = resources.getDrawable(res, null)
