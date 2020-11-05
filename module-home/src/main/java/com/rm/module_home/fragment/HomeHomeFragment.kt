@@ -8,7 +8,7 @@ import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.receiver.NetworkChangeReceiver
-import com.rm.business_lib.isHomeDouClick
+import com.rm.business_lib.HomeGlobalData.isHomeDouClick
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity

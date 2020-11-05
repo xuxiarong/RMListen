@@ -60,7 +60,7 @@ class CustomInterceptor : Interceptor {
         // 构建请求
         val originalResponse = buildRequestResponse(chain)
         // 返回参数拦截处理
-        responseIntercept(originalResponse, chain)
+//        responseIntercept(originalResponse, chain)
         return originalResponse[0]
     }
 

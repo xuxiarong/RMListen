@@ -30,8 +30,7 @@
                 android:layout_height="@dimen/dp_144"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/temp_detail_icon" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 bindPlayCount="@{viewModel.detailInfoData.list.play_count}"

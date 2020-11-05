@@ -34,10 +34,14 @@ class BoutiqueViewModel(private val repository: HomeRepository) :
             repository.getTabList().checkResult(
                 onSuccess = {
                     showContentView()
-                    tabList.addAll(it.class_list)
-                    bannerList.addAll(it.banner_list)
-                    tabAdapter.notifyDataSetChanged()
-                    tabSize.set(tabList.size)
+                    if(it.class_list!=null && it.banner_list!=null){
+                        tabList.addAll(it.class_list)
+                        bannerList.addAll(it.banner_list)
+                        tabAdapter.notifyDataSetChanged()
+                        tabSize.set(tabList.size)
+                    }else{
+                        showDataEmpty()
+                    }
                 },
                 onError = {
                     showServiceError()

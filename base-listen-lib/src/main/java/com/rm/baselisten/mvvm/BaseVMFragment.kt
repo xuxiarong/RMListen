@@ -47,6 +47,9 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
      */
     private var mChildView: View? = null
 
+    /**
+     * 定义子类空视图对象
+     */
     var mDataShowView: View? = null
 
     /**
@@ -208,6 +211,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                 if (!mBaseBinding.baseEmpty.isInflated) {
                     mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
                     mBaseBinding.baseEmpty.viewStub?.inflate()
+
                 }
                 if (mDataShowView != null) {
                     mDataShowView!!.visibility = View.GONE

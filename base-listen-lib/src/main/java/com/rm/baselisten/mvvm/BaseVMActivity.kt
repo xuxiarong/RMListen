@@ -13,7 +13,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
-import com.rm.baselisten.BR
 import com.rm.baselisten.R
 import com.rm.baselisten.databinding.ActivityBaseVmBinding
 import com.rm.baselisten.ktx.putAnyExtras
@@ -57,6 +56,11 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
      * 定义子类的View，用于跟子类的dataBind进行绑定
      */
     private var mChildView: View? = null
+
+    /**
+     * 定义子类空视图对象
+     */
+    var mDataShowView: View? = null
 
     /**
      * 定义子类的dataBing对象
@@ -220,32 +224,51 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             BaseNetStatus.BASE_SHOW_DATA_EMPTY -> {
                 if (!mBaseBinding.baseEmpty.isInflated) {
                     mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
-                    val inflate = mBaseBinding.baseEmpty.viewStub?.inflate()
-                    val binding = DataBindingUtil.getBinding<ViewDataBinding>(inflate!!)
-                    binding?.setVariable(BR.viewModel, mViewModel)
+                    mBaseBinding.baseEmpty.viewStub?.inflate()
                 }
-                mChildView?.visibility = View.GONE
+                if (mDataShowView != null) {
+                    mDataShowView!!.visibility = View.GONE
+                } else {
+                    mChildView?.visibility = View.GONE
+                }
             }
             BaseNetStatus.BASE_SHOW_SERVICE_ERROR -> {
-                if (!mBaseBinding.baseError.isInflated) {
-                    mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
-                    mBaseBinding.baseError.viewStub?.inflate()
-                }
-                mChildView?.visibility = View.GONE
+                setServiceError()
             }
             BaseNetStatus.BASE_SHOW_LOADING -> {
                 if (!mBaseBinding.baseLoad.isInflated) {
                     mBaseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
                     mBaseBinding.baseLoad.viewStub?.inflate()
                 }
-                mChildView?.visibility = View.VISIBLE
+                if (mDataShowView != null) {
+                    mDataShowView!!.visibility = View.GONE
+                } else {
+                    mChildView?.visibility = View.GONE
+                }
             }
             BaseNetStatus.BASE_SHOW_CONTENT -> {
-                mChildView?.visibility = View.VISIBLE
+                if (mDataShowView != null) {
+                    mDataShowView!!.visibility = View.VISIBLE
+                } else {
+                    mChildView?.visibility = View.VISIBLE
+                }
             }
             BaseNetStatus.BASE_SHOW_NET_ERROR -> {
+                setServiceError()
                 tipView.showNetError(this)
             }
+        }
+    }
+
+    fun setServiceError() {
+        if (!mBaseBinding.baseError.isInflated) {
+            mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
+            mBaseBinding.baseError.viewStub?.inflate()
+        }
+        if (mDataShowView != null) {
+            mDataShowView!!.visibility = View.GONE
+        } else {
+            mChildView?.visibility = View.GONE
         }
     }
 

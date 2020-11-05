@@ -47,7 +47,16 @@ object BannerJumpUtils {
                     if (!TextUtils.isEmpty(page)) {
                         if (page == "home") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context)
+                            mainService.startMainActivity(context = context,selectTab = 0)
+                        } else if (page == "search") {
+                            val mainService = RouterHelper.createRouter(MainService::class.java)
+                            mainService.startMainActivity(context = context,selectTab = 1)
+                        } else if (page == "listen") {
+                            val mainService = RouterHelper.createRouter(MainService::class.java)
+                            mainService.startMainActivity(context = context,selectTab = 2)
+                        } else if (page == "mine") {
+                            val mainService = RouterHelper.createRouter(MainService::class.java)
+                            mainService.startMainActivity(context = context,selectTab = 2)
                         } else if (page == "audioDetail") {
                             val homeService = RouterHelper.createRouter(HomeService::class.java)
                             if (!TextUtils.isEmpty(audioId)) {
@@ -68,7 +77,7 @@ object BannerJumpUtils {
                     }
                 }
                 else -> {
-                    DLog.d("suolong", "a&$authority")
+                    DLog.d("suolong", "authority = $authority")
                 }
             }
         }

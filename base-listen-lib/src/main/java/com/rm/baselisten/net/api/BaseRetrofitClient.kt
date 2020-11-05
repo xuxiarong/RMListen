@@ -1,7 +1,10 @@
 package com.rm.baselisten.net.api
 
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BuildConfig
+import com.rm.baselisten.jsondeserializer.*
 import com.rm.baselisten.util.NetWorkUtils
 import okhttp3.Cache
 import okhttp3.CacheControl
@@ -10,6 +13,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import java.math.BigDecimal
+import java.math.BigInteger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -76,11 +81,24 @@ open class BaseRetrofitClient {
     }
 
     fun <S> getService(serviceClass: Class<S>, baseUrl: String): S {
+        val gson = GsonBuilder()
+            .serializeNulls()
+            .registerTypeHierarchyAdapter(BigDecimal::class.java, BigDecimalAdapter())
+            .registerTypeHierarchyAdapter(BigInteger::class.java, BigIntegerAdapter())
+            .registerTypeHierarchyAdapter(Boolean::class.java, BooleanAdapter())
+            .registerTypeHierarchyAdapter(Byte::class.java, ByteAdapter())
+            .registerTypeHierarchyAdapter(Character::class.java, CharacterAdapter())
+            .registerTypeHierarchyAdapter(Double::class.java, DoubleAdapter())
+            .registerTypeHierarchyAdapter(Float::class.java, FloatAdapter())
+            .registerTypeHierarchyAdapter(Long::class.java, LongAdapter())
+            .registerTypeHierarchyAdapter(JsonObject::class.java, JsonObjectAdapter())
+            .registerTypeHierarchyAdapter(Integer::class.java, IntegerAdapter())
+            .registerTypeHierarchyAdapter(String::class.java, StringAdapter())
+            .registerTypeHierarchyAdapter(List::class.java, ListAdapter())
+            .create()
         return Retrofit.Builder()
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(baseUrl)
             .build().create(serviceClass)
     }

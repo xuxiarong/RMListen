@@ -1,6 +1,9 @@
 package com.rm.business_lib.net
 
 import androidx.annotation.Nullable
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.rm.baselisten.jsondeserializer.*
 import com.rm.baselisten.net.api.BaseRetrofitClient
 import okhttp3.Call
 import okhttp3.HttpUrl
@@ -9,6 +12,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.math.BigDecimal
+import java.math.BigInteger
 
 
 /**
@@ -19,12 +24,42 @@ import retrofit2.converter.gson.GsonConverterFactory
 class BusinessRetrofitClient : BaseRetrofitClient() {
     companion object {
         // 基础host
-        const val BASE_URL = "http://dev-api.ls.com:9602/api/v1_0/"
-//        const val BASE_URL = "http://192.168.11.88:9602/api/v1_0/"
-        const val  NEW_URL="http://mobilecdn.kugou.com/api/v3"
-        const val OLD_HOST="http://10.1.3.12:9602"
-        const val PLAY_PATH="http://www.kugou.com/yy/index.php"
-        const val LISTEN_PATH="http://192.168.11.217:3000/mock/154/api/v1_0/"
+        const val BASE_DEVELOP_URL = "http://dev-api.ls.com:9602/api/v1_0/"
+        const val BASE_MOCK_URL = "http://192.168.11.217:3000/mock/154/api/v1_0/"
+        const val BASE_TEST_RUL = "http://dev-api.ls.com:9602/api/v1_0/"
+        const val BASE_RELEASE_URL = "http://dev-api.ls.com:9602/api/v1_0/"
+
+        //        const val BASE_URL = "http://192.168.11.88:9602/api/v1_0/"
+        const val NEW_URL = "http://mobilecdn.kugou.com/api/v3"
+        const val OLD_HOST = "http://10.1.3.12:9602"
+        const val PLAY_PATH = "http://www.kugou.com/yy/index.php"
+
+        const val TYPE_RELEASE = 0;
+        const val TYPE_TEST = 1;
+        const val TYPE_MOCK = 2;
+        const val TYPE_DEVELOP = 3;
+
+        var currentType = TYPE_DEVELOP
+
+        fun getBaseUrl(): String {
+            when (currentType) {
+                TYPE_DEVELOP -> {
+                    return BASE_DEVELOP_URL
+                }
+                TYPE_MOCK -> {
+                    return BASE_MOCK_URL
+                }
+                TYPE_TEST -> {
+                    return BASE_TEST_RUL
+                }
+                TYPE_RELEASE -> {
+                    return BASE_RELEASE_URL
+                }
+                else -> {
+                    return BASE_RELEASE_URL
+                }
+            }
+        }
 
     }
 
@@ -34,25 +69,43 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
     }
 
     fun <S> getService(serviceClass: Class<S>): S {
+
+        val gson = GsonBuilder()
+            .serializeNulls()
+            .registerTypeHierarchyAdapter(BigDecimal::class.java, BigDecimalAdapter())
+            .registerTypeHierarchyAdapter(BigInteger::class.java, BigIntegerAdapter())
+            .registerTypeHierarchyAdapter(Boolean::class.java, BooleanAdapter())
+            .registerTypeHierarchyAdapter(Byte::class.java, ByteAdapter())
+            .registerTypeHierarchyAdapter(Character::class.java, CharacterAdapter())
+            .registerTypeHierarchyAdapter(Double::class.java, DoubleAdapter())
+            .registerTypeHierarchyAdapter(Float::class.java, FloatAdapter())
+            .registerTypeHierarchyAdapter(JsonObject::class.java, JsonObjectAdapter())
+            .registerTypeHierarchyAdapter(List::class.java, ListAdapter())
+            .registerTypeHierarchyAdapter(Long::class.java, LongAdapter())
+            .registerTypeHierarchyAdapter(Short::class.java, ShortAdapter())
+            .registerTypeHierarchyAdapter(String::class.java, StringAdapter())
+            .registerTypeHierarchyAdapter(Integer::class.java, IntegerAdapter())
+            .create()
+
         return Retrofit.Builder()
             .client(client)
             .callFactory(object : CallFactoryProxy(client) {
                 override fun getNewUrl(baseUrlName: String?, request: Request?): HttpUrl? {
                     if (baseUrlName.equals("baidu")) {
                         val oldUrl = request?.url.toString()
-                        val newUrl =oldUrl.replace(OLD_HOST,NEW_URL)
+                        val newUrl = oldUrl.replace(OLD_HOST, NEW_URL)
                         return newUrl.toHttpUrl()
                     }
                     if (baseUrlName.equals("play")) {
                         val oldUrl = request?.url.toString()
-                        val newUrl =oldUrl.replace(OLD_HOST,PLAY_PATH)
+                        val newUrl = oldUrl.replace(OLD_HOST, PLAY_PATH)
                         return newUrl.toHttpUrl()
                     }
                     return null
                 }
             })
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .baseUrl(getBaseUrl())
             .build().create(serviceClass)
     }
 }
@@ -69,6 +122,7 @@ abstract class CallFactoryProxy(private val delegate: Call.Factory) : Call.Facto
 
     @Nullable
     protected abstract fun getNewUrl(baseUrlName: String?, request: Request?): HttpUrl?
+
     companion object {
         private const val NAME_BASE_URL = "BaseUrlName"
     }

@@ -3,34 +3,32 @@ package com.rm.module_main.activity
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
-import com.rm.baselisten.mvvm.BaseActivity
-import com.rm.business_lib.wedgit.NoTouchViewPager
-import com.rm.component_comm.home.HomeService
-import com.rm.component_comm.mine.MineService
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_main.BR
 import com.rm.module_main.R
 import com.rm.module_main.adapter.MyViewPagerAdapter
-import com.rm.module_main.customview.bottomtab.BottomTabView
 import com.rm.module_main.customview.bottomtab.NavigationController
 import com.rm.module_main.customview.bottomtab.item.NormalItemView
+import com.rm.module_main.databinding.MainActivityMainBindingImpl
+import com.rm.module_main.viewmodel.HomeMainViewModel
+import kotlinx.android.synthetic.main.main_activity_main.*
 
 /**
  * desc   :
  * date   : 2020/08/12
  * version: 1.0
  */
-class MainMainActivity : BaseActivity() {
+class MainMainActivity : BaseVMActivity<MainActivityMainBindingImpl,HomeMainViewModel>() {
 
     private lateinit var navigationController: NavigationController
 
     override fun getLayoutId() = R.layout.main_activity_main
-    lateinit var homeService: HomeService
-    lateinit var mineService: MineService
 
     override fun initView() {
 
-        navigationController = findViewById<BottomTabView>(R.id.mainTab).custom().run {
+        navigationController = mainTab.custom().run {
 
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
@@ -110,17 +108,16 @@ class MainMainActivity : BaseActivity() {
             })
         }.build()
         navigationController.addPlaceholder(2)
-        val viewPager = findViewById<NoTouchViewPager>(R.id.view_pager).apply {
-            adapter = MyViewPagerAdapter(
+
+        view_pager.adapter = MyViewPagerAdapter(
                 supportFragmentManager,
                 navigationController.itemCount
             )
-        }
-        viewPager.offscreenPageLimit = 5
+
+        view_pager.offscreenPageLimit = 5
 //        navigationController.setMessageNumber(3, 8)
 //        navigationController.setHasMessage(1, true)
-        navigationController.setupWithViewPager(viewPager)
-
+        navigationController.setupWithViewPager(view_pager)
 
     }
 
@@ -129,6 +126,9 @@ class MainMainActivity : BaseActivity() {
         val playService = RouterHelper.createRouter(PlayService::class.java)
         rootViewAddView(playService.getGlobalPlay())
         playService.showView(this)
+        if(view_pager.currentItem!= currentTab){
+            view_pager.setCurrentItem(currentTab,false)
+        }
     }
 
     override fun initData() {
@@ -136,8 +136,22 @@ class MainMainActivity : BaseActivity() {
     }
 
     companion object{
-        fun startMainActivity(context: Context){
+
+        var currentTab = 0;
+
+        fun startMainActivity(context: Context,selectTab : Int = 0){
+            //如果context 已经是MainMainActivity，而且则不需要跳转了
+            if(context is MainMainActivity && selectTab == currentTab){
+                return
+            }
+            currentTab = selectTab
             context.startActivity(Intent(context,MainMainActivity::class.java))
         }
+    }
+
+    override fun initModelBrId() = BR.viewModel
+
+    override fun startObserve() {
+
     }
 }
