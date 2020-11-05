@@ -70,22 +70,22 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
 
     fun <S> getService(serviceClass: Class<S>): S {
 
-        val gson = GsonBuilder()
-            .serializeNulls()
-            .registerTypeHierarchyAdapter(BigDecimal::class.java, BigDecimalAdapter())
-            .registerTypeHierarchyAdapter(BigInteger::class.java, BigIntegerAdapter())
-            .registerTypeHierarchyAdapter(Boolean::class.java, BooleanAdapter())
-            .registerTypeHierarchyAdapter(Byte::class.java, ByteAdapter())
-            .registerTypeHierarchyAdapter(Character::class.java, CharacterAdapter())
-            .registerTypeHierarchyAdapter(Double::class.java, DoubleAdapter())
-            .registerTypeHierarchyAdapter(Float::class.java, FloatAdapter())
-            .registerTypeHierarchyAdapter(JsonObject::class.java, JsonObjectAdapter())
-            .registerTypeHierarchyAdapter(List::class.java, ListAdapter())
-            .registerTypeHierarchyAdapter(Long::class.java, LongAdapter())
-            .registerTypeHierarchyAdapter(Short::class.java, ShortAdapter())
-            .registerTypeHierarchyAdapter(String::class.java, StringAdapter())
-            .registerTypeHierarchyAdapter(Integer::class.java, IntegerAdapter())
-            .create()
+//        val gson = GsonBuilder()
+//            .serializeNulls()
+//            .registerTypeHierarchyAdapter(BigDecimal::class.java, BigDecimalAdapter())
+//            .registerTypeHierarchyAdapter(BigInteger::class.java, BigIntegerAdapter())
+//            .registerTypeHierarchyAdapter(Boolean::class.java, BooleanAdapter())
+//            .registerTypeHierarchyAdapter(Byte::class.java, ByteAdapter())
+//            .registerTypeHierarchyAdapter(Character::class.java, CharacterAdapter())
+//            .registerTypeHierarchyAdapter(Double::class.java, DoubleAdapter())
+//            .registerTypeHierarchyAdapter(Float::class.java, FloatAdapter())
+//            .registerTypeHierarchyAdapter(JsonObject::class.java, JsonObjectAdapter())
+//            .registerTypeHierarchyAdapter(List::class.java, ListAdapter())
+//            .registerTypeHierarchyAdapter(Long::class.java, LongAdapter())
+//            .registerTypeHierarchyAdapter(Short::class.java, ShortAdapter())
+//            .registerTypeHierarchyAdapter(String::class.java, StringAdapter())
+//            .registerTypeHierarchyAdapter(Integer::class.java, IntegerAdapter())
+//            .create()
 
         return Retrofit.Builder()
             .client(client)
@@ -104,7 +104,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
                     return null
                 }
             })
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(getBaseUrl())
             .build().create(serviceClass)
     }

@@ -12,7 +12,7 @@ import java.io.Serializable
  */
 
 data class AudioChapterListModel(
-    var list: MutableList<ChapterList>,
+    var list: MutableList<ChapterList>?,
     val Anthology_list: MutableList<DataStr>,
     var total: Int
 ) : Serializable

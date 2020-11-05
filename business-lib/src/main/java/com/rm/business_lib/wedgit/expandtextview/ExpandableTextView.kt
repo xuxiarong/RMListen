@@ -84,8 +84,9 @@ class ExpandableTextView @JvmOverloads constructor(
         }
         mTextView.text = mText
         visibility = View.VISIBLE
-
         mTextView.post {
+            DLog.i("========","${mTextView.lineCount}    $isExpand")
+
             if (mMaxLine < mTextView.lineCount && isExpand) {
                 mImageView.visibility = View.VISIBLE
                 val buffer = StringBuffer()
@@ -148,6 +149,6 @@ class ExpandableTextView @JvmOverloads constructor(
 }
 
 @BindingAdapter("expandText")
-fun ExpandableTextView.setExpandText(mText:String?){
+fun ExpandableTextView.setExpandText(mText: String?) {
     setText(mText)
 }

@@ -379,11 +379,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         }
 
         if (oldChapterPage > chapterPage) {
-            chapterList.addAll(0, bean.list)
+            bean.list?.let { chapterList.addAll(0, it) }
             chapterRefreshStatus.finishRefresh(true)
         } else {
             chapterRefreshStatus.finishLoadMore(true)
-            chapterList.addAll(bean.list)
+            bean.list?.let { chapterList.addAll(it) }
         }
         chapterAdapter.setList(chapterList)
         oldChapterPage = chapterPage

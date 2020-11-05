@@ -8,12 +8,14 @@
         <variable
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
-        <import type="com.rm.business_lib.wedgit.ShadowDrawableUtil"/>
+
+        <import type="com.rm.business_lib.wedgit.ShadowDrawableUtil" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_16">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_main_tool_bar"
@@ -151,15 +153,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_4"
             android:textColor="@color/business_text_color_666666"
+            app:expand_text_max_line="2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detain_brief_introduction"
-            tools:text="@string/home_detail_brief_introduction" />
+            app:layout_constraintTop_toBottomOf="@id/home_detain_brief_introduction" />
 
         <View
             android:id="@+id/home_detail_line"
             isVisible="@{viewModel.detailInfoData.list.audio_intro.length()>0}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/line_0.5dp"
+            android:layout_marginTop="@dimen/dp_14"
             android:background="@color/business_color_e8e8e8"
             app:layout_constraintTop_toBottomOf="@id/home_detail_brief" />
 

@@ -582,7 +582,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.process.set(currentDurtion.toFloat())
         mViewModel.audioChapterModel.get()?.let {
             mViewModel.updatePlayBookProcess(
-                it.list.find { it.chapter_id == mChapterId },
+                it.list?.find { it.chapter_id == mChapterId },
                 currentDurtion
             )
         }
