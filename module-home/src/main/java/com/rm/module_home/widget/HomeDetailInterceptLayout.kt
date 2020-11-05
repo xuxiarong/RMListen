@@ -5,14 +5,13 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.animation.AccelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.module_home.R
 import kotlin.math.abs
@@ -73,7 +72,12 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     private var topListener: ScrollTopListener? = null
 
     private lateinit var headerLayout: ConstraintLayout
+
+    //章节RecyclerView
     private lateinit var mRecyclerView: RecyclerView
+
+    //章节分页RecyclerView
+    private lateinit var mRecyclerView1: RecyclerView
 
 
     companion object {
@@ -101,6 +105,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
         super.onFinishInflate()
         headerLayout = findViewById(R.id.home_detail_chapter_header)
         mRecyclerView = findViewById(R.id.detail_directory_recycler)
+        mRecyclerView1 = findViewById(R.id.detail_anthology_recycler)
     }
 
 
@@ -125,23 +130,55 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
                 if (abs(dx) > abs(dy)) {
                     return super.onInterceptTouchEvent(ev)
                 }
+
                 //滑动向上、向下
-                return if (dy > 0) {
-                    if (!isTopItem(-1) || canRefreshData) {
-                        super.onInterceptTouchEvent(ev)
-                    } else {
-                        onTouchEvent(ev)
-                    }
+                return if (chapterPageRvIsVisible()) {
+                    interceptChapterPageRv(dy, ev)
                 } else {
-                    if (canMoreData || !isTopItem(1)) {
-                        super.onInterceptTouchEvent(ev)
-                    } else {
-                        onTouchEvent(ev)
-                    }
+                    interceptChapterRv(dy, ev)
                 }
+
             }
         }
         return super.onInterceptTouchEvent(ev)
+    }
+
+    /**
+     * 对章节Rv进行拦截
+     */
+    private fun interceptChapterRv(dy: Float, ev: MotionEvent): Boolean {
+        return if (dy > 0) {
+            if (!isTopItem(-1, mRecyclerView) || canRefreshData) {
+                super.onInterceptTouchEvent(ev)
+            } else {
+                onTouchEvent(ev)
+            }
+        } else {
+            if (canMoreData || !isTopItem(1, mRecyclerView)) {
+                super.onInterceptTouchEvent(ev)
+            } else {
+                onTouchEvent(ev)
+            }
+        }
+    }
+
+    /**
+     * 对章节分页进行拦截
+     */
+    private fun interceptChapterPageRv(dy: Float, ev: MotionEvent): Boolean {
+        return if (dy > 0) {
+            if (!isTopItem(-1, mRecyclerView1)) {
+                super.onInterceptTouchEvent(ev)
+            } else {
+                onTouchEvent(ev)
+            }
+        } else {
+            if (!isTopItem(1, mRecyclerView1)) {
+                super.onInterceptTouchEvent(ev)
+            } else {
+                onTouchEvent(ev)
+            }
+        }
     }
 
     fun setCanMoreData(hasMoreData: Boolean) {
@@ -153,10 +190,17 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     }
 
     /**
+     * 判断章节分页列表是否现实
+     */
+    private fun chapterPageRvIsVisible(): Boolean {
+        return mRecyclerView1.visibility == View.VISIBLE
+    }
+
+    /**
      * 判断recyclerView是否到达最顶端(-1   返回false表示不能往下滑动，即代表到顶部了)/低端(1  返回false表示不能往上滑动，即代表到底部了)
      */
-    private fun isTopItem(direction: Int): Boolean {
-        return !mRecyclerView.canScrollVertically(direction)
+    private fun isTopItem(direction: Int, recyclerView: RecyclerView): Boolean {
+        return !recyclerView.canScrollVertically(direction)
     }
 
     private var downY = 0
