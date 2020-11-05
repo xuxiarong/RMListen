@@ -86,7 +86,6 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     //清除按钮是否显示
     val clearVisible = ObservableField<Boolean>(false)
 
-    var clearInput: () -> Unit = {}
 
     //搜索是否结束
     private var resultIsEnd = true
@@ -121,8 +120,13 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
         if (keyboardVisibility) {
             recommendVisible.set(false)
+            if (keyWord.get()!!.isEmpty()){
+                historyIsVisible.set(true)
+            }
         } else {
             recommendVisible.set(true)
+            suggestIsVisible.set(false)
+            historyIsVisible.set(false)
         }
     }
 
@@ -144,13 +148,6 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         }
         startActivity(SearchResultActivity::class.java)
     }
-
-//    /**
-//     * 历史 item 点击事件
-//     */
-//    val historyItemClickFun: (View, String) -> Unit = { _, content ->
-//        toSearch(content)
-//    }
 
     /**
      * 清除历史点击事件 清除
@@ -182,10 +179,9 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     fun clickClearInput() {
         searchKeyword.set("")
         keyWord.set("")
-        clearInput()
         inputAdapter.setList(null)
         suggestIsVisible.set(false)
-        recommendVisible.set(true)
+        recommendVisible.set(false)
     }
 
     /**
@@ -273,8 +269,12 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
             repository.searchSuggest(keyword).checkResult(
                 onSuccess = {
                     resultIsEnd = true
-                    val list = it.keywords.split(",")
-                    inputAdapter.setList(list)
+                    if (it.keywords.isNotEmpty()) {
+                        val list = it.keywords.split(",")
+                        inputAdapter.setList(list)
+                    } else {
+                        inputAdapter.setList(null)
+                    }
                 },
                 onError = {
                     resultIsEnd = true

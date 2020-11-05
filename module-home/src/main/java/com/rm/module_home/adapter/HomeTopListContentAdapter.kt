@@ -1,5 +1,6 @@
 package com.rm.module_home.adapter
 
+import android.view.View
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.flyco.roundview.RoundTextView
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
@@ -43,6 +44,11 @@ class HomeTopListContentAdapter(
             else -> {
                 R.color.business_color_999999
             }
+        }
+        if (holder.adapterPosition > 9) {
+            view.visibility = View.GONE
+        } else {
+            view.visibility = View.VISIBLE
         }
         view.delegate.backgroundColor = view.Color(color)
     }

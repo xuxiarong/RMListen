@@ -1,10 +1,14 @@
 package com.rm.module_search.fragment
 
+import android.graphics.Rect
 import android.view.ViewTreeObserver
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getListString
+import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
+import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
 import com.rm.module_search.*
 import com.rm.module_search.adapter.SearchMainAdapter
@@ -12,6 +16,7 @@ import com.rm.module_search.databinding.SearchFragmentMainBinding
 import com.rm.module_search.viewmodel.SearchMainViewModel
 import kotlinx.android.synthetic.main.search_fragment_main.*
 import java.lang.ref.WeakReference
+import kotlin.math.abs
 import kotlin.random.Random
 
 
@@ -22,9 +27,9 @@ import kotlin.random.Random
  * @description
  *
  */
-class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainViewModel>(){
+class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainViewModel>() {
     private var hintTask: AutoTask? = null
-
+    private lateinit var params: ConstraintLayout.LayoutParams
     override fun initModelBrId() = BR.viewModel
 
     override fun initLayoutId() = R.layout.search_fragment_main
@@ -34,19 +39,28 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         mDataShowView = search_main_view_pager
         hintTask = AutoTask(this)
 
-        mViewModel.clearInput = {
-            mDataBind.searchMainEditText.setText("")
-        }
-        activity?.apply {
-            window.decorView.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
-        }
+        params = mDataBind.searchMainSuggestRv.layoutParams as ConstraintLayout.LayoutParams
+        mDataBind.root.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
 
-        mDataBind.root.setOnTouchListener(this)
+
+        mDataBind.root.setOnClickListener{
+            hideKeyboard(mDataBind.searchMainEditText.applicationWindowToken)
+        }
     }
 
-
+    /**
+     * 动态获取输入法的高度，并且给联想的RV设置bottomMargin，修复联想被挡住的bug
+     */
     private val windowListener = ViewTreeObserver.OnGlobalLayoutListener {
-
+        val rect = Rect()
+        mDataBind.root.getWindowVisibleDisplayFrame(rect)
+        val bottom = rect.bottom
+        val height = screenHeight - bottom - getStateHeight(context!!)
+        //超过屏幕的五分之一则表示显示了输入框
+        if (abs(height) > screenHeight / 5 && height != params.bottomMargin) {
+            params.bottomMargin = height
+            mDataBind.searchMainSuggestRv.layoutParams = params
+        }
     }
 
 
@@ -104,7 +118,9 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     override fun onResume() {
         super.onResume()
-        mViewModel.clickClearInput()
+        val keyword = searchKeyword.get()!!
+        mViewModel.keyWord.set(keyword)
+        mViewModel.inputText.set(keyword)
         mViewModel.hintBannerList.get()?.let { startHintBanner() }
         curType.postValue(REQUEST_TYPE_ALL)
         refreshHistoryData()
@@ -118,9 +134,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     override fun onDestroy() {
         super.onDestroy()
-        activity?.apply {
-            window.decorView.viewTreeObserver.removeOnGlobalLayoutListener(windowListener)
-        }
+        mDataBind.root.viewTreeObserver.removeOnGlobalLayoutListener(windowListener)
     }
 
     /**

@@ -18,9 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_18"
+        android:onClick="@{()->click.itemClickFun(item)}"
         android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16"
-        android:onClick="@{()->click.itemClickFun(item)}">
+        android:paddingEnd="@dimen/dp_16">
 
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -34,14 +34,31 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
 
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/home_menu_book_adapter_tips"
+            bindText="@{item.audio_label}"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_16"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_4"
+            android:textColor="@color/businessWhite"
+            android:textSize="@dimen/business_text_size_10sp"
+            app:layout_constraintRight_toRightOf="@id/home_menu_detail_book_adapter_icon"
+            app:layout_constraintTop_toTopOf="@id/home_menu_detail_book_adapter_icon"
+            app:rv_backgroundColor="@color/business_text_color_333333"
+            app:rv_cornerRadius_BL="@dimen/dp_4"
+            app:rv_cornerRadius_TR="@dimen/dp_4"
+            tools:text="文案" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_book_adapter_title"
             style="@style/BusinessTextStyleFirst_2"
             bindText="@{item.audio_name}"
             android:layout_width="0dp"
-            android:maxLines="1"
             android:layout_marginStart="@dimen/dp_12"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"
             app:layout_constraintTop_toTopOf="parent"
@@ -56,10 +73,10 @@
             android:layout_marginTop="@dimen/dp_12"
             android:maxLines="2"
             android:text="@{item.audio_intro}"
+            app:layout_constraintBottom_toTopOf="@id/home_menu_detail_book_adapter_author"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"
             app:layout_constraintTop_toBottomOf="@id/home_menu_detail_book_adapter_title"
-            app:layout_constraintBottom_toTopOf="@id/home_menu_detail_book_adapter_author"
             tools:text="124" />
 
         <androidx.appcompat.widget.AppCompatTextView

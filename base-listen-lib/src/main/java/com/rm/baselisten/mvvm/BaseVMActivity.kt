@@ -90,48 +90,12 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         //添加通用的提示框
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev?.action == MotionEvent.ACTION_DOWN) {
-            //得到当前页面的焦点,ps:有输入框的页面焦点一般会被输入框占据
-            val currentFocus = currentFocus
-            //判断用户点击的是否是输入框以外的区域
-            if (isShouldHideKeyboard(currentFocus, ev)) {
-                hideKeyboard(currentFocus?.windowToken);   //收起键盘
-            }
-        }
-        return super.dispatchTouchEvent(ev)
-    }
-
-    /**
-     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
-     *
-     * @param v
-     * @param event
-     * @return
-     */
-    private fun isShouldHideKeyboard(
-        v: View?,
-        event: MotionEvent
-    ): Boolean {
-        if (v != null && v is EditText) {  //判断得到的焦点控件是否包含EditText
-            val l = intArrayOf(0, 0)
-            v.getLocationInWindow(l)
-            val left = l[0]
-            //得到输入框在屏幕中上下左右的位置
-            val top = l[1]
-            val bottom = top + v.getHeight()
-            val right = left + v.getWidth()
-            return !(event.x > left && event.x < right && event.y > top && event.y < bottom)
-        }
-        // 如果焦点不是EditText则忽略
-        return false
-    }
 
     /**
      * 获取InputMethodManager，隐藏软键盘
      * @param token
      */
-    private fun hideKeyboard(token: IBinder?) {
+    fun hideKeyboard(token: IBinder?) {
         if (token != null) {
             val im: InputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
