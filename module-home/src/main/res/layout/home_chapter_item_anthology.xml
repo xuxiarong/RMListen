@@ -4,37 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
-            type="com.rm.business_lib.bean.DataStr"
-            />
+            type="com.rm.business_lib.bean.DataStr" />
+
         <variable
             name="click"
-            type="com.rm.module_home.viewmodel.HomeDetailViewModel"/>
+            type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="@dimen/dp_16"
-        android:background="@drawable/shape_chapter_item_color"
-        android:layout_marginStart="@dimen/dp_12"
-        android:layout_width="77dp"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
         android:layout_height="@dimen/dp_40"
-        android:onClick="@{(DataStr)-> click.getTrackList(item.position)}"
-        >
+        android:layout_marginStart="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_6"
+        android:background="@drawable/home_chapter_page_un_select"
+        android:gravity="center"
+        android:text="@{item.strData}"
+        android:textColor="@color/business_text_color_666666"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="01-20" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="@dimen/sp_14"
-            android:text="@{item.strData}"
-            android:textColor="@color/business_text_color_666666"
-            tools:text="01-20"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- android:onClick="@{(ChapterList)->
-    chapterclick.itemClick(context,DetailChapterViewModel)}" -->
 </layout>

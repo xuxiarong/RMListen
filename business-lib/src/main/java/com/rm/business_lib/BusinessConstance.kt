@@ -38,7 +38,7 @@ object HomeGlobalData{
 }
 
 
-object PlayGlobalData{
+object PlayGlobalData {
 
     /**
      * 以下状态是Google的播放器原生状态，请不要随意修改
@@ -67,34 +67,38 @@ object PlayGlobalData{
 
     //全局播放器定时时间
     var playTimerDuration = ObservableLong(0L)
+
     //全局播放器播放速度
     var playSpeed = ObservableFloat(1.0f)
 
     var playState = ObservableField<PlayState>(PlayState())
 }
 
-object AudioSortType{
+object AudioSortType {
+    //正序
     const val SORT_DESC = "desc"
-    const val SORT_ASC = "asc"
 
+    //倒序
+    const val SORT_ASC = "asc"
 }
 
-object LoginPhoneReminder{
-    var phoneMap  = hashMapOf<Int,String>()
+object LoginPhoneReminder {
+    var phoneMap = hashMapOf<Int, String>()
 
-    fun getCurrentActivityInputPhone(context: Context) : String{
-        if(phoneMap.size>0 && phoneMap[context.applicationContext.hashCode()]!=null){
-           return phoneMap[context.applicationContext.hashCode()]!!
+    fun getCurrentActivityInputPhone(context: Context): String {
+        if (phoneMap.size > 0 && phoneMap[context.applicationContext.hashCode()] != null) {
+            return phoneMap[context.applicationContext.hashCode()]!!
         }
         return ""
     }
 
-    fun putCurrentActivityInputPhone(context: Context,phone : String){
+    fun putCurrentActivityInputPhone(context: Context, phone: String) {
         phoneMap.clear()
         phoneMap[context.applicationContext.hashCode()] = phone
     }
 
 }
+
 // ******** home ********
 //是否是第首次收藏
 const val IS_FIRST_FAVORITES = "is_first_favorites"
@@ -114,5 +118,5 @@ const val LISTEN_SHEET_LIST_MY_LIST = 0 //我的听单
 const val LISTEN_SHEET_LIST_COLLECTED_LIST = 1 //收藏听单
 
 
-val SAVA_SPEED="savaSpeed"
+val SAVA_SPEED = "savaSpeed"
 

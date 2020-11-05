@@ -5,11 +5,9 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
-import com.rm.business_lib.bean.DetailBookBean
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
@@ -17,7 +15,6 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.widget.HomeDetailInterceptLayout
-import com.rm.module_play.enum.Jump
 import kotlinx.android.synthetic.main.home_activity_detail_main.*
 
 /**
@@ -25,15 +22,10 @@ import kotlinx.android.synthetic.main.home_activity_detail_main.*
  *  //1、需添加书籍下架的toast提示，然后finish掉详情页
  */
 class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
-    val memberId: String = ""
     override fun getLayoutId(): Int = R.layout.home_activity_detail_main
 
     override fun initModelBrId() = BR.viewModel
 
-    //播放器路由
-    private val playService by lazy {
-        RouterHelper.createRouter(PlayService::class.java)
-    }
 
     companion object {
         const val AUDIO_ID = "audioID"
@@ -50,56 +42,42 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
         }
     }
 
-    private var audioId: String = ""
-    private var stateHeight: Int = 0
 
     override fun initView() {
         super.initView()
         setTransparentStatusBar()
+
         mDataBind.homeDetailCommentRecycleView.apply {
-            val adapter = mViewModel.homeDetailCommentAdapter
-            adapter.onAttachedToRecyclerView(this)
-            bindVerticalLayout(adapter)
+            bindVerticalLayout(mViewModel.homeDetailCommentAdapter)
             mViewModel.createHeader(this)
         }
 
-        val layoutParams = mDataBind.homeDetailTitleCl.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.apply {
+        (mDataBind.homeDetailTitleCl.layoutParams as ViewGroup.MarginLayoutParams).apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin
-            stateHeight = getStateHeight(this@HomeDetailActivity)
-            topMargin = stateHeight
+            topMargin = getStateHeight(this@HomeDetailActivity)
         }
 
-        audioId = intent?.getStringExtra(AUDIO_ID) ?: ""
-        if (audioId.isNotEmpty()) {
-            mViewModel.audioId.set(audioId)
-            mViewModel.sort.set("asc")
-            mViewModel.intDetailInfo(audioId)
-            mViewModel.onRefresh() //初始化章节列表
+        intent?.getStringExtra(AUDIO_ID)?.let {
+            mViewModel.audioId.set(it)
+            mViewModel.intDetailInfo(it)
+            mViewModel.getChapterList() //初始化章节列表
 
-            mViewModel.getCommentList(audioId)
+            mViewModel.getCommentList(it)
+        }
 
-        }
-        // TODO: 2020/9/28 章节排序
-        home_detail_play_sort.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                mViewModel.sort.set("desc")
-                mViewModel.getTrackList("desc")
-            } else {
-                mViewModel.sort.set("asc")
-                mViewModel.getTrackList("asc")
-            }
-        }
 
         mDataBind.homeDetailChapterHeader.post {
+            //获取章节头部的高度
             val measuredHeight = mDataBind.homeDetailChapterHeader.measuredHeight
             val params =
                 mDataBind.homeDetailCommentRefresh.layoutParams as ConstraintLayout.LayoutParams
 
+            //评论列表设置bottomMargin使其不被挡住
             params.bottomMargin = measuredHeight + 20
             mDataBind.homeDetailCommentRefresh.layoutParams = params
         }
 
+        //监听章节列表停留的位置，如果在顶部则现实title
         mDataBind.homeDetailInterceptLayout.setScrollTopListener(object :
             HomeDetailInterceptLayout.ScrollTopListener {
             override fun toTop(isTop: Boolean) {
@@ -114,42 +92,9 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
 
     override fun startObserve() {
 
-        mViewModel.actionControl.observe(this, Observer {
-            mViewModel.detailInfoData.get()?.let {
-                playService.toPlayPage(
-                    context = this@HomeDetailActivity, bean = DetailBookBean(
-                        audio_id = it.list.audio_id,
-                        audio_name = it.list.audio_name,
-                        original_name = it.list.original_name,
-                        author = it.list.author,
-                        audio_cover_url = it.list.audio_cover_url,
-                        anchor = it.list.anchor
-                    ), from = Jump.DETAILSBOOK.from, sortType = mViewModel.sort.get()!!
-                )
-            }
-        })
-
     }
 
-//    private val mOnScrollChangedListener: ScrollLayout.OnScrollChangedListener =
-//        object : ScrollLayout.OnScrollChangedListener {
-//            override fun onScrollProgressChanged(currentProgress: Float) {
-//                if (currentProgress == 0f) {
-//                    mDataBind.homeDetailTitle.visibility = View.VISIBLE
-//                } else {
-//                    mDataBind.homeDetailTitle.visibility = View.GONE
-//                }
-//            }
-//
-//            override fun onScrollFinished(currentStatus: ScrollLayout.Status) {
-//            }
-//
-//            override fun onChildScroll(top: Int) {
-//            }
-//        }
-
     override fun initData() {
-        //mViewModel.intDetailInfo("162163095869968384")
     }
 
     override fun onStart() {
