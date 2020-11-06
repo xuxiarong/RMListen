@@ -101,7 +101,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 intent.putAnyExtras(chapterListModel, it)
                 intent.putAnyExtras(fromJump, from)
                 context.startActivity(intent)
-                (context as Activity).overridePendingTransition(activity_top_open, 0);
+                (context as Activity).overridePendingTransition(activity_top_open, 0)
             }
         }
 
@@ -118,7 +118,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             val intent = Intent(context, BookPlayerActivity::class.java)
             intent.putAnyExtras(fromJump, fromGlobal)
             context.startActivity(intent)
-            (context as Activity).overridePendingTransition(activity_top_open, 0);
+            (context as Activity).overridePendingTransition(activity_top_open, 0)
 
         }
 
@@ -131,7 +131,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             intent.putAnyExtras(fromJump, from)
             intent.putAnyExtras(paramAudioId, audioId)
             context.startActivity(intent)
-            (context as Activity).overridePendingTransition(activity_top_open, 0);
+            (context as Activity).overridePendingTransition(activity_top_open, 0)
 
         }
 
