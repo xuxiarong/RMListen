@@ -73,7 +73,7 @@
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
                 app:layout_constraintLeft_toRightOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
-                tools:text="小丸子" />
+                tools:text="小丸子小丸子小丸子小丸子小丸子小丸子小丸子小丸子小丸子" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -126,12 +126,14 @@
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"
+                android:lines="1"
+                android:ellipsize="end"
                 android:layout_marginBottom="8dp"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 app:layout_constraintLeft_toRightOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
-                tools:text="小丸子" />
+                tools:text="小丸子小丸子小丸子小丸子小丸子小丸子小丸子小丸子" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
