@@ -443,6 +443,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     commentTotal.set(it.total)
                     processCommentData(it)
                 }, onError = {
+                    if (commentPage != 1) {
+                        commentPage--
+                    }
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )

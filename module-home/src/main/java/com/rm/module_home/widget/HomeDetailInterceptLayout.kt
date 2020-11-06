@@ -127,7 +127,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
                 mPrevMotionX = x
                 mPrevMotionY = y
                 //横向滑动就不分发了
-                if (abs(dx) > abs(dy)) {
+                if (abs(dx) > abs(dy) || abs(dy) < 10) {
                     return super.onInterceptTouchEvent(ev)
                 }
 

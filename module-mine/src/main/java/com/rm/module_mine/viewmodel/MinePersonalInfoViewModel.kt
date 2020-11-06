@@ -70,9 +70,10 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                         LOGIN_USER_INFO.putMMKV(userBean)
                         loginUser.set(userBean)
                         sex.set(getSexStr(userBean))
+                        showTip("修改成功")
                     },
                     onError = {
-                        showToast("修改失败")
+                        showTip("修改失败",R.color.business_color_ff5e5e)
                     }
                 )
             }
@@ -83,7 +84,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
         launchOnIO {
             repository.uploadAvatar(filePath).checkResult(
                 onSuccess = {
-                    showToast("上传成功")
+                    showTip("修改成功")
                     loginUser.get()?.let { userBean ->
                         userBean.avatar_url = it.url
                         loginUser.set(userBean)
@@ -92,7 +93,9 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                     userIconUrl.set(it.url)
                 },
                 onError = {
-                    showToast("上传失败")
+//                    showToast("")
+                    showTip("修改失败",R.color.business_color_ff5e5e)
+
                 }
             )
         }

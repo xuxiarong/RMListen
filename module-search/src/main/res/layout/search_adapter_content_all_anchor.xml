@@ -43,6 +43,7 @@
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
+            android:singleLine="true"
             app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_avatar"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Manuel Burns" />
@@ -68,6 +69,7 @@
             bindSpanContent="@{item.member_intro}"
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
+            android:maxLines="1"
             android:layout_marginTop="@dimen/dp_4"
             app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"

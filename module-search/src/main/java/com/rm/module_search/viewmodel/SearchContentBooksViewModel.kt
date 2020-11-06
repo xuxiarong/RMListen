@@ -109,6 +109,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
         if (mPage == 1) {
             refreshStateMode.finishRefresh(false)
         } else {
+            mPage--
             refreshStateMode.finishLoadMore(false)
         }
         loadErrorBlock("$msg")

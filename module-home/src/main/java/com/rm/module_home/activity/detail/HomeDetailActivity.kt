@@ -112,8 +112,12 @@ class HomeDetailActivity :
                 val top = mViewModel.mDataBinding?.homeDetailIcon?.top ?: 0
                 val height = mViewModel.mDataBinding?.homeDetailIcon?.height ?: 0
                 totalDy += dy
-                if (totalDy > 0 && totalDy <= top + height) {
-                    val alpha = totalDy.toFloat() / (top + height)
+                if (totalDy > 0) {
+                    val alpha = if (totalDy.toFloat() / (top + height) > 1f) {
+                        1f
+                    } else {
+                        totalDy.toFloat() / (top + height)
+                    }
                     oldAlpha = alpha
                     mDataBind.homeDetailBlur.alpha = alpha
                     mDataBind.homeDetailTitle.visibility = if (alpha > 0.9) {

@@ -42,7 +42,7 @@
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
-            android:maxLines="1"
+            android:singleLine="true"
             app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_avatar"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Manuel Burns" />
@@ -69,6 +69,7 @@
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_4"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="@id/search_adapter_anchor_attention"
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
             app:layout_constraintTop_toBottomOf="@id/search_adapter_anchor_name"
@@ -84,7 +85,7 @@
             app:layout_constraintStart_toStartOf="@id/search_adapter_anchor_name"
             tools:text="1.5w粉丝" />
 
-<!--        isVisible="@{!TextUtils.equals(viewModel.userInfo.id,item.member_id)}"-->
+        <!--        isVisible="@{!TextUtils.equals(viewModel.userInfo.id,item.member_id)}"-->
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_anchor_attention"
@@ -95,11 +96,11 @@
             android:onClick="@{()->viewModel.clickAttentionFun(context,item)}"
             android:paddingStart="@dimen/sp_14"
             android:paddingTop="5dp"
-            android:visibility="gone"
             android:paddingEnd="@dimen/sp_14"
             android:paddingBottom="@dimen/dp_5"
             android:text="@{item.is_follow==1L ? @string/business_followed : @string/business_attention}"
             android:textColor="@{item.is_follow==1L ? @color/business_text_color_666666 : @color/business_color_ff5e5e}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

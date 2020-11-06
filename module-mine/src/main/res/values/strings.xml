@@ -109,8 +109,8 @@
     <string name="mine_create_sheet">创建的听单</string>
     <string name="mine_favor_sheet">收藏的听单</string>
     <string name="mine_num">(%d)</string>
-    <string name="mine_fans_num">粉丝：%d</string>
-    <string name="mine_attention_num">关注：%d</string>
+    <string name="mine_fans_num">粉丝:</string>
+    <string name="mine_attention_num">关注:</string>
 
 
 </resources>

@@ -58,10 +58,11 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
                     onSuccess = { userBean ->
                         LOGIN_USER_INFO.putMMKV(userBean)
                         loginUser.set(userBean)
+                        showTip("修改成功")
                         finish()
                     },
                     onError = {
-                        showToast("修改失败")
+                        showTip("$it",R.color.business_color_ff5e5e)
                         DLog.i("------>", "$it")
                     }
                 )

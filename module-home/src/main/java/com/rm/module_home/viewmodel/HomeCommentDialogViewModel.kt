@@ -6,10 +6,13 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommBottomDialog
+import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.receiver.NetworkChangeReceiver
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.loginUser
@@ -32,6 +35,16 @@ class HomeCommentDialogViewModel(
     private val audioId: String,
     private val commentSuccessBlock: () -> Unit
 ) : BaseVMViewModel() {
+    init {
+        NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if (!NetworkChangeReceiver.isAvailable.get()) {
+                    showTip("当前网络不可用", R.color.business_color_ff5e5e, true)
+                }
+            }
+        })
+    }
 
     private val repository by lazy {
         HomeRepository(BusinessRetrofitClient().getService(HomeApiService::class.java))
@@ -138,7 +151,11 @@ class HomeCommentDialogViewModel(
 
             } else {
                 showTip("评论中", R.color.business_text_color_333333, false)
-                sendComment(view, it, audioId, loginUser.get()!!.id)
+                if (NetworkChangeReceiver.isAvailable.get()) {
+                    sendComment(view, it, audioId, loginUser.get()!!.id)
+                } else {
+                    showTip("当前网络不可用", R.color.business_color_ff5e5e, true)
+                }
             }
         }
     }

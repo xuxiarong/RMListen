@@ -7,8 +7,9 @@
     android:layout_marginTop="@dimen/dp_14"
     android:layout_marginEnd="@dimen/dp_2"
     android:layout_marginBottom="@dimen/dp_2"
+    android:gravity="center"
     android:drawableStart="@drawable/business_shape_circle_ff5e5e"
-    android:background="@drawable/home_top_list_tab_bg"
+    android:background="@drawable/home_rank_class"
     tools:text="11111"
     android:drawablePadding="@dimen/dp_6" />
 

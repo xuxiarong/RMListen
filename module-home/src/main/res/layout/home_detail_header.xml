@@ -367,7 +367,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{@string/business_comment(viewModel.commentTotal)}"
+                android:text="@{viewModel.commentTotal>99?@string/business_comment_num:@string/business_comment(viewModel.commentTotal)}"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_16sp"
                 android:textStyle="bold"
