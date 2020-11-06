@@ -115,6 +115,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         if (mPage == 1) {
             refreshStateMode.finishRefresh(false)
         } else {
+            mPage--
             refreshStateMode.finishLoadMore(false)
         }
         loadErrorBlock("$msg")

@@ -1,14 +1,10 @@
 package com.rm.module_home.util
 
-import android.content.Context
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.viewmodel.HomeCommentDialogViewModel
-import kotlinx.android.synthetic.main.home_dialog_comment.*
 
 /**
  *
@@ -38,4 +34,6 @@ class HomeCommentDialogHelper(
             BR.homeCommentDialogViewModel
         )
     }
+
+
 }

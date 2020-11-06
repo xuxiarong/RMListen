@@ -71,11 +71,12 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                 onSuccess = {
                     showContentView()
                     changeState(bean, 1)
-                    showToast("关注成功")
+                    showTip("关注成功")
                 },
                 onError = {
                     showContentView()
                     DLog.i("--->", "$it")
+                    showTip("$it",R.color.business_color_ff5e5e)
                 })
         }
     }
@@ -90,11 +91,13 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                 onSuccess = {
                     showContentView()
                     changeState(bean, 0)
-                    showToast("取消关注成功")
+                    showTip("取消关注成功")
                 },
                 onError = {
                     DLog.i("--->", "$it")
                     showContentView()
+                    showTip("$it",R.color.business_color_ff5e5e)
+
                 })
         }
     }

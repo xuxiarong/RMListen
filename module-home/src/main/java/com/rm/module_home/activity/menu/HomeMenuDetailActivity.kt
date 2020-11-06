@@ -95,9 +95,13 @@ class HomeMenuDetailActivity :
                 val top = mViewModel.dataBinding?.homeMenuDetailFrontCover?.top ?: 0
                 val height = mViewModel.dataBinding?.homeMenuDetailFrontCover?.height ?: 0
                 totalDy += dy
-                if (totalDy > 0 && totalDy <= top + height) {
-                    val i = totalDy.toFloat() / (top + height)
-                    mDataBind.homeMenuDetailBlur.alpha = i
+                if (totalDy > 0) {
+                    val alpha = if (totalDy.toFloat() / (top + height) > 1f) {
+                        1f
+                    } else {
+                        totalDy.toFloat() / (top + height)
+                    }
+                    mDataBind.homeMenuDetailBlur.alpha = alpha
                 }
             }
         })

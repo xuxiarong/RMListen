@@ -57,7 +57,7 @@
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
-            android:maxLines="1"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
             app:layout_constraintTop_toTopOf="@id/search_adapter_content_books_icon"

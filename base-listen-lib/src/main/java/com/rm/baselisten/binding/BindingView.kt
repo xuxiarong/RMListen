@@ -45,6 +45,11 @@ fun View.isVisible(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.GONE
 }
 
+@BindingAdapter("isVisiblePlace")
+fun View.isVisiblePlace(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+}
+
 @BindingAdapter("bindBackground")
 fun View.bindBackground(drawableId: Int?) {
     if (drawableId != null && drawableId > 0) {

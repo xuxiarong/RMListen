@@ -10,6 +10,7 @@ import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineMemberActivity
 import com.rm.module_mine.activity.MineSettingActivity
 import com.rm.module_mine.adapter.MineHomeAdapter
 import com.rm.module_mine.bean.MineHomeBean
@@ -113,7 +114,7 @@ class MineHomeViewModel : BaseVMViewModel() {
             RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
             return
         }
-        showToast("已登陆，跳转到个人详情界面")
+        MineMemberActivity.newInstance(context, loginUser.get()!!.id)
     }
 
 
@@ -122,8 +123,6 @@ class MineHomeViewModel : BaseVMViewModel() {
      * @param context Context
      */
     fun getVipClick(context: Context) {
-        showToast("立即开通点击事件")
-//
         getActivity(context)?.let {
             CommBottomDialog().showCommonDialog(
                 it,

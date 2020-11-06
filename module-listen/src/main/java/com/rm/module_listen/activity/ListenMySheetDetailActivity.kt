@@ -133,8 +133,12 @@ class ListenMySheetDetailActivity :
                 val top = headerDataBind?.listenSheetDetailFrontCover?.top ?: 0
                 val height = headerDataBind?.listenSheetDetailFrontCover?.height ?: 0
                 totalDy += dy
-                if (totalDy > 0 && totalDy <= top + height) {
-                    val alpha = totalDy.toFloat() / (top + height)
+                if (totalDy > 0) {
+                    val alpha = if (totalDy.toFloat() / (top + height) > 1f) {
+                        1f
+                    } else {
+                        totalDy.toFloat() / (top + height)
+                    }
                     mDataBind.listenSheetDetailBlur.alpha = alpha
                 }
             }
