@@ -238,8 +238,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_48"
             app:layout_constraintTop_toBottomOf="@+id/playChapterName"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
         <LinearLayout
