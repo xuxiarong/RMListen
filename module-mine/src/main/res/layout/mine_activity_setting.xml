@@ -47,7 +47,6 @@
                 android:id="@+id/mine_setting_account_security"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{()->viewModel.clickAccountSecurity(context)}"
                 app:material_name="@string/mine_account_security" />
 
 
@@ -118,6 +117,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_favorable_comment" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:id="@+id/mine_setting_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.clickVersionUpdate(context)}"
+                app:material_name="@string/mine_app_version" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/mine_setting_sign_out"

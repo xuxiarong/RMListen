@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineVersionUpdateViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.MineVersionUpdateActivity">
+
+
+        <TextView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/dp_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="版本号：0.0.8.20201106"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/dp_18" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:lineSpacingExtra="8dp"
+            android:text="版本更新信息:
+                \n1,修复一些已知Bug和Crash
+                \n2,重构详情页，完善详情页UI效果，可能还存在一些问题
+                \n3,重构了播放器每个页面的入口圆形按钮，首次进入App，圆形按钮还有一些状态问题
+                \n4,个人设置页面添加了版本更新，记录了每个版本更新的一些开发信息
+                    "
+            android:layout_marginTop="50dp"
+            android:padding="@dimen/dp_16" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

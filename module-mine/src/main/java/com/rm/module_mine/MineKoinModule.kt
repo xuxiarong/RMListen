@@ -31,6 +31,8 @@ val viewModelModule = module {
     viewModel { MineMemberFansViewModel(get()) }
     viewModel { MineMemberFollowsViewModel(get()) }
     viewModel { MineMemberReleaseBooksViewModel(get()) }
+    viewModel { MineVersionUpdateViewModel() }
+
 }
 
 val repositoryModule = module {

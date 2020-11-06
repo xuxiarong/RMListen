@@ -11,10 +11,7 @@ import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.R
-import com.rm.module_mine.activity.MineSettingAccountSecurityActivity
-import com.rm.module_mine.activity.MineSettingDownloadActivity
-import com.rm.module_mine.activity.MinePersonalInfoActivity
-import com.rm.module_mine.activity.MineSettingPlayActivity
+import com.rm.module_mine.activity.*
 
 /**
  *
@@ -83,6 +80,14 @@ class MineSettingViewModel : BaseVMViewModel() {
         } else {
             quicklyLogin(context)
         }
+    }
+
+
+    /**
+     * 版本更新信息
+     */
+    fun clickVersionUpdate(context: Context) {
+        startActivity(MineVersionUpdateActivity::class.java)
     }
 
     private fun quicklyLogin(context: Context) {

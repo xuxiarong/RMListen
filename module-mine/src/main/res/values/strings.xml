@@ -38,6 +38,8 @@
     <string name="mine_other">其他</string>
     <string name="mine_message_notice">消息通知</string>
     <string name="mine_favorable_comment">给个好评</string>
+    <string name="mine_app_version">版本信息</string>
+
     <string name="mine_free_book">免费求书</string>
     <string name="mine_sign_out">退出登录</string>
     <string name="mine_login_and_register">登录/注册</string>
