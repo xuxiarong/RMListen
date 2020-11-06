@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -176,6 +174,15 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             }
         })
 
+        mViewModel.baseTipModel.observe(this, Observer {
+            tipView.showTipView(
+                activity = this,
+                tipText = it.content,
+                tipColor = it.contentColor,
+                tipProgress = it.isProgress,
+                netError = it.isNetError
+            )
+        })
 
     }
 

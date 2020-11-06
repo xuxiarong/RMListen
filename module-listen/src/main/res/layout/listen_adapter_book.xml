@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="item"
             type="com.rm.business_lib.bean.AudioBean" />
@@ -60,15 +59,25 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="#00ff00" />
 
-            <TextView
+            <com.flyco.roundview.RoundTextView
                 android:id="@+id/listen_book_adapter_tips"
-                style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
                 bindText="@{item.audio_label}"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_16"
+                android:enabled="false"
+                android:gravity="center"
+                android:paddingStart="@dimen/dp_4"
+                android:paddingEnd="@dimen/dp_4"
+                android:textColor="@color/businessWhite"
+                android:textSize="@dimen/business_text_size_10sp"
                 app:layout_constraintRight_toRightOf="@id/listen_book_adapter_icon"
                 app:layout_constraintTop_toTopOf="@id/listen_book_adapter_icon"
+                app:rv_backgroundColor="@color/business_text_color_333333"
+                app:rv_cornerRadius_BL="@dimen/dp_4"
+                app:rv_cornerRadius_TR="@dimen/dp_4"
                 tools:text="文案" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_book_adapter_name"
                 style="@style/BusinessTextStyleFirst_2"
                 bindText="@{item.audio_name}"
@@ -81,7 +90,7 @@
                 app:layout_constraintTop_toTopOf="@id/listen_book_adapter_icon"
                 tools:text="你自己觉得有，别人感觉" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_book_adapter_describe"
                 style="@style/BusinessTextStyleSecond_3"
                 bindText="@{item.audio_intro}"
@@ -93,7 +102,7 @@
                 app:layout_constraintTop_toBottomOf="@id/listen_book_adapter_name"
                 tools:text="公司要为员工创造环境，但员工的成长最终是靠自己" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_book_adapter_author"
                 style="@style/BusinessTextStyleThird_4"
                 bindText="@{item.author}"

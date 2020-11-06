@@ -121,12 +121,12 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         if (keyboardVisibility) {
             recommendVisible.set(false)
             if (keyWord.get()!!.isEmpty()){
-                historyIsVisible.set(true)
+                historyIsVisible.set(HISTORY_KEY.getListString().size > 0)
             }
         } else {
             recommendVisible.set(true)
             suggestIsVisible.set(false)
-            historyIsVisible.set(false)
+            historyIsVisible.set(HISTORY_KEY.getListString().size > 0)
         }
     }
 
@@ -179,6 +179,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     fun clickClearInput() {
         searchKeyword.set("")
         keyWord.set("")
+        inputText.set("")
         inputAdapter.setList(null)
         suggestIsVisible.set(false)
         recommendVisible.set(false)

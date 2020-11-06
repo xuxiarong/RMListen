@@ -18,6 +18,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_menu_detail_front_cover"
+            android:layout_marginTop="@dimen/dp_12"
             bindUrl="@{headerViewModel.data.cover_url}"
             corner="@{8}"
             android:layout_width="@dimen/dp_144"
@@ -69,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"
-            android:drawableStart="@drawable/business_icon_book_num"
+            android:drawableStart="@drawable/business_icon_book_ee"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover"
             app:layout_constraintTop_toBottomOf="@id/home_menu_detail_author_icon"
@@ -86,6 +87,14 @@
             android:text="@string/home_menu_detail_add_collected"
             app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_front_cover"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/business_menu_red_bg"
+            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_collected"
+            app:layout_constraintEnd_toEndOf="@id/home_menu_detail_collected"
+            app:layout_constraintStart_toStartOf="@id/home_menu_detail_collected" />
 
         <com.rm.business_lib.wedgit.expandtextview.ExpandableTextView
             android:id="@+id/home_menu_detail_brief"

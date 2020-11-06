@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -13,12 +14,15 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.widget.HomeDetailInterceptLayout
+import kotlinx.android.synthetic.main.home_activity_detail_main.*
+import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
 
 /**
  * 书籍详情
  *  //1、需添加书籍下架的toast提示，然后finish掉详情页
  */
-class HomeDetailActivity : ComponentShowPlayActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
+class HomeDetailActivity :
+    ComponentShowPlayActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
     override fun getLayoutId(): Int = R.layout.home_activity_detail_main
 
     override fun initModelBrId() = BR.viewModel
@@ -43,6 +47,8 @@ class HomeDetailActivity : ComponentShowPlayActivity<HomeActivityDetailMainBindi
     override fun initView() {
         super.initView()
         setTransparentStatusBar()
+
+        recycleScrollListener()
 
         mDataBind.homeDetailCommentRecycleView.apply {
             bindVerticalLayout(mViewModel.homeDetailCommentAdapter)
@@ -80,12 +86,48 @@ class HomeDetailActivity : ComponentShowPlayActivity<HomeActivityDetailMainBindi
             override fun toTop(isTop: Boolean) {
                 if (isTop) {
                     mDataBind.homeDetailTitle.visibility = View.VISIBLE
+                    mDataBind.homeDetailBlur.alpha = 1f
                 } else {
-                    mDataBind.homeDetailTitle.visibility = View.INVISIBLE
+                    if (!titleIsVisible) {
+                        mDataBind.homeDetailBlur.alpha = oldAlpha
+                        mDataBind.homeDetailTitle.visibility = View.INVISIBLE
+                    }
                 }
             }
         })
     }
+
+    private var titleIsVisible = false
+    private var oldAlpha = 0f
+
+    /**
+     * recyclerView滑动监听
+     */
+    private fun recycleScrollListener() {
+        mDataBind.homeDetailCommentRecycleView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            private var totalDy = 0
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val top = mViewModel.mDataBinding?.homeDetailIcon?.top ?: 0
+                val height = mViewModel.mDataBinding?.homeDetailIcon?.height ?: 0
+                totalDy += dy
+                if (totalDy > 0 && totalDy <= top + height) {
+                    val alpha = totalDy.toFloat() / (top + height)
+                    oldAlpha = alpha
+                    mDataBind.homeDetailBlur.alpha = alpha
+                    mDataBind.homeDetailTitle.visibility = if (alpha > 0.9) {
+                        titleIsVisible = true
+                        View.VISIBLE
+                    } else {
+                        titleIsVisible = false
+                        View.INVISIBLE
+                    }
+                }
+            }
+        })
+    }
+
 
     override fun startObserve() {
 
@@ -98,13 +140,5 @@ class HomeDetailActivity : ComponentShowPlayActivity<HomeActivityDetailMainBindi
         super.onStart()
         mViewModel.chapterAdapter.notifyDataSetChanged()
     }
-
-
-//    override fun onResume() {
-//        super.onResume()
-////        val playService = RouterHelper.createRouter(PlayService::class.java)
-////        rootViewAddView(playService.getGlobalPlay())
-////        playService.showView(this)
-//    }
 
 }

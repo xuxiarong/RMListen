@@ -129,21 +129,29 @@ class HomeCommentDialogViewModel(
      * 点击发送按钮
      */
     fun clickSend(view: View) {
-        val imm =
-            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (imm.isActive) {
-            imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
-        }
         inputComment.get()?.let {
-            showTip("评论中", R.color.business_text_color_333333, false)
-            sendComment(it, audioId, loginUser.get()!!.id)
+            if (it.length > 200) {
+                showTip(
+                    CONTEXT.getString(R.string.home_comment_input_limit),
+                    R.color.business_color_ff5e5e, true
+                )
+
+            } else {
+                showTip("评论中", R.color.business_text_color_333333, false)
+                sendComment(view, it, audioId, loginUser.get()!!.id)
+            }
         }
+    }
+
+    fun clickLayout() {
+        //防止点击消失dialog
     }
 
     /**
      * 发送评论
      */
     private fun sendComment(
+        view: View,
         content: String,
         audio_id: String,
         anchor_id: String
@@ -151,6 +159,11 @@ class HomeCommentDialogViewModel(
         launchOnIO {
             repository.homeSendComment(content, audio_id, anchor_id).checkResult(
                 onSuccess = {
+                    val imm =
+                        view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    if (imm.isActive) {
+                        imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
+                    }
                     commentSuccessBlock()
                     mDialog.dismiss()
                     hideTipView()

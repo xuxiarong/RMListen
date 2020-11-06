@@ -7,12 +7,18 @@ import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.mvvm.BaseActivity
+import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.mvvm.BaseViewModel
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.ListenSheetListType
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
+import com.rm.component_comm.activity.ComponentShowPlayActivity
+import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.adapter.ListenSheetListPagerAdapter
+import com.rm.module_listen.databinding.ListenActivitySheetListBinding
 import com.rm.module_listen.fragment.ListenSheetCollectedListFragment
 import com.rm.module_listen.fragment.ListenSheetMyListFragment
 import kotlinx.android.synthetic.main.listen_activity_sheet_list.*
@@ -21,7 +27,7 @@ import kotlinx.android.synthetic.main.listen_activity_sheet_list.*
  * 听单界面
  */
 class
-ListenSheetListActivity : BaseActivity() {
+ListenSheetListActivity : ComponentShowPlayActivity<ListenActivitySheetListBinding, BaseVMViewModel>() {
 
     companion object {
         const val SHEET_LIST_TYPE = "sheetListType"
@@ -48,7 +54,6 @@ ListenSheetListActivity : BaseActivity() {
         }
     }
 
-
     @ListenSheetListType
     private var sheetType = LISTEN_SHEET_LIST_MY_LIST
 
@@ -58,10 +63,12 @@ ListenSheetListActivity : BaseActivity() {
         CONTEXT.getString(R.string.listen_collected_sheet)
     )
     private var mListTabFragment: MutableList<Fragment>? = null
-    override fun getLayoutId(): Int {
-        return R.layout.listen_activity_sheet_list
-    }
 
+    override fun getLayoutId() = R.layout.listen_activity_sheet_list
+    override fun initModelBrId() = BR.viewModel
+
+    override fun startObserve() {
+    }
     override fun initView() {
         super.initView()
         sheetType = intent.getIntExtra(SHEET_LIST_TYPE, LISTEN_SHEET_LIST_MY_LIST)
@@ -78,7 +85,7 @@ ListenSheetListActivity : BaseActivity() {
         if (TextUtils.isEmpty(memberId) || memberId == loginUser.get()?.id) {
             mListTabText[0] = CONTEXT.getString(R.string.listen_my_sheet)
         } else {
-            mListTabText[0] =  CONTEXT.getString(R.string.listen_create_sheet)
+            mListTabText[0] = CONTEXT.getString(R.string.listen_create_sheet)
         }
         mListTabFragment = mutableListOf(
             ListenSheetMyListFragment.newInstance(memberId!!),
@@ -114,5 +121,7 @@ ListenSheetListActivity : BaseActivity() {
             it.onActivityResult(requestCode, resultCode, data)
         }
     }
+
+
 
 }

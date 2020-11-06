@@ -2,6 +2,8 @@ package com.rm.baselisten.dialog
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.mvvm.BaseActivity
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 /**

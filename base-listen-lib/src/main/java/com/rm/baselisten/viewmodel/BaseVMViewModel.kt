@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.R
 import com.rm.baselisten.model.*
 import com.rm.baselisten.mvvm.BaseViewModel
 import com.rm.baselisten.util.NetWorkUtils
@@ -57,32 +58,37 @@ open class BaseVMViewModel : BaseViewModel() {
     var baseToastModel = MutableLiveData<BaseToastModel>()
 
     /**
+     * 基类的提示数据
+     */
+    val baseTipModel = MutableLiveData<BaseTipModel>()
+
+    /**
      * 是否显示音乐按钮入口
      */
     var basePlayControlModel = ObservableField<BasePlayControlModel>(BasePlayControlModel())
 
 
     fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {
-        if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+        if (NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
             viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
-        }else{
+        } else {
             showNetError()
         }
     }
 
     fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
-        if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+        if (NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
             viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
-        }else{
+        } else {
             showNetError()
         }
     }
 
 
-    fun <T> launchOnIO(block: suspend CoroutineScope.() -> T,netErrorBlock :()->Unit = {}) {
-        if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+    fun <T> launchOnIO(block: suspend CoroutineScope.() -> T, netErrorBlock: () -> Unit = {}) {
+        if (NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
             viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
-        }else{
+        } else {
             netErrorBlock()
         }
     }
@@ -162,6 +168,18 @@ open class BaseVMViewModel : BaseViewModel() {
 
     fun showLoading() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING))
+    }
+
+    fun showTip(tipModel: BaseTipModel) {
+        baseTipModel.postValue(tipModel)
+    }
+
+    fun showTip(content: String) {
+        baseTipModel.postValue(BaseTipModel(content = content, contentColor = R.color.base_333))
+    }
+
+    fun showTip(content: String, color: Int) {
+        baseTipModel.postValue(BaseTipModel(content = content, contentColor = color))
     }
 
     /**

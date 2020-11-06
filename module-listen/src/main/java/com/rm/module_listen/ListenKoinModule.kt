@@ -1,5 +1,6 @@
 package com.rm.module_listen
 
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_listen.api.ListenApiService
 import com.rm.module_listen.repository.*
@@ -23,6 +24,7 @@ val viewModelModule = module {
     viewModel { ListenSheetCollectedListViewModel(get()) }
     viewModel { ListenSheetDetailViewModel(get()) }
     viewModel { ListenHistoryViewModel() }
+    viewModel { BaseVMViewModel() }
 }
 
 val repositoryModule = module {
