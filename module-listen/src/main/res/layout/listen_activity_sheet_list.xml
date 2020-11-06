@@ -1,49 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/listen_sheet_list_back"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_48"
-        android:layout_marginStart="@dimen/dp_16"
-        android:src="@drawable/base_icon_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
-        android:id="@+id/listen_sheet_list_tab"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_45"
-        android:layout_gravity="center_horizontal|bottom"
-        android:orientation="horizontal"
-        app:bendTabBackground="@null"
-        app:bendTabIndicatorAnimation="true"
-        app:bendTabIndicatorColor="@color/business_color_ff5e5e"
-        app:bendTabIndicatorHeight="@dimen/dp_1"
-        app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
-        app:bendTabIndicatorWidth="@dimen/dp_24"
-        app:bendTabMode="fixed"
-        app:bendTabPaddingEnd="@dimen/dp_20"
-        app:bendTabPaddingStart="@dimen/dp_20"
-        app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
-        app:bendTabTextSelectIsBold="true"
-        app:bendTabTextSize="@dimen/business_text_size_16sp"
-        app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
-        app:layout_collapseMode="pin"
-        app:layout_constraintBottom_toBottomOf="@id/listen_sheet_list_back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/listen_sheet_list_back" />
+        <variable
+            name="viewModel"
+            type="com.rm.baselisten.viewmodel.BaseVMViewModel" />
+    </data>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/listen_sheet_list_view_pager"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_14"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listen_sheet_list_back" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/listen_sheet_list_back"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_48"
+            android:layout_marginStart="@dimen/dp_16"
+            android:src="@drawable/base_icon_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
+            android:id="@+id/listen_sheet_list_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_45"
+            android:layout_gravity="center_horizontal|bottom"
+            android:orientation="horizontal"
+            app:bendTabBackground="@null"
+            app:bendTabIndicatorAnimation="true"
+            app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+            app:bendTabIndicatorHeight="@dimen/dp_1"
+            app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+            app:bendTabIndicatorWidth="@dimen/dp_24"
+            app:bendTabMode="fixed"
+            app:bendTabPaddingEnd="@dimen/dp_20"
+            app:bendTabPaddingStart="@dimen/dp_20"
+            app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+            app:bendTabTextSelectIsBold="true"
+            app:bendTabTextSize="@dimen/business_text_size_16sp"
+            app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
+            app:layout_collapseMode="pin"
+            app:layout_constraintBottom_toBottomOf="@id/listen_sheet_list_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/listen_sheet_list_back" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/listen_sheet_list_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_14"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/listen_sheet_list_back" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

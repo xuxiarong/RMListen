@@ -29,7 +29,7 @@ class ExpandableTextView @JvmOverloads constructor(
     private var isExpand = true//是否折叠
     private lateinit var mTextView: TextView
     private lateinit var mImageView: ImageView
-    private var mTextColor = ContextCompat.getColor(context, R.color.business_text_color_333333)
+    private var mTextColor = ContextCompat.getColor(context, R.color.business_text_color_666666)
     private var mTextSize = 0
     private var mExpandIcon = R.drawable.business_icon_unfold
     private var textHeight: Int = 0
@@ -39,7 +39,7 @@ class ExpandableTextView @JvmOverloads constructor(
             context.obtainStyledAttributes(attrs, R.styleable.ExpandableTextView)
         mTextColor = ta.getColor(R.styleable.ExpandableTextView_expand_text_color, mTextColor)
         mTextSize =
-            ta.getDimensionPixelSize(R.styleable.ExpandableTextView_expand_text_size, sp(16f))
+            ta.getDimensionPixelSize(R.styleable.ExpandableTextView_expand_text_size, sp(14f))
         mExpandIcon = ta.getResourceId(R.styleable.ExpandableTextView_expand_iv_icon, mExpandIcon)
         mMaxLine = ta.getInteger(R.styleable.ExpandableTextView_expand_text_max_line, mMaxLine)
         ta.recycle()
@@ -85,38 +85,43 @@ class ExpandableTextView @JvmOverloads constructor(
         mTextView.text = mText
         visibility = View.VISIBLE
         mTextView.post {
-            DLog.i("========","${mTextView.lineCount}    $isExpand")
-
-            if (mMaxLine < mTextView.lineCount && isExpand) {
+            if (mMaxLine < mTextView.lineCount) {
                 mImageView.visibility = View.VISIBLE
                 val buffer = StringBuffer()
                 mTextView.layout?.let {
+
                     var start = 0
                     var end: Int
                     var lastWidth = 0f//最后一行的宽度
                     var maxWidth = 0f//最大宽度
                     var sub: String
-
-                    for (i in 0 until mMaxLine) {
-                        //获取当前这一行的字数
-                        end = it.getLineEnd(i)
-                        lastWidth = it.getLineWidth(i)
-                        if (i == 0) {
-                            maxWidth = lastWidth
+                    if (isExpand) {
+                        for (i in 0 until mMaxLine) {
+                            //获取当前这一行的字数
+                            end = it.getLineEnd(i)
+                            lastWidth = it.getLineWidth(i)
+                            if (i == 0) {
+                                maxWidth = lastWidth
+                            }
+                            //获取当前这一行的文本
+                            sub = mText!!.substring(start, end)
+                            start = end
+                            buffer.append(sub)
                         }
-                        //获取当前这一行的文本
-                        sub = mText!!.substring(start, end)
-                        start = end
-                        buffer.append(sub)
-                    }
 
-
-                    //判断最后一行是否能够显示完全，如果显示不全则添加空格让其换行
-                    if ((textHeight * 2 + lastWidth) > maxWidth) {
-                        buffer.delete(buffer.length - 4, buffer.length)
-                        buffer.append("...")
+                        //判断最后一行是否能够显示完全，如果显示不全则添加空格让其换行
+                        if ((textHeight * 2 + lastWidth) > maxWidth) {
+                            buffer.delete(buffer.length - 4, buffer.length)
+                            buffer.append("...")
+                        }
+                        mTextView.text = buffer
+                    } else {
+                        val lineWidth = it.getLineWidth(mTextView.lineCount - 1)
+                        val iconWidth = mImageView.measuredWidth
+                        if (measuredWidth - iconWidth - lineWidth <= 20) {
+                            mTextView.text = buffer.append(mText).append("\n")
+                        }
                     }
-                    mTextView.text = buffer
                 }
             }
         }

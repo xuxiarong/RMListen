@@ -3,9 +3,12 @@ package com.rm.module_listen.activity
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
+import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -79,6 +82,8 @@ class ListenMySheetDetailActivity :
             headerDataBind?.listenSheetDetailDescription?.text = it
         }
 
+        recycleScrollListener()
+
     }
 
     /**
@@ -110,6 +115,27 @@ class ListenMySheetDetailActivity :
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.mAdapter.headerLayoutCount == 0) {
                     createHeader(mViewModel.data.get()!!)
+                }
+            }
+        })
+    }
+
+
+    /**
+     * recyclerView滑动监听
+     */
+    private fun recycleScrollListener() {
+        mDataBind.listenSheetDetailRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            private var totalDy = 0
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val top = headerDataBind?.listenSheetDetailFrontCover?.top ?: 0
+                val height = headerDataBind?.listenSheetDetailFrontCover?.height ?: 0
+                totalDy += dy
+                if (totalDy > 0 && totalDy <= top + height) {
+                    val alpha = totalDy.toFloat() / (top + height)
+                    mDataBind.listenSheetDetailBlur.alpha = alpha
                 }
             }
         })

@@ -17,8 +17,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/dp_6"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_6">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_detail_front_cover"
@@ -26,6 +26,7 @@
             corner="@{8f}"
             android:layout_width="@dimen/dp_144"
             android:layout_height="@dimen/dp_144"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
@@ -37,6 +38,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginEnd="@dimen/dp_16"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/listen_sheet_detail_front_cover"
             app:layout_constraintTop_toTopOf="@id/listen_sheet_detail_front_cover"
@@ -50,7 +52,8 @@
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_16"
-            android:drawableStart="@drawable/business_icon_day"
+            android:drawableStart="@drawable/business_icon_day_ee"
+            android:drawablePadding="@dimen/dp_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/listen_sheet_detail_front_cover"
             app:layout_constraintTop_toBottomOf="@id/listen_sheet_detail_description"
@@ -59,12 +62,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_detail_read_num"
             style="@style/BusinessTextStyleSecond_4"
-            bindText="@{item.num_audio}"
+            bindPlayCount="@{item.num_audio}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_16"
-            android:drawableStart="@drawable/business_icon_book_num"
+            android:drawableStart="@drawable/business_icon_book_ee"
+            android:drawablePadding="@dimen/dp_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/listen_sheet_detail_front_cover"
             app:layout_constraintTop_toBottomOf="@id/listen_sheet_detail_create"

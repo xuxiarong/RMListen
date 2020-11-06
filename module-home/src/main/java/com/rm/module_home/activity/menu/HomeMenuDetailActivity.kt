@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
@@ -50,13 +52,14 @@ class HomeMenuDetailActivity :
             topMargin = stateHeight
         }
 
-//        recycleScrollListener()
+        recycleScrollListener()
 
         home_menu_detail_recycler_view.apply {
             bindVerticalLayout(mViewModel.mAdapter)
             createHeader()
         }
     }
+
     override fun initData() {
         mViewModel.showLoading()
         mViewModel.getData()
@@ -86,26 +89,16 @@ class HomeMenuDetailActivity :
     private fun recycleScrollListener() {
         home_menu_detail_recycler_view.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
+            private var totalDy = 0
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                //找到即将移出屏幕Item的position,position是移出屏幕item的数量
-                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val position = linearLayoutManager.findFirstVisibleItemPosition()
-                //根据position找到这个Item
-                val firstVisibleChildView = linearLayoutManager.findViewByPosition(position)
-                //获取Item的高
-                val itemHeight = firstVisibleChildView?.height ?: 0
-                //算出该Item还未移出屏幕的高度
-                val itemTop = firstVisibleChildView?.top ?: 0
-                //position移出屏幕的数量*高度得出移动的距离
-                val iPosition = position * itemHeight
-                //减去该Item还未移出屏幕的部分可得出滑动的距离
-                val iResult = iPosition - itemTop
-
-//                val height = home_menu_detail_iv_bg.height
-
-//                val fl = iResult.toFloat() / height.toFloat()
-//                home_menu_detail_iv_bg.alpha = 1f - fl
+                val top = mViewModel.dataBinding?.homeMenuDetailFrontCover?.top ?: 0
+                val height = mViewModel.dataBinding?.homeMenuDetailFrontCover?.height ?: 0
+                totalDy += dy
+                if (totalDy > 0 && totalDy <= top + height) {
+                    val i = totalDy.toFloat() / (top + height)
+                    mDataBind.homeMenuDetailBlur.alpha = i
+                }
             }
         })
     }
@@ -121,8 +114,5 @@ class HomeMenuDetailActivity :
         }
     }
 
-    override fun onStart() {
-        super.onStart()
 
-    }
 }

@@ -1,9 +1,12 @@
 package com.rm.module_listen.viewmodel
 
+import android.view.Gravity
 import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.getBooleanMMKV
@@ -21,14 +24,49 @@ import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
+import com.rm.module_listen.databinding.ListenDialogSheetListBinding
 import com.rm.module_listen.repository.ListenRepository
+import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 
 class ListenDialogSheetViewModel(
     private val mActivity: FragmentActivity,
-    private val baseViewModel: BaseVMViewModel
+    private val baseViewModel: BaseVMViewModel,
+    private val audioId: String
 ) : BaseVMViewModel() {
     private val repository by lazy {
         ListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
+    }
+
+    private var dateBinding: ListenDialogSheetListBinding? = null
+
+    /**
+     * 懒加载dialog
+     */
+    val mDialog by lazy {
+        val height = BaseApplication.CONTEXT.resources.getDimensionPixelSize(R.dimen.dp_390)
+        CommonMvFragmentDialog().apply {
+            gravity = Gravity.BOTTOM
+            dialogWidthIsMatchParent = true
+            dialogHeight = height
+            dialogHasBackground = true
+            initDialog = {
+                dateBinding = mDataBind as ListenDialogSheetListBinding
+                initView(dateBinding!!)
+            }
+        }
+    }
+
+    /**
+     * 初始化操作
+     */
+    private fun CommonMvFragmentDialog.initView(dateBinding: ListenDialogSheetListBinding) {
+        dateBinding.listenDialogSheetCreateBookList.setOnClickListener {
+            ListenDialogCreateSheetHelper(baseViewModel, mActivity).showCreateSheetDialog(audioId)
+            dismiss()
+        }
+        baseViewModel.showLoading()
+        getData()
+        dismiss = { dismiss() }
     }
 
     /**
@@ -45,9 +83,6 @@ class ListenDialogSheetViewModel(
     }
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
-
-    //音频Id
-    val audioId = MutableLiveData<String>()
 
     var dismiss: () -> Unit = {}
 
@@ -83,15 +118,15 @@ class ListenDialogSheetViewModel(
                 },
                 onError = {
                     baseViewModel.showContentView()
-                    if (mActivity is BaseActivity) {
-                        mActivity.tipView.showTipView(
-                            mActivity,
-                            tipText = "$it",
-                            tipColor = R.color.business_color_ff5e5e
-                        )
-                    } else {
-                        baseViewModel.showToast("$it")
-                    }
+//                    if (mActivity is BaseActivity) {
+//                        mActivity.tipView.showTipView(
+//                            mActivity,
+//                            tipText = "$it",
+//                            tipColor = R.color.business_color_ff5e5e
+//                        )
+//                    } else {
+//                        baseViewModel.showToast("$it")
+//                    }
                 }
             )
         }
@@ -154,11 +189,11 @@ class ListenDialogSheetViewModel(
                     ImageView(mActivity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(mActivity)
         } else {
-            if (mActivity is BaseActivity) {
-                mActivity.tipView.showTipView(mActivity, "添加成功")
-            } else {
-                baseViewModel.showToast(mActivity.getString(R.string.listen_add_success_tip))
-            }
+//            if (mActivity is BaseActivity) {
+//                mActivity.tipView.showTipView(mActivity, "添加成功")
+//            } else {
+//                baseViewModel.showToast(mActivity.getString(R.string.listen_add_success_tip))
+//            }
         }
         dismissFun()
         IS_FIRST_ADD_SHEET.putMMKV(false)
@@ -185,9 +220,7 @@ class ListenDialogSheetViewModel(
      * item 点击事件
      */
     fun itemClickFun(bean: ListenSheetBean) {
-        audioId.value?.let {
-            addSheet("${bean.sheet_id}", it)
-        }
+        addSheet("${bean.sheet_id}", audioId)
     }
 
     /**

@@ -162,6 +162,22 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                 this@BaseVMFragment.activity?.finish()
             }
         })
+
+        mViewModel.baseTipModel.observe(this, Observer {
+            if (activity is BaseActivity) {
+                val baseActivity = activity as BaseActivity
+                baseActivity.tipView.showTipView(
+                    activity = baseActivity,
+                    tipText = it.content,
+                    tipColor = it.contentColor,
+                    tipProgress = it.isProgress,
+                    netError = it.isNetError
+                )
+            } else {
+                ToastUtil.show(this@BaseVMFragment.activity, it.content)
+            }
+        })
+
     }
 
     /**

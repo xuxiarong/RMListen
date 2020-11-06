@@ -18,6 +18,28 @@
         android:id="@+id/bottom_sheet_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            blurUrl="@{viewModel.detailInfoData.list.audio_cover_url}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:foreground="@drawable/business_invalid_name"
+            android:scaleType="fitXY"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_detail_blur"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:alpha="0"
+            android:background="@color/business_text_color_ffffff"
+            android:scaleType="fitXY"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <!--标题栏-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_detail_title_cl"
@@ -129,16 +151,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_marginTop="@dimen/dp_20"
+                    android:alpha="@{viewModel.hideOr? 0.3f:1f}"
                     android:drawableStart="@drawable/home_detail_icon_all_play"
-                    android:enabled="@{!viewModel.hideOr}"
                     android:drawablePadding="@dimen/dp_4"
+                    android:enabled="@{!viewModel.hideOr}"
                     android:onClick="@{()->viewModel.clickPlayPage(context)}"
                     android:paddingStart="@dimen/dp_16"
                     android:paddingTop="@dimen/dp_9"
                     android:paddingEnd="@dimen/dp_16"
-                    android:textColor="@color/business_text_color_666666"
                     android:paddingBottom="@dimen/dp_9"
                     android:text="@string/home_play_all"
+                    android:textColor="@color/business_text_color_666666"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/home_detail_view" />
@@ -163,6 +186,7 @@
                     bindClick="@{()->viewModel.startDownloadChapterActivity(context)}"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:alpha="@{viewModel.hideOr? 0.3f:1f}"
                     android:enabled="@{!viewModel.hideOr}"
                     android:paddingStart="@dimen/dp_10"
                     android:paddingEnd="@dimen/dp_10"
@@ -175,6 +199,7 @@
                     android:id="@+id/home_detail_play_sort"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:alpha="@{viewModel.hideOr? 0.3f:1f}"
                     android:button="@null"
                     android:drawableStart="@drawable/home_detail_chapter_ce"
                     android:enabled="@{!viewModel.hideOr}"

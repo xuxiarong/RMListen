@@ -33,6 +33,7 @@ import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.adapter.HomeDetailChapterAdapter
 import com.rm.module_home.adapter.HomeDetailChapterPageAdapter
 import com.rm.module_home.databinding.HomeDetailHeaderBinding
 import com.rm.module_home.model.home.detail.CommentList
@@ -145,7 +146,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 头部dataBinding对象
      */
-    private var mDataBinding: HomeDetailHeaderBinding? = null
+
+    var mDataBinding: HomeDetailHeaderBinding? = null
 
     /**
      * 创建头部详细信息
@@ -182,37 +184,20 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     val homeDetailTagsAdapter by lazy {
         CommonBindAdapter(
             mutableListOf<DetailTags>(),
-            R.layout.home_item_book_label, BR.detailTags
+            R.layout.home_item_book_label,
+            BR.detailTags
         )
     }
 
     /**
      * 章节分页适配器
      */
-    val chapterAnthologyAdapter by lazy {
-        HomeDetailChapterPageAdapter(this)
-//        CommonBindVMAdapter(
-//            this,
-//            mutableListOf<DataStr>(),
-//            R.layout.home_chapter_item_anthology,
-//            BR.click,
-//            BR.item
-//        )
-    }
+    val chapterAnthologyAdapter by lazy { HomeDetailChapterPageAdapter(this) }
 
     /**
      * 章节的适配器
      */
-    val chapterAdapter by lazy {
-        CommonBindVMAdapter(
-            this,
-            mutableListOf<ChapterList>(),
-            R.layout.home_item_detail_chapter,
-            BR.chapterclick,
-            BR.DetailChapterViewModel
-
-        )
-    }
+    val chapterAdapter by lazy { HomeDetailChapterAdapter(this) }
 
     /**
      * 评论加载更多
@@ -283,6 +268,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onError = {
                     showContentView()
                     DLog.i("------->", "订阅失败  $it")
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -296,11 +282,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.unSubscribe(audioId).checkResult(
                 onSuccess = {
                     isSubscribed.set(false)
-                    showToast("取消订阅成功")
+//                    showToast("取消订阅成功")
+                    showTip("取消订阅成功")
                 },
                 onError = {
                     showContentView()
                     DLog.i("------->", "取消订阅  $it")
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -356,6 +344,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                         showContentView()
                         chapterRefreshStatus.finishRefresh(false)
                         chapterRefreshStatus.finishLoadMore(false)
+                        showTip("$it", R.color.business_color_ff5e5e)
                     })
         }
     }
@@ -406,6 +395,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 },
                 onError = {
                     DLog.i("----->", "评论点赞:$it")
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }
@@ -426,6 +416,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 },
                 onError = {
                     DLog.i("----->", "评论点赞:$it")
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -452,6 +443,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     commentTotal.set(it.total)
                     processCommentData(it)
                 }, onError = {
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -468,10 +460,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     isAttention.set(true)
-                    showToast("关注成功")
+                    showTip("关注成功")
                 },
                 onError = {
                     showContentView()
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }
@@ -486,13 +479,15 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     isAttention.set(false)
-                    showToast("取消关注成功")
+                    showTip("取消关注成功")
                 },
                 onError = {
                     showContentView()
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }
+
 
     /**
      * 处理评论数据
@@ -616,21 +611,20 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 关注点击事件
      */
     fun clickAttentionFun(context: Context, followId: String?) {
-        if (TextUtils.isEmpty(followId)) {
-            return
-        }
         getActivity(context)?.let {
             if (!isLogin.get()) {
                 quicklyLogin(it)
-            } else {
-                if (isAttention.get()) {
-                    unAttentionAnchor(followId!!)
-                } else {
-                    attentionAnchor(followId!!)
+            } else
+                if (!TextUtils.isEmpty(followId)) {
+                    if (isAttention.get()) {
+                        unAttentionAnchor(followId!!)
+                    } else {
+                        attentionAnchor(followId!!)
+                    }
                 }
-            }
         }
     }
+
 
     /**
      * 评论点击事件
@@ -642,9 +636,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     HomeCommentDialogHelper(this, it, audioId) {
                         commentPage = 1
                         getCommentList(audioId)
-                        if (it is BaseActivity) {
-                            it.tipView.showTipView(it, "评论成功")
-                        }
+                        showTip("评论成功")
                     }.showDialog()
                 }
 
@@ -762,7 +754,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(activity)
         } else {
-            showToast(context.getString(R.string.home_subscribe_success_tip))
+//            showToast(context.getString(R.string.home_subscribe_success_tip))
+            showTip(context.getString(R.string.home_subscribe_success_tip))
         }
         IS_FIRST_SUBSCRIBE.putMMKV(false)
     }
