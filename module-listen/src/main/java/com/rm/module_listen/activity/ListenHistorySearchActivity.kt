@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ActivityListenHistorySearchBinding
@@ -13,7 +13,7 @@ import com.rm.module_listen.viewmodel.ListenHistoryViewModel
 import kotlinx.android.synthetic.main.activity_listen_history_search.*
 
 class ListenHistorySearchActivity :
-    BaseVMActivity<ActivityListenHistorySearchBinding, ListenHistoryViewModel>() {
+    ComponentShowPlayActivity<ActivityListenHistorySearchBinding, ListenHistoryViewModel>() {
 
 
     override fun initModelBrId() = BR.viewModel

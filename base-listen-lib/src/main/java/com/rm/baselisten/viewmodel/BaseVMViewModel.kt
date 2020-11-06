@@ -2,6 +2,7 @@ package com.rm.baselisten.viewmodel
 
 import android.content.Context
 import android.content.ContextWrapper
+import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -54,6 +55,11 @@ open class BaseVMViewModel : BaseViewModel() {
      * 基类的Toast数据
      */
     var baseToastModel = MutableLiveData<BaseToastModel>()
+
+    /**
+     * 是否显示音乐按钮入口
+     */
+    var basePlayControlModel = ObservableField<BasePlayControlModel>(BasePlayControlModel())
 
 
     fun launchOnUI(block: suspend CoroutineScope.() -> Unit) {

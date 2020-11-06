@@ -7,7 +7,9 @@ import android.content.Intent
 import android.text.TextUtils
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.ktx.putAnyExtras
+import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
@@ -609,6 +611,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         read = playWhenReady
                     )
                 )
+                BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playReady = playWhenReady,playStatus = playbackState))
+
             }
         } else {
             mViewModel.playStatusBean.set(
@@ -617,6 +621,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     read = playWhenReady
                 )
             )
+            BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playReady = playWhenReady,playStatus = playbackState))
         }
         DLog.d(
             "suolong",

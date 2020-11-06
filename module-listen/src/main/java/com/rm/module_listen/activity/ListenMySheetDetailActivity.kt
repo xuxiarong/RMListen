@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.SheetInfoBean
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenActivitySheetDetailBinding
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.listen_activity_sheet_detail.*
  * 听单详情
  */
 class ListenMySheetDetailActivity :
-    BaseVMActivity<ListenActivitySheetDetailBinding, ListenSheetDetailViewModel>() {
+    ComponentShowPlayActivity<ListenActivitySheetDetailBinding, ListenSheetDetailViewModel>() {
 
     companion object {
         //删除成功回调code

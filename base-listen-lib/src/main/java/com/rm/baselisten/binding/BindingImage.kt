@@ -3,13 +3,17 @@ package com.rm.baselisten.binding
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.view.View
+import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.R
+import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.thridlib.glide.loadBlurImage
 import com.rm.baselisten.thridlib.glide.loadCircleImage
 import com.rm.baselisten.thridlib.glide.loadImage
 import com.rm.baselisten.thridlib.glide.loadRoundCornersImage
-import com.rm.baselisten.util.DLog
+
 
 /**
  * desc   :
@@ -89,4 +93,22 @@ fun ImageView.blurUrl(blurUrl: String?) {
 fun ImageView.blurRoundUrl(blurUrl: String?) {
     val url = blurUrl ?: ""
     loadRoundCornersImage(8.0f,this, url)
+}
+
+@BindingAdapter("bindPlayRotation")
+fun ImageView.bindPlayRotation(model : BasePlayStatusModel?){
+    if(model == null){
+        clearAnimation()
+        return
+    }else{
+        if(model.playReady && model.playStatus == 3){
+            val playAnim = AnimationUtils.loadAnimation(context, R.anim.base_rotate_play)
+            val interpolator = LinearInterpolator() //设置匀速旋转，在xml文件中设置会出现卡顿
+            playAnim!!.interpolator = interpolator
+            startAnimation(playAnim) //开始动画
+        }else{
+            clearAnimation()
+        }
+    }
+
 }

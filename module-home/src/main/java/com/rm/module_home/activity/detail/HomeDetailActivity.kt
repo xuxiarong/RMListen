@@ -6,22 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
-import com.rm.component_comm.play.PlayService
-import com.rm.component_comm.router.RouterHelper
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.widget.HomeDetailInterceptLayout
-import kotlinx.android.synthetic.main.home_activity_detail_main.*
 
 /**
  * 书籍详情
  *  //1、需添加书籍下架的toast提示，然后finish掉详情页
  */
-class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
+class HomeDetailActivity : ComponentShowPlayActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
     override fun getLayoutId(): Int = R.layout.home_activity_detail_main
 
     override fun initModelBrId() = BR.viewModel
@@ -103,11 +100,11 @@ class HomeDetailActivity : BaseVMActivity<HomeActivityDetailMainBinding, HomeDet
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        val playService = RouterHelper.createRouter(PlayService::class.java)
-        rootViewAddView(playService.getGlobalPlay())
-        playService.showView(this)
-    }
+//    override fun onResume() {
+//        super.onResume()
+////        val playService = RouterHelper.createRouter(PlayService::class.java)
+////        rootViewAddView(playService.getGlobalPlay())
+////        playService.showView(this)
+//    }
 
 }

@@ -4,13 +4,11 @@ import android.graphics.Rect
 import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.observe
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.Cxt.Companion.context
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_search.*
 import com.rm.module_search.adapter.SearchResultAdapter
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_ALL
@@ -19,7 +17,6 @@ import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_B
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_SHEET
 import com.rm.module_search.databinding.SearchActivityResultBinding
 import com.rm.module_search.viewmodel.SearchResultViewModel
-import kotlinx.android.synthetic.main.search_fragment_main.*
 import kotlin.math.abs
 
 /**
@@ -29,7 +26,7 @@ import kotlin.math.abs
  * @description
  *
  */
-class SearchResultActivity : BaseVMActivity<SearchActivityResultBinding, SearchResultViewModel>() {
+class SearchResultActivity : ComponentShowPlayActivity<SearchActivityResultBinding, SearchResultViewModel>() {
     private lateinit var params: ConstraintLayout.LayoutParams
 
 

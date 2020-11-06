@@ -5,17 +5,16 @@ import android.content.Intent
 import android.view.View
 import androidx.lifecycle.observe
 import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.binding.paddingBindData
+import com.rm.business_lib.xbanner.XBanner
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.rm.module_home.viewmodel.HomeMenuViewModel
-import com.rm.business_lib.xbanner.XBanner
 
-class HomeMenuActivity : BaseVMActivity<HomeActivityListenMenuBinding, HomeMenuViewModel>() {
+class HomeMenuActivity : ComponentShowPlayActivity<HomeActivityListenMenuBinding, HomeMenuViewModel>() {
 
     //懒加载头部banner
     private val headView by lazy {

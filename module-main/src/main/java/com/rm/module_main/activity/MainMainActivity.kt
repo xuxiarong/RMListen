@@ -3,9 +3,8 @@ package com.rm.module_main.activity
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
-import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.component_comm.play.PlayService
-import com.rm.component_comm.router.RouterHelper
+import androidx.viewpager.widget.ViewPager
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_main.BR
 import com.rm.module_main.R
 import com.rm.module_main.adapter.MyViewPagerAdapter
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.main_activity_main.*
  * date   : 2020/08/12
  * version: 1.0
  */
-class MainMainActivity : BaseVMActivity<MainActivityMainBindingImpl,HomeMainViewModel>() {
+class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, HomeMainViewModel>() {
 
     private lateinit var navigationController: NavigationController
 
@@ -119,13 +118,31 @@ class MainMainActivity : BaseVMActivity<MainActivityMainBindingImpl,HomeMainView
 //        navigationController.setHasMessage(1, true)
         navigationController.setupWithViewPager(view_pager)
 
+        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                currentTab = position
+            }
+        })
+
     }
 
     override fun onResume() {
         super.onResume()
-        val playService = RouterHelper.createRouter(PlayService::class.java)
-        rootViewAddView(playService.getGlobalPlay())
-        playService.showView(this)
+//        val playService = RouterHelper.createRouter(PlayService::class.java)
+//        rootViewAddView(playService.getGlobalPlay())
+//        playService.showView(this)
         if(view_pager.currentItem!= currentTab){
             view_pager.setCurrentItem(currentTab,false)
         }

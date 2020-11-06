@@ -3,7 +3,7 @@ package com.rm.module_listen.activity
 import android.content.Context
 import android.content.Intent
 import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenActivitySubscriptionBinding
@@ -13,7 +13,7 @@ import com.rm.module_listen.viewmodel.ListenSubscriptionViewModel
  * 订阅界面
  */
 class ListenSubscriptionActivity :
-    BaseVMActivity<ListenActivitySubscriptionBinding, ListenSubscriptionViewModel>() {
+    ComponentShowPlayActivity<ListenActivitySubscriptionBinding, ListenSubscriptionViewModel>() {
 
 
     companion object {

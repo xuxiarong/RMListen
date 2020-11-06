@@ -1,5 +1,8 @@
 package com.rm.module_play.playview
 
+import com.rm.baselisten.BaseConstance
+import com.rm.baselisten.model.BasePlayInfoModel
+import com.rm.baselisten.model.BasePlayProgressModel
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.utilExt.dip
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -32,7 +35,10 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
     }
     //设置书籍封面
     fun setBooKImage(bookUrl: String?){
-        bookUrl?.let { globalView.setBooKImage(it) }
+        bookUrl?.let {
+            globalView.setBooKImage(it)
+            BaseConstance.basePlayInfoModel.set(BasePlayInfoModel(playUrl = bookUrl))
+        }
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
@@ -61,7 +67,10 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        globalView.setProgress(currentDurtion.toFloat() / totalDurtion.toFloat())
+        val progress = currentDurtion.toFloat() / totalDurtion.toFloat()
+        globalView.setProgress(progress)
+        BaseConstance.basePlayProgressModel.set(BasePlayProgressModel(playProgress = (progress * 100).toInt()))
+
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {

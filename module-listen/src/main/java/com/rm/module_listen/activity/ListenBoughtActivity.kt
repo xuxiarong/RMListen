@@ -6,9 +6,8 @@ import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.utilExt.dimen
 import com.rm.business_lib.bean.BookBean
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenActivityBoughtBinding
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.listen_activity_bought.*
  * 已购界面
  */
 class ListenBoughtActivity :
-    BaseVMActivity<ListenActivityBoughtBinding, ListenBoughtViewModel>() {
+    ComponentShowPlayActivity<ListenActivityBoughtBinding, ListenBoughtViewModel>() {
     companion object {
 
         fun startActivity(context: Context) {

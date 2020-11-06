@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.databinding.Observable
 import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityBoutiqueBinding
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.home_activity_boutique.*
  * 精品推荐界面
  */
 class BoutiqueActivity :
-    BaseVMActivity<HomeActivityBoutiqueBinding, BoutiqueViewModel>() {
+    ComponentShowPlayActivity<HomeActivityBoutiqueBinding, BoutiqueViewModel>() {
 
     companion object {
         fun startActivity(context: Context) {

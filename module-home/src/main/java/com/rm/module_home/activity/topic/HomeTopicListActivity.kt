@@ -2,12 +2,10 @@ package com.rm.module_home.activity.topic
 
 import android.content.Context
 import android.content.Intent
-import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityTopicListBinding
-import kotlinx.android.synthetic.main.home_activity_main.view.*
 import kotlinx.android.synthetic.main.home_activity_topic_list.*
 
 /**
@@ -16,7 +14,7 @@ import kotlinx.android.synthetic.main.home_activity_topic_list.*
  * version: 1.0
  */
 class HomeTopicListActivity :
-    BaseVMActivity<HomeActivityTopicListBinding, HomeTopicListViewModel>() {
+    ComponentShowPlayActivity<HomeActivityTopicListBinding, HomeTopicListViewModel>() {
 
     companion object {
         fun startActivity(

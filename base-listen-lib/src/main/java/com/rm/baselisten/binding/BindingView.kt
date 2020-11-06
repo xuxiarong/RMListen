@@ -2,6 +2,7 @@ package com.rm.baselisten.binding
 
 import android.view.View
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.util.setGlobalPlayOnClickNotDoubleListener
 
 /**
  * desc   :
@@ -20,6 +21,14 @@ fun View.bindClick(action: (() -> Unit)?) {
         setOnClickListener { action() }
     }
 }
+
+@BindingAdapter("bindGlobalPlayClick")
+fun View.bindGlobalPlayClick(action: (() -> Unit)?) {
+    if (action != null) {
+        setGlobalPlayOnClickNotDoubleListener { action() }
+    }
+}
+
 
 @BindingAdapter("bindLongClick")
 fun View.bindLongClick(action: (() -> Unit)?) {

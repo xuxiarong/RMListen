@@ -12,7 +12,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.binding.divLinearItemDecoration
-import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeTopListPagerAdapter
@@ -25,7 +25,7 @@ import com.rm.module_home.fragment.HomeTopListContentFragment
 import com.rm.module_home.viewmodel.TopListViewModel
 import kotlinx.android.synthetic.main.home_activity_top_list.*
 
-class HomeTopListActivity : BaseVMActivity<HomeActivityTopListBinding, TopListViewModel>() {
+class HomeTopListActivity : ComponentShowPlayActivity<HomeActivityTopListBinding, TopListViewModel>() {
 
     private var mPopupWindow: PopupWindow? = null
 

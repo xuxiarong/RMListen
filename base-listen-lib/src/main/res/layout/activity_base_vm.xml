@@ -9,6 +9,7 @@
         <variable
             name="viewModel"
             type="com.rm.baselisten.viewmodel.BaseVMViewModel" />
+        <import type="com.rm.baselisten.BaseConstance"/>
     </data>
 
 
@@ -72,31 +73,45 @@
 
             />
 
-<!--        <FrameLayout-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_width="41dp"-->
-<!--            android:layout_height="41dp"-->
-<!--            android:layout_marginBottom="20dp">-->
+        <FrameLayout
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            isVisible="@{viewModel.basePlayControlModel.showPlay}"
+            bindGlobalPlayClick="@{viewModel.basePlayControlModel.clickFun}"
+            android:layout_marginBottom="20dp">
 
-<!--            <androidx.appcompat.widget.AppCompatImageView-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:src="@drawable/base_shape_play_red"-->
-<!--                isCircle="@{true}"-->
-<!--                bindUrl="@{}"-->
-<!--                />-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                isCircle="@{true}"
+                bindUrl="@{BaseConstance.INSTANCE.basePlayInfoModel.playUrl}"
+                bindPlayRotation="@{BaseConstance.INSTANCE.basePlayStatusModel}"
+                />
 
-<!--            <View-->
-<!--                android:layout_width="9dp"-->
-<!--                android:layout_height="9dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:background="@drawable/base_shape_play_white_dot"-->
-<!--                />-->
+            <View
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_gravity="center"
+                android:background="@drawable/base_shape_play_white_dot"
+                />
 
-<!--        </FrameLayout>-->
+            <com.rm.baselisten.view.progressbar.CircularProgressView
+                android:id="@+id/businessDownProgress"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                app:backColor="@color/base_e8e8e8"
+                app:backWidth="2dp"
+                app:progColor="@color/base_ff5e5e"
+                app:progWidth="2dp"
+                bindPlayProgress="@{BaseConstance.INSTANCE.basePlayProgressModel.playProgress}"
+                />
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

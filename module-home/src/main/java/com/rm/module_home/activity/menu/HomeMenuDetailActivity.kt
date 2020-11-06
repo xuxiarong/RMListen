@@ -9,8 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuDetailBinding
@@ -19,7 +19,7 @@ import com.rm.module_home.viewmodel.HomeMenuDetailViewModel
 import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
 
 class HomeMenuDetailActivity :
-    BaseVMActivity<HomeActivityListenMenuDetailBinding, HomeMenuDetailViewModel>() {
+    ComponentShowPlayActivity<HomeActivityListenMenuDetailBinding, HomeMenuDetailViewModel>() {
 
     companion object {
         const val SHEET_ID = "sheetId"

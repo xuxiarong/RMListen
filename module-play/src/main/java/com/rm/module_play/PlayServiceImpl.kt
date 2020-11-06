@@ -3,7 +3,6 @@ package com.rm.module_play
 import android.content.Context
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.baselisten.util.setOnClickNotDoubleListener
 import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.DaoUtil
@@ -27,10 +26,14 @@ class PlayServiceImpl : PlayService {
 
     override fun getGlobalPlay(): View = GlobalplayHelp.instance.globalView
     override fun showView(context: Context) {
-        GlobalplayHelp.instance.globalView.mainShow()
-        GlobalplayHelp.instance.globalView.setOnClickNotDoubleListener {
-            BookPlayerActivity.startActivity(context, Jump.DOTS.from)
-        }
+//        GlobalplayHelp.instance.globalView.mainShow()
+//        GlobalplayHelp.instance.globalView.setOnClickNotDoubleListener {
+//            BookPlayerActivity.startActivity(context, Jump.DOTS.from)
+//        }
+    }
+
+    override fun onGlobalPlayClick(context: Context) {
+        BookPlayerActivity.startActivity(context, Jump.DOTS.from)
     }
 
     override fun toPlayPage(

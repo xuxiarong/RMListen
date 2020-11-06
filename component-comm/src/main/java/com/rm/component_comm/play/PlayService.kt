@@ -20,6 +20,8 @@ interface PlayService : ApplicationProvider {
     //显示播放器按钮
     fun showView(context: Context)
 
+    fun onGlobalPlayClick(context: Context)
+
     //跳转到播放器页面
     fun toPlayPage(
         context: Context, bean: DetailBookBean, from: String, sortType: String
