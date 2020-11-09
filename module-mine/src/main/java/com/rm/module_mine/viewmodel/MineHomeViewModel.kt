@@ -114,7 +114,7 @@ class MineHomeViewModel : BaseVMViewModel() {
             RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
             return
         }
-        MineMemberActivity.newInstance(context, loginUser.get()!!.id)
+        MineMemberActivity.newInstance(context, loginUser.get()!!.id!!)
     }
 
 
@@ -123,13 +123,5 @@ class MineHomeViewModel : BaseVMViewModel() {
      * @param context Context
      */
     fun getVipClick(context: Context) {
-        getActivity(context)?.let {
-            CommBottomDialog().showCommonDialog(
-                it,
-                R.layout.mine_dialog_bottom_select_birthday,
-                this,
-                BR.viewModel
-            )
-        }
     }
 }

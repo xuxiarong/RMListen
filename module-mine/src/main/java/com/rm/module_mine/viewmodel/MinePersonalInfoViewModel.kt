@@ -1,7 +1,11 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.ActivityInfo
+import android.text.TextUtils
+import android.text.format.DateUtils
+import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableField
 import com.bugrui.cameralibrary.*
@@ -13,6 +17,7 @@ import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.LOGIN_USER_INFO
@@ -30,6 +35,7 @@ import com.rm.module_mine.bean.UpdateUserInfoBean
 import com.rm.module_mine.databinding.MineDialogBottomSelectBirthdayBinding
 import com.rm.module_mine.repository.MineRepository
 import com.rm.module_mine.util.GlideEngine
+import kotlinx.android.synthetic.main.mine_dialog_bottom_select_birthday.*
 
 
 /**
@@ -73,7 +79,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                         showTip("修改成功")
                     },
                     onError = {
-                        showTip("修改失败",R.color.business_color_ff5e5e)
+                        showTip("修改失败", R.color.business_color_ff5e5e)
                     }
                 )
             }
@@ -94,7 +100,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                 },
                 onError = {
 //                    showToast("")
-                    showTip("修改失败",R.color.business_color_ff5e5e)
+                    showTip("修改失败", R.color.business_color_ff5e5e)
 
                 }
             )
@@ -169,6 +175,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      * 生日点击事件
      */
     fun clickBirthday(view: View) {
+        var dataBinding: MineDialogBottomSelectBirthdayBinding? = null
         getActivity(view.context)?.let {
             birthdayDialog.showCommonDialog(
                 it,
@@ -177,8 +184,9 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                 BR.viewModel
             ).apply {
                 birthdayDialog.mDataBind?.let { binding ->
-                    val dataBinding = binding as MineDialogBottomSelectBirthdayBinding
-                    val time = dataBinding.mineDialogBirthdayTimePicker.getTime()
+                    dataBinding = binding as MineDialogBottomSelectBirthdayBinding
+
+                    val time = dataBinding!!.mineDialogBirthdayTimePicker.getTime()
                     birthday.set(time)
                 }
             }
@@ -206,11 +214,11 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
         userInfo.get()?.let {
             updateUserInfo(
                 UpdateUserInfoBean(
-                    it.nickname,
+                    it.nickname!!,
                     sex,
-                    it.birthday,
-                    it.address,
-                    it.signature
+                    it.birthday!!,
+                    it.address!!,
+                    it.signature!!
                 )
             )
         }
@@ -296,11 +304,11 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
             userInfo.get()?.let {
                 updateUserInfo(
                     UpdateUserInfoBean(
-                        it.nickname,
-                        it.gender,
+                        it.nickname!!,
+                        it.gender!!,
                         bir.trimEnd(),
-                        it.address,
-                        it.signature
+                        it.address!!,
+                        it.signature!!
                     )
                 )
             }

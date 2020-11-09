@@ -27,7 +27,7 @@ class MineAccountSecuritySettingViewModel : BaseVMViewModel() {
     fun clickChangePsdFun(context: Context) {
         loginUser.get()?.let {
             RouterHelper.createRouter(LoginService::class.java)
-                .startVerificationInput(context, it.area_code, it.account, 1)
+                .startVerificationInput(context, it.area_code!!, it.account!!, 1)
         }
     }
 
@@ -55,7 +55,7 @@ class MineAccountSecuritySettingViewModel : BaseVMViewModel() {
                 rightBtnClick = {
                     loginUser.get()?.let {
                         RouterHelper.createRouter(LoginService::class.java)
-                            .startVerificationInput(context, it.area_code, it.account, 2)
+                            .startVerificationInput(context, it.area_code!!, it.account!!, 2)
                         finish()
                     }
                 }

@@ -83,11 +83,11 @@ class MinePersonalInfoActivity :
         mViewModel.userInfo.get()?.let {
             mViewModel.updateUserInfo(
                 UpdateUserInfoBean(
-                    it.nickname,
-                    it.gender,
-                    it.birthday,
+                    it.nickname!!,
+                    it.gender!!,
+                    it.birthday!!,
                     country.cn,
-                    it.signature
+                    it.signature!!
                 )
             )
         }
