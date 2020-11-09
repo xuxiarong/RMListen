@@ -25,7 +25,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             bindMenu="@{item.menu_name}"
-            android:layout_width="match_parent"
+            android:layout_width="77dp"
             android:layout_height="@dimen/dp_44"
             android:layout_gravity="center"
             android:background="@drawable/business_selector_ff5e5e_white_8dp"
