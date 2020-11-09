@@ -8,6 +8,7 @@ import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.EmojiUtils
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -183,7 +184,7 @@ class ListenDialogCreateSheetViewModel(
             val description =
                 dataBinding?.listenDialogCreateSheetEditSynopsis?.text.toString()
             when {
-                containsEmoji(str) -> {
+                EmojiUtils.containsEmoji(str) -> {
                     baseViewModel.showToast(CONTEXT.getString(R.string.listen_input_char_tip))
                 }
                 numberOfWords(str) -> {
@@ -224,20 +225,5 @@ class ListenDialogCreateSheetViewModel(
         return str.length > 20
     }
 
-    /**
-     * 判断是否是特殊字符（表情）
-     */
-    private fun containsEmoji(str: String): Boolean {
-        str.forEach {
-            return !isEmojiCharacter(it)
-        }
-        return false
-    }
-
-    private fun isEmojiCharacter(codePoint: Char): Boolean {
-        return codePoint.toInt() == 0x0 || codePoint.toInt() == 0x9 || codePoint.toInt() == 0xA ||
-                codePoint.toInt() == 0xD || codePoint.toInt() in 0x20..0xD7FF ||
-                codePoint.toInt() in 0xE000..0xFFFD || (codePoint.toInt() in 0x10000..0x10FFFF)
-    }
 
 }

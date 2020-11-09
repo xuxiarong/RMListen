@@ -3,6 +3,7 @@ package com.rm.module_mine.viewmodel
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.EmojiUtils
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.LOGIN_USER_INFO
@@ -44,28 +45,38 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
      * 修改用户信息
      */
     fun updateUserInfo() {
-        loginUser.get()?.let {
-            val updateUserInfo = UpdateUserInfoBean(
-                inputText.get()!!,
-                it.gender,
-                it.birthday,
-                it.address,
-                it.signature
-            )
+        when {
+            inputText.get()!!.length > 16 -> {
+                showTip("字数最多不能超过16个",R.color.business_color_ff5e5e)
+            }
+            EmojiUtils.containsEmoji(inputText.get()!!) -> {
+                showTip("不能包含表情",R.color.business_color_ff5e5e)
+            }
+            else -> {
+                loginUser.get()?.let {
+                    val updateUserInfo = UpdateUserInfoBean(
+                        inputText.get()!!,
+                        it.gender!!,
+                        it.birthday!!,
+                        it.address!!,
+                        it.signature!!
+                    )
 
-            launchOnIO {
-                repository.updateUserInfo(updateUserInfo).checkResult(
-                    onSuccess = { userBean ->
-                        LOGIN_USER_INFO.putMMKV(userBean)
-                        loginUser.set(userBean)
-                        showTip("修改成功")
-                        finish()
-                    },
-                    onError = {
-                        showTip("$it",R.color.business_color_ff5e5e)
-                        DLog.i("------>", "$it")
+                    launchOnIO {
+                        repository.updateUserInfo(updateUserInfo).checkResult(
+                            onSuccess = { userBean ->
+                                LOGIN_USER_INFO.putMMKV(userBean)
+                                loginUser.set(userBean)
+                                showTip("修改成功")
+                                finish()
+                            },
+                            onError = {
+                                showTip("$it", R.color.business_color_ff5e5e)
+                                DLog.i("------>", "$it")
+                            }
+                        )
                     }
-                )
+                }
             }
         }
     }

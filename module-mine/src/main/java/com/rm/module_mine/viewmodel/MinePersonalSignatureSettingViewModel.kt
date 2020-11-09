@@ -48,10 +48,10 @@ class MinePersonalSignatureSettingViewModel(private val repository: MineReposito
     fun updateUserInfo() {
         loginUser.get()?.let {
             val updateUserInfo = UpdateUserInfoBean(
-                it.nickname,
-                it.gender,
-                it.birthday,
-                it.address,
+                it.nickname!!,
+                it.gender!!,
+                it.birthday!!,
+                it.address!!,
                 inputText.get()!!
             )
 
