@@ -22,7 +22,7 @@
             android:padding="@dimen/dp_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="版本号：0.0.8.20201106"
+            android:text="版本号：0.0.10.20201109"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/dp_18" />
 
@@ -35,10 +35,9 @@
             android:lineSpacingExtra="8dp"
             android:text="版本更新信息:
                 \n1,修复一些已知Bug和Crash
-                \n2,重构详情页，完善详情页UI效果，可能还存在一些问题
-                \n3,重构了播放器每个页面的入口圆形按钮，首次进入App，圆形按钮还有一些状态问题
-                \n4,个人设置页面添加了版本更新，记录了每个版本更新的一些开发信息
-                \n5,紧急修复播放页进度条消失的问题
+                \n2,重构了播放器每个页面的入口圆形按钮，首次进入App，圆形按钮还有一些状态问题
+                \n3,修改播放器页面的UI细节问题
+                \n4,修改首页的一些UI细节问题
                     "
             android:layout_marginTop="50dp"
             android:padding="@dimen/dp_16" />
