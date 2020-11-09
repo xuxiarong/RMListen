@@ -108,4 +108,38 @@ interface PlayApiService {
     @DELETE("comment/like")
     suspend fun homeUnLikeComment(@Query("comment_id") comment_id: String): BaseResponse<Any>
 
+
+
+    /**
+     * 关注主播接口
+     * @param follow_id Int
+     */
+    @FormUrlEncoded
+    @POST("member/follow")
+    suspend fun homeAttentionAnchor(@Field("follow_id") follow_id: String): BaseResponse<Any>
+
+    /**
+     * 取消关注主播接口
+     * @param follow_id Int
+     */
+    @DELETE("member/follow")
+    suspend fun homeUnAttentionAnchor(@Query("follow_id") follow_id: String): BaseResponse<Any>
+
+
+    /**
+     * 添加订阅
+     * @param audio_id 音频Id
+     */
+    @FormUrlEncoded
+    @POST("subscription/list")
+    suspend fun homeAddSubscription(@Field("audio_id") audio_id: String): BaseResponse<Any>
+
+    /**
+     * 取消订阅
+     * @param audio_id 音频Id
+     */
+    @DELETE("subscription/list")
+    suspend fun homeCancelSubscription(@Query("audio_id") audio_id: String): BaseResponse<Any>
+
+
 }

@@ -32,7 +32,7 @@ data class HomeDetailList(
     var author: String,                  // 主播昵称
     var member_id: String,                  // 直播用户id
     var nickname: String,                 // 用户名
-    val subscription_count: Int,//订阅数
+     val  subscription_count: Int,//订阅数
     val last_sequence: Int,
     var audio_cover_url: String,
     val anchor: Anchor,

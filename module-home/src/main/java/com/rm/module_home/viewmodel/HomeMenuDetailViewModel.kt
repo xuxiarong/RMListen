@@ -236,10 +236,10 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
         val activity = getActivity(context)
         if (IS_FIRST_FAVORITES.getBooleanMMKV(true) && activity != null) {
             CustomTipsFragmentDialog().apply {
-                titleText = context.getString(R.string.home_favorites_success)
-                contentText = context.getString(R.string.home_favorites_success_content)
-                leftBtnText = context.getString(R.string.home_know)
-                rightBtnText = context.getString(R.string.home_goto_look)
+                titleText = context.getString(R.string.business_favorites_success)
+                contentText = context.getString(R.string.business_favorites_success_content)
+                leftBtnText = context.getString(R.string.business_know)
+                rightBtnText = context.getString(R.string.business_goto_look)
                 leftBtnTextColor = R.color.business_text_color_333333
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
@@ -256,7 +256,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                     ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(activity)
         } else {
-            showToast(context.getString(R.string.home_favorites_success_tip))
+            showToast(context.getString(R.string.business_favorites_success_tip))
         }
         IS_FIRST_FAVORITES.putMMKV(false)
     }

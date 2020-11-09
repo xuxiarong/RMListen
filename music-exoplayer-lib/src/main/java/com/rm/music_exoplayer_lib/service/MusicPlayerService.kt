@@ -230,8 +230,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     override fun startPlayMusic(chapterId: String) {
         mCurrentPlayIndex = mAudios.indexOfFirst { it.chapterId == chapterId }
-        postViewHandlerCurrentPosition(mCurrentPlayIndex)
-        startPlay(mAudios.getOrNull(mCurrentPlayIndex) as BaseAudioInfo)
+        if (mCurrentPlayIndex != -1) {
+            postViewHandlerCurrentPosition(mCurrentPlayIndex)
+            startPlay(mAudios.getOrNull(mCurrentPlayIndex) as BaseAudioInfo)
+        }
     }
 
     fun startPlayMusic(playIndex: Int) {

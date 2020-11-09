@@ -8,10 +8,6 @@
         <variable
             name="viewModel"
             type="com.rm.module_play.viewmodel.PlayViewModel" />
-
-        <variable
-            name="itemModel"
-            type="com.rm.module_play.model.PlayControlModel" />
     </data>
 
     <RelativeLayout

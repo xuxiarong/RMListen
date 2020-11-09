@@ -5,4 +5,5 @@
     <string name="play_subs_anchor">+订阅</string>
     <string name="play_speed_text">%fx</string>
     <string name="play_skip_15_second">15s</string>
+    <string name="play_subscriber_num">人订阅</string>
 </resources>

@@ -9,6 +9,7 @@ import android.text.TextUtils
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.BaseConstance
+import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.mvvm.BaseActivity
@@ -35,7 +36,6 @@ import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
 import com.rm.module_play.dialog.*
 import com.rm.module_play.enum.Jump
-import com.rm.module_play.model.PlayControlModel
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
@@ -229,6 +229,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     @SuppressLint("ResourceAsColor")
     override fun initView() {
         setStatusBar(R.color.businessWhite)
+
+        mDataBind.rvMusicPlay.apply {
+            bindVerticalLayout(mViewModel.mCommentAdapter)
+            mViewModel.createHeader(this)
+        }
+
         mViewModel.initPlayerAdapterModel()
         swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)
         swipe_back_layout.setOnSwipeBackListener(this)
@@ -259,17 +265,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         if (musicPlayerManger.getCurrentPlayerMusic() != null) {
                             val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()!!
                             mChapterId = currentPlayerMusic.chapterId
-                            val playControl = mViewModel.playControlModel.get()
-                            if (playControl != null) {
-                                mViewModel.playControlModel.set(
-                                    PlayControlModel(
-                                        baseAudioInfo = currentPlayerMusic,
-                                        homeDetailModel = playControl.homeDetailModel
-                                    )
-                                )
-                            } else {
-                                mViewModel.playControlModel.set(PlayControlModel(baseAudioInfo = currentPlayerMusic))
-                            }
+
                         }
                         mChapterId?.let {
                             if (!musicPlayerManger.isPlaying()) {
@@ -402,16 +398,14 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                 .showMySheetListDialog(
                                     mViewModel,
                                     this@BookPlayerActivity,
-                                    mViewModel.audioID.get()!!
+                                    mViewModel.audioId.get()!!
                                 )
                         }
 
                     }
                     controlTime?.contains(ACTION_MORE_COMMENT) == true -> {
-                        mViewModel.audioID.get()?.let {
-                            CommentCenterActivity.toCommentCenterActivity(
-                                this@BookPlayerActivity, it
-                            )
+                        mViewModel.audioId.get()?.let {
+
                         }
                     }
                     controlTime?.contains(ACTION_MORE_FINSH) == true -> {
@@ -422,9 +416,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     }
                 }
             }
-        })
-        mViewModel.mutableList.observe(this, Observer {
-            mViewModel.mBookPlayerAdapter.setList(it)
         })
 
 
@@ -439,14 +430,15 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         when (fromJumpType) {
             //从圆圈进来
             Jump.DOTS.from -> {
-                mViewModel.initPlayBookSate(fromGlobalCache.getObjectMMKV(PlayBookState::class.java))
+                val playBook = fromGlobalCache.getObjectMMKV(PlayBookState::class.java)
+                mViewModel.initPlayBookSate(playBook)
 
             }
             //从最近播放进来
             Jump.RECENTPLAY.from -> {
                 val chapterId = intent.getStringExtra(paramChapterId)
                 val audioId = intent.getStringExtra(paramAudioId)
-                mViewModel.audioID.set(audioId)
+                mViewModel.audioId.set(audioId)
                 mChapterId = chapterId
                 mViewModel.getDetailInfo(audioId)
                 mViewModel.chapterPageList(
@@ -457,7 +449,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             //从详情全部进来
             Jump.DETAILSBOOK.from -> {
                 (intent.getSerializableExtra(chapterListModel) as? DetailBookBean)?.let {
-                    mViewModel.setBookDetailBean(it)
                     mViewModel.chapterList(
                         it.audio_id,
                         1,
@@ -470,7 +461,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             Jump.CHAPTER.from -> {
                 (intent.getSerializableExtra(chapterListModel) as? ChapterList)?.let {
                     mChapterId = it.chapter_id
-                    mViewModel.audioID.set(it.audio_id)
+                    mViewModel.audioId.set(it.audio_id)
                     mViewModel.chapterList(
                         it.audio_id,
                         1,
@@ -493,17 +484,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mChapterId = intent.getStringExtra(paramChapterId)
                 val audio: DownloadAudio =
                     intent.getSerializableExtra(downloadAudio) as DownloadAudio
-
-                mViewModel.setBookDetailBean(
-                    DetailBookBean(
-                        audio_id = audio.audio_id.toString(),
-                        audio_cover_url = audio.audio_cover_url,
-                        audio_name = audio.audio_name,
-                        author = audio.author,
-                        original_name = audio.audio_name
-                    )
-                )
-
 
                 val chapterList = arrayListOf<ChapterList>()
                 audio.chapterList.forEach {
@@ -537,9 +517,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         mViewModel.countdown()
         getIntentParams()
+        mViewModel.getCommentList()
     }
 
-    private fun checkData (){
+    private fun checkData() {
 
     }
 
@@ -590,14 +571,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     private fun getRecentPlayBook(
         musicInfo: BaseAudioInfo
     ) {
-        val playerControl = mViewModel.playControlModel.get()
-        playerControl?.baseAudioInfo = musicInfo
-        mViewModel.playControlModel.set(playerControl)
-        mViewModel.playControlModel.notifyChange()
-        mViewModel.playReport(
-            playerControl?.baseAudioInfo?.audioId ?: "",
-            playerControl?.baseAudioInfo?.chapterId ?: ""
-        )
         mViewModel.updatePlayBook(
             mViewModel.audioChapterModel.get()?.list?.find { it.chapter_id == mChapterId }
         )

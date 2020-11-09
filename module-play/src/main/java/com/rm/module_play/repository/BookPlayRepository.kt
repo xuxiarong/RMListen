@@ -176,4 +176,36 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     suspend fun homeUnLikeComment(comment_id: String): BaseResult<Any> {
         return apiCall { playApi.homeUnLikeComment(comment_id) }
     }
+
+
+
+    /**
+     * 关注主播接口
+     * @param follow_id String
+     */
+    suspend fun attentionAnchor(follow_id: String): BaseResult<Any> {
+        return apiCall { playApi.homeAttentionAnchor(follow_id) }
+    }
+
+    /**
+     * 取消关注主播接口
+     * @param follow_id String
+     */
+    suspend fun unAttentionAnchor(follow_id: String): BaseResult<Any> {
+        return apiCall { playApi.homeUnAttentionAnchor(follow_id) }
+    }
+
+    /**
+     * 订阅
+     */
+    suspend fun subscribe(audioId: String): BaseResult<Any> {
+        return apiCall { playApi.homeAddSubscription(audioId) }
+    }
+
+    /**
+     * 取消订阅
+     */
+    suspend fun unSubscribe(audioId: String): BaseResult<Any> {
+        return apiCall { playApi.homeCancelSubscription(audioId) }
+    }
 }

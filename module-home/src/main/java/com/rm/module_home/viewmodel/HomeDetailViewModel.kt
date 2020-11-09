@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
@@ -740,10 +739,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         val activity = getActivity(context)
         if (IS_FIRST_SUBSCRIBE.getBooleanMMKV(true) && activity != null) {
             CustomTipsFragmentDialog().apply {
-                titleText = context.getString(R.string.home_favorites_success)
-                contentText = context.getString(R.string.home_favorites_success_content)
-                leftBtnText = context.getString(R.string.home_know)
-                rightBtnText = context.getString(R.string.home_goto_look)
+                titleText = context.getString(R.string.business_favorites_success)
+                contentText = context.getString(R.string.business_favorites_success_content)
+                leftBtnText = context.getString(R.string.business_know)
+                rightBtnText = context.getString(R.string.business_goto_look)
                 leftBtnTextColor = R.color.business_text_color_333333
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
@@ -758,7 +757,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             }.show(activity)
         } else {
 //            showToast(context.getString(R.string.home_subscribe_success_tip))
-            showTip(context.getString(R.string.home_subscribe_success_tip))
+            showTip(context.getString(R.string.business_subscribe_success_tip))
         }
         IS_FIRST_SUBSCRIBE.putMMKV(false)
     }

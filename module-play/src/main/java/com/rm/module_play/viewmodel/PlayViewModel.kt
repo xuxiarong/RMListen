@@ -2,20 +2,26 @@ package com.rm.module_play.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
-import android.util.Log
+import android.view.LayoutInflater
+import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableFloat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.chad.library.adapter.base.entity.MultiItemEntity
+import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.getBooleanMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.IS_FIRST_SUBSCRIBE
 import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.*
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
@@ -25,15 +31,15 @@ import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
-import com.rm.module_play.adapter.BookPlayerAdapter
 import com.rm.module_play.cache.PlayBookState
+import com.rm.module_play.databinding.PlayMianHeaderBinding
 import com.rm.module_play.model.*
-import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -54,64 +60,123 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     val process = ObservableFloat(0f)//进度条
     val maxProcess = ObservableFloat(0f)//最大进度
     val updateThumbText = ObservableField<String>()//更改文字
-    var playControlModel = ObservableField<PlayControlModel>()
     var playControlAction = ObservableField<String>()
-    var playControlRecommentListModel =
-        MutableLiveData<MutableList<PlayControlRecommentListModel>>()
-    val mutableList = MutableLiveData<MutableList<MultiItemEntity>>()
-    val audioCommentList = MutableLiveData<MutableList<Comments>>()
     val playManger: MusicPlayerManager = musicPlayerManger
-    val audioID = ObservableField<String>()
     var audioInfo = ObservableField<DetailBookBean>()
 
-    //当前播放的章节ID
-    val mChapterId = ObservableField<String>()
     var playBookSate = ObservableField<PlayBookState>()
 
     //播放状态进度条，0是播放2是加载中1是暂停,false是暂停
     var playStatusBean = ObservableField<PlayState>(
         PlayState()
     )
+
+    /**
+     * 是否能够上一章
+     */
     var hasPreChapter = ObservableBoolean(false)
+
+    /**
+     * 是否能够下一章
+     */
     var hasNextChapter = ObservableBoolean(false)
-    var sortType = ObservableField<String>("")
+
     var seekText = ObservableField<String>("")
     var seekChangeVar: (String) -> Unit = { seekTextChange(it) }
+
+
+    private val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
+    val curTime = System.currentTimeMillis()
+
+    var playSpeed = PlayGlobalData.playSpeed
+
+    init {
+        updateThumbText.set("0/0")
+        playBookSate.set(PlayBookState())
+    }
+
+    /**
+     * 当前音频id
+     */
+    val audioId = ObservableField<String>()
+
+
+    /**
+     * 章节当前的页码
+     */
+    private var commentPage = 1
+
+    /**
+     * 每次加载数据的条数
+     */
+    private val pageSize = 12
+
+    /**
+     * 数据详情
+     */
+    val bookDetailData = ObservableField<HomeDetailList>()
 
     /**
      * 评论数量
      */
     var commentTotal = ObservableField(0)
 
-    // 下拉刷新和加载更多控件状态控制Model
-    val refreshStatusModel = SmartRefreshLayoutStatusModel()
-    var page = 1
-    private val pageSize = 12
-    private val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
-    val curTime = System.currentTimeMillis()
+    /**
+     * 关注按钮是否显示
+     */
+    val attentionVisibility = ObservableField<Boolean>(true)
 
-    var playTimerDuration = PlayGlobalData.playTimerDuration
-    var playSpeed = PlayGlobalData.playSpeed
+    /**
+     * 主播是否关注
+     */
+    var isAttention = ObservableBoolean(false)
 
-    init {
-        updateThumbText.set("0/0")
-        playBookSate.set(PlayBookState())
-        audioCommentList.value = arrayListOf()
+    /**
+     * 是否订阅过
+     */
+    var isSubscribe = ObservableBoolean(false)
+
+    /**
+     * 评论 SmartRefreshLayout的状态变化
+     */
+    val commentRefreshModel = SmartRefreshLayoutStatusModel()
+
+
+    /**
+     * 头部dataBinding对象
+     */
+
+    var mDataBinding: PlayMianHeaderBinding? = null
+
+    /**
+     * 创建头部详细信息
+     */
+    fun createHeader(view: RecyclerView) {
+        mDataBinding = DataBindingUtil.inflate<PlayMianHeaderBinding>(
+            LayoutInflater.from(view.context),
+            R.layout.play_mian_header,
+            view,
+            false
+        ).apply {
+            mCommentAdapter.addHeaderView(this.root)
+            setVariable(BR.viewModel, this@PlayViewModel)
+        }
+
     }
 
-    val mBookPlayerAdapter: BookPlayerAdapter by lazy {
-        BookPlayerAdapter(this, BR.viewModel, BR.itemModel)
-
-    }
-    val commentAdapter by lazy {
+    /**
+     * 评论adapter
+     */
+    val mCommentAdapter by lazy {
         CommonBindVMAdapter<Comments>(
             this,
             mutableListOf(),
-            R.layout.recy_item_book_comment_center,
-            BR.viewModel,
-            BR.itemModel
+            R.layout.play_item_comment,
+            BR.commentViewModel,
+            BR.commentItem
         )
     }
+
 
     companion object {
         const val ACTION_PLAY_QUEUE = "ACTION_PLAY_QUEUE"//播放列表
@@ -156,7 +221,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             )
         } else {
             return HomeDetailList(
-                audio_id = audioID.get()!!,
+                audio_id = audioId.get()!!,
                 audio_type = 0,
                 audio_name = "",
                 original_name = "",
@@ -216,13 +281,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 初始化数据
      */
     fun initPlayerAdapterModel() {
-        playControlModel.set(PlayControlModel())
-        mutableList.value = mutableListOf(
-            playControlModel.get()!!,
-            PlayControlSubModel(),
-            PlayControlCommentTitleModel()
-        )
-
     }
 
     //播放器操作行为
@@ -234,36 +292,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playControlAction.set(action)
     }
 
-    //订阅
-    fun playSubAction(model: PlayControlSubModel) {
-
-    }
-
-    //订阅
-    fun playFollowAction(model: PlayControlHotModel) {
-
-    }
-
-    //点赞
-    fun playLikeBook(context: Context, bean: Comments) {
-        if (isLogin.get()) {
-            if (bean.is_liked) {
-                unLikeComment(bean)
-            } else {
-                likeComment(bean)
-            }
-        } else {
-            getActivity(context)?.let { quicklyLogin(it) }
-        }
-    }
-
-    //精品详情
-    fun playBoutiqueDetails(model: PlayControlRecommentListModel) {
-        Log.i("", "playBoutiqueDetails")
-    }
 
     fun audioNameClick(context: Context) {
-        val audioId = audioID.get()
+        val audioId = audioId.get()
         if (audioId != null) {
             RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
             finish()
@@ -276,8 +307,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
             .quicklyLogin(this, it, loginSuccess = {
-                page = 1
-                commentAudioComments(audioID.get()!!)
+                commentPage = 1
+                getCommentList()
             })
     }
 
@@ -330,6 +361,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
+
     /**
      * 获取书籍详情信息
      */
@@ -337,19 +369,16 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnUI {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
+                    it.list.apply {
+                        bookDetailData.set(this)
+                        isAttention.set(anchor.status)
+                        isSubscribe.set(is_subscribe)
+                    }
+
                     if (TextUtils.isEmpty(it.list.audio_cover_url)) {
                         it.list.audio_cover_url = ""
                     }
-                    setBookDetailBean(
-                        DetailBookBean(
-                            audio_id = it.list.audio_id,
-                            audio_name = it.list.audio_name,
-                            original_name = it.list.original_name,
-                            author = it.list.author,
-                            audio_cover_url = it.list.audio_cover_url,
-                            anchor = it.list.anchor
-                        )
-                    )
+
                 }, onError = {
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
                 }
@@ -362,24 +391,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun unLikeComment(bean: Comments) {
         launchOnIO {
-            repository.homeUnLikeComment(bean.id.toString()).checkResult(
+            repository.homeUnLikeComment(bean.id).checkResult(
                 onSuccess = {
-                    mutableList.value?.let {
-                        it.forEachIndexed { index, multiItemEntity ->
-                            if (multiItemEntity.itemType == BookPlayerAdapter.ITEM_TYPE_COMMENT_LIST) {
-                                val comment = (it[index] as PlayControlCommentListModel).comments
 
-                                if (TextUtils.equals(comment?.id, bean.id)) {
-                                    bean.is_liked = false
-                                    bean.likes = bean.likes + -1
-                                    mBookPlayerAdapter.data[index] =
-                                        PlayControlCommentListModel(comments = bean)
-                                    val headerLayoutCount = mBookPlayerAdapter.headerLayoutCount
-                                    mBookPlayerAdapter.notifyItemChanged(index + headerLayoutCount)
-                                }
-                            }
-                        }
-                    }
+                    val indexOf = mCommentAdapter.data.indexOf(bean)
+                    bean.is_liked = false
+                    bean.likes = bean.likes - 1
+                    val headerLayoutCount = mCommentAdapter.headerLayoutCount
+                    mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
 
                 },
                 onError = {
@@ -394,24 +413,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun likeComment(bean: Comments) {
         launchOnIO {
-            repository.homeLikeComment(bean.id.toString()).checkResult(
+            repository.homeLikeComment(bean.id).checkResult(
                 onSuccess = {
-                    mutableList.value?.let {
-                        it.forEachIndexed { index, multiItemEntity ->
-                            if (multiItemEntity.itemType == BookPlayerAdapter.ITEM_TYPE_COMMENT_LIST) {
-                                val comment = (it[index] as PlayControlCommentListModel).comments
 
-                                if (TextUtils.equals(comment?.id, bean.id)) {
-                                    bean.is_liked = true
-                                    bean.likes = bean.likes + 1
-                                    mBookPlayerAdapter.data[index] =
-                                        PlayControlCommentListModel(comments = bean)
-                                    val headerLayoutCount = mBookPlayerAdapter.headerLayoutCount
-                                    mBookPlayerAdapter.notifyItemChanged(index + headerLayoutCount)
-                                }
-                            }
-                        }
-                    }
+                    val indexOf = mCommentAdapter.data.indexOf(bean)
+                    bean.is_liked = true
+                    bean.likes = bean.likes + 1
+                    //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
+                    val headerLayoutCount = mCommentAdapter.headerLayoutCount
+                    mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = {
                     DLog.i("----->", "评论点赞:$it")
@@ -419,11 +429,48 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
+
+    /**
+     * 订阅
+     */
+    private fun subscribe(context: Context, audioId: String) {
+        launchOnIO {
+            repository.subscribe(audioId).checkResult(
+                onSuccess = {
+                    isSubscribe.set(true)
+                    subscribeSuccess(context)
+                },
+                onError = {
+                    DLog.i("------->", "订阅失败  $it")
+                    showTip("$it", R.color.business_color_ff5e5e)
+                }
+            )
+        }
+    }
+
+    /**
+     * 取消订阅
+     */
+    private fun unSubscribe(audioId: String) {
+        launchOnIO {
+            repository.unSubscribe(audioId).checkResult(
+                onSuccess = {
+                    isSubscribe.set(false)
+                    showTip("取消订阅成功")
+                },
+                onError = {
+                    DLog.i("------->", "取消订阅  $it")
+                    showTip("$it", R.color.business_color_ff5e5e)
+                }
+            )
+        }
+    }
+
+
     //设置上次播放缓存的数据
     fun initPlayBookSate(playBook: PlayBookState?) {
         playBook?.let {
             this.playBookSate.set(playBook)
-            setBookDetailBean(it.homeDetailModel)
             it.audioChapterListModel?.let { its ->
                 audioChapterModel.set(its)
                 its.list?.let { list -> setPlayPath(list) }
@@ -443,96 +490,56 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     }
 
-    /**
-     * 书本信息
-     */
-    fun setBookDetailBean(homeDetailBean: DetailBookBean?) {
-        if (homeDetailBean != null) {
-            audioInfo.set(homeDetailBean)
-        }
-        homeDetailBean?.let {
-            playBookSate.get()?.homeDetailModel = it
-            val listValue = mutableList.value
-            listValue?.set(0, PlayControlModel(homeDetailModel = it))
-            listValue?.set(1, PlayControlSubModel(anchor = it.anchor))
-            audioID.set(it.audio_id)
-
-            commentAudioComments(it.audio_id)
-            mutableList.postValue(listValue)
-            setHistoryPlayBook(it)
-            GlobalplayHelp.instance.setBooKImage(it.audio_cover_url)
-        }
-    }
 
     /**
      *评论列表
      */
-    private fun commentAudioComments(audioID: String) {
+    fun getCommentList() {
         launchOnIO {
-            if (page == 1) {
-                showLoading()
-            }
-            repository.commentAudioComments(audioID, page, pageSize)
+            repository.commentAudioComments(audioId.get()!!, commentPage, pageSize)
                 .checkResult(onSuccess = {
-                    commentTotal.set(it.total)
-                    it.list.forEach {
-                        mutableList.value?.add(PlayControlCommentListModel(comments = it))
-                    }
-                    mutableList.postValue(mutableList.value)
-                    if (page == 1) {
-                        if (it.list.isEmpty()) {
-                            showContentView()
-                        } else {
-                            showContentView()
-                        }
-                    } else {
-                        refreshStatusModel.finishLoadMore(true)
-                    }
-                    refreshStatusModel.setHasMore(it.list.isNotEmpty())
-                    page++
+                    processCommentSuccessData(it)
                 }, onError = {
-                    if (page == 1) {
-                        showServiceError()
-                    } else {
-                        refreshStatusModel.finishLoadMore(false)
-                    }
+                    processCommentFailureData(it)
                 })
         }
     }
 
     /**
-     *评论中心列表
+     * 处理评论列表成功数据
      */
-    fun commentCenterAudioComments(audioID: String) {
-        launchOnIO {
-            if (page == 1) {
-                showLoading()
-            }
-            repository.commentAudioComments(audioID, page, pageSize)
-                .checkResult(onSuccess = {
-                    commentTotal.set(it.total)
-                    (audioCommentList.value as ArrayList<Comments>).addAll(it.list)
-                    audioCommentList.postValue(audioCommentList.value)
-                    if (page == 1) {
-                        if (it.list.isEmpty()) {
-                            showDataEmpty()
-                        } else {
-                            showContentView()
-                        }
-                    } else {
-                        refreshStatusModel.finishLoadMore(true)
-                    }
-                    refreshStatusModel.setHasMore(it.list.isNotEmpty())
-                    page++
-                }, onError = {
-                    if (page == 1) {
-                        showServiceError()
-                    } else {
-                        refreshStatusModel.finishLoadMore(false)
-                    }
-
-                })
+    private fun processCommentSuccessData(bean: AudioCommentsModel) {
+        showContentView()
+        commentTotal.set(bean.total)
+        if (commentPage == 1) {
+            mCommentAdapter.setList(bean.list)
+            commentRefreshModel.finishRefresh(true)
+        } else {
+            mCommentAdapter.addData(bean.list)
+            commentRefreshModel.finishLoadMore(true)
         }
+        commentRefreshModel.setHasMore(bean.list.size >= pageSize)
+    }
+
+    /**
+     * 处理评论列表失败数据
+     */
+    private fun processCommentFailureData(it: String?) {
+        if (commentPage == 1) {
+            commentRefreshModel.finishRefresh(false)
+            showTip("$it")
+        } else {
+            commentRefreshModel.finishLoadMore(false)
+            commentPage--
+        }
+    }
+
+    /**
+     * 评论加载更多
+     */
+    fun commentLoadData() {
+        commentPage++
+        getCommentList()
     }
 
     /**
@@ -561,14 +568,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun clickCommentFun(context: Context) {
         getActivity(context)?.let {
             if (isLogin.get()) {
-                audioID.get()?.let { audioId ->
+                audioId.get()?.let { audioId ->
                     RouterHelper.createRouter(HomeService::class.java)
                         .showCommentDialog(this, it, audioId) {
                             if (it is BaseActivity) {
                                 it.tipView.showTipView(it, "评论成功")
                             }
-                            page = 1
-                            commentAudioComments(audioId)
+                            commentPage = 1
+                            getCommentList()
                         }
                 }
 
@@ -601,10 +608,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         this.seekText.set(changeText)
     }
 
-    fun commentAvatarClick(context: Context, member_id: String) {
-        RouterHelper.createRouter(MineService::class.java)
-            .toMineCommentFragment(context = context, memberId = member_id)
-    }
 
     val countdownTime = ObservableField<String>()
 
@@ -636,6 +639,146 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
 
 
+    }
+
+    /**
+     * 评论头像点击事件
+     */
+    fun commentAvatarClick(context: Context, member_id: String) {
+        RouterHelper.createRouter(MineService::class.java)
+            .toMineCommentFragment(context = context, memberId = member_id)
+    }
+
+    /**
+     * 关注点击事件
+     */
+    fun clickAttentionFun(context: Context, followId: String?) {
+        getActivity(context)?.let {
+            if (!isLogin.get()) {
+                quicklyLogin(it)
+            } else
+                if (!TextUtils.isEmpty(followId)) {
+                    if (isAttention.get()) {
+                        unAttentionAnchor(followId!!)
+                    } else {
+                        attentionAnchor(followId!!)
+                    }
+                }
+        }
+    }
+
+    /**
+     * 关注主播
+     */
+    private fun attentionAnchor(followId: String) {
+        showLoading()
+        launchOnIO {
+            repository.attentionAnchor(followId).checkResult(
+                onSuccess = {
+                    showContentView()
+                    isAttention.set(true)
+                    showTip("关注成功")
+                },
+                onError = {
+                    showContentView()
+                    showTip("$it", R.color.business_color_ff5e5e)
+                })
+        }
+    }
+
+    /**
+     * 取消关注主播
+     */
+    private fun unAttentionAnchor(followId: String) {
+        showLoading()
+        launchOnIO {
+            repository.unAttentionAnchor(followId).checkResult(
+                onSuccess = {
+                    showContentView()
+                    isAttention.set(false)
+                    showTip("取消关注成功")
+                },
+                onError = {
+                    showContentView()
+                    showTip("$it", R.color.business_color_ff5e5e)
+                })
+        }
+    }
+
+    /**
+     * 主播头像点击事件
+     */
+    fun clickMemberFun(context: Context) {
+        if (isLogin.get()) {
+            bookDetailData.get()?.let {
+                RouterHelper.createRouter(MineService::class.java)
+                    .toMineMember(context, it.anchor_id)
+            }
+        } else {
+            getActivity(context)?.let { quicklyLogin(it) }
+        }
+    }
+
+    /**
+     * 订阅点击事件
+     */
+    fun clickPlaySubAction(context: Context) {
+        getActivity(context)?.let {
+            if (!isLogin.get()) {
+                quicklyLogin(it)
+            } else {
+                if (isSubscribe.get()) {
+                    audioId.get()?.let { audioId -> unSubscribe(audioId) }
+                } else {
+                    audioId.get()?.let { audioId -> subscribe(context, audioId) }
+                }
+            }
+        }
+    }
+
+    /**
+     * 评论列表点赞点击事件
+     */
+    fun playLikeBook(context: Context, bean: Comments) {
+        if (isLogin.get()) {
+            if (bean.is_liked) {
+                unLikeComment(bean)
+            } else {
+                likeComment(bean)
+            }
+        } else {
+            getActivity(context)?.let { quicklyLogin(it) }
+        }
+    }
+
+
+    /**
+     * 订阅成功
+     */
+    private fun subscribeSuccess(context: Context) {
+        val activity = getActivity(context)
+        if (IS_FIRST_SUBSCRIBE.getBooleanMMKV(true) && activity != null) {
+            CustomTipsFragmentDialog().apply {
+                titleText = context.getString(R.string.business_favorites_success)
+                contentText = context.getString(R.string.business_favorites_success_content)
+                leftBtnText = context.getString(R.string.business_know)
+                rightBtnText = context.getString(R.string.business_goto_look)
+                leftBtnTextColor = R.color.business_text_color_333333
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    RouterHelper.createRouter(ListenService::class.java).startSubscription(activity)
+                    dismiss()
+                }
+                customView =
+                    ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
+            }.show(activity)
+        } else {
+            showTip(context.getString(R.string.business_subscribe_success_tip))
+        }
+        IS_FIRST_SUBSCRIBE.putMMKV(false)
     }
 
 }

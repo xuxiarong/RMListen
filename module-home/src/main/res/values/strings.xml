@@ -33,13 +33,6 @@
     <string name="home_praise_list">好评榜</string>
 
 
-    <string name="home_favorites_success">订阅成功</string>
-    <string name="home_know">我知道了</string>
-    <string name="home_goto_look">去看看</string>
-    <string name="home_favorites_success_tip">收藏成功，请在我听-听单中查看</string>
-    <string name="home_subscribe_success_tip">订阅成功，请在我听-听单中查看</string>
-    <string name="home_favorites_success_content">可在“我听-听单”中查看</string>
-
     <string name="home_audio_size">共%d本</string>
     <string name="home_detail_comment_hint">快来发表你的评论吧</string>
     <string name="home_top_10">TOP10</string>

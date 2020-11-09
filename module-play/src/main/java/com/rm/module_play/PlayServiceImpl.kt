@@ -12,7 +12,6 @@ import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
-import com.rm.module_play.activity.CommentCenterActivity
 import com.rm.module_play.enum.Jump
 import com.rm.module_play.playview.GlobalplayHelp
 
@@ -82,7 +81,6 @@ class PlayServiceImpl : PlayService {
         DaoUtil(HistoryPlayBook::class.java, "").queryAll()
 
     override fun toCommentCenterActivity(context: Context, audioID: String) {
-        CommentCenterActivity.toCommentCenterActivity(context, audioID)
     }
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {
