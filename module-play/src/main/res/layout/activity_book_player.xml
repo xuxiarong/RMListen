@@ -22,7 +22,7 @@
 
             <ImageView
                 android:id="@+id/report_why_arrow"
-                bindClick="@{()->viewModel.finshActivity(viewModel.ACTION_MORE_FINSH+viewModel.curTime)}"
+                bindClick="@{()->viewModel.finishActivity(viewModel.ACTION_MORE_FINSH+viewModel.curTime)}"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginTop="@dimen/dp_10"

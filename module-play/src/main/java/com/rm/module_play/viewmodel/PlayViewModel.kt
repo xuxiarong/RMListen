@@ -219,7 +219,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playControlModel.set(PlayControlModel())
         mutableList.value = mutableListOf(
             playControlModel.get()!!,
-            PlayControlSubModel(),
+            PlaySubAudioModel(),
             PlayControlCommentTitleModel()
         )
 
@@ -230,17 +230,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playControlAction.set(action)
     }
 
-    fun finshActivity(action: String) {
+    fun finishActivity(action: String) {
         playControlAction.set(action)
     }
 
     //订阅
-    fun playSubAction(model: PlayControlSubModel) {
+    fun playSubAudio(audioModel: PlaySubAudioModel) {
 
     }
 
     //订阅
-    fun playFollowAction(model: PlayControlHotModel) {
+    fun playSubsAnchor(playSubsAnchorModel: PlaySubsAnchorModel) {
 
     }
 
@@ -341,14 +341,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         it.list.audio_cover_url = ""
                     }
                     setBookDetailBean(
-                        DetailBookBean(
+                        homeDetailBean = DetailBookBean(
                             audio_id = it.list.audio_id,
                             audio_name = it.list.audio_name,
                             original_name = it.list.original_name,
                             author = it.list.author,
                             audio_cover_url = it.list.audio_cover_url,
                             anchor = it.list.anchor
-                        )
+                        ), homeDetailList = it.list
                     )
                 }, onError = {
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
@@ -446,7 +446,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 书本信息
      */
-    fun setBookDetailBean(homeDetailBean: DetailBookBean?) {
+    fun setBookDetailBean(
+        homeDetailBean: DetailBookBean?,
+        homeDetailList: HomeDetailList = HomeDetailList.getDefault()
+    ) {
         if (homeDetailBean != null) {
             audioInfo.set(homeDetailBean)
         }
@@ -454,9 +457,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             playBookSate.get()?.homeDetailModel = it
             val listValue = mutableList.value
             listValue?.set(0, PlayControlModel(homeDetailModel = it))
-            listValue?.set(1, PlayControlSubModel(anchor = it.anchor))
+            if (!TextUtils.isEmpty(homeDetailList.anchor_id)) {
+                listValue?.set(1, PlaySubAudioModel(audio = homeDetailList))
+                listValue?.set(2, PlaySubsAnchorModel(anchor = homeDetailList.anchor))
+            } else {
+                listValue?.set(1, PlaySubAudioModel(audio = HomeDetailList.getDefault()))
+                listValue?.set(2, PlaySubsAnchorModel(anchor = it.anchor))
+            }
             audioID.set(it.audio_id)
-
             commentAudioComments(it.audio_id)
             mutableList.postValue(listValue)
             setHistoryPlayBook(it)

@@ -39,7 +39,41 @@ data class HomeDetailList(
     val tags: MutableList<DetailTags>,
     val is_subscribe: Boolean,//是否订阅
     val is_fav: Boolean//是否收藏
-)
+){
+    companion object{
+        fun getDefault() : HomeDetailList{
+            return HomeDetailList(
+                audio_id = "",
+                audio_type = 0,
+                audio_name = "",
+                original_name = "",
+                status = 1,
+                author_intro = "",
+                anchor_id = "",
+                short_intro = "",
+                audio_intro = "",
+                audio_cover = "",
+                cover_url = "",
+                audio_label = "",
+                quality = 0,
+                progress = 0,
+                play_count = 0,
+                created_at = "11111",
+                chapter_updated_at = "11111",
+                author = "",
+                member_id = "",
+                nickname = "",
+                subscription_count = 0,
+                last_sequence = 0,
+                audio_cover_url = "",
+                anchor = Anchor.getDefault(),
+                tags = mutableListOf(),
+                is_subscribe = false,
+                is_fav = false
+            )
+        }
+    }
+}
 
 data class DetailTags(
     val tag_id: Int,
