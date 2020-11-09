@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import android.text.TextUtils
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
@@ -69,9 +70,44 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
 
     companion object {
+
         const val chapterListModel = "chapterListModel"
         const val fromJump = "fromJump"
         const val fromGlobalCache = "fromGlobalCache"
+
+        //记录上次打开的时间，防止多次快速点击打开多次，影响体验
+        var lastOpenTime: Long = SystemClock.currentThreadTimeMillis()
+        var playAudioId: Long = 0L
+        var playAudioInfo: DownloadAudio = DownloadAudio()
+        var playChapterId: Long = 0L
+        var playChapterList: List<ChapterList> = mutableListOf()
+        var playSortType: String = "scs"
+
+        fun startPlayActivity(
+            context: Context,
+            audioId: Long = 0L,
+            audioInfo: DownloadAudio = DownloadAudio(),
+            ChapterId: Long = 0L,
+            chapterList: List<ChapterList> = mutableListOf(),
+            sortType: String = "scs"
+        ) {
+            //防止连续打开多次
+            if (SystemClock.currentThreadTimeMillis() - lastOpenTime < 100) {
+                lastOpenTime = SystemClock.currentThreadTimeMillis()
+                return
+            }
+            lastOpenTime = SystemClock.currentThreadTimeMillis()
+            playAudioId = audioId
+            playAudioInfo = audioInfo
+            playChapterId = ChapterId
+            playChapterList = chapterList
+            playSortType = sortType
+            val intent = Intent(context, BookPlayerActivity::class.java)
+            context.startActivity(intent)
+            (context as Activity).overridePendingTransition(activity_top_open, 0)
+
+        }
+
 
         //带书籍详情进入
         fun startActivity(
@@ -417,8 +453,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     audioId,
                     chapterId, "asc"
                 )
-
-
             }
             //从详情全部进来
             Jump.DETAILSBOOK.from -> {
@@ -504,6 +538,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.countdown()
         getIntentParams()
     }
+
+    private fun checkData (){
+
+    }
+
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         if (playerState == -1) {
@@ -602,16 +641,21 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         val currentStatus = mViewModel.playStatusBean.get()
         if (currentStatus != null) {
-            if(currentStatus.read == playWhenReady && currentStatus.state == playbackState){
+            if (currentStatus.read == playWhenReady && currentStatus.state == playbackState) {
                 return
-            }else{
+            } else {
                 mViewModel.playStatusBean.set(
                     PlayState(
                         state = playbackState,
                         read = playWhenReady
                     )
                 )
-                BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playReady = playWhenReady,playStatus = playbackState))
+                BaseConstance.basePlayStatusModel.set(
+                    BasePlayStatusModel(
+                        playReady = playWhenReady,
+                        playStatus = playbackState
+                    )
+                )
 
             }
         } else {
@@ -621,7 +665,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     read = playWhenReady
                 )
             )
-            BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playReady = playWhenReady,playStatus = playbackState))
+            BaseConstance.basePlayStatusModel.set(
+                BasePlayStatusModel(
+                    playReady = playWhenReady,
+                    playStatus = playbackState
+                )
+            )
         }
         DLog.d(
             "suolong",
