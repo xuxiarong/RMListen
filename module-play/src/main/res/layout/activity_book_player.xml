@@ -20,11 +20,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/report_why_arrow"
+                bindClick="@{()->viewModel.finshActivity(viewModel.ACTION_MORE_FINSH+viewModel.curTime)}"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_16"
+                android:src="@drawable/base_icon_back"
+                android:rotation="270"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:background="@drawable/music_ic_icon_share_bc" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_music_play"
                 bindVerticalLayout="@{viewModel.mBookPlayerAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="48dp"
                 android:background="@color/base_activity_bg_color"
                 tools:ignore="MissingConstraints" />
 

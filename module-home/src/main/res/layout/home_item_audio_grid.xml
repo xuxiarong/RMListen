@@ -70,7 +70,7 @@
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintTop_toBottomOf="@+id/homeItemRecommendHorDoubleTopName"
             app:layout_constraintStart_toStartOf="@+id/homeItemRecommendHorDoubleTopName"
-            tools:text="小丸子" />
+            tools:text="小丸子小丸子小丸子小丸子小丸子小丸子" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

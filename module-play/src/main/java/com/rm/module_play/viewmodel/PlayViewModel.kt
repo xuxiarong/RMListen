@@ -50,7 +50,6 @@ import kotlinx.coroutines.flow.*
  */
 open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMViewModel() {
     val playPath = MutableLiveData<List<BaseAudioInfo>>()
-    private val pathList = ArrayList<BaseAudioInfo>()
     val audioChapterModel = ObservableField<AudioChapterListModel>()
     val process = ObservableFloat(0f)//进度条
     val maxProcess = ObservableFloat(0f)//最大进度
@@ -181,7 +180,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 last_sequence = 0,
                 audio_cover_url = "",
                 anchor = Anchor.getDefault(),
-                tags = mutableListOf<DetailTags>(),
+                tags = mutableListOf(),
                 is_subscribe = false,
                 is_fav = false
             )
@@ -192,8 +191,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun setPlayPath(chapterList: List<ChapterList>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                val tempList = mutableListOf<BaseAudioInfo>()
                 chapterList.forEach {
-                    pathList.add(
+                    tempList.add(
                         BaseAudioInfo(
                             audioPath = it.path_url,
                             audioName = it.chapter_name,
@@ -205,8 +205,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         )
                     )
                 }
-                playPath.postValue(pathList)
-
+                playPath.postValue(tempList)
             }
         }
 

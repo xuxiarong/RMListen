@@ -31,6 +31,13 @@ abstract class ComponentShowPlayActivity<V : ViewDataBinding, VM : BaseVMViewMod
     }
 
     open fun startPlayActivity() {
+//        if (TextUtils.isEmpty(PlayConstance.getLastListenAudioUrl())) {
+//            tipView.showTipView(
+//                this,
+//                getString(com.rm.business_lib.R.string.business_no_content)
+//            )
+//            return
+//        }
         playService.onGlobalPlayClick(this)
     }
 
