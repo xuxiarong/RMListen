@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
@@ -121,7 +120,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     var chapterTotal = ObservableField(0)
 
-    var oldChapterTotal = 0
+    /**
+     * 记录上一次章节列表的总数
+     */
+    private var oldChapterTotal = 0
 
     /**
      * 书籍状态
@@ -235,8 +237,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     //如果主播id与当前的用户id一致则隐藏关注按钮
+
                     loginUser.get()?.let { user ->
-                        attentionVisibility.set(user.id != it.list.member_id)
+                        attentionVisibility.set(user.id != it.list.anchor_id)
                     }
                     detailInfoData.set(it)
                     isAttention.set(it.list.anchor.status)
@@ -246,7 +249,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     if (it?.contains("下架") == true || it?.contains("违规") == true) {
                         finish()
                     }
-                    showToast(it.toString())
+                    showTip(it.toString(), R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -257,16 +260,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 订阅
      */
     private fun subscribe(context: Context, audioId: String) {
-        showLoading()
         launchOnIO {
             repository.subscribe(audioId).checkResult(
                 onSuccess = {
-                    showContentView()
                     isSubscribed.set(true)
                     subscribeSuccess(context)
                 },
                 onError = {
-                    showContentView()
                     DLog.i("------->", "订阅失败  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -282,11 +282,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.unSubscribe(audioId).checkResult(
                 onSuccess = {
                     isSubscribed.set(false)
-//                    showToast("取消订阅成功")
                     showTip("取消订阅成功")
                 },
                 onError = {
-                    showContentView()
                     DLog.i("------->", "取消订阅  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -334,7 +332,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * sort：排序(asc,desc)
      */
     fun getChapterList() {
-        DLog.i("----------->", "$chapterPage    $mCurSort")
         launchOnIO {
             repository.chapterList(audioId.get()!!, chapterPage, chapterPageSize, mCurSort)
                 .checkResult(

@@ -342,7 +342,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     fun onChapterClick(context: Context,model : ListenAudioChapter) {
         val playService = RouterHelper.createRouter(PlayService::class.java)
         playService.toPlayPage(context = context,book = ChapterList(
-            amount = 2,
+            amount = 2.0,
             audio_id = model.audio_id,
             chapter_name = model.chapter_name,
             duration = model.duration,

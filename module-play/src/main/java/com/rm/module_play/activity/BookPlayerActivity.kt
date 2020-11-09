@@ -480,8 +480,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mViewModel.audioChapterModel.set(
                     AudioChapterListModel(
                         list = chapterList,
-                        total = chapterList.size,
-                        Anthology_list = mutableListOf()
+                        total = chapterList.size
                     )
                 )
             }

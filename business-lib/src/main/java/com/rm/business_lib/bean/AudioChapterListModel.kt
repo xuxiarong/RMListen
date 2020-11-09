@@ -13,12 +13,11 @@ import java.io.Serializable
 
 data class AudioChapterListModel(
     var list: MutableList<ChapterList>?,
-    val Anthology_list: MutableList<DataStr>,
     var total: Int
 ) : Serializable
 
 data class ChapterList(
-    var amount: Int,
+    var amount: Double,
     var audio_id: String,
     var chapter_id: String,
     var chapter_name: String,
