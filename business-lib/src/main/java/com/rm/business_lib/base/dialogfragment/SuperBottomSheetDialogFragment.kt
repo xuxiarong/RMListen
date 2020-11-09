@@ -2,7 +2,9 @@ package com.rm.business_lib.base.dialogfragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -46,7 +48,7 @@ abstract class SuperBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val lp = dialog?.window?.attributes
-        lp?.dimAmount = 0.6f
+        lp?.dimAmount = 0f
         dialog?.window?.attributes = lp
         (dialog?.window?.findViewById(R.id.design_bottom_sheet) as View).setBackgroundResource(android.R.color.transparent)
         onInitialize()
