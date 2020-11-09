@@ -1,61 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:maxHeight="500dp"
-    android:layout_height="match_parent">
+    android:layout_height="500dp">
 
-    <com.flyco.roundview.RoundLinearLayout
-        android:id="@+id/content_root"
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:rv_backgroundColor="@android:color/white"
-        app:rv_cornerRadius_TL="24dp"
-        app:rv_cornerRadius_TR="24dp"
-        tools:ignore="MissingConstraints">
+        android:src="@drawable/business_dialog_top_9bg" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="42dp"
+        android:background="@color/businessWhite"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/business_text_color_333333"
-                android:textSize="14sp"
-                android:text="关闭定时" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_22"
+            android:text="@string/play_close_timer"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="14sp" />
 
-            <CheckBox
-                android:id="@+id/checkbox_music_play_time_setting_check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="25dp" />
-        </RelativeLayout>
+        <CheckBox
+            android:id="@+id/checkbox_music_play_time_setting_check"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:layout_gravity="end"
+            android:button="@null" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginTop="39dp"
             android:background="@color/business_color_e8e8e8" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_music_play_time_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:overScrollMode="never">
         </androidx.recyclerview.widget.RecyclerView>
 
+    </FrameLayout>
 
-    </com.flyco.roundview.RoundLinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

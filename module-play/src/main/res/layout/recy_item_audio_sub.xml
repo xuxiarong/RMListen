@@ -4,57 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_play.viewmodel.PlayViewModel" />
+
         <variable
             name="itemModel"
-            type="com.rm.module_play.model.PlayControlSubModel" />
+            type="com.rm.module_play.model.PlaySubAudioModel" />
     </data>
 
-    <com.flyco.roundview.RoundRelativeLayout
+    <com.flyco.roundview.RoundFrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:paddingLeft="18dp"
-        app:rv_backgroundColor="@color/business_color_04000000"
+        android:layout_marginEnd="16dp"
+        app:rv_backgroundColor="@color/business_color_f7f7f7"
         app:rv_cornerRadius="8dp"
         tools:ignore="MissingConstraints">
 
         <TextView
+            bindText="@{viewModel.audioInfo.audio_name}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="8dp"
-            bindText="@{itemModel.anchor.anchor_name}"
+            android:layout_marginEnd="86dp"
+            android:ellipsize="end"
+            android:lines="1"
             android:textColor="@color/business_text_color_333333"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="三国演义三国演义三国演义三国演义三国演义三国演义三国演义" />
 
         <TextView
+            bindPlayCount="@{itemModel.audio.subscription_count}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="8dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/dp_16"
             android:layout_marginBottom="8dp"
-            bindPlayCount="@{itemModel.anchor.anchor_follows}"
             android:textColor="@color/business_text_color_999999"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="1000人已关注" />
 
         <com.flyco.roundview.RoundTextView
             android:layout_width="70dp"
             android:layout_height="26dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
+            android:layout_gravity="end|center_vertical"
             android:gravity="center"
-            android:text="@string/play_subs_anchor"
-            android:onClick="@{()->viewModel.playSubAction(itemModel)}"
+            android:onClick="@{()->viewModel.playSubAudio(itemModel)}"
+            android:text="@string/play_subs_audio"
             android:textColor="@color/business_color_ff5e5e"
             android:textSize="12sp"
-            app:rv_cornerRadius="15dp"
+            android:layout_marginEnd="@dimen/dp_16"
+            app:rv_isRadiusHalfHeight="true"
             app:rv_strokeColor="@color/business_color_ff5e5e"
             app:rv_strokeWidth="1dp" />
 
-    </com.flyco.roundview.RoundRelativeLayout>
+    </com.flyco.roundview.RoundFrameLayout>
 </layout>

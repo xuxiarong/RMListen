@@ -26,13 +26,13 @@ class BookPlayerAdapter(
         val ITEM_TYPE_PLAYER = R.layout.recy_item_book_player_control
 
         //主播订阅
-        val ITEM_TYPE_ANCHOR = R.layout.recy_item_book_player_sub
+        val ITEM_TYPE_AUDIO_SUB = R.layout.recy_item_audio_sub
 
         //精品订阅
         val ITEM_TYPE_BOUTIQUE = R.layout.recy_item_recommended_book_play
 
         //热门主播推荐
-        val ITEM_TYPE_FOLLOW = R.layout.recy_item_book_player_hot_sub
+        val ITEM_TYPE_SUBS_ANCHOR = R.layout.recy_item_subs_anchor
 
         //评论标题
         val ITEM_TYPE_COMMENT_TITLE = R.layout.recy_item_comment_more_book_play

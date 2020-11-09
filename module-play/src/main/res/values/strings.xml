@@ -2,7 +2,11 @@
     <string name="play_app_name">Play</string>
     <string name="play_speed">倍速</string>
     <string name="play_timer">定时器</string>
-    <string name="play_subs_anchor">+订阅</string>
+    <string name="play_subs_audio">+订阅</string>
+    <string name="play_subs_anchor">+关注</string>
     <string name="play_speed_text">%fx</string>
     <string name="play_skip_15_second">15s</string>
+    <string name="play_close_timer">关闭定时</string>
+    <string name="play_hot_anchor">热门主播</string>
+
 </resources>
