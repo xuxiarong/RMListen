@@ -10,6 +10,7 @@
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/home_home_smart_layout"
         bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess}"
         bindOnRefreshListener="@{viewModel.getHomeDataFromService}"
         android:paddingBottom="@dimen/dp_20"

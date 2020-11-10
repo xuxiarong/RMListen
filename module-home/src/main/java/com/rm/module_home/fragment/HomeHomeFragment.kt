@@ -1,5 +1,6 @@
 package com.rm.module_home.fragment
 
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -8,6 +9,7 @@ import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.receiver.NetworkChangeReceiver
+import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.business_lib.HomeGlobalData.isHomeDouClick
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -47,6 +49,13 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         mDataShowView = homeRv
         setStatusBar(R.color.base_activity_bg_color)
 
+        setDefault()
+        context?.let {
+            val height = DisplayUtils.getStateHeight(it)
+            val params = mDataBind.homeHomeSmartLayout.layoutParams as ConstraintLayout.LayoutParams
+            params.topMargin = height
+        }
+
         mViewModel.collectItemClickList = { initCollectClick(it) }
         mViewModel.doubleRvLeftScrollOpenDetail = { startBoutique() }
         mViewModel.audioClick = { onAudioClick(it) }
@@ -83,19 +92,24 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             mHomeAdapter.setList(it)
         })
 
-        mViewModel.errorMsg.addOnPropertyChangedCallback(object :Observable.OnPropertyChangedCallback(){
+        mViewModel.errorMsg.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
 
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(mViewModel.errorMsg.get()!=null){
-                    (activity as BaseActivity).tipView.showTipView(activity = activity as FragmentActivity,tipText = mViewModel.errorMsg.get()!!)
+                if (mViewModel.errorMsg.get() != null) {
+                    (activity as BaseActivity).tipView.showTipView(
+                        activity = activity as FragmentActivity,
+                        tipText = mViewModel.errorMsg.get()!!
+                    )
                 }
             }
         })
 
-        mViewModel.showNetError.addOnPropertyChangedCallback(object :Observable.OnPropertyChangedCallback(){
+        mViewModel.showNetError.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
 
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(mViewModel.showNetError.get()){
+                if (mViewModel.showNetError.get()) {
                     (activity as BaseActivity).tipView.showNetError(activity = activity as FragmentActivity)
                 }
             }
@@ -109,7 +123,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                         if (mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR
                             || mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR
                         ) {
-                             mViewModel.getHomeDataFromService()
+                            mViewModel.getHomeDataFromService()
                         }
                     }
                 }

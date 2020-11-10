@@ -36,6 +36,14 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     override fun initView() {
         super.initView()
+        setDefault()
+        context?.let {
+            val height = getStateHeight(it)
+            val searchParams =
+                mDataBind.searchMainTvSearch.layoutParams as ConstraintLayout.LayoutParams
+            searchParams.topMargin = height
+        }
+
         mDataShowView = search_main_view_pager
         hintTask = AutoTask(this)
 
@@ -43,7 +51,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         mDataBind.root.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
 
 
-        mDataBind.root.setOnClickListener{
+        mDataBind.root.setOnClickListener {
             hideKeyboard(mDataBind.searchMainEditText.applicationWindowToken)
         }
     }
