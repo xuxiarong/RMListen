@@ -13,7 +13,6 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.AudioSortType
-import com.rm.business_lib.bean.ChapterList
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -29,7 +28,6 @@ import com.rm.module_listen.model.ListenAudioChapter
 import com.rm.module_listen.model.ListenAudioInfo
 import com.rm.module_listen.model.ListenSubsDateModel
 import com.rm.module_listen.repository.ListenRepository
-import com.rm.module_play.enum.Jump
 
 /**
  * desc   :
@@ -70,10 +68,10 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         initSubsRvScrollListen()
     }
 
-    fun checkLogin(context: Context){
-        if(!isLogin.get()){
-            if(context is FragmentActivity){
-                RouterHelper.createRouter(LoginService::class.java).quicklyLogin(this,context)
+    fun checkLogin(context: Context) {
+        if (!isLogin.get()) {
+            if (context is FragmentActivity) {
+                RouterHelper.createRouter(LoginService::class.java).quicklyLogin(this, context)
             }
         }
     }
@@ -339,29 +337,20 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         }
     }
 
-    fun onChapterClick(context: Context,model : ListenAudioChapter) {
+    fun onChapterClick(context: Context, model: ListenAudioChapter) {
         val playService = RouterHelper.createRouter(PlayService::class.java)
-        playService.toPlayPage(context = context,book = ChapterList(
-            amount = 2,
-            audio_id = model.audio_id,
-            chapter_name = model.chapter_name,
-            duration = model.duration,
-            need_pay = 1,
-            path = model.path,
-            path_url = model.path,
-            play_count = model.play_count.toInt(),
-            sequence = model.sequence.toInt(),
-            size = model.size.toLong(),
-            created_at = "2020-09-09",
-            recentPlay = 0L,
-            chapter_id = model.chapter_id
-        ),from = Jump.CHAPTER.from,sortType = AudioSortType.SORT_DESC)
+        playService.startPlayActivity(
+            context = context,
+            audioId = model.audio_id,
+            chapterId = model.chapter_id,
+            sortType = AudioSortType.SORT_DESC
+        )
 
     }
 
-    fun onAudioClick(context: Context,model : ListenAudioInfo){
+    fun onAudioClick(context: Context, model: ListenAudioInfo) {
         val homeService = RouterHelper.createRouter(HomeService::class.java)
-        homeService.toDetailActivity(context = context,audioID = model.audio_id)
+        homeService.toDetailActivity(context = context, audioID = model.audio_id)
     }
 
 }

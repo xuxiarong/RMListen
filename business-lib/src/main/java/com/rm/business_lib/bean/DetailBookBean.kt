@@ -14,6 +14,6 @@ data class DetailBookBean(
     val original_name: String,
     val author: String="",
     val audio_cover_url: String,
-    val anchor: Anchor = Anchor.getDefault(),
+    val anchor: Anchor = Anchor(),
     val chapter_list: MutableList<ChapterList>? = null
 ) : Serializable

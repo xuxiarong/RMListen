@@ -10,7 +10,6 @@ import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
 import com.rm.module_download.R
-import com.rm.module_play.enum.Jump
 
 class DownloadBookDetailViewModel:BaseVMViewModel() {
 
@@ -33,7 +32,7 @@ class DownloadBookDetailViewModel:BaseVMViewModel() {
     }
 
     fun downloadChapterClick(context : Context,chapter: DownloadChapter){
-        playService.toPlayPage(context,audio = downloadAudio.get()!!,chapterId = chapter.chapter_id.toString(),from = Jump.DOWNLOAD.from)
+        playService.startPlayActivity(context,audioId = chapter.audio_id.toString(),chapterId = chapter.chapter_id.toString())
     }
 
 }

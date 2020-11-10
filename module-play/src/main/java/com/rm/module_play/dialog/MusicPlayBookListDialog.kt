@@ -10,8 +10,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.BaseAudioModel
 import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.HomeDetailList
 import com.rm.business_lib.binding.bindChapterList
 import com.rm.business_lib.binding.bindDateString
 import com.rm.business_lib.binding.bindDuration
@@ -35,7 +35,7 @@ import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
  * @Version: 1.0.0
  */
 fun FragmentActivity.showPlayBookListDialog(
-    downloadAudio : HomeDetailList?,
+    downloadAudio : BaseAudioModel?,
     audioListModel: AudioChapterListModel,
     back: (chapterId: String) -> Unit,
     mLoad: (types: Int) -> Unit,
@@ -54,7 +54,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     var mBack: (chapterId: String) -> Unit = {}
     var mLoad: (types: Int) -> Unit = {}
     var audioChapterListModel: AudioChapterListModel? = null
-    var downloadAudio: HomeDetailList? = null
+    var downloadAudio: BaseAudioModel? = null
     var isPlay : Boolean =false
 
     private val timeSAdapter by lazy {
@@ -105,7 +105,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
                 audio.audio_id = downloadAudio!!.audio_id.toLong()
                 audio.author = downloadAudio!!.author
                 audio.audio_cover_url = downloadAudio!!.audio_cover_url
-                audio.last_sequence = downloadAudio!!.last_sequence
+                audio.last_sequence = downloadAudio!!.last_sequence.toInt()
                 downloadService.startDownloadChapterSelectionActivity(context = context!!,downloadAudio = audio)
             }
         }
@@ -132,7 +132,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     }
 
 
-    internal class TimeSAdapter(var downloadAudio : HomeDetailList?,list: MutableList<ChapterList>,var isPlay: Boolean) :
+    internal class TimeSAdapter(var downloadAudio : BaseAudioModel?, list: MutableList<ChapterList>, var isPlay: Boolean) :
         BaseQuickAdapter<ChapterList, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
         override fun convert(holder: BaseViewHolder, item: ChapterList) {
             val playChapter=item.chapter_id== musicPlayerManger.getCurrentPlayerMusic()?.chapterId

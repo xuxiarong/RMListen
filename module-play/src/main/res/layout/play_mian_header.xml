@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
 
     <data>
 
@@ -44,7 +45,7 @@
                 android:background="@drawable/business_shape_gradient_0000000_66000000" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                bindPlayCount="@{viewModel.bookDetailData.play_count}"
+                bindPlayCountString="@{viewModel.bookDetailData.play_count}"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_28"
                 android:layout_gravity="bottom|right"
@@ -300,7 +301,7 @@
                 tools:text="123" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                bindPlayCount="@{viewModel.bookDetailData.subscription_count}"
+                bindPlayCountString="@{viewModel.bookDetailData.subscription_count}"
                 bindPlayCountUnit="@{@string/play_subscriber_num}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

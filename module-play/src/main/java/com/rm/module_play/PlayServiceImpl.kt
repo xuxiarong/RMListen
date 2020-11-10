@@ -3,16 +3,14 @@ package com.rm.module_play
 import android.content.Context
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.rm.business_lib.bean.BaseAudioModel
 import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
-import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
-import com.rm.module_play.enum.Jump
 import com.rm.module_play.playview.GlobalplayHelp
 
 /**
@@ -32,50 +30,26 @@ class PlayServiceImpl : PlayService {
     }
 
     override fun onGlobalPlayClick(context: Context) {
-        BookPlayerActivity.startActivity(context, Jump.DOTS.from)
+//        BookPlayerActivity.startActivity(context, Jump.DOTS.from)
     }
 
-    override fun toPlayPage(
-        context: Context, bean: DetailBookBean, from: String, sortType: String
-    ) {
-        BookPlayerActivity.startActivity(context, bean, from,sortType)
-
-    }
-
-
-    override fun toPlayPage(context: Context, chapterId: String, audioId: String, from: String) {
-        BookPlayerActivity.startActivity(context, chapterId, audioId, from)
-
-    }
-
-    override fun toPlayPage(context: Context, book: ChapterList, from: String,sortType: String) {
-        BookPlayerActivity.startActivity(context, book, from,sortType)
-
-    }
-
-    override fun toPlayPage(
+    override fun startPlayActivity(
         context: Context,
-        book: MutableList<ChapterList>,
-        from: String,
-        chapterId: String
-    ) {
-        BookPlayerActivity.startActivity(context, book, chapterId, from)
-    }
-
-    override fun toPlayPage(
-        context: Context,
-        audio: DownloadAudio,
+        audioId: String,
+        audioInfo: BaseAudioModel,
         chapterId: String,
-        from: String
+        chapterList: List<ChapterList>,
+        sortType: String
     ) {
-        BookPlayerActivity.startActivity(
+        BookPlayerActivity.startPlayActivity(
             context = context,
-            audio = audio,
+            audioId = audioId,
+            audioModel = audioInfo,
             chapterId = chapterId,
-            from = from
+            chapterList = chapterList,
+            sortType = sortType
         )
     }
-
 
     override fun queryPlayBookList(): List<HistoryPlayBook>? =
         DaoUtil(HistoryPlayBook::class.java, "").queryAll()

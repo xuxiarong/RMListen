@@ -10,17 +10,14 @@ import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.ktx.putAnyExtras
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.getObjectMMKV
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.putMMKV
-import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.BaseAudioModel
 import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.DetailBookBean
-import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
@@ -28,14 +25,11 @@ import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.navigateToForResult
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
-import com.rm.module_play.PlayConstance
 import com.rm.module_play.R
 import com.rm.module_play.R.anim.activity_top_open
-import com.rm.module_play.cache.PlayBookState
 import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
 import com.rm.module_play.dialog.*
-import com.rm.module_play.enum.Jump
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
@@ -60,156 +54,51 @@ import kotlinx.android.synthetic.main.activity_book_player.*
  */
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
     MusicPlayerEventListener, SwipeBackLayout.SwipeBackListener {
-
-
-    var mChapterId: String? = null
-    private var fromJumpType: String? = null
-
-    //是否重置播放
-    private var isResumePlay = false
-
-
     companion object {
-
-        const val chapterListModel = "chapterListModel"
-        const val fromJump = "fromJump"
         const val fromGlobalCache = "fromGlobalCache"
 
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
         var lastOpenTime: Long = SystemClock.currentThreadTimeMillis()
-        var playAudioId: Long = 0L
-        var playAudioInfo: DownloadAudio = DownloadAudio()
-        var playChapterId: Long = 0L
+        var playAudioId: String = ""
+        var playAudioModel: BaseAudioModel = BaseAudioModel()
+        var playChapterId: String = ""
         var playChapterList: List<ChapterList> = mutableListOf()
         var playSortType: String = "scs"
-
+        //是否重置播放
+        var isResumePlay = false
         fun startPlayActivity(
             context: Context,
-            audioId: Long = 0L,
-            audioInfo: DownloadAudio = DownloadAudio(),
-            ChapterId: Long = 0L,
+            audioId: String = "",
+            audioModel: BaseAudioModel = BaseAudioModel(),
+            chapterId: String = "",
             chapterList: List<ChapterList> = mutableListOf(),
             sortType: String = "scs"
         ) {
-            //防止连续打开多次
-            if (SystemClock.currentThreadTimeMillis() - lastOpenTime < 100) {
+            try {
+                //防止连续打开多次
+                if (SystemClock.currentThreadTimeMillis() - lastOpenTime < 100) {
+                    lastOpenTime = SystemClock.currentThreadTimeMillis()
+                    return
+                }
                 lastOpenTime = SystemClock.currentThreadTimeMillis()
-                return
-            }
-            lastOpenTime = SystemClock.currentThreadTimeMillis()
-            playAudioId = audioId
-            playAudioInfo = audioInfo
-            playChapterId = ChapterId
-            playChapterList = chapterList
-            playSortType = sortType
-            val intent = Intent(context, BookPlayerActivity::class.java)
-            context.startActivity(intent)
-            (context as Activity).overridePendingTransition(activity_top_open, 0)
-
-        }
-
-
-        //带书籍详情进入
-        fun startActivity(
-            context: Context,
-            homeDetailBean: DetailBookBean?,
-            from: String,
-            sortType: String
-        ) {
-            homeDetailBean?.let {
+                playAudioId = audioId
+                playAudioModel = audioModel
+                playChapterId = chapterId
+                playChapterList = chapterList
+                playSortType = sortType
+                //音频ID不能为空
+                if(playAudioId.isEmpty()){
+                    val baseActivity = context as BaseActivity
+                    baseActivity.tipView.showTipView(baseActivity,"书籍ID不能为空")
+                    return
+                }
                 val intent = Intent(context, BookPlayerActivity::class.java)
-                intent.putAnyExtras(chapterListModel, it)
-                intent.putAnyExtras(fromJump, from)
                 context.startActivity(intent)
                 (context as Activity).overridePendingTransition(activity_top_open, 0)
+            }catch (e : Exception){
+                ToastUtil.show(context,"${e.message}")
             }
         }
-
-        //某一个章节进来
-        fun startActivity(
-            context: Context,
-            chapter: ChapterList?,
-            from: String,
-            sortType: String
-        ) {
-            chapter?.let {
-                val intent = Intent(context, BookPlayerActivity::class.java)
-                intent.putAnyExtras(chapterListModel, it)
-                intent.putAnyExtras(fromJump, from)
-                context.startActivity(intent)
-                (context as Activity).overridePendingTransition(activity_top_open, 0)
-            }
-        }
-
-        //全局原点
-        fun startActivity(context: Context, fromGlobal: String) {
-
-            if (TextUtils.isEmpty(PlayConstance.getLastListenAudioUrl())) {
-                (context as BaseActivity).tipView.showTipView(
-                    context,
-                    context.getString(com.rm.business_lib.R.string.business_no_content)
-                )
-                return
-            }
-            val intent = Intent(context, BookPlayerActivity::class.java)
-            intent.putAnyExtras(fromJump, fromGlobal)
-            context.startActivity(intent)
-            (context as Activity).overridePendingTransition(activity_top_open, 0)
-
-        }
-
-        //从最近播放进入
-        const val paramChapterId = "chapterId"
-        const val paramAudioId = "audioId"
-        fun startActivity(context: Context, chapterId: String, audioId: String, from: String) {
-            val intent = Intent(context, BookPlayerActivity::class.java)
-            intent.putAnyExtras(paramChapterId, chapterId)
-            intent.putAnyExtras(fromJump, from)
-            intent.putAnyExtras(paramAudioId, audioId)
-            context.startActivity(intent)
-            (context as Activity).overridePendingTransition(activity_top_open, 0)
-
-        }
-
-        /**
-         * 从订阅新增进来
-         */
-        fun startActivity(
-            context: Context,
-            book: List<ChapterList>,
-            chapterId: String, from: String
-        ) {
-            val intent = Intent(context, BookPlayerActivity::class.java)
-            intent.putAnyExtras(paramChapterId, chapterId)
-            intent.putAnyExtras(fromJump, from)
-            intent.putAnyExtras(chapterListModel, book)
-            context.startActivity(intent)
-            (context as Activity).overridePendingTransition(activity_top_open, 0)
-
-        }
-
-
-        const val downloadAudio = "download_audio"
-
-        /**
-         * 从本地列表过来
-         */
-        fun startActivity(
-            context: Context,
-            audio: DownloadAudio,
-            chapterId: String,
-            from: String
-        ) {
-            val intent = Intent(context, BookPlayerActivity::class.java)
-            intent.putAnyExtras(paramChapterId, chapterId)
-            intent.putAnyExtras(fromJump, from)
-            intent.putAnyExtras(paramAudioId, audio.audio_id)
-            intent.putAnyExtras(downloadAudio, audio)
-            context.startActivity(intent)
-            (context as Activity).overridePendingTransition(activity_top_open, 0)
-
-        }
-
     }
 
     override fun onResume() {
@@ -252,99 +141,25 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         })
 
         mViewModel.playPath.observe(this, Observer { playPath ->
-            playPath?.let { it1 ->
-                musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
-                GlobalplayHelp.instance.addOnPlayerEventListener()
-                isResumePlay = true
-                if (playPath.size <= 1) {
-                    mViewModel.hasNextChapter.set(false)
-                    mViewModel.hasPreChapter.set(false)
-                }
-                when (fromJumpType) {
-                    Jump.DOTS.from -> {
-                        if (musicPlayerManger.getCurrentPlayerMusic() != null) {
-                            val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()!!
-                            mChapterId = currentPlayerMusic.chapterId
-
-                        }
-                        mChapterId?.let {
-                            if (!musicPlayerManger.isPlaying()) {
-                                musicPlayerManger.updateMusicPlayerData(it1, it)
-                                musicPlayerManger.startPlayMusic(it)
-                            }
-                        }
-                    }
-                    Jump.DETAILSBOOK.from -> {
-                        mChapterId = playPath.getOrNull(0)?.chapterId
-                        mChapterId?.let {
-                            if (musicPlayerManger.isPlaying()) {
-                                if (musicPlayerManger.getCurrentPlayerMusic()?.chapterId != mChapterId) {
-                                    musicPlayerManger.updateMusicPlayerData(it1, it)
-                                    musicPlayerManger.startPlayMusic(it)
-                                }
-                            } else {
-                                musicPlayerManger.updateMusicPlayerData(it1, it)
-                                musicPlayerManger.startPlayMusic(it)
-
-                            }
-                        }
-
-
-                    }
-                    Jump.CHAPTER.from -> {
-                        mChapterId?.let {
-                            if (musicPlayerManger.isPlaying()) {
-                                if (musicPlayerManger.getCurrentPlayerMusic()?.chapterId != mChapterId) {
-                                    musicPlayerManger.updateMusicPlayerData(it1, it)
-                                    musicPlayerManger.startPlayMusic(it)
-                                }
-                            } else {
-                                musicPlayerManger.updateMusicPlayerData(it1, it)
-                                musicPlayerManger.startPlayMusic(it)
-
-                            }
-                        }
-                    }
-                    Jump.RECENTPLAY.from -> {
-                        mChapterId?.let {
-                            if (musicPlayerManger.isPlaying()) {
-                                if (musicPlayerManger.getCurrentPlayerMusic()?.chapterId != mChapterId) {
-                                    musicPlayerManger.updateMusicPlayerData(it1, it)
-                                    musicPlayerManger.startPlayMusic(it)
-                                }
-                            } else {
-                                musicPlayerManger.updateMusicPlayerData(it1, it)
-                                musicPlayerManger.startPlayMusic(it)
-                            }
-                        }
-                    }
-                    Jump.SUBBOOKS.from -> {
-
-                    }
-                    Jump.DOWNLOAD.from -> {
-                        mChapterId?.let {
-                            if (musicPlayerManger.isPlaying()) {
-                                if (musicPlayerManger.getCurrentPlayerMusic()?.chapterId != mChapterId) {
-                                    musicPlayerManger.updateMusicPlayerData(it1, it)
-                                    musicPlayerManger.startPlayMusic(it)
-                                }
-                            } else {
-                                musicPlayerManger.updateMusicPlayerData(it1, it)
-                                musicPlayerManger.startPlayMusic(it)
-                            }
-                        }
-                    }
-                    else -> {
-
-                    }
-                }
-
+            musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
+            GlobalplayHelp.instance.addOnPlayerEventListener()
+            isResumePlay = true
+            if (playPath.size <= 1) {
+                mViewModel.hasNextChapter.set(false)
+                mViewModel.hasPreChapter.set(false)
             }
-            musicPlayerManger.getCurrentPlayerMusic()?.let { audio ->
-                mChapterId?.let {
-                    getRecentPlayBook(audio)
+            if (musicPlayerManger.getCurrentPlayerMusic() != null) {
+                val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()!!
+                playChapterId = currentPlayerMusic.chapterId
+                getRecentPlayBook(currentPlayerMusic)
+            }
 
-                }
+            if (!musicPlayerManger.isPlaying()) {
+                musicPlayerManger.updateMusicPlayerData(
+                    audios = playPath,
+                    chapterId = playChapterId
+                )
+                musicPlayerManger.startPlayMusic(chapterId = playChapterId)
             }
         })
 
@@ -393,15 +208,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
                     }
                     controlTime?.contains(ACTION_JOIN_LISTEN) == true -> {
-                        mChapterId?.let {
-                            RouterHelper.createRouter(ListenService::class.java)
-                                .showMySheetListDialog(
-                                    mViewModel,
-                                    this@BookPlayerActivity,
-                                    mViewModel.audioId.get()!!
-                                )
-                        }
-
+                    RouterHelper.createRouter(ListenService::class.java)
+                        .showMySheetListDialog(
+                            mViewModel,
+                            this@BookPlayerActivity,
+                            mViewModel.audioId.get()!!
+                        )
                     }
                     controlTime?.contains(ACTION_MORE_COMMENT) == true -> {
                         mViewModel.audioId.get()?.let {
@@ -417,96 +229,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 }
             }
         })
-
-
-    }
-
-    /**
-     * 获取参数
-     */
-    private fun getIntentParams() {
-        //正在播放的对象
-        fromJumpType = intent.getStringExtra(fromJump)
-        when (fromJumpType) {
-            //从圆圈进来
-            Jump.DOTS.from -> {
-                val playBook = fromGlobalCache.getObjectMMKV(PlayBookState::class.java)
-                mViewModel.initPlayBookSate(playBook)
-
-            }
-            //从最近播放进来
-            Jump.RECENTPLAY.from -> {
-                val chapterId = intent.getStringExtra(paramChapterId)
-                val audioId = intent.getStringExtra(paramAudioId)
-                mViewModel.audioId.set(audioId)
-                mChapterId = chapterId
-                mViewModel.getDetailInfo(audioId)
-                mViewModel.chapterPageList(
-                    audioId,
-                    chapterId, "asc"
-                )
-            }
-            //从详情全部进来
-            Jump.DETAILSBOOK.from -> {
-                (intent.getSerializableExtra(chapterListModel) as? DetailBookBean)?.let {
-                    mViewModel.chapterList(
-                        it.audio_id,
-                        1,
-                        20,
-                        "asc"
-                    )
-                }
-            }
-            //从详情某章节进来
-            Jump.CHAPTER.from -> {
-                (intent.getSerializableExtra(chapterListModel) as? ChapterList)?.let {
-                    mChapterId = it.chapter_id
-                    mViewModel.audioId.set(it.audio_id)
-                    mViewModel.chapterList(
-                        it.audio_id,
-                        1,
-                        20,
-                        "asc"
-                    )
-                    mViewModel.getDetailInfo(it.audio_id)
-                }
-            }
-            //从订阅进来
-            Jump.SUBBOOKS.from -> {
-                mChapterId = intent.getStringExtra(paramChapterId)
-                (intent.getSerializableExtra(chapterListModel) as? List<ChapterList>)?.let {
-                    mViewModel.setPlayPath(it)
-                }
-            }
-
-            //从下载进来
-            Jump.DOWNLOAD.from -> {
-                mChapterId = intent.getStringExtra(paramChapterId)
-                val audio: DownloadAudio =
-                    intent.getSerializableExtra(downloadAudio) as DownloadAudio
-
-                val chapterList = arrayListOf<ChapterList>()
-                audio.chapterList.forEach {
-                    chapterList.add(ChapterList.copyFromDownload(it))
-                }
-                mViewModel.setPlayPath(chapterList)
-
-                mViewModel.audioChapterModel.set(
-                    AudioChapterListModel(
-                        list = chapterList,
-                        total = chapterList.size,
-                        Anthology_list = mutableListOf()
-                    )
-                )
-            }
-
-            else -> {
-
-            }
-
-        }
-
-
     }
 
     override fun onPause() {
@@ -515,15 +237,14 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun initData() {
+        mViewModel.audioId.set(playAudioId)
+        //书籍信息未传入，获取书籍详情信息
+        if(TextUtils.isEmpty(playAudioModel.anchor_id)){
+            mViewModel.getDetailInfo(playAudioId)
+        }
         mViewModel.countdown()
-        getIntentParams()
         mViewModel.getCommentList()
     }
-
-    private fun checkData() {
-
-    }
-
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         if (playerState == -1) {
@@ -572,7 +293,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         musicInfo: BaseAudioInfo
     ) {
         mViewModel.updatePlayBook(
-            mViewModel.audioChapterModel.get()?.list?.find { it.chapter_id == mChapterId }
+            mViewModel.audioChapterModel.get()?.list?.find { it.chapter_id == playChapterId }
         )
     }
 
@@ -596,7 +317,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.process.set(currentDurtion.toFloat())
         mViewModel.audioChapterModel.get()?.let {
             mViewModel.updatePlayBookProcess(
-                it.list?.find { it.chapter_id == mChapterId },
+                it.list?.find { it.chapter_id == playChapterId },
                 currentDurtion
             )
         }
@@ -629,7 +350,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         playStatus = playbackState
                     )
                 )
-
             }
         } else {
             mViewModel.playStatusBean.set(

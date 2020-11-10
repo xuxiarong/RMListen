@@ -6,7 +6,7 @@ import androidx.databinding.BindingAdapter
 import com.flyco.roundview.RoundTextView
 import com.rm.business_lib.R
 import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.HomeDetailList
+import com.rm.business_lib.bean.BaseAudioModel
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
@@ -20,7 +20,7 @@ import com.rm.business_lib.wedgit.download.DownloadStatusView
 
 @BindingAdapter("bindDownloadAudio","bindDownloadStatusChapter", "bindCurrentDownChapter",requireAll = true)
 fun DownloadStatusView.bindChapterList(
-    downloadAudio: HomeDetailList?,
+    downloadAudio: BaseAudioModel?,
     chapter: ChapterList,
     downloadChapter: DownloadChapter?
 ) {

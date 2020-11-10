@@ -54,7 +54,7 @@
                 tools:text="文案" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                bindPlayCount="@{viewModel.detailInfoData.list.play_count}"
+                bindPlayCountString="@{viewModel.detailInfoData.list.play_count}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_2"

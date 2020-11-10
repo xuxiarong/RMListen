@@ -22,7 +22,10 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
-import com.rm.business_lib.bean.*
+import com.rm.business_lib.bean.AudioChapterListModel
+import com.rm.business_lib.bean.BaseAudioModel
+import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.bean.DetailBookBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.HistoryPlayBook
 import com.rm.business_lib.isLogin
@@ -39,7 +42,8 @@ import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.cache.PlayBookState
 import com.rm.module_play.databinding.PlayMianHeaderBinding
-import com.rm.module_play.model.*
+import com.rm.module_play.model.AudioCommentsModel
+import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -114,7 +118,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 数据详情
      */
-    val bookDetailData = ObservableField<HomeDetailList>()
+    val bookDetailData = ObservableField<BaseAudioModel>()
 
     /**
      * 评论数量
@@ -187,68 +191,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         const val ACTION_MORE_FINSH = "ACTION_MORE_FINSH"//关闭
     }
 
-    fun getHomeDetailListModel(): HomeDetailList? {
+    fun getHomeDetailListModel(): BaseAudioModel? {
         val audioBean = audioInfo.get()
-        if (audioBean != null) {
-            return HomeDetailList(
+        return if (audioBean != null) {
+            BaseAudioModel(
                 audio_id = audioBean.audio_id,
-                audio_type = 0,
                 audio_name = audioBean.audio_name,
                 original_name = audioBean.original_name,
-                status = 1,
-                author_intro = "",
-                anchor_id = "",
-                short_intro = "",
-                audio_intro = "",
-                audio_cover = "",
-                cover_url = "",
-                audio_label = "",
-                quality = 0,
-                progress = 0,
-                play_count = 0,
-                created_at = "11111",
-                chapter_updated_at = "11111",
-                author = audioBean.author,
-                member_id = "",
-                nickname = "",
-                subscription_count = 0,
-                last_sequence = 0,
-                audio_cover_url = audioBean.audio_cover_url,
-                anchor = Anchor.getDefault(),
-                tags = mutableListOf<DetailTags>(),
-                is_subscribe = false,
                 is_fav = false
             )
         } else {
-            return HomeDetailList(
-                audio_id = audioId.get()!!,
-                audio_type = 0,
-                audio_name = "",
-                original_name = "",
-                status = 1,
-                author_intro = "",
-                anchor_id = "",
-                short_intro = "",
-                audio_intro = "",
-                audio_cover = "",
-                cover_url = "",
-                audio_label = "",
-                quality = 0,
-                progress = 0,
-                play_count = 0,
-                created_at = "11111",
-                chapter_updated_at = "11111",
-                author = "",
-                member_id = "",
-                nickname = "",
-                subscription_count = 0,
-                last_sequence = 0,
-                audio_cover_url = "",
-                anchor = Anchor.getDefault(),
-                tags = mutableListOf(),
-                is_subscribe = false,
-                is_fav = false
-            )
+            BaseAudioModel(audio_id = audioId.get()!!)
         }
     }
 

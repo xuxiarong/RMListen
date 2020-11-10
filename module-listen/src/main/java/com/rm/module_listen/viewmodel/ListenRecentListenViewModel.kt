@@ -14,7 +14,6 @@ import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenHistorySearchActivity
 import com.rm.module_listen.model.ListenHistoryModel
 import com.rm.module_listen.model.ListenRecentDateModel
-import com.rm.module_play.enum.Jump
 
 /**
  * desc   :
@@ -62,11 +61,10 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     }
 
     fun startAudioPlay(context: Context, model: ListenHistoryModel) {
-        playService.toPlayPage(
+        playService.startPlayActivity(
             context = context,
             audioId = model.HistoryPlayBook.audio_id.toString(),
-            chapterId = model.HistoryPlayBook.listBean[0].chapter_id,
-            from = Jump.RECENTPLAY.from
+            chapterId = model.HistoryPlayBook.listBean[0].chapter_id
         )
     }
 

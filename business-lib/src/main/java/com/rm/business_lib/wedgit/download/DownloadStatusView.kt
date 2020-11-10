@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.rm.business_lib.R
-import com.rm.business_lib.bean.HomeDetailList
+import com.rm.business_lib.bean.BaseAudioModel
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
@@ -24,7 +24,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
         View.inflate(context, R.layout.layout_download_status_view, this)
     }
 
-    var audio: HomeDetailList? =null
+    var audio: BaseAudioModel? =null
 
 
     fun setDownloadStatus(chapter: DownloadChapter) {
@@ -43,9 +43,9 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                         downloadAudio.audio_name = audio!!.audio_name
                         downloadAudio.audio_cover_url = audio!!.audio_cover_url
                         downloadAudio.down_size = 0L
-                        downloadAudio.last_sequence = audio!!.last_sequence
+                        downloadAudio.last_sequence = audio!!.last_sequence.toInt()
                         downloadAudio.author = audio!!.author
-                        downloadAudio.status = audio!!.status
+                        downloadAudio.status = audio!!.status.toInt()
                         DownloadMemoryCache.addAudioToDownloadMemoryCache(downloadAudio)
                     }
                     DownloadMemoryCache.addDownloadingChapter(chapter)

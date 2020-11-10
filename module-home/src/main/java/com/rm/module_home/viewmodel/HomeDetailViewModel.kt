@@ -39,7 +39,6 @@ import com.rm.module_home.model.home.detail.CommentList
 import com.rm.module_home.model.home.detail.HomeCommentBean
 import com.rm.module_home.repository.HomeRepository
 import com.rm.module_home.util.HomeCommentDialogHelper
-import com.rm.module_play.enum.Jump
 import kotlin.math.ceil
 
 
@@ -299,17 +298,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     fun clickPlayPage(context: Context) {
         detailInfoData.get()?.let {
-            RouterHelper.createRouter(PlayService::class.java).toPlayPage(
+            RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                 context = context,
-                bean = DetailBookBean(
-                    audio_id = it.list.audio_id,
-                    audio_name = it.list.audio_name,
-                    original_name = it.list.original_name,
-                    author = it.list.author,
-                    audio_cover_url = it.list.audio_cover_url,
-                    anchor = it.list.anchor
-                ), from = Jump.DETAILSBOOK.from,
-                sortType = mCurSort
+                audioId = audioId.get()!!
             )
         }
     }
@@ -318,7 +309,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 书籍状态
      */
     private fun showStatus() {
-        when (detailInfoData.get()?.list?.progress) {
+        when (detailInfoData.get()?.list?.progress?.toInt()) {
             0 -> showStatus.set("未开播")
             1 -> showStatus.set("已连载" + detailInfoData.get()?.list?.last_sequence + "集")
             else -> showStatus.set("已完结")
@@ -426,8 +417,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 章节 item 点击事件
      */
     fun itemClick(context: Context, bean: ChapterList) {
-        RouterHelper.createRouter(PlayService::class.java).toPlayPage(
-            context, bean, Jump.CHAPTER.from, mCurSort
+        RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
+            context, audioId = audioId.get()!!,chapterId = bean.chapter_id, sortType = mCurSort
         )
     }
 
@@ -556,8 +547,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             downloadAudio.audio_name = homeDetailModel.list.audio_name
             downloadAudio.author = homeDetailModel.list.author
             downloadAudio.audio_cover_url = homeDetailModel.list.audio_cover_url
-            downloadAudio.status = homeDetailModel.list.status
-            downloadAudio.last_sequence = homeDetailModel.list.last_sequence
+            downloadAudio.status = homeDetailModel.list.status.toInt()
+            downloadAudio.last_sequence = homeDetailModel.list.last_sequence.toInt()
             createRouter.startDownloadChapterSelectionActivity(
                 context,
                 downloadAudio
