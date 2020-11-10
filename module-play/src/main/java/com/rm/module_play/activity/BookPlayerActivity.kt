@@ -9,7 +9,6 @@ import android.text.TextUtils
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.BaseConstance
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
@@ -118,11 +117,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     @SuppressLint("ResourceAsColor")
     override fun initView() {
         setStatusBar(R.color.businessWhite)
-
-        mDataBind.rvMusicPlay.apply {
-            bindVerticalLayout(mViewModel.mCommentAdapter)
-            mViewModel.createHeader(this)
-        }
 
         mViewModel.initPlayerAdapterModel()
         swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)

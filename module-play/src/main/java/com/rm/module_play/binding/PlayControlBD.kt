@@ -26,7 +26,10 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
  */
 
 @BindingAdapter("progressChangedListener")
-fun BubbleSeekBar.progressChangedListener(action : (String)->Unit) {
+fun BubbleSeekBar.progressChangedListener(action: ((String) -> Unit)?) {
+    if (action == null) {
+        return
+    }
     setOnProgressChangedListener(object :
         BubbleSeekBar.OnProgressChangedListener {
         override fun onProgressChanged(
@@ -35,7 +38,7 @@ fun BubbleSeekBar.progressChangedListener(action : (String)->Unit) {
             thumbText: String,
             fromUser: Boolean
         ) {
-            if(fromUser){
+            if (fromUser) {
                 action(thumbText)
             }
         }
@@ -43,7 +46,7 @@ fun BubbleSeekBar.progressChangedListener(action : (String)->Unit) {
         override fun onStartTrackingTouch(bubbleSeekBar: BubbleSeekBar?) {
         }
 
-        override fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?,progress : Float) {
+        override fun onStopTrackingTouch(bubbleSeekBar: BubbleSeekBar?, progress: Float) {
             MusicPlayerManager.musicPlayerManger.seekTo(progress.toLong())
             action("")
         }
@@ -63,7 +66,10 @@ fun BubbleSeekBar.setProgressMax(max: Float) {
 
 
 @BindingAdapter("updateThumbText")
-fun BubbleSeekBar.updateThumbText(str: String) {
+fun BubbleSeekBar.updateThumbText(str: String?) {
+    if (str==null){
+        return
+    }
     updateThumbText(str)
 }
 
@@ -73,65 +79,65 @@ fun LottieAnimationView.bindPlayOrPause(state: PlayState) {
     var playAnimName = ""
     var playFinish = true
 
-    if(isAnimating ){
-        DLog.d("suolongg","z正在动画中，退出")
+    if (isAnimating) {
+        DLog.d("suolongg", "z正在动画中，退出")
         return
     }
 
-    if (!state.read && (state.state==4 || state.state == 3) && playFinish && (playAnimName == "play_start.json"||playAnimName == "")) {
+    if (!state.read && (state.state == 4 || state.state == 3) && playFinish && (playAnimName == "play_start.json" || playAnimName == "")) {
         setAnimation("play_pause.json")
-        addAnimatorListener(object : Animator.AnimatorListener{
+        addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
                 playAnimName = "play_pause.json"
                 playFinish = false
-                DLog.d("suolong","play_pause onAnimationRepeat")
+                DLog.d("suolong", "play_pause onAnimationRepeat")
             }
 
             override fun onAnimationEnd(animation: Animator?) {
                 playFinish = true
                 playAnimName = "play_pause.json"
-                DLog.d("suolong","play_pause onAnimationEnd")
+                DLog.d("suolong", "play_pause onAnimationEnd")
             }
 
             override fun onAnimationCancel(animation: Animator?) {
                 playAnimName = "play_pause.json"
                 playFinish = true
-                DLog.d("suolong","play_pause onAnimationCancel")
+                DLog.d("suolong", "play_pause onAnimationCancel")
 
             }
 
             override fun onAnimationStart(animation: Animator?) {
                 playFinish = false
                 playAnimName = "play_pause.json"
-                DLog.d("suolong","play_pause onAnimationStart")
+                DLog.d("suolong", "play_pause onAnimationStart")
             }
         })
         playAnimation()
 
-    } else if(state.read && state.state == 3 && playFinish && playAnimName == "play_pause.json"||playAnimName == "") {
+    } else if (state.read && state.state == 3 && playFinish && playAnimName == "play_pause.json" || playAnimName == "") {
         setAnimation("play_start.json")
-        addAnimatorListener(object : Animator.AnimatorListener{
+        addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
                 playAnimName = "play_start.json"
                 playFinish = false
-                DLog.d("suolong","play_start onAnimationRepeat")
+                DLog.d("suolong", "play_start onAnimationRepeat")
             }
 
             override fun onAnimationEnd(animation: Animator?) {
                 playAnimName = "play_start.json"
                 playFinish = true
-                DLog.d("suolong","play_start onAnimationEnd")
+                DLog.d("suolong", "play_start onAnimationEnd")
             }
 
             override fun onAnimationCancel(animation: Animator?) {
                 playAnimName = "play_start.json"
                 playFinish = true
-                DLog.d("suolong","play_start onAnimationCancel")
+                DLog.d("suolong", "play_start onAnimationCancel")
             }
 
             override fun onAnimationStart(animation: Animator?) {
                 playFinish = false
-                DLog.d("suolong","play_start onAnimationStart")
+                DLog.d("suolong", "play_start onAnimationStart")
             }
         })
         playAnimation()
@@ -140,7 +146,10 @@ fun LottieAnimationView.bindPlayOrPause(state: PlayState) {
 }
 
 @BindingAdapter("bindPlayControl")
-fun PlayControlView.bindPlayControl(playState: PlayState){
+fun PlayControlView.bindPlayControl(playState: PlayState?) {
+    if (playState==null){
+        return
+    }
     startOrPause(playState = playState)
 }
 
@@ -148,7 +157,7 @@ fun PlayControlView.bindPlayControl(playState: PlayState){
 fun PlayControlView.bindPlayControlClick(action: (() -> Unit)?) {
     if (action != null) {
         setPlayOnClickNotDoubleListener {
-            if(playFinish){
+            if (playFinish) {
                 action()
             }
         }
@@ -180,7 +189,10 @@ fun ImageView.bindPlayNextSrc(hasNext: Boolean) {
 
 
 @BindingAdapter("bindPlayPrepareProgress")
-fun CircularProgressView.bindPlayPrepareProgress(playStatus: PlayState) {
+fun CircularProgressView.bindPlayPrepareProgress(playStatus: PlayState?) {
+    if(playStatus==null){
+        return
+    }
     if (playStatus.state == STATE_BUFFERING) {
         startAutoProgress()
     } else {
@@ -211,20 +223,20 @@ fun TextView.bindPlaySpeedText(float: Float?) {
     }
 
     text = (
-        if (0F < float && float <= 0.5F) {
-            "0.5x"
-        } else if (0.5F < float && float <= 0.75F) {
-            "0.75x"
-        } else if (0.75F < float && float <= 1.0F) {
-            "1.0x"
-        } else if (1.0F < float && float <= 1.25F) {
-            "1.25x"
-        } else if (1.25F < float && float <= 1.5F) {
-            "1.5x"
-        } else {
-            "2.0x"
-        }
-    )
+            if (0F < float && float <= 0.5F) {
+                "0.5x"
+            } else if (0.5F < float && float <= 0.75F) {
+                "0.75x"
+            } else if (0.75F < float && float <= 1.0F) {
+                "1.0x"
+            } else if (1.0F < float && float <= 1.25F) {
+                "1.25x"
+            } else if (1.25F < float && float <= 1.5F) {
+                "1.5x"
+            } else {
+                "2.0x"
+            }
+            )
 
 }
 

@@ -41,7 +41,6 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.cache.PlayBookState
-import com.rm.module_play.databinding.PlayMianHeaderBinding
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
@@ -144,29 +143,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 评论 SmartRefreshLayout的状态变化
      */
     val commentRefreshModel = SmartRefreshLayoutStatusModel()
-
-
-    /**
-     * 头部dataBinding对象
-     */
-
-    var mDataBinding: PlayMianHeaderBinding? = null
-
-    /**
-     * 创建头部详细信息
-     */
-    fun createHeader(view: RecyclerView) {
-        mDataBinding = DataBindingUtil.inflate<PlayMianHeaderBinding>(
-            LayoutInflater.from(view.context),
-            R.layout.play_mian_header,
-            view,
-            false
-        ).apply {
-            mCommentAdapter.addHeaderView(this.root)
-            setVariable(BR.viewModel, this@PlayViewModel)
-        }
-
-    }
 
     /**
      * 评论adapter
