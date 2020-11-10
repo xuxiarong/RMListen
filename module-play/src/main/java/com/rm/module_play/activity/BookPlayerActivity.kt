@@ -230,11 +230,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initView() {
         setStatusBar(R.color.businessWhite)
 
-        mDataBind.rvMusicPlay.apply {
-            bindVerticalLayout(mViewModel.mCommentAdapter)
-            mViewModel.createHeader(this)
-        }
-
         mViewModel.initPlayerAdapterModel()
         swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)
         swipe_back_layout.setOnSwipeBackListener(this)
