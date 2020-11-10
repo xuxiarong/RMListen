@@ -10,11 +10,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.business_lib.bean.ChapterListModel
+import com.rm.business_lib.binding.bindChapterList
 import com.rm.business_lib.binding.bindDateString
 import com.rm.business_lib.binding.bindDuration
 import com.rm.business_lib.binding.bindPlayCountString
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.wedgit.LivingView
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.component_comm.download.DownloadService
@@ -144,16 +146,16 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
                 holder.getView<LivingView>(R.id.living_img).visibility = View.GONE
             }
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
-            holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name+"sadadasdasdasdaskjdskljdfjkldfjkldfsjkladfsjkldsjkl")
+            holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
             holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCountString(item.play_count)
             holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.duration)
             holder.getView<TextView>(R.id.tv_music_play_up_time).bindDateString(item.created_at)
             val downloadStatusView = holder.getView<DownloadStatusView>(R.id.image_music_play_down)
-//            downloadStatusView.bindChapterList(
-//                downloadAudio,
-//                item,
-//                DownloadMemoryCache.downloadingChapter.get()
-//            )
+            downloadStatusView.bindChapterList(
+                downloadAudio,
+                item,
+                DownloadMemoryCache.downloadingChapter.get()
+            )
         }
     }
 
