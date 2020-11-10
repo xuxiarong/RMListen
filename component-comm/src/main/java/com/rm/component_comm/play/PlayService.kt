@@ -25,7 +25,7 @@ interface PlayService : ApplicationProvider {
         audioId: String = "",
         audioInfo: DownloadAudio = DownloadAudio(),
         chapterId: String = "",
-        chapterList: List<DownloadChapter> = mutableListOf(),
+        chapterList: MutableList<DownloadChapter> = mutableListOf(),
         sortType: String = "scs"
     )
 

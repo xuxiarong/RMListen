@@ -16,6 +16,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
@@ -53,24 +54,69 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 当前音频id
      */
-    val playAudioId = ObservableField<String>()
+    val playAudioId = ObservableField<String>("")
 
     /**
      * 播放的书籍详情
      */
     val playAudioModel = ObservableField<DownloadAudio>()
+
     /**
      * 当前播放的列表
      */
     val playPath = MutableLiveData<List<BaseAudioInfo>>()
+
+    /**
+     * 播放的章节id
+     */
+    val playChapterId = ObservableField<String>("")
+
+    /**
+     * 播放的章节
+     */
+    var playChapter = ObservableField<DownloadChapter>(DownloadChapter())
+
+    /**
+     * 播放的章节列表
+     */
     val playChapterList = MutableLiveData<MutableList<DownloadChapter>>()
 
+    /**
+     * 章节的当前分页
+     */
+    var playChapterPage = PlayGlobalData.PLAY_FIRST_PAGE
 
+    /**
+     * 章节每页数量
+     */
+    var playChapterPageSize = PlayGlobalData.PLAY_PAGE_SIZE
+
+    /**
+     * 是否还有更多章节列表
+     */
+    var playHasMoreChapter = true
+
+    /**
+     * 播放的进度
+     */
     val process = ObservableFloat(0f)//进度条
-    val maxProcess = ObservableFloat(0f)//最大进度
-    val updateThumbText = ObservableField<String>()//更改文字
+
+    /**
+     * 播放的最大进度
+     */
+    val maxProcess = ObservableFloat(0f)
+
+    /**
+     * 绘制进度条的时间文字
+     */
+    val updateThumbText = ObservableField<String>("00:00/00:00")
     var playControlAction = ObservableField<String>()
+
+    /**
+     * 播放器实例对象
+     */
     val playManger: MusicPlayerManager = musicPlayerManger
+
     /**
      * 播放状态进度条，0是播放2是加载中1是暂停,false是暂停
      */
@@ -168,7 +214,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
 
-    fun setPlayPath(chapterList: List<DownloadChapter>) {
+    private fun setAudioPlayPath(chapterList: List<DownloadChapter>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val tempList = mutableListOf<BaseAudioInfo>()
@@ -189,13 +235,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             }
         }
 
-    }
-
-
-    /**
-     * 初始化数据
-     */
-    fun initPlayerAdapterModel() {
     }
 
     //播放器操作行为
@@ -241,36 +280,78 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
     /**
-     * 章节列表
+     * 通过音频ID直接获取下一页的章节列表，从第一页开始，这里成功后需要记录chapterId
      */
-    fun chapterList(audioId: String, page: Int, page_size: Int, sort: String) {
-        launchOnUI {
-            repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
-                it.list?.let { list -> setPlayPath(list) }
-                showContentView()
-            }, onError = {
-                showContentView()
-            })
+    fun getChapterList(
+        audioId: String,
+        page: Int = playChapterPage,
+        page_size: Int = playChapterPageSize,
+        sort: String = AudioSortType.SORT_ASC
+    ) {
+        if (playHasMoreChapter) {
+            launchOnUI {
+                repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
+                    val chapterList = it.list
+                    if (chapterList != null && chapterList.size > 0) {
+                        playHasMoreChapter = chapterList.size >= page_size
+                        //是第一页，那么取第一条作为播放
+                        if (page == PlayGlobalData.PLAY_FIRST_PAGE) {
+                            playChapter.set(chapterList[0])
+                            playChapterId.set(chapterList[0].chapter_id.toString())
+                        }
+                        playChapterPage++
+                        setAudioPlayPath(chapterList)
+                    } else {
+                        playHasMoreChapter = false
+                        setAudioPlayPath(mutableListOf())
+                    }
+                    showContentView()
+                }, onError = {
+                    showContentView()
+                })
+            }
         }
     }
 
     /**
-     * 章节列表
+     * 通过音频ID，章节ID获取指定的章节列表，该接口会返回一个用于下次分页的page字段，需要记录
      */
-    fun chapterPageList(
+    fun getChapterListWithId(
         audioId: String,
         chapterId: String,
-        sort: String
+        page: Int = playChapterPage,
+        page_size: Int = playChapterPageSize,
+        sort: String = AudioSortType.SORT_ASC
     ) {
         launchOnUI {
-            repository.chapterPageList(audioId, chapterId, sort).checkResult(onSuccess = {
+            repository.chapterPageList(
+                audioId = audioId,
+                chapterId = chapterId,
+                page = page,
+                page_size = page_size,
+                sort = sort
+            ).checkResult(onSuccess = {
+                val chapterList = it.list
+                playChapterPage = it.page
                 showContentView()
+                if (chapterList != null && chapterList.size > 0) {
+                    playHasMoreChapter = chapterList.size >= page_size
+                    chapterList.forEach { chapter ->
+                        if (chapter.chapter_id.toString() == playChapterId.get()) {
+                            playChapter.set(chapter)
+                            setAudioPlayPath(chapterList)
+                            return@forEach
+                        }
+                    }
+                } else {
+                    playHasMoreChapter = false
+                    setAudioPlayPath(mutableListOf())
+                }
             }, onError = {
                 showContentView()
             })
         }
     }
-
 
     /**
      * 获取书籍详情信息
@@ -284,11 +365,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         isAttention.set(anchor.status)
                         isSubscribe.set(is_subscribe)
                     }
-
                     if (TextUtils.isEmpty(it.list.audio_cover_url)) {
                         it.list.audio_cover_url = ""
                     }
-
                 }, onError = {
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
                 }

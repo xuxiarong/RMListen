@@ -8,6 +8,7 @@ import com.rm.business_lib.R
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 
 /**
@@ -25,12 +26,12 @@ fun DownloadStatusView.bindChapterList(
     if(downloadAudio !=null){
         this.audio = downloadAudio
     }
-//    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
-//    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
-//        chapter.down_status = downloadChapter.down_status
-//        chapter.current_offset = downloadChapter.current_offset
-//    }
-//    setDownloadStatus(checkChapter)
+    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
+    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
+        chapter.down_status = downloadChapter.down_status
+        chapter.current_offset = downloadChapter.current_offset
+    }
+    setDownloadStatus(checkChapter)
 }
 
 @BindingAdapter("bindDownloadNum")

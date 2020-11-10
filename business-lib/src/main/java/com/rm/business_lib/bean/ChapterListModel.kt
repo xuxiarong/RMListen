@@ -13,7 +13,8 @@ import java.io.Serializable
 
 data class ChapterListModel(
     var list: MutableList<DownloadChapter>?,
-    var total: Int
+    var total: Int,
+    var page : Int
 ) : Serializable
 
 data class DataStr(

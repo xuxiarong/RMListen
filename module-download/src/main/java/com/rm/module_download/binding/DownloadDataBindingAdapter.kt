@@ -253,15 +253,15 @@ fun DownloadStatusView.bindDownloadStatusChapter(
     setDownloadStatus(chapter)
 }
 
-//@BindingAdapter("bindChapterList", "bindCurrentDownChapter")
-//fun DownloadStatusView.bindChapterList(
-//    chapter: ChapterList,
-//    downloadChapter: DownloadChapter?
-//) {
-////    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(downloadChapter)
-////    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
-////        chapter.down_status = downloadChapter.down_status
-////        chapter.current_offset = downloadChapter.current_offset
-////    }
-////    setDownloadStatus(checkChapter)
-//}
+@BindingAdapter("bindChapterList", "bindCurrentDownChapter")
+fun DownloadStatusView.bindChapterList(
+    chapter: DownloadChapter,
+    downloadChapter: DownloadChapter?
+) {
+    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
+    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
+        chapter.down_status = downloadChapter.down_status
+        chapter.current_offset = downloadChapter.current_offset
+    }
+    setDownloadStatus(checkChapter)
+}

@@ -36,7 +36,7 @@ class PlayServiceImpl : PlayService {
         audioId: String,
         audioInfo: DownloadAudio,
         chapterId: String,
-        chapterList: List<DownloadChapter>,
+        chapterList: MutableList<DownloadChapter>,
         sortType: String
     ) {
         BookPlayerActivity.startPlayActivity(
