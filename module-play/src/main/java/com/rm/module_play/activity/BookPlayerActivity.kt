@@ -14,6 +14,7 @@ import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
+import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -63,8 +64,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playAudioId: String = ""
         var playAudioModel: DownloadAudio = DownloadAudio()
         var playChapterId: String = ""
-        var playChapterList: List<DownloadChapter> = mutableListOf()
-        var playSortType: String = "scs"
+        var playChapterList: MutableList<DownloadChapter> = mutableListOf()
+        var playSortType: String = AudioSortType.SORT_ASC
         //是否重置播放
         var isResumePlay = false
         fun startPlayActivity(
@@ -72,8 +73,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             audioId: String = "",
             audioModel: DownloadAudio = DownloadAudio(),
             chapterId: String = "",
-            chapterList: List<DownloadChapter> = mutableListOf(),
-            sortType: String = "scs"
+            chapterList: MutableList<DownloadChapter> = mutableListOf(),
+            sortType: String = AudioSortType.SORT_ASC
         ) {
             try {
                 //防止连续打开多次
@@ -119,11 +120,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     @SuppressLint("ResourceAsColor")
     override fun initView() {
         setStatusBar(R.color.businessWhite)
-
-        mViewModel.initPlayerAdapterModel()
         swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)
         swipe_back_layout.setOnSwipeBackListener(this)
-
     }
 
     override fun startObserve() {
@@ -147,7 +145,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             if (musicPlayerManger.getCurrentPlayerMusic() != null) {
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()!!
                 playChapterId = currentPlayerMusic.chapterId
-                getRecentPlayBook(currentPlayerMusic)
             }
 
             if (!musicPlayerManger.isPlaying()) {
@@ -234,9 +231,23 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun initData() {
         mViewModel.playAudioId.set(playAudioId)
-        //书籍信息未传入，获取书籍详情信息
-        if(TextUtils.isEmpty(playAudioModel.anchor_id)){
+        //书籍信息未传入，获取书籍详情信息,有则直接使用
+        if(TextUtils.isEmpty(playAudioModel.audio_cover_url)){
             mViewModel.getDetailInfo(playAudioId)
+        }else{
+            mViewModel.playAudioModel.set(playAudioModel)
+        }
+        //如果传入的章节id为空，说明不是通过章节列表跳转的，直接访问书籍章节列表的第一页数据即可
+
+        if (playChapterList!=null && playChapterList.isNotEmpty()){
+            mViewModel.playChapterList.value = playChapterList
+        }else{
+            if(TextUtils.isEmpty(playChapterId)){
+                mViewModel.getChapterList(playAudioId)
+            }else{
+                mViewModel.playChapterId.set(playChapterId)
+                mViewModel.getChapterListWithId(audioId = playAudioId,chapterId = playChapterId)
+            }
         }
         mViewModel.countdown()
         mViewModel.getCommentList()
@@ -262,7 +273,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-        getRecentPlayBook(musicInfo)
         val playList = mViewModel.playManger.getCurrentPlayList()
         if (playList != null && playList.isNotEmpty()) {
             val size = playList.size
@@ -280,17 +290,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             mViewModel.hasNextChapter.set(false)
             mViewModel.hasNextChapter.set(false)
         }
-    }
-
-    /**
-     * 设置当前播放页面
-     */
-    private fun getRecentPlayBook(
-        musicInfo: BaseAudioInfo
-    ) {
-//        mViewModel.updatePlayBook(
-//            mViewModel.audioChapterModel.get()?.list?.find { it.chapter_id == playChapterId }
-//        )
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -311,12 +310,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         )
 //        mViewModel.playBookSate.get()?.process = currentDurtion.toFloat()
         mViewModel.process.set(currentDurtion.toFloat())
-//        mViewModel.audioChapterModel.get()?.let {
-//            mViewModel.updatePlayBookProcess(
-//                it.list?.find { it.chapter_id == playChapterId },
-//                currentDurtion
-//            )
-//        }
 
         if (isResumePlay) {
             mViewModel.maxProcess.set(totalDurtion.toFloat())

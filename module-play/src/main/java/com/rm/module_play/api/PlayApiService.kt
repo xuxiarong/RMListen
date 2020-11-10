@@ -1,8 +1,8 @@
 package com.rm.module_play.api
 
 import com.rm.baselisten.net.bean.BaseResponse
-import com.rm.business_lib.bean.ChapterListModel
 import com.rm.business_lib.bean.AudioDetailBean
+import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
@@ -84,6 +84,8 @@ interface PlayApiService {
     suspend fun chapterPage(
         @Query("audio_id") audioId: String,
         @Query("chapter_id") chapterId:String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size:Int,
         @Query("sort") sort: String
     ): BaseResponse<ChapterListModel>
 

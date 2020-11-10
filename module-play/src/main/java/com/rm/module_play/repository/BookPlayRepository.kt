@@ -2,8 +2,8 @@ package com.rm.module_play.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
-import com.rm.business_lib.bean.ChapterListModel
 import com.rm.business_lib.bean.AudioDetailBean
+import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.test.SearchMusicData
@@ -78,10 +78,20 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
      */
     suspend fun chapterPageList(
         audioId: String,
+        page: Int,
+        page_size: Int,
         chapterId: String,
         sort: String
     ): BaseResult<ChapterListModel> {
-        return apiCall { playApi.chapterPage(audioId, chapterId, sort) }
+        return apiCall {
+            playApi.chapterPage(
+                audioId = audioId,
+                chapterId = chapterId,
+                page = page,
+                page_size = page_size,
+                sort = sort
+            )
+        }
     }
 
     /**
@@ -99,7 +109,6 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     suspend fun homeUnLikeComment(comment_id: String): BaseResult<Any> {
         return apiCall { playApi.homeUnLikeComment(comment_id) }
     }
-
 
 
     /**
