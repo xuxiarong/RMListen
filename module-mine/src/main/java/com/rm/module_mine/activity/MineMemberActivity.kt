@@ -71,10 +71,6 @@ class MineMemberActivity : BaseVMActivity<MineActivityMemberDetailBinding, MineM
         }
     }
 
-    override fun initView() {
-        super.initView()
-    }
-
     override fun initData() {
         initParams()
         val memberId = intent.getStringExtra(MEMBER_ID)

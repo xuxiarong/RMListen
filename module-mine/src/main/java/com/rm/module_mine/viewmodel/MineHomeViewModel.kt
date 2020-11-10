@@ -123,13 +123,6 @@ class MineHomeViewModel : BaseVMViewModel() {
      * @param context Context
      */
     fun getVipClick(context: Context) {
-        getActivity(context)?.let {
-            CommBottomDialog().showCommonDialog(
-                it,
-                R.layout.mine_dialog_bottom_select_birthday,
-                this,
-                BR.viewModel
-            )
-        }
+
     }
 }

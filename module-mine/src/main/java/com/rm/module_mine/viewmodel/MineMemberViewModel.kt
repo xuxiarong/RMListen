@@ -12,6 +12,7 @@ import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineImageActivity
 import com.rm.module_mine.activity.MineMemberFollowAndFansActivity
 import com.rm.module_mine.bean.MineInfoDetail
 import com.rm.module_mine.repository.MineRepository
@@ -85,12 +86,18 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                 onError = {
                     DLog.i("--->", "$it")
                     showContentView()
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
 
                 })
         }
     }
 
+    /**
+     * 头像点击事件
+     */
+    fun clickIconFun(context: Context, imageUrl: String) {
+        MineImageActivity.startActivity(context, imageUrl)
+    }
 
     /**
      * 关注点击事件
@@ -114,7 +121,13 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
      */
     fun clickFollowFun(context: Context, type: Int) {
         detailInfoData.get()?.let {
-            MineMemberFollowAndFansActivity.newInstance(context, it.fans, it.follows, memberId.get()!!, type)
+            MineMemberFollowAndFansActivity.newInstance(
+                context,
+                it.fans,
+                it.follows,
+                memberId.get()!!,
+                type
+            )
         }
     }
 

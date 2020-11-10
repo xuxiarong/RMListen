@@ -26,10 +26,10 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
     }
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
-    private var mPage = 1//当前的页码
+    var mPage = 1//当前的页码
 
     //每页加载数据条数
-    private val pageSize = 12
+    private val pageSize = 20
 
     private lateinit var rankType: String
     private lateinit var rankSeg: String
@@ -38,14 +38,13 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
     /**
      * 获取榜单听单
      */
-    fun getListInfo(rankType: String, rankSeg: String, page: Int) {
+    fun getListInfo(rankType: String, rankSeg: String) {
         this.rankType = rankType
         this.rankSeg = rankSeg
         launchOnIO {
-            repository.getTopList(rankType, rankSeg, page, pageSize).checkResult(
+            repository.getTopList(rankType, rankSeg, mPage, pageSize).checkResult(
                 onSuccess = {
                     processSuccessData(it)
-
                 },
                 onError = {
                     processFailData()
@@ -72,9 +71,12 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
             refreshStatusModel.finishLoadMore(true)
             bean.list?.let { list -> mAdapter.addData(list) }
         }
-
-        //是否有更多数据
-        refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
+        if (rankSeg == "all") {
+            //是否有更多数据
+            refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
+        } else {
+            refreshStatusModel.setHasMore(mPage < 5)
+        }
     }
 
     /**
@@ -85,6 +87,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
         if (mPage == 1) {
             refreshStatusModel.finishRefresh(false)
         } else {
+            mPage--
             refreshStatusModel.finishLoadMore(false)
         }
     }
@@ -102,7 +105,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
      */
     fun refreshData() {
         mPage = 1
-        getListInfo(rankType, rankSeg, mPage)
+        getListInfo(rankType, rankSeg)
     }
 
     /**
@@ -110,7 +113,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
      */
     fun loadData() {
         ++mPage
-        getListInfo(rankType, rankSeg, mPage)
+        getListInfo(rankType, rankSeg)
     }
 
 

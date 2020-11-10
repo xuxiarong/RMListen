@@ -16,19 +16,24 @@ import com.rm.baselisten.util.ConvertUtils
  * date   : 2020/08/04
  * version: 1.0
  */
-@BindingAdapter("bindText")
-fun TextView.bindText(content: Any?) {
-    if(content == null){
+@BindingAdapter("bindText", "bindMaxLength", requireAll = false)
+fun TextView.bindText(content: Any?, bindMaxLength: Int = -1) {
+    if (content == null) {
         visibility = View.GONE
         return
     }
     visibility = if (TextUtils.isEmpty(content.toString())) {
         View.GONE
     } else {
-        text = content.toString()
+        text = if (bindMaxLength > 0 && content.toString().length > bindMaxLength) {
+            "${content.toString().subSequence(0, bindMaxLength)}..."
+        } else {
+            content.toString()
+        }
         View.VISIBLE
     }
 }
+
 
 @BindingAdapter("bindIsBold")
 fun TextView.bindIsBold(bindIsBold: Boolean?) {

@@ -25,8 +25,8 @@
             android:id="@+id/mine_create_sheet_adapter_icon"
             bindUrl="@{createSheetItem.sheet_cover}"
             corner="@{4f}"
-            android:layout_width="@dimen/dp_106"
-            android:layout_height="@dimen/dp_106"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +46,7 @@
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintRight_toRightOf="@id/mine_create_sheet_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/mine_create_sheet_adapter_icon"
-            app:rv_backgroundColor="@color/business_text_color_333333"
+            app:rv_backgroundColor="@color/business_color_ff5e5e"
             app:rv_cornerRadius_BL="@dimen/dp_4"
             app:rv_cornerRadius_TR="@dimen/dp_4"
             tools:text="文案" />
@@ -76,7 +76,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_create_sheet_adapter_create_time"
-            style="@style/BusinessTextStyleSecond_4"
+            style="@style/BusinessTextStyleThird_4"
             bindDateString="@{createSheetItem.created_at}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
@@ -88,20 +88,21 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_create_sheet_adapter_book_num"
-            style="@style/BusinessTextStyleSecond_4"
-            bindText="@{createSheetItem.num_audio}"
+            style="@style/BusinessTextStyleThird_4"
+            bindPlayCountString="@{createSheetItem.num_audio}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_book_num"
             android:drawablePadding="@dimen/dp_2"
+            android:singleLine="true"
             app:layout_constraintBottom_toBottomOf="@id/mine_create_sheet_adapter_view"
             app:layout_constraintStart_toEndOf="@id/mine_create_sheet_adapter_create_time"
             tools:text="124" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_create_sheet_adapter_collected_num"
-            style="@style/BusinessTextStyleSecond_4"
-            bindText="@{createSheetItem.num_favor}"
+            style="@style/BusinessTextStyleThird_4"
+            bindPlayCountString="@{createSheetItem.num_favor}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_unfavorites"

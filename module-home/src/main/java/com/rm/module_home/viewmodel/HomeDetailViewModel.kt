@@ -51,6 +51,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 章节当前加载的页码
      */
+    private var nextChapterPage = 1
+
     private var chapterPage = 1
 
     /**
@@ -216,16 +218,20 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 章节加载上一页
      */
     fun chapterRefreshData() {
-        chapterPage--
-        getChapterList()
+        if (chapterPage > 1) {
+            chapterPage--
+            getChapterList(chapterPage)
+        }
     }
 
     /**
      * 章节加载更多
      */
     fun chapterLoadData() {
-        chapterPage++
-        getChapterList()
+        if (nextChapterPage < ceil(chapterTotal.get()!! / chapterPageSize.toFloat()).toInt()) {
+            nextChapterPage++
+            getChapterList(nextChapterPage)
+        }
     }
 
     /**
@@ -238,7 +244,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     showContentView()
                     //如果主播id与当前的用户id一致则隐藏关注按钮
                     loginUser.get()?.let { user ->
-                        attentionVisibility.set(user.id != it.list.member_id)
+                        attentionVisibility.set(user.id != it.list.anchor_id)
                     }
                     detailInfoData.set(it)
                     isAttention.set(it.list.anchor.status)
@@ -327,13 +333,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * audio_id:音频id
      * sort：排序(asc,desc)
      */
-    fun getChapterList() {
-        DLog.i("----------->", "$chapterPage    $mCurSort")
+    fun getChapterList(page: Int) {
         launchOnIO {
-            repository.chapterList(audioId.get()!!, chapterPage, chapterPageSize, mCurSort)
+            repository.chapterList(audioId.get()!!, page, chapterPageSize, mCurSort)
                 .checkResult(
                     onSuccess = {
-                        processChapterData(it)
+                        processChapterData(it, page)
                     }, onError = {
                         showContentView()
                         chapterRefreshStatus.finishRefresh(false)
@@ -346,22 +351,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 处理章节数据
      */
-    private fun processChapterData(bean: ChapterListModel) {
+    private fun processChapterData(bean: ChapterListModel, page: Int) {
         showContentView()
         chapterTotal.set(bean.total)
         configChapterPageList()
 
-        //向上取整
-        val ceil = ceil(bean.total / chapterPageSize.toFloat()).toInt()
-
         chapterRefreshStatus.setCanRefresh(chapterPage != 1)
-        if (chapterPage == ceil) {
-            chapterRefreshStatus.setHasMore(false)
-        } else {
-            chapterRefreshStatus.setHasMore(true)
-        }
 
-        if (oldChapterPage > chapterPage) {
+        chapterRefreshStatus.setHasMore(bean.total > chapterAdapter.data.size)
+
+        if (oldChapterPage > page) {
             bean.list?.let { chapterList.addAll(0, it) }
             chapterRefreshStatus.finishRefresh(true)
         } else {
@@ -369,7 +368,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             bean.list?.let { chapterList.addAll(it) }
         }
         chapterAdapter.setList(chapterList)
-        oldChapterPage = chapterPage
+        oldChapterPage = page
 
     }
 
@@ -422,7 +421,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     fun itemClick(context: Context, bean: DownloadChapter) {
         RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
-            context, audioId = audioId.get()!!,chapterId = bean.chapter_id.toString(), sortType = mCurSort
+            context,
+            audioId = audioId.get()!!,
+            chapterId = bean.chapter_id.toString(),
+            sortType = mCurSort
         )
     }
 
@@ -573,19 +575,22 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             }
         }
         configChapterPageList()
+        nextChapterPage = 1
         chapterPage = 1
         chapterList.clear()
-        getChapterList()
+        getChapterList(1)
     }
 
     /**
      * 章节分页item点击事件
      */
     fun itemClickSelectChapter(page: Int) {
+        nextChapterPage = page
         chapterPage = page
         chapterList.clear()
         hideOr.set(!hideOr.get())
-        getChapterList()
+        chapterRefreshStatus.setCanRefresh(page != 1)
+        getChapterList(page)
     }
 
     /**
@@ -647,13 +652,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 主播头像点击事件
      */
     fun clickMemberFun(context: Context) {
-        if (isLogin.get()) {
-            detailInfoData.get()?.let {
-                RouterHelper.createRouter(MineService::class.java)
-                    .toMineMember(context, it.list.anchor_id)
-            }
-        } else {
-            getActivity(context)?.let { quicklyLogin(it) }
+        detailInfoData.get()?.let {
+            RouterHelper.createRouter(MineService::class.java)
+                .toMineMember(context, it.list.anchor_id)
         }
     }
 
@@ -676,8 +677,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 分享
      */
     fun clickShare() {
-        val canRefresh = chapterRefreshStatus.canRefresh.get()!!
-        chapterRefreshStatus.setCanRefresh(!canRefresh)
     }
 
 

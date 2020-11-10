@@ -1,5 +1,6 @@
 package com.rm.business_lib.db.download;
 
+import com.google.gson.annotations.SerializedName;
 import com.rm.business_lib.bean.Anchor;
 import com.rm.business_lib.bean.DetailTags;
 import com.rm.business_lib.db.DaoSession;
@@ -7,14 +8,12 @@ import com.rm.business_lib.db.DownloadAudioDao;
 import com.rm.business_lib.db.DownloadChapterDao;
 import com.rm.business_lib.db.converter.AnchorConvert;
 import com.rm.business_lib.db.converter.DetailTagsConvert;
-
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
-
 import java.io.Serializable;
 import java.util.List;
 
