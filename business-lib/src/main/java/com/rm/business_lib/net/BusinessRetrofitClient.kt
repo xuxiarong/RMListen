@@ -1,9 +1,6 @@
 package com.rm.business_lib.net
 
 import androidx.annotation.Nullable
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.rm.baselisten.jsondeserializer.*
 import com.rm.baselisten.net.api.BaseRetrofitClient
 import okhttp3.Call
 import okhttp3.HttpUrl
@@ -12,8 +9,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.math.BigDecimal
-import java.math.BigInteger
 
 
 /**
@@ -28,18 +23,20 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         const val BASE_MOCK_URL = "http://192.168.11.217:3000/mock/154/api/v1_0/"
         const val BASE_TEST_RUL = "http://dev-api.ls.com:9602/api/v1_0/"
         const val BASE_RELEASE_URL = "http://dev-api.ls.com:9602/api/v1_0/"
+        const val BASE_STG_URL = "http://10.1.20.201:9602/api/v1_0/"
 
         //        const val BASE_URL = "http://192.168.11.88:9602/api/v1_0/"
         const val NEW_URL = "http://mobilecdn.kugou.com/api/v3"
         const val OLD_HOST = "http://10.1.3.12:9602"
         const val PLAY_PATH = "http://www.kugou.com/yy/index.php"
 
-        const val TYPE_RELEASE = 0;
-        const val TYPE_TEST = 1;
-        const val TYPE_MOCK = 2;
-        const val TYPE_DEVELOP = 3;
+        const val TYPE_RELEASE = 0
+        const val TYPE_TEST = 1
+        const val TYPE_MOCK = 2
+        const val TYPE_DEVELOP = 3
+        const val TYPE_STG = 4
 
-        var currentType = TYPE_DEVELOP
+        var currentType = TYPE_STG
 
         fun getBaseUrl(): String {
             when (currentType) {
@@ -54,6 +51,9 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
                 }
                 TYPE_RELEASE -> {
                     return BASE_RELEASE_URL
+                }
+                TYPE_STG -> {
+                    return BASE_STG_URL
                 }
                 else -> {
                     return BASE_RELEASE_URL
