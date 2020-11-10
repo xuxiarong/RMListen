@@ -4,7 +4,6 @@ import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.BR
-import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
@@ -26,13 +25,13 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
     val mAdapter by lazy {
-        CommonBindAdapter<AudioBean>(
+        CommonBindAdapter<com.rm.business_lib.db.download.DownloadAudio>(
             mutableListOf(),
             R.layout.business_adapter_auto_noraml_item,
             BR.audioItem
         ).apply {
             setOnItemClickListener { _, _, position ->
-                startActivity(HomeDetailActivity::class.java, HomeDetailActivity.getIntent(data[position].audio_id))
+                startActivity(HomeDetailActivity::class.java, HomeDetailActivity.getIntent(data[position].audio_id.toString()))
             }
         }
     }

@@ -2,7 +2,7 @@ package com.rm.module_search.fragment
 
 import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.business_lib.bean.AudioBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.module_search.BR
 import com.rm.module_search.R
 import com.rm.module_search.bean.MemberBean
@@ -50,7 +50,7 @@ class SearchContentAllFragment :
     /**
      * 处理书籍数据
      */
-    private fun processBookData(audioList: List<AudioBean>) {
+    private fun processBookData(audioList: List<DownloadAudio>) {
         if (audioList.size > 3) {
             mViewModel.bookAdapter.setList(audioList.subList(0, 3))
         } else {

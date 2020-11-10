@@ -15,8 +15,8 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_FAVORITES
 import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
-import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.bean.SheetDetailInfoBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
@@ -55,7 +55,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
 
     //创建adapter
     val mAdapter by lazy {
-        CommonBindVMAdapter<AudioBean>(
+        CommonBindVMAdapter<DownloadAudio>(
             this,
             mutableListOf(),
             R.layout.home_adapter_menu_detail,
@@ -67,7 +67,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
     /**
      * item 点击事件
      */
-    fun itemClickFun(bookBean: AudioBean) {
+    fun itemClickFun(bookBean: DownloadAudio) {
         val hasMap = getHasMap()
         hasMap[AUDIO_ID] = bookBean.audio_id
         startActivity(HomeDetailActivity::class.java,hasMap)

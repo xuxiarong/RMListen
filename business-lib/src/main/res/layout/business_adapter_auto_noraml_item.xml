@@ -6,7 +6,7 @@
     <data>
         <variable
             name="audioItem"
-            type="com.rm.business_lib.bean.AudioBean" />
+            type="com.rm.business_lib.db.download.DownloadAudio" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,7 +65,7 @@
             style="@style/BusinessTextStyleThird_4"
             app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_icon"
             app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
-            android:text="@{audioItem.anchor}"
+            android:text="@{audioItem.anchor.anchor_name}"
             tools:text="楼芸蓓" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

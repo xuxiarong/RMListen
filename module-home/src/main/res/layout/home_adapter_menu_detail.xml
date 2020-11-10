@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.rm.business_lib.bean.AudioBean" />
+            type="com.rm.business_lib.db.download.DownloadAudio" />
 
         <variable
             name="click"

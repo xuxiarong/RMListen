@@ -3,7 +3,9 @@ package com.rm.module_home.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.*
+import com.rm.business_lib.bean.SheetListBean
+import com.rm.business_lib.bean.SheetMenuInfoBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.detail.HomeDetailActivity.Companion.AUDIO_ID
@@ -148,7 +150,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
     /**
      * item中子item点击事件
      */
-    fun itemChildClickFun(bean: AudioBean) {
+    fun itemChildClickFun(bean: DownloadAudio) {
         val map = getHasMap()
         map[AUDIO_ID] = bean.audio_id
         startActivity(HomeDetailActivity::class.java, map)

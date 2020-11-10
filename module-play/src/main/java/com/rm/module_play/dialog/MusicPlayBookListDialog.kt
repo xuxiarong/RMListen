@@ -9,15 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
-import com.rm.business_lib.bean.AudioChapterListModel
-import com.rm.business_lib.bean.BaseAudioModel
-import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.binding.bindChapterList
+import com.rm.business_lib.bean.ChapterListModel
 import com.rm.business_lib.binding.bindDateString
 import com.rm.business_lib.binding.bindDuration
-import com.rm.business_lib.binding.bindPlayCount
+import com.rm.business_lib.binding.bindPlayCountString
 import com.rm.business_lib.db.download.DownloadAudio
-import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.wedgit.LivingView
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.component_comm.download.DownloadService
@@ -35,14 +32,14 @@ import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
  * @Version: 1.0.0
  */
 fun FragmentActivity.showPlayBookListDialog(
-    downloadAudio : BaseAudioModel?,
-    audioListModel: AudioChapterListModel,
+    downloadAudio : DownloadAudio?,
+    listModel: ChapterListModel,
     back: (chapterId: String) -> Unit,
     mLoad: (types: Int) -> Unit,
     isPlay : Boolean
 ) {
     MusicPlayBookListDialog().apply {
-        this.audioChapterListModel = audioListModel
+        this.chapterListModel = listModel
         this.mBack = back
         this.mLoad = mLoad
         this.downloadAudio = downloadAudio
@@ -53,14 +50,14 @@ fun FragmentActivity.showPlayBookListDialog(
 class MusicPlayBookListDialog : BottomDialogFragment() {
     var mBack: (chapterId: String) -> Unit = {}
     var mLoad: (types: Int) -> Unit = {}
-    var audioChapterListModel: AudioChapterListModel? = null
-    var downloadAudio: BaseAudioModel? = null
+    var chapterListModel: ChapterListModel? = null
+    var downloadAudio: DownloadAudio? = null
     var isPlay : Boolean =false
 
     private val timeSAdapter by lazy {
-        TimeSAdapter(downloadAudio,audioChapterListModel?.list as MutableList<ChapterList>,isPlay).apply {
+        TimeSAdapter(downloadAudio,chapterListModel?.list as MutableList<DownloadChapter>,isPlay).apply {
             setOnItemClickListener { adapter, view, position ->
-                mBack(data[position].chapter_id)
+                mBack(data[position].chapter_id.toString())
                 dismissAllowingStateLoss()
             }
         }
@@ -105,7 +102,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
                 audio.audio_id = downloadAudio!!.audio_id.toLong()
                 audio.author = downloadAudio!!.author
                 audio.audio_cover_url = downloadAudio!!.audio_cover_url
-                audio.last_sequence = downloadAudio!!.last_sequence.toInt()
+                audio.last_sequence = downloadAudio!!.last_sequence
                 downloadService.startDownloadChapterSelectionActivity(context = context!!,downloadAudio = audio)
             }
         }
@@ -132,10 +129,10 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     }
 
 
-    internal class TimeSAdapter(var downloadAudio : BaseAudioModel?, list: MutableList<ChapterList>, var isPlay: Boolean) :
-        BaseQuickAdapter<ChapterList, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
-        override fun convert(holder: BaseViewHolder, item: ChapterList) {
-            val playChapter=item.chapter_id== musicPlayerManger.getCurrentPlayerMusic()?.chapterId
+    internal class TimeSAdapter(var downloadAudio : DownloadAudio?, list: MutableList<DownloadChapter>, var isPlay: Boolean) :
+        BaseQuickAdapter<DownloadChapter, BaseViewHolder>(R.layout.music_play_item_book_list, list) {
+        override fun convert(holder: BaseViewHolder, item: DownloadChapter) {
+            val playChapter=item.chapter_id== musicPlayerManger.getCurrentPlayerMusic()?.chapterId?.toLong()
             holder.setVisible(R.id.music_play_book_list_position,!playChapter)
             if(playChapter){
                 if(isPlay){
@@ -148,15 +145,15 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             }
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name+"sadadasdasdasdaskjdskljdfjkldfjkldfsjkladfsjkldsjkl")
-            holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCount(item.play_count)
+            holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCountString(item.play_count)
             holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.duration)
             holder.getView<TextView>(R.id.tv_music_play_up_time).bindDateString(item.created_at)
             val downloadStatusView = holder.getView<DownloadStatusView>(R.id.image_music_play_down)
-            downloadStatusView.bindChapterList(
-                downloadAudio,
-                item,
-                DownloadMemoryCache.downloadingChapter.get()
-            )
+//            downloadStatusView.bindChapterList(
+//                downloadAudio,
+//                item,
+//                DownloadMemoryCache.downloadingChapter.get()
+//            )
         }
     }
 

@@ -14,9 +14,8 @@ import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
-import com.rm.baselisten.util.putMMKV
-import com.rm.business_lib.bean.BaseAudioModel
-import com.rm.business_lib.bean.ChapterList
+import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
@@ -28,7 +27,10 @@ import com.rm.module_play.R
 import com.rm.module_play.R.anim.activity_top_open
 import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
-import com.rm.module_play.dialog.*
+import com.rm.module_play.dialog.MusicPlayBookListDialog
+import com.rm.module_play.dialog.showMusicPlayMoreDialog
+import com.rm.module_play.dialog.showMusicPlaySpeedDialog
+import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.playview.GlobalplayHelp
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
@@ -59,18 +61,18 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
         var lastOpenTime: Long = SystemClock.currentThreadTimeMillis()
         var playAudioId: String = ""
-        var playAudioModel: BaseAudioModel = BaseAudioModel()
+        var playAudioModel: DownloadAudio = DownloadAudio()
         var playChapterId: String = ""
-        var playChapterList: List<ChapterList> = mutableListOf()
+        var playChapterList: List<DownloadChapter> = mutableListOf()
         var playSortType: String = "scs"
         //是否重置播放
         var isResumePlay = false
         fun startPlayActivity(
             context: Context,
             audioId: String = "",
-            audioModel: BaseAudioModel = BaseAudioModel(),
+            audioModel: DownloadAudio = DownloadAudio(),
             chapterId: String = "",
-            chapterList: List<ChapterList> = mutableListOf(),
+            chapterList: List<DownloadChapter> = mutableListOf(),
             sortType: String = "scs"
         ) {
             try {
@@ -164,22 +166,22 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 when {
                     controlTime?.contains(ACTION_PLAY_QUEUE) == true -> {
                         //调整播放列表
-                        mViewModel.audioChapterModel.get()?.let { it ->
-                            showPlayBookListDialog(
-                                downloadAudio = mViewModel.getHomeDetailListModel(),
-                                audioListModel = it,
-                                back = {
-                                    musicPlayerManger.startPlayMusic(it.toString())
-                                },
-                                mLoad = { type ->
-                                    if (type == 0) {
-                                        //                                    ToastUtil.show(this@BookPlayerActivity, "刷新")
-                                    } else {
-                                        //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
-                                    }
-                                }, isPlay = mViewModel.playStatusBean.get()?.read == true
-                            )
-                        }
+//                        mViewModel.audioChapterModel.get()?.let { it ->
+//                            showPlayBookListDialog(
+//                                downloadAudio = mViewModel.getHomeDetailListModel(),
+//                                audioListModel = it,
+//                                back = {
+//                                    musicPlayerManger.startPlayMusic(it.toString())
+//                                },
+//                                mLoad = { type ->
+//                                    if (type == 0) {
+//                                        //                                    ToastUtil.show(this@BookPlayerActivity, "刷新")
+//                                    } else {
+//                                        //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
+//                                    }
+//                                }, isPlay = mViewModel.playStatusBean.get()?.read == true
+//                            )
+//                        }
                     }
                     controlTime?.contains(ACTION_PLAY_OPERATING) == true -> {
                         showMusicPlayMoreDialog { it1 ->
@@ -206,11 +208,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         .showMySheetListDialog(
                             mViewModel,
                             this@BookPlayerActivity,
-                            mViewModel.audioId.get()!!
+                            mViewModel.playAudioId.get()!!
                         )
                     }
                     controlTime?.contains(ACTION_MORE_COMMENT) == true -> {
-                        mViewModel.audioId.get()?.let {
+                        mViewModel.playAudioId.get()?.let {
 
                         }
                     }
@@ -227,11 +229,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onPause() {
         super.onPause()
-        fromGlobalCache.putMMKV(mViewModel.playBookSate.get())
+//        fromGlobalCache.putMMKV(mViewModel.playBookSate.get())
     }
 
     override fun initData() {
-        mViewModel.audioId.set(playAudioId)
+        mViewModel.playAudioId.set(playAudioId)
         //书籍信息未传入，获取书籍详情信息
         if(TextUtils.isEmpty(playAudioModel.anchor_id)){
             mViewModel.getDetailInfo(playAudioId)
@@ -286,9 +288,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     private fun getRecentPlayBook(
         musicInfo: BaseAudioInfo
     ) {
-        mViewModel.updatePlayBook(
-            mViewModel.audioChapterModel.get()?.list?.find { it.chapter_id == playChapterId }
-        )
+//        mViewModel.updatePlayBook(
+//            mViewModel.audioChapterModel.get()?.list?.find { it.chapter_id == playChapterId }
+//        )
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -307,14 +309,14 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 totalDurtion
             )}"
         )
-        mViewModel.playBookSate.get()?.process = currentDurtion.toFloat()
+//        mViewModel.playBookSate.get()?.process = currentDurtion.toFloat()
         mViewModel.process.set(currentDurtion.toFloat())
-        mViewModel.audioChapterModel.get()?.let {
-            mViewModel.updatePlayBookProcess(
-                it.list?.find { it.chapter_id == playChapterId },
-                currentDurtion
-            )
-        }
+//        mViewModel.audioChapterModel.get()?.let {
+//            mViewModel.updatePlayBookProcess(
+//                it.list?.find { it.chapter_id == playChapterId },
+//                currentDurtion
+//            )
+//        }
 
         if (isResumePlay) {
             mViewModel.maxProcess.set(totalDurtion.toFloat())

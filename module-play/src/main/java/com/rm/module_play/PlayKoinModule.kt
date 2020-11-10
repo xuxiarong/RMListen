@@ -3,7 +3,6 @@ package com.rm.module_play
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.repository.BookPlayRepository
-import com.rm.module_play.test.TestViewModel
 import com.rm.module_play.viewmodel.PlayViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -16,7 +15,6 @@ import org.koin.dsl.module
 val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
     viewModel { PlayViewModel(get()) }
-    viewModel { TestViewModel(get()) }
 }
 
 val repositoryModule = module {

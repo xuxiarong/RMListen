@@ -7,7 +7,7 @@
 
         <variable
             name="DetailChapterViewModel"
-            type="com.rm.business_lib.bean.ChapterList" />
+            type="com.rm.business_lib.db.download.DownloadChapter" />
 
         <import type="com.rm.business_lib.download.DownloadMemoryCache" />
 
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_10"
-        android:onClick="@{(ChapterList)->chapterclick.itemClick(context,DetailChapterViewModel)}"
+        android:onClick="@{()->chapterclick.itemClick(context,DetailChapterViewModel)}"
         android:paddingTop="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_10"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +67,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/detail_chapter_views_tx"
-                bindPlayCount="@{DetailChapterViewModel.play_count}"
+                bindPlayCountString="@{DetailChapterViewModel.play_count}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

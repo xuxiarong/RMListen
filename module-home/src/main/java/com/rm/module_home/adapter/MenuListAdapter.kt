@@ -6,9 +6,8 @@ import com.rm.baselisten.adapter.single.BaseBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.gridItemDecoration
-import com.rm.business_lib.bean.AudioBean
-import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.business_lib.bean.SheetMenuInfoBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.viewmodel.HomeMenuViewModel
@@ -38,7 +37,7 @@ class MenuListAdapter(private val mViewModel: HomeMenuViewModel) :
                         it
                     }
                     bindGridLayout(
-                        CommonBindVMAdapter<AudioBean>(
+                        CommonBindVMAdapter<DownloadAudio>(
                             mViewModel,
                             list,
                             R.layout.home_adapter_menu_book,

@@ -1,18 +1,19 @@
 package com.rm.module_search.viewmodel
 
-import android.content.Context
 import android.view.View
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.AudioBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
-import com.rm.module_search.*
+import com.rm.module_search.BR
+import com.rm.module_search.R
+import com.rm.module_search.REQUEST_TYPE_AUDIO
 import com.rm.module_search.bean.SearchResultBean
 import com.rm.module_search.repository.SearchRepository
+import com.rm.module_search.searchKeyword
 
 /**
  *
@@ -26,7 +27,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
 
     //书籍adapter
     val bookAdapter by lazy {
-        CommonBindVMAdapter<AudioBean>(
+        CommonBindVMAdapter<DownloadAudio>(
             this,
             mutableListOf(),
             R.layout.search_adapter_content_books,
@@ -118,8 +119,8 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
     /**
      * item点击事件
      */
-    fun itemClickFun(view: View, bean: AudioBean) {
+    fun itemClickFun(view: View, bean: DownloadAudio) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bean.audio_id)
+            .toDetailActivity(view.context, bean.audio_id.toString())
     }
 }

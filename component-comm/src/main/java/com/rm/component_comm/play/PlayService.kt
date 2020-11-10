@@ -2,9 +2,8 @@ package com.rm.component_comm.play
 
 import android.content.Context
 import android.view.View
-import com.rm.business_lib.bean.BaseAudioModel
-import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.db.HistoryPlayBook
+import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -24,14 +23,14 @@ interface PlayService : ApplicationProvider {
     fun startPlayActivity(
         context: Context,
         audioId: String = "",
-        audioInfo: BaseAudioModel = BaseAudioModel(),
+        audioInfo: DownloadAudio = DownloadAudio(),
         chapterId: String = "",
-        chapterList: List<ChapterList> = mutableListOf(),
+        chapterList: List<DownloadChapter> = mutableListOf(),
         sortType: String = "scs"
     )
 
     //播放历史
-    fun queryPlayBookList(): List<HistoryPlayBook>?
+//    fun queryPlayBookList(): List<HistoryPlayBook>?
 
     /**
      * 评论中心跳转

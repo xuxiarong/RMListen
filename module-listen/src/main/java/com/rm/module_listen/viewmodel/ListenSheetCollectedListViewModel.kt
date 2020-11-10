@@ -4,7 +4,7 @@ import android.text.TextUtils
 import android.view.View
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.AudioBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -137,10 +137,10 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
     /**
      * 子view item点击事件
      */
-    fun itemChildClickFun(view: View, bean: AudioBean) {
+    fun itemChildClickFun(view: View, bean: DownloadAudio) {
         getActivity(view.context)?.let {
             RouterHelper.createRouter(HomeService::class.java)
-                .toDetailActivity(it, bean.audio_id)
+                .toDetailActivity(it, bean.audio_id.toString())
         }
     }
 

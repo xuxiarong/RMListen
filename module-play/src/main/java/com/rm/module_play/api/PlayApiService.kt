@@ -1,8 +1,8 @@
 package com.rm.module_play.api
 
 import com.rm.baselisten.net.bean.BaseResponse
-import com.rm.business_lib.bean.AudioChapterListModel
-import com.rm.business_lib.bean.HomeDetailBean
+import com.rm.business_lib.bean.ChapterListModel
+import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
@@ -74,7 +74,7 @@ interface PlayApiService {
         @Query("page") page: Int,
         @Query("page_size") page_size: Int,
         @Query("sort") sort: String
-    ): BaseResponse<AudioChapterListModel>
+    ): BaseResponse<ChapterListModel>
 
 
     /**
@@ -85,13 +85,13 @@ interface PlayApiService {
         @Query("audio_id") audioId: String,
         @Query("chapter_id") chapterId:String,
         @Query("sort") sort: String
-    ): BaseResponse<AudioChapterListModel>
+    ): BaseResponse<ChapterListModel>
 
     /**
      * 获取听书详情
      */
     @GET("audio/detail")
-    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailBean>
+    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<AudioDetailBean>
 
     /**
      * 评论点赞

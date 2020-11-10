@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.rm.business_lib.R
-import com.rm.business_lib.bean.BaseAudioModel
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
@@ -24,7 +23,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
         View.inflate(context, R.layout.layout_download_status_view, this)
     }
 
-    var audio: BaseAudioModel? =null
+    var audio: DownloadAudio? =null
 
 
     fun setDownloadStatus(chapter: DownloadChapter) {
@@ -37,16 +36,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
                     if(audio!=null){
-                        val downloadAudio = DownloadAudio()
-                        downloadAudio.download_num = 0
-                        downloadAudio.audio_id = audio!!.audio_id.toLong()
-                        downloadAudio.audio_name = audio!!.audio_name
-                        downloadAudio.audio_cover_url = audio!!.audio_cover_url
-                        downloadAudio.down_size = 0L
-                        downloadAudio.last_sequence = audio!!.last_sequence.toInt()
-                        downloadAudio.author = audio!!.author
-                        downloadAudio.status = audio!!.status.toInt()
-                        DownloadMemoryCache.addAudioToDownloadMemoryCache(downloadAudio)
+                        DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
                     }
                     DownloadMemoryCache.addDownloadingChapter(chapter)
                 }

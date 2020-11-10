@@ -2,16 +2,13 @@ package com.rm.module_play.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.widget.ImageView
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableFloat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
@@ -22,12 +19,8 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
-import com.rm.business_lib.bean.AudioChapterListModel
-import com.rm.business_lib.bean.BaseAudioModel
-import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.DetailBookBean
-import com.rm.business_lib.db.DaoUtil
-import com.rm.business_lib.db.HistoryPlayBook
+import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.utils.mmSS
@@ -40,7 +33,6 @@ import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
-import com.rm.module_play.cache.PlayBookState
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
@@ -58,51 +50,64 @@ import kotlinx.coroutines.flow.*
  * @Version: 1.0.0
  */
 open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMViewModel() {
+    /**
+     * 当前音频id
+     */
+    val playAudioId = ObservableField<String>()
+
+    /**
+     * 播放的书籍详情
+     */
+    val playAudioModel = ObservableField<DownloadAudio>()
+    /**
+     * 当前播放的列表
+     */
     val playPath = MutableLiveData<List<BaseAudioInfo>>()
-    val audioChapterModel = ObservableField<AudioChapterListModel>()
+    val playChapterList = MutableLiveData<MutableList<DownloadChapter>>()
+
+
     val process = ObservableFloat(0f)//进度条
     val maxProcess = ObservableFloat(0f)//最大进度
     val updateThumbText = ObservableField<String>()//更改文字
     var playControlAction = ObservableField<String>()
     val playManger: MusicPlayerManager = musicPlayerManger
-    var audioInfo = ObservableField<DetailBookBean>()
-
-    var playBookSate = ObservableField<PlayBookState>()
-
-    //播放状态进度条，0是播放2是加载中1是暂停,false是暂停
+    /**
+     * 播放状态进度条，0是播放2是加载中1是暂停,false是暂停
+     */
     var playStatusBean = ObservableField<PlayState>(
         PlayState()
     )
 
     /**
-     * 是否能够上一章
+     * 是否有上一章
      */
     var hasPreChapter = ObservableBoolean(false)
 
     /**
-     * 是否能够下一章
+     * 是否有下一章
      */
     var hasNextChapter = ObservableBoolean(false)
 
+    /**
+     * 拖动进度条时显示的文案
+     */
     var seekText = ObservableField<String>("")
+
+    /**
+     * 拖动进度条时回调的方法
+     */
     var seekChangeVar: (String) -> Unit = { seekTextChange(it) }
 
-
-    private val mHistoryPlayBook: HistoryPlayBook = HistoryPlayBook()
-    val curTime = System.currentTimeMillis()
-
+    /**
+     * 播放速度
+     */
     var playSpeed = PlayGlobalData.playSpeed
+
+    val curTime = System.currentTimeMillis()
 
     init {
         updateThumbText.set("0/0")
-        playBookSate.set(PlayBookState())
     }
-
-    /**
-     * 当前音频id
-     */
-    val audioId = ObservableField<String>()
-
 
     /**
      * 章节当前的页码
@@ -113,11 +118,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 每次加载数据的条数
      */
     private val pageSize = 12
-
-    /**
-     * 数据详情
-     */
-    val bookDetailData = ObservableField<BaseAudioModel>()
 
     /**
      * 评论数量
@@ -167,22 +167,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         const val ACTION_MORE_FINSH = "ACTION_MORE_FINSH"//关闭
     }
 
-    fun getHomeDetailListModel(): BaseAudioModel? {
-        val audioBean = audioInfo.get()
-        return if (audioBean != null) {
-            BaseAudioModel(
-                audio_id = audioBean.audio_id,
-                audio_name = audioBean.audio_name,
-                original_name = audioBean.original_name,
-                is_fav = false
-            )
-        } else {
-            BaseAudioModel(audio_id = audioId.get()!!)
-        }
-    }
 
-
-    fun setPlayPath(chapterList: List<ChapterList>) {
+    fun setPlayPath(chapterList: List<DownloadChapter>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val tempList = mutableListOf<BaseAudioInfo>()
@@ -192,8 +178,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                             audioPath = it.path_url,
                             audioName = it.chapter_name,
                             filename = it.chapter_name,
-                            audioId = it.audio_id,
-                            chapterId = it.chapter_id,
+                            audioId = it.audio_id.toString(),
+                            chapterId = it.chapter_id.toString(),
                             duration = it.duration,
                             playCount = it.play_count.toString()
                         )
@@ -223,7 +209,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
 
     fun audioNameClick(context: Context) {
-        val audioId = audioId.get()
+        val audioId = playAudioId.get()
         if (audioId != null) {
             RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
             finish()
@@ -260,8 +246,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun chapterList(audioId: String, page: Int, page_size: Int, sort: String) {
         launchOnUI {
             repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
-                playBookSate.get()?.audioChapterListModel = it
-                audioChapterModel.set(it)
                 it.list?.let { list -> setPlayPath(list) }
                 showContentView()
             }, onError = {
@@ -280,9 +264,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     ) {
         launchOnUI {
             repository.chapterPageList(audioId, chapterId, sort).checkResult(onSuccess = {
-                playBookSate.get()?.audioChapterListModel = it
-                audioChapterModel.set(it)
-                it.list?.let { list -> setPlayPath(list) }
                 showContentView()
             }, onError = {
                 showContentView()
@@ -299,7 +280,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
                     it.list.apply {
-                        bookDetailData.set(this)
+                        playAudioModel.set(this)
                         isAttention.set(anchor.status)
                         isSubscribe.set(is_subscribe)
                     }
@@ -396,36 +377,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
 
-    //设置上次播放缓存的数据
-    fun initPlayBookSate(playBook: PlayBookState?) {
-        playBook?.let {
-            this.playBookSate.set(playBook)
-            it.audioChapterListModel?.let { its ->
-                audioChapterModel.set(its)
-                its.list?.let { list -> setPlayPath(list) }
-            }
-        }
-
-    }
-
-    //设置书籍
-    private fun setHistoryPlayBook(homeDetail: DetailBookBean) {
-        mHistoryPlayBook.audio_cover_url = homeDetail.audio_cover_url
-        mHistoryPlayBook.audio_id = homeDetail.audio_id.toLong()
-        mHistoryPlayBook.audio_name = homeDetail.audio_name
-        mHistoryPlayBook.author = homeDetail.author
-        mHistoryPlayBook.listBean = arrayListOf()
-        repository.insertPlayBook(mHistoryPlayBook)
-
-    }
-
-
     /**
      *评论列表
      */
     fun getCommentList() {
         launchOnIO {
-            repository.commentAudioComments(audioId.get()!!, commentPage, pageSize)
+            repository.commentAudioComments(playAudioId.get()!!, commentPage, pageSize)
                 .checkResult(onSuccess = {
                     processCommentSuccessData(it)
                 }, onError = {
@@ -471,24 +428,24 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         getCommentList()
     }
 
-    /**
-     * 记录播放的章节
-     */
-    fun updatePlayBook(chapter: ChapterList?) {
-        chapter?.let {
-            repository.updatePlayBook(it)
-
-        }
-    }
-
-    /**
-     * 更新播放进度
-     */
-    fun updatePlayBookProcess(chapter: ChapterList?, progress: Long = 0L) {
-        chapter?.let {
-            repository.updatePlayBookProcess(chapter, progress)
-        }
-    }
+//    /**
+//     * 记录播放的章节
+//     */
+//    fun updatePlayBook(chapter: ChapterList?) {
+//        chapter?.let {
+//            repository.updatePlayBook(it)
+//
+//        }
+//    }
+//
+//    /**
+//     * 更新播放进度
+//     */
+//    fun updatePlayBookProcess(chapter: ChapterList?, progress: Long = 0L) {
+//        chapter?.let {
+//            repository.updatePlayBookProcess(chapter, progress)
+//        }
+//    }
 
 
     /**
@@ -497,7 +454,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun clickCommentFun(context: Context) {
         getActivity(context)?.let {
             if (isLogin.get()) {
-                audioId.get()?.let { audioId ->
+                playAudioId.get()?.let { audioId ->
                     RouterHelper.createRouter(HomeService::class.java)
                         .showCommentDialog(this, it, audioId) {
                             if (it is BaseActivity) {
@@ -514,11 +471,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-    /**
-     * 查询
-     */
-    fun queryPlayBookList(): List<HistoryPlayBook>? =
-        DaoUtil(HistoryPlayBook::class.java, "").queryAll()
+//    /**
+//     * 查询
+//     */
+//    fun queryPlayBookList(): List<HistoryPlayBook>? =
+//        DaoUtil(HistoryPlayBook::class.java, "").queryAll()
 
 
     fun playPreClick() {
@@ -639,7 +596,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun clickMemberFun(context: Context) {
         if (isLogin.get()) {
-            bookDetailData.get()?.let {
+            playAudioModel.get()?.let {
                 RouterHelper.createRouter(MineService::class.java)
                     .toMineMember(context, it.anchor_id)
             }
@@ -657,9 +614,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 quicklyLogin(it)
             } else {
                 if (isSubscribe.get()) {
-                    audioId.get()?.let { audioId -> unSubscribe(audioId) }
+                    playAudioId.get()?.let { audioId -> unSubscribe(audioId) }
                 } else {
-                    audioId.get()?.let { audioId -> subscribe(context, audioId) }
+                    playAudioId.get()?.let { audioId -> subscribe(context, audioId) }
                 }
             }
         }

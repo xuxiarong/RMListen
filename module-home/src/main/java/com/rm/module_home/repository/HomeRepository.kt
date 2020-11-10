@@ -27,7 +27,7 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
     /**
      * 获取听书详情
      */
-    suspend fun getDetailInfo(id: String): BaseResult<HomeDetailBean> {
+    suspend fun getDetailInfo(id: String): BaseResult<AudioDetailBean> {
         return apiCall { homeService.homeDetail(id) }
     }
 
@@ -51,7 +51,7 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
         page: Int,
         page_size: Int,
         sort: String
-    ): BaseResult<AudioChapterListModel> {
+    ): BaseResult<ChapterListModel> {
         return apiCall { homeService.chapterList(id, page, page_size, sort) }
     }
 

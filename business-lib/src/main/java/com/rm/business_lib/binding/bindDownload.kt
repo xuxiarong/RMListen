@@ -5,11 +5,9 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.flyco.roundview.RoundTextView
 import com.rm.business_lib.R
-import com.rm.business_lib.bean.ChapterList
-import com.rm.business_lib.bean.BaseAudioModel
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
-import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 
 /**
@@ -20,19 +18,19 @@ import com.rm.business_lib.wedgit.download.DownloadStatusView
 
 @BindingAdapter("bindDownloadAudio","bindDownloadStatusChapter", "bindCurrentDownChapter",requireAll = true)
 fun DownloadStatusView.bindChapterList(
-    downloadAudio: BaseAudioModel?,
-    chapter: ChapterList,
+    downloadAudio: DownloadAudio?,
+    chapter: DownloadChapter,
     downloadChapter: DownloadChapter?
 ) {
     if(downloadAudio !=null){
         this.audio = downloadAudio
     }
-    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(ChapterList.toDownChapter(chapter))
-    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
-        chapter.down_status = downloadChapter.down_status
-        chapter.current_offset = downloadChapter.current_offset
-    }
-    setDownloadStatus(checkChapter)
+//    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
+//    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
+//        chapter.down_status = downloadChapter.down_status
+//        chapter.current_offset = downloadChapter.current_offset
+//    }
+//    setDownloadStatus(checkChapter)
 }
 
 @BindingAdapter("bindDownloadNum")

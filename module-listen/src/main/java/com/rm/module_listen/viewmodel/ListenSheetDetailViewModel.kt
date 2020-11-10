@@ -2,21 +2,19 @@ package com.rm.module_listen.viewmodel
 
 import android.view.View
 import androidx.databinding.ObservableField
-import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.AudioBean
 import com.rm.business_lib.bean.SheetInfoBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenMySheetDetailActivity
-import com.rm.module_listen.databinding.ListenHeaderSheetDetailBinding
 import com.rm.module_listen.repository.ListenRepository
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 
@@ -27,7 +25,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
      * 懒加载构建adapter对象
      */
     val mAdapter by lazy {
-        CommonBindVMAdapter<AudioBean>(
+        CommonBindVMAdapter<DownloadAudio>(
             this,
             mutableListOf(),
             R.layout.listen_adapter_book,
@@ -184,10 +182,10 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     /**
      * 将音频从听单移除
      */
-    fun removeAudioFun(bean: AudioBean) {
+    fun removeAudioFun(bean: DownloadAudio) {
         showLoading()
         launchOnIO {
-            repository.removeAudio("${data.get()?.sheet_id}", bean.audio_id).checkResult(
+            repository.removeAudio("${data.get()?.sheet_id}", bean.audio_id.toString()).checkResult(
                 onSuccess = {
                     showContentView()
                     mAdapter.remove(bean)
@@ -203,9 +201,9 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     /**
      * item点击事件
      */
-    fun itemClickFun(view: View, bean: AudioBean) {
+    fun itemClickFun(view: View, bean: DownloadAudio) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bean.audio_id)
+            .toDetailActivity(view.context, bean.audio_id.toString())
     }
 
     /**

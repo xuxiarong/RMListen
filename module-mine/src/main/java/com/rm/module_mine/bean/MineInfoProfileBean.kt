@@ -1,6 +1,5 @@
 package com.rm.module_mine.bean
 
-import com.rm.business_lib.bean.AudioBean
 import java.io.Serializable
 
 /**

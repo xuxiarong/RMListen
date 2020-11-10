@@ -28,7 +28,7 @@ interface HomeApiService {
      * 获取听书详情
      */
     @GET("audio/detail")
-    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<HomeDetailBean>
+    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<AudioDetailBean>
 
 
     /**
@@ -51,7 +51,7 @@ interface HomeApiService {
         @Query("page") page: Int,
         @Query("page_size") page_size: Int,
         @Query("sort") sort: String
-    ): BaseResponse<AudioChapterListModel>
+    ): BaseResponse<ChapterListModel>
 
     /**
      * 首页-听单

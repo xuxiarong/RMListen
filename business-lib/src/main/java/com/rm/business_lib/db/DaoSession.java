@@ -8,11 +8,9 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.rm.business_lib.db.HistoryPlayBook;
 import com.rm.business_lib.db.download.DownloadAudio;
 import com.rm.business_lib.db.download.DownloadChapter;
 
-import com.rm.business_lib.db.HistoryPlayBookDao;
 import com.rm.business_lib.db.DownloadAudioDao;
 import com.rm.business_lib.db.DownloadChapterDao;
 
@@ -25,11 +23,9 @@ import com.rm.business_lib.db.DownloadChapterDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig historyPlayBookDaoConfig;
     private final DaoConfig downloadAudioDaoConfig;
     private final DaoConfig downloadChapterDaoConfig;
 
-    private final HistoryPlayBookDao historyPlayBookDao;
     private final DownloadAudioDao downloadAudioDao;
     private final DownloadChapterDao downloadChapterDao;
 
@@ -37,32 +33,22 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
-        historyPlayBookDaoConfig = daoConfigMap.get(HistoryPlayBookDao.class).clone();
-        historyPlayBookDaoConfig.initIdentityScope(type);
-
         downloadAudioDaoConfig = daoConfigMap.get(DownloadAudioDao.class).clone();
         downloadAudioDaoConfig.initIdentityScope(type);
 
         downloadChapterDaoConfig = daoConfigMap.get(DownloadChapterDao.class).clone();
         downloadChapterDaoConfig.initIdentityScope(type);
 
-        historyPlayBookDao = new HistoryPlayBookDao(historyPlayBookDaoConfig, this);
         downloadAudioDao = new DownloadAudioDao(downloadAudioDaoConfig, this);
         downloadChapterDao = new DownloadChapterDao(downloadChapterDaoConfig, this);
 
-        registerDao(HistoryPlayBook.class, historyPlayBookDao);
         registerDao(DownloadAudio.class, downloadAudioDao);
         registerDao(DownloadChapter.class, downloadChapterDao);
     }
     
     public void clear() {
-        historyPlayBookDaoConfig.clearIdentityScope();
         downloadAudioDaoConfig.clearIdentityScope();
         downloadChapterDaoConfig.clearIdentityScope();
-    }
-
-    public HistoryPlayBookDao getHistoryPlayBookDao() {
-        return historyPlayBookDao;
     }
 
     public DownloadAudioDao getDownloadAudioDao() {

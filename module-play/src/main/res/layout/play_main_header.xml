@@ -30,7 +30,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_img_layout"
-                bindUrl="@{viewModel.bookDetailData.audio_cover_url}"
+                bindUrl="@{viewModel.playAudioModel.audio_cover_url}"
                 corner="@{8f}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -45,7 +45,7 @@
                 android:background="@drawable/business_shape_gradient_0000000_66000000" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                bindPlayCountString="@{viewModel.bookDetailData.play_count}"
+                bindPlayCountString="@{viewModel.playAudioModel.play_count}"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_28"
                 android:layout_gravity="bottom|right"
@@ -67,7 +67,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:lines="1"
-            android:text="@{viewModel.bookDetailData.audio_name}"
+            android:text="@{viewModel.playAudioModel.audio_name}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +114,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:onClick="@{(Context)->viewModel.audioNameClick(context)}"
-                android:text="@{viewModel.audioInfo.audio_name}"
+                android:text="@{viewModel.playAudioModel.audio_name}"
                 android:textColor="@color/business_text_color_666666"
                 tools:text="《与罗摩相遇》第一章《与罗摩相遇》第一章《与罗摩相遇》第一章 " />
 
@@ -288,7 +288,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/play_main_header_anchor_name"
-                bindText="@{viewModel.bookDetailData.anchor.anchor_name}"
+                bindText="@{viewModel.playAudioModel.anchor.anchor_name}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_8"
@@ -301,7 +301,7 @@
                 tools:text="123" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                bindPlayCountString="@{viewModel.bookDetailData.subscription_count}"
+                bindPlayCountString="@{viewModel.playAudioModel.subscription_count}"
                 bindPlayCountUnit="@{@string/play_subscriber_num}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -349,7 +349,7 @@
             <!-- 主播 -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_detail_anchor_url"
-                bindUrl="@{viewModel.bookDetailData.anchor.anchor_avatar}"
+                bindUrl="@{viewModel.playAudioModel.anchor.anchor_avatar}"
                 isCircle="@{true}"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -366,7 +366,7 @@
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginEnd="@dimen/dp_8"
                 android:singleLine="true"
-                android:text="@{viewModel.bookDetailData.anchor.anchor_name}"
+                android:text="@{viewModel.playAudioModel.anchor.anchor_name}"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_14sp"
                 android:textStyle="bold"
@@ -416,7 +416,7 @@
                 android:background="@{viewModel.isAttention ? @drawable/business_attention_un_select  : @drawable/business_attentionselect}"
                 android:drawableStart="@{viewModel.isAttention ? @drawable/business_icon_attention_eb : @drawable/business_icon_attention_ea}"
                 android:drawablePadding="@dimen/dp_4"
-                android:onClick="@{()->viewModel.clickAttentionFun(context,viewModel.bookDetailData.member_id)}"
+                android:onClick="@{()->viewModel.clickAttentionFun(context,viewModel.playAudioModel.member_id)}"
                 android:orientation="horizontal"
                 android:paddingStart="@dimen/dp_15"
                 android:paddingTop="@dimen/dp_5"

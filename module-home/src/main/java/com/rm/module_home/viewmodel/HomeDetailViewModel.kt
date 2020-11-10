@@ -19,8 +19,12 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
-import com.rm.business_lib.bean.*
+import com.rm.business_lib.bean.ChapterListModel
+import com.rm.business_lib.bean.DataStr
+import com.rm.business_lib.bean.DetailTags
+import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -129,7 +133,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 书籍信息
      */
-    var detailInfoData = ObservableField<HomeDetailBean>()
+    var detailInfoData = ObservableField<AudioDetailBean>()
 
     /**
      * 评论数量
@@ -139,7 +143,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 章节列表
      */
-    private val chapterList = mutableListOf<ChapterList>()
+    private val chapterList = mutableListOf<DownloadChapter>()
 
     /**
      * 头部dataBinding对象
@@ -342,7 +346,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 处理章节数据
      */
-    private fun processChapterData(bean: AudioChapterListModel) {
+    private fun processChapterData(bean: ChapterListModel) {
         showContentView()
         chapterTotal.set(bean.total)
         configChapterPageList()
@@ -416,9 +420,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 章节 item 点击事件
      */
-    fun itemClick(context: Context, bean: ChapterList) {
+    fun itemClick(context: Context, bean: DownloadChapter) {
         RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
-            context, audioId = audioId.get()!!,chapterId = bean.chapter_id, sortType = mCurSort
+            context, audioId = audioId.get()!!,chapterId = bean.chapter_id.toString(), sortType = mCurSort
         )
     }
 
@@ -547,8 +551,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             downloadAudio.audio_name = homeDetailModel.list.audio_name
             downloadAudio.author = homeDetailModel.list.author
             downloadAudio.audio_cover_url = homeDetailModel.list.audio_cover_url
-            downloadAudio.status = homeDetailModel.list.status.toInt()
-            downloadAudio.last_sequence = homeDetailModel.list.last_sequence.toInt()
+            downloadAudio.status = homeDetailModel.list.status
+            downloadAudio.last_sequence = homeDetailModel.list.last_sequence
             createRouter.startDownloadChapterSelectionActivity(
                 context,
                 downloadAudio

@@ -4,11 +4,10 @@ import android.content.Context
 import android.view.View
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.bean.AudioBean
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.home.HomeService
@@ -37,7 +36,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
 
     //书籍adapter
     val bookAdapter by lazy {
-        CommonBindVMAdapter<AudioBean>(
+        CommonBindVMAdapter<DownloadAudio>(
             this,
             mutableListOf(),
             R.layout.search_adapter_content_all_books,
@@ -93,9 +92,9 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
     /**
      * 全部-书籍点击事件
      */
-    fun clickBookFun(view: View, bean: AudioBean) {
+    fun clickBookFun(view: View, bean: DownloadAudio) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bean.audio_id)
+            .toDetailActivity(view.context, bean.audio_id.toString())
     }
 
     /**
