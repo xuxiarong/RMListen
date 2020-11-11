@@ -34,8 +34,14 @@ abstract class ComponentShowPlayActivity<V : ViewDataBinding, VM : BaseVMViewMod
 
     open fun startPlayActivity() {
         BaseConstance.basePlayInfoModel.get()?.let {
-            if(!TextUtils.isEmpty(it.playUrl)){
-                playService.onGlobalPlayClick(this)
+            if (!TextUtils.isEmpty(it.playUrl)) {
+                val progress = BaseConstance.basePlayProgressModel.get()?.playProgress ?: 0
+                playService.startPlayActivity(
+                    this,
+                    audioId = it.playAudioId,
+                    chapterId = it.playChapterId,
+                    chapterProgress = progress
+                )
                 return
             }
         }

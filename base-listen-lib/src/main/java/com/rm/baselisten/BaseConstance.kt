@@ -4,7 +4,6 @@ import androidx.databinding.ObservableField
 import com.rm.baselisten.model.BasePlayInfoModel
 import com.rm.baselisten.model.BasePlayProgressModel
 import com.rm.baselisten.model.BasePlayStatusModel
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getObjectMMKV
 import com.rm.baselisten.util.putMMKV
 
@@ -33,7 +32,10 @@ object BaseConstance {
     private const val PlAY_LAST_LISTEN_INFO = "play_last_listen_chapter"
     private const val PlAY_LAST_LISTEN_PROGRESS = "play_last_listen_progress"
 
-    fun getLastListenInfo(): BasePlayInfoModel {
+    /**
+     * 获取上一次的收听记录
+      */
+    private fun getLastListenInfo(): BasePlayInfoModel {
         try {
             return PlAY_LAST_LISTEN_INFO.getObjectMMKV(
                 BasePlayInfoModel::class.java,
@@ -45,7 +47,10 @@ object BaseConstance {
         return BasePlayInfoModel()
     }
 
-    fun getLastListenProgress(): BasePlayProgressModel {
+    /**
+     * 获取上一次的收听进度
+     */
+    private fun getLastListenProgress(): BasePlayProgressModel {
         try {
             val lastProgress = PlAY_LAST_LISTEN_PROGRESS.getObjectMMKV(
                 BasePlayProgressModel::class.java,
@@ -58,7 +63,9 @@ object BaseConstance {
         return BasePlayProgressModel(0)
     }
 
-
+    /**
+     * 更新正在播放的书籍信息
+     */
     fun updateBaseAudioId(audioId: String, playUrl: String) {
         val baseAudio = basePlayInfoModel.get()
         if (baseAudio != null) {
@@ -77,6 +84,9 @@ object BaseConstance {
         }
     }
 
+    /**
+     * 更新正在播放的章节信息
+     */
     fun updateBaseChapterId(chapterId: String) {
         val baseAudio = basePlayInfoModel.get()
         if (baseAudio != null) {
@@ -90,6 +100,9 @@ object BaseConstance {
         }
     }
 
+    /**
+     * 更新正在播放的章节进度
+     */
     fun updateBaseProgress(process: Int) {
         val progressModel = BasePlayProgressModel(playProgress = process)
         basePlayProgressModel.set(progressModel)
@@ -97,9 +110,6 @@ object BaseConstance {
     }
 
     init {
-        val lastListenAudioUrl = getLastListenInfo()
-        val lastListenProgress = getLastListenProgress()
-        DLog.d("suolong","lastListenAudioUrl = ${lastListenAudioUrl.playUrl}  progress = ${lastListenProgress.playProgress}" )
         basePlayInfoModel.set(getLastListenInfo())
         basePlayProgressModel.set(getLastListenProgress())
     }

@@ -64,6 +64,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playAudioModel: DownloadAudio = DownloadAudio()
         var playChapterId: String = ""
         var playChapterList: MutableList<DownloadChapter> = mutableListOf()
+        var playChapterProgress : Int = 0
         var playSortType: String = AudioSortType.SORT_ASC
 
         fun startPlayActivity(
@@ -72,6 +73,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             audioModel: DownloadAudio = DownloadAudio(),
             chapterId: String = "",
             chapterList: MutableList<DownloadChapter> = mutableListOf(),
+            chapterProgress : Int = 0,
             sortType: String = AudioSortType.SORT_ASC
         ) {
             try {
@@ -85,7 +87,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 playAudioModel = audioModel
                 playChapterId = chapterId
                 playChapterList = chapterList
+                playChapterProgress = chapterProgress
                 playSortType = sortType
+
                 //音频ID不能为空
                 if (playAudioId.isEmpty()) {
                     val baseActivity = context as BaseActivity

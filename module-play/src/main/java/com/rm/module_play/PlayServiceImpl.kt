@@ -23,14 +23,7 @@ class PlayServiceImpl : PlayService {
 
     override fun getGlobalPlay(): View = GlobalPlayHelper.INSTANCE.globalView
     override fun showView(context: Context) {
-//        GlobalPlayHelper.INSTANCE.globalView.mainShow()
-//        GlobalPlayHelper.INSTANCE.globalView.setOnClickNotDoubleListener {
-//            BookPlayerActivity.startActivity(context, Jump.DOTS.from)
-//        }
-    }
 
-    override fun onGlobalPlayClick(context: Context) {
-//        BookPlayerActivity.startActivity(context, Jump.DOTS.from)
     }
 
     override fun startPlayActivity(
@@ -39,6 +32,7 @@ class PlayServiceImpl : PlayService {
         audioInfo: DownloadAudio,
         chapterId: String,
         chapterList: MutableList<DownloadChapter>,
+        chapterProgress: Int,
         sortType: String
     ) {
         BookPlayerActivity.startPlayActivity(
@@ -47,6 +41,7 @@ class PlayServiceImpl : PlayService {
             audioModel = audioInfo,
             chapterId = chapterId,
             chapterList = chapterList,
+            chapterProgress = chapterProgress,
             sortType = sortType
         )
     }

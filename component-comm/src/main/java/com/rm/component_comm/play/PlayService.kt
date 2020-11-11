@@ -19,14 +19,13 @@ interface PlayService : ApplicationProvider {
     //显示播放器按钮
     fun showView(context: Context)
 
-    fun onGlobalPlayClick(context: Context)
-
     fun startPlayActivity(
         context: Context,
         audioId: String = "",
         audioInfo: DownloadAudio = DownloadAudio(),
         chapterId: String = "",
         chapterList: MutableList<DownloadChapter> = mutableListOf(),
+        chapterProgress : Int = 0,
         sortType: String = "scs"
     )
 

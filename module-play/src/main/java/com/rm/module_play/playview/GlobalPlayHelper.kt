@@ -4,6 +4,7 @@ import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.utilExt.dip
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
@@ -71,10 +72,8 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        if (!playWhenReady) {
-            globalView.pause()
-        } else {
-            globalView.play()
+        if(playbackState == STATE_ENDED){
+            BaseConstance.updateBaseProgress(100)
         }
     }
 
