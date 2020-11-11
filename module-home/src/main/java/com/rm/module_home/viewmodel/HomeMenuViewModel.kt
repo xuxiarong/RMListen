@@ -1,5 +1,6 @@
 package com.rm.module_home.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -150,10 +151,8 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
     /**
      * item中子item点击事件
      */
-    fun itemChildClickFun(bean: DownloadAudio) {
-        val map = getHasMap()
-        map[AUDIO_ID] = bean.audio_id
-        startActivity(HomeDetailActivity::class.java, map)
+    fun itemChildClickFun(context: Context, bean: DownloadAudio) {
+        HomeDetailActivity.startActivity(context, bean.audio_id.toString())
     }
 
 }

@@ -52,12 +52,10 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
         launchOnIO {
             repository.getCollectedList(mPage, pageSize, memberId).checkResult(
                 onSuccess = {
-                    DLog.i("=====","onSuccess  $it")
                     successData(it)
                 },
                 onError = {
                     failData()
-                    DLog.i("=====","onError  $it")
                 }
             )
         }

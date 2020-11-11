@@ -67,16 +67,14 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
     /**
      * item 点击事件
      */
-    fun itemClickFun(bookBean: DownloadAudio) {
-        val hasMap = getHasMap()
-        hasMap[AUDIO_ID] = bookBean.audio_id
-        startActivity(HomeDetailActivity::class.java,hasMap)
+    fun itemClickFun(context: Context, bookBean: DownloadAudio) {
+        HomeDetailActivity.startActivity(context, bookBean.audio_id.toString())
     }
 
     /**
      * 收藏点击事件
      */
-    fun clickCollectionRelated( view: View) {
+    fun clickCollectionRelated(view: View) {
         if (isLogin.get()) {
             data.get()?.sheet_id?.let {
                 if (isFavor.get() == false) {
@@ -171,7 +169,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
      */
     private fun getAudioList() {
         launchOnIO {
-            repository.getAudioList( sheetId.get() ?: "", mPage, pageSize)
+            repository.getAudioList(sheetId.get() ?: "", mPage, pageSize)
                 .checkResult(
                     onSuccess = {
                         showContentView()
@@ -218,7 +216,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
             repository.unFavoritesSheet(sheetId).checkResult(
                 onSuccess = {
                     showContentView()
-                    showToast("取消收藏成功")
+                    showTip("取消收藏成功")
                     setFavorState(false)
                 },
                 onError = {
@@ -256,7 +254,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                     ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(activity)
         } else {
-            showToast(context.getString(R.string.business_favorites_success_tip))
+            showTip(context.getString(R.string.business_favorites_success_tip))
         }
         IS_FIRST_FAVORITES.putMMKV(false)
     }

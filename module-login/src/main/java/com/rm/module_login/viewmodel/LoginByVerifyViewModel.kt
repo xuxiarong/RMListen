@@ -2,6 +2,7 @@ package com.rm.module_login.viewmodel
 
 import android.content.Context
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.R
@@ -41,11 +42,11 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
         // 网络通过手机获取验证码
         if (!isCheck.get()!!) {
             // 未选中check box
-            showToast(R.string.login_agree_deal_tips)
+            showTip(CONTEXT.getString(R.string.login_agree_deal_tips),R.color.business_color_ff5e5e)
             return
         }
         if (phoneInputViewModel.phone.get()!!.length < 7) {
-            showToast(R.string.login_input_right_number_tips)
+            showTip(CONTEXT.getString(R.string.login_input_right_number_tips),R.color.business_color_ff5e5e)
             return
         }
 
@@ -59,7 +60,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
             ).checkResult(
                 onSuccess = {
                     showContentView()
-                    showToast(R.string.login_send_success)
+                    showTip(CONTEXT.getString(R.string.login_send_success))
                     // 跳转到登陆验证码输入界面
                     startActivity(
                         VerificationInputActivity::class.java,

@@ -88,7 +88,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
                 }, onError = {
                     showContentView()
                     DLog.i("----->", "$it")
-                    showToast("$it")
+                    showTip("$it",R.color.business_color_ff5e5e)
                 }
             )
         }

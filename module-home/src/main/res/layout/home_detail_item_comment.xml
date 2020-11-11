@@ -71,7 +71,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_comment_day_tx"
-            bindDate="@{commentItem.created_at}"
+            bindTimeDateLong="@{commentItem.created_at}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"

@@ -30,15 +30,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
         return apiCall { playApi.getPlayPath(params) }
     }
 
-    //获取用户评论列表
-    suspend fun getMemberComments(page: Int, pageSize: Int): BaseResult<Any> {
-        return apiCall { playApi.getMemberComments(page, pageSize) }
-    }
 
-    //点赞和取消点赞
-    suspend fun likeComment(commentID: Int): BaseResult<Any> {
-        return apiCall { playApi.likeComment(commentID) }
-    }
 
     /**
      * 获取书本详情

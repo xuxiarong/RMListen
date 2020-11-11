@@ -39,10 +39,10 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_member_publish_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/business_color_b1b1b1"
-                    android:text="@{@string/mine_num(viewModel.data.publish_info.total)}"
                     android:textSize="@dimen/business_text_size_16sp"
                     tools:text="(23)" />
 
@@ -85,10 +85,10 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_member_create_sheet_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/business_color_b1b1b1"
-                    android:text="@{@string/mine_num(viewModel.data.sheet_info.total)}"
                     android:textSize="@dimen/business_text_size_16sp"
                     tools:text="(23)" />
 
@@ -131,9 +131,9 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mine_member_favor_sheet_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/mine_num(viewModel.data.favor_sheet_info.total)}"
                     android:textColor="@color/business_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_16sp"
                     tools:text="(23)" />

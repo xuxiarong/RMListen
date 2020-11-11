@@ -2,6 +2,7 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -82,7 +83,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     loginIn(it.access, it.refresh, it.member)
 
                     // 登陆成功
-                    showToast(R.string.login_success)
+                    showTip(CONTEXT.getString(R.string.login_success))
                     showContentView()
                     finish()
 
@@ -179,13 +180,13 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
         launchOnIO {
             repository.sendMessage(type, countryCode, phone).checkResult(
                 onSuccess = {
-                    showToast(R.string.login_send_success)
+                    showTip(CONTEXT.getString(R.string.login_send_success))
                     // 开始倒计时
                     startCountDown()
                     showContentView()
                 },
                 onError = {
-                    showToast(R.string.login_send_failed)
+                    showTip(CONTEXT.getString(R.string.login_send_failed),R.color.business_color_ff5e5e)
                     showContentView()
                 }
             )

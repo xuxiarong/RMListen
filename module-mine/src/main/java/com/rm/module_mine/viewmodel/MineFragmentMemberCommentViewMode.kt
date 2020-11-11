@@ -121,7 +121,7 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
         } else {
             refreshStateModel.finishLoadMore(false)
         }
-        showToast("$msg")
+        showTip("$msg",R.color.business_color_ff5e5e)
     }
 
     /**

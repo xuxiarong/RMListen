@@ -25,15 +25,7 @@ class BoutiqueFragment(
     BaseVMFragment<HomeFragmentBoutiqueBinding, BoutiqueFragmentViewModel>() {
 
     private val headView by lazy {
-        View.inflate(activity, R.layout.home_header_banner, null).apply {
-            setPadding(
-                paddingLeft,
-                dip(14f),
-                paddingRight,
-                paddingBottom
-            )
-        }
-    }
+        View.inflate(activity, R.layout.home_header_banner, null)}
 
     override fun initLayoutId(): Int = R.layout.home_fragment_boutique
 

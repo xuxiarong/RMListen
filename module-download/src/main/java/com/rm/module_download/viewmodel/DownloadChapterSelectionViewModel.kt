@@ -140,7 +140,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                         }
                     },
                     onError = {
-                        showToast("$it")
+                        showTip("$it",R.color.business_color_ff5e5e)
                         DLog.e("download", "$it")
                     }
                 )
@@ -171,7 +171,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                     },
                     onError = {
                         DLog.i("download", "$it")
-                        showToast("$it")
+                        showTip("$it",R.color.business_color_ff5e5e)
                     }
                 )
         }

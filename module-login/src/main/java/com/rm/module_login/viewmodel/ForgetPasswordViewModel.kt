@@ -1,6 +1,7 @@
 package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.R
@@ -29,7 +30,7 @@ class ForgetPasswordViewModel(private val repository: LoginRepository) : BaseVMV
     fun getCode() {
         // toto 网络通过手机获取验证码
         if (phoneInputViewModel.phone.get()!!.length < 7) {
-            showToast(R.string.login_input_right_number_tips)
+            showTip(CONTEXT.getString(R.string.login_input_right_number_tips))
             return
         }
 
@@ -43,7 +44,7 @@ class ForgetPasswordViewModel(private val repository: LoginRepository) : BaseVMV
             ).checkResult(
                 onSuccess = {
                     showContentView()
-                    showToast(R.string.login_send_success)
+                    showTip(CONTEXT.getString(R.string.login_send_success))
 
                     // 跳转到验证码输入界面
                     startActivity(
@@ -57,7 +58,7 @@ class ForgetPasswordViewModel(private val repository: LoginRepository) : BaseVMV
                 },
                 onError = {
                     showContentView()
-                    it?.let { showToast(it) }
+                    it?.let { showTip(it, R.color.business_color_ff5e5e) }
                 }
             )
         }

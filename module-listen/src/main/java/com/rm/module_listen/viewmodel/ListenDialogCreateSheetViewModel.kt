@@ -26,8 +26,7 @@ import com.rm.module_listen.repository.ListenRepository
 
 class ListenDialogCreateSheetViewModel(
     private val mActivity: FragmentActivity,
-    private val baseViewModel: BaseVMViewModel
-) :
+    private val baseViewModel: BaseVMViewModel) :
     BaseVMViewModel() {
 
     private val repository by lazy {
@@ -63,21 +62,21 @@ class ListenDialogCreateSheetViewModel(
      * @param description 听单简介
      */
     private fun createSheet(sheet_name: String, description: String) {
-        baseViewModel.showLoading()
+        showLoading()
         launchOnIO {
             repository.createSheet(sheet_name, description).checkResult(
                 onSuccess = {
-                    baseViewModel.showContentView()
+                    showContentView()
                     if (TextUtils.isEmpty(audioId)) {
-                        baseViewModel.showToast(CONTEXT.getString(R.string.listen_add_success_tip))
+                        showToast(CONTEXT.getString(R.string.listen_add_success_tip))
                         mDialog?.dismiss()
                     } else {
                         addSheet(it.sheet_id)
                     }
-                    baseViewModel.showContentView()
+                    showContentView()
                 },
                 onError = {
-                    baseViewModel.showContentView()
+                    showContentView()
                     showErrorTip(it)
                 }
             )
@@ -91,11 +90,11 @@ class ListenDialogCreateSheetViewModel(
         launchOnIO {
             repository.addSheetList(sheetId, audioId).checkResult(
                 onSuccess = {
-                    baseViewModel.showContentView()
+                    showContentView()
                     addSheetSuccess(sheetId)
                 },
                 onError = {
-                    baseViewModel.showContentView()
+                    showContentView()
 
                     showErrorTip(it)
                 }
@@ -132,7 +131,7 @@ class ListenDialogCreateSheetViewModel(
             if (mActivity is BaseActivity) {
                 mActivity.tipView.showTipView(mActivity, "添加成功")
             } else {
-                baseViewModel.showToast(mActivity.getString(R.string.listen_add_success_tip))
+                showToast(mActivity.getString(R.string.listen_add_success_tip))
             }
         }
         mDialog?.dismiss()
@@ -147,7 +146,7 @@ class ListenDialogCreateSheetViewModel(
                 tipColor = R.color.business_color_ff5e5e
             )
         } else {
-            baseViewModel.showToast("$msg")
+            showToast("$msg")
         }
     }
 
@@ -157,17 +156,17 @@ class ListenDialogCreateSheetViewModel(
      * @param bean 听单json
      */
     private fun editSheet(bean: ListenPatchSheetBean) {
-        baseViewModel.showLoading()
+        showLoading()
         launchOnIO {
             repository.editSheet(bean).checkResult(
                 onSuccess = {
-                    baseViewModel.showContentView()
+                    showContentView()
                     editSuccess(bean.sheet_name)
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_edit_success_tip))
+                    showToast(CONTEXT.getString(R.string.listen_edit_success_tip))
                     mDialog?.dismiss()
                 },
                 onError = {
-                    baseViewModel.showContentView()
+                    showContentView()
                     showErrorTip(it)
                 }
             )
@@ -185,10 +184,10 @@ class ListenDialogCreateSheetViewModel(
                 dataBinding?.listenDialogCreateSheetEditSynopsis?.text.toString()
             when {
                 EmojiUtils.containsEmoji(str) -> {
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_input_char_tip))
+                    showToast(CONTEXT.getString(R.string.listen_input_char_tip))
                 }
                 numberOfWords(str) -> {
-                    baseViewModel.showToast(CONTEXT.getString(R.string.listen_input_length_tip))
+                    showToast(CONTEXT.getString(R.string.listen_input_length_tip))
                 }
                 else -> {
                     if (sheetId.get() == null) {
@@ -199,7 +198,7 @@ class ListenDialogCreateSheetViewModel(
                 }
             }
         } else {
-            baseViewModel.showToast(CONTEXT.getString(R.string.listen_input_title))
+            showToast(CONTEXT.getString(R.string.listen_input_title))
         }
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,60 +12,106 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_390"
-        android:background="@drawable/business_shape_white_top_radius_24dp"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/listen_dialog_sheet_text"
-            style="@style/BusinessTextStyleFirst_2"
-            android:paddingBottom="@dimen/dp_15"
-            android:paddingTop="@dimen/dp_15"
-            android:text="@string/listen_add_to_book_list"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/listen_dialog_sheet_create_book_list"
-            style="@style/BusinessTextStyleFirst_3"
-            android:paddingBottom="@dimen/dp_15"
-            android:paddingTop="@dimen/dp_15"
-            android:text="@string/listen_create_book_list"
-            android:textStyle="bold"
-            android:textColor="@color/business_color_ff5e5e"
-            app:layout_constraintBottom_toBottomOf="@id/listen_dialog_sheet_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/listen_dialog_sheet_text" />
-
-        <View
-            android:id="@+id/listen_dialog_sheet_line"
+        <LinearLayout
+            android:id="@+id/listen_dialog_sheet_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:background="@color/business_color_0f000000"
-            app:layout_constraintTop_toBottomOf="@id/listen_dialog_sheet_text" />
+            android:layout_height="52dp"
+            android:layout_margin="8dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/base_shape_round_ffffff_16dp"
+            android:elevation="6dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/listen_dialog_sheet_refresh"
+            <ProgressBar
+                android:id="@+id/listen_dialog_sheet_progress"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginEnd="2dp"
+                android:indeterminateDrawable="@drawable/shape_base_tip_loading"
+                android:rotation="90"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/listen_dialog_sheet_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginTop="15dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="@color/base_ff5e5e"
+                android:textSize="16sp"
+                tools:text="文字超过最大限制文字超过最" />
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_14"
-            bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
-            bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
-            bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
-            bindOnRefreshListener="@{viewModel.refreshData}"
-            bindOnLoadMoreListener="@{viewModel.loadData}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/listen_dialog_sheet_line">
+            android:layout_height="@dimen/dp_390"
+            android:background="@drawable/business_shape_white_top_radius_24dp"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listen_dialog_sheet_recycler_view"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/listen_dialog_sheet_text"
+                style="@style/BusinessTextStyleFirst_2"
+                android:paddingTop="@dimen/dp_15"
+                android:paddingBottom="@dimen/dp_15"
+                android:text="@string/listen_add_to_book_list"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/listen_dialog_sheet_create_book_list"
+                style="@style/BusinessTextStyleFirst_3"
+                android:paddingTop="@dimen/dp_15"
+                android:paddingBottom="@dimen/dp_15"
+                android:text="@string/listen_create_book_list"
+                android:textColor="@color/business_color_ff5e5e"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/listen_dialog_sheet_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/listen_dialog_sheet_text" />
+
+            <View
+                android:id="@+id/listen_dialog_sheet_line"
                 android:layout_width="match_parent"
-                bindVerticalLayout="@{viewModel.mAdapter}"
-                android:layout_height="match_parent" />
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/business_color_0f000000"
+                app:layout_constraintTop_toBottomOf="@id/listen_dialog_sheet_text" />
+
+            <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                android:id="@+id/listen_dialog_sheet_refresh"
+                bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
+                bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
+                bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+                bindOnLoadMoreListener="@{viewModel.loadData}"
+                bindOnRefreshListener="@{viewModel.refreshData}"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dp_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/listen_dialog_sheet_line">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listen_dialog_sheet_recycler_view"
+                    bindVerticalLayout="@{viewModel.mAdapter}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

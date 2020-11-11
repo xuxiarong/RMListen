@@ -29,7 +29,7 @@ fun TextView.bindPlayCount(count: Int) {
 }
 
 @BindingAdapter("bindPlayCount", "bindPlayCountUnit", requireAll = false)
-fun TextView.bindPlayCount(count: Int, unit: String?) {
+fun TextView.bindPlayCount(count: Int, unit: String? = null) {
     val charSequence: CharSequence = when {
         count < 10000 -> {
             count.toString()
@@ -51,11 +51,11 @@ fun TextView.bindPlayCount(count: Int, unit: String?) {
     text = bf
 }
 
-@BindingAdapter("bindPlayCountString")
-fun TextView.bindPlayCountString(count: String?) {
+@BindingAdapter("bindPlayCountString", "bindPlayCountUnit", requireAll = false)
+fun TextView.bindPlayCountString(count: String?, unit: String? = null) {
     try {
         if (count != null) {
-            bindPlayCount(count.toInt(), null)
+            bindPlayCount(count.toInt(), unit)
         }
     } catch (e: Exception) {
         e.printStackTrace()
