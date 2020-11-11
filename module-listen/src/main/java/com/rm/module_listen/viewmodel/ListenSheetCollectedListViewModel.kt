@@ -77,6 +77,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      * 处理成功数据
      */
     private fun successData(bean: SheetFavorBean) {
+        showContentView()
         if (mPage == 1) {
             //刷新完成
             refreshStateModel.finishRefresh(true)
@@ -100,6 +101,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      * 处理请求失败
      */
     private fun failData() {
+        showContentView()
         if (mPage == 1) {
             refreshStateModel.finishRefresh(false)
         } else {

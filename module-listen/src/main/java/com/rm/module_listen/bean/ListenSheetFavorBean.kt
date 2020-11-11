@@ -1,6 +1,6 @@
 package com.rm.module_listen.bean
 
-import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.db.download.DownloadAudio
 
 data class SheetFavorBean(
     var list: List<SheetFavorDataBean>,
@@ -9,7 +9,7 @@ data class SheetFavorBean(
 
 data class SheetFavorDataBean(
     var audio_label: String,
-    var audio_list: MutableList<DownloadChapter>?,
+    var audio_list: MutableList<DownloadAudio>?,
     var audio_total: Int,
     var avatar_url: String,
     var member_id: Int,
