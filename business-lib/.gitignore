@@ -2,3 +2,5 @@
 /src/main/java/com/rm/business_lib/db/DaoMaster.java
 /src/main/java/com/rm/business_lib/db/DaoSession.java
 /src/main/java/com/rm/business_lib/db/TestUserDaoDao.java
+/src/main/java/com/rm/business_lib/db/ListenAudioEntityDao.java
+/src/main/java/com/rm/business_lib/db/ListenChapterEntityDao.java
