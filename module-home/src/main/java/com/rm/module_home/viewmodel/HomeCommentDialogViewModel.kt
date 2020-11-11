@@ -152,7 +152,7 @@ class HomeCommentDialogViewModel(
             } else {
                 showTip("评论中", R.color.business_text_color_333333, false)
                 if (NetworkChangeReceiver.isAvailable.get()) {
-                    sendComment(view, it, audioId, loginUser.get()!!.id)
+                    sendComment(view, it, audioId, loginUser.get()!!.id!!)
                 } else {
                     showTip("当前网络不可用", R.color.business_color_ff5e5e, true)
                 }

@@ -49,9 +49,9 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
 
     fun getData() {
         if (memberType == 1) {
-            mineAnchorCommentList(memberId)
-        } else {
             mineMemberCommentList(memberId)
+        } else {
+            mineAnchorCommentList(memberId)
         }
     }
 

@@ -60,7 +60,6 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
 
     }
 
-
     override fun getLayoutResId(): Int = R.layout.music_play_dialog_speed_setting
 
     override fun onInitialize() {

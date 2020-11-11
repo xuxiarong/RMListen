@@ -5,6 +5,7 @@
     tools:ignore="MissingDefaultResource">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
@@ -14,10 +15,11 @@
             type="com.rm.module_home.model.home.banner.HomeBannerRvModel" />
     </data>
 
-    <FrameLayout
+    <com.flyco.roundview.RoundFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        app:rv_cornerRadius="@dimen/dp_8">
+
         <com.rm.business_lib.xbanner.XBanner
             android:id="@+id/mainBanner"
             android:layout_width="match_parent"
@@ -26,8 +28,15 @@
             app:clipChildrenTopBottomMargin="0dp"
             app:pageChangeDuration="1000"
             app:pointsPosition="CENTER"
-            android:elevation="5dp"
             app:viewPagerClipChildren="true" />
-    </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="176dp"
+            android:src="@drawable/business_banner_bg"
+            />
+
+    </com.flyco.roundview.RoundFrameLayout>
 
 </layout>

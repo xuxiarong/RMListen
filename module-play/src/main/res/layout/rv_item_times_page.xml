@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="44dp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_music_play_time_play"
-        android:layout_marginLeft="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:textColor="@color/business_text_color_333333"
         android:textSize="14sp"
         tools:text="10分钟" />
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_music_play_time_down"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginEnd="@dimen/dp_30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_gravity="end|center_vertical"
         android:textColor="@color/business_color_b1b1b1"
         android:textSize="14sp"
         tools:text="10分钟" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/music_play_time_setting_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="25dp" />
+        android:layout_gravity="end|center_vertical"
+        />
 
-</RelativeLayout>
+</FrameLayout>

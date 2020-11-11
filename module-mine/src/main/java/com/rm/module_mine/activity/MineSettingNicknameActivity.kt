@@ -2,6 +2,7 @@ package com.rm.module_mine.activity
 
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.business_lib.loginUser
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivitySettingNicknameBinding
@@ -33,11 +34,14 @@ class MineSettingNicknameActivity :
             .setLeftIcon(R.drawable.base_icon_back)
             .setTitle(getString(R.string.mine_change_nickname))
             .setRightText(getString(R.string.business_sure))
-            .setRightTextColor (R.color.business_text_color_666666)
+            .setRightTextColor(R.color.business_text_color_666666)
             .setRightTextClick { mViewModel.updateUserInfo() }
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = titleModel
 
+        loginUser.get()?.nickname?.let {
+           mViewModel.inputText.set(it)
+        }
     }
 
     override fun startObserve() {

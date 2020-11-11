@@ -311,10 +311,22 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playControlAction.set(action)
     }
 
-    fun finshActivity(action: String) {
+    fun finishActivity(action: String) {
         playControlAction.set(action)
     }
 
+    //点赞
+    fun playLikeBook(context: Context, bean: Comments) {
+        if (isLogin.get()) {
+            if (bean.is_liked) {
+                unLikeComment(bean)
+            } else {
+                likeComment(bean)
+            }
+        } else {
+            getActivity(context)?.let { quicklyLogin(it) }
+        }
+    }
 
     fun audioNameClick(context: Context) {
         val audioId = playAudioId.get()
@@ -496,6 +508,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
+
         }
     }
 
@@ -763,20 +776,20 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-    /**
-     * 评论列表点赞点击事件
-     */
-    fun playLikeBook(context: Context, bean: Comments) {
-        if (isLogin.get()) {
-            if (bean.is_liked) {
-                unLikeComment(bean)
-            } else {
-                likeComment(bean)
-            }
-        } else {
-            getActivity(context)?.let { quicklyLogin(it) }
-        }
-    }
+//    /**
+//     * 评论列表点赞点击事件
+//     */
+//    fun playLikeBook(context: Context, bean: Comments) {
+//        if (isLogin.get()) {
+//            if (bean.is_liked) {
+//                unLikeComment(bean)
+//            } else {
+//                likeComment(bean)
+//            }
+//        } else {
+//            getActivity(context)?.let { quicklyLogin(it) }
+//        }
+//    }
 
 
     /**

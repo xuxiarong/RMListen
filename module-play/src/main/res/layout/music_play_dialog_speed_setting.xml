@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:maxHeight="500dp"
-    android:layout_height="match_parent">
+    android:layout_height="500dp">
 
-    <com.flyco.roundview.RoundLinearLayout
-        android:id="@+id/content_root"
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:rv_backgroundColor="@android:color/white"
-        app:rv_cornerRadius_TL="10dp"
-        app:rv_cornerRadius_TR="10dp"
-        tools:ignore="MissingConstraints">
+        android:src="@drawable/business_dialog_top_9bg"
+        />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_music_play_time_setting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never">
-        </androidx.recyclerview.widget.RecyclerView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_music_play_time_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginTop="@dimen/dp_41"
+        android:overScrollMode="never">
+    </androidx.recyclerview.widget.RecyclerView>
 
-
-    </com.flyco.roundview.RoundLinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

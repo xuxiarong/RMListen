@@ -1,11 +1,17 @@
 package com.rm.module_mine.widget.picker
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.TimeUtils
+import com.rm.business_lib.loginUser
 import com.rm.module_mine.R
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -26,7 +32,7 @@ class TimePickerView @JvmOverloads constructor(
 
     companion object {
         const val DEFAULT_START_YEAR = 1900
-        const val DEFAULT_END_YEAR = 2100
+        const val DEFAULT_END_YEAR = 2020
         const val DEFAULT_START_MONTH = 1
         const val DEFAULT_END_MONTH = 12
         const val DEFAULT_START_DAY = 1
@@ -34,16 +40,20 @@ class TimePickerView @JvmOverloads constructor(
     }
 
     private val startYear = DEFAULT_START_YEAR
-    private val endYear = DEFAULT_END_YEAR
+    private var endYear = DEFAULT_END_YEAR
     private val startMonth = DEFAULT_START_MONTH
-    private val endMonth = DEFAULT_END_MONTH
+    private var endMonth = DEFAULT_END_MONTH
     private val startDay = DEFAULT_START_DAY
     private var endDay = DEFAULT_END_DAY //表示31天的
 
     private var currentYear = 0
 
     private var mSelectChangeCallback: ISelectTimeCallback? = null
+    private val calendar = Calendar.getInstance()
 
+    init {
+        endYear = calendar.get(Calendar.YEAR)
+    }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -51,15 +61,26 @@ class TimePickerView @JvmOverloads constructor(
         yearView = findViewById(R.id.mine_time_picker_year)
         monthView = findViewById(R.id.mine_time_picker_month)
         dayView = findViewById(R.id.mine_time_picker_day)
-        setSolar()
+
+        var timeMillis = -1L
+        loginUser.get()?.birthday?.let {
+            if (!TextUtils.isEmpty(it)) {
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
+                timeMillis = TimeUtils.string2Date(it,dateFormat).time
+            }
+        }
+        setSolar(timeMillis)
     }
 
     /**
      * 设置公历
      */
-    private fun setSolar() {
-        val calendar = Calendar.getInstance()
-        calendar.time = Date(System.currentTimeMillis())
+    private fun setSolar(timeMillis: Long = -1L) {
+        if (timeMillis == -1L) {
+            calendar.time = Date(System.currentTimeMillis())
+        } else {
+            calendar.time = Date(timeMillis)
+        }
         val year = calendar[Calendar.YEAR]
         val month = calendar[Calendar.MONTH]
         val day = calendar[Calendar.DAY_OF_MONTH]
@@ -79,14 +100,12 @@ class TimePickerView @JvmOverloads constructor(
         // 月
         if (year == startYear) {
             //起始日期的月份控制
-            monthView.adapter = NumericWheelAdapter(
-                startMonth,
-                12
-            )
+            monthView.adapter = NumericWheelAdapter(startMonth, 12)
             monthView.currentItem = month + 1 - startMonth
         } else if (year == endYear) {
             //终止日期的月份控制
-            monthView.adapter = NumericWheelAdapter(1, endMonth)
+//            monthView.adapter = NumericWheelAdapter(1, endMonth)
+            monthView.adapter = NumericWheelAdapter(1, month + 1)
             monthView.currentItem = month
         } else {
             monthView.adapter = NumericWheelAdapter(1, 12)
@@ -98,23 +117,14 @@ class TimePickerView @JvmOverloads constructor(
             // 起始日期的天数控制
             when {
                 listBig.contains((month + 1).toString()) -> {
-                    dayView.adapter = NumericWheelAdapter(
-                        startDay,
-                        31
-                    )
+                    dayView.adapter = NumericWheelAdapter(startDay, 31)
                 }
                 listLittle.contains((month + 1).toString()) -> {
-                    dayView.adapter = NumericWheelAdapter(
-                        startDay,
-                        30
-                    )
+                    dayView.adapter = NumericWheelAdapter(startDay, 30)
                 }
                 else -> {
                     // 闰年 29，平年 28
-                    dayView.adapter = NumericWheelAdapter(
-                        startDay,
-                        if (leapYear) 29 else 28
-                    )
+                    dayView.adapter = NumericWheelAdapter(startDay, if (leapYear) 29 else 28)
                 }
             }
             dayView.currentItem = day - startDay
@@ -136,18 +146,12 @@ class TimePickerView @JvmOverloads constructor(
                     if (endDay > 29) {
                         endDay = 29
                     }
-                    dayView.adapter = NumericWheelAdapter(
-                        1,
-                        endDay
-                    )
+                    dayView.adapter = NumericWheelAdapter(1, endDay)
                 } else {
                     if (endDay > 28) {
                         endDay = 28
                     }
-                    dayView.adapter = NumericWheelAdapter(
-                        1,
-                        endDay
-                    )
+                    dayView.adapter = NumericWheelAdapter(1, endDay)
                 }
             }
             dayView.currentItem = day - 1
@@ -158,14 +162,12 @@ class TimePickerView @JvmOverloads constructor(
                     dayView.adapter = NumericWheelAdapter(1, 31)
                 }
                 listLittle.contains((month + 1).toString()) -> {
-                    dayView.adapter = NumericWheelAdapter(1, 30)
+//                    dayView.adapter = NumericWheelAdapter(1, 30)
+                    dayView.adapter = NumericWheelAdapter(1, day)
                 }
                 else -> {
                     // 闰年 29，平年 28
-                    dayView.adapter = NumericWheelAdapter(
-                        startDay,
-                        if (leapYear) 29 else 28
-                    )
+                    dayView.adapter = NumericWheelAdapter(startDay, if (leapYear) 29 else 28)
                 }
             }
             dayView.currentItem = day - 1
@@ -180,10 +182,7 @@ class TimePickerView @JvmOverloads constructor(
             // 判断大小月及是否闰年,用来确定"日"的数据
             if (yearNum == startYear) { //等于开始的年
                 //重新设置月份
-                monthView.adapter = NumericWheelAdapter(
-                    startMonth,
-                    12
-                )
+                monthView.adapter = NumericWheelAdapter(startMonth, 12)
                 if (currentMonthItem > monthView.adapter.itemsCount - 1) {
                     currentMonthItem = monthView.adapter.itemsCount - 1
                     monthView.currentItem = currentMonthItem
@@ -198,10 +197,11 @@ class TimePickerView @JvmOverloads constructor(
                 }
             } else if (yearNum == endYear) {
                 //重新设置月份
-                monthView.adapter = NumericWheelAdapter(
-                    1,
-                    endMonth
-                )
+                if (calendar.get(Calendar.YEAR) == yearNum) {
+                    monthView.adapter = NumericWheelAdapter(1, calendar.get(Calendar.MONTH) + 1)
+                } else {
+                    monthView.adapter = NumericWheelAdapter(1, endMonth)
+                }
                 if (currentMonthItem > monthView.adapter.itemsCount - 1) {
                     currentMonthItem = monthView.adapter.itemsCount - 1
                     monthView.currentItem = currentMonthItem
@@ -288,6 +288,9 @@ class TimePickerView @JvmOverloads constructor(
                 if (endD > 30) {
                     endD = 30
                 }
+                if (calendar.get(Calendar.MONTH) + 1 == monthNum && calendar.get(Calendar.YEAR) == yearNum) {
+                    endD = calendar.get(Calendar.DAY_OF_MONTH)
+                }
                 dayView.adapter = NumericWheelAdapter(dayStartNum, endD)
             }
             else -> {
@@ -323,19 +326,29 @@ class TimePickerView @JvmOverloads constructor(
     fun getTime(): String {
         val sb = StringBuilder()
         if (currentYear == startYear) {
-            if (monthView.currentItem + startMonth == startMonth) {
-                sb.append(yearView.currentItem + startYear).append("-")
-                    .append(monthView.currentItem + startMonth).append("-")
-                    .append(dayView.currentItem + startDay).append(" ")
+            val currentItem = monthView.currentItem
+            if (currentItem + startMonth == startMonth) {
+                val currentItem1 = yearView.currentItem
+                val currentItem2 = monthView.currentItem
+                val currentItem3 = dayView.currentItem
+                sb.append(currentItem1 + startYear).append("-")
+                    .append(currentItem2 + startMonth).append("-")
+                    .append(currentItem3 + startDay).append(" ")
             } else {
-                sb.append(yearView.currentItem + startYear).append("-")
-                    .append(monthView.currentItem + startMonth).append("-")
-                    .append(dayView.currentItem + 1).append(" ")
+                val currentItem1 = yearView.currentItem
+                val currentItem2 = monthView.currentItem
+                val currentItem3 = dayView.currentItem
+                sb.append(currentItem1 + startYear).append("-")
+                    .append(currentItem2 + startMonth).append("-")
+                    .append(currentItem3 + 1).append(" ")
             }
         } else {
-            sb.append(yearView.currentItem + startYear).append("-")
-                .append(monthView.currentItem + 1).append("-")
-                .append(dayView.currentItem + 1).append(" ")
+            val currentItem = yearView.currentItem
+            val currentItem1 = monthView.currentItem
+            val currentItem2 = dayView.currentItem
+            sb.append(currentItem + startYear).append("-")
+                .append(currentItem1 + 1).append("-")
+                .append(currentItem2 + 1).append(" ")
         }
         return sb.toString()
     }

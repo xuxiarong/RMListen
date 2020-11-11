@@ -82,11 +82,11 @@ class HomeTopListActivity : ComponentShowPlayActivity<HomeActivityTopListBinding
                 getString(R.string.home_popular_list) -> {
                     HomeTopListContentFragment.RANK_TYPE_POPULAR
                 }
-                getString(R.string.home_hot_list) -> {
-                    HomeTopListContentFragment.RANK_TYPE_HOT
-                }
                 getString(R.string.home_new_book_list) -> {
                     HomeTopListContentFragment.RANK_TYPE_NEW_BOOK
+                }
+                getString(R.string.home_hot_list) -> {
+                    HomeTopListContentFragment.RANK_TYPE_HOT
                 }
                 getString(R.string.home_search_list) -> {
                     HomeTopListContentFragment.RANK_TYPE_SEARCH

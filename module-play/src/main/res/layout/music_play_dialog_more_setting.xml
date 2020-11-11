@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="180dp"
+    >
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/business_dialog_top_9bg"
+        />
 
     <com.flyco.roundview.RoundLinearLayout
         android:id="@+id/content_root"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_height="155dp"
+        android:padding="@dimen/dp_25"
         app:rv_backgroundColor="@android:color/white"
-        app:rv_cornerRadius_TL="24dp"
-        app:rv_cornerRadius_TR="24dp"
+        android:orientation="horizontal"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:id="@+id/music_play_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
-            android:layout_marginTop="23dp"
+            android:layout_marginLeft="17dp"
             android:orientation="vertical">
 
             <com.flyco.roundview.RoundFrameLayout
@@ -53,7 +61,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="62dp"
-            android:layout_marginTop="23dp"
             android:orientation="vertical">
 
             <com.flyco.roundview.RoundFrameLayout
@@ -84,4 +91,6 @@
 
     </com.flyco.roundview.RoundLinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

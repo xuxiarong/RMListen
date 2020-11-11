@@ -114,12 +114,6 @@
             android:id="@+id/home_detail_intercept_layout"
             bindCanLoadMore="@{viewModel.chapterRefreshStatus.isHasMore()}"
             bindCanRefresh="@{viewModel.chapterRefreshStatus.canRefresh}"
-            bindShadowColor="@{@color/business_text_color_999999}"
-            bindShadowRadius="@{4}"
-            bindShadowType="@{ShadowDrawableUtil.TypeEnum.TOP}"
-            bindShapeColor="@{@color/business_text_color_ffffff}"
-            bindShapeRadius="@{24}"
-            bindShapeType="@{ShadowDrawableUtil.SHAPE_ROUND_PART}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_10"
@@ -128,10 +122,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_title_cl">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/business_dialog_top_9bg"
+                />
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_detail_chapter_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_25"
+                android:background="@color/businessWhite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -139,7 +142,7 @@
                     android:id="@+id/home_detail_view"
                     android:layout_width="@dimen/dp_50"
                     android:layout_height="@dimen/dp_6"
-                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginTop="7dp"
                     android:background="@drawable/business_shape_round_b1b1b1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

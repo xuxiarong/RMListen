@@ -23,16 +23,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="10dp"
             android:onClick="@{()->viewModel.playPreClick()}"
+            android:padding="10dp"
             tools:ignore="MissingConstraints" />
 
         <FrameLayout
             android:id="@+id/rl_music_paly_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
             android:layout_centerInParent="true"
             tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="74dp"
+                android:layout_height="74dp"
+                android:layout_gravity="center"
+                android:src="@drawable/play_start_play_bg" />
 
             <com.rm.baselisten.view.progressbar.CircularProgressView
                 android:id="@+id/progress_play"
@@ -46,33 +52,25 @@
                 app:progWidth="1dp"
                 tools:progress="65" />
 
-            <com.flyco.roundview.RoundFrameLayout
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center"
-                app:rv_backgroundColor="@color/business_color_ff5e5e"
-                app:rv_isRadiusHalfHeight="true">
-
-                <com.rm.module_play.view.PlayControlView
-                    android:id="@+id/animation_view"
-                    bindPlayControlClick="@{viewModel.playManger.playOrPause}"
-                    bindPlayControl="@{viewModel.playStatusBean}"
-                    android:layout_width="@dimen/dp_56"
-                    android:layout_height="@dimen/dp_56"
-                    android:layout_gravity="center" />
-            </com.flyco.roundview.RoundFrameLayout>
+            <com.rm.module_play.view.PlayControlView
+                android:id="@+id/animation_view"
+                bindPlayControl="@{viewModel.playStatusBean}"
+                bindPlayControlClick="@{viewModel.playManger.playOrPause}"
+                android:layout_width="@dimen/dp_56"
+                android:layout_height="@dimen/dp_56"
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
         <ImageView
             android:id="@+id/iv_music_play_right"
-            android:onClick="@{()->viewModel.playNextClick()}"
+            bindPlayNextSrc="@{viewModel.hasNextChapter}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:onClick="@{()->viewModel.playNextClick()}"
             android:padding="10dp"
-            bindPlayNextSrc="@{viewModel.hasNextChapter}"
             tools:ignore="MissingConstraints" />
 
     </RelativeLayout>

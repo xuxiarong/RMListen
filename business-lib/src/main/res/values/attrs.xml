@@ -254,7 +254,24 @@
         <!-- 占位图缩放模式 -->
         <attr name="android:scaleType" />
     </declare-styleable>
-    <item name="xbanner_pointId" type="id"/>
+    <item name="xbanner_pointId" type="id" />
+
+    <declare-styleable name="RoundImageView">
+        <attr name="rv_backgroundColor" />
+        <attr name="rv_backgroundPressColor" />
+        <attr name="rv_cornerRadius" />
+        <attr name="rv_strokeWidth" />
+        <attr name="rv_strokeColor" />
+        <attr name="rv_strokePressColor" />
+        <attr name="rv_textPressColor" />
+        <attr name="rv_isRadiusHalfHeight" />
+        <attr name="rv_isWidthHeightEqual" />
+        <attr name="rv_cornerRadius_TL" />
+        <attr name="rv_cornerRadius_TR" />
+        <attr name="rv_cornerRadius_BL" />
+        <attr name="rv_cornerRadius_BR" />
+        <attr name="rv_isRippleEnable" />
+    </declare-styleable>
 
 
 </resources>

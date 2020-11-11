@@ -345,7 +345,6 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             chapterId = model.chapter_id,
             sortType = AudioSortType.SORT_DESC
         )
-
     }
 
     fun onAudioClick(context: Context, model: ListenAudioInfo) {

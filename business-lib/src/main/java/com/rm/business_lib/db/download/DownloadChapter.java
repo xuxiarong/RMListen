@@ -27,7 +27,7 @@ public class DownloadChapter implements Serializable {
     private long current_offset;
     private Long duration;
     private int need_pay;
-    private int amount;
+    private double amount;
     private String play_count;
     private String created_at;
     private String file_path;
@@ -48,10 +48,10 @@ public class DownloadChapter implements Serializable {
     }
 
 
-    @Generated(hash = 1918248085)
+    @Generated(hash = 1386464685)
     public DownloadChapter(Long chapter_id, Long audio_id, String audio_name,
             int sequence, String chapter_name, long size, String down_speed,
-            long current_offset, Long duration, int need_pay, int amount,
+            long current_offset, Long duration, int need_pay, double amount,
             String play_count, String created_at, String file_path, String path_url,
             int down_status, int listen_duration, boolean chapter_edit_select,
             boolean down_edit_select) {
@@ -153,11 +153,11 @@ public class DownloadChapter implements Serializable {
         this.need_pay = need_pay;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return this.amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

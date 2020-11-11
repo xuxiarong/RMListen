@@ -36,7 +36,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="@dimen/dp_24"
-            android:src="@mipmap/main_ic_launcher"
+            android:src="@mipmap/ic_launcher"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="100dp"
