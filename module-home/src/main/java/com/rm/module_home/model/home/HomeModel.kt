@@ -46,7 +46,7 @@ data class HomeAudioList(
 )
 
 data class HomeAudioModel(
-    val anchor: String,
+    val anchor_name: String,
     val anchor_id: String,
     val audio_cover: String,
     val audio_id: String,

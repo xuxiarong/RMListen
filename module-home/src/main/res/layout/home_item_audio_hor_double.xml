@@ -62,7 +62,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopAuthor"
-                bindText="@{item.topRecommendModel.anchor}"
+                bindText="@{item.topRecommendModel.anchor_name}"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"
@@ -122,7 +122,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomAuthor"
-                bindText="@{item.bottomRecommendModel.anchor}"
+                bindText="@{item.bottomRecommendModel.anchor_name}"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"

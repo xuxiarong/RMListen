@@ -16,6 +16,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +52,7 @@ public class ListenAudioEntity implements Serializable {
     private String subscription_count;
     private String last_sequence;
     private String audio_cover_url;
+    private String anchor_name;
     @Convert(columnType = String.class, converter = AnchorConvert.class)
     private Anchor anchor;
     @Convert(columnType = String.class, converter = DetailTagsConvert.class)
@@ -71,7 +73,7 @@ public class ListenAudioEntity implements Serializable {
     @Generated(hash = 2019863944)
     private transient ListenAudioEntityDao myDao;
 
-    @Generated(hash = 1922395470)
+    @Generated(hash = 571320131)
     public ListenAudioEntity(Long audio_id, String audio_type, String audio_name,
             String original_name, String status, String author_intro,
             String anchor_id, String short_intro, String audio_intro,
@@ -79,9 +81,10 @@ public class ListenAudioEntity implements Serializable {
             String quality, String progress, String play_count, String created_at,
             String chapter_updated_at, String author, String member_id,
             String nickname, String subscription_count, String last_sequence,
-            String audio_cover_url, Anchor anchor, List<DetailTags> tags,
-            boolean is_subscribe, boolean is_fav, int download_num, long down_size,
-            boolean edit_select, boolean listen_finish) {
+            String audio_cover_url, String anchor_name, Anchor anchor,
+            List<DetailTags> tags, boolean is_subscribe, boolean is_fav,
+            int download_num, long down_size, boolean edit_select,
+            boolean listen_finish) {
         this.audio_id = audio_id;
         this.audio_type = audio_type;
         this.audio_name = audio_name;
@@ -105,6 +108,7 @@ public class ListenAudioEntity implements Serializable {
         this.subscription_count = subscription_count;
         this.last_sequence = last_sequence;
         this.audio_cover_url = audio_cover_url;
+        this.anchor_name = anchor_name;
         this.anchor = anchor;
         this.tags = tags;
         this.is_subscribe = is_subscribe;
@@ -303,8 +307,16 @@ public class ListenAudioEntity implements Serializable {
         this.audio_cover_url = audio_cover_url;
     }
 
+    public String getAnchor_name() {
+        return this.anchor_name;
+    }
+
+    public void setAnchor_name(String anchor_name) {
+        this.anchor_name = anchor_name;
+    }
+
     public Anchor getAnchor() {
-        return this.anchor;
+        return this.anchor == null?new Anchor() : this.anchor;
     }
 
     public void setAnchor(Anchor anchor) {
@@ -312,7 +324,7 @@ public class ListenAudioEntity implements Serializable {
     }
 
     public List<DetailTags> getTags() {
-        return this.tags;
+        return this.tags == null? new ArrayList<DetailTags>() : this.tags;
     }
 
     public void setTags(List<DetailTags> tags) {

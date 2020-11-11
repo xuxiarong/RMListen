@@ -69,7 +69,7 @@
         <TextView
             android:id="@+id/home_book_adapter_author"
             style="@style/BusinessTextStyleThird_4"
-            android:text="@{item.verModel.anchor}"
+            android:text="@{item.verModel.anchor_name}"
             app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_icon"
             app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
             tools:text="楼芸蓓" />
