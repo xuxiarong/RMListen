@@ -82,7 +82,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
-            bindText="@{item.singleModel.anchor}"
+            bindText="@{item.singleModel.anchor_name}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_17"
             android:layout_marginTop="188dp"
