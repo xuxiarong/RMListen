@@ -23,6 +23,7 @@
         <activity android:name=".activity.MineMemberFollowAndFansActivity" />
         <activity android:name=".activity.MineMemberReleaseBooksActivity" />
         <activity android:name=".activity.MineCropActivity" />
+        <activity android:name=".activity.MineImageActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

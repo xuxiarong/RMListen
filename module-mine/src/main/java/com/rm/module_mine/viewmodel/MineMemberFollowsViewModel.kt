@@ -20,7 +20,7 @@ import com.rm.module_mine.repository.MineRepository
  * @description
  *
  */
-class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseVMViewModel() {
+class   MineMemberFollowsViewModel(private val repository: MineRepository) : BaseVMViewModel() {
     //每页加载的条数
     private val pageSize = 12
 
@@ -40,8 +40,8 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
             this,
             mutableListOf(),
             R.layout.mine_adapter_member_follow,
-            BR.fansViewModel,
-            BR.followViewModel
+            BR.followViewModel,
+            BR.followItem
         )
     }
 

@@ -63,8 +63,9 @@ class HomeDetailActivity :
         intent?.getStringExtra(AUDIO_ID)?.let {
             mViewModel.audioId.set(it)
             mViewModel.intDetailInfo(it)
-            mViewModel.getChapterList() //初始化章节列表
 
+            mViewModel.chapterRefreshStatus.setCanRefresh(false)
+            mViewModel.getChapterList(1) //初始化章节列表
             mViewModel.getCommentList(it)
         }
 

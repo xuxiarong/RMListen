@@ -104,7 +104,8 @@ class HomeTopListContentFragment :
         }
         canRefreshData = false
         mViewModel.showLoading()
-        mViewModel.getListInfo("$rankType", rankSeg, 1)
+        mViewModel.mPage = 1
+        mViewModel.getListInfo("$rankType", rankSeg)
     }
 
 

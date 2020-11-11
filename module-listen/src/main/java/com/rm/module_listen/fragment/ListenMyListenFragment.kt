@@ -1,9 +1,12 @@
 package com.rm.module_listen.fragment
 
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
 import com.rm.component_comm.download.DownloadService
@@ -44,6 +47,13 @@ class ListenMyListenFragment :
 
     override fun initView() {
         super.initView()
+        setDefault()
+        context?.let {
+            val height = DisplayUtils.getStateHeight(it)
+            val params = mDataBind.listenAppbarLayout.layoutParams as CoordinatorLayout.LayoutParams
+            params.topMargin = height
+        }
+
         mDataShowView = listenMyListenVp
         //用懒加载的方式切换fragment的时候会报错
         mViewPagerAdapter = ListenMyListenPagerAdapter(fm = activity!!.supportFragmentManager,tabList = tabList, fragmentList = mMyListenFragmentList)

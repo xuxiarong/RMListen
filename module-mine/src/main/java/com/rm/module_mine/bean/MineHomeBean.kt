@@ -7,7 +7,7 @@ package com.rm.module_mine.bean
  * @description
  *
  */
-data class MineHomeBean(
+data class  MineHomeBean(
     var title: String,
     val data: MutableList<MineHomeDetailBean>
 )

@@ -1,5 +1,6 @@
 package com.rm.module_mine
 
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.login.LoginViewModel

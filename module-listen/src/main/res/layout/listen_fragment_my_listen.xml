@@ -18,6 +18,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/listen_appbar_layout"
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:background="@color/businessWhite"
