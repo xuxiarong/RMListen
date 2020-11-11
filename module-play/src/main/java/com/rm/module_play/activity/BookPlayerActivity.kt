@@ -41,7 +41,6 @@ import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_FINSH
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_OPERATING
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
-import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_book_player.*
@@ -57,7 +56,6 @@ import kotlinx.android.synthetic.main.activity_book_player.*
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
     MusicPlayerEventListener, SwipeBackLayout.SwipeBackListener {
     companion object {
-        const val fromGlobalCache = "fromGlobalCache"
 
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
         var lastOpenTime: Long = SystemClock.currentThreadTimeMillis()
@@ -66,8 +64,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playChapterId: String = ""
         var playChapterList: MutableList<DownloadChapter> = mutableListOf()
         var playSortType: String = AudioSortType.SORT_ASC
-        //是否重置播放
-        var isResumePlay = false
+
         fun startPlayActivity(
             context: Context,
             audioId: String = "",
@@ -89,16 +86,16 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 playChapterList = chapterList
                 playSortType = sortType
                 //音频ID不能为空
-                if(playAudioId.isEmpty()){
+                if (playAudioId.isEmpty()) {
                     val baseActivity = context as BaseActivity
-                    baseActivity.tipView.showTipView(baseActivity,"书籍ID不能为空")
+                    baseActivity.tipView.showTipView(baseActivity, "书籍ID不能为空")
                     return
                 }
                 val intent = Intent(context, BookPlayerActivity::class.java)
                 context.startActivity(intent)
                 (context as Activity).overridePendingTransition(activity_top_open, 0)
-            }catch (e : Exception){
-                ToastUtil.show(context,"${e.message}")
+            } catch (e: Exception) {
+                ToastUtil.show(context, "${e.message}")
             }
         }
     }
@@ -137,7 +134,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         mViewModel.playPath.observe(this, Observer { playPath ->
             musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
             GlobalplayHelp.instance.addOnPlayerEventListener()
-            isResumePlay = true
             if (playPath.size <= 1) {
                 mViewModel.hasNextChapter.set(false)
                 mViewModel.hasPreChapter.set(false)
@@ -150,9 +146,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             if (!musicPlayerManger.isPlaying()) {
                 musicPlayerManger.updateMusicPlayerData(
                     audios = playPath,
-                    chapterId = playChapterId
+                    chapterId = mViewModel.playChapterId.get()!!
                 )
-                musicPlayerManger.startPlayMusic(chapterId = playChapterId)
+                musicPlayerManger.startPlayMusic(chapterId = mViewModel.playChapterId.get()!!)
             }
         })
 
@@ -162,23 +158,16 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 val controlTime = mViewModel.playControlAction.get()
                 when {
                     controlTime?.contains(ACTION_PLAY_QUEUE) == true -> {
-                        //调整播放列表
-//                        mViewModel.audioChapterModel.get()?.let { it ->
-//                            showPlayBookListDialog(
-//                                downloadAudio = mViewModel.getHomeDetailListModel(),
-//                                audioListModel = it,
-//                                back = {
-//                                    musicPlayerManger.startPlayMusic(it.toString())
-//                                },
-//                                mLoad = { type ->
-//                                    if (type == 0) {
-//                                        //                                    ToastUtil.show(this@BookPlayerActivity, "刷新")
-//                                    } else {
-//                                        //                                    ToastUtil.show(this@BookPlayerActivity, "加载更多")
-//                                    }
-//                                }, isPlay = mViewModel.playStatusBean.get()?.read == true
-//                            )
-//                        }
+
+//                        showPlayBookListDialog(
+//                            downloadAudio = mViewModel.playAudioModel.get(),
+//                            audioListModel = it,
+//                            back = {
+//                                musicPlayerManger.startPlayMusic(it.toString())
+//                            },
+//                            mLoad = mViewModel.playChapterListSort,
+//                            isPlay = mViewModel.playStatusBean.get()?.read == true
+//                        )
                     }
                     controlTime?.contains(ACTION_PLAY_OPERATING) == true -> {
                         showMusicPlayMoreDialog { it1 ->
@@ -201,12 +190,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
                     }
                     controlTime?.contains(ACTION_JOIN_LISTEN) == true -> {
-                    RouterHelper.createRouter(ListenService::class.java)
-                        .showMySheetListDialog(
-                            mViewModel,
-                            this@BookPlayerActivity,
-                            mViewModel.playAudioId.get()!!
-                        )
+                        RouterHelper.createRouter(ListenService::class.java)
+                            .showMySheetListDialog(
+                                mViewModel,
+                                this@BookPlayerActivity,
+                                mViewModel.playAudioId.get()!!
+                            )
                     }
                     controlTime?.contains(ACTION_MORE_COMMENT) == true -> {
                         mViewModel.playAudioId.get()?.let {
@@ -224,29 +213,25 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         })
     }
 
-    override fun onPause() {
-        super.onPause()
-//        fromGlobalCache.putMMKV(mViewModel.playBookSate.get())
-    }
-
     override fun initData() {
         mViewModel.playAudioId.set(playAudioId)
+        mViewModel.playChapterListSort.set(playSortType)
         //书籍信息未传入，获取书籍详情信息,有则直接使用
-        if(TextUtils.isEmpty(playAudioModel.audio_cover_url)){
+        if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
             mViewModel.getDetailInfo(playAudioId)
-        }else{
-            mViewModel.playAudioModel.set(playAudioModel)
+        } else {
+            mViewModel.initCurrentPlayAudio(playAudioModel)
         }
         //如果传入的章节id为空，说明不是通过章节列表跳转的，直接访问书籍章节列表的第一页数据即可
 
-        if (playChapterList!=null && playChapterList.isNotEmpty()){
+        if (playChapterList != null && playChapterList.isNotEmpty()) {
             mViewModel.playChapterList.value = playChapterList
-        }else{
-            if(TextUtils.isEmpty(playChapterId)){
+        } else {
+            if (TextUtils.isEmpty(playChapterId)) {
                 mViewModel.getChapterList(playAudioId)
-            }else{
+            } else {
                 mViewModel.playChapterId.set(playChapterId)
-                mViewModel.getChapterListWithId(audioId = playAudioId,chapterId = playChapterId)
+                mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
             }
         }
         mViewModel.countdown()
@@ -274,6 +259,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
         val playList = mViewModel.playManger.getCurrentPlayList()
+        mViewModel.startPlayChapter(musicInfo, position)
         if (playList != null && playList.isNotEmpty()) {
             val size = playList.size
             if (position == 0) {
@@ -302,19 +288,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-
-        mViewModel.updateThumbText.set(
-            "${formatTimeInMillisToString(currentDurtion)}/${formatTimeInMillisToString(
-                totalDurtion
-            )}"
-        )
-//        mViewModel.playBookSate.get()?.process = currentDurtion.toFloat()
-        mViewModel.process.set(currentDurtion.toFloat())
-
-        if (isResumePlay) {
-            mViewModel.maxProcess.set(totalDurtion.toFloat())
-            isResumePlay = false
-        }
+        mViewModel.updatePlayChapterProgress(currentDurtion,totalDurtion)
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {

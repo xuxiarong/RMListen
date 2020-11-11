@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
@@ -20,8 +21,12 @@ import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.converter.BusinessConvert
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.db.listen.ListenAudioEntity
+import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.utils.mmSS
@@ -38,11 +43,15 @@ import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 /**
  *
@@ -97,6 +106,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var playHasMoreChapter = true
 
     /**
+     * 章节列表倒叙逆序
+     */
+    var playChapterListSort = ObservableField<String>(AudioSortType.SORT_ASC)
+
+    /**
      * 播放的进度
      */
     val process = ObservableFloat(0f)//进度条
@@ -116,6 +130,16 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 播放器实例对象
      */
     val playManger: MusicPlayerManager = musicPlayerManger
+
+    /**
+     * 书籍播放的数据库对象
+     */
+    val playAudioDao = DaoUtil(ListenAudioEntity::class.java, "")
+
+    /**
+     * 章节播放的数据库对象
+     */
+    val playChapterDao = DaoUtil(ListenChapterEntity::class.java, "")
 
     /**
      * 播放状态进度条，0是播放2是加载中1是暂停,false是暂停
@@ -213,29 +237,74 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         const val ACTION_MORE_FINSH = "ACTION_MORE_FINSH"//关闭
     }
 
-
-    private fun setAudioPlayPath(chapterList: List<DownloadChapter>) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val tempList = mutableListOf<BaseAudioInfo>()
-                chapterList.forEach {
-                    tempList.add(
-                        BaseAudioInfo(
-                            audioPath = it.path_url,
-                            audioName = it.chapter_name,
-                            filename = it.chapter_name,
-                            audioId = it.audio_id.toString(),
-                            chapterId = it.chapter_id.toString(),
-                            duration = it.duration,
-                            playCount = it.play_count.toString()
-                        )
-                    )
-                }
-                playPath.postValue(tempList)
-            }
+    /**
+     * 设置播放路径
+     */
+    fun setAudioPlayPath(chapterList: MutableList<DownloadChapter>) {
+        val tempList = mutableListOf<BaseAudioInfo>()
+        chapterList.forEach {
+            tempList.add(
+                BaseAudioInfo(
+                    audioPath = it.path_url,
+                    audioName = it.chapter_name,
+                    filename = it.chapter_name,
+                    audioId = it.audio_id.toString(),
+                    chapterId = it.chapter_id.toString(),
+                    duration = it.duration,
+                    playCount = it.play_count.toString()
+                )
+            )
         }
+        playChapterList.addAll(chapterList)
+        playPath.postValue(tempList)
 
     }
+
+    fun initCurrentPlayAudio(audio: DownloadAudio) {
+        playAudioModel.set(audio)
+        isAttention.set(audio.anchor.status)
+        isSubscribe.set(audio.is_subscribe)
+        playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
+    }
+
+    fun initPlayChapter(chapter: DownloadChapter) {
+        playChapter.set(chapter)
+        maxProcess.set(chapter.duration.toFloat())
+        process.set(chapter.listen_duration.toFloat())
+        playChapterId.set(chapter.chapter_id.toString())
+        playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
+    }
+
+    fun updatePlayChapterProgress(currentDuration: Long,totalDurtion: Long) {
+        val chapter = playChapter.get()
+        if (chapter != null) {
+            process.set(currentDuration.toFloat())
+            updateThumbText.set(
+                "${formatTimeInMillisToString(currentDuration)}/${formatTimeInMillisToString(
+                    totalDurtion
+                )}"
+            )
+            chapter.listen_duration = currentDuration.toInt()
+            playChapter.set(chapter)
+            playChapterId.set(chapter.chapter_id.toString())
+            playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
+        }
+    }
+
+    fun startPlayChapter(baseAudioInfo: BaseAudioInfo, position: Int) {
+        val playChapterList = playChapterList.value
+        if (playChapterList != null && playChapterList.size > 0) {
+            if (position <= playChapterList.size - 1) {
+                val startChapter = playChapterList[position]
+                playChapter.set(startChapter)
+                playChapterId.set(startChapter.chapter_id.toString())
+                maxProcess.set(startChapter.duration.toFloat())
+                process.set(startChapter.listen_duration.toFloat())
+                playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(playChapterList[position]))
+            }
+        }
+    }
+
 
     //播放器操作行为
     fun playControlAction(action: String) {
@@ -286,7 +355,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         audioId: String,
         page: Int = playChapterPage,
         page_size: Int = playChapterPageSize,
-        sort: String = AudioSortType.SORT_ASC
+        sort: String = playChapterListSort.get()!!
     ) {
         if (playHasMoreChapter) {
             launchOnUI {
@@ -296,8 +365,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         playHasMoreChapter = chapterList.size >= page_size
                         //是第一页，那么取第一条作为播放
                         if (page == PlayGlobalData.PLAY_FIRST_PAGE) {
-                            playChapter.set(chapterList[0])
-                            playChapterId.set(chapterList[0].chapter_id.toString())
+                            initPlayChapter(chapterList[0])
                         }
                         playChapterPage++
                         setAudioPlayPath(chapterList)
@@ -305,9 +373,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         playHasMoreChapter = false
                         setAudioPlayPath(mutableListOf())
                     }
-                    showContentView()
                 }, onError = {
-                    showContentView()
+                    it?.let {
+                        showTip(it)
+                    }
                 })
             }
         }
@@ -321,7 +390,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         chapterId: String,
         page: Int = playChapterPage,
         page_size: Int = playChapterPageSize,
-        sort: String = AudioSortType.SORT_ASC
+        sort: String = playChapterListSort.get()!!
     ) {
         launchOnUI {
             repository.chapterPageList(
@@ -338,7 +407,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     playHasMoreChapter = chapterList.size >= page_size
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == playChapterId.get()) {
-                            playChapter.set(chapter)
+                            initPlayChapter(chapter)
                             setAudioPlayPath(chapterList)
                             return@forEach
                         }
@@ -360,14 +429,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnUI {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
-                    it.list.apply {
-                        playAudioModel.set(this)
-                        isAttention.set(anchor.status)
-                        isSubscribe.set(is_subscribe)
-                    }
-                    if (TextUtils.isEmpty(it.list.audio_cover_url)) {
-                        it.list.audio_cover_url = ""
-                    }
+                    initCurrentPlayAudio(it.list)
                 }, onError = {
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
                 }

@@ -83,7 +83,7 @@
                             android:background="@drawable/business_shape_gradient_0000000_66000000" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            bindPlayCountString="@{viewModel.playAudioModel.play_count}"
+                            bindPlayCountString="@{viewModel.playChapter.play_count}"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/dp_28"
                             android:layout_gravity="bottom|right"
@@ -105,7 +105,7 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:lines="1"
-                        android:text="@{viewModel.playAudioModel.audio_name}"
+                        android:text="@{viewModel.playChapter.chapter_name}"
                         android:textColor="@color/business_text_color_333333"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"

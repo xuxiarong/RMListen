@@ -19,10 +19,10 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
+import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.business_lib.bean.DataStr
 import com.rm.business_lib.bean.DetailTags
-import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.isLogin
@@ -304,7 +304,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         detailInfoData.get()?.let {
             RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                 context = context,
-                audioId = audioId.get()!!
+                audioId = audioId.get()!!,
+                sortType = mCurSort
             )
         }
     }
