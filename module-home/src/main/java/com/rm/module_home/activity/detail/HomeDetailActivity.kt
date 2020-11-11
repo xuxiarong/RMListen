@@ -43,6 +43,18 @@ class HomeDetailActivity :
         }
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.getStringExtra(AUDIO_ID)?.let {
+            mViewModel.audioId.set(it)
+            mViewModel.intDetailInfo(it)
+
+            mViewModel.chapterRefreshStatus.setCanRefresh(false)
+            mViewModel.getChapterList(1) //初始化章节列表
+            mViewModel.getCommentList(it)
+        }
+
+    }
 
     override fun initView() {
         super.initView()

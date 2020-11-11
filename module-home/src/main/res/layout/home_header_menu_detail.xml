@@ -13,16 +13,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_14">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_menu_detail_front_cover"
-            android:layout_marginTop="@dimen/dp_12"
             bindUrl="@{headerViewModel.data.cover_url}"
             corner="@{8}"
             android:layout_width="@dimen/dp_144"
             android:layout_height="@dimen/dp_144"
+            android:layout_marginTop="@dimen/dp_12"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +65,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_read_num"
             style="@style/BusinessTextStyleSecond_4"
-            bindText="@{headerViewModel.data.num_favor}"
+            bindPlayCount="@{headerViewModel.data.num_favor}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"
@@ -92,9 +91,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/business_menu_red_bg"
-            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_collected"
             app:layout_constraintEnd_toEndOf="@id/home_menu_detail_collected"
-            app:layout_constraintStart_toStartOf="@id/home_menu_detail_collected" />
+            app:layout_constraintStart_toStartOf="@id/home_menu_detail_collected"
+            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_collected" />
 
         <com.rm.business_lib.wedgit.expandtextview.ExpandableTextView
             android:id="@+id/home_menu_detail_brief"
@@ -106,6 +105,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_menu_detail_front_cover" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_brief" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
