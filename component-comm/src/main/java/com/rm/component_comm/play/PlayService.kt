@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -30,7 +31,7 @@ interface PlayService : ApplicationProvider {
     )
 
     //播放历史
-//    fun queryPlayBookList(): List<HistoryPlayBook>?
+    fun queryPlayBookList(): List<ListenAudioEntity>?
 
     /**
      * 评论中心跳转

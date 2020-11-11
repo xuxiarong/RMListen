@@ -6,6 +6,9 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.listen.ListenAudioEntity
+import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
@@ -41,21 +44,21 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
     fun getListenHistory() {
-//        launchOnIO {
-//            val queryPlayBookList = playService.queryPlayBookList()
-//            val audioList = ArrayList<ListenHistoryModel>()
-//            if (queryPlayBookList != null && queryPlayBookList.isNotEmpty()) {
-//                searchHasData.set(true)
-//                queryPlayBookList.forEach {
-//                    val listenHistoryModel = ListenHistoryModel(it)
-//                    listenHistoryModel.itemType = R.layout.listen_item_history_listen
-//                    audioList.add(listenHistoryModel)
-//                }
-//                allHistory.postValue(audioList)
-//            } else {
-//                searchHasData.set(false)
-//            }
-//        }
+        launchOnIO {
+            val queryPlayBookList = playService.queryPlayBookList()
+            val audioList = ArrayList<ListenHistoryModel>()
+            if (queryPlayBookList != null && queryPlayBookList.isNotEmpty()) {
+                searchHasData.set(true)
+                queryPlayBookList.forEach {
+                    val listenHistoryModel = ListenHistoryModel(it)
+                    listenHistoryModel.itemType = R.layout.listen_item_history_listen
+                    audioList.add(listenHistoryModel)
+                }
+                allHistory.postValue(audioList)
+            } else {
+                searchHasData.set(false)
+            }
+        }
     }
 
 
@@ -87,7 +90,8 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
     fun deleteAllHistory() {
-//        DaoUtil(HistoryPlayBook::class.java, "").deleteAll()
+        DaoUtil(ListenChapterEntity::class.java, "").deleteAll()
+        DaoUtil(ListenAudioEntity::class.java, "").deleteAll()
         allHistory.value = mutableListOf()
     }
 
@@ -98,7 +102,8 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     fun deleteItem(item: ListenHistoryModel) {
         mSwipeAdapter.mItemManger.closeItem(mSwipeAdapter.data.indexOf(item))
         mSwipeAdapter.data.remove(item)
-//        DaoUtil(HistoryPlayBook::class.java, "").delete(item.audio)
+        DaoUtil(ListenChapterEntity::class.java, "").delete(item.audio.listenChapterList)
+        DaoUtil(ListenAudioEntity::class.java, "").delete(item.audio)
     }
 
 

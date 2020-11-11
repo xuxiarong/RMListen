@@ -77,15 +77,15 @@ class MusicLockActivity : BaseActivity(),
                                 }
                             } else {
                                 val isSuccess =
-                                    true //MusicPlayerManager.getInstance().collectMusic(audioInfo);
+                                    true //MusicPlayerManager.getINSTANCE().collectMusic(audioInfo);
                                 if (isSuccess) {
                                     music_lock_collect.isSelected = true
-                                    //                                    MusicPlayerManager.getInstance().observerUpdata(new MusicStatus());
+                                    //                                    MusicPlayerManager.getINSTANCE().observerUpdata(new MusicStatus());
                                 }
                             }
                         }
                     } else if (id == R.id.music_lock_model) {
-//                        MusicPlayerManager.getInstance().changedPlayerPlayModel();
+//                        MusicPlayerManager.getINSTANCE().changedPlayerPlayModel();
                     }
                 }
             }
@@ -101,7 +101,7 @@ class MusicLockActivity : BaseActivity(),
         music_lock_time.text = date[0]
         music_lock_date.text = date[1]
         //闹钟模式
-        val playerModel = 1 //"MusicPlayerManager.getInstance().getPlayerModel();"
+        val playerModel = 1 //"MusicPlayerManager.getINSTANCE().getPlayerModel();"
 //        music_lock_model.setImageResource(getResToPlayModel(playerModel, false))
         //播放对象、状态
         val audioInfo =
@@ -143,13 +143,13 @@ class MusicLockActivity : BaseActivity(),
         if (null != audioInfo) {
             //是否已收藏
             val isExist =
-                true //SqlLiteCacheManager.getInstance().isExistToCollectByID(audioInfo.getAudioId());
+                true //SqlLiteCacheManager.getINSTANCE().isExistToCollectByID(audioInfo.getAudioId());
 //            mMusicCollect!!.isSelected = isExist
 //            mMusicCollect!!.tag = audioInfo
             //            mMusicTitle.setText(audioInfo.getAudioName());
 //            mMusicAnchor.setText(audioInfo.getNickname());
-//            MusicUtils.getInstance().setMusicComposeFront(MusicLockActivity.this,mMusicCover,
-//                    MusicUtils.getInstance().getMusicFrontPath(audioInfo),MusicConstants.SCALE_DISC_LOCK_SIZE
+//            MusicUtils.getINSTANCE().setMusicComposeFront(MusicLockActivity.this,mMusicCover,
+//                    MusicUtils.getINSTANCE().getMusicFrontPath(audioInfo),MusicConstants.SCALE_DISC_LOCK_SIZE
 //                    ,MusicConstants.SCALE_MUSIC_PIC_LOCK_SIZE,R.drawable.ic_music_disc,R.drawable.ic_music_juke_default_cover);
         }
     }
@@ -194,7 +194,7 @@ class MusicLockActivity : BaseActivity(),
      */
     private fun getResToPlayModel(playerModel: Int, isToast: Boolean): Int {
         //        if(isToast){
-//            Toast.makeText(MusicLockActivity.this,MediaUtils.getInstance().getPlayerModelToString(MusicLockActivity.this,playerModel),Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MusicLockActivity.this,MediaUtils.getINSTANCE().getPlayerModelToString(MusicLockActivity.this,playerModel),Toast.LENGTH_SHORT).show();
 //        }
         return 1
     }

@@ -9,6 +9,7 @@ import androidx.databinding.ObservableFloat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.mvvm.BaseActivity
@@ -260,10 +261,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     }
 
-    fun initCurrentPlayAudio(audio: DownloadAudio) {
+    fun initPlayAudio(audio: DownloadAudio) {
         playAudioModel.set(audio)
         isAttention.set(audio.anchor.status)
         isSubscribe.set(audio.is_subscribe)
+        BaseConstance.updateBaseAudioId(audioId = audio.audio_id.toString(),playUrl = audio.audio_cover_url)
         playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
     }
 
@@ -275,19 +277,30 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
     }
 
-    fun updatePlayChapterProgress(currentDuration: Long,totalDurtion: Long) {
+    fun updatePlayChapterProgress(
+        currentDuration: Long = 0L,
+        totalDuration: Long = 0L,
+        isPlayFinish: Boolean = false
+    ) {
         val chapter = playChapter.get()
         if (chapter != null) {
             process.set(currentDuration.toFloat())
             updateThumbText.set(
                 "${formatTimeInMillisToString(currentDuration)}/${formatTimeInMillisToString(
-                    totalDurtion
+                    totalDuration
                 )}"
             )
-            chapter.listen_duration = currentDuration.toInt()
+            chapter.listen_duration = if (isPlayFinish) {
+                100
+            } else {
+                (currentDuration / 10 / chapter.duration).toInt()
+            }
             playChapter.set(chapter)
             playChapterId.set(chapter.chapter_id.toString())
             playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
+            if (playAudioModel.get() != null) {
+                playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(playAudioModel.get()!!))
+            }
         }
     }
 
@@ -441,7 +454,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnUI {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
-                    initCurrentPlayAudio(it.list)
+                    initPlayAudio(it.list)
                 }, onError = {
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
                 }

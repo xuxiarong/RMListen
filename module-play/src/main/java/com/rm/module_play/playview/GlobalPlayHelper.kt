@@ -1,8 +1,6 @@
 package com.rm.module_play.playview
 
 import com.rm.baselisten.BaseConstance
-import com.rm.baselisten.model.BasePlayInfoModel
-import com.rm.baselisten.model.BasePlayProgressModel
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.utilExt.dip
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
@@ -16,10 +14,10 @@ import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
  * @data: 8/28/20 10:48 AM
  * @Version: 1.0.0
  */
-class GlobalplayHelp private constructor() : MusicPlayerEventListener {
+class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
     companion object {
-        val instance: GlobalplayHelp by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-            GlobalplayHelp()
+        val INSTANCE: GlobalPlayHelper by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            GlobalPlayHelper()
         }
     }
 
@@ -32,13 +30,6 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
 
     fun addOnPlayerEventListener() {
         musicPlayerManger.addOnPlayerEventListener(this)
-    }
-    //设置书籍封面
-    fun setBooKImage(bookUrl: String?){
-        bookUrl?.let {
-            globalView.setBooKImage(it)
-            BaseConstance.basePlayInfoModel.set(BasePlayInfoModel(playUrl = bookUrl))
-        }
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
@@ -56,6 +47,8 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
+        BaseConstance.updateBaseChapterId(chapterId = musicInfo.chapterId )
+        BaseConstance.updateBaseProgress(process = 0 )
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -69,7 +62,7 @@ class GlobalplayHelp private constructor() : MusicPlayerEventListener {
     ) {
         val progress = currentDurtion.toFloat() / totalDurtion.toFloat()
         globalView.setProgress(progress)
-        BaseConstance.basePlayProgressModel.set(BasePlayProgressModel(playProgress = (progress * 100).toInt()))
+        BaseConstance.updateBaseProgress(process = (progress * 100).toInt())
 
     }
 

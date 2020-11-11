@@ -1,7 +1,7 @@
 package com.rm.module_listen.model
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.module_listen.R
 
 /**
@@ -9,21 +9,9 @@ import com.rm.module_listen.R
  * date   : 2020/09/02
  * version: 1.0
  */
-data class ListenRecentListenModel constructor(
-    val imageUrl: String,
-    val iconCorner: Float,
-    val title: String,
-    val chapter: String,
-    val tag: String,
-    val time: String,
-    val status: String
-) : MultiItemEntity {
-    override val itemType = R.layout.listen_item_recent_listen
-}
-
 
 data class ListenHistoryModel constructor(
-    val audio : DownloadAudio
+    val audio : ListenAudioEntity
 ) : MultiItemEntity {
     override var itemType = R.layout.listen_item_recent_listen
 }

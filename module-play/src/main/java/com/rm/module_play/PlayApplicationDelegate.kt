@@ -5,6 +5,8 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getFloattMMKV
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -28,7 +30,7 @@ class PlayApplicationDelegate : IApplicationDelegate {
             PlayGlobalData.playSpeed.set(it)
         }
         CacheUtils.instance.initSharedPreferencesConfig(CONTEXT)
-
+        initPlayHistory()
     }
 
     override fun onTerminate() {
@@ -42,4 +44,23 @@ class PlayApplicationDelegate : IApplicationDelegate {
     override fun onTrimMemory(level: Int) {
         DLog.d(TAG, "Module Play onTrimMemory(),---level--->>>$level")
     }
+
+    private fun initPlayHistory() {
+        try {
+            val playList = DaoUtil(ListenAudioEntity::class.java, "").queryAll()
+            if (playList != null && playList.isNotEmpty() && playList.last().listenChapterList != null && playList.last().listenChapterList.isNotEmpty()) {
+                val audio = playList.last()
+                val chapter = playList.last().listenChapterList.last()
+//                BaseConstance.updateBaseAudioId(
+//                    playUrl = audio.audio_cover_url,
+//                    audioId = audio.audio_id.toString()
+//                )
+//                BaseConstance.updateBaseChapterId(chapterId = chapter.chapter_id.toString())
+//                BaseConstance.updateBaseProgress(process = chapter.listen_duration)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }
