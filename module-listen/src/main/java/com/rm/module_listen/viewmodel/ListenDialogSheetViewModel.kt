@@ -1,13 +1,12 @@
 package com.rm.module_listen.viewmodel
 
 import android.view.Gravity
+import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
@@ -43,11 +42,10 @@ class ListenDialogSheetViewModel(
      * 懒加载dialog
      */
     val mDialog by lazy {
-        val height = BaseApplication.CONTEXT.resources.getDimensionPixelSize(R.dimen.dp_390)
         CommonMvFragmentDialog().apply {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
-            dialogHeight = height
+            dialogHeightIsMatchParent = true
             dialogHasBackground = true
             initDialog = {
                 dateBinding = mDataBind as ListenDialogSheetListBinding
@@ -64,7 +62,6 @@ class ListenDialogSheetViewModel(
             ListenDialogCreateSheetHelper(baseViewModel, mActivity).showCreateSheetDialog(audioId)
             dismiss()
         }
-        baseViewModel.showLoading()
         getData()
         dismiss = { dismiss() }
     }
@@ -109,24 +106,15 @@ class ListenDialogSheetViewModel(
      * 添加到听单列表
      */
     private fun addSheet(sheet_id: String, audio_id: String) {
-        baseViewModel.showLoading()
         launchOnIO {
             repository.addSheetList(sheet_id, audio_id).checkResult(
                 onSuccess = {
-                    baseViewModel.showContentView()
+                    showContentView()
                     addSheetSuccess(sheet_id)
                 },
                 onError = {
-                    baseViewModel.showContentView()
-//                    if (mActivity is BaseActivity) {
-//                        mActivity.tipView.showTipView(
-//                            mActivity,
-//                            tipText = "$it",
-//                            tipColor = R.color.business_color_ff5e5e
-//                        )
-//                    } else {
-//                        baseViewModel.showToast("$it")
-//                    }
+                    showContentView()
+                    showTip("$it", R.color.business_color_ff5e5e,true)
                 }
             )
         }
@@ -136,19 +124,26 @@ class ListenDialogSheetViewModel(
      * 处理成功数据
      */
     private fun processSuccessData(bean: ListenSheetMyListBean) {
-        baseViewModel.showContentView()
         if (page == 1) {
             //刷新完成
             refreshStateModel.finishRefresh(true)
-            mAdapter.setList(bean.list)
+            if (bean.list?.size ?: 0 > 0) {
+                mAdapter.setList(bean.list)
+            } else {
+                showData()
+            }
         } else {
             //加载更多完成
-            refreshStateModel.finishLoadMore(true)
             bean.list?.let { mAdapter.addData(it) }
+            refreshStateModel.finishLoadMore(true)
         }
 
         //是否有跟多数据
         refreshStateModel.setHasMore(bean.list?.size ?: 0 > pageSize)
+    }
+
+    private fun showData() {
+
     }
 
     /**
@@ -189,11 +184,7 @@ class ListenDialogSheetViewModel(
                     ImageView(mActivity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(mActivity)
         } else {
-//            if (mActivity is BaseActivity) {
-//                mActivity.tipView.showTipView(mActivity, "添加成功")
-//            } else {
-//                baseViewModel.showToast(mActivity.getString(R.string.listen_add_success_tip))
-//            }
+            showTip("添加成功", R.color.business_text_color_333333, true)
         }
         dismissFun()
         IS_FIRST_ADD_SHEET.putMMKV(false)
@@ -228,5 +219,29 @@ class ListenDialogSheetViewModel(
      */
     private fun dismissFun() {
         dismiss()
+    }
+
+
+    private fun showTip(msg: String, color: Int, isDelayGone: Boolean) {
+        dateBinding?.listenDialogSheetLayout?.apply {
+            dateBinding?.listenDialogSheetTip?.text = msg
+            dateBinding?.listenDialogSheetTip?.setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    color
+                )
+            )
+            visibility = View.VISIBLE
+            handler.removeCallbacksAndMessages(null)
+            if (isDelayGone) {
+                handler.postDelayed({
+                    hideTipView()
+                }, 3000)
+            }
+        }
+    }
+
+    private fun hideTipView() {
+        dateBinding?.listenDialogSheetLayout?.visibility = View.GONE
     }
 }

@@ -40,6 +40,7 @@ import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
+import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
@@ -275,6 +276,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         process.set(chapter.listen_duration.toFloat())
         playChapterId.set(chapter.chapter_id.toString())
         playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
+
+        playChapterId.get()?.let {
+            playReport(playAudioId.get()!!, it)
+        }
     }
 
     fun updatePlayChapterProgress(

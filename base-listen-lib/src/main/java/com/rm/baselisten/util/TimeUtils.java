@@ -133,6 +133,7 @@ public final class TimeUtils {
      * @return the date
      */
     public static Date string2Date(final String time) {
+//       new  SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
         return string2Date(time, getDefaultFormat());
     }
 

@@ -150,7 +150,7 @@ class HomeCommentDialogViewModel(
                 )
 
             } else {
-                showTip("评论中", R.color.business_text_color_333333, false)
+//                showTip("评论中", R.color.business_text_color_333333, false)
                 if (NetworkChangeReceiver.isAvailable.get()) {
                     sendComment(view, it, audioId, loginUser.get()!!.id!!)
                 } else {

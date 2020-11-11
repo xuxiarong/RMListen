@@ -453,7 +453,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 关注主播
      */
     private fun attentionAnchor(followId: String) {
-        showLoading()
+//        showLoading()
         launchOnIO {
             repository.attentionAnchor(followId).checkResult(
                 onSuccess = {
@@ -665,12 +665,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         if (TextUtils.isEmpty(memberId)) {
             return
         }
-        if (isLogin.get()) {
-            RouterHelper.createRouter(MineService::class.java)
-                .toMineMember(context, memberId!!)
-        } else {
-            getActivity(context)?.let { quicklyLogin(it) }
-        }
+        RouterHelper.createRouter(MineService::class.java)
+            .toMineMember(context, memberId!!)
+
     }
 
     /**

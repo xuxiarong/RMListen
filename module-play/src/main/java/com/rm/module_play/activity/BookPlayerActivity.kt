@@ -59,7 +59,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     companion object {
 
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
-        var lastOpenTime: Long = SystemClock.currentThreadTimeMillis()
+        var lastOpenTime: Long = 0L/* SystemClock.currentThreadTimeMillis()*/
         var playAudioId: String = ""
         var playAudioModel: DownloadAudio = DownloadAudio()
         var playChapterId: String = ""
@@ -237,6 +237,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
         mViewModel.countdown()
         mViewModel.getCommentList()
+
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
@@ -289,7 +290,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        mViewModel.updatePlayChapterProgress(currentDurtion,totalDurtion)
+        mViewModel.updatePlayChapterProgress(currentDurtion, totalDurtion)
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {

@@ -154,10 +154,11 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
                     val indexOf = anchorAdapter.data.indexOf(bean)
                     bean.is_follow = 1
                     anchorAdapter.notifyItemChanged(indexOf)
-                    showToast("关注成功")
+                    showTip("关注成功")
                 },
                 onError = {
                     showContentView()
+                    showTip("$it",R.color.business_color_ff5e5e)
                 })
         }
     }
@@ -174,10 +175,11 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
                     val indexOf = anchorAdapter.data.indexOf(bean)
                     bean.is_follow = 0
                     anchorAdapter.notifyItemChanged(indexOf)
-                    showToast("取消关注成功")
+                    showTip("取消关注成功")
                 },
                 onError = {
                     showContentView()
+                    showTip("$it",R.color.business_color_ff5e5e)
                 })
         }
     }

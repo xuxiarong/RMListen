@@ -2,6 +2,7 @@ package com.rm.module_listen.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -45,8 +46,11 @@ class ListenSheetCollectedListFragment :
         if (requestCode == 100 && resultCode == 200) {
             val isFavorite = data?.getBooleanExtra("isFavorite", true)
             val sheetId = data?.getStringExtra("sheetId") ?: ""
-            if (isFavorite == false) {
+            if (TextUtils.isEmpty(mViewModel.memberId) && isFavorite == false) {
                 mViewModel.remove(sheetId)
+                if (mViewModel.mAdapter.data.size == 0) {
+                    mViewModel.showDataEmpty()
+                }
             }
         }
     }

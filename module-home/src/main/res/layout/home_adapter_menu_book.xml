@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{()->audioViewModel.itemChildClickFun(audioBean)}"
+        android:onClick="@{()->audioViewModel.itemChildClickFun(context,audioBean)}"
         android:orientation="vertical">
 
         <ImageView
