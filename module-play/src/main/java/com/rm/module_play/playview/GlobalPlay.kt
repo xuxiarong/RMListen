@@ -23,7 +23,6 @@ import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.DisplayUtils.getDip
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.R
-import com.rm.module_play.PlayConstance
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 
@@ -75,7 +74,6 @@ class GlobalPlay @JvmOverloads constructor(
         mAnimator?.addUpdateListener(this)
         mPathEffect = CornerPathEffect(getDip(context, 2f))
 
-        setBooKImage(PlayConstance.getLastListenAudioUrl())
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

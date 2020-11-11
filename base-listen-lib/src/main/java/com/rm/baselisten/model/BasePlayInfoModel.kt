@@ -6,5 +6,7 @@ package com.rm.baselisten.model
  * version: 1.0
  */
 data class BasePlayInfoModel constructor(
-    var playUrl : String = ""
+    var playUrl : String = "",
+    var playAudioId : String = "",
+    var playChapterId : String = ""
 )

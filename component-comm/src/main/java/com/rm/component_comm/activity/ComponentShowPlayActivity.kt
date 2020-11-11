@@ -1,7 +1,9 @@
 package com.rm.component_comm.activity
 
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.databinding.ViewDataBinding
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -31,14 +33,12 @@ abstract class ComponentShowPlayActivity<V : ViewDataBinding, VM : BaseVMViewMod
     }
 
     open fun startPlayActivity() {
-//        if (TextUtils.isEmpty(PlayConstance.getLastListenAudioUrl())) {
-//            tipView.showTipView(
-//                this,
-//                getString(com.rm.business_lib.R.string.business_no_content)
-//            )
-//            return
-//        }
-        playService.onGlobalPlayClick(this)
+        BaseConstance.basePlayInfoModel.get()?.let {
+            if(!TextUtils.isEmpty(it.playUrl)){
+                playService.onGlobalPlayClick(this)
+                return
+            }
+        }
+        tipView.showTipView(this, getString(com.rm.business_lib.R.string.business_no_content))
     }
-
 }

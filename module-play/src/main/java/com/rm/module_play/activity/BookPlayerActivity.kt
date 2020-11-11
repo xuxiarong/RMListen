@@ -15,6 +15,7 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.AudioSortType
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -32,7 +33,7 @@ import com.rm.module_play.dialog.MusicPlayBookListDialog
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
-import com.rm.module_play.playview.GlobalplayHelp
+import com.rm.module_play.playview.GlobalPlayHelper
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_JOIN_LISTEN
@@ -133,7 +134,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
         mViewModel.playPath.observe(this, Observer { playPath ->
             musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
-            GlobalplayHelp.instance.addOnPlayerEventListener()
+            GlobalPlayHelper.INSTANCE.addOnPlayerEventListener()
             if (playPath.size <= 1) {
                 mViewModel.hasNextChapter.set(false)
                 mViewModel.hasPreChapter.set(false)
@@ -220,7 +221,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
             mViewModel.getDetailInfo(playAudioId)
         } else {
-            mViewModel.initCurrentPlayAudio(playAudioModel)
+            mViewModel.initPlayAudio(playAudioModel)
         }
         //如果传入的章节id为空，说明不是通过章节列表跳转的，直接访问书籍章节列表的第一页数据即可
 
@@ -297,6 +298,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+        if(playbackState == PlayGlobalData.STATE_ENDED){
+            mViewModel.updatePlayChapterProgress(isPlayFinish = true)
+        }
         val currentStatus = mViewModel.playStatusBean.get()
         if (currentStatus != null) {
             if (currentStatus.read == playWhenReady && currentStatus.state == playbackState) {

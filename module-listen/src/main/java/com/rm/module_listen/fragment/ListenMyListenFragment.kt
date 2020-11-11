@@ -1,6 +1,5 @@
 package com.rm.module_listen.fragment
 
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
@@ -73,10 +72,6 @@ class ListenMyListenFragment :
                 }
             }
         })
-//        DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
-//            mViewModel.downloadNumber.set(it.size)
-//        })
-
     }
 
     override fun initData() {
@@ -86,24 +81,7 @@ class ListenMyListenFragment :
 
     private fun configTab() {
         listenMyListenRtl.setupWithViewPager(listenMyListenVp)
-//        listenMyListenRtl.addOnTabSelectedListener(object :BendTabLayout.OnTabSelectedListener{
-//            override fun onTabReselected(tab: BendTabLayout.BendTab?) {
-//            }
-//
-//            override fun onTabUnselected(tab: BendTabLayout.BendTab?) {
-//            }
-//
-//            override fun onTabSelected(tab: BendTabLayout.BendTab?) {
-//                if(tab!=null){
-//                    if(tab.position == 1){
-//                        val subFragment =   mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment
-//                        subFragment.checkLogin()
-//                    }
-//                }
-//            }
-//        })
         listenMyListenVp.setCurrentItem(0, false)
-
     }
 
     private fun setClick() {

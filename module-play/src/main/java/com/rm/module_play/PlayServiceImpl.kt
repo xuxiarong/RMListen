@@ -3,13 +3,15 @@ package com.rm.module_play
 import android.content.Context
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
-import com.rm.module_play.playview.GlobalplayHelp
+import com.rm.module_play.playview.GlobalPlayHelper
 
 /**
  * desc   : play module 路由服务实现类
@@ -19,10 +21,10 @@ import com.rm.module_play.playview.GlobalplayHelp
 @Route(path = ARouterModuleServicePath.PATH_PLAY_SERVICE)
 class PlayServiceImpl : PlayService {
 
-    override fun getGlobalPlay(): View = GlobalplayHelp.instance.globalView
+    override fun getGlobalPlay(): View = GlobalPlayHelper.INSTANCE.globalView
     override fun showView(context: Context) {
-//        GlobalplayHelp.instance.globalView.mainShow()
-//        GlobalplayHelp.instance.globalView.setOnClickNotDoubleListener {
+//        GlobalPlayHelper.INSTANCE.globalView.mainShow()
+//        GlobalPlayHelper.INSTANCE.globalView.setOnClickNotDoubleListener {
 //            BookPlayerActivity.startActivity(context, Jump.DOTS.from)
 //        }
     }
@@ -49,8 +51,8 @@ class PlayServiceImpl : PlayService {
         )
     }
 
-//    override fun queryPlayBookList(): List<HistoryPlayBook>? =
-//        DaoUtil(HistoryPlayBook::class.java, "").queryAll()
+    override fun queryPlayBookList(): List<ListenAudioEntity>? =
+        DaoUtil(ListenAudioEntity::class.java, "").queryAll()
 
     override fun toCommentCenterActivity(context: Context, audioID: String) {
     }

@@ -5,12 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.listen.ListenAudioEntity
+import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenHistorySearchActivity
 import com.rm.module_listen.model.ListenHistoryModel
+import com.rm.module_listen.model.ListenRecentDateModel
 
 /**
  * desc   :
@@ -34,24 +38,24 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         )
     }
 
+    fun getListenHistory() {
+        showLoading()
+        launchOnIO {
+            val queryPlayBookList = playService.queryPlayBookList()
+            val audioList = ArrayList<MultiItemEntity>()
+            if (queryPlayBookList != null && queryPlayBookList.isNotEmpty()) {
+                showContentView()
+                audioList.add(ListenRecentDateModel())
+                queryPlayBookList.forEach {
+                    audioList.add(ListenHistoryModel(it))
+                }
+                allHistory.postValue(audioList)
+            } else {
+                showDataEmpty()
+            }
+        }
+    }
 
-//    fun getListenHistory() {
-//        showLoading()
-//        launchOnIO {
-//            val queryPlayBookList = playService.queryPlayBookList()
-//            val audioList = ArrayList<MultiItemEntity>()
-//            if (queryPlayBookList != null && queryPlayBookList.isNotEmpty()) {
-//                showContentView()
-//                audioList.add(ListenRecentDateModel())
-//                queryPlayBookList.forEach {
-//                    audioList.add(ListenHistoryModel(it))
-//                }
-//                allHistory.postValue(audioList)
-//            } else {
-//                showDataEmpty()
-//            }
-//        }
-//    }
 
     fun startListenRecentDetail(context: Context) {
         ListenHistorySearchActivity.startListenHistorySearch(context)
@@ -67,7 +71,8 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     fun deleteItem(item: ListenHistoryModel) {
         mSwipeAdapter.mItemManger.closeItem(mSwipeAdapter.data.indexOf(item))
         mSwipeAdapter.data.remove(item)
-//        DaoUtil(HistoryPlayBook::class.java, "").delete(item.HistoryPlayBook)
+        DaoUtil(ListenChapterEntity::class.java, "").delete(item.audio.listenChapterList)
+        DaoUtil(ListenAudioEntity::class.java, "").delete(item.audio)
     }
 
 }
