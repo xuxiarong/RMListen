@@ -49,10 +49,13 @@ import kotlin.math.ceil
 class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
 
     /**
-     * 章节当前加载的页码
+     * 下一页章节的页码
      */
     private var nextChapterPage = 1
 
+    /**
+     * 上一页章节页码
+     */
     private var chapterPage = 1
 
     /**
@@ -210,7 +213,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 评论加载更多
      */
     fun commentLoadMoreData() {
-        ++commentPage
         audioId.get()?.let {
             getCommentList(it)
         }
@@ -438,10 +440,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     commentTotal.set(it.total)
                     processCommentData(it)
+
                 }, onError = {
-                    if (commentPage != 1) {
-                        commentPage--
-                    }
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
@@ -493,12 +493,20 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     private fun processCommentData(bean: HomeCommentBean) {
         commentRefreshStateMode.finishLoadMore(true)
+        if (homeDetailCommentAdapter.data.size < bean.total) {
+            commentRefreshStateMode.setHasMore(true)
+            ++commentPage
+        } else {
+            commentRefreshStateMode.setHasMore(false)
+        }
+
         if (commentPage == 1) {
             homeDetailCommentAdapter.setList(bean.list_comment)
         } else {
             homeDetailCommentAdapter.addData(bean.list_comment)
         }
-        commentRefreshStateMode.setHasMore(bean.list_comment.size >= mPageSize)
+
+
     }
 
     /**

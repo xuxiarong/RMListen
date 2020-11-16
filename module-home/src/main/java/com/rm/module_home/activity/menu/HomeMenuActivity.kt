@@ -14,7 +14,8 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.rm.module_home.viewmodel.HomeMenuViewModel
 
-class HomeMenuActivity : ComponentShowPlayActivity<HomeActivityListenMenuBinding, HomeMenuViewModel>() {
+class HomeMenuActivity :
+    ComponentShowPlayActivity<HomeActivityListenMenuBinding, HomeMenuViewModel>() {
 
     //懒加载头部banner
     private val headView by lazy {
@@ -38,7 +39,7 @@ class HomeMenuActivity : ComponentShowPlayActivity<HomeActivityListenMenuBinding
                 paddingBindData(it.banner_list)
 //                setIsClipChildrenMode(false)
                 setOnItemClickListener { _, _, _, position ->
-                    BannerJumpUtils.onBannerClick(context,it.banner_list!![position].banner_jump)
+                    BannerJumpUtils.onBannerClick(context, it.banner_list!![position].banner_jump)
                 }
             }
         }
@@ -51,6 +52,7 @@ class HomeMenuActivity : ComponentShowPlayActivity<HomeActivityListenMenuBinding
                 finish()
             }
         mViewModel.baseTitleModel.value = baseTitleModel
+        mDataBind.homeMenuRefresh.setEnableFooterFollowWhenNoMoreData(true)
         mViewModel.menuAdapter.addHeaderView(headView)
     }
 

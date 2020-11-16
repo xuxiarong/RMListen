@@ -51,7 +51,10 @@ class HomeTopicListActivity :
         mViewModel.topicId = intent.getIntExtra("topicId", -1)
 
         val stringExtra = intent.getStringExtra("topicName")
-        home_topic_title.text= stringExtra
+        home_topic_title.text = stringExtra
+
+        mDataBind.homeTopicRefreshLayout.setEnableFooterFollowWhenNoMoreData(true)
+
 
     }
 

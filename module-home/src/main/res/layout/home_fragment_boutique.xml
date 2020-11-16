@@ -9,18 +9,23 @@
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/home_boutique_fragment_refresh_layout"
         bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
         bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
         bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess}"
         bindOnLoadMoreListener="@{viewModel.getBookList}"
         bindOnRefreshListener="@{viewModel.refresh}"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_boutique_fragment_recycler_view"
             bindVerticalLayout="@{viewModel.bookAdapter}"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

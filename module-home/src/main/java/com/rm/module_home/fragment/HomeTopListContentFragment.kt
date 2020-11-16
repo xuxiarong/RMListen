@@ -69,6 +69,7 @@ class HomeTopListContentFragment :
         arguments?.let {
             rankType = it.getInt(RANK_TYPE)
         }
+        mDataBind.homeTopListRefresh.setEnableFooterFollowWhenNoMoreData(true)
     }
 
     /**

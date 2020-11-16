@@ -20,12 +20,11 @@ import com.rm.business_lib.xbanner.XBanner
 class BoutiqueFragment(
     private val categoryTabBean: CategoryTabBean,
     private val bannerList: List<BannerInfoBean>
-) :
-
-    BaseVMFragment<HomeFragmentBoutiqueBinding, BoutiqueFragmentViewModel>() {
+) : BaseVMFragment<HomeFragmentBoutiqueBinding, BoutiqueFragmentViewModel>() {
 
     private val headView by lazy {
-        View.inflate(activity, R.layout.home_header_banner, null)}
+        View.inflate(activity, R.layout.home_header_banner, null)
+    }
 
     override fun initLayoutId(): Int = R.layout.home_fragment_boutique
 
@@ -34,12 +33,12 @@ class BoutiqueFragment(
     override fun initView() {
         super.initView()
         mViewModel.categoryTabBean = categoryTabBean
-
+        mDataBind.homeBoutiqueFragmentRefreshLayout.setEnableFooterFollowWhenNoMoreData(true)
         headView.findViewById<XBanner>(R.id.home_head_banner).apply {
             setIsClipChildrenMode(false)
-            paddingBindData(bannerList,true)
+            paddingBindData(bannerList, true)
             setOnItemClickListener { _, _, _, position ->
-                BannerJumpUtils.onBannerClick(context,bannerList[position].banner_jump)
+                BannerJumpUtils.onBannerClick(context, bannerList[position].banner_jump)
             }
         }
 

@@ -6,11 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
@@ -18,7 +15,6 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuDetailBinding
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.viewmodel.HomeMenuDetailViewModel
-import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
 
 class HomeMenuDetailActivity :
     ComponentShowPlayActivity<HomeActivityListenMenuDetailBinding, HomeMenuDetailViewModel>() {
@@ -45,7 +41,7 @@ class HomeMenuDetailActivity :
 
         setTransparentStatusBar()//设置透明沉浸状态栏
 
-        val layoutParams = (home_menu_detail_title_cl.layoutParams) as ConstraintLayout.LayoutParams
+        val layoutParams = (mDataBind.homeMenuDetailTitleCl.layoutParams) as ConstraintLayout.LayoutParams
         layoutParams.apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin
             val stateHeight = getStateHeight(this@HomeMenuDetailActivity)
@@ -54,10 +50,11 @@ class HomeMenuDetailActivity :
 
         recycleScrollListener()
 
-        home_menu_detail_recycler_view.apply {
+        mDataBind.homeMenuDetailRecyclerView.apply {
             bindVerticalLayout(mViewModel.mAdapter)
             createHeader()
         }
+        mDataBind.homeMenuDetailRefresh.setEnableFooterFollowWhenNoMoreData(true)
     }
 
     override fun initData() {
@@ -69,7 +66,7 @@ class HomeMenuDetailActivity :
         mViewModel.dataBinding = DataBindingUtil.inflate<HomeHeaderMenuDetailBinding>(
             LayoutInflater.from(this@HomeMenuDetailActivity),
             R.layout.home_header_menu_detail,
-            home_menu_detail_recycler_view,
+            mDataBind.homeMenuDetailRecyclerView,
             false
         ).apply {
             this.root.visibility = View.GONE
@@ -87,7 +84,7 @@ class HomeMenuDetailActivity :
      * recyclerView滑动监听
      */
     private fun recycleScrollListener() {
-        home_menu_detail_recycler_view.addOnScrollListener(object :
+        mDataBind.homeMenuDetailRecyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             private var totalDy = 0
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

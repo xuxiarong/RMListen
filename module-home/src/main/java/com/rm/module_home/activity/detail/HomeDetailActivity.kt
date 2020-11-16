@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
@@ -81,6 +82,7 @@ class HomeDetailActivity :
             mViewModel.getCommentList(it)
         }
 
+        mDataBind.homeDetailCommentRefresh.setEnableFooterFollowWhenNoMoreData(true)
 
         mDataBind.homeDetailChapterHeader.post {
             //获取章节头部的高度

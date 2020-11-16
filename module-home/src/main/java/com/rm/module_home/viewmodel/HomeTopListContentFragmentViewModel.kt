@@ -75,7 +75,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
             //是否有更多数据
             refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
         } else {
-            refreshStatusModel.setHasMore(mPage < 5)
+            refreshStatusModel.setHasMore(mPage < 5 || bean.list?.size ?: 0 >= pageSize)
         }
     }
 
