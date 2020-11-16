@@ -291,6 +291,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     ) {
         val chapter = playChapter.get()
         if (chapter != null) {
+            maxProcess.set(totalDuration.toFloat())
             process.set(currentDuration.toFloat())
             updateThumbText.set(
                 "${formatTimeInMillisToString(currentDuration)}/${
@@ -313,7 +314,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-    fun startPlayChapter(baseAudioInfo: BaseAudioInfo, position: Int) {
+    fun savePlayChapter(baseAudioInfo: BaseAudioInfo, position: Int) {
         val playChapterList = playChapterList.value
         if (playChapterList != null && playChapterList.size > 0) {
             if (position <= playChapterList.size - 1) {
@@ -430,8 +431,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             repository.chapterPageList(
                 audioId = audioId,
                 chapterId = chapterId,
-                page = page,
-                page_size = page_size,
+//                page = page,
+//                page_size = page_size,
                 sort = sort
             ).checkResult(onSuccess = {
                 val chapterList = it.list

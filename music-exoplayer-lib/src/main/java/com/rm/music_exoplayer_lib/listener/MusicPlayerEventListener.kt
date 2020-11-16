@@ -27,7 +27,6 @@ interface MusicPlayerEventListener {
      * 此方法已被废弃，缓冲进度播放器内部使用变量储存，每隔500mm连同播放进度回调至组件
      * 合并至onTaskRuntime方法
      */
-    @Deprecated("")
     fun onBufferingUpdate(percent: Int)
 
     /**

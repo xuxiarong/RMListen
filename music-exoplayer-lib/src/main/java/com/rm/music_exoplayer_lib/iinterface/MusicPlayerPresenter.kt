@@ -278,7 +278,7 @@ interface MusicPlayerPresenter {
     //恢复页面播放状态
     fun resumePlayState(state:Boolean)
 
-
+    fun getCurrentPlayIndex() : Int
 
 
 }

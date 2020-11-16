@@ -29,6 +29,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         }
         private var mBinder: MusicPlayerBinder? = null
         private var mConnection: ServiceConnection? = null
+
         //播放器界面路径、锁屏界面路径、主界面路径
         private var mActivityLockClassName: String? = null //播放器界面路径、锁屏界面路径、主界面路径
 
@@ -245,6 +246,8 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     override fun resumePlayState(state: Boolean) {
         mBinder?.resumePlayState(state)
     }
+
+    override fun getCurrentPlayIndex(): Int = mBinder?.getCurrentPlayIndex() ?: -1
 
 
 }

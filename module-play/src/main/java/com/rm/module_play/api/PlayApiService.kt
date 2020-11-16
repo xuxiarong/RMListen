@@ -84,8 +84,8 @@ interface PlayApiService {
     suspend fun chapterPage(
         @Query("audio_id") audioId: String,
         @Query("chapter_id") chapterId:String,
-        @Query("page") page: Int,
-        @Query("page_size") page_size:Int,
+//        @Query("page") page: Int,
+//        @Query("page_size") page_size:Int,
         @Query("sort") sort: String
     ): BaseResponse<ChapterListModel>
 

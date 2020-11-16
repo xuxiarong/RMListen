@@ -516,7 +516,11 @@ class BubbleSeekBar @JvmOverloads constructor(
         formatted.append(String.format(":%02d", seconds))
 
         return try {
-            String(formatted.toString().toByteArray(), Charset.forName("UTF-8"))
+            var result = String(formatted.toString().toByteArray(), Charset.forName("UTF-8"))
+            if(result == "0/0"){
+                result = "00:00/00:00"
+            }
+            return result
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             "00:00"
