@@ -618,6 +618,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                    android:id="@+id/play_refresh_layout"
                     bindIsHasMoreData="@{viewModel.commentRefreshModel.isHasMore()}"
                     bindIsLoadMoreSuccess="@{viewModel.commentRefreshModel.isLoadMoreSuccess()}"
                     bindOnLoadMoreListener="@{viewModel.commentLoadData}"
@@ -633,6 +634,8 @@
                         bindVerticalLayout="@{viewModel.mCommentAdapter}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+
+
                 </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

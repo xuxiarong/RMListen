@@ -1,8 +1,9 @@
 package com.rm.module_home.activity.boutique
 
+import android.view.LayoutInflater
 import android.view.View
+import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.binding.paddingBindData
 import com.rm.component_comm.utils.BannerJumpUtils
@@ -25,6 +26,9 @@ class BoutiqueFragment(
     private val headView by lazy {
         View.inflate(activity, R.layout.home_header_banner, null)
     }
+    private val footView by lazy {
+        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
+    }
 
     override fun initLayoutId(): Int = R.layout.home_fragment_boutique
 
@@ -33,7 +37,6 @@ class BoutiqueFragment(
     override fun initView() {
         super.initView()
         mViewModel.categoryTabBean = categoryTabBean
-        mDataBind.homeBoutiqueFragmentRefreshLayout.setEnableFooterFollowWhenNoMoreData(true)
         headView.findViewById<XBanner>(R.id.home_head_banner).apply {
             setIsClipChildrenMode(false)
             paddingBindData(bannerList, true)
@@ -50,6 +53,18 @@ class BoutiqueFragment(
     }
 
     override fun startObserve() {
+        mViewModel.refreshStatusModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStatusModel.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.bookAdapter.removeAllFooterView()
+                    mViewModel.bookAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.bookAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
 

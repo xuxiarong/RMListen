@@ -2,6 +2,8 @@ package com.rm.module_listen.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -27,6 +29,11 @@ class ListenSheetMyListFragment :
         }
     }
 
+    private val footView by lazy {
+        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
+    }
+
+
     override fun initModelBrId() = BR.viewModel
 
     override fun initLayoutId() = R.layout.listen_fragment_sheet_my_list
@@ -40,6 +47,18 @@ class ListenSheetMyListFragment :
     }
 
     override fun startObserve() {
+        mViewModel.refreshStateModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStateModel.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.mAdapter.removeAllFooterView()
+                    mViewModel.mAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.mAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
     /**

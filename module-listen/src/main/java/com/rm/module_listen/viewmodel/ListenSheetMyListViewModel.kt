@@ -99,7 +99,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
         }
 
         //是否有更多数据
-        refreshStateModel.setHasMore(bean.list?.size ?: 0 > pageSize)
+        refreshStateModel.setNoHasMore(bean.list?.size ?: 0 < pageSize)
     }
 
     /**
@@ -119,6 +119,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
      */
     fun refreshData() {
         page = 1
+        refreshStateModel.setNoHasMore(false)
         getData(memberId)
     }
 

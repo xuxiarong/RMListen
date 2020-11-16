@@ -2,6 +2,8 @@ package com.rm.module_home.activity.topic
 
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
+import androidx.databinding.Observable
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -37,11 +39,27 @@ class HomeTopicListActivity :
         }
     }
 
+    private val footView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
+    }
+
     override fun getLayoutId(): Int = R.layout.home_activity_topic_list
 
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
+        mViewModel.refreshStatusModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStatusModel.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.mAdapter.removeAllFooterView()
+                    mViewModel.mAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.mAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
     override fun initView() {
@@ -52,8 +70,6 @@ class HomeTopicListActivity :
 
         val stringExtra = intent.getStringExtra("topicName")
         home_topic_title.text = stringExtra
-
-        mDataBind.homeTopicRefreshLayout.setEnableFooterFollowWhenNoMoreData(true)
 
 
     }

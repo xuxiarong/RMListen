@@ -114,7 +114,7 @@ class ListenDialogSheetViewModel(
                 },
                 onError = {
                     showContentView()
-                    showTip("$it", R.color.business_color_ff5e5e,true)
+                    showTip("$it", R.color.business_color_ff5e5e, true)
                 }
             )
         }
@@ -139,7 +139,7 @@ class ListenDialogSheetViewModel(
         }
 
         //是否有跟多数据
-        refreshStateModel.setHasMore(bean.list?.size ?: 0 > pageSize)
+        refreshStateModel.setNoHasMore(bean.list?.size ?: 0 < pageSize)
     }
 
     private fun showData() {

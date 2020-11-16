@@ -25,7 +25,6 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
-import com.rm.module_home.activity.detail.HomeDetailActivity.Companion.AUDIO_ID
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.repository.HomeRepository
@@ -113,6 +112,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
      */
     fun refreshData() {
         mPage = 1
+        refreshStatusModel.setNoHasMore(false)
         getData()
     }
 
@@ -154,7 +154,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                         refreshStatusModel.finishRefresh(true)
                         mAdapter.setList(it.audio_list?.list)
                         //是否有更多数据
-                        refreshStatusModel.setHasMore(it.audio_list?.list?.size ?: 0 >= pageSize)
+                        refreshStatusModel.setNoHasMore(it.audio_list?.list?.size ?: 0 < pageSize)
                     },
                     onError = {
                         showServiceError()
@@ -177,12 +177,13 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                         it.list.let { list -> mAdapter.addData(list) }
                         refreshStatusModel.finishLoadMore(true)
                         //是否有更多数据
-                        refreshStatusModel.setHasMore(it.list.size >= pageSize)
+                        refreshStatusModel.setNoHasMore(it.list.size < pageSize)
 
                     },
                     onError = {
                         showServiceError()
                         refreshStatusModel.finishLoadMore(false)
+                        mPage--
                     }
                 )
         }

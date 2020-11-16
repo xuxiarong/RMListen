@@ -40,7 +40,6 @@ import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
-import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
@@ -136,12 +135,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 书籍播放的数据库对象
      */
-    val playAudioDao = DaoUtil(ListenAudioEntity::class.java, "")
+    private val playAudioDao = DaoUtil(ListenAudioEntity::class.java, "")
 
     /**
      * 章节播放的数据库对象
      */
-    val playChapterDao = DaoUtil(ListenChapterEntity::class.java, "")
+    private val playChapterDao = DaoUtil(ListenChapterEntity::class.java, "")
 
     /**
      * 播放状态进度条，0是播放2是加载中1是暂停,false是暂停
@@ -266,7 +265,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playAudioModel.set(audio)
         isAttention.set(audio.anchor.status)
         isSubscribe.set(audio.is_subscribe)
-        BaseConstance.updateBaseAudioId(audioId = audio.audio_id.toString(),playUrl = audio.audio_cover_url)
+        BaseConstance.updateBaseAudioId(
+            audioId = audio.audio_id.toString(),
+            playUrl = audio.audio_cover_url
+        )
         playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
     }
 
@@ -291,9 +293,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (chapter != null) {
             process.set(currentDuration.toFloat())
             updateThumbText.set(
-                "${formatTimeInMillisToString(currentDuration)}/${formatTimeInMillisToString(
-                    totalDuration
-                )}"
+                "${formatTimeInMillisToString(currentDuration)}/${
+                    formatTimeInMillisToString(
+                        totalDuration
+                    )
+                }"
             )
             chapter.listen_duration = if (isPlayFinish) {
                 100
@@ -576,7 +580,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             mCommentAdapter.addData(bean.list)
             commentRefreshModel.finishLoadMore(true)
         }
-        commentRefreshModel.setHasMore(bean.list.size >= pageSize)
+
+        if (mCommentAdapter.data.size >= bean.total || bean.list.size < pageSize) {
+            commentRefreshModel.setNoHasMore(true)
+        } else {
+            commentPage++
+        }
     }
 
     /**
@@ -588,7 +597,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             showTip("$it")
         } else {
             commentRefreshModel.finishLoadMore(false)
-            commentPage--
         }
     }
 
@@ -596,7 +604,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 评论加载更多
      */
     fun commentLoadData() {
-        commentPage++
         getCommentList()
     }
 

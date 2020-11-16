@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.utilExt.getStateHeight
@@ -28,7 +29,9 @@ class HomeMenuDetailActivity :
             context.startActivityForResult(intent, 100)
         }
     }
-
+    private val footView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
+    }
 
     override fun getLayoutId() = R.layout.home_activity_listen_menu_detail
 
@@ -54,7 +57,6 @@ class HomeMenuDetailActivity :
             bindVerticalLayout(mViewModel.mAdapter)
             createHeader()
         }
-        mDataBind.homeMenuDetailRefresh.setEnableFooterFollowWhenNoMoreData(true)
     }
 
     override fun initData() {
@@ -78,6 +80,18 @@ class HomeMenuDetailActivity :
      * 数据发生改变监听
      */
     override fun startObserve() {
+        mViewModel.refreshStatusModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStatusModel.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.mAdapter.removeAllFooterView()
+                    mViewModel.mAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.mAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
     /**

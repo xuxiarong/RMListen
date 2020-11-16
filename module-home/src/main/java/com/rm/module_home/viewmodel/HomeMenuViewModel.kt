@@ -1,6 +1,7 @@
 package com.rm.module_home.viewmodel
 
 import android.content.Context
+import android.view.LayoutInflater
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -8,8 +9,8 @@ import com.rm.business_lib.bean.SheetListBean
 import com.rm.business_lib.bean.SheetMenuInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
-import com.rm.module_home.activity.detail.HomeDetailActivity.Companion.AUDIO_ID
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
 import com.rm.module_home.adapter.MenuListAdapter
@@ -47,6 +48,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
      */
     fun refreshData() {
         mPage = 1
+        refreshStatusModel.setNoHasMore(false)
         getSheetList()
     }
 
@@ -54,7 +56,6 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
      * 加载更多
      */
     fun loadData() {
-        ++mPage
         getSheetList()
     }
 
@@ -108,8 +109,13 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
             refreshStatusModel.finishLoadMore(true)
         }
 
-        //没用更多数据
-        refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
+        if (menuAdapter.data.size >= bean.total) {
+            //没用更多数据
+            refreshStatusModel.setNoHasMore(true)
+        } else {
+            mPage++
+        }
+
     }
 
     /**
@@ -134,6 +140,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
             showContentView()
             refreshStatusModel.finishRefresh(false)
         } else {
+            mPage--
             refreshStatusModel.finishLoadMore(false)
         }
     }

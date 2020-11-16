@@ -31,7 +31,10 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
             BR.audioItem
         ).apply {
             setOnItemClickListener { _, _, position ->
-                startActivity(HomeDetailActivity::class.java,HomeDetailActivity.getIntent(data[position].audio_id.toString()))
+                startActivity(
+                    HomeDetailActivity::class.java,
+                    HomeDetailActivity.getIntent(data[position].audio_id.toString())
+                )
             }
         }
     }
@@ -57,7 +60,7 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
                             refreshStatusModel.finishLoadMore(true)
                         }
                         // 设置是否还有下一页数据
-                        refreshStatusModel.setHasMore(it.list.size > 0)
+                        refreshStatusModel.setNoHasMore(bookAdapter.data.size >= it.total)
                         page++
                     },
                     onError = {
@@ -73,7 +76,8 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
     }
 
     fun refresh() {
-        page = 0
+        refreshStatusModel.setNoHasMore(false)
+        page = 1
         launchOnIO {
             repository.getBoutiqueRecommendInfoList(categoryTabBean!!.class_id, page, pageSize)
                 .checkResult(
@@ -85,7 +89,7 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
                         page++
                         refreshStatusModel.finishRefresh(true)
                         // 设置是否还有下一页数据
-                        refreshStatusModel.setHasMore(it.list.size > 0)
+                        refreshStatusModel.setNoHasMore(bookAdapter.data.size >= it.total)
 
                     },
                     onError = {

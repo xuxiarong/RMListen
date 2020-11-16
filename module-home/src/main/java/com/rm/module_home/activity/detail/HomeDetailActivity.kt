@@ -2,9 +2,11 @@ package com.rm.module_home.activity.detail
 
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.utilExt.dip
@@ -44,6 +46,14 @@ class HomeDetailActivity :
         }
     }
 
+    private val commentFootView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
+    }
+
+    private val chapterFootView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.getStringExtra(AUDIO_ID)?.let {
@@ -51,7 +61,12 @@ class HomeDetailActivity :
             mViewModel.intDetailInfo(it)
 
             mViewModel.chapterRefreshStatus.setCanRefresh(false)
-            mViewModel.getChapterList(1) //初始化章节列表
+            mViewModel.chapterRefreshStatus.setNoHasMore(false)
+            mViewModel.chapterRefreshStatus.setResetNoMoreData(true)
+
+            mViewModel.commentRefreshStateMode.setNoHasMore(false)
+
+            mViewModel.getChapterList(1, HomeDetailViewModel.CHAPTER_REFRESH_PAGE) //初始化章节列表
             mViewModel.getCommentList(it)
         }
 
@@ -78,11 +93,14 @@ class HomeDetailActivity :
             mViewModel.intDetailInfo(it)
 
             mViewModel.chapterRefreshStatus.setCanRefresh(false)
-            mViewModel.getChapterList(1) //初始化章节列表
+            mViewModel.chapterRefreshStatus.setResetNoMoreData(true)
+            mViewModel.chapterRefreshStatus.setNoHasMore(false)
+
+            mViewModel.commentRefreshStateMode.setNoHasMore(false)
+
+            mViewModel.getChapterList(1, HomeDetailViewModel.CHAPTER_REFRESH_PAGE) //初始化章节列表
             mViewModel.getCommentList(it)
         }
-
-        mDataBind.homeDetailCommentRefresh.setEnableFooterFollowWhenNoMoreData(true)
 
         mDataBind.homeDetailChapterHeader.post {
             //获取章节头部的高度
@@ -149,7 +167,31 @@ class HomeDetailActivity :
 
 
     override fun startObserve() {
+        mViewModel.chapterRefreshStatus.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.chapterRefreshStatus.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.chapterAdapter.removeAllFooterView()
+                    mViewModel.chapterAdapter.addFooterView(chapterFootView)
+                } else {
+                    mViewModel.chapterAdapter.removeAllFooterView()
+                }
+            }
+        })
 
+        mViewModel.commentRefreshStateMode.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.commentRefreshStateMode.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.homeDetailCommentAdapter.removeAllFooterView()
+                    mViewModel.homeDetailCommentAdapter.addFooterView(commentFootView)
+                } else {
+                    mViewModel.homeDetailCommentAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
     override fun initData() {

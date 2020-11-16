@@ -73,9 +73,9 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
         }
         if (rankSeg == "all") {
             //是否有更多数据
-            refreshStatusModel.setHasMore(bean.list?.size ?: 0 >= pageSize)
+            refreshStatusModel.setNoHasMore(bean.list?.size ?: 0 < pageSize)
         } else {
-            refreshStatusModel.setHasMore(mPage < 5 || bean.list?.size ?: 0 >= pageSize)
+            refreshStatusModel.setNoHasMore(mPage == 5 || bean.list?.size ?: 0 < pageSize)
         }
     }
 
@@ -105,6 +105,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
      */
     fun refreshData() {
         mPage = 1
+        refreshStatusModel.setNoHasMore(false)
         getListInfo(rankType, rankSeg)
     }
 

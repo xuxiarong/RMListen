@@ -43,6 +43,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
 
     //每页展示数量
     private val mPageSize = 12
+
     //加载失败
     var loadErrorBlock: (String) -> Unit = {}
 
@@ -52,6 +53,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
      */
     fun refreshData() {
         mPage = 1
+        refreshStateMode.setNoHasMore(false)
         requestData()
     }
 
@@ -90,8 +92,6 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
             refreshStateMode.finishLoadMore(true)
         }
 
-        refreshStateMode.setHasMore(bean.audio_list.isNotEmpty())
-
         if (mPage == 1) {
             if (bean.audio_list.isEmpty()) {
                 showDataEmpty()
@@ -101,6 +101,8 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
         } else {
             bean.audio_list.let { bookAdapter.addData(it) }
         }
+        refreshStateMode.setNoHasMore(bean.audio_list.size < mPageSize || bookAdapter.data.size >= bean.audio)
+
     }
 
     /**

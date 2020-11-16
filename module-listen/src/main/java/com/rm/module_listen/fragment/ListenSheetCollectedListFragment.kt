@@ -3,6 +3,8 @@ package com.rm.module_listen.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.LayoutInflater
+import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -22,6 +24,10 @@ class ListenSheetCollectedListFragment :
             return fragment
         }
     }
+    private val footView by lazy {
+        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
+    }
+
 
     override fun initModelBrId() = BR.viewModel
 
@@ -36,6 +42,18 @@ class ListenSheetCollectedListFragment :
     }
 
     override fun startObserve() {
+        mViewModel.refreshStateModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStateModel.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.mAdapter.removeAllFooterView()
+                    mViewModel.mAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.mAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
     /**

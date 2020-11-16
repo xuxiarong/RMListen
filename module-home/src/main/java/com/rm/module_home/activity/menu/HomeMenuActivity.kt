@@ -2,7 +2,9 @@ package com.rm.module_home.activity.menu
 
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
+import androidx.databinding.Observable
 import androidx.lifecycle.observe
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.business_lib.binding.paddingBindData
@@ -20,6 +22,10 @@ class HomeMenuActivity :
     //懒加载头部banner
     private val headView by lazy {
         View.inflate(this, R.layout.home_header_banner, null)
+    }
+
+    private val footView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
     }
 
     companion object {
@@ -43,6 +49,18 @@ class HomeMenuActivity :
                 }
             }
         }
+        mViewModel.refreshStatusModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStatusModel.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.menuAdapter.removeAllFooterView()
+                    mViewModel.menuAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.menuAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
     override fun initView() {
@@ -52,8 +70,8 @@ class HomeMenuActivity :
                 finish()
             }
         mViewModel.baseTitleModel.value = baseTitleModel
-        mDataBind.homeMenuRefresh.setEnableFooterFollowWhenNoMoreData(true)
         mViewModel.menuAdapter.addHeaderView(headView)
+
     }
 
     override fun initData() {

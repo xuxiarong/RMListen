@@ -48,6 +48,18 @@ import kotlin.math.ceil
 
 class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
 
+    companion object {
+        //章节加载上一页
+        const val CHAPTER_PREVIOUS_PAGE = "chapter_previous_page"
+
+        //章节加载下一页
+        const val CHAPTER_NEXT_PAGE = "chapter_next_page"
+
+        //刷新章节
+        const val CHAPTER_REFRESH_PAGE = "chapter_refresh_page"
+    }
+
+
     /**
      * 下一页章节的页码
      */
@@ -56,12 +68,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 上一页章节页码
      */
-    private var chapterPage = 1
+    private var previousChapterPage = 1
 
     /**
-     * 章节上一次加载的页码
+     * 章节的最大页码
      */
-    private var oldChapterPage = -1
+    private var chapterMaxPage = -1
 
     /**
      * 章节分页加载的数量
@@ -149,11 +161,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     var commentTotal = ObservableField(0)
 
     /**
-     * 章节列表
-     */
-    private val chapterList = mutableListOf<DownloadChapter>()
-
-    /**
      * 头部dataBinding对象
      */
 
@@ -223,9 +230,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 章节加载上一页
      */
     fun chapterRefreshData() {
-        if (chapterPage > 1) {
-            chapterPage--
-            getChapterList(chapterPage)
+        if (previousChapterPage > 1) {
+            previousChapterPage--
+            getChapterList(previousChapterPage, CHAPTER_PREVIOUS_PAGE)
         }
     }
 
@@ -233,10 +240,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 章节加载更多
      */
     fun chapterLoadData() {
-        if (nextChapterPage < ceil(chapterTotal.get()!! / chapterPageSize.toFloat()).toInt()) {
+        if (chapterMaxPage > nextChapterPage) {
             nextChapterPage++
-            getChapterList(nextChapterPage)
+            getChapterList(nextChapterPage, CHAPTER_NEXT_PAGE)
         }
+
     }
 
     /**
@@ -335,44 +343,89 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * audio_id:音频id
      * sort：排序(asc,desc)
      */
-    fun getChapterList(page: Int) {
+    fun getChapterList(page: Int, chapterType: String) {
         launchOnIO {
             repository.chapterList(audioId.get()!!, page, chapterPageSize, mCurSort)
                 .checkResult(
                     onSuccess = {
-                        processChapterData(it, page)
+                        processChapterData(it, page, chapterType)
                     }, onError = {
-                        showContentView()
-                        chapterRefreshStatus.finishRefresh(false)
-                        chapterRefreshStatus.finishLoadMore(false)
-                        showTip("$it", R.color.business_color_ff5e5e)
+                        processChapterFailure(it, chapterType)
                     })
         }
     }
 
     /**
+     * 处理章节价值失败
+     */
+    private fun processChapterFailure(msg: String?, chapterType: String) {
+        when (chapterType) {
+            CHAPTER_NEXT_PAGE -> {
+                chapterRefreshStatus.finishLoadMore(false)
+                nextChapterPage--
+            }
+            CHAPTER_PREVIOUS_PAGE -> {
+                chapterRefreshStatus.finishRefresh(false)
+            }
+            CHAPTER_REFRESH_PAGE -> {
+                chapterRefreshStatus.finishRefresh(false)
+            }
+        }
+        showTip("$msg", R.color.business_color_ff5e5e)
+    }
+
+
+    /**
      * 处理章节数据
      */
-    private fun processChapterData(bean: ChapterListModel, page: Int) {
+    private fun processChapterData(bean: ChapterListModel, page: Int, chapterType: String) {
         showContentView()
         chapterTotal.set(bean.total)
         configChapterPageList()
+        chapterMaxPage = ceil(bean.total / chapterPageSize.toDouble()).toInt()
+        chapterRefreshStatus.setNoHasMore(page == chapterMaxPage)
 
-        chapterRefreshStatus.setCanRefresh(chapterPage != 1)
-
-        chapterRefreshStatus.setHasMore(bean.total > chapterAdapter.data.size)
-
-        if (oldChapterPage > page) {
-            bean.list?.let { chapterList.addAll(0, it) }
-            chapterRefreshStatus.finishRefresh(true)
-        } else {
-            chapterRefreshStatus.finishLoadMore(true)
-            bean.list?.let { chapterList.addAll(it) }
+        when (chapterType) {
+            CHAPTER_NEXT_PAGE -> {
+                nextLoadData(bean)
+            }
+            CHAPTER_PREVIOUS_PAGE -> {
+                previousLoadData(bean)
+            }
+            CHAPTER_REFRESH_PAGE -> {
+                refreshLoadData(bean)
+            }
         }
-        chapterAdapter.setList(chapterList)
-        oldChapterPage = page
-
     }
+
+    /**
+     * 处理加载下一页章节数据
+     */
+    private fun nextLoadData(bean: ChapterListModel) {
+        chapterRefreshStatus.finishLoadMore(true)
+        bean.list?.let { chapterAdapter.addData(it) }
+    }
+
+    /**
+     * 处理价值上一页章节数据
+     */
+    private fun previousLoadData(bean: ChapterListModel) {
+        chapterRefreshStatus.setCanRefresh(previousChapterPage != 1)
+        chapterRefreshStatus.finishRefresh(true)
+        bean.list?.let {
+            chapterAdapter.addData(0, it)
+            chapterAdapter.notifyDataSetChanged()
+        }
+    }
+
+    /**
+     * 处理加载新数据
+     */
+    private fun refreshLoadData(bean: ChapterListModel) {
+        chapterRefreshStatus.finishRefresh(true)
+        chapterAdapter.setList(bean.list)
+    }
+
 
     /**
      * 评论点赞
@@ -493,13 +546,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     private fun processCommentData(bean: HomeCommentBean) {
         commentRefreshStateMode.finishLoadMore(true)
-        if (homeDetailCommentAdapter.data.size < bean.total) {
-            commentRefreshStateMode.setHasMore(true)
-            ++commentPage
+        if (homeDetailCommentAdapter.data.size >= bean.total || bean.list_comment.size < mPageSize) {
+            commentRefreshStateMode.setNoHasMore(true)
         } else {
-            commentRefreshStateMode.setHasMore(false)
+            ++commentPage
         }
-
         if (commentPage == 1) {
             homeDetailCommentAdapter.setList(bean.list_comment)
         } else {
@@ -584,9 +635,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         }
         configChapterPageList()
         nextChapterPage = 1
-        chapterPage = 1
-        chapterList.clear()
-        getChapterList(1)
+        previousChapterPage = 1
+        chapterRefreshStatus.setResetNoMoreData(true)
+        chapterRefreshStatus.setNoHasMore(false)
+        getChapterList(1, CHAPTER_REFRESH_PAGE)
     }
 
     /**
@@ -594,11 +646,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     fun itemClickSelectChapter(page: Int) {
         nextChapterPage = page
-        chapterPage = page
-        chapterList.clear()
+        previousChapterPage = page
         hideOr.set(!hideOr.get())
         chapterRefreshStatus.setCanRefresh(page != 1)
-        getChapterList(page)
+        chapterRefreshStatus.setResetNoMoreData(true)
+        chapterRefreshStatus.setNoHasMore(false)
+        getChapterList(page, CHAPTER_REFRESH_PAGE)
     }
 
     /**

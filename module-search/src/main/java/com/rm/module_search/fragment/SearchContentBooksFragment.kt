@@ -1,5 +1,6 @@
 package com.rm.module_search.fragment
 
+import android.view.LayoutInflater
 import androidx.databinding.Observable
 import androidx.lifecycle.observe
 import com.rm.baselisten.mvvm.BaseVMFragment
@@ -19,6 +20,9 @@ import com.rm.module_search.viewmodel.SearchContentBooksViewModel
 class SearchContentBooksFragment :
     BaseVMFragment<SearchFragmentContentBookBinding, SearchContentBooksViewModel>() {
 
+    private val footView by lazy {
+        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
+    }
     override fun initLayoutId() = R.layout.search_fragment_content_book
 
     override fun initModelBrId() = BR.viewModel
@@ -39,9 +43,20 @@ class SearchContentBooksFragment :
                 mViewModel.showContentView()
                 mViewModel.bookAdapter.setList(list)
             }
-
-
         }
+
+        mViewModel.refreshStateMode.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStateMode.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.bookAdapter.removeAllFooterView()
+                    mViewModel.bookAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.bookAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
     override fun onResume() {

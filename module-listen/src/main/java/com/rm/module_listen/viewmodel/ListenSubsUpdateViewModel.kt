@@ -62,7 +62,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 //    private var allDateList = MutableLiveData<MutableList<ListenSubsDateModel>>()
 
     private var currentPage = 1
-    val pageSize = 12
+    private val pageSize = 12
 
     fun init() {
         initSubsRvScrollListen()
@@ -82,7 +82,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             repository.getListenSubsUpgradeList(currentPage, pageSize).checkResult(
                 onSuccess = {
                     showContentView()
-                    refreshStatusModel.setHasMore(it.list.size > 0)
+                    refreshStatusModel.setNoHasMore(it.list.size < pageSize)
                     refreshStatusModel.finishLoadMore(true)
                     currentPage++
                     dealData(it.list)

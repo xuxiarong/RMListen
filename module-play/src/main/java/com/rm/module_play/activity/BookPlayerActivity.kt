@@ -64,7 +64,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playAudioModel: DownloadAudio = DownloadAudio()
         var playChapterId: String = ""
         var playChapterList: MutableList<DownloadChapter> = mutableListOf()
-        var playChapterProgress : Int = 0
+        var playChapterProgress: Int = 0
         var playSortType: String = AudioSortType.SORT_ASC
 
         fun startPlayActivity(
@@ -73,7 +73,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             audioModel: DownloadAudio = DownloadAudio(),
             chapterId: String = "",
             chapterList: MutableList<DownloadChapter> = mutableListOf(),
-            chapterProgress : Int = 0,
+            chapterProgress: Int = 0,
             sortType: String = AudioSortType.SORT_ASC
         ) {
             try {
@@ -145,25 +145,25 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
             val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
             val chapterId = mViewModel.playChapterId.get()
-            if(chapterId!=null && !TextUtils.isEmpty(chapterId)){
-                if(currentPlayerMusic!=null){
+            if (chapterId != null && !TextUtils.isEmpty(chapterId)) {
+                if (currentPlayerMusic != null) {
                     //传入的章节id与正在播放的章节id进行对比，如果不一致，则播放传入的章节，一致则不用处理，继续播放该章节即可
-                    if(currentPlayerMusic.chapterId != chapterId){
+                    if (currentPlayerMusic.chapterId != chapterId) {
                         startPlayChapter(playPath, chapterId, currentPlayerMusic)
                     }
-                }else{
-                    if(playPath!=null && playPath.isNotEmpty()){
+                } else {
+                    if (playPath != null && playPath.isNotEmpty()) {
                         val predicate: (BaseAudioInfo) -> Boolean = { chapterId == it.chapterId }
                         val firstIndex = playPath.indexOfFirst(predicate)
-                        if(firstIndex!=-1){
+                        if (firstIndex != -1) {
                             startPlayChapter(playPath, chapterId, playPath[firstIndex])
-                        }else{
+                        } else {
                             startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
                         }
                     }
                 }
-            }else{
-                if(playPath!=null && playPath.isNotEmpty()){
+            } else {
+                if (playPath != null && playPath.isNotEmpty()) {
                     startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
                 }
             }
@@ -327,7 +327,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        if(playbackState == PlayGlobalData.STATE_ENDED){
+        if (playbackState == PlayGlobalData.STATE_ENDED) {
             mViewModel.updatePlayChapterProgress(isPlayFinish = true)
         }
         val currentStatus = mViewModel.playStatusBean.get()

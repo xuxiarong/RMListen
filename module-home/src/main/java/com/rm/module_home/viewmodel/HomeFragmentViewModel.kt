@@ -52,7 +52,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     var blockClick: (com.rm.module_home.model.home.HomeBlockModel) -> Unit = {}
 
     fun getHomeDataFromService() {
-        refreshStatusModel.setHasMore(false)
+        refreshStatusModel.setNoHasMore(true)
         launchOnIO(block = {
             repository.getHomeData().checkResult(
                 onSuccess = {
