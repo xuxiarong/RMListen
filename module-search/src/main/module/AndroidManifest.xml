@@ -20,6 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SearchResultActivity"/>
+        <activity
+            android:name=".activity.SearchResultActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 </manifest>

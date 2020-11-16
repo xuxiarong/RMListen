@@ -5,7 +5,6 @@ import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getListString
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
@@ -54,6 +53,9 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         mDataBind.root.setOnClickListener {
             hideKeyboard(mDataBind.searchMainEditText.applicationWindowToken)
         }
+        mDataBind.searchMainSuggestRv.setOnClickListener {
+            hideKeyboard(mDataBind.searchMainEditText.applicationWindowToken)
+        }
     }
 
     /**
@@ -82,14 +84,13 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
      * tabLayout绑定viewpager滑动事件
      */
     private fun attachViewPager() {
-        BendTabLayoutMediator(search_main_tab_layout, search_main_view_pager,
-            BendTabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                mViewModel.mTabDataList.get()?.let {
-                    if (it.size > position) {
-                        tab.text = it[position]
-                    }
+        BendTabLayoutMediator(search_main_tab_layout, search_main_view_pager) { tab, position ->
+            mViewModel.mTabDataList.get()?.let {
+                if (it.size > position) {
+                    tab.text = it[position]
                 }
-            }).attach()
+            }
+        }.attach()
 
     }
 
@@ -115,7 +116,6 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
     }
 
     private fun setData() {
-        DLog.i("------->", "setData--->${search_main_view_pager == null}")
         mViewModel.mTabDataList.get()?.let {
             search_main_view_pager?.let { viewPager ->
                 viewPager.adapter = SearchMainAdapter(this, it)
@@ -186,6 +186,5 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
             }
         }
     }
-
 
 }

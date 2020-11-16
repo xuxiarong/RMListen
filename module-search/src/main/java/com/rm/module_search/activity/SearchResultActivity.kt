@@ -26,7 +26,8 @@ import kotlin.math.abs
  * @description
  *
  */
-class SearchResultActivity : ComponentShowPlayActivity<SearchActivityResultBinding, SearchResultViewModel>() {
+class SearchResultActivity :
+    ComponentShowPlayActivity<SearchActivityResultBinding, SearchResultViewModel>() {
     private lateinit var params: ConstraintLayout.LayoutParams
 
 
@@ -46,6 +47,10 @@ class SearchResultActivity : ComponentShowPlayActivity<SearchActivityResultBindi
         mDataBind.root.setOnClickListener {
             hideKeyboard(mDataBind.searchResultEditText.applicationWindowToken)
         }
+        mDataBind.searchResultSuggestRv.setOnClickListener {
+            hideKeyboard(mDataBind.searchResultEditText.applicationWindowToken)
+        }
+
     }
 
     override fun initData() {
@@ -81,26 +86,28 @@ class SearchResultActivity : ComponentShowPlayActivity<SearchActivityResultBindi
      * tabLayout绑定viewpager滑动事件
      */
     private fun attachViewPager() {
-        BendTabLayoutMediator(mDataBind.searchResultTabLayout, mDataBind.searchResultViewPager,
-            BendTabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                tab.text = when (mViewModel.tabList[position]) {
-                    TYPE_CONTENT_ALL -> {
-                        getString(R.string.search_all)
-                    }
-                    TYPE_CONTENT_BOOKS -> {
-                        getString(R.string.search_books)
-                    }
-                    TYPE_CONTENT_ANCHOR -> {
-                        getString(R.string.search_anchor)
-                    }
-                    TYPE_CONTENT_SHEET -> {
-                        getString(R.string.search_sheet)
-                    }
-                    else -> {
-                        getString(R.string.search_all)
-                    }
+        BendTabLayoutMediator(
+            mDataBind.searchResultTabLayout,
+            mDataBind.searchResultViewPager
+        ) { tab, position ->
+            tab.text = when (mViewModel.tabList[position]) {
+                TYPE_CONTENT_ALL -> {
+                    getString(R.string.search_all)
                 }
-            }).attach()
+                TYPE_CONTENT_BOOKS -> {
+                    getString(R.string.search_books)
+                }
+                TYPE_CONTENT_ANCHOR -> {
+                    getString(R.string.search_anchor)
+                }
+                TYPE_CONTENT_SHEET -> {
+                    getString(R.string.search_sheet)
+                }
+                else -> {
+                    getString(R.string.search_all)
+                }
+            }
+        }.attach()
 
     }
 
@@ -111,7 +118,7 @@ class SearchResultActivity : ComponentShowPlayActivity<SearchActivityResultBindi
         val rect = Rect()
         mDataBind.root.getWindowVisibleDisplayFrame(rect)
         val bottom = rect.bottom
-        val height = screenHeight - bottom+getStateHeight(context)
+        val height = screenHeight - bottom + getStateHeight(context)
 
         //超过屏幕的五分之一则表示显示了输入框
         if (abs(height) > screenHeight / 5 && height != params.bottomMargin) {
@@ -128,5 +135,6 @@ class SearchResultActivity : ComponentShowPlayActivity<SearchActivityResultBindi
     override fun finish() {
         super.finish()
         searchKeyword.set("")
+        mViewModel.historyVisible.set(false)
     }
 }
