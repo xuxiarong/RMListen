@@ -143,17 +143,29 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mViewModel.hasNextChapter.set(false)
                 mViewModel.hasPreChapter.set(false)
             }
-            if (musicPlayerManger.getCurrentPlayerMusic() != null) {
-                val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()!!
-                playChapterId = currentPlayerMusic.chapterId
-            }
-
-            if (!musicPlayerManger.isPlaying()) {
-                musicPlayerManger.updateMusicPlayerData(
-                    audios = playPath,
-                    chapterId = mViewModel.playChapterId.get()!!
-                )
-                musicPlayerManger.startPlayMusic(chapterId = mViewModel.playChapterId.get()!!)
+            val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
+            val chapterId = mViewModel.playChapterId.get()
+            if(chapterId!=null && !TextUtils.isEmpty(chapterId)){
+                if(currentPlayerMusic!=null){
+                    //传入的章节id与正在播放的章节id进行对比，如果不一致，则播放传入的章节，一致则不用处理，继续播放该章节即可
+                    if(currentPlayerMusic.chapterId != chapterId){
+                        startPlayChapter(playPath, chapterId, currentPlayerMusic)
+                    }
+                }else{
+                    if(playPath!=null && playPath.isNotEmpty()){
+                        val predicate: (BaseAudioInfo) -> Boolean = { chapterId == it.chapterId }
+                        val firstIndex = playPath.indexOfFirst(predicate)
+                        if(firstIndex!=-1){
+                            startPlayChapter(playPath, chapterId, playPath[firstIndex])
+                        }else{
+                            startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
+                        }
+                    }
+                }
+            }else{
+                if(playPath!=null && playPath.isNotEmpty()){
+                    startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
+                }
             }
         })
 
@@ -218,6 +230,18 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         })
     }
 
+    private fun startPlayChapter(
+        playPath: List<BaseAudioInfo>,
+        chapterId: String,
+        currentPlayerMusic: BaseAudioInfo
+    ) {
+        musicPlayerManger.updateMusicPlayerData(audios = playPath, chapterId = chapterId)
+        musicPlayerManger.startPlayMusic(chapterId = chapterId)
+        if (playChapterProgress != 0) {
+            musicPlayerManger.seekTo(currentPlayerMusic.duration / 100 * playChapterProgress)
+        }
+    }
+
     override fun initData() {
         mViewModel.playAudioId.set(playAudioId)
         mViewModel.playChapterListSort.set(playSortType)
@@ -229,7 +253,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
         //如果传入的章节id为空，说明不是通过章节列表跳转的，直接访问书籍章节列表的第一页数据即可
 
-        if (playChapterList != null && playChapterList.isNotEmpty()) {
+        if (playChapterList.isNotEmpty()) {
             mViewModel.playChapterList.value = playChapterList
         } else {
             if (TextUtils.isEmpty(playChapterId)) {
@@ -239,6 +263,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
             }
         }
+        playChapterId = ""
         mViewModel.countdown()
         mViewModel.getCommentList()
 

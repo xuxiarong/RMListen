@@ -478,7 +478,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         if (mAudios.size > currentPlayIndex) {
             mOnPlayerEventListeners.forEach {
                 it.onPlayMusiconInfo(
-                    (mAudios[currentPlayIndex] as BaseAudioInfo), currentPlayIndex
+                    mAudios[currentPlayIndex], currentPlayIndex
                 )
             }
         }
