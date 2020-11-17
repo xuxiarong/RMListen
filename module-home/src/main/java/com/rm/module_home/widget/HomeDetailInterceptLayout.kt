@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.module_home.R
 import kotlin.math.abs
@@ -89,9 +90,9 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        mBottomHeight = headerLayout.height
+        mBottomHeight = headerLayout.height+dip(20)
         //根据实际情况计算
-        mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_180) - 55
+        mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_160)
 
         mTopHeight = -55
 

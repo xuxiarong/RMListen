@@ -66,7 +66,8 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     //输入法显示/隐藏监听
     var keyboardVisibility: (Boolean) -> Unit = { keyboardVisibilityListener(it) }
 
-    val inputText = ObservableField<String>()
+    //输入法是否显示
+    val keyboardIsVisibility = ObservableField<Boolean>(false)
 
     //输入法搜索按钮监听
     val bindActionListener: (View) -> Unit = { clickSearchFun(it) }
@@ -85,7 +86,6 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
 
     //清除按钮是否显示
     val clearVisible = ObservableField<Boolean>(false)
-
 
     //搜索是否结束
     private var resultIsEnd = true
@@ -118,15 +118,20 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
      * 键盘的显示隐藏监听
      */
     private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
+        keyboardIsVisibility.set(keyboardVisibility)
+        DLog.i("========>>>", "${keyWord.get()}    $keyboardVisibility")
         if (keyboardVisibility) {
-            recommendVisible.set(false)
             if (keyWord.get()!!.isEmpty()) {
                 historyIsVisible.set(HISTORY_KEY.getListString().size > 0)
+            } else {
+                searchSuggest(keyWord.get()!!)
             }
+            recommendVisible.set(false)
         } else {
-            recommendVisible.set(true)
-            suggestIsVisible.set(false)
-            historyIsVisible.set(HISTORY_KEY.getListString().size > 0)
+            if (suggestIsVisible.get()!=true){
+                recommendVisible.set(true)
+                historyIsVisible.set(HISTORY_KEY.getListString().size > 0)
+            }
         }
     }
 
@@ -181,7 +186,6 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     fun clickClearInput() {
         searchKeyword.set("")
         keyWord.set("")
-        inputText.set("")
         inputAdapter.setList(null)
         suggestIsVisible.set(false)
         recommendVisible.set(false)

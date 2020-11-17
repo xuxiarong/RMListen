@@ -39,7 +39,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
             bindText="@{item.gridRecommendRvModel.audio_label}"
-            style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+            style="@style/BusinessLabStyleHalfRound_FF5E5E"
             app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
 

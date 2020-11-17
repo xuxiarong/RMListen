@@ -32,10 +32,10 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_16"
             android:background="@drawable/business_shape_f7f7f7_12dp"
             android:paddingStart="@dimen/dp_4"
             android:paddingTop="8dp"
-            android:layout_marginEnd="@dimen/dp_16"
             android:paddingBottom="@dimen/dp_8"
             app:layout_constraintBottom_toBottomOf="@id/search_result_back"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,7 @@
                 android:text="@{viewModel.keyWord}" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                isVisible="@{viewModel.keyWord.length()>0 }"
+                isVisible="@{viewModel.keyWord.length()>0&amp;&amp;viewModel.keyboardIsVisibility}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -132,7 +132,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_result_history_text" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.rm.module_search.widget.KeyboardRecyclerView
             android:id="@+id/search_result_suggest_rv"
             bindVerticalLayout="@{viewModel.inputAdapter}"
             isVisible="@{viewModel.suggestIsVisible}"
@@ -149,11 +149,11 @@
             isVisible="@{viewModel.contentIsVisible}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45"
+            app:bendTabBackground="@null"
             app:bendTabIndicatorAnimation="true"
             app:bendTabIndicatorColor="@color/business_color_ff5e5e"
             app:bendTabIndicatorHeight="@dimen/dp_1"
             app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
-            app:bendTabBackground="@null"
             app:bendTabIndicatorWidth="@dimen/dp_24"
             app:bendTabMode="scrollable"
             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"

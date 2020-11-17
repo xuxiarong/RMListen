@@ -71,7 +71,7 @@
                 android:text="@{viewModel.keyWord}" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                isVisible="@{viewModel.keyWord.length()>0}"
+                isVisible="@{viewModel.keyWord.length()>0&amp;&amp;viewModel.keyboardIsVisibility}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -82,12 +82,14 @@
         </LinearLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/search_fragment_coording_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_main_tv_search">
 
             <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/search_fragment_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/businessWhite"
@@ -152,11 +154,11 @@
                             android:textSize="@dimen/business_text_size_14sp"
                             app:layout_constraintEnd_toStartOf="@id/search_main_del_history"
                             app:layout_constraintTop_toTopOf="parent" />
-<!--                        bindTagClick="@{viewModel.historyItemClickFun}"-->
+                        <!--                        bindTagClick="@{viewModel.historyItemClickFun}"-->
                         <com.rm.module_search.widget.TagLayout
                             android:id="@+id/search_main_history_tags"
-                            bindTagData="@{viewModel.historyList}"
                             bindTagClick="@{viewModel.historyItemClickFun}"
+                            bindTagData="@{viewModel.historyList}"
                             bindTagMaxLine="@{2}"
                             isVisible="@{viewModel.historyIsVisible}"
                             android:layout_width="match_parent"
@@ -205,10 +207,10 @@
                             isVisible="@{viewModel.recommendVisible}"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_45"
+                            app:bendTabBackground="@null"
                             app:bendTabIndicatorAnimation="true"
                             app:bendTabIndicatorColor="@color/business_color_ff5e5e"
                             app:bendTabIndicatorHeight="@dimen/dp_1"
-                            app:bendTabBackground="@null"
                             app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
                             app:bendTabIndicatorWidth="@dimen/dp_24"
                             app:bendTabMode="scrollable"
@@ -233,7 +235,7 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.rm.module_search.widget.KeyboardRecyclerView
             android:id="@+id/search_main_suggest_rv"
             bindVerticalLayout="@{viewModel.inputAdapter}"
             isVisible="@{viewModel.suggestIsVisible}"

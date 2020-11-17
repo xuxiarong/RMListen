@@ -3,7 +3,9 @@ package com.rm.module_search.fragment
 import android.graphics.Rect
 import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.Observable
+import com.google.android.material.appbar.AppBarLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.getListString
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
@@ -29,6 +31,10 @@ import kotlin.random.Random
 class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainViewModel>() {
     private var hintTask: AutoTask? = null
     private lateinit var params: ConstraintLayout.LayoutParams
+
+    //输入法高度
+    private var keyboardHeight = 0
+
     override fun initModelBrId() = BR.viewModel
 
     override fun initLayoutId() = R.layout.search_fragment_main
@@ -53,8 +59,21 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         mDataBind.root.setOnClickListener {
             hideKeyboard(mDataBind.searchMainEditText.applicationWindowToken)
         }
-        mDataBind.searchMainSuggestRv.setOnClickListener {
-            hideKeyboard(mDataBind.searchMainEditText.applicationWindowToken)
+    }
+
+    /**
+     * fix 修复吸顶后 历史显示异常
+     */
+    private fun scrollTop() {
+        val behavior =
+            (mDataBind.searchFragmentAppbar.layoutParams as CoordinatorLayout.LayoutParams).behavior
+        if (behavior is AppBarLayout.Behavior) {
+            val topAndBottomOffset = behavior.topAndBottomOffset
+            if (topAndBottomOffset != 0) {
+                behavior.topAndBottomOffset = 0
+                mDataBind.searchFragmentAppbar.setExpanded(true, true)
+            }
+
         }
     }
 
@@ -65,12 +84,8 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         val rect = Rect()
         mDataBind.root.getWindowVisibleDisplayFrame(rect)
         val bottom = rect.bottom
-        val height = screenHeight - bottom - getStateHeight(context!!)
-        //超过屏幕的五分之一则表示显示了输入框
-        if (abs(height) > screenHeight / 5 && height != params.bottomMargin) {
-            params.bottomMargin = height
-            mDataBind.searchMainSuggestRv.layoutParams = params
-        }
+        keyboardHeight = screenHeight - bottom - getStateHeight(context!!)
+
     }
 
 
@@ -113,6 +128,19 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
                 startHintBanner()
             }
         })
+
+        mViewModel.keyboardIsVisibility.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                params.bottomMargin = if (mViewModel.keyboardIsVisibility.get() == true) {
+                    scrollTop()
+                    keyboardHeight
+                } else {
+                    0
+                }
+                mDataBind.searchMainSuggestRv.layoutParams = params
+            }
+        })
     }
 
     private fun setData() {
@@ -128,7 +156,8 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         super.onResume()
         val keyword = searchKeyword.get()!!
         mViewModel.keyWord.set(keyword)
-        mViewModel.inputText.set(keyword)
+        mViewModel.suggestIsVisible.set(false)
+        mViewModel.recommendVisible.set(true)
         mViewModel.hintBannerList.get()?.let { startHintBanner() }
         curType.postValue(REQUEST_TYPE_ALL)
         refreshHistoryData()

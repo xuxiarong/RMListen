@@ -193,7 +193,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
      * 收藏听单
      */
     private fun favoritesSheet(view: View, sheetId: String) {
-        showLoading()
         launchOnIO {
             repository.favoritesSheet(sheetId).checkResult(
                 onSuccess = {
@@ -212,7 +211,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
      * 取消收藏
      */
     private fun unFavoritesSheet(sheetId: String) {
-        showLoading()
         launchOnIO {
             repository.unFavoritesSheet(sheetId).checkResult(
                 onSuccess = {
@@ -260,19 +258,4 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
         IS_FIRST_FAVORITES.putMMKV(false)
     }
 
-}
-
-@BindingAdapter("bindFavor")
-fun AppCompatTextView.bindFavor(isFavor: Boolean) {
-    if (isFavor) {
-        visibility = View.VISIBLE
-        setBackgroundResource(R.drawable.home_select_menu_collected_unselect)
-        text = resources.getString(R.string.home_menu_detail_collected)
-        setTextColor(Color(R.color.business_text_color_b1b1b1))
-    } else {
-        visibility = View.VISIBLE
-        setBackgroundResource(R.drawable.home_select_menu_collected_select)
-        text = resources.getString(R.string.home_menu_detail_add_collected)
-        setTextColor(Color(R.color.business_text_color_ffffff))
-    }
 }

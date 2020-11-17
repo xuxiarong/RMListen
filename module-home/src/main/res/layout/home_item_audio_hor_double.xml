@@ -39,7 +39,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopTag"
                 bindText="@{item.topRecommendModel.audio_label}"
-                style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+                style="@style/BusinessLabStyleHalfRound_FF5E5E"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon" />
 
@@ -99,7 +99,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomTag"
                 bindText="@{item.bottomRecommendModel.audio_label}"
-                style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+                style="@style/BusinessLabStyleHalfRound_FF5E5E"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon" />
 
