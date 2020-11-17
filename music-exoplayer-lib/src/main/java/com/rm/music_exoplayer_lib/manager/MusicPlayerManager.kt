@@ -121,7 +121,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun getCurrentPlayerID(): Long {
-        TODO("Not yet implemented")
+        return mBinder?.getCurrentPlayerMusic()?.chapterId?.toLong() ?:0L
     }
 
     override fun seekTo(currentTime: Long) {

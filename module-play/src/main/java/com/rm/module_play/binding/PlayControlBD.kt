@@ -214,11 +214,11 @@ fun TextView.bindPlayTimeCountText(timeCount: Long) {
 @BindingAdapter("bindPlaySpeedText")
 fun TextView.bindPlaySpeedText(float: Float?) {
     if (float == null) {
-        visibility = View.GONE
+        visibility = View.INVISIBLE
         return
     }
     if (float <= 0) {
-        visibility = View.GONE
+        visibility = View.INVISIBLE
         return
     }
 

@@ -263,12 +263,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         musicPlayerManger.startPlayMusic(chapterId = chapterId)
         mViewModel.maxProcess.set(currentPlayerMusic.duration.toFloat())
         when {
-            playCurrentDuration <= 0 -> {
+            playCurrentDuration <=0 -> {
                 mViewModel.process.set(0F)
             }
             else -> {
-                if (playCurrentDuration > currentPlayerMusic.duration * 1000) {
-                    playCurrentDuration = currentPlayerMusic.duration * 1000
+                if(playCurrentDuration > currentPlayerMusic.duration *1000){
+                    playCurrentDuration = currentPlayerMusic.duration *1000
                 }
                 musicPlayerManger.seekTo(playCurrentDuration)
             }
@@ -293,7 +293,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mViewModel.getChapterList(playAudioId)
             } else {
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
-                if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
+                if(currentPlayerMusic!=null && currentPlayerMusic.chapterId == playChapterId){
                     mViewModel.maxProcess.set(currentPlayerMusic.duration * 1000F)
                     mViewModel.process.set(musicPlayerManger.getCurDurtion().toFloat())
                 }

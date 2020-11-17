@@ -43,6 +43,7 @@ import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
+import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
@@ -369,19 +370,20 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 //        showChapter.notifyChange()
 //        showChapter.set(false)
         if(context is FragmentActivity){
-            CommonDragMvDialog().apply {
-                gravity = Gravity.BOTTOM
-                dialogWidthIsMatchParent = true
-                dialogHeight = context.dip(550)
-                dialogHasBackground = false
-                closeDragAlpha = true
-                dialogCanceledOnTouchOutside = false
-            }.showCommonDialog(
-                context,
-                R.layout.play_dialog_chapter_list,
-                this,
-                BR.viewModel
-            )
+//            CommonDragMvDialog().apply {
+//                gravity = Gravity.BOTTOM
+//                dialogWidthIsMatchParent = true
+//                dialogHeight = context.dip(550)
+//                dialogHasBackground = false
+//                closeDragAlpha = true
+//                dialogCanceledOnTouchOutside = false
+//            }.showCommonDialog(
+//                context,
+//                R.layout.play_dialog_chapter_list,
+//                this,
+//                BR.viewModel
+//            )
+            context.showPlayBookListDialog(this)
         }
     }
 

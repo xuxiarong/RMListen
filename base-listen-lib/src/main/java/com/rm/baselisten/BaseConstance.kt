@@ -104,7 +104,7 @@ object BaseConstance {
      * 更新正在播放的章节进度
      */
     fun updateBaseProgress(currentDuration : Long , totalDuration : Long) {
-        val progressModel = BasePlayProgressModel(currentDuration = currentDuration,totalDuration = currentDuration)
+        val progressModel = BasePlayProgressModel(currentDuration = currentDuration,totalDuration = totalDuration)
         basePlayProgressModel.set(progressModel)
         PlAY_LAST_LISTEN_PROGRESS.putMMKV(progressModel)
     }
