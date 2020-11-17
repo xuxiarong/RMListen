@@ -622,6 +622,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         showState = state
     }
 
+    override fun getCurrentPlayIndex(): Int {
+        return mCurrentPlayIndex
+    }
+
     /**
      * 播放器设计模式
      */

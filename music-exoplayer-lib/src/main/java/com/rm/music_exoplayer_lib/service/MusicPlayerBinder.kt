@@ -193,4 +193,5 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     //恢复页面播放状态
     fun resumePlayState(state:Boolean)=presenter.resumePlayState(state)
 
+    fun getCurrentPlayIndex()  = presenter.getCurrentPlayIndex()
 }

@@ -2,6 +2,8 @@ package com.rm.component_comm.play
 
 import android.content.Context
 import android.view.View
+import com.rm.business_lib.AudioSortType
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
@@ -26,7 +28,7 @@ interface PlayService : ApplicationProvider {
         chapterId: String = "",
         chapterList: MutableList<DownloadChapter> = mutableListOf(),
         chapterProgress : Int = 0,
-        sortType: String = "scs"
+        sortType: String = AudioSortType.SORT_ASC
     )
 
     //播放历史

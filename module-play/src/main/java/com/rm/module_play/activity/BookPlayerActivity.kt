@@ -59,7 +59,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     companion object {
 
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
-        var lastOpenTime: Long = 0L/* SystemClock.currentThreadTimeMillis()*/
+        private var lastOpenTime: Long = 0L
         var playAudioId: String = ""
         var playAudioModel: DownloadAudio = DownloadAudio()
         var playChapterId: String = ""
@@ -150,6 +150,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     //传入的章节id与正在播放的章节id进行对比，如果不一致，则播放传入的章节，一致则不用处理，继续播放该章节即可
                     if(currentPlayerMusic.chapterId != chapterId){
                         startPlayChapter(playPath, chapterId, currentPlayerMusic)
+                    }else{
+                        onPlayMusiconInfo(currentPlayerMusic, musicPlayerManger.getCurrentPlayIndex())
                     }
                 }else{
                     if(playPath!=null && playPath.isNotEmpty()){
@@ -237,8 +239,17 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     ) {
         musicPlayerManger.updateMusicPlayerData(audios = playPath, chapterId = chapterId)
         musicPlayerManger.startPlayMusic(chapterId = chapterId)
-        if (playChapterProgress != 0) {
-            musicPlayerManger.seekTo(currentPlayerMusic.duration / 100 * playChapterProgress)
+        mViewModel.maxProcess.set(currentPlayerMusic.duration.toFloat())
+        when {
+            playChapterProgress <=0 -> {
+                mViewModel.process.set(0F)
+            }
+            playChapterProgress in 1..99 -> {
+                musicPlayerManger.seekTo(currentPlayerMusic.duration * 10 * playChapterProgress)
+            }
+            else -> {
+                mViewModel.process.set(currentPlayerMusic.duration * 10 *99F)
+            }
         }
     }
 
@@ -259,6 +270,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             if (TextUtils.isEmpty(playChapterId)) {
                 mViewModel.getChapterList(playAudioId)
             } else {
+                val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
+                if(currentPlayerMusic!=null && currentPlayerMusic.chapterId == playChapterId){
+                    mViewModel.maxProcess.set(currentPlayerMusic.duration * 1000F)
+                    mViewModel.process.set(musicPlayerManger.getCurDurtion().toFloat())
+                }
                 mViewModel.playChapterId.set(playChapterId)
                 mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
             }
@@ -289,8 +305,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
+        mViewModel.savePlayChapter(musicInfo, position)
+
         val playList = mViewModel.playManger.getCurrentPlayList()
-        mViewModel.startPlayChapter(musicInfo, position)
         if (playList != null && playList.isNotEmpty()) {
             val size = playList.size
             if (position == 0) {
@@ -364,7 +381,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
         DLog.d(
             "suolong",
-            " playWhenReady = $playWhenReady --- status = ${playbackState} --- time = ${System.currentTimeMillis()}"
+            " playWhenReady = $playWhenReady --- status = $playbackState --- time = ${System.currentTimeMillis()}"
         )
     }
 
