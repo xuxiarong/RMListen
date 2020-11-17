@@ -640,7 +640,7 @@
                         tools:ignore="MissingConstraints">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_music_play"
+                            android:id="@+id/play_comment_rv"
                             bindVerticalLayout="@{viewModel.mCommentAdapter}"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />

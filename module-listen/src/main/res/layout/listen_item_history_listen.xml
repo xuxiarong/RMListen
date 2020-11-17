@@ -64,7 +64,7 @@
                 style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
                 app:layout_constraintRight_toRightOf="@id/listenItemRecentIv"
                 app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
-                android:text="@{item.audio.audio_label}"
+                bindText="@{item.audio.audio_label}"
                 tools:text="文案" />
 
             <TextView
