@@ -94,7 +94,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
 
         if (mPage == 1) {
             if (bean.audio_list.isEmpty()) {
-                showDataEmpty()
+                showSearchDataEmpty()
             } else {
                 bookAdapter.setList(bean.audio_list)
             }

@@ -27,6 +27,8 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
     val memberId = ObservableField<String>("")
 
     var detailInfoData = ObservableField<MineInfoDetail>()
+    var fans = ObservableField(0)
+    var follows = ObservableField(0)
 
     var isVisible = ObservableBoolean(false)
 
@@ -39,7 +41,8 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     detailInfoData.set(it)
-
+                    fans.set(it.fans)
+                    follows.set(it.follows)
                     attentionVisibility.set(it.id != loginUser.get()?.id)
                     isAttention.set(it.is_followed)
 
@@ -58,9 +61,8 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
             repository.attentionAnchor(followId).checkResult(
                 onSuccess = {
                     isAttention.set(true)
-                    detailInfoData.get()?.let {
-                        it.fans = it.fans + 1
-                        detailInfoData.set(it)
+                    fans.get()?.let {
+                        fans.set(it + 1)
                     }
                     showTip("关注成功")
                 },
@@ -81,9 +83,8 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
             repository.unAttentionAnchor(followId).checkResult(
                 onSuccess = {
                     isAttention.set(false)
-                    detailInfoData.get()?.let {
-                        it.fans = it.fans - 1
-                        detailInfoData.set(it)
+                    fans.get()?.let {
+                        fans.set(it - 1)
                     }
                     showTip("取消关注成功")
                 },

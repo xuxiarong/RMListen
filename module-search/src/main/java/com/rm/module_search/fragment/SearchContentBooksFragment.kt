@@ -37,7 +37,7 @@ class SearchContentBooksFragment :
         searchResultData.observe(this) {
             val list = it.audio_list
             if (list.isNullOrEmpty()) {
-                mViewModel.showDataEmpty()
+                mViewModel.showSearchDataEmpty()
             } else {
                 mViewModel.mPage = 1
                 mViewModel.showContentView()
@@ -62,7 +62,7 @@ class SearchContentBooksFragment :
     override fun onResume() {
         super.onResume()
         if (mViewModel.bookAdapter.data.isEmpty()) {
-            mViewModel.showDataEmpty()
+            mViewModel.showSearchDataEmpty()
         }
     }
 

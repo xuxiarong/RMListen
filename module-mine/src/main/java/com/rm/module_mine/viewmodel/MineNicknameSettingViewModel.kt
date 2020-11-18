@@ -9,6 +9,7 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.LOGIN_USER_INFO
 import com.rm.business_lib.loginUser
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MinePersonalInfoActivity.Companion.RESULT_CODE_NICK
 import com.rm.module_mine.bean.UpdateUserInfoBean
 import com.rm.module_mine.repository.MineRepository
 
@@ -47,10 +48,10 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
     fun updateUserInfo() {
         when {
             inputText.get()!!.length > 16 -> {
-                showTip("字数最多不能超过16个",R.color.business_color_ff5e5e)
+                showTip("字数最多不能超过16个", R.color.business_color_ff5e5e)
             }
             EmojiUtils.containsEmoji(inputText.get()!!) -> {
-                showTip("不能包含表情",R.color.business_color_ff5e5e)
+                showTip("不能包含表情", R.color.business_color_ff5e5e)
             }
             else -> {
                 loginUser.get()?.let {
@@ -67,12 +68,11 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
                             onSuccess = { userBean ->
                                 LOGIN_USER_INFO.putMMKV(userBean)
                                 loginUser.set(userBean)
-                                showTip("修改成功")
-                                finish()
+                                setResultAndFinish(RESULT_CODE_NICK)
                             },
-                            onError = {
-                                showTip("$it", R.color.business_color_ff5e5e)
-                                DLog.i("------>", "$it")
+                            onError = {msg->
+                                showTip("$msg", R.color.business_color_ff5e5e)
+                                DLog.i("------>", "$msg")
                             }
                         )
                     }

@@ -5,6 +5,7 @@ import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
 import com.rm.business_lib.bean.Country
+import com.rm.business_lib.loginUser
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineCropActivity.Companion.FILE_PATH
@@ -60,13 +61,11 @@ class MinePersonalInfoActivity :
                 RESULT_CODE_ADDRESS -> {
                     countrySuccess(data)
                 }
-                RESULT_CODE_NICK -> {
-
-                }
-                RESULT_CODE_SIGNATURE -> {
+                RESULT_CODE_NICK, RESULT_CODE_SIGNATURE -> {
+                    mViewModel.userInfo.set(loginUser.get())
+                    mViewModel.showTip("修改成功")
                 }
                 RESULT_CODE_CROP -> {
-
                     data?.getStringExtra(FILE_PATH)?.let {
                         DLog.i("----->onActivityResult", "CROP $it")
                         mViewModel.uploadPic(it)

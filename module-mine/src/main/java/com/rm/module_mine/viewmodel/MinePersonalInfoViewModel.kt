@@ -145,7 +145,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      * 昵称点击事件
      */
     fun clickNickname() {
-        startActivity(MineSettingNicknameActivity::class.java)
+        startActivityForResult(MineSettingNicknameActivity::class.java,100)
     }
 
     /**
@@ -197,7 +197,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      * 个性签名点击事件
      */
     fun clickPersonalSignature() {
-        startActivity(MineSettingPersonalSignatureActivity::class.java)
+        startActivityForResult(MineSettingPersonalSignatureActivity::class.java,100)
     }
 
     /**

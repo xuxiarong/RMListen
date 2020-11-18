@@ -39,7 +39,7 @@ class SearchContentSheetFragment :
         searchResultData.observe(this) {
             val list = it.sheet_list
             if (list.isNullOrEmpty()) {
-                mViewModel.showDataEmpty()
+                mViewModel.showSearchDataEmpty()
             } else {
                 mViewModel.mPage = 1
                 mViewModel.showContentView()
@@ -64,7 +64,7 @@ class SearchContentSheetFragment :
     override fun onResume() {
         super.onResume()
         if (mViewModel.sheetAdapter.data.isEmpty()) {
-            mViewModel.showDataEmpty()
+            mViewModel.showSearchDataEmpty()
         }
     }
 

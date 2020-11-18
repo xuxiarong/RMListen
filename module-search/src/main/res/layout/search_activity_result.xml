@@ -132,17 +132,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_result_history_text" />
 
-        <com.rm.module_search.widget.KeyboardRecyclerView
-            android:id="@+id/search_result_suggest_rv"
-            bindVerticalLayout="@{viewModel.inputAdapter}"
+        <FrameLayout
+            android:id="@+id/search_result_suggest_layout"
             isVisible="@{viewModel.suggestIsVisible}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/business_text_color_ffffff"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_result_back" />
+            app:layout_constraintTop_toBottomOf="@id/search_result_back">
 
+            <androidx.recyclerview.widget.RecyclerView
+                bindVerticalLayout="@{viewModel.inputAdapter}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
         <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
             android:id="@+id/search_result_tab_layout"

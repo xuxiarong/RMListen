@@ -38,7 +38,7 @@ class SearchContentAnchorFragment :
         searchResultData.observe(this) {
             val list = it.member_list
             if (list.isNullOrEmpty()) {
-                mViewModel.showDataEmpty()
+                mViewModel.showSearchDataEmpty()
             } else {
                 mViewModel.mPage = 1
                 mViewModel.showContentView()
@@ -63,7 +63,7 @@ class SearchContentAnchorFragment :
     override fun onResume() {
         super.onResume()
         if (mViewModel.anchorAdapter.data.isEmpty()) {
-            mViewModel.showDataEmpty()
+            mViewModel.showSearchDataEmpty()
         }
     }
 

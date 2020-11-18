@@ -97,7 +97,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
 
         if (mPage == 1) {
             if (bean.member_list.isEmpty()) {
-                showDataEmpty()
+                showSearchDataEmpty()
             } else {
                 anchorAdapter.setList(bean.member_list)
             }

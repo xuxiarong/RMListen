@@ -63,12 +63,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 下一页章节的页码
      */
-    private var nextChapterPage = 1
+    var nextChapterPage = 1
 
     /**
      * 上一页章节页码
      */
-    private var previousChapterPage = 1
+    var previousChapterPage = 1
 
     /**
      * 章节的最大页码
@@ -83,7 +83,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 评论当前的页码
      */
-    private var commentPage = 1
+    var commentPage = 1
 
     /**
      * 评论每次加载数据的条数
@@ -546,17 +546,17 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     private fun processCommentData(bean: HomeCommentBean) {
         commentRefreshStateMode.finishLoadMore(true)
-        if (homeDetailCommentAdapter.data.size >= bean.total || bean.list_comment.size < mPageSize) {
-            commentRefreshStateMode.setNoHasMore(true)
-        } else {
-            ++commentPage
-        }
         if (commentPage == 1) {
             homeDetailCommentAdapter.setList(bean.list_comment)
         } else {
             homeDetailCommentAdapter.addData(bean.list_comment)
         }
 
+        if (homeDetailCommentAdapter.data.size >= bean.total || bean.list_comment.size < mPageSize) {
+            commentRefreshStateMode.setNoHasMore(true)
+        } else {
+            ++commentPage
+        }
 
     }
 

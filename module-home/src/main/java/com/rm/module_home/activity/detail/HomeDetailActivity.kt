@@ -63,13 +63,15 @@ class HomeDetailActivity :
             mViewModel.chapterRefreshStatus.setCanRefresh(false)
             mViewModel.chapterRefreshStatus.setNoHasMore(false)
             mViewModel.chapterRefreshStatus.setResetNoMoreData(true)
-
-            mViewModel.commentRefreshStateMode.setNoHasMore(false)
-
+            mViewModel.nextChapterPage = 1
+            mViewModel.previousChapterPage = 1
             mViewModel.getChapterList(1, HomeDetailViewModel.CHAPTER_REFRESH_PAGE) //初始化章节列表
+
+            mViewModel.commentPage = 1
+            mViewModel.commentRefreshStateMode.setNoHasMore(false)
+            mViewModel.commentRefreshStateMode.setResetNoMoreData(true)
             mViewModel.getCommentList(it)
         }
-
     }
 
     override fun initView() {

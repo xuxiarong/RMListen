@@ -40,7 +40,7 @@ class SearchContentAllFragment :
             processSheetData(sheetList)
             processBookData(audioList)
             if (audioList.isEmpty() && memberList.isEmpty() && sheetList.isEmpty()) {
-                mViewModel.showDataEmpty()
+                mViewModel.showSearchDataEmpty()
             } else {
                 mViewModel.showContentView()
             }

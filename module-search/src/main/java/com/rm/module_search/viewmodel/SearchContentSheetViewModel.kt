@@ -90,7 +90,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
 
         if (mPage == 1) {
             if (bean.sheet_list.isEmpty()) {
-                showDataEmpty()
+                showSearchDataEmpty()
             } else {
                 sheetAdapter.setList(bean.sheet_list)
             }
