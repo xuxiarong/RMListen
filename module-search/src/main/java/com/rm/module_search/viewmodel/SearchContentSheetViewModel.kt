@@ -57,7 +57,6 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
      * 加载更多
      */
     fun loadData() {
-        ++mPage
         requestData()
     }
 
@@ -82,6 +81,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
      * 成功数据
      */
     private fun successData(bean: SearchResultBean) {
+
         if (mPage == 1) {
             refreshStateMode.finishRefresh(true)
         } else {
@@ -97,7 +97,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
         } else {
             bean.sheet_list.let { sheetAdapter.addData(it) }
         }
-
+        ++mPage
         refreshStateMode.setNoHasMore(bean.sheet_list.size < mPageSize || sheetAdapter.data.size >= bean.sheet)
     }
 
@@ -108,7 +108,6 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
         if (mPage == 1) {
             refreshStateMode.finishRefresh(false)
         } else {
-            mPage--
             refreshStateMode.finishLoadMore(false)
         }
 

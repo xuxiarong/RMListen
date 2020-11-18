@@ -61,7 +61,6 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
      * 加载更多
      */
     fun loadData() {
-        ++mPage
         requestData()
     }
 
@@ -86,6 +85,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
      * 成功数据
      */
     private fun successData(bean: SearchResultBean) {
+
         if (mPage == 1) {
             refreshStateMode.finishRefresh(true)
         } else {
@@ -101,6 +101,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
         } else {
             bean.audio_list.let { bookAdapter.addData(it) }
         }
+        ++mPage
         refreshStateMode.setNoHasMore(bean.audio_list.size < mPageSize || bookAdapter.data.size >= bean.audio)
 
     }
@@ -112,7 +113,6 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
         if (mPage == 1) {
             refreshStateMode.finishRefresh(false)
         } else {
-            mPage--
             refreshStateMode.finishLoadMore(false)
         }
         loadErrorBlock("$msg")

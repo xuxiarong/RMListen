@@ -137,7 +137,7 @@ class ListenDialogSheetViewModel(
             bean.list?.let { mAdapter.addData(it) }
             refreshStateModel.finishLoadMore(true)
         }
-
+        ++page
         //是否有跟多数据
         refreshStateModel.setNoHasMore(bean.list?.size ?: 0 < pageSize)
     }
@@ -203,7 +203,6 @@ class ListenDialogSheetViewModel(
      * 加载更多数据
      */
     fun loadData() {
-        ++page
         getData()
     }
 

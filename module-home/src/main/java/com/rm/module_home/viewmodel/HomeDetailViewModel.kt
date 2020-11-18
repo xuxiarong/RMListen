@@ -356,7 +356,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     }
 
     /**
-     * 处理章节价值失败
+     * 处理章节加载失败
      */
     private fun processChapterFailure(msg: String?, chapterType: String) {
         when (chapterType) {
@@ -633,6 +633,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 mCurSort = AudioSortType.SORT_ASC
             }
         }
+        chapterAdapter.setSort(mCurSort)
         configChapterPageList()
         nextChapterPage = 1
         previousChapterPage = 1

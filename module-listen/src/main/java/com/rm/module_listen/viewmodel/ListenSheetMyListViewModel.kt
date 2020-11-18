@@ -97,7 +97,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
             refreshStateModel.finishLoadMore(true)
             bean.list?.let { mAdapter.addData(it) }
         }
-
+        page++
         //是否有更多数据
         refreshStateModel.setNoHasMore(bean.list?.size ?: 0 < pageSize)
     }

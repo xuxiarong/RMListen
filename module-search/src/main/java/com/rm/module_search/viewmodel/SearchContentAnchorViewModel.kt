@@ -63,7 +63,6 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
      * 加载更多
      */
     fun loadData() {
-        ++mPage
         requestData()
     }
 
@@ -94,7 +93,6 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         } else {
             refreshStateMode.finishLoadMore(true)
         }
-
         if (mPage == 1) {
             if (bean.member_list.isEmpty()) {
                 showSearchDataEmpty()
@@ -104,6 +102,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         } else {
             bean.member_list.let { anchorAdapter.addData(it) }
         }
+        ++mPage
         refreshStateMode.setNoHasMore(bean.member_list.size < mPageSize || anchorAdapter.data.size >= bean.member)
 
     }
@@ -115,7 +114,6 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         if (mPage == 1) {
             refreshStateMode.finishRefresh(false)
         } else {
-            mPage--
             refreshStateMode.finishLoadMore(false)
         }
         loadErrorBlock("$msg")

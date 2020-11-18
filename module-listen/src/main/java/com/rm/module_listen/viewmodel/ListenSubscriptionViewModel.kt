@@ -71,7 +71,6 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * 加载更多
      */
     fun loadData() {
-        ++mPage
         getData()
     }
 
@@ -112,6 +111,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
             setTop(listListen)
             mAdapter.addData(listListen)
         }
+        ++mPage
         //是否有更多数据
         refreshStatusModel.setNoHasMore(listListen.size < pageSize)
     }

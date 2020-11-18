@@ -32,8 +32,6 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
 
     val data = ObservableField<SearchResultBean>()
 
-    val userInfo = loginUser
-
     //书籍adapter
     val bookAdapter by lazy {
         CommonBindVMAdapter<DownloadAudio>(
