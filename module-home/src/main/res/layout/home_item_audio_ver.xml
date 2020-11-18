@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/home_book_adapter_tips"
-            style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+            style="@style/BusinessLabStyleHalfRound_FF5E5E"
             bindText="@{item.verModel.audio_label}"
             app:layout_constraintRight_toRightOf="@id/home_book_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/home_book_adapter_icon"
