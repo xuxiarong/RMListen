@@ -70,8 +70,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
      */
     suspend fun chapterPageList(
         audioId: String,
-//        page: Int,
-//        page_size: Int,
+        page_size: Int,
         chapterId: String,
         sort: String
     ): BaseResult<ChapterListModel> {
@@ -79,8 +78,7 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
             playApi.chapterPage(
                 audioId = audioId,
                 chapterId = chapterId,
-//                page = page,
-//                page_size = page_size,
+                page_size = page_size,
                 sort = sort
             )
         }

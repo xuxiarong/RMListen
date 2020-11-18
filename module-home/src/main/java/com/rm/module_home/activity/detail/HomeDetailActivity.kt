@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
@@ -17,8 +16,6 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityDetailMainBinding
 import com.rm.module_home.viewmodel.HomeDetailViewModel
 import com.rm.module_home.widget.HomeDetailInterceptLayout
-import kotlinx.android.synthetic.main.home_activity_detail_main.*
-import kotlinx.android.synthetic.main.home_activity_listen_menu_detail.*
 
 /**
  * 书籍详情
@@ -169,10 +166,10 @@ class HomeDetailActivity :
 
 
     override fun startObserve() {
-        mViewModel.chapterRefreshStatus.isHasMore.addOnPropertyChangedCallback(object :
+        mViewModel.chapterRefreshStatus.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.chapterRefreshStatus.isHasMore.get()
+                val hasMore = mViewModel.chapterRefreshStatus.noMoreData.get()
                 if (hasMore == true) {
                     mViewModel.chapterAdapter.removeAllFooterView()
                     mViewModel.chapterAdapter.addFooterView(chapterFootView)
@@ -182,10 +179,10 @@ class HomeDetailActivity :
             }
         })
 
-        mViewModel.commentRefreshStateMode.isHasMore.addOnPropertyChangedCallback(object :
+        mViewModel.commentRefreshStateMode.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.commentRefreshStateMode.isHasMore.get()
+                val hasMore = mViewModel.commentRefreshStateMode.noMoreData.get()
                 if (hasMore == true) {
                     mViewModel.homeDetailCommentAdapter.removeAllFooterView()
                     mViewModel.homeDetailCommentAdapter.addFooterView(commentFootView)

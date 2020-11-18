@@ -82,6 +82,12 @@
                 android:id="@+id/smart_refresh_layout_play"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                bindCanRefresh="@{viewModel.chapterRefreshModel.canRefresh}"
+                bindIsRefreshSuccess="@{viewModel.chapterRefreshModel.isRefreshSuccess()}"
+                bindNoMoreData="@{viewModel.chapterRefreshModel.noMoreData}"
+                bindIsLoadMoreSuccess="@{viewModel.chapterRefreshModel.isLoadMoreSuccess()}"
+                bindOnRefreshListener="@{viewModel.getPrePageChapterList}"
+                bindOnLoadMoreListener="@{viewModel.getNextPageChapterList}"
                 android:layout_marginTop="@dimen/dp_86">
 
                 <androidx.recyclerview.widget.RecyclerView

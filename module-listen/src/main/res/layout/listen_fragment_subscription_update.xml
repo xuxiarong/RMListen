@@ -61,7 +61,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore}"
+            bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
             bindOnLoadMoreListener="@{viewModel.getSubsDataFromService}"
             isVisible="@{viewModel.userLogin}"

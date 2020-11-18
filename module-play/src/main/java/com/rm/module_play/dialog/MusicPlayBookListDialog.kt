@@ -2,6 +2,7 @@ package com.rm.module_play.dialog
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -122,14 +123,19 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             chapterAdapter.notifyDataSetChanged()
         }
 
-
-        smart_refresh_layout_play.setOnRefreshListener {
-            smart_refresh_layout_play.finishRefresh(1500)
+        if(viewModel.playNextPage <= 2){
+            smart_refresh_layout_play.setEnableRefresh(false)
+        }else{
+            smart_refresh_layout_play.setEnableRefresh(true)
         }
-//        smart_refresh_layout_play.setOnLoadMoreListener {
-//            smart_refresh_layout_play.finishLoadMore(1500)
-//            mLoad(1)
-//        }
+        smart_refresh_layout_play.setOnRefreshListener {
+            viewModel.getPrePageChapterList()
+        }
+        smart_refresh_layout_play.setOnLoadMoreListener {
+            if(!TextUtils.isEmpty(viewModel.playAudioId.get())){
+                viewModel.getNextPageChapterList()
+            }
+        }
         startObserve()
     }
 
@@ -143,6 +149,24 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         viewModel.playChapterList.observe(viewLifecycleOwner, Observer {
             chapterAdapter.setList(it)
         })
+//        viewModel.chapterRefreshModel.isHasMore.addOnPropertyChangedCallback(object :
+//            Observable.OnPropertyChangedCallback() {
+//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+//                // 没有更多数据了
+//                if (viewModel.chapterRefreshModel.isHasMore.get()!!) {
+//                    smart_refresh_layout_play.finishLoadMoreWithNoMoreData()
+//                }
+//            }
+//        })
+//        viewModel.chapterRefreshModel.re.addOnPropertyChangedCallback(object :
+//            Observable.OnPropertyChangedCallback() {
+//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+//                // 没有更多数据了
+//                if (viewModel.chapterRefreshModel.isHasMore.get()!!) {
+//                    smart_refresh_layout_play.finishLoadMoreWithNoMoreData()
+//                }
+//            }
+//        })
     }
 
     internal class TimeSAdapter(val viewModel: PlayViewModel) :

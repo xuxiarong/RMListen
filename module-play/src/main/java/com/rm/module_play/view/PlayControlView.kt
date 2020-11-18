@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.content.Context
 import android.util.AttributeSet
 import com.airbnb.lottie.LottieAnimationView
+import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.DLog
 import com.rm.business_lib.play.PlayState
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
@@ -18,10 +19,18 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     var playAnimName = ""
     var playFinish = true
+    var action: (() -> Unit)? = {}
+    private val pauseListener by lazy {
+        PauseAnimatorListener()
+    }
+    private val startListener by lazy {
+        StartAnimatorListener()
+    }
 
-    fun startOrPause(playState: PlayState){
+    fun startOrPause(playState: BasePlayStatusModel,action: (() -> Unit)?){
+        this.action = action
         //代表播放列表已经播放完
-        if(playState.state == STATE_ENDED){
+        if(playState.playStatus == STATE_ENDED){
             setAnimation("play_pause.json")
             playAnimation()
             return
@@ -32,63 +41,36 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
             return
         }
 
-        if (!playState.read &&  playState.state == 3 && playFinish && (playAnimName == "play_start.json"||playAnimName == "")) {
+        if (!playState.playReady &&  playState.playStatus == 3 && playFinish && (playAnimName == "play_start.json"||playAnimName == "")) {
             setAnimation("play_pause.json")
-            addAnimatorListener(object : Animator.AnimatorListener{
-                override fun onAnimationRepeat(animation: Animator?) {
-                    playAnimName = "play_pause.json"
-                    playFinish = false
-                    DLog.d("suolong","play_pause onAnimationRepeat")
-                }
-
-                override fun onAnimationEnd(animation: Animator?) {
-                    playFinish = true
-                    playAnimName = "play_pause.json"
-                    DLog.d("suolong","play_pause onAnimationEnd")
-                }
-
-                override fun onAnimationCancel(animation: Animator?) {
-                    playAnimName = "play_pause.json"
-                    playFinish = true
-                    DLog.d("suolong","play_pause onAnimationCancel")
-
-                }
-
-                override fun onAnimationStart(animation: Animator?) {
-                    playFinish = false
-                    playAnimName = "play_pause.json"
-                    DLog.d("suolong","play_pause onAnimationStart")
-                }
-            })
+            addAnimatorListener(pauseListener)
+            playAnimName = "play_pause.json"
             playAnimation()
+            DLog.d("suolongg","播放暂停动画")
 
-        } else if(playState.read && playState.state == 3 && playFinish && playAnimName == "play_pause.json"||playAnimName == "") {
+        } else if(playState.playReady && playState.playStatus == 3 && playFinish && playAnimName == "play_pause.json"||playAnimName == "") {
             setAnimation("play_start.json")
-            addAnimatorListener(object : Animator.AnimatorListener{
-                override fun onAnimationRepeat(animation: Animator?) {
-                    playAnimName = "play_start.json"
-                    playFinish = false
-                    DLog.d("suolong","play_start onAnimationRepeat")
-                }
-
-                override fun onAnimationEnd(animation: Animator?) {
-                    playAnimName = "play_start.json"
-                    playFinish = true
-                    DLog.d("suolong","play_start onAnimationEnd")
-                }
-
-                override fun onAnimationCancel(animation: Animator?) {
-                    playAnimName = "play_start.json"
-                    playFinish = true
-                    DLog.d("suolong","play_start onAnimationCancel")
-                }
-
-                override fun onAnimationStart(animation: Animator?) {
-                    playFinish = false
-                    DLog.d("suolong","play_start onAnimationStart")
-                }
-            })
+            addAnimatorListener(startListener)
+            playAnimName = "play_start.json"
+            DLog.d("suolongg","播放开始动画")
             playAnimation()
+        }
+    }
+
+    private fun setClickFun(action: (() -> Unit)?){
+        postDelayed({
+            playFinish = true
+            if(action!=null){
+                setOnClickListener {
+                    action()
+                }
+            }
+        },50)
+    }
+
+    fun clearClick(){
+        setOnClickListener {
+            DLog.d("suolong","正在动画中，不执行点击事件")
         }
     }
 
@@ -105,4 +87,46 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
         playFinish = true
     }
 
+    inner class PauseAnimatorListener : Animator.AnimatorListener{
+        override fun onAnimationRepeat(animation: Animator?) {
+            clearClick()
+            DLog.d("suolong","play_pause onAnimationRepeat")
+        }
+
+        override fun onAnimationEnd(animation: Animator?) {
+            setClickFun(action = action)
+            DLog.d("suolong","play_pause onAnimationEnd")
+        }
+
+        override fun onAnimationCancel(animation: Animator?) {
+            setClickFun(action = action)
+            DLog.d("suolong","play_pause onAnimationCancel")
+
+        }
+
+        override fun onAnimationStart(animation: Animator?) {
+            clearClick()
+            DLog.d("suolong","play_pause onAnimationStart")
+        }
+    }
+
+    inner class StartAnimatorListener : Animator.AnimatorListener{
+        override fun onAnimationRepeat(animation: Animator?) {
+            clearClick()
+        }
+
+        override fun onAnimationEnd(animation: Animator?) {
+            setClickFun(action = action)
+            DLog.d("suolong","play_start onAnimationEnd")
+        }
+
+        override fun onAnimationCancel(animation: Animator?) {
+            setClickFun(action = action)
+        }
+
+        override fun onAnimationStart(animation: Animator?) {
+            clearClick()
+            DLog.d("suolong","play_start onAnimationStart")
+        }
+    }
 }

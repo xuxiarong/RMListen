@@ -1,8 +1,11 @@
 package com.rm.module_play.playview
 
 import com.rm.baselisten.BaseConstance
+import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.Cxt
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
+import com.rm.business_lib.play.PlayState
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
@@ -48,8 +51,11 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-        BaseConstance.updateBaseChapterId(chapterId = musicInfo.chapterId )
-        BaseConstance.updateBaseProgress(currentDuration = 0L,totalDuration = musicInfo.duration * 1000 )
+        BaseConstance.updateBaseChapterId(chapterId = musicInfo.chapterId)
+        BaseConstance.updateBaseProgress(
+            currentDuration = 0L,
+            totalDuration = musicInfo.duration * 1000
+        )
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -61,7 +67,10 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        BaseConstance.updateBaseProgress(currentDuration = currentDurtion,totalDuration = totalDurtion )
+        BaseConstance.updateBaseProgress(
+            currentDuration = currentDurtion,
+            totalDuration = totalDurtion
+        )
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
@@ -69,13 +78,31 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        if(playbackState == STATE_ENDED){
+        if (playbackState == STATE_ENDED) {
             BaseConstance.updatePlayFinish()
         }
+        val currentStatus = BaseConstance.basePlayStatusModel.get()
+        if (currentStatus != null) {
+            if (currentStatus.playReady == playWhenReady && currentStatus.playStatus == playbackState) {
+                return
+            } else {
+                BaseConstance.basePlayStatusModel.set(
+                    BasePlayStatusModel(
+                        playWhenReady,
+                        playbackState
+                    )
+                )
+            }
+        } else {
+            BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playWhenReady, playbackState))
+        }
+        DLog.d(
+            "suolong",
+            " playWhenReady = $playWhenReady --- status = $playbackState --- time = ${System.currentTimeMillis()}"
+        )
     }
 
     override fun onCompletionPlay() {
     }
-
 
 }

@@ -9,8 +9,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
-import com.rm.baselisten.BaseConstance
-import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
@@ -19,7 +17,6 @@ import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.router.RouterHelper
@@ -127,10 +124,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun startObserve() {
-        mViewModel.commentRefreshModel.isHasMore.addOnPropertyChangedCallback(object :
+        mViewModel.commentRefreshModel.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.commentRefreshModel.isHasMore.get()
+                val hasMore = mViewModel.commentRefreshModel.noMoreData.get()
                 if (hasMore==true){
                     mViewModel.mCommentAdapter.removeAllFooterView()
                     mViewModel.mCommentAdapter.addFooterView(footView)
@@ -259,7 +256,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             mViewModel.playChapterList.value = playChapterList
         } else {
             if (TextUtils.isEmpty(playChapterId)) {
-                mViewModel.getChapterList(playAudioId)
+                mViewModel.getNextPageChapterList()
             } else {
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
                 if(currentPlayerMusic!=null && currentPlayerMusic.chapterId == playChapterId){
@@ -338,42 +335,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         if (playbackState == PlayGlobalData.STATE_ENDED) {
             mViewModel.updatePlayChapterProgress(isPlayFinish = true)
         }
-        val currentStatus = mViewModel.playStatusBean.get()
-        if (currentStatus != null) {
-            if (currentStatus.read == playWhenReady && currentStatus.state == playbackState) {
-                return
-            } else {
-                mViewModel.playStatusBean.set(
-                    PlayState(
-                        state = playbackState,
-                        read = playWhenReady
-                    )
-                )
-                BaseConstance.basePlayStatusModel.set(
-                    BasePlayStatusModel(
-                        playReady = playWhenReady,
-                        playStatus = playbackState
-                    )
-                )
-            }
-        } else {
-            mViewModel.playStatusBean.set(
-                PlayState(
-                    state = playbackState,
-                    read = playWhenReady
-                )
-            )
-            BaseConstance.basePlayStatusModel.set(
-                BasePlayStatusModel(
-                    playReady = playWhenReady,
-                    playStatus = playbackState
-                )
-            )
-        }
-        DLog.d(
-            "suolong",
-            " playWhenReady = $playWhenReady --- status = $playbackState --- time = ${System.currentTimeMillis()}"
-        )
     }
 
     //播放完成

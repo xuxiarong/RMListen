@@ -3,12 +3,10 @@ package com.rm.module_listen.activity
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -122,10 +120,10 @@ class ListenMySheetDetailActivity :
             }
         })
 
-        mViewModel.refreshStateModel.isHasMore.addOnPropertyChangedCallback(object :
+        mViewModel.refreshStateModel.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStateModel.isHasMore.get()
+                val hasMore = mViewModel.refreshStateModel.noMoreData.get()
                 if (hasMore == true) {
                     mViewModel.mAdapter.removeAllFooterView()
                     mViewModel.mAdapter.addFooterView(footView)

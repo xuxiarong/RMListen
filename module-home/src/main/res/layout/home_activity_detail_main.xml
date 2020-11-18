@@ -91,7 +91,7 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/home_detail_comment_refresh"
-            bindIsHasMoreData="@{viewModel.commentRefreshStateMode.isHasMore()}"
+            bindNoMoreData="@{viewModel.commentRefreshStateMode.noMoreData}"
             bindIsLoadMoreSuccess="@{viewModel.commentRefreshStateMode.isLoadMoreSuccess()}"
             bindOnLoadMoreListener="@{viewModel.commentLoadMoreData}"
             bindResetNoMoreData="@{viewModel.commentRefreshStateMode.resetNoMoreData}"
@@ -113,7 +113,7 @@
 
         <com.rm.module_home.widget.HomeDetailInterceptLayout
             android:id="@+id/home_detail_intercept_layout"
-            bindCanLoadMore="@{!viewModel.chapterRefreshStatus.isHasMore()}"
+            bindCanLoadMore="@{!viewModel.chapterRefreshStatus.noMoreData}"
             bindCanRefresh="@{viewModel.chapterRefreshStatus.canRefresh}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -239,7 +239,7 @@
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:id="@+id/home_chapter_detail_refresh"
                 bindCanRefresh="@{viewModel.chapterRefreshStatus.canRefresh}"
-                bindIsHasMoreData="@{viewModel.chapterRefreshStatus.isHasMore()}"
+                bindNoMoreData="@{viewModel.chapterRefreshStatus.noMoreData}"
                 bindIsLoadMoreSuccess="@{viewModel.chapterRefreshStatus.isLoadMoreSuccess()}"
                 bindIsRefreshSuccess="@{viewModel.chapterRefreshStatus.isRefreshSuccess()}"
                 bindOnLoadMoreListener="@{viewModel.chapterLoadData}"

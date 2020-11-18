@@ -82,7 +82,7 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/home_menu_detail_refresh"
-            bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore()}"
+            bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess()}"
             bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
             bindOnLoadMoreListener="@{viewModel.loadData}"
