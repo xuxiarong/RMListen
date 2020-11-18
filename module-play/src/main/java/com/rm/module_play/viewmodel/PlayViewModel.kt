@@ -662,26 +662,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         getCommentList()
     }
 
-//    /**
-//     * 记录播放的章节
-//     */
-//    fun updatePlayBook(chapter: ChapterList?) {
-//        chapter?.let {
-//            repository.updatePlayBook(it)
-//
-//        }
-//    }
-//
-//    /**
-//     * 更新播放进度
-//     */
-//    fun updatePlayBookProcess(chapter: ChapterList?, progress: Long = 0L) {
-//        chapter?.let {
-//            repository.updatePlayBookProcess(chapter, progress)
-//        }
-//    }
-
-
     /**
      * 评论点击事件
      */
@@ -704,13 +684,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             }
         }
     }
-
-//    /**
-//     * 查询
-//     */
-//    fun queryPlayBookList(): List<HistoryPlayBook>? =
-//        DaoUtil(HistoryPlayBook::class.java, "").queryAll()
-
 
     fun playPreClick() {
         if (hasPreChapter.get()) {

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.business_lib.binding.bindChapterList
 import com.rm.business_lib.binding.bindDateString
@@ -104,11 +105,19 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
                 .startDownloadChapterSelectionActivity(activity!!, viewModel.playAudioModel.get()!!)
         }
 
-        if (viewModel.playChapterListSort.get() != null) {
-
+        if(AudioSortType.SORT_ASC == viewModel.playChapterListSort.get()){
+            play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_ort_ce)
+        }else{
+            play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_inverted_ce)
         }
-
         play_cb_chapter_sort.setOnClickListener {
+            if(AudioSortType.SORT_ASC == viewModel.playChapterListSort.get()){
+                viewModel.playChapterListSort.set(AudioSortType.SORT_DESC)
+                play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_inverted_ce)
+            }else{
+                viewModel.playChapterListSort.set(AudioSortType.SORT_ASC)
+                play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_ort_ce)
+            }
             chapterAdapter.data.reverse()
             chapterAdapter.notifyDataSetChanged()
         }

@@ -62,7 +62,7 @@
                     android:layout_marginEnd="58dp"
                     android:src="@drawable/music_play_ic_icon_download_de" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/play_cb_chapter_sort"
                     android:layout_width="@dimen/dp_22"
                     android:layout_height="@dimen/dp_22"
