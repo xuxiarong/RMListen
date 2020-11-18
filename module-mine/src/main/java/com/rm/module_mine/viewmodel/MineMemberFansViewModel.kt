@@ -76,7 +76,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                 onError = {
                     showContentView()
                     DLog.i("--->", "$it")
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }
@@ -96,7 +96,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                 onError = {
                     DLog.i("--->", "$it")
                     showContentView()
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
 
                 })
         }
@@ -140,7 +140,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
             refreshStatusModel.finishLoadMore(true)
             fanAdapter.addData(bean.list)
         }
-        refreshStatusModel.setHasMore(bean.list.size >= pageSize)
+        refreshStatusModel.setNoHasMore(fanAdapter.data.size >= bean.total || bean.list.size < pageSize)
     }
 
 
@@ -149,6 +149,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
      */
     fun refreshData() {
         fansPage = 1
+        refreshStatusModel.setNoHasMore(false)
         mineMemberFansList()
     }
 

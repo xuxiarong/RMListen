@@ -14,20 +14,22 @@
         android:layout_height="match_parent">
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/mine_member_comment_refresh_layout"
             bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
             bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
             bindOnLoadMoreListener="@{viewModel.loadMoreData}"
             bindOnRefreshListener="@{viewModel.refreshData}"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_16"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16">
 
             <androidx.recyclerview.widget.RecyclerView
                 bindVerticalLayout="@{viewModel.commentAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
@@ -37,12 +39,15 @@
             android:layout_height="match_parent"
             android:background="@color/business_text_color_ffffff">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
+                isVisible="@{viewModel.isShowNoData}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/business_text_color_ffffff"
+                android:drawableTop="@drawable/base_no_data"
                 android:gravity="center_horizontal"
                 android:paddingTop="@dimen/dp_20"
-                android:text="这里什么都没有～" />
+                android:text="@string/base_fine_no_data" />
         </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>

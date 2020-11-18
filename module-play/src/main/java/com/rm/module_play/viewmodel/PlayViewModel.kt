@@ -138,12 +138,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 书籍播放的数据库对象
      */
-    val playAudioDao = DaoUtil(ListenAudioEntity::class.java, "")
+    private val playAudioDao = DaoUtil(ListenAudioEntity::class.java, "")
 
     /**
      * 章节播放的数据库对象
      */
-    val playChapterDao = DaoUtil(ListenChapterEntity::class.java, "")
+    private val playChapterDao = DaoUtil(ListenChapterEntity::class.java, "")
 
     /**
      * 播放状态进度条，0是播放2是加载中1是暂停,false是暂停
@@ -315,9 +315,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             maxProcess.set(totalDuration.toFloat())
             process.set(currentDuration.toFloat())
             updateThumbText.set(
-                "${formatTimeInMillisToString(currentDuration)}/${formatTimeInMillisToString(
-                    totalDuration
-                )}"
+                "${formatTimeInMillisToString(currentDuration)}/${
+                    formatTimeInMillisToString(
+                        totalDuration
+                    )
+                }"
             )
             chapter.listen_duration = if (isPlayFinish) {
                 totalDuration
@@ -631,7 +633,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             mCommentAdapter.addData(bean.list)
             commentRefreshModel.finishLoadMore(true)
         }
-        commentRefreshModel.setHasMore(bean.list.size >= pageSize)
+
+        if (mCommentAdapter.data.size >= bean.total || bean.list.size < pageSize) {
+            commentRefreshModel.setNoHasMore(true)
+        } else {
+            commentPage++
+        }
     }
 
     /**
@@ -643,7 +650,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             showTip("$it")
         } else {
             commentRefreshModel.finishLoadMore(false)
-            commentPage--
         }
     }
 
@@ -651,7 +657,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 评论加载更多
      */
     fun commentLoadData() {
-        commentPage++
         getCommentList()
     }
 

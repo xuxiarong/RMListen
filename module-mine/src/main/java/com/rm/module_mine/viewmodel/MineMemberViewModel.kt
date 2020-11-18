@@ -54,12 +54,14 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
      * 关注主播
      */
     private fun attentionAnchor(followId: String) {
-        showLoading()
         launchOnIO {
             repository.attentionAnchor(followId).checkResult(
                 onSuccess = {
-                    showContentView()
                     isAttention.set(true)
+                    detailInfoData.get()?.let {
+                        it.fans = it.fans + 1
+                        detailInfoData.set(it)
+                    }
                     showTip("关注成功")
                 },
                 onError = {
@@ -75,12 +77,14 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
      * 取消关注主播
      */
     private fun unAttentionAnchor(followId: String) {
-        showLoading()
         launchOnIO {
             repository.unAttentionAnchor(followId).checkResult(
                 onSuccess = {
-                    showContentView()
                     isAttention.set(false)
+                    detailInfoData.get()?.let {
+                        it.fans = it.fans - 1
+                        detailInfoData.set(it)
+                    }
                     showTip("取消关注成功")
                 },
                 onError = {

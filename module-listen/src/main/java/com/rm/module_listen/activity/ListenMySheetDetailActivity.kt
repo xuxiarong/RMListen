@@ -42,8 +42,7 @@ class ListenMySheetDetailActivity :
                 Intent(
                     context,
                     ListenMySheetDetailActivity::class.java
-                ).putExtra(SHEET_ID, sheetId)
-                , LISTEN_SHEET_DETAIL_REQUEST_CODE
+                ).putExtra(SHEET_ID, sheetId), LISTEN_SHEET_DETAIL_REQUEST_CODE
             )
         }
     }
@@ -52,6 +51,10 @@ class ListenMySheetDetailActivity :
     private var mSheetId: String? = null
 
     private var headerDataBind: ListenHeaderSheetDetailBinding? = null
+
+    private val footView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
+    }
 
     override fun initModelBrId() = BR.viewModel
 
@@ -115,6 +118,19 @@ class ListenMySheetDetailActivity :
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.mAdapter.headerLayoutCount == 0) {
                     createHeader(mViewModel.data.get()!!)
+                }
+            }
+        })
+
+        mViewModel.refreshStateModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStateModel.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.mAdapter.removeAllFooterView()
+                    mViewModel.mAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.mAdapter.removeAllFooterView()
                 }
             }
         })

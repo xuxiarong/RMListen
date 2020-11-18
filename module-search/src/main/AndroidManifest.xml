@@ -2,6 +2,8 @@
     package="com.rm.module_search">
 
     <application>
-        <activity android:name=".activity.SearchResultActivity" />
+        <activity
+            android:name=".activity.SearchResultActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 </manifest>

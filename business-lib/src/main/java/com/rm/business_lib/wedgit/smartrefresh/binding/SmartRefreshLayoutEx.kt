@@ -51,19 +51,33 @@ fun SmartRefreshLayout.bindIsRefreshSuccess(isSuccess: Boolean?) {
  * @param isSuccess Boolean?
  * @param isHasMoreData Boolean? 是否还有下一页数据
  */
-@BindingAdapter("bindIsLoadMoreSuccess", "bindIsHasMoreData", requireAll = false)
-fun SmartRefreshLayout.bindIsLoadMoreSuccess(isSuccess: Boolean?, isHasMoreData: Boolean?) {
+@BindingAdapter("bindIsLoadMoreSuccess")
+fun SmartRefreshLayout.bindIsLoadMoreSuccess(isSuccess: Boolean?) {
     if (isSuccess != null) {
         finishLoadMore(isSuccess)
     }
-    if (isHasMoreData != null && !isHasMoreData) {
-        // 没有更多数据了
-        setEnableFooterFollowWhenNoMoreData(false)
+}
+
+@BindingAdapter("bindIsHasMoreData")
+fun SmartRefreshLayout.bindIsHasMoreData(isHasMoreData: Boolean?) {
+    // 没有更多数据了
+    if (isHasMoreData == true) {
         finishLoadMoreWithNoMoreData()
     }
 }
 
+
 @BindingAdapter("bindCanRefresh")
 fun SmartRefreshLayout.bindCanRefresh(canRefresh: Boolean?) {
     setEnableRefresh(canRefresh ?: false)
+}
+
+@BindingAdapter("bindResetNoMoreData")
+fun SmartRefreshLayout.bindResetNoMoreData(resetNoMoreData: Boolean?) {
+    if (resetNoMoreData == null) {
+        return
+    }
+    if (resetNoMoreData == true) {
+        resetNoMoreData()
+    }
 }

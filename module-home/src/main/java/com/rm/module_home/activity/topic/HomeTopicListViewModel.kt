@@ -31,7 +31,10 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
             BR.audioItem
         ).apply {
             setOnItemClickListener { _, _, position ->
-                startActivity(HomeDetailActivity::class.java, HomeDetailActivity.getIntent(data[position].audio_id.toString()))
+                startActivity(
+                    HomeDetailActivity::class.java,
+                    HomeDetailActivity.getIntent(data[position].audio_id.toString())
+                )
             }
         }
     }
@@ -59,7 +62,7 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
                         refreshStatusModel.finishLoadMore(true)
                     }
                     // 设置是否还有下一页数据
-                    refreshStatusModel.setHasMore(it.list.size > 0)
+                    refreshStatusModel.setNoHasMore(mAdapter.data.size >= it.total)
                     page++
                 },
                 onError = {
@@ -80,6 +83,7 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
      * 下拉刷新时调用
      */
     fun refresh() {
+        refreshStatusModel.setNoHasMore(false)
         launchOnIO {
             page = 1
             repository.getTopicList(pageId, blockId, topicId, page, pageSize).checkResult(
@@ -91,7 +95,7 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
                     page++
                     refreshStatusModel.finishRefresh(true)
                     // 设置是否还有下一页数据
-                    refreshStatusModel.setHasMore(it.list.size > 0)
+                    refreshStatusModel.setNoHasMore(mAdapter.data.size >= it.total)
                 },
                 onError = {
                     // 下拉刷新失败

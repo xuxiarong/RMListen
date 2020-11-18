@@ -56,6 +56,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
      */
     fun refreshData() {
         mPage = 1
+        refreshStateModel.setNoHasMore(false)
         getSheetInfo(sheetId)
     }
 
@@ -83,7 +84,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
                     mAdapter.setList(it.audio_list.list)
 
                     //是否有更多数据
-                    refreshStateModel.setHasMore(it.audio_list.list.size > pageSize)
+                    refreshStateModel.setNoHasMore(it.audio_list.list.size < pageSize)
                 },
 
                 onError = {
@@ -104,7 +105,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
                     refreshStateModel.finishLoadMore(true)
                     mAdapter.addData(it.list)
 
-                    refreshStateModel.setHasMore(it.list.size > pageSize)
+                    refreshStateModel.setNoHasMore(it.list.size < pageSize)
                 },
                 onError = {
                     refreshStateModel.finishLoadMore(false)

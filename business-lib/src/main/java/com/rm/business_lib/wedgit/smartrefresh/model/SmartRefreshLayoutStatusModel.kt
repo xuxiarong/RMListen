@@ -20,7 +20,11 @@ class SmartRefreshLayoutStatusModel {
     // 注意：不要直接在代码里面更改isLoadMoreSuccess的值，一定要调用setHasMore()方法，如果值本身未发生改变是更新不了UI的，例：当前本身值为true，下次再设置为true，则更新不了UI
     var isHasMore = ObservableField<Boolean>()
 
+    //是否能够刷新
     var canRefresh = ObservableField<Boolean>(true)
+
+    //是否重置加载更多状态
+    var resetNoMoreData = ObservableField<Boolean>(true)
 
 
     /**
@@ -46,7 +50,7 @@ class SmartRefreshLayoutStatusModel {
      * 设置是否还有更多数据
      * @param isMore Boolean
      */
-    fun setHasMore(isMore: Boolean) {
+    fun setNoHasMore(isMore: Boolean) {
         isHasMore.set(isMore)
         isHasMore.notifyChange()
     }
@@ -57,6 +61,14 @@ class SmartRefreshLayoutStatusModel {
     fun setCanRefresh(canRefresh: Boolean) {
         this.canRefresh.set(canRefresh)
         this.canRefresh.notifyChange()
+    }
+
+    /**
+     * 是否重置加载更多状态
+     */
+    fun setResetNoMoreData(resetNoMoreData: Boolean) {
+        this.resetNoMoreData.set(resetNoMoreData)
+        this.resetNoMoreData.notifyChange()
     }
 
 }

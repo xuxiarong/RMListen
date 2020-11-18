@@ -77,73 +77,36 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     /**
      * 输入框内容改变
      */
-    private fun inputKeyWordChange(it: String) {
-        if (it.isEmpty()) {
-            historyVisible.set(inputAdapter.data.size > 0)
-            suggestIsVisible.set(false)
+    private fun inputKeyWordChange(content: String) {
+        keyWord.set(content.trimEnd().trim())
+        suggestIsVisible.set(true)
+        //如果请求没有结束则不会去搜索
+        if (resultIsEnd && content.isNotEmpty()) {
+            searchSuggest(content)
         } else {
-            showSuggest(it)
+            inputAdapter.setList(null)
+            historyVisible.set(HISTORY_KEY.getListString().size > 0)
+            suggestIsVisible.set(false)
         }
-        keyWord.set(it)
+
     }
 
     /**
      * 键盘的显示隐藏监听
      */
     private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
-        val get = keyWord.get()!!
-        val keywordNull = get.isEmpty()
         //键盘是否显示
         if (keyboardVisibility) {
-            //如果输入框内容为空则显示搜索历史，否则现实联想
-            if (keywordNull) {
-                showHistory()
-            } else {
-                //显示联想内容
-                showSuggest(keyWord.get()!!)
-            }
             contentIsVisible.set(false)
-        } else {
-            if (!keywordNull) {
-                showSuggest(keyWord.get()!!)
-            } else {
-                showContent()
+            if (keyWord.get()!!.isEmpty()) {
+                historyVisible.set(HISTORY_KEY.getListString().size > 0)
             }
+        } else {
+            contentIsVisible.set(true)
+            suggestIsVisible.set(false)
+            historyVisible.set(false)
         }
 
-    }
-
-    /**
-     * 显示搜索历史
-     */
-    private fun showHistory() {
-        val list = HISTORY_KEY.getListString()
-        val dataNotNull = list.size > 0
-        //如果搜索记录不为空则显示
-        historyVisible.set(dataNotNull)
-        historyList.set(list)
-        suggestIsVisible.set(false)
-    }
-
-    /**
-     * 显示联想
-     */
-    private fun showSuggest(content: String) {
-        suggestIsVisible.set(true)
-        contentIsVisible.set(false)
-        historyVisible.set(false)
-        if (resultIsEnd) {
-            searchSuggest(content)
-        }
-    }
-
-    /**
-     * 显示内容
-     */
-    private fun showContent() {
-        contentIsVisible.set(true)
-        historyVisible.set(false)
-        suggestIsVisible.set(false)
     }
 
     /**
@@ -153,8 +116,8 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         keyWord.set("")
         inputAdapter.setList(null)
         suggestIsVisible.set(false)
-        historyVisible.set(false)
-        contentIsVisible.set(true)
+        historyVisible.set(HISTORY_KEY.getListString().size > 0)
+        contentIsVisible.set(false)
     }
 
     /**
@@ -209,7 +172,9 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
             repository.searchResult(keyword, REQUEST_TYPE_ALL, 1, 12).checkResult(
                 onSuccess = {
                     searchResultData.postValue(it)
-                    showContent()
+                    historyVisible.set(false)
+                    suggestIsVisible.set(false)
+                    contentIsVisible.set(true)
                 },
                 onError = {
                     DLog.i("------>", "$it")

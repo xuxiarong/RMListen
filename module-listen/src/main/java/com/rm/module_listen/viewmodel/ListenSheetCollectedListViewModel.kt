@@ -3,7 +3,6 @@ package com.rm.module_listen.viewmodel
 import android.text.TextUtils
 import android.view.View
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -95,7 +94,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
         }
 
         //是否有更多数据
-        refreshStateModel.setHasMore(bean.list.size > pageSize)
+        refreshStateModel.setNoHasMore(bean.list.size < pageSize)
     }
 
     /**
@@ -115,6 +114,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      */
     fun refreshData() {
         mPage = 1
+        refreshStateModel.setNoHasMore(false)
         getData(memberId)
     }
 

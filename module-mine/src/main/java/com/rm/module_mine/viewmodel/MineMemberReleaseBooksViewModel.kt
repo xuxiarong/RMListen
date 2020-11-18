@@ -86,7 +86,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
             refreshStatusModel.finishLoadMore(true)
             mAdapter.addData(bean.list)
         }
-        refreshStatusModel.setHasMore(bean.list.size >= pageSize)
+        refreshStatusModel.setNoHasMore(mAdapter.data.size >= bean.total || bean.list.size < pageSize)
     }
 
 
@@ -95,6 +95,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
      */
     fun refreshData() {
         mPage = 1
+        refreshStatusModel.setNoHasMore(false)
         mineMemberReleaseBookList()
     }
 
@@ -109,8 +110,8 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
     /**
      * item点击事件
      */
-    fun clickItemFun(context: Context,bean: MinePublishDetailBean) {
-        RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context,bean.audio_id)
+    fun clickItemFun(context: Context, bean: MinePublishDetailBean) {
+        RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, bean.audio_id)
     }
 
 }

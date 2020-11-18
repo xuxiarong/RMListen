@@ -73,6 +73,8 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
 
     private var memberId = ""
 
+    val isShowNoData = ObservableField<Boolean>(false)
+
 
     /**
      * 获取: 发布书籍/听单/收藏听单列表
@@ -88,7 +90,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
                 }, onError = {
                     showContentView()
                     DLog.i("----->", "$it")
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -108,7 +110,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
         val createSize = sheetInfo.list?.size ?: 0
 
         if (favorSize <= 0 && releaseSize <= 0 && createSize <= 0) {
-            showDataEmpty()
+            isShowNoData.set(true)
         }
 
         if (createSize > 0) {
@@ -135,7 +137,6 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
                 releaseSheetAdapter.setList(publishInfo.list.subList(0, 2))
             } else {
                 releaseSheetAdapter.setList(publishInfo.list)
-
             }
         }
 
@@ -145,7 +146,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
      * 发布书籍查看更多
      */
     fun clickReleaseFun(context: Context) {
-        MineMemberReleaseBooksActivity.newInstance(context,memberId)
+        MineMemberReleaseBooksActivity.newInstance(context, memberId)
     }
 
     /**
@@ -154,7 +155,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
     fun clickFavorFun(context: Context) {
         getActivity(context)?.let {
             RouterHelper.createRouter(ListenService::class.java)
-                .startListenSheetList(it, LISTEN_SHEET_LIST_COLLECTED_LIST,memberId)
+                .startListenSheetList(it, LISTEN_SHEET_LIST_COLLECTED_LIST, memberId)
         }
     }
 
@@ -164,7 +165,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
     fun clickCreateFun(context: Context) {
         getActivity(context)?.let {
             RouterHelper.createRouter(ListenService::class.java)
-                .startListenSheetList(it, LISTEN_SHEET_LIST_MY_LIST,memberId)
+                .startListenSheetList(it, LISTEN_SHEET_LIST_MY_LIST, memberId)
         }
     }
 

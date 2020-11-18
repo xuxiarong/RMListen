@@ -120,7 +120,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
         if (keyboardVisibility) {
             recommendVisible.set(false)
-            if (keyWord.get()!!.isEmpty()){
+            if (keyWord.get()!!.isEmpty()) {
                 historyIsVisible.set(HISTORY_KEY.getListString().size > 0)
             }
         } else {
@@ -160,6 +160,8 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
      * 删除历史点击事件
      */
     fun clickDeleteHistory() {
+        keyWord.set("")
+        hintKeyword = ""
         clearVisible.set(false)
         HISTORY_KEY.putMMKV(mutableListOf())
         historyList.set(null)

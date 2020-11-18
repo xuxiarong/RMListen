@@ -98,6 +98,8 @@
                 android:layout_height="match_parent"
                 android:paddingStart="@dimen/dp_16"
                 android:paddingEnd="@dimen/dp_16" />
+
+
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

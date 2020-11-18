@@ -3,7 +3,6 @@ package com.rm.module_search.viewmodel
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
@@ -56,6 +55,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
      */
     fun refreshData() {
         mPage = 1
+        refreshStateMode.setNoHasMore(false)
         requestData()
     }
 
@@ -94,7 +94,6 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         } else {
             refreshStateMode.finishLoadMore(true)
         }
-        refreshStateMode.setHasMore(bean.member_list.isNotEmpty())
 
         if (mPage == 1) {
             if (bean.member_list.isEmpty()) {
@@ -104,8 +103,9 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
             }
         } else {
             bean.member_list.let { anchorAdapter.addData(it) }
-
         }
+        refreshStateMode.setNoHasMore(bean.member_list.size < mPageSize || anchorAdapter.data.size >= bean.member)
+
     }
 
     /**
@@ -137,7 +137,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
                 },
                 onError = {
                     showContentView()
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }
@@ -158,7 +158,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
                 },
                 onError = {
                     showContentView()
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }

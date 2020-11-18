@@ -23,11 +23,11 @@
 
             <LinearLayout
                 android:id="@+id/mine_member_book_layout"
+                isVisible="@{viewModel.releaseSheetVisibility}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:onClick="@{()->viewModel.clickReleaseFun(context)}"
-                isVisible="@{viewModel.releaseSheetVisibility}"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -58,8 +58,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mine_member_book_rv"
-                isVisible="@{viewModel.releaseSheetVisibility}"
                 bindVerticalLayout="@{viewModel.releaseSheetAdapter}"
+                isVisible="@{viewModel.releaseSheetVisibility}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_14"
@@ -68,10 +68,10 @@
 
             <LinearLayout
                 android:id="@+id/mine_member_create_sheet_layout"
+                isVisible="@{viewModel.createSheetVisibility}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_14"
-                isVisible="@{viewModel.createSheetVisibility}"
                 android:onClick="@{()->viewModel.clickCreateFun(context)}"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/mine_member_book_rv">
@@ -104,22 +104,22 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mine_member_create_sheet_rv"
+                bindVerticalLayout="@{viewModel.createSheetAdapter}"
+                isVisible="@{viewModel.createSheetVisibility}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_14"
-                isVisible="@{viewModel.createSheetVisibility}"
-                bindVerticalLayout="@{viewModel.createSheetAdapter}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mine_member_create_sheet_layout" />
 
             <LinearLayout
                 android:id="@+id/mine_member_favor_sheet_layout"
+                isVisible="@{viewModel.favorSheetVisibility}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_14"
                 android:onClick="@{()->viewModel.clickFavorFun(context)}"
                 android:orientation="horizontal"
-                isVisible="@{viewModel.favorSheetVisibility}"
                 app:layout_constraintTop_toBottomOf="@id/mine_member_create_sheet_rv">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -150,14 +150,26 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mine_member_favor_sheet_rv"
+                bindVerticalLayout="@{viewModel.favorSheetAdapter}"
+                isVisible="@{viewModel.favorSheetVisibility}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                isVisible="@{viewModel.favorSheetVisibility}"
                 android:layout_marginTop="@dimen/dp_14"
-                bindVerticalLayout="@{viewModel.favorSheetAdapter}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mine_member_favor_sheet_layout" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                isVisible="@{viewModel.isShowNoData}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/business_text_color_ffffff"
+                android:drawableTop="@drawable/base_no_data"
+                android:gravity="center_horizontal"
+                android:paddingTop="@dimen/dp_20"
+                android:text="@string/base_fine_no_data" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.core.widget.NestedScrollView>
 </layout>
 

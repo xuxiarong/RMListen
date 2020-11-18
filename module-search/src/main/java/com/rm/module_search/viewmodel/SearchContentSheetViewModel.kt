@@ -1,9 +1,7 @@
 package com.rm.module_search.viewmodel
 
-import android.content.Context
 import android.view.View
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -51,6 +49,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
      */
     fun refreshData() {
         mPage = 1
+        refreshStateMode.setNoHasMore(false)
         requestData()
     }
 
@@ -89,8 +88,6 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
             refreshStateMode.finishLoadMore(true)
         }
 
-        refreshStateMode.setHasMore(bean.sheet_list.isNotEmpty())
-
         if (mPage == 1) {
             if (bean.sheet_list.isEmpty()) {
                 showDataEmpty()
@@ -100,6 +97,8 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
         } else {
             bean.sheet_list.let { sheetAdapter.addData(it) }
         }
+
+        refreshStateMode.setNoHasMore(bean.sheet_list.size < mPageSize || sheetAdapter.data.size >= bean.sheet)
     }
 
     /**

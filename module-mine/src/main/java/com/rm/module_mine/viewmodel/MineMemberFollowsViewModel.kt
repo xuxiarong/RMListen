@@ -20,7 +20,7 @@ import com.rm.module_mine.repository.MineRepository
  * @description
  *
  */
-class   MineMemberFollowsViewModel(private val repository: MineRepository) : BaseVMViewModel() {
+class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseVMViewModel() {
     //每页加载的条数
     private val pageSize = 12
 
@@ -77,7 +77,7 @@ class   MineMemberFollowsViewModel(private val repository: MineRepository) : Bas
                 onError = {
                     showContentView()
                     DLog.i("--->", "$it")
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
 
                 })
         }
@@ -98,7 +98,7 @@ class   MineMemberFollowsViewModel(private val repository: MineRepository) : Bas
                 onError = {
                     DLog.i("--->", "$it")
                     showContentView()
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
 
                 })
         }
@@ -142,7 +142,7 @@ class   MineMemberFollowsViewModel(private val repository: MineRepository) : Bas
             refreshStatusModel.finishLoadMore(true)
             followAdapter.addData(bean.list)
         }
-        refreshStatusModel.setHasMore(bean.list.size >= pageSize)
+        refreshStatusModel.setNoHasMore(followAdapter.data.size >= bean.total || bean.list.size < pageSize)
     }
 
 
@@ -151,6 +151,7 @@ class   MineMemberFollowsViewModel(private val repository: MineRepository) : Bas
      */
     fun refreshData() {
         followPage = 1
+        refreshStatusModel.setNoHasMore(false)
         mineMemberFollowList()
     }
 

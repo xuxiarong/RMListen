@@ -2,7 +2,9 @@ package com.rm.module_home.activity.menu
 
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
+import androidx.databinding.Observable
 import androidx.lifecycle.observe
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.business_lib.binding.paddingBindData
@@ -14,11 +16,16 @@ import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeActivityListenMenuBinding
 import com.rm.module_home.viewmodel.HomeMenuViewModel
 
-class HomeMenuActivity : ComponentShowPlayActivity<HomeActivityListenMenuBinding, HomeMenuViewModel>() {
+class HomeMenuActivity :
+    ComponentShowPlayActivity<HomeActivityListenMenuBinding, HomeMenuViewModel>() {
 
     //懒加载头部banner
     private val headView by lazy {
         View.inflate(this, R.layout.home_header_banner, null)
+    }
+
+    private val footView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
     }
 
     companion object {
@@ -38,10 +45,22 @@ class HomeMenuActivity : ComponentShowPlayActivity<HomeActivityListenMenuBinding
                 paddingBindData(it.banner_list)
 //                setIsClipChildrenMode(false)
                 setOnItemClickListener { _, _, _, position ->
-                    BannerJumpUtils.onBannerClick(context,it.banner_list!![position].banner_jump)
+                    BannerJumpUtils.onBannerClick(context, it.banner_list!![position].banner_jump)
                 }
             }
         }
+        mViewModel.refreshStatusModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.refreshStatusModel.isHasMore.get()
+                if (hasMore == true) {
+                    mViewModel.menuAdapter.removeAllFooterView()
+                    mViewModel.menuAdapter.addFooterView(footView)
+                } else {
+                    mViewModel.menuAdapter.removeAllFooterView()
+                }
+            }
+        })
     }
 
     override fun initView() {
@@ -52,6 +71,7 @@ class HomeMenuActivity : ComponentShowPlayActivity<HomeActivityListenMenuBinding
             }
         mViewModel.baseTitleModel.value = baseTitleModel
         mViewModel.menuAdapter.addHeaderView(headView)
+
     }
 
     override fun initData() {

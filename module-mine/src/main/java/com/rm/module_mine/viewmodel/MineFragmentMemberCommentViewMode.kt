@@ -99,7 +99,6 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
                 commentAdapter.setList(bean.list)
                 isShowNoData.set(false)
             } else {
-//                showDataEmpty()
                 isShowNoData.set(true)
             }
 
@@ -108,7 +107,7 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
             refreshStateModel.finishLoadMore(true)
         }
         //是否有更多数据
-        refreshStateModel.setHasMore(bean.list.size >= pageSize)
+        refreshStateModel.setNoHasMore(bean.list.size < pageSize)
     }
 
 
@@ -120,8 +119,9 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
             refreshStateModel.finishRefresh(false)
         } else {
             refreshStateModel.finishLoadMore(false)
+            mPage--
         }
-        showTip("$msg",R.color.business_color_ff5e5e)
+        showTip("$msg", R.color.business_color_ff5e5e)
     }
 
     /**
@@ -129,6 +129,7 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
      */
     fun refreshData() {
         mPage = 1
+        refreshStateModel.setNoHasMore(false)
         getData()
     }
 

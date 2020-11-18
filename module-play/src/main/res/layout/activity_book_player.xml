@@ -714,7 +714,7 @@
                     android:background="@color/business_color_e8e8e8" />
 
                 <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                    android:id="@+id/smart_refresh_layout_play"
+                    android:id="@+id/play_refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/dp_77">

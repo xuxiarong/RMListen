@@ -63,6 +63,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     fun refreshData() {
         mPage = 1
         topSize = 0
+        refreshStatusModel.setNoHasMore(false)
         getData()
     }
 
@@ -99,20 +100,24 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
         if (mPage == 1) {
             //刷新完成
             refreshStatusModel.finishRefresh(true)
-            test(listListen)
-            mAdapter.setList(listListen)
+            setTop(listListen)
+            if (listListen.size > 0) {
+                mAdapter.setList(listListen)
+            } else {
+                showDataEmpty()
+            }
         } else {
             //加载更多完成
             refreshStatusModel.finishLoadMore(true)
-            test(listListen)
+            setTop(listListen)
             mAdapter.addData(listListen)
         }
         //是否有更多数据
-        refreshStatusModel.setHasMore(listListen.size >= pageSize)
+        refreshStatusModel.setNoHasMore(listListen.size < pageSize)
     }
 
     private var topSize = 0
-    private fun test(listListen: MutableList<ListenSubscriptionListBean>) {
+    private fun setTop(listListen: MutableList<ListenSubscriptionListBean>) {
         listListen.forEach {
             if (it.is_top == 1) {
                 topSize++
@@ -180,7 +185,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                     showContentView()
                     mDialog.dismiss()
                     if (subscriptionData.get()!!.is_top == 1) {
-                        mAdapter.setTopSize(--topSize )
+                        mAdapter.setTopSize(--topSize)
                     }
                     mAdapter.remove(subscriptionData.get()!!)
                 },
