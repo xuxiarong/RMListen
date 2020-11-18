@@ -29,14 +29,14 @@ import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 
 class ListenDialogSheetViewModel(
     private val mActivity: FragmentActivity,
-    private val baseViewModel: BaseVMViewModel,
-    private val audioId: String
+    private val audioId: String,
+    private val successBlock: () -> Unit
 ) : BaseVMViewModel() {
     private val repository by lazy {
         ListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
 
-    private var dateBinding: ListenDialogSheetListBinding? = null
+    private var dataBinding: ListenDialogSheetListBinding? = null
 
     /**
      * 懒加载dialog
@@ -48,8 +48,8 @@ class ListenDialogSheetViewModel(
             dialogHeightIsMatchParent = true
             dialogHasBackground = true
             initDialog = {
-                dateBinding = mDataBind as ListenDialogSheetListBinding
-                initView(dateBinding!!)
+                dataBinding = mDataBind as ListenDialogSheetListBinding
+                initView(dataBinding!!)
             }
         }
     }
@@ -59,7 +59,10 @@ class ListenDialogSheetViewModel(
      */
     private fun CommonMvFragmentDialog.initView(dateBinding: ListenDialogSheetListBinding) {
         dateBinding.listenDialogSheetCreateBookList.setOnClickListener {
-            ListenDialogCreateSheetHelper(baseViewModel, mActivity).showCreateSheetDialog(audioId)
+            ListenDialogCreateSheetHelper(
+                mActivity,
+                successBlock = successBlock
+            ).showCreateSheetDialog(audioId)
             dismiss()
         }
         getData()
@@ -109,12 +112,13 @@ class ListenDialogSheetViewModel(
         launchOnIO {
             repository.addSheetList(sheet_id, audio_id).checkResult(
                 onSuccess = {
-                    showContentView()
-                    addSheetSuccess(sheet_id)
+                    addSheetSuccess()
                 },
                 onError = {
-                    showContentView()
-                    showTip("$it", R.color.business_color_ff5e5e, true)
+                    showTip(
+                        msg = "$it",
+                        color = R.color.business_color_ff5e5e
+                    )
                 }
             )
         }
@@ -150,7 +154,6 @@ class ListenDialogSheetViewModel(
      * 处理失败数据
      */
     private fun processFailData() {
-        baseViewModel.showContentView()
         if (page == 1) {
             refreshStateModel.finishRefresh(false)
         } else {
@@ -161,8 +164,9 @@ class ListenDialogSheetViewModel(
     /**
      * 添加成功
      */
-    private fun addSheetSuccess(sheetId: String) {
+    private fun addSheetSuccess() {
         if (IS_FIRST_ADD_SHEET.getBooleanMMKV(true)) {
+            hideTipView()
             CustomTipsFragmentDialog().apply {
                 titleText = mActivity.getString(R.string.listen_add_success)
                 contentText = mActivity.getString(R.string.listen_add_success_content)
@@ -184,7 +188,7 @@ class ListenDialogSheetViewModel(
                     ImageView(mActivity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(mActivity)
         } else {
-            showTip("添加成功", R.color.business_text_color_333333, true)
+          successBlock()
         }
         dismissFun()
         IS_FIRST_ADD_SHEET.putMMKV(false)
@@ -221,10 +225,15 @@ class ListenDialogSheetViewModel(
     }
 
 
-    private fun showTip(msg: String, color: Int, isDelayGone: Boolean) {
-        dateBinding?.listenDialogSheetLayout?.apply {
-            dateBinding?.listenDialogSheetTip?.text = msg
-            dateBinding?.listenDialogSheetTip?.setTextColor(
+    private fun showTip(
+        msg: String,
+        color: Int,
+        isDelayGone: Boolean? = true,
+        isShowProgress: Boolean? = false
+    ) {
+        dataBinding?.listenDialogSheetLayout?.apply {
+            dataBinding?.listenDialogSheetTip?.text = msg
+            dataBinding?.listenDialogSheetTip?.setTextColor(
                 ContextCompat.getColor(
                     context,
                     color
@@ -232,15 +241,20 @@ class ListenDialogSheetViewModel(
             )
             visibility = View.VISIBLE
             handler.removeCallbacksAndMessages(null)
-            if (isDelayGone) {
+            if (isDelayGone == true) {
                 handler.postDelayed({
                     hideTipView()
                 }, 3000)
             }
         }
+        if (isShowProgress == true) {
+            dataBinding?.listenDialogSheetProgress?.visibility = View.VISIBLE
+        } else {
+            dataBinding?.listenDialogSheetProgress?.visibility = View.GONE
+        }
     }
 
     private fun hideTipView() {
-        dateBinding?.listenDialogSheetLayout?.visibility = View.GONE
+        dataBinding?.listenDialogSheetLayout?.visibility = View.GONE
     }
 }

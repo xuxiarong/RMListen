@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.home_dialog_comment.*
  *
  */
 class HomeCommentDialogViewModel(
-    private val baseViewModel: BaseVMViewModel,
     private val audioId: String,
     private val commentSuccessBlock: () -> Unit
 ) : BaseVMViewModel() {
@@ -40,7 +39,12 @@ class HomeCommentDialogViewModel(
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (!NetworkChangeReceiver.isAvailable.get()) {
-                    showTip("当前网络不可用", R.color.business_color_ff5e5e, true)
+                    showTip(
+                        msg = "当前网络不可用",
+                        color = R.color.business_color_ff5e5e,
+                        isDelayGone = true,
+                        isShowProgress = false
+                    )
                 }
             }
         })
@@ -104,14 +108,15 @@ class HomeCommentDialogViewModel(
         inputComment.set(content.trim().trimEnd())
         if (inputComment.get()!!.length > 200) {
             showTip(
-                CONTEXT.getString(R.string.home_comment_input_limit),
-                R.color.business_color_ff5e5e,
-                true
+                msg = CONTEXT.getString(R.string.home_comment_input_limit),
+                color = R.color.business_color_ff5e5e,
+                isDelayGone = true,
+                isShowProgress = false
             )
         }
     }
 
-    private fun showTip(msg: String, color: Int, isDelayGone: Boolean) {
+    private fun showTip(msg: String, color: Int, isDelayGone: Boolean, isShowProgress: Boolean) {
         dataBinding?.homeDialogCommentLayout?.apply {
             dataBinding?.homeDialogCommentTip?.text = msg
             dataBinding?.homeDialogCommentTip?.setTextColor(
@@ -129,6 +134,11 @@ class HomeCommentDialogViewModel(
                 }, 3000)
             }
         }
+        if (isShowProgress) {
+            dataBinding?.homeDialogCommentProgress?.visibility = View.VISIBLE
+        } else {
+            dataBinding?.homeDialogCommentProgress?.visibility = View.GONE
+        }
     }
 
     private fun hideTipView() {
@@ -145,16 +155,28 @@ class HomeCommentDialogViewModel(
         inputComment.get()?.let {
             if (it.length > 200) {
                 showTip(
-                    CONTEXT.getString(R.string.home_comment_input_limit),
-                    R.color.business_color_ff5e5e, true
+                    msg = CONTEXT.getString(R.string.home_comment_input_limit),
+                    color = R.color.business_color_ff5e5e,
+                    isDelayGone = true,
+                    isShowProgress = false
                 )
 
             } else {
-//                showTip("评论中", R.color.business_text_color_333333, false)
+                showTip(
+                    msg = "提交评论中",
+                    color = R.color.business_text_color_333333,
+                    isDelayGone = false,
+                    isShowProgress = true
+                )
                 if (NetworkChangeReceiver.isAvailable.get()) {
                     sendComment(view, it, audioId, loginUser.get()!!.id!!)
                 } else {
-                    showTip("当前网络不可用", R.color.business_color_ff5e5e, true)
+                    showTip(
+                        msg = "当前网络不可用",
+                        color = R.color.business_color_ff5e5e,
+                        isDelayGone = true,
+                        isShowProgress = false
+                    )
                 }
             }
         }
@@ -186,7 +208,12 @@ class HomeCommentDialogViewModel(
                     hideTipView()
                 },
                 onError = {
-                    showTip("$it", R.color.business_color_ff5e5e, true)
+                    showTip(
+                        msg = "$it",
+                        color = R.color.business_color_ff5e5e,
+                        isDelayGone = true,
+                        isShowProgress = false
+                    )
                 }
             )
         }

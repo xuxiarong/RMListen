@@ -48,12 +48,11 @@ class HomeServiceImpl : HomeService {
     }
 
     override fun showCommentDialog(
-        baseViewModel: BaseVMViewModel,
         mActivity: FragmentActivity,
         audio: String,
         commentSuccessBlock: () -> Unit
     ) {
-        HomeCommentDialogHelper(baseViewModel, mActivity, audio, commentSuccessBlock).showDialog()
+        HomeCommentDialogHelper( mActivity, audio, commentSuccessBlock).showDialog()
     }
 
     override fun init(context: Context?) {

@@ -35,13 +35,11 @@ interface HomeService : ApplicationProvider {
 
     /**
      * 弹出评论dialog
-     * @param baseViewModel viewMode对象
      * @param mActivity activity 对象
      * @param audio 音频Id
      * @param commentSuccessBlock 评论成功回调
      */
     fun showCommentDialog(
-        baseViewModel: BaseVMViewModel,
         mActivity: FragmentActivity,
         audio: String,
         commentSuccessBlock: () -> Unit

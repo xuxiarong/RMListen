@@ -17,8 +17,10 @@ import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.component_comm.listen.ListenService
+import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -128,10 +130,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val hasMore = mViewModel.commentRefreshModel.noMoreData.get()
-                if (hasMore==true){
+                if (hasMore == true) {
                     mViewModel.mCommentAdapter.removeAllFooterView()
                     mViewModel.mCommentAdapter.addFooterView(footView)
-                }else{
+                } else {
                     mViewModel.mCommentAdapter.removeAllFooterView()
                 }
             }
@@ -197,12 +199,18 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     }
 
                     controlTime?.contains(ACTION_JOIN_LISTEN) == true -> {
-                        RouterHelper.createRouter(ListenService::class.java)
-                            .showMySheetListDialog(
-                                mViewModel,
-                                this@BookPlayerActivity,
-                                mViewModel.playAudioId.get()!!
-                            )
+                        if (!isLogin.get()) {
+                            RouterHelper.createRouter(LoginService::class.java)
+                                .quicklyLogin(mViewModel, this@BookPlayerActivity)
+                        } else {
+                            RouterHelper.createRouter(ListenService::class.java)
+                                .showMySheetListDialog(
+                                    this@BookPlayerActivity,
+                                    mViewModel.playAudioId.get()!!
+                                ){
+                                    mViewModel.showTip("添加成功")
+                                }
+                        }
                     }
                     controlTime?.contains(ACTION_MORE_COMMENT) == true -> {
                         mViewModel.playAudioId.get()?.let {
@@ -229,12 +237,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         musicPlayerManger.startPlayMusic(chapterId = chapterId)
         mViewModel.maxProcess.set(currentPlayerMusic.duration.toFloat())
         when {
-            playCurrentDuration <=0 -> {
+            playCurrentDuration <= 0 -> {
                 mViewModel.process.set(0F)
             }
             else -> {
-                if(playCurrentDuration > currentPlayerMusic.duration *1000){
-                    playCurrentDuration = currentPlayerMusic.duration *1000
+                if (playCurrentDuration > currentPlayerMusic.duration * 1000) {
+                    playCurrentDuration = currentPlayerMusic.duration * 1000
                 }
                 musicPlayerManger.seekTo(playCurrentDuration)
             }
@@ -259,7 +267,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mViewModel.getNextPageChapterList()
             } else {
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
-                if(currentPlayerMusic!=null && currentPlayerMusic.chapterId == playChapterId){
+                if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
                     mViewModel.maxProcess.set(currentPlayerMusic.duration * 1000F)
                     mViewModel.process.set(musicPlayerManger.getCurDurtion().toFloat())
                 }

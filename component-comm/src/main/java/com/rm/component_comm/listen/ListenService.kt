@@ -22,17 +22,10 @@ interface ListenService : ApplicationProvider {
      *  @param activity
      */
     fun showMySheetListDialog(
-        baseViewModel: BaseVMViewModel,
         activity: FragmentActivity,
-        audioId: String
+        audioId: String,
+        successBlock: () -> Unit
     )
-
-    /***
-     * 创建听单
-     *
-     * @param activity FragmentActivity
-     */
-    fun showCreateSheetListDialog(baseViewModel: BaseVMViewModel, activity: FragmentActivity)
 
     /**
      * 跳转到 听单界面

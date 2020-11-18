@@ -30,7 +30,7 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
      * 监听输入框内容变化
      */
     private fun inputChange(content: String) {
-        inputText.set(content)
+        inputText.set(content.trim().trimEnd())
         val titleModel = baseTitleModel.value
         if (inputText.get()?.length ?: 0 > 0) {
             titleModel?.setRightEnabled(true)
@@ -49,6 +49,9 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
         when {
             inputText.get()!!.length > 16 -> {
                 showTip("字数最多不能超过16个", R.color.business_color_ff5e5e)
+            }
+            check(inputText.get()!!) -> {
+                showTip("不能包含特殊字符", R.color.business_color_ff5e5e)
             }
             EmojiUtils.containsEmoji(inputText.get()!!) -> {
                 showTip("不能包含表情", R.color.business_color_ff5e5e)
@@ -70,7 +73,7 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
                                 loginUser.set(userBean)
                                 setResultAndFinish(RESULT_CODE_NICK)
                             },
-                            onError = {msg->
+                            onError = { msg ->
                                 showTip("$msg", R.color.business_color_ff5e5e)
                                 DLog.i("------>", "$msg")
                             }
@@ -83,5 +86,15 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
 
     fun clickClear() {
         inputText.set("")
+    }
+
+    fun check(s: String): Boolean {
+        var b = false
+        var tmp = s
+        tmp = tmp.replace("\\p{P}".toRegex(), "")
+        if (s.length != tmp.length) {
+            b = true
+        }
+        return b
     }
 }

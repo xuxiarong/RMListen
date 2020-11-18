@@ -1,7 +1,6 @@
 package com.rm.module_home.util
 
 import androidx.fragment.app.FragmentActivity
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.viewmodel.HomeCommentDialogViewModel
@@ -14,7 +13,6 @@ import com.rm.module_home.viewmodel.HomeCommentDialogViewModel
  *
  */
 class HomeCommentDialogHelper(
-    private val baseViewModel: BaseVMViewModel,
     private val mActivity: FragmentActivity,
     private val audio: String,
     private val commentSuccessBlock: () -> Unit
@@ -23,7 +21,7 @@ class HomeCommentDialogHelper(
      * viewModel对象
      */
     private val mViewModel by lazy {
-        HomeCommentDialogViewModel(baseViewModel, audio, commentSuccessBlock)
+        HomeCommentDialogViewModel( audio, commentSuccessBlock)
     }
 
     fun showDialog() {

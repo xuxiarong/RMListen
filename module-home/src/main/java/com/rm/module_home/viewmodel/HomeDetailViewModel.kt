@@ -697,7 +697,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         getActivity(context)?.let {
             if (isLogin.get()) {
                 audioId.get()?.let { audioId ->
-                    HomeCommentDialogHelper(this, it, audioId) {
+                    HomeCommentDialogHelper(it, audioId) {
                         commentPage = 1
                         getCommentList(audioId)
                         showTip("评论成功")
@@ -749,7 +749,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
 
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
-                    .showMySheetListDialog(this, it, audioId.get()!!)
+                    .showMySheetListDialog(it, audioId.get()!!) {
+                        showTip("添加成功")
+                    }
             }
         }
 

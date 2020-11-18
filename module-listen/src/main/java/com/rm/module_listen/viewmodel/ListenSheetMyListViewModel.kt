@@ -154,6 +154,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
         clickBean.get()?.let {
             if (it.sheet_id.toString() == sheetId) {
                 mAdapter.remove(it)
+                showTip("编辑成功")
             }
         }
     }
