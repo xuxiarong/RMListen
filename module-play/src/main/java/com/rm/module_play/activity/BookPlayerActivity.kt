@@ -389,7 +389,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onViewPositionChanged(fractionAnchor: Float, fractionScreen: Float) {
-        getBaseContainer().background.mutate().alpha = (255 * (1 - fractionScreen)).toInt()
+        getBaseContainer().background.mutate().alpha = 1
     }
 
 

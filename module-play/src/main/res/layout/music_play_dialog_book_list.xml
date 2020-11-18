@@ -40,13 +40,13 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_42"
+                android:layout_marginTop="@dimen/dp_50"
                 android:background="@color/businessWhite"
                 android:paddingStart="@dimen/dp_20"
                 android:paddingEnd="@dimen/dp_20">
 
                 <TextView
-                    android:id="@+id/music_play_order_play"
+                    android:id="@+id/play_iv_play_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_22"
                     android:drawablePadding="4dp"
@@ -55,7 +55,7 @@
                     tools:text="顺序播放" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/music_play_download_de"
+                    android:id="@+id/play_iv_download"
                     android:layout_width="@dimen/dp_22"
                     android:layout_height="@dimen/dp_22"
                     android:layout_gravity="end"
@@ -63,7 +63,7 @@
                     android:src="@drawable/music_play_ic_icon_download_de" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_sort_songs_list"
+                    android:id="@+id/play_cb_chapter_sort"
                     android:layout_width="@dimen/dp_22"
                     android:layout_height="@dimen/dp_22"
                     android:layout_gravity="end"
@@ -75,14 +75,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/dp_76"
+                android:layout_marginTop="@dimen/dp_84"
                 android:background="@color/business_color_e8e8e8" />
 
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:id="@+id/smart_refresh_layout_play"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_77">
+                android:layout_marginTop="@dimen/dp_86">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_music_play_book_list"

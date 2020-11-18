@@ -40,7 +40,7 @@ import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
  * @Version: 1.0.0
  */
 fun FragmentActivity.showPlayBookListDialog(
-    viewModel : PlayViewModel
+    viewModel: PlayViewModel
 ) {
     MusicPlayBookListDialog().apply {
         this.viewModel = viewModel
@@ -48,21 +48,22 @@ fun FragmentActivity.showPlayBookListDialog(
 }
 
 class MusicPlayBookListDialog : BottomDialogFragment() {
-    lateinit var viewModel : PlayViewModel
+    lateinit var viewModel: PlayViewModel
     lateinit var mDataBind: ViewDataBinding
     private val chapterAdapter by lazy {
         TimeSAdapter(viewModel).apply {
             setOnItemClickListener { adapter, view, position ->
                 val chapterId = data[position].chapter_id
-                if(chapterId == viewModel.playManger.getCurrentPlayerID()){
+                if (chapterId == viewModel.playManger.getCurrentPlayerID()) {
                     viewModel.playManger.play()
-                }else{
+                } else {
                     viewModel.playManger.startPlayMusic(data[position].chapter_id.toString())
                 }
                 dismissAllowingStateLoss()
             }
         }
     }
+
     override fun getBackgroundAlpha() = 0f
 
     override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_book_list
@@ -73,7 +74,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         mDataBind = DataBindingUtil.inflate(inflater, onSetInflaterLayout(), container, false)
-        mDataBind.setVariable(BR.viewModel,viewModel)
+        mDataBind.setVariable(BR.viewModel, viewModel)
         mDataBind.apply {
             lifecycleOwner = this@MusicPlayBookListDialog
         }
@@ -82,10 +83,11 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rv_music_play_book_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_music_play_book_list.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_music_play_book_list.adapter = chapterAdapter
         setPlayModel()
-        music_play_order_play.setOnClickListener {
+        play_iv_play_mode.setOnClickListener {
             if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_SINGLE) {
                 musicPlayerManger.setPlayerModel(MUSIC_MODEL_ORDER)
             } else if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_ORDER) {
@@ -97,20 +99,24 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         play_drag_chapter_list.seDragCloseListener {
             dismiss()
         }
-        music_play_download_de.setOnClickListener {
-            RouterHelper.createRouter(DownloadService::class.java).startDownloadChapterSelectionActivity(activity!!,viewModel.playAudioModel.get()!!)
+        play_iv_download.setOnClickListener {
+            RouterHelper.createRouter(DownloadService::class.java)
+                .startDownloadChapterSelectionActivity(activity!!, viewModel.playAudioModel.get()!!)
         }
 
-        cb_sort_songs_list.setOnClickListener {
+        if (viewModel.playChapterListSort.get() != null) {
+
+        }
+
+        play_cb_chapter_sort.setOnClickListener {
             chapterAdapter.data.reverse()
             chapterAdapter.notifyDataSetChanged()
         }
 
 
-//        smart_refresh_layout_play.setOnRefreshListener {
-//            smart_refresh_layout_play.finishRefresh(1500)
-//            mLoad(0)
-//        }
+        smart_refresh_layout_play.setOnRefreshListener {
+            smart_refresh_layout_play.finishRefresh(1500)
+        }
 //        smart_refresh_layout_play.setOnLoadMoreListener {
 //            smart_refresh_layout_play.finishLoadMore(1500)
 //            mLoad(1)
@@ -118,7 +124,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         startObserve()
     }
 
-    fun startObserve(){
+    private fun startObserve() {
         DownloadMemoryCache.downloadingChapter.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
@@ -131,17 +137,21 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     }
 
     internal class TimeSAdapter(val viewModel: PlayViewModel) :
-        BaseQuickAdapter<DownloadChapter, BaseViewHolder>(R.layout.music_play_item_book_list, viewModel.playChapterList.value) {
+        BaseQuickAdapter<DownloadChapter, BaseViewHolder>(
+            R.layout.music_play_item_book_list,
+            viewModel.playChapterList.value
+        ) {
         override fun convert(holder: BaseViewHolder, item: DownloadChapter) {
-            val playChapter=item.chapter_id== musicPlayerManger.getCurrentPlayerMusic()?.chapterId?.toLong()
-            holder.setVisible(R.id.music_play_book_list_position,!playChapter)
-            if(playChapter){
-                if(viewModel.playStatusBean.get()!!.isStart()){
+            val playChapter =
+                item.chapter_id == musicPlayerManger.getCurrentPlayerMusic()?.chapterId?.toLong()
+            holder.setVisible(R.id.music_play_book_list_position, !playChapter)
+            if (playChapter) {
+                if (viewModel.playStatusBean.get()!!.isStart()) {
                     holder.getView<LivingView>(R.id.living_img).startAnim()
-                }else{
+                } else {
                     holder.getView<LivingView>(R.id.living_img).pauseAnim()
                 }
-            }else{
+            } else {
                 holder.getView<LivingView>(R.id.living_img).visibility = View.GONE
             }
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
@@ -166,14 +176,14 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         var res = 0
         if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_SINGLE) {
             res = R.drawable.music_play_ic_icon_single_de
-            music_play_order_play.text = "单集播放"
-        }else if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_ORDER) {
+            play_iv_play_mode.text = "单集播放"
+        } else if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_ORDER) {
             res = R.drawable.business_play_mode_order
-            music_play_order_play.text = "顺序播放"
+            play_iv_play_mode.text = "顺序播放"
         }
         val resDrawable = resources.getDrawable(res, null)
         resDrawable.setBounds(0, 0, resDrawable.minimumWidth, resDrawable.minimumHeight)
-        music_play_order_play.setCompoundDrawables(resDrawable, null, null, null)
+        play_iv_play_mode.setCompoundDrawables(resDrawable, null, null, null)
 
     }
 
