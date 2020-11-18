@@ -16,7 +16,7 @@ fun CircularProgressView.bindPlayProgress(model : BasePlayProgressModel){
     if(model.totalDuration == 0L){
         progress = 0
     }else{
-        progress = (model.currentDuration/(model.totalDuration*100)).toInt()
+        progress = (model.currentDuration*100/(model.totalDuration)).toInt()
     }
 }
 
