@@ -1,83 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.rm.baselisten.view.DragCloseLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/play_drag_chapter_list"
-    android:layout_width="match_parent"
-    android:layout_height="550dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+        <variable
+            name="item"
+            type="com.rm.business_lib.db.download.DownloadChapter" />
+        <import type="com.rm.baselisten.util.TimeUtils"/>
+        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
+
+    </data>
+
+    <com.rm.baselisten.view.DragCloseLayout
+        android:id="@+id/play_drag_chapter_list"
         android:layout_width="match_parent"
         android:layout_height="550dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/business_dialog_top_9bg" />
-
-        <com.flyco.roundview.RoundFrameLayout
-            android:layout_width="50dp"
-            android:layout_height="6dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_30"
-            app:rv_backgroundColor="@color/business_color_b1b1b1"
-            app:rv_cornerRadius="5dp" />
-
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_42"
-            android:background="@color/businessWhite"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20">
-
-            <TextView
-                android:id="@+id/music_play_order_play"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_22"
-                android:drawablePadding="4dp"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="14sp"
-                tools:text="顺序播放" />
+            android:layout_height="550dp">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/music_play_download_de"
-                android:layout_width="@dimen/dp_22"
-                android:layout_height="@dimen/dp_22"
-                android:layout_gravity="end"
-                android:layout_marginEnd="58dp"
-                android:src="@drawable/music_play_ic_icon_download_de" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/business_dialog_top_9bg" />
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/cb_sort_songs_list"
-                android:layout_width="@dimen/dp_22"
-                android:layout_height="@dimen/dp_22"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:drawableStart="@drawable/home_detail_chapter_ce" />
+            <com.flyco.roundview.RoundFrameLayout
+                android:layout_width="50dp"
+                android:layout_height="6dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_30"
+                app:rv_backgroundColor="@color/business_color_b1b1b1"
+                app:rv_cornerRadius="5dp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp_42"
+                android:background="@color/businessWhite"
+                android:paddingStart="@dimen/dp_20"
+                android:paddingEnd="@dimen/dp_20">
+
+                <TextView
+                    android:id="@+id/music_play_order_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_22"
+                    android:drawablePadding="4dp"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="14sp"
+                    tools:text="顺序播放" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/music_play_download_de"
+                    android:layout_width="@dimen/dp_22"
+                    android:layout_height="@dimen/dp_22"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="58dp"
+                    android:src="@drawable/music_play_ic_icon_download_de" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_sort_songs_list"
+                    android:layout_width="@dimen/dp_22"
+                    android:layout_height="@dimen/dp_22"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:drawableStart="@drawable/home_detail_chapter_ce" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dp_76"
+                android:background="@color/business_color_e8e8e8" />
+
+            <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                android:id="@+id/smart_refresh_layout_play"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp_77">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_music_play_book_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never" />
+            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 
         </FrameLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/dp_76"
-            android:background="@color/business_color_e8e8e8" />
-
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/smart_refresh_layout_play"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_77">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_music_play_book_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never" />
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-
-    </FrameLayout>
-
-</com.rm.baselisten.view.DragCloseLayout>
+    </com.rm.baselisten.view.DragCloseLayout>
+</layout>

@@ -127,14 +127,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun startObserve() {
-        DownloadMemoryCache.downloadingChapter.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (MusicPlayBookListDialog.isShowing && MusicPlayBookListDialog.musicDialog != null) {
-                    MusicPlayBookListDialog.musicDialog!!.notifyDialog()
-                }
-            }
-        })
 
         mViewModel.playPath.observe(this, Observer { playPath ->
             musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
