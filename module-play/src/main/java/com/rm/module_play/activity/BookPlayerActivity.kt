@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
 import android.text.TextUtils
+import android.view.LayoutInflater
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.BaseConstance
@@ -64,7 +65,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playAudioModel: DownloadAudio = DownloadAudio()
         var playChapterId: String = ""
         var playChapterList: MutableList<DownloadChapter> = mutableListOf()
-        var playCurrentDuration : Long = 0L
+        var playCurrentDuration: Long = 0L
         var playSortType: String = AudioSortType.SORT_ASC
 
         fun startPlayActivity(
@@ -73,7 +74,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             audioModel: DownloadAudio = DownloadAudio(),
             chapterId: String = "",
             chapterList: MutableList<DownloadChapter> = mutableListOf(),
-            currentDuration : Long = 0L,
+            currentDuration: Long = 0L,
             sortType: String = AudioSortType.SORT_ASC
         ) {
             try {
@@ -115,6 +116,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         overridePendingTransition(0, R.anim.activity_bottom_close)
     }
 
+    private val footView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
+    }
+
     override fun getLayoutId(): Int = R.layout.activity_book_player
 
     override fun initModelBrId(): Int = BR.viewModel
@@ -127,6 +132,28 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun startObserve() {
+        mViewModel.commentRefreshModel.isHasMore.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val hasMore = mViewModel.commentRefreshModel.isHasMore.get()
+                if (hasMore==true){
+                    mViewModel.mCommentAdapter.removeAllFooterView()
+                    mViewModel.mCommentAdapter.addFooterView(footView)
+                }else{
+                    mViewModel.mCommentAdapter.removeAllFooterView()
+                }
+            }
+        })
+
+
+        DownloadMemoryCache.downloadingChapter.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if (MusicPlayBookListDialog.isShowing && MusicPlayBookListDialog.musicDialog != null) {
+                    MusicPlayBookListDialog.musicDialog!!.notifyDialog()
+                }
+            }
+        })
 
         mViewModel.playPath.observe(this, Observer { playPath ->
             musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
@@ -142,8 +169,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     //传入的章节id与正在播放的章节id进行对比，如果不一致，则播放传入的章节，一致则不用处理，继续播放该章节即可
                     if (currentPlayerMusic.chapterId != chapterId) {
                         startPlayChapter(playPath, chapterId, currentPlayerMusic)
-                    }else{
-                        onPlayMusiconInfo(currentPlayerMusic, musicPlayerManger.getCurrentPlayIndex())
+                    } else {
+                        onPlayMusiconInfo(
+                            currentPlayerMusic,
+                            musicPlayerManger.getCurrentPlayIndex()
+                        )
                     }
                 } else {
                     if (playPath != null && playPath.isNotEmpty()) {
