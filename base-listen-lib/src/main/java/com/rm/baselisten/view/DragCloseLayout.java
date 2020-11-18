@@ -12,6 +12,10 @@ import android.widget.RelativeLayout;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
+import com.rm.baselisten.utilExt.DisplayUtils;
+
+import me.jessyan.autosize.utils.ScreenUtils;
+
 /**
  * desc   : 能拖拽关闭Layout
  * author : lm162_SuoLong
@@ -27,6 +31,7 @@ public class DragCloseLayout extends RelativeLayout {
     private Dialog mDialog;
     private int mMeasureHeight;
     private int mTotalDragY;
+    private boolean closeAlpha;
 
     //滑动关闭的监听器
     private IDragCloseListener mDragCloseListener;
@@ -45,6 +50,14 @@ public class DragCloseLayout extends RelativeLayout {
 
     public void setDialog (Dialog dialog){
         this.mDialog = dialog;
+    }
+
+    public boolean isCloseAlpha() {
+        return closeAlpha;
+    }
+
+    public void setCloseAlpha(boolean closeAlpha) {
+        this.closeAlpha = closeAlpha;
     }
 
     private void initView() {
@@ -98,7 +111,7 @@ public class DragCloseLayout extends RelativeLayout {
     }
 
     private void setupWindowDimAmount(float dimAmount){
-        if(mDialog == null){
+        if(mDialog == null || closeAlpha){
             return;
         }
         Window window = mDialog.getWindow();
@@ -130,6 +143,17 @@ public class DragCloseLayout extends RelativeLayout {
                 mDragCloseListener.onDragClose();
             }
         }
+    }
+
+    /**
+     * 从上往下平滑关闭拖拽的布局
+     */
+    public void openBottomToTop() {
+
+//        if (viewDragHelper.smoothSlideViewTo(this, 0, ScreenUtils.getScreenSize(getContext())[1])) {
+//            ViewCompat.postInvalidateOnAnimation(this);
+//            mTotalDragY = 0;
+//        }
     }
 
     public interface IDragCloseListener {

@@ -103,10 +103,19 @@ object BaseConstance {
     /**
      * 更新正在播放的章节进度
      */
-    fun updateBaseProgress(process: Int) {
-        val progressModel = BasePlayProgressModel(playProgress = process)
+    fun updateBaseProgress(currentDuration : Long , totalDuration : Long) {
+        val progressModel = BasePlayProgressModel(currentDuration = currentDuration,totalDuration = currentDuration)
         basePlayProgressModel.set(progressModel)
         PlAY_LAST_LISTEN_PROGRESS.putMMKV(progressModel)
+    }
+
+    fun updatePlayFinish(){
+        val progressModel = basePlayProgressModel.get()
+        if(progressModel!=null && progressModel.totalDuration>0){
+            basePlayProgressModel.set(BasePlayProgressModel(currentDuration = progressModel.totalDuration,totalDuration = progressModel.totalDuration))
+        }else{
+            basePlayProgressModel.set(BasePlayProgressModel(currentDuration = 1000L,totalDuration = 1000L))
+        }
     }
 
     init {

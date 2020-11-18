@@ -46,7 +46,7 @@ fun TextView.listenBindChapterTime(audio: ListenHistoryModel) {
     text = ""
     try {
         if (audio.audio.listenChapterList.isNotEmpty()) {
-            text = TimeUtils.getListenDuration(audio.audio.listenChapterList.last().duration)
+            text = TimeUtils.getListenDuration(audio.audio.listenChapterList.last().duration/1000)
         }
     } catch (e: Exception) {
         e.printStackTrace()
@@ -65,12 +65,12 @@ fun TextView.listenBindChapterStatus(audio: ListenHistoryModel) {
             if (result <= 0) {
                 result = 0
             }
-            if (result >= 100) {
+            if (result >= lastChapter.duration) {
                 text = context.getString(R.string.listen_finish)
                 setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
             } else {
                 setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
-                text = "${String.format(context.getString(R.string.listen_progress), result)}%"
+                text = "${String.format(context.getString(R.string.listen_progress), (result * 100 /lastChapter.duration))}%"
             }
         }
     } catch (e: Exception) {

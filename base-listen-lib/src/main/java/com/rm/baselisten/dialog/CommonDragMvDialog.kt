@@ -16,6 +16,8 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  */
 open class CommonDragMvDialog : BaseMvFragmentDialog() {
 
+    var closeDragAlpha : Boolean = false
+
     override fun startObserve() {
 
     }
@@ -34,6 +36,7 @@ open class CommonDragMvDialog : BaseMvFragmentDialog() {
             }
         }
         draggableView.setDialog(dialog)
+        draggableView.isCloseAlpha = closeDragAlpha
         draggableView.seDragCloseListener(::dismiss)
         return draggableView
     }

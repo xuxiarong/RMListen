@@ -74,6 +74,7 @@
                 android:id="@+id/rv_music_play_book_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                bindVerticalLayout="@{viewModel.chapterListAdapter}"
                 android:overScrollMode="never" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

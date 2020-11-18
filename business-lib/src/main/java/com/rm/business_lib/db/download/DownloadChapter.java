@@ -18,14 +18,14 @@ public class DownloadChapter implements Serializable {
     private static final long serialVersionUID = -4795622106216659705L;
     @Id
     private Long chapter_id;
-    private Long audio_id ;
-    private String audio_name ;
-    private int  sequence;
+    private Long audio_id;
+    private String audio_name;
+    private int sequence;
     private String chapter_name;
-    private long size ; //音频大小
+    private long size; //音频大小
     private String down_speed;
     private long current_offset;
-    private Long duration;
+    private long duration;
     private int need_pay;
     private double amount;
     private String play_count;
@@ -33,28 +33,23 @@ public class DownloadChapter implements Serializable {
     private String file_path;
     private String path_url;
     //下载的状态
-    private int down_status ;
+    private int down_status;
     //收听的进度
-    private int listen_duration;
+    private long listen_duration;
+    private long updateMillis;
+
     //章节是否被选中下载
     private boolean chapter_edit_select;
     // 处于下载队列是否被选中
     private boolean down_edit_select;
 
-
-
-    @Generated(hash = 1634822403)
-    public DownloadChapter() {
-    }
-
-
-    @Generated(hash = 1386464685)
+    @Generated(hash = 369077968)
     public DownloadChapter(Long chapter_id, Long audio_id, String audio_name,
-            int sequence, String chapter_name, long size, String down_speed,
-            long current_offset, Long duration, int need_pay, double amount,
-            String play_count, String created_at, String file_path, String path_url,
-            int down_status, int listen_duration, boolean chapter_edit_select,
-            boolean down_edit_select) {
+                           int sequence, String chapter_name, long size, String down_speed,
+                           long current_offset, long duration, int need_pay, double amount,
+                           String play_count, String created_at, String file_path, String path_url,
+                           int down_status, long listen_duration, long updateMillis,
+                           boolean chapter_edit_select, boolean down_edit_select) {
         this.chapter_id = chapter_id;
         this.audio_id = audio_id;
         this.audio_name = audio_name;
@@ -72,21 +67,13 @@ public class DownloadChapter implements Serializable {
         this.path_url = path_url;
         this.down_status = down_status;
         this.listen_duration = listen_duration;
+        this.updateMillis = updateMillis;
         this.chapter_edit_select = chapter_edit_select;
         this.down_edit_select = down_edit_select;
     }
 
-
-    public boolean isDownloading(){
-        return down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOADING;
-    }
-
-    public boolean isDownloadFinish(){
-        return down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH;
-    }
-
-    public boolean isDownWait(){
-        return down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT;
+    @Generated(hash = 1634822403)
+    public DownloadChapter() {
     }
 
     public Long getChapter_id() {
@@ -106,7 +93,7 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getAudio_name() {
-        return this.audio_name == null?"":this.audio_name;
+        return this.audio_name == null ? "" : this.audio_name;
     }
 
     public void setAudio_name(String audio_name) {
@@ -122,26 +109,42 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getChapter_name() {
-        return this.chapter_name == null?"":this.chapter_name;
+        return this.chapter_name == null ? "" : this.chapter_name;
     }
 
     public void setChapter_name(String chapter_name) {
         this.chapter_name = chapter_name;
     }
-    
+
+    public long getSize() {
+        return this.size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
+
     public String getDown_speed() {
-        return this.down_speed == null?"":this.down_speed;
+        return this.down_speed == null ? "" : this.down_speed;
     }
 
     public void setDown_speed(String down_speed) {
         this.down_speed = down_speed;
     }
 
-    public Long getDuration() {
+    public long getCurrent_offset() {
+        return this.current_offset;
+    }
+
+    public void setCurrent_offset(long current_offset) {
+        this.current_offset = current_offset;
+    }
+
+    public long getDuration() {
         return this.duration;
     }
 
-    public void setDuration(Long duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
@@ -162,7 +165,7 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getPlay_count() {
-        return this.play_count;
+        return this.play_count == null ? "0" : this.play_count;
     }
 
     public void setPlay_count(String play_count) {
@@ -170,7 +173,7 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getCreated_at() {
-        return this.created_at;
+        return this.created_at == null ? "0" : this.created_at;
     }
 
     public void setCreated_at(String created_at) {
@@ -178,7 +181,7 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getFile_path() {
-        return this.file_path == null?"":file_path;
+        return this.file_path;
     }
 
     public void setFile_path(String file_path) {
@@ -186,7 +189,7 @@ public class DownloadChapter implements Serializable {
     }
 
     public String getPath_url() {
-        return this.path_url==null?"":this.path_url;
+        return this.path_url == null ? "0" : this.path_url;
     }
 
     public void setPath_url(String path_url) {
@@ -201,11 +204,11 @@ public class DownloadChapter implements Serializable {
         this.down_status = down_status;
     }
 
-    public int getListen_duration() {
+    public long getListen_duration() {
         return this.listen_duration;
     }
 
-    public void setListen_duration(int listen_duration) {
+    public void setListen_duration(long listen_duration) {
         this.listen_duration = listen_duration;
     }
 
@@ -225,19 +228,23 @@ public class DownloadChapter implements Serializable {
         this.down_edit_select = down_edit_select;
     }
 
-    public void setSize(long size) {
-        this.size = size;
+    public boolean isDownloading() {
+        return down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOADING;
     }
 
-    public void setCurrent_offset(long current_offset) {
-        this.current_offset = current_offset;
+    public boolean isDownloadFinish() {
+        return down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH;
     }
 
-    public long getSize() {
-        return this.size;
+    public boolean isDownWait() {
+        return down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT;
     }
 
-    public long getCurrent_offset() {
-        return this.current_offset;
+    public long getUpdateMillis() {
+        return this.updateMillis;
+    }
+
+    public void setUpdateMillis(long updateMillis) {
+        this.updateMillis = updateMillis;
     }
 }

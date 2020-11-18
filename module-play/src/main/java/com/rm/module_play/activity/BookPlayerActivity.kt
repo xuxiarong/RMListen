@@ -64,7 +64,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playAudioModel: DownloadAudio = DownloadAudio()
         var playChapterId: String = ""
         var playChapterList: MutableList<DownloadChapter> = mutableListOf()
-        var playChapterProgress : Int = 0
+        var playCurrentDuration : Long = 0L
         var playSortType: String = AudioSortType.SORT_ASC
 
         fun startPlayActivity(
@@ -73,7 +73,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             audioModel: DownloadAudio = DownloadAudio(),
             chapterId: String = "",
             chapterList: MutableList<DownloadChapter> = mutableListOf(),
-            chapterProgress : Int = 0,
+            currentDuration : Long = 0L,
             sortType: String = AudioSortType.SORT_ASC
         ) {
             try {
@@ -87,7 +87,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 playAudioModel = audioModel
                 playChapterId = chapterId
                 playChapterList = chapterList
-                playChapterProgress = chapterProgress
+                playCurrentDuration = currentDuration
                 playSortType = sortType
 
                 //音频ID不能为空
@@ -241,14 +241,14 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         musicPlayerManger.startPlayMusic(chapterId = chapterId)
         mViewModel.maxProcess.set(currentPlayerMusic.duration.toFloat())
         when {
-            playChapterProgress <=0 -> {
+            playCurrentDuration <=0 -> {
                 mViewModel.process.set(0F)
             }
-            playChapterProgress in 1..99 -> {
-                musicPlayerManger.seekTo(currentPlayerMusic.duration * 10 * playChapterProgress)
-            }
             else -> {
-                mViewModel.process.set(currentPlayerMusic.duration * 10 *99F)
+                if(playCurrentDuration > currentPlayerMusic.duration *1000){
+                    playCurrentDuration = currentPlayerMusic.duration *1000
+                }
+                musicPlayerManger.seekTo(playCurrentDuration)
             }
         }
     }

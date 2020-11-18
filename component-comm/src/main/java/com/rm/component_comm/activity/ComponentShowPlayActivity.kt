@@ -35,12 +35,12 @@ abstract class ComponentShowPlayActivity<V : ViewDataBinding, VM : BaseVMViewMod
     open fun startPlayActivity() {
         BaseConstance.basePlayInfoModel.get()?.let {
             if (!TextUtils.isEmpty(it.playUrl)) {
-                val progress = BaseConstance.basePlayProgressModel.get()?.playProgress ?: 0
+                val progress = BaseConstance.basePlayProgressModel.get()?.currentDuration ?: 0
                 playService.startPlayActivity(
                     this,
                     audioId = it.playAudioId,
                     chapterId = it.playChapterId,
-                    chapterProgress = progress
+                    currentDuration = progress
                 )
                 return
             }

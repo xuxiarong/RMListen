@@ -49,7 +49,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
         BaseConstance.updateBaseChapterId(chapterId = musicInfo.chapterId )
-        BaseConstance.updateBaseProgress(process = 0 )
+        BaseConstance.updateBaseProgress(currentDuration = 0L,totalDuration = musicInfo.duration * 1000 )
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -61,10 +61,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        val progress = currentDurtion.toFloat() / totalDurtion.toFloat()
-        globalView.setProgress(progress)
-        BaseConstance.updateBaseProgress(process = (progress * 100).toInt())
-
+        BaseConstance.updateBaseProgress(currentDuration = currentDurtion,totalDuration = totalDurtion )
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
@@ -73,7 +70,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         if(playbackState == STATE_ENDED){
-            BaseConstance.updateBaseProgress(100)
+            BaseConstance.updatePlayFinish()
         }
     }
 

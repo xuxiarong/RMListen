@@ -64,7 +64,9 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     fun startAudioPlay(context: Context, model: ListenHistoryModel) {
         playService.startPlayActivity(
             context = context,
-            audioId = model.audio.audio_id.toString()
+            audioId = model.audio.audio_id.toString(),
+            chapterId = model.audio.listenChapterList.last().chapter_id.toString(),
+            currentDuration = model.audio.listenChapterList.last().listen_duration
         )
     }
 

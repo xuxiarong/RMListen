@@ -12,42 +12,43 @@ import com.rm.business_lib.db.listen.ListenChapterEntity;
  */
 public class BusinessConvert {
 
-    public static DownloadAudio convertToDownloadAudio(ListenAudioEntity listenAudio) {
-        return new DownloadAudio(
-                listenAudio.getAudio_id(),
-                listenAudio.getAudio_type(),
-                listenAudio.getAudio_name(),
-                listenAudio.getOriginal_name(),
-                listenAudio.getStatus(),
-                listenAudio.getAuthor_intro(),
-                listenAudio.getAnchor_id(),
-                listenAudio.getShort_intro(),
-                listenAudio.getAudio_intro(),
-                listenAudio.getAudio_cover(),
-                listenAudio.getCover_url(),
-                listenAudio.getAudio_label(),
-                listenAudio.getQuality(),
-                listenAudio.getProgress(),
-                listenAudio.getPlay_count(),
-                listenAudio.getCreated_at(),
-                listenAudio.getChapter_updated_at(),
-                listenAudio.getAnchor_name(),
-                listenAudio.getAuthor(),
-                listenAudio.getMember_id(),
-                listenAudio.getNickname(),
-                listenAudio.getSubscription_count(),
-                listenAudio.getLast_sequence(),
-                listenAudio.getAudio_cover_url(),
-                listenAudio.getAnchor(),
-                listenAudio.getTags(),
-                listenAudio.getIs_subscribe(),
-                listenAudio.getIs_fav(),
-                listenAudio.getDownload_num(),
-                listenAudio.getDown_size(),
-                listenAudio.getEdit_select(),
-                listenAudio.getListen_finish()
-        );
-    }
+//    public static DownloadAudio convertToDownloadAudio(ListenAudioEntity listenAudio) {
+//        return new DownloadAudio(
+//                listenAudio.getAudio_id(),
+//                listenAudio.getAudio_type(),
+//                listenAudio.getAudio_name(),
+//                listenAudio.getOriginal_name(),
+//                listenAudio.getStatus(),
+//                listenAudio.getAuthor_intro(),
+//                listenAudio.getAnchor_id(),
+//                listenAudio.getShort_intro(),
+//                listenAudio.getAudio_intro(),
+//                listenAudio.getAudio_cover(),
+//                listenAudio.getCover_url(),
+//                listenAudio.getAudio_label(),
+//                listenAudio.getQuality(),
+//                listenAudio.getProgress(),
+//                listenAudio.getPlay_count(),
+//                listenAudio.getCreated_at(),
+//                listenAudio.getChapter_updated_at(),
+//                listenAudio.getAnchor_name(),
+//                listenAudio.getUpdateMillis(),
+//                listenAudio.getAuthor(),
+//                listenAudio.getMember_id(),
+//                listenAudio.getNickname(),
+//                listenAudio.getSubscription_count(),
+//                listenAudio.getLast_sequence(),
+//                listenAudio.getAudio_cover_url(),
+//                listenAudio.getAnchor(),
+//                listenAudio.getTags(),
+//                listenAudio.getIs_subscribe(),
+//                listenAudio.getIs_fav(),
+//                listenAudio.getDownload_num(),
+//                listenAudio.getDown_size(),
+//                listenAudio.getEdit_select(),
+//                listenAudio.getListen_finish()
+//        );
+//    }
 
     public static ListenAudioEntity convertToListenAudio(DownloadAudio downloadAudio) {
         ListenAudioEntity listenAudioEntity = new ListenAudioEntity();
@@ -69,6 +70,7 @@ public class BusinessConvert {
         listenAudioEntity.setCreated_at(downloadAudio.getCreated_at());
         listenAudioEntity.setChapter_updated_at(downloadAudio.getChapter_updated_at());
         listenAudioEntity.setAnchor_name(downloadAudio.getAnchor_name());
+        listenAudioEntity.setUpdateMillis(downloadAudio.getUpdateMillis());
         listenAudioEntity.setAuthor(downloadAudio.getAuthor());
         listenAudioEntity.setMember_id(downloadAudio.getMember_id());
         listenAudioEntity.setNickname(downloadAudio.getNickname());
@@ -105,6 +107,7 @@ public class BusinessConvert {
                 listenChapter.getPath_url(),
                 listenChapter.getDown_status(),
                 listenChapter.getListen_duration(),
+                listenChapter.getUpdateMillis(),
                 listenChapter.getChapter_edit_select(),
                 listenChapter.getDown_edit_select()
         );
@@ -129,6 +132,7 @@ public class BusinessConvert {
                 downloadChapter.getPath_url(),
                 downloadChapter.getDown_status(),
                 downloadChapter.getListen_duration(),
+                downloadChapter.getUpdateMillis(),
                 downloadChapter.getChapter_edit_select(),
                 downloadChapter.getDown_edit_select()
         );

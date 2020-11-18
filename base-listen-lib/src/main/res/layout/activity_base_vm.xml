@@ -108,7 +108,7 @@
                 app:backWidth="2dp"
                 app:progColor="@color/base_ff5e5e"
                 app:progWidth="2dp"
-                bindPlayProgress="@{BaseConstance.INSTANCE.basePlayProgressModel.playProgress}"
+                bindPlayProgress="@{BaseConstance.INSTANCE.basePlayProgressModel}"
                 />
 
         </FrameLayout>

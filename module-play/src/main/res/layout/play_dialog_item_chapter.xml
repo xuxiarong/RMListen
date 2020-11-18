@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+        <variable
+            name="item"
+            type="com.rm.business_lib.db.download.DownloadChapter" />
+        <import type="com.rm.baselisten.util.TimeUtils"/>
+        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
+    </data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <com.rm.business_lib.wedgit.LivingView
+            android:id="@+id/living_img"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_19"
+            android:clickable="false"
+            android:visibility="invisible"
+            app:line_color="@color/business_color_ff5e5e"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/music_play_book_list_position"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_7"
+            android:layout_marginEnd="@dimen/dp_7"
+            android:gravity="center_horizontal"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/business_text_size_14sp"
+            android:visibility="visible"
+            tools:ignore="MissingConstraints"
+            bindText="@{item.sequence}"
+            tools:text="1344" />
+
+        <TextView
+            android:id="@+id/tv_music_play_chapter_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_42"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/business_text_size_16sp"
+            app:layout_constraintLeft_toRightOf="@+id/music_play_book_list_position"
+            tools:ignore="MissingConstraints"
+            android:text="@{item.chapter_name}"
+            tools:text="Albert CastilloAlbert CastilloAlbert CastilloAlbert CastilloAlbert CastilloAlbert Castillo" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/dp_50"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_music_play_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/business_text_color_b1b1b1"
+                android:textSize="12sp"
+                app:drawableStartCompat="@drawable/music_play_ic_icon_play_eb"
+                bindPlayCountString="@{item.play_count}"
+                tools:text="14w" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_music_play_time_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/business_text_color_b1b1b1"
+                android:textSize="12sp"
+                android:text="@{TimeUtils.getListenDuration(item.duration)}"
+                app:drawableLeftCompat="@drawable/music_play_ic_icon_time_eb"
+                tools:text="14:34" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_music_play_up_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/business_text_color_b1b1b1"
+                android:textSize="12sp"
+                android:text="@{TimeUtils.getListenYearTime(Long.valueOf(item.created_at))}"
+                app:drawableLeftCompat="@drawable/music_play_ic_icon_day_eb"
+                tools:text="1988/04/23" />
+        </LinearLayout>
+
+        <com.rm.business_lib.wedgit.download.DownloadStatusView
+            android:id="@+id/image_music_play_down"
+            bindCurrentDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
+            bindDownloadAudio="@{viewModel.playAudioModel}"
+            bindDownloadStatusChapter="@{item}"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_gravity="end|center_vertical"
+            tools:ignore="MissingConstraints" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@color/base_e8e8e8"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16" />
+    </FrameLayout>
+</layout>

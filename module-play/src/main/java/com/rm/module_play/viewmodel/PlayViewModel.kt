@@ -2,6 +2,7 @@ package com.rm.module_play.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
+import android.view.Gravity
 import android.widget.ImageView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -11,12 +12,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
@@ -40,7 +43,6 @@ import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
-import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
@@ -229,6 +231,24 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         )
     }
 
+    /**
+     * 章节列表View的控制显示状态
+     */
+    var showChapter = ObservableBoolean(false)
+
+    /**
+     * 章节列表的Adapter
+     */
+    val chapterListAdapter by lazy {
+        CommonBindVMAdapter<DownloadChapter>(
+            this,
+            mutableListOf(),
+            R.layout.play_dialog_item_chapter,
+            BR.viewModel,
+            BR.item
+        )
+    }
+
 
     companion object {
         const val ACTION_PLAY_QUEUE = "ACTION_PLAY_QUEUE"//播放列表
@@ -258,6 +278,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             )
         }
         playChapterList.addAll(chapterList)
+        chapterListAdapter.setList(playChapterList.value)
         playPath.postValue(tempList)
 
     }
@@ -267,16 +288,18 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         isAttention.set(audio.anchor.status)
         isSubscribe.set(audio.is_subscribe)
         BaseConstance.updateBaseAudioId(audioId = audio.audio_id.toString(),playUrl = audio.audio_cover_url)
+        audio.updateMillis = System.currentTimeMillis()
         playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
     }
 
     fun initPlayChapter(chapter: DownloadChapter) {
         playChapter.set(chapter)
-        maxProcess.set(chapter.duration.toFloat())
+        maxProcess.set(chapter.duration * 1000F)
         process.set(chapter.listen_duration.toFloat())
         playChapterId.set(chapter.chapter_id.toString())
+        chapter.duration *=1000
         playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
-
+        chapter.duration/=1000
         playChapterId.get()?.let {
             playReport(playAudioId.get()!!, it)
         }
@@ -297,15 +320,19 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 )}"
             )
             chapter.listen_duration = if (isPlayFinish) {
-                100
+                totalDuration
             } else {
-                (currentDuration / 10 / chapter.duration).toInt()
+                currentDuration
             }
             playChapter.set(chapter)
             playChapterId.set(chapter.chapter_id.toString())
+            chapter.updateMillis = System.currentTimeMillis()
+            chapter.duration = totalDuration
             playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
-            if (playAudioModel.get() != null) {
-                playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(playAudioModel.get()!!))
+            val audio = playAudioModel.get()
+            if (audio != null) {
+                audio.updateMillis = System.currentTimeMillis()
+                playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
             }
         }
     }
@@ -315,11 +342,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (playChapterList != null && playChapterList.size > 0) {
             if (position <= playChapterList.size - 1) {
                 val startChapter = playChapterList[position]
+
                 playChapter.set(startChapter)
                 playChapterId.set(startChapter.chapter_id.toString())
-                maxProcess.set(startChapter.duration.toFloat())
+                maxProcess.set(startChapter.duration * 1000F)
                 process.set(startChapter.listen_duration.toFloat())
-                playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(playChapterList[position]))
+                startChapter.updateMillis = System.currentTimeMillis()
+                startChapter.duration *=1000
+                playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(startChapter))
+                startChapter.duration/=1000
             }
         }
     }
@@ -329,6 +360,29 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun playControlAction(action: String) {
         playControlAction.set(action)
     }
+
+    fun showChapterListDialog(context: Context){
+
+//        showChapter.set(true)
+//        showChapter.notifyChange()
+//        showChapter.set(false)
+        if(context is FragmentActivity){
+            CommonDragMvDialog().apply {
+                gravity = Gravity.BOTTOM
+                dialogWidthIsMatchParent = true
+                dialogHeight = context.dip(550)
+                dialogHasBackground = false
+                closeDragAlpha = true
+                dialogCanceledOnTouchOutside = false
+            }.showCommonDialog(
+                context,
+                R.layout.play_dialog_chapter_list,
+                this,
+                BR.viewModel
+            )
+        }
+    }
+
 
     fun finishActivity(action: String) {
         playControlAction.set(action)

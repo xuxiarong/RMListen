@@ -32,7 +32,7 @@ class PlayServiceImpl : PlayService {
         audioInfo: DownloadAudio,
         chapterId: String,
         chapterList: MutableList<DownloadChapter>,
-        chapterProgress: Int,
+        currentDuration: Long,
         sortType: String
     ) {
         BookPlayerActivity.startPlayActivity(
@@ -41,7 +41,7 @@ class PlayServiceImpl : PlayService {
             audioModel = audioInfo,
             chapterId = chapterId,
             chapterList = chapterList,
-            chapterProgress = chapterProgress,
+            currentDuration = currentDuration,
             sortType = sortType
         )
     }

@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.rm.baselisten.R
 import com.rm.baselisten.helper.GlobalCloseInputHelper
+import com.rm.baselisten.utilExt.DisplayUtils
+import com.rm.baselisten.utilExt.screenWidth
 
 /**
  * desc   :
@@ -113,6 +115,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
                 //设置Dialog外部透明
                 params.dimAmount = 0f
                 dialog!!.window!!.attributes = params
+                dialog!!.window?.setBackgroundDrawableResource(R.color.base_transparent) // 背景透明
             } else {
                 dialog!!.window?.setBackgroundDrawableResource(R.color.base_transparent) // 背景透明
             }
@@ -121,7 +124,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
                 dialogWidth
             } else {
                 if (dialogWidthIsMatchParent) {
-                    WindowManager.LayoutParams.MATCH_PARENT
+                    activity!!.screenWidth
                 } else {
                     WindowManager.LayoutParams.WRAP_CONTENT
                 }

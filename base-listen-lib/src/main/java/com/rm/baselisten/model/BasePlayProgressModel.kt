@@ -6,5 +6,6 @@ package com.rm.baselisten.model
  * version: 1.0
  */
 data class BasePlayProgressModel constructor(
-    var playProgress : Int = 0
+    var totalDuration : Long = 0L,
+    var currentDuration : Long = 0L
 )

@@ -15,12 +15,15 @@ import com.rm.baselisten.view.DragCloseLayout
  */
 open class CommonDragDialog : BaseFragmentDialog() {
 
+    var closeDragAlpha : Boolean = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         val draggableView = DragCloseLayout(this.activity)
         draggableView.addView(view, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT
         )
         draggableView.setDialog(dialog)
+        draggableView.isCloseAlpha = closeDragAlpha
         draggableView.seDragCloseListener(::dismiss)
         return draggableView
     }

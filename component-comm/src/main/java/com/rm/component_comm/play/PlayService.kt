@@ -27,7 +27,7 @@ interface PlayService : ApplicationProvider {
         audioInfo: DownloadAudio = DownloadAudio(),
         chapterId: String = "",
         chapterList: MutableList<DownloadChapter> = mutableListOf(),
-        chapterProgress : Int = 0,
+        currentDuration : Long = 0L,
         sortType: String = AudioSortType.SORT_ASC
     )
 
