@@ -149,9 +149,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 播放状态进度条，0是播放2是加载中1是暂停,false是暂停
      */
-    var playStatusBean = ObservableField<PlayState>(
-        PlayState()
-    )
+    var playStatusBean = BaseConstance.basePlayStatusModel
 
     /**
      * 是否有上一章

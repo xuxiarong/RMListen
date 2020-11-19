@@ -338,42 +338,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         if (playbackState == PlayGlobalData.STATE_ENDED) {
             mViewModel.updatePlayChapterProgress(isPlayFinish = true)
         }
-        val currentStatus = mViewModel.playStatusBean.get()
-        if (currentStatus != null) {
-            if (currentStatus.read == playWhenReady && currentStatus.state == playbackState) {
-                return
-            } else {
-                mViewModel.playStatusBean.set(
-                    PlayState(
-                        state = playbackState,
-                        read = playWhenReady
-                    )
-                )
-                BaseConstance.basePlayStatusModel.set(
-                    BasePlayStatusModel(
-                        playReady = playWhenReady,
-                        playStatus = playbackState
-                    )
-                )
-            }
-        } else {
-            mViewModel.playStatusBean.set(
-                PlayState(
-                    state = playbackState,
-                    read = playWhenReady
-                )
-            )
-            BaseConstance.basePlayStatusModel.set(
-                BasePlayStatusModel(
-                    playReady = playWhenReady,
-                    playStatus = playbackState
-                )
-            )
-        }
-        DLog.d(
-            "suolong",
-            " playWhenReady = $playWhenReady --- status = $playbackState --- time = ${System.currentTimeMillis()}"
-        )
     }
 
     //播放完成

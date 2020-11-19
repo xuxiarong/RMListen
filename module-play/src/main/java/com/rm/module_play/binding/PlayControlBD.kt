@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
+import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.setPlayOnClickNotDoubleListener
@@ -145,24 +146,24 @@ fun LottieAnimationView.bindPlayOrPause(state: PlayState) {
 
 }
 
-@BindingAdapter("bindPlayControl")
-fun PlayControlView.bindPlayControl(playState: PlayState?) {
+@BindingAdapter("bindPlayControl","bindPlayControlClick")
+fun PlayControlView.bindPlayControl(playState: BasePlayStatusModel?,action: (() -> Unit)?) {
     if (playState==null){
         return
     }
-    startOrPause(playState = playState)
+    startOrPause(playState = playState,action = action)
 }
 
-@BindingAdapter("bindPlayControlClick")
-fun PlayControlView.bindPlayControlClick(action: (() -> Unit)?) {
-    if (action != null) {
-        setPlayOnClickNotDoubleListener {
-            if (playFinish) {
-                action()
-            }
-        }
-    }
-}
+//@BindingAdapter("bindPlayControlClick")
+//fun PlayControlView.bindPlayControlClick(action: (() -> Unit)?) {
+//    if (action != null) {
+//        setPlayOnClickNotDoubleListener {
+//            if (playFinish) {
+//                action()
+//            }
+//        }
+//    }
+//}
 
 
 @BindingAdapter("bindPlayPreSrc")
@@ -189,11 +190,11 @@ fun ImageView.bindPlayNextSrc(hasNext: Boolean) {
 
 
 @BindingAdapter("bindPlayPrepareProgress")
-fun CircularProgressView.bindPlayPrepareProgress(playStatus: PlayState?) {
+fun CircularProgressView.bindPlayPrepareProgress(playStatus: BasePlayStatusModel?) {
     if(playStatus==null){
         return
     }
-    if (playStatus.state == STATE_BUFFERING) {
+    if (playStatus.playStatus == STATE_BUFFERING) {
         startAutoProgress()
     } else {
         stopAutoProgress()
