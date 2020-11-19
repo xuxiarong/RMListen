@@ -166,6 +166,10 @@ open class BaseVMViewModel : BaseViewModel() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_DATA_EMPTY))
     }
 
+    fun showSearchDataEmpty() {
+        baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_SEARCH_DATA_EMPTY))
+    }
+
     fun showLoading() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING))
     }

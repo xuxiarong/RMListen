@@ -63,12 +63,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 下一页章节的页码
      */
-    private var nextChapterPage = 1
+    var nextChapterPage = 1
 
     /**
      * 上一页章节页码
      */
-    private var previousChapterPage = 1
+    var previousChapterPage = 1
 
     /**
      * 章节的最大页码
@@ -83,7 +83,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 评论当前的页码
      */
-    private var commentPage = 1
+    var commentPage = 1
 
     /**
      * 评论每次加载数据的条数
@@ -356,7 +356,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     }
 
     /**
-     * 处理章节价值失败
+     * 处理章节加载失败
      */
     private fun processChapterFailure(msg: String?, chapterType: String) {
         when (chapterType) {
@@ -546,17 +546,17 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     private fun processCommentData(bean: HomeCommentBean) {
         commentRefreshStateMode.finishLoadMore(true)
-        if (homeDetailCommentAdapter.data.size >= bean.total || bean.list_comment.size < mPageSize) {
-            commentRefreshStateMode.setNoHasMore(true)
-        } else {
-            ++commentPage
-        }
         if (commentPage == 1) {
             homeDetailCommentAdapter.setList(bean.list_comment)
         } else {
             homeDetailCommentAdapter.addData(bean.list_comment)
         }
 
+        if (homeDetailCommentAdapter.data.size >= bean.total || bean.list_comment.size < mPageSize) {
+            commentRefreshStateMode.setNoHasMore(true)
+        } else {
+            ++commentPage
+        }
 
     }
 
@@ -633,6 +633,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 mCurSort = AudioSortType.SORT_ASC
             }
         }
+        chapterAdapter.setSort(mCurSort)
         configChapterPageList()
         nextChapterPage = 1
         previousChapterPage = 1
@@ -696,7 +697,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         getActivity(context)?.let {
             if (isLogin.get()) {
                 audioId.get()?.let { audioId ->
-                    HomeCommentDialogHelper(this, it, audioId) {
+                    HomeCommentDialogHelper(it, audioId) {
                         commentPage = 1
                         getCommentList(audioId)
                         showTip("评论成功")
@@ -748,7 +749,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
 
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
-                    .showMySheetListDialog(this, it, audioId.get()!!)
+                    .showMySheetListDialog(it, audioId.get()!!) {
+                        showTip("添加成功")
+                    }
             }
         }
 

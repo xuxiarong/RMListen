@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.rm.baselisten.model.BaseNetStatus" />
+
+        <variable
+            name="status"
+            type="com.rm.baselisten.model.BaseStatusModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        isVisible="@{status.netStatus == BaseNetStatus.BASE_SHOW_SEARCH_DATA_EMPTY}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/base_search_no_result" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/base_search_no_result" />
+
+    </LinearLayout>
+</layout>

@@ -35,11 +35,12 @@ class MineSettingPersonalSignatureActivity :
             .setRightText(getString(R.string.business_sure))
             .setLeftIconClick { finish() }
             .setRightTextColor (R.color.business_text_color_666666)
+            .setRightEnabled(false)
             .setRightTextClick { mViewModel.updateUserInfo() }
+
         mViewModel.baseTitleModel.value = titleModel
 
     }
-
     override fun startObserve() {
     }
 

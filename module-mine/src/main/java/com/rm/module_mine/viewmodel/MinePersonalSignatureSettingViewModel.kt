@@ -8,8 +8,11 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.LOGIN_USER_INFO
 import com.rm.business_lib.loginUser
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MinePersonalInfoActivity.Companion.RESULT_CODE_SIGNATURE
 import com.rm.module_mine.bean.UpdateUserInfoBean
 import com.rm.module_mine.repository.MineRepository
+import kotlinx.coroutines.delay
+import java.util.logging.Handler
 
 /**
  *
@@ -54,14 +57,12 @@ class MinePersonalSignatureSettingViewModel(private val repository: MineReposito
                 it.address!!,
                 inputText.get()!!
             )
-
             launchOnIO {
                 repository.updateUserInfo(updateUserInfo).checkResult(
                     onSuccess = { userBean ->
                         LOGIN_USER_INFO.putMMKV(userBean)
                         loginUser.set(userBean)
-                        showTip("修改成功")
-                        finish()
+                        setResultAndFinish(RESULT_CODE_SIGNATURE)
                     },
                     onError = {
                         showTip("修改失败",R.color.business_color_ff5e5e)

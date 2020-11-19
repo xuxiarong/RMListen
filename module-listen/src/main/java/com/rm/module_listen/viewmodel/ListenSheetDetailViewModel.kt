@@ -147,13 +147,13 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     fun dialogSheetDetailEditSheetFun(view: View) {
         data.get()?.let {
             getActivity(view.context)?.let { activity ->
-                ListenDialogCreateSheetHelper(
-                    this,
-                    activity
-                ).showEditDialog(
+                ListenDialogCreateSheetHelper(activity) {
+
+                }.showEditDialog(
                     it.sheet_id,
                     success = { sheetName ->
                         editSuccess(sheetName)
+                        showTip("编辑成功")
                     }
                 )
             }

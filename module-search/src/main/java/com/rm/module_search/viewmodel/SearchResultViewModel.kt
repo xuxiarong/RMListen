@@ -106,6 +106,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
                 historyVisible.set(HISTORY_KEY.getListString().size > 0)
             } else {
                 searchSuggest(keyWord.get()!!)
+                suggestIsVisible.set(true)
             }
         } else {
             contentIsVisible.set(true)

@@ -120,7 +120,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
      * 加载更多
      */
     fun loadData() {
-        ++mPage
         getAudioList()
     }
 
@@ -154,6 +153,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                         refreshStatusModel.finishRefresh(true)
                         mAdapter.setList(it.audio_list?.list)
                         //是否有更多数据
+                        ++mPage
                         refreshStatusModel.setNoHasMore(it.audio_list?.list?.size ?: 0 < pageSize)
                     },
                     onError = {
@@ -178,12 +178,11 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                         refreshStatusModel.finishLoadMore(true)
                         //是否有更多数据
                         refreshStatusModel.setNoHasMore(it.list.size < pageSize)
-
+                        ++mPage
                     },
                     onError = {
-                        showServiceError()
+                        showTip("$it", R.color.business_color_ff5e5e)
                         refreshStatusModel.finishLoadMore(false)
-                        mPage--
                     }
                 )
         }
@@ -201,7 +200,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                     setFavorState(true)
                 },
                 onError = {
-                    showServiceError()
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -219,7 +218,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                     setFavorState(false)
                 },
                 onError = {
-                    showServiceError()
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }

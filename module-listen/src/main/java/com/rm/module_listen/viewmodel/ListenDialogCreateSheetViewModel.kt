@@ -1,12 +1,13 @@
 package com.rm.module_listen.viewmodel
 
 import android.text.TextUtils
+import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommonDragMvDialog
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.EmojiUtils
 import com.rm.baselisten.util.getBooleanMMKV
@@ -26,8 +27,9 @@ import com.rm.module_listen.repository.ListenRepository
 
 class ListenDialogCreateSheetViewModel(
     private val mActivity: FragmentActivity,
-    private val baseViewModel: BaseVMViewModel) :
-    BaseVMViewModel() {
+    private val successBlock: () -> Unit
+
+) : BaseVMViewModel() {
 
     private val repository by lazy {
         ListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
@@ -62,21 +64,26 @@ class ListenDialogCreateSheetViewModel(
      * @param description 听单简介
      */
     private fun createSheet(sheet_name: String, description: String) {
-        showLoading()
+        showTip(
+            msg = "创建听单中",
+            color = R.color.business_text_color_333333,
+            isDelayGone = false,
+            isShowProgress = true
+        )
         launchOnIO {
             repository.createSheet(sheet_name, description).checkResult(
                 onSuccess = {
-                    showContentView()
                     if (TextUtils.isEmpty(audioId)) {
-                        showToast(CONTEXT.getString(R.string.listen_add_success_tip))
+                        showTip(
+                            msg = CONTEXT.getString(R.string.listen_add_success_tip),
+                            color = R.color.business_text_color_333333
+                        )
                         mDialog?.dismiss()
                     } else {
                         addSheet(it.sheet_id)
                     }
-                    showContentView()
                 },
                 onError = {
-                    showContentView()
                     showErrorTip(it)
                 }
             )
@@ -90,13 +97,10 @@ class ListenDialogCreateSheetViewModel(
         launchOnIO {
             repository.addSheetList(sheetId, audioId).checkResult(
                 onSuccess = {
-                    showContentView()
-                    addSheetSuccess(sheetId)
+                    addSheetSuccess()
                 },
                 onError = {
-                    showContentView()
-
-                    showErrorTip(it)
+                    showErrorTip(CONTEXT.getString(R.string.listen_add_fail))
                 }
             )
         }
@@ -105,8 +109,9 @@ class ListenDialogCreateSheetViewModel(
     /**
      * 添加成功
      */
-    private fun addSheetSuccess(sheetId: String) {
+    private fun addSheetSuccess() {
         if (IS_FIRST_ADD_SHEET.getBooleanMMKV(true)) {
+            hideTipView()
             CustomTipsFragmentDialog().apply {
                 titleText = mActivity.getString(R.string.listen_add_success)
                 contentText = mActivity.getString(R.string.listen_add_success_content)
@@ -128,26 +133,15 @@ class ListenDialogCreateSheetViewModel(
                     ImageView(mActivity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(mActivity)
         } else {
-            if (mActivity is BaseActivity) {
-                mActivity.tipView.showTipView(mActivity, "添加成功")
-            } else {
-                showToast(mActivity.getString(R.string.listen_add_success_tip))
-            }
+            successBlock()
+            showTip(msg = "添加成功", color = R.color.business_text_color_333333)
         }
         mDialog?.dismiss()
         IS_FIRST_ADD_SHEET.putMMKV(false)
     }
 
     private fun showErrorTip(msg: String?) {
-        if (mActivity is BaseActivity) {
-            mActivity.tipView.showTipView(
-                mActivity,
-                tipText = "$msg",
-                tipColor = R.color.business_color_ff5e5e
-            )
-        } else {
-            showToast("$msg")
-        }
+        showTip(msg = "$msg", color = R.color.business_color_ff5e5e)
     }
 
     /**
@@ -156,18 +150,24 @@ class ListenDialogCreateSheetViewModel(
      * @param bean 听单json
      */
     private fun editSheet(bean: ListenPatchSheetBean) {
-        showLoading()
+        showTip(
+            msg = "修改听单中",
+            color = R.color.business_text_color_333333,
+            isDelayGone = false,
+            isShowProgress = true
+        )
         launchOnIO {
             repository.editSheet(bean).checkResult(
                 onSuccess = {
-                    showContentView()
                     editSuccess(bean.sheet_name)
-                    showToast(CONTEXT.getString(R.string.listen_edit_success_tip))
+                    showTip(
+                        msg = CONTEXT.getString(R.string.listen_edit_success_tip),
+                        color = R.color.business_text_color_333333
+                    )
                     mDialog?.dismiss()
                 },
                 onError = {
-                    showContentView()
-                    showErrorTip(it)
+                    showErrorTip(msg = CONTEXT.getString(R.string.listen_edit_fail))
                 }
             )
         }
@@ -184,10 +184,10 @@ class ListenDialogCreateSheetViewModel(
                 dataBinding?.listenDialogCreateSheetEditSynopsis?.text.toString()
             when {
                 EmojiUtils.containsEmoji(str) -> {
-                    showToast(CONTEXT.getString(R.string.listen_input_char_tip))
+                    showErrorTip(msg = CONTEXT.getString(R.string.listen_input_char_tip))
                 }
                 numberOfWords(str) -> {
-                    showToast(CONTEXT.getString(R.string.listen_input_length_tip))
+                    showErrorTip(msg = CONTEXT.getString(R.string.listen_input_length_tip))
                 }
                 else -> {
                     if (sheetId.get() == null) {
@@ -198,7 +198,7 @@ class ListenDialogCreateSheetViewModel(
                 }
             }
         } else {
-            showToast(CONTEXT.getString(R.string.listen_input_title))
+            showErrorTip(msg = CONTEXT.getString(R.string.listen_input_title))
         }
     }
 
@@ -224,5 +224,38 @@ class ListenDialogCreateSheetViewModel(
         return str.length > 20
     }
 
+
+    private fun showTip(
+        msg: String,
+        color: Int,
+        isDelayGone: Boolean? = true,
+        isShowProgress: Boolean? = false
+    ) {
+        dataBinding?.listenDialogCreateSheetLayout?.apply {
+            dataBinding?.listenDialogCreateSheetTip?.text = msg
+            dataBinding?.listenDialogCreateSheetTip?.setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    color
+                )
+            )
+            visibility = View.VISIBLE
+            handler.removeCallbacksAndMessages(null)
+            if (isDelayGone == true) {
+                handler.postDelayed({
+                    hideTipView()
+                }, 3000)
+            }
+        }
+        if (isShowProgress == true) {
+            dataBinding?.listenDialogCreateSheetProgress?.visibility = View.VISIBLE
+        } else {
+            dataBinding?.listenDialogCreateSheetProgress?.visibility = View.GONE
+        }
+    }
+
+    private fun hideTipView() {
+        dataBinding?.listenDialogCreateSheetLayout?.visibility = View.GONE
+    }
 
 }

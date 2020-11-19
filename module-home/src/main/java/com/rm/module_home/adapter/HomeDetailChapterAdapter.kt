@@ -2,6 +2,7 @@ package com.rm.module_home.adapter
 
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
+import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -14,15 +15,29 @@ import com.rm.module_home.viewmodel.HomeDetailViewModel
  * @description
  *
  */
-class HomeDetailChapterAdapter(mViewModel: HomeDetailViewModel) : BaseBindVMAdapter<DownloadChapter>(
-    mViewModel,
-    mutableListOf(),
-    R.layout.home_item_detail_chapter,
-    BR.chapterclick,
-    BR.DetailChapterViewModel
-) {
+class HomeDetailChapterAdapter(mViewModel: HomeDetailViewModel) :
+    BaseBindVMAdapter<DownloadChapter>(
+        mViewModel,
+        mutableListOf(),
+        R.layout.home_item_detail_chapter,
+        BR.chapterclick,
+        BR.DetailChapterViewModel
+    ) {
+    private var mSort = AudioSortType.SORT_ASC
+
+    fun setSort(sort: String) {
+        mSort = sort
+    }
+
     override fun convert(holder: BaseViewHolder, item: DownloadChapter) {
         super.convert(holder, item)
-        holder.setText(R.id.detail_chapter_number_tx, "${holder.adapterPosition + 1}")
+        if (mSort == AudioSortType.SORT_ASC) {
+            holder.setText(R.id.detail_chapter_number_tx, "${holder.adapterPosition + 1}")
+        } else {
+            holder.setText(
+                R.id.detail_chapter_number_tx,
+                "${itemCount - (holder.adapterPosition + 1)}"
+            )
+        }
     }
 }

@@ -281,7 +281,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playPath.postValue(tempList)
     }
 
-    fun insertPlayPath(chapterList: MutableList<DownloadChapter>){
+    fun insertPlayPath(chapterList: MutableList<DownloadChapter>) {
         val tempChapterList = mutableListOf<DownloadChapter>()
         val tempPathList = mutableListOf<BaseAudioInfo>()
         tempChapterList.addAll(chapterList)
@@ -299,11 +299,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             )
         }
         val currentPathList = playPath.value
-        if(currentPathList!=null && currentPathList.isNotEmpty()){
+        if (currentPathList != null && currentPathList.isNotEmpty()) {
             tempPathList.addAll(currentPathList)
         }
         val currentChapterList = playChapterList.value
-        if(currentChapterList!=null && currentChapterList.isNotEmpty()){
+        if (currentChapterList != null && currentChapterList.isNotEmpty()) {
             tempChapterList.addAll(currentChapterList)
         }
         playChapterList.postValue(tempChapterList)
@@ -315,7 +315,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playAudioModel.set(audio)
         isAttention.set(audio.anchor.status)
         isSubscribe.set(audio.is_subscribe)
-        BaseConstance.updateBaseAudioId(audioId = audio.audio_id.toString(),playUrl = audio.audio_cover_url)
+        BaseConstance.updateBaseAudioId(
+            audioId = audio.audio_id.toString(),
+            playUrl = audio.audio_cover_url
+        )
         audio.updateMillis = System.currentTimeMillis()
         playChapterListSort.get()?.let {
             audio.sortType = it
@@ -328,9 +331,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         maxProcess.set(chapter.duration * 1000F)
         process.set(chapter.listen_duration.toFloat())
         playChapterId.set(chapter.chapter_id.toString())
-        chapter.duration *=1000
+        chapter.duration *= 1000
         playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
-        chapter.duration/=1000
+        chapter.duration /= 1000
         playChapterId.get()?.let {
             playReport(playAudioId.get()!!, it)
         }
@@ -382,9 +385,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 maxProcess.set(startChapter.duration * 1000F)
                 process.set(startChapter.listen_duration.toFloat())
                 startChapter.updateMillis = System.currentTimeMillis()
-                startChapter.duration *=1000
+                startChapter.duration *= 1000
                 playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(startChapter))
-                startChapter.duration/=1000
+                startChapter.duration /= 1000
             }
         }
     }
@@ -395,12 +398,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playControlAction.set(action)
     }
 
-    fun showChapterListDialog(context: Context){
+    fun showChapterListDialog(context: Context) {
 
 //        showChapter.set(true)
 //        showChapter.notifyChange()
 //        showChapter.set(false)
-        if(context is FragmentActivity){
+        if (context is FragmentActivity) {
 //            CommonDragMvDialog().apply {
 //                gravity = Gravity.BOTTOM
 //                dialogWidthIsMatchParent = true
@@ -471,9 +474,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 通过音频ID直接获取下一页的章节列表，从第一页开始，这里成功后需要记录chapterId
      */
-    fun  getNextPageChapterList() {
+    fun getNextPageChapterList() {
         launchOnUI {
-            repository.chapterList(playAudioId.get()!!, playNextPage, playChapterPageSize, playChapterListSort.get()!!).checkResult(onSuccess = {
+            repository.chapterList(
+                playAudioId.get()!!,
+                playNextPage,
+                playChapterPageSize,
+                playChapterListSort.get()!!
+            ).checkResult(onSuccess = {
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
                     chapterRefreshModel.noMoreData.set(chapterList.size < playChapterPageSize)
@@ -503,17 +511,22 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 通过音频ID直接获取上一页的章节列表
      */
-    fun getPrePageChapterList(){
+    fun getPrePageChapterList() {
         val audioId = playAudioId.get()
-        if(TextUtils.isEmpty(audioId)){
+        if (TextUtils.isEmpty(audioId)) {
             return
         }
-        if(playPrePage <= PlayGlobalData.PLAY_FIRST_PAGE){
+        if (playPrePage <= PlayGlobalData.PLAY_FIRST_PAGE) {
             return
         }
         playPrePage--
         launchOnUI {
-            repository.chapterList(audioId!!, playPrePage, playChapterPageSize, playChapterListSort.get()!!).checkResult(onSuccess = {
+            repository.chapterList(
+                audioId!!,
+                playPrePage,
+                playChapterPageSize,
+                playChapterListSort.get()!!
+            ).checkResult(onSuccess = {
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
                     insertPlayPath(chapterList)
@@ -730,10 +743,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             if (isLogin.get()) {
                 playAudioId.get()?.let { audioId ->
                     RouterHelper.createRouter(HomeService::class.java)
-                        .showCommentDialog(this, it, audioId) {
-                            if (it is BaseActivity) {
-                                it.tipView.showTipView(it, "评论成功")
-                            }
+                        .showCommentDialog(it, audioId) {
+                            showTip("评论成功")
                             commentPage = 1
                             getCommentList()
                         }

@@ -203,6 +203,17 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
                     mChildView?.visibility = View.GONE
                 }
             }
+            BaseNetStatus.BASE_SHOW_SEARCH_DATA_EMPTY -> {
+                if (!mBaseBinding.baseSearchEmpty.isInflated) {
+                    mBaseBinding.baseSearchEmpty.viewStub?.layoutResource = initSearchEmptyLayout()
+                    mBaseBinding.baseSearchEmpty.viewStub?.inflate()
+                }
+                if (mDataShowView != null) {
+                    mDataShowView!!.visibility = View.GONE
+                } else {
+                    mChildView?.visibility = View.GONE
+                }
+            }
             BaseNetStatus.BASE_SHOW_SERVICE_ERROR -> {
                 setServiceError()
             }
@@ -298,5 +309,12 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
      */
     protected open fun initEmptyLayout(): Int {
         return R.layout.base_layout_empty
+    }
+    /**
+     * 初始化搜索空数据的View
+     * @return Int 空数据View的layoutId
+     */
+    protected open fun initSearchEmptyLayout(): Int {
+        return R.layout.base_layout_search_empty
     }
 }

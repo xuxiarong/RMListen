@@ -1,7 +1,6 @@
 package com.rm.module_listen.utils
 
 import androidx.fragment.app.FragmentActivity
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.viewmodel.ListenDialogSheetViewModel
@@ -10,14 +9,14 @@ import com.rm.module_listen.viewmodel.ListenDialogSheetViewModel
  * 添加听单dialog
  */
 class ListenDialogSheetHelper(
-    private val baseViewModel: BaseVMViewModel,
     private val mActivity: FragmentActivity,
-    private val audioId: String
+    private val audioId: String,
+    private val successBlock: () -> Unit
 ) {
     /**
      * viewModel对象
      */
-    private val mViewModel by lazy { ListenDialogSheetViewModel(mActivity, baseViewModel, audioId) }
+    private val mViewModel by lazy { ListenDialogSheetViewModel(mActivity, audioId, successBlock) }
 
 
     /**

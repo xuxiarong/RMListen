@@ -140,7 +140,6 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
             showContentView()
             refreshStatusModel.finishRefresh(false)
         } else {
-            mPage--
             refreshStatusModel.finishLoadMore(false)
         }
     }

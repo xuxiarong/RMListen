@@ -37,7 +37,7 @@ class SearchResultActivity :
 
     override fun initView() {
         super.initView()
-        params = mDataBind.searchResultSuggestRv.layoutParams as ConstraintLayout.LayoutParams
+        params = mDataBind.searchResultSuggestLayout.layoutParams as ConstraintLayout.LayoutParams
         mDataBind.root.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
 
         mDataBind.searchResultEditText.setText(searchKeyword.get()!!)
@@ -47,7 +47,7 @@ class SearchResultActivity :
         mDataBind.root.setOnClickListener {
             hideKeyboard(mDataBind.searchResultEditText.applicationWindowToken)
         }
-        mDataBind.searchResultSuggestRv.setOnClickListener {
+        mDataBind.searchResultSuggestLayout.setOnClickListener {
             hideKeyboard(mDataBind.searchResultEditText.applicationWindowToken)
         }
 
@@ -123,18 +123,15 @@ class SearchResultActivity :
         //超过屏幕的五分之一则表示显示了输入框
         if (abs(height) > screenHeight / 5 && height != params.bottomMargin) {
             params.bottomMargin = height
-            mDataBind.searchResultSuggestRv.layoutParams = params
+            mDataBind.searchResultSuggestLayout.layoutParams = params
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        searchKeyword.set("")
         mDataBind.root.viewTreeObserver.removeOnGlobalLayoutListener(windowListener)
     }
 
-    override fun finish() {
-        super.finish()
-        searchKeyword.set("")
-        mViewModel.historyVisible.set(false)
-    }
+
 }
