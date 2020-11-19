@@ -631,7 +631,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                        bindIsHasMoreData="@{viewModel.commentRefreshModel.isHasMore()}"
+                        bindNoMoreData="@{viewModel.commentRefreshModel.noMoreData}"
                         bindIsLoadMoreSuccess="@{viewModel.commentRefreshModel.isLoadMoreSuccess()}"
                         bindOnLoadMoreListener="@{viewModel.commentLoadData}"
                         android:layout_width="match_parent"

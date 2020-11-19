@@ -47,10 +47,10 @@ class SearchContentSheetFragment :
             }
         }
 
-        mViewModel.refreshStateMode.isHasMore.addOnPropertyChangedCallback(object :
+        mViewModel.refreshStateMode.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStateMode.isHasMore.get()
+                val hasMore = mViewModel.refreshStateMode.noMoreData.get()
                 if (hasMore == true) {
                     mViewModel.sheetAdapter.removeAllFooterView()
                     mViewModel.sheetAdapter.addFooterView(footView)

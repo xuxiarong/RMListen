@@ -58,10 +58,10 @@ fun SmartRefreshLayout.bindIsLoadMoreSuccess(isSuccess: Boolean?) {
     }
 }
 
-@BindingAdapter("bindIsHasMoreData")
-fun SmartRefreshLayout.bindIsHasMoreData(isHasMoreData: Boolean?) {
+@BindingAdapter("bindNoMoreData")
+fun SmartRefreshLayout.bindNoMoreData(noMoreData: Boolean?) {
     // 没有更多数据了
-    if (isHasMoreData == true) {
+    if (noMoreData == true) {
         finishLoadMoreWithNoMoreData()
     }
 }

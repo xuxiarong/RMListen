@@ -115,10 +115,10 @@ class HomeTopListContentFragment :
 
 
     override fun startObserve() {
-        mViewModel.refreshStatusModel.isHasMore.addOnPropertyChangedCallback(object :
+        mViewModel.refreshStatusModel.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStatusModel.isHasMore.get()
+                val hasMore = mViewModel.refreshStatusModel.noMoreData.get()
                 if (hasMore == true) {
                     mViewModel.mAdapter.removeAllFooterView()
                     mViewModel.mAdapter.addFooterView(footView)

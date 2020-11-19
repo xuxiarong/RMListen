@@ -42,10 +42,10 @@ class ListenSheetCollectedListFragment :
     }
 
     override fun startObserve() {
-        mViewModel.refreshStateModel.isHasMore.addOnPropertyChangedCallback(object :
+        mViewModel.refreshStateModel.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStateModel.isHasMore.get()
+                val hasMore = mViewModel.refreshStateModel.noMoreData.get()
                 if (hasMore == true) {
                     mViewModel.mAdapter.removeAllFooterView()
                     mViewModel.mAdapter.addFooterView(footView)

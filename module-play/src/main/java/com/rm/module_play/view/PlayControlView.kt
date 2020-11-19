@@ -28,8 +28,8 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun startOrPause(playState: BasePlayStatusModel,action: (() -> Unit)?){
-        //代表播放列表已经播放完
         this.action = action
+        //代表播放列表已经播放完
         if(playState.playStatus == STATE_ENDED){
             setAnimation("play_pause.json")
             playAnimation()
@@ -58,11 +58,14 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun setClickFun(action: (() -> Unit)?){
-        if(action!=null){
-            setOnClickListener {
-                action()
+        postDelayed({
+            playFinish = true
+            if(action!=null){
+                setOnClickListener {
+                    action()
+                }
             }
-        }
+        },50)
     }
 
     fun clearClick(){
@@ -86,26 +89,22 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     inner class PauseAnimatorListener : Animator.AnimatorListener{
         override fun onAnimationRepeat(animation: Animator?) {
-            playFinish = false
             clearClick()
             DLog.d("suolong","play_pause onAnimationRepeat")
         }
 
         override fun onAnimationEnd(animation: Animator?) {
-            playFinish = true
             setClickFun(action = action)
             DLog.d("suolong","play_pause onAnimationEnd")
         }
 
         override fun onAnimationCancel(animation: Animator?) {
-            playFinish = true
             setClickFun(action = action)
             DLog.d("suolong","play_pause onAnimationCancel")
 
         }
 
         override fun onAnimationStart(animation: Animator?) {
-            playFinish = false
             clearClick()
             DLog.d("suolong","play_pause onAnimationStart")
         }
@@ -113,23 +112,19 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
 
     inner class StartAnimatorListener : Animator.AnimatorListener{
         override fun onAnimationRepeat(animation: Animator?) {
-            playFinish = false
             clearClick()
         }
 
         override fun onAnimationEnd(animation: Animator?) {
-            playFinish = true
             setClickFun(action = action)
             DLog.d("suolong","play_start onAnimationEnd")
         }
 
         override fun onAnimationCancel(animation: Animator?) {
-            playFinish = true
             setClickFun(action = action)
         }
 
         override fun onAnimationStart(animation: Animator?) {
-            playFinish = false
             clearClick()
             DLog.d("suolong","play_start onAnimationStart")
         }

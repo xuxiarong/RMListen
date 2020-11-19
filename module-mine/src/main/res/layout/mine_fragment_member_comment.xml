@@ -15,7 +15,7 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/mine_member_comment_refresh_layout"
-            bindIsHasMoreData="@{viewModel.refreshStateModel.isHasMore()}"
+            bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
             bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
             bindOnLoadMoreListener="@{viewModel.loadMoreData}"

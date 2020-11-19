@@ -2,7 +2,6 @@ package com.rm.module_play.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
-import android.view.Gravity
 import android.widget.ImageView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -12,14 +11,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
-import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.IS_FIRST_SUBSCRIBE
@@ -32,7 +29,6 @@ import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.isLogin
-import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -96,19 +92,20 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     val playChapterList = MutableLiveData<MutableList<DownloadChapter>>()
 
     /**
-     * 章节的当前分页
+     * 加载下一页的当前页码
      */
-    var playChapterPage = PlayGlobalData.PLAY_FIRST_PAGE
+    var playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
+
+
+    /**
+     * 加载上一页的当前页码
+     */
+    var playPrePage = PlayGlobalData.PLAY_FIRST_PAGE
 
     /**
      * 章节每页数量
      */
     var playChapterPageSize = PlayGlobalData.PLAY_PAGE_SIZE
-
-    /**
-     * 是否还有更多章节列表
-     */
-    var playHasMoreChapter = true
 
     /**
      * 章节列表倒叙逆序
@@ -248,6 +245,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         )
     }
 
+    /**
+     * 评论 SmartRefreshLayout的状态变化
+     */
+    val chapterRefreshModel = SmartRefreshLayoutStatusModel()
+
 
     companion object {
         const val ACTION_PLAY_OPERATING = "ACTION_PLAY_OPERATING"//播放操作
@@ -277,7 +279,36 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playChapterList.addAll(chapterList)
         chapterListAdapter.setList(playChapterList.value)
         playPath.postValue(tempList)
+    }
 
+    fun insertPlayPath(chapterList: MutableList<DownloadChapter>){
+        val tempChapterList = mutableListOf<DownloadChapter>()
+        val tempPathList = mutableListOf<BaseAudioInfo>()
+        tempChapterList.addAll(chapterList)
+        chapterList.forEach {
+            tempPathList.add(
+                BaseAudioInfo(
+                    audioPath = it.path_url,
+                    audioName = it.chapter_name,
+                    filename = it.chapter_name,
+                    audioId = it.audio_id.toString(),
+                    chapterId = it.chapter_id.toString(),
+                    duration = it.duration,
+                    playCount = it.play_count.toString()
+                )
+            )
+        }
+        val currentPathList = playPath.value
+        if(currentPathList!=null && currentPathList.isNotEmpty()){
+            tempPathList.addAll(currentPathList)
+        }
+        val currentChapterList = playChapterList.value
+        if(currentChapterList!=null && currentChapterList.isNotEmpty()){
+            tempChapterList.addAll(currentChapterList)
+        }
+        playChapterList.postValue(tempChapterList)
+        chapterListAdapter.setList(tempChapterList)
+        playPath.postValue(tempPathList)
     }
 
     fun initPlayAudio(audio: DownloadAudio) {
@@ -424,7 +455,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 上报
      */
     fun playReport(audioID: String, chapterId: String) {
-        launchOnIO {
+        launchOnUI {
             repository.playerReport(audioID, chapterId).checkResult(onSuccess = {
                 ExoplayerLogger.exoLog(it)
             }, onError = {
@@ -436,34 +467,62 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 通过音频ID直接获取下一页的章节列表，从第一页开始，这里成功后需要记录chapterId
      */
-    fun getChapterList(
-        audioId: String,
-        page: Int = playChapterPage,
-        page_size: Int = playChapterPageSize,
-        sort: String = playChapterListSort.get()!!
-    ) {
-        if (playHasMoreChapter) {
-            launchOnUI {
-                repository.chapterList(audioId, page, page_size, sort).checkResult(onSuccess = {
-                    val chapterList = it.list
-                    if (chapterList != null && chapterList.size > 0) {
-                        playHasMoreChapter = chapterList.size >= page_size
-                        //是第一页，那么取第一条作为播放
-                        if (page == PlayGlobalData.PLAY_FIRST_PAGE) {
-                            initPlayChapter(chapterList[0])
-                        }
-                        playChapterPage++
-                        setAudioPlayPath(chapterList)
-                    } else {
-                        playHasMoreChapter = false
-                        setAudioPlayPath(mutableListOf())
+    fun  getNextPageChapterList() {
+        launchOnUI {
+            repository.chapterList(playAudioId.get()!!, playNextPage, playChapterPageSize, playChapterListSort.get()!!).checkResult(onSuccess = {
+                val chapterList = it.list
+                if (chapterList != null && chapterList.size > 0) {
+                    chapterRefreshModel.noMoreData.set(chapterList.size < playChapterPageSize)
+                    chapterRefreshModel.finishLoadMore(true)
+                    //是第一页，那么取第一条作为播放
+                    if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
+                        initPlayChapter(chapterList[0])
+                        chapterRefreshModel.canRefresh.set(false)
                     }
-                }, onError = {
-                    it?.let {
-                        showTip(it)
-                    }
-                })
-            }
+                    playNextPage++
+                    setAudioPlayPath(chapterList)
+                } else {
+                    chapterRefreshModel.noMoreData.set(false)
+                    chapterRefreshModel.finishLoadMore(false)
+                    setAudioPlayPath(mutableListOf())
+                }
+            }, onError = {
+                it?.let {
+                    chapterRefreshModel.finishLoadMore(false)
+                    showTip(it)
+                }
+            })
+        }
+
+    }
+
+    /**
+     * 通过音频ID直接获取上一页的章节列表
+     */
+    fun getPrePageChapterList(){
+        val audioId = playAudioId.get()
+        if(TextUtils.isEmpty(audioId)){
+            return
+        }
+        if(playPrePage <= PlayGlobalData.PLAY_FIRST_PAGE){
+            return
+        }
+        playPrePage--
+        launchOnUI {
+            repository.chapterList(audioId!!, playPrePage, playChapterPageSize, playChapterListSort.get()!!).checkResult(onSuccess = {
+                val chapterList = it.list
+                if (chapterList != null && chapterList.size > 0) {
+                    insertPlayPath(chapterList)
+                    chapterRefreshModel.canRefresh.set(playPrePage > 1)
+                }
+                chapterRefreshModel.finishRefresh(true)
+            }, onError = {
+                playPrePage++
+                chapterRefreshModel.finishRefresh(false)
+                it?.let {
+                    showTip(it)
+                }
+            })
         }
     }
 
@@ -472,24 +531,21 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun getChapterListWithId(
         audioId: String,
-        chapterId: String,
-        page: Int = playChapterPage,
-        page_size: Int = playChapterPageSize,
-        sort: String = playChapterListSort.get()!!
+        chapterId: String
     ) {
         launchOnUI {
             repository.chapterPageList(
                 audioId = audioId,
                 chapterId = chapterId,
-//                page = page,
-//                page_size = page_size,
-                sort = sort
+                page_size = playChapterPageSize,
+                sort = playChapterListSort.get()!!
             ).checkResult(onSuccess = {
                 val chapterList = it.list
-                playChapterPage = it.page
+                playNextPage = it.page
+                playPrePage = it.page
                 showContentView()
                 if (chapterList != null && chapterList.size > 0) {
-                    playHasMoreChapter = chapterList.size >= page_size
+                    chapterRefreshModel.noMoreData.set(chapterList.size < playChapterPageSize)
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == playChapterId.get()) {
                             initPlayChapter(chapter)
@@ -497,12 +553,16 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                             return@forEach
                         }
                     }
+                    playNextPage++
                 } else {
-                    playHasMoreChapter = false
                     setAudioPlayPath(mutableListOf())
                 }
             }, onError = {
+                chapterRefreshModel.finishLoadMore(false)
                 showContentView()
+                it?.let {
+                    showTip(it)
+                }
             })
         }
     }
@@ -526,7 +586,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 取消评论点赞
      */
     private fun unLikeComment(bean: Comments) {
-        launchOnIO {
+        launchOnUI {
             repository.homeUnLikeComment(bean.id).checkResult(
                 onSuccess = {
 
@@ -548,7 +608,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 评论点赞
      */
     private fun likeComment(bean: Comments) {
-        launchOnIO {
+        launchOnUI {
             repository.homeLikeComment(bean.id).checkResult(
                 onSuccess = {
 
@@ -570,7 +630,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 订阅
      */
     private fun subscribe(context: Context, audioId: String) {
-        launchOnIO {
+        launchOnUI {
             repository.subscribe(audioId).checkResult(
                 onSuccess = {
                     isSubscribe.set(true)
@@ -589,7 +649,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 取消订阅
      */
     private fun unSubscribe(audioId: String) {
-        launchOnIO {
+        launchOnUI {
             repository.unSubscribe(audioId).checkResult(
                 onSuccess = {
                     isSubscribe.set(false)
@@ -608,7 +668,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      *评论列表
      */
     fun getCommentList() {
-        launchOnIO {
+        launchOnUI {
             repository.commentAudioComments(playAudioId.get()!!, commentPage, pageSize)
                 .checkResult(onSuccess = {
                     processCommentSuccessData(it)
@@ -761,7 +821,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun attentionAnchor(followId: String) {
         showLoading()
-        launchOnIO {
+        launchOnUI {
             repository.attentionAnchor(followId).checkResult(
                 onSuccess = {
                     showContentView()
@@ -780,7 +840,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun unAttentionAnchor(followId: String) {
         showLoading()
-        launchOnIO {
+        launchOnUI {
             repository.unAttentionAnchor(followId).checkResult(
                 onSuccess = {
                     showContentView()

@@ -10,7 +10,7 @@
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        bindIsHasMoreData="@{viewModel.refreshStatusModel.isHasMore()}"
+        bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
         bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess()}"
         bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
         bindOnLoadMoreListener="@{viewModel.loadMoreData}"
