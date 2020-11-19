@@ -19,35 +19,30 @@ import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.play.PlayState
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.component_comm.listen.ListenService
-import com.rm.component_comm.navigateToForResult
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.R.anim.activity_top_open
-import com.rm.module_play.common.ARouterPath
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
-import com.rm.module_play.dialog.MusicPlayBookListDialog
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.playview.GlobalPlayHelper
 import com.rm.module_play.viewmodel.PlayViewModel
-import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_GET_PLAYINFO_LIST
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_JOIN_LISTEN
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_COMMENT
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_FINSH
 import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_OPERATING
-import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_QUEUE
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.activity_book_player.*
 
 
+@SuppressLint("InflateParams")
 @Suppress(
     "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING",
     "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
@@ -144,17 +139,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 }
             }
         })
-
-
-        DownloadMemoryCache.downloadingChapter.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (MusicPlayBookListDialog.isShowing && MusicPlayBookListDialog.musicDialog != null) {
-                    MusicPlayBookListDialog.musicDialog!!.notifyDialog()
-                }
-            }
-        })
-
         mViewModel.playPath.observe(this, Observer { playPath ->
             musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
             GlobalPlayHelper.INSTANCE.addOnPlayerEventListener()
@@ -198,18 +182,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val controlTime = mViewModel.playControlAction.get()
                 when {
-                    controlTime?.contains(ACTION_PLAY_QUEUE) == true -> {
-
-//                        showPlayBookListDialog(
-//                            downloadAudio = mViewModel.playAudioModel.get(),
-//                            audioListModel = it,
-//                            back = {
-//                                musicPlayerManger.startPlayMusic(it.toString())
-//                            },
-//                            mLoad = mViewModel.playChapterListSort,
-//                            isPlay = mViewModel.playStatusBean.get()?.read == true
-//                        )
-                    }
                     controlTime?.contains(ACTION_PLAY_OPERATING) == true -> {
                         showMusicPlayMoreDialog { it1 ->
                             if (it1 == 0) {
@@ -226,10 +198,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                             }
                         }
                     }
-                    controlTime?.contains(ACTION_GET_PLAYINFO_LIST) == true -> {
-                        navigateToForResult(ARouterPath.testPath, 100)
 
-                    }
                     controlTime?.contains(ACTION_JOIN_LISTEN) == true -> {
                         RouterHelper.createRouter(ListenService::class.java)
                             .showMySheetListDialog(

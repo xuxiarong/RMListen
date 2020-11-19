@@ -35,7 +35,7 @@
             android:lineSpacingExtra="8dp"
             android:text="版本更新信息:
                 \n1,修复一些已知Bug和Crash
-                \n2,重构了播放器每个页面的入口圆形按钮，首次进入App，圆形按钮还有一些状态问题
+                \n2,重构了播放器
                 \n3,修改播放器页面的UI细节问题
                 \n4,修改首页的一些UI细节问题
                     "

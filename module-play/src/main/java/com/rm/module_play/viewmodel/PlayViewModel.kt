@@ -252,9 +252,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
 
     companion object {
-        const val ACTION_PLAY_QUEUE = "ACTION_PLAY_QUEUE"//播放列表
         const val ACTION_PLAY_OPERATING = "ACTION_PLAY_OPERATING"//播放操作
-        const val ACTION_GET_PLAYINFO_LIST = "ACTION_GET_PLAYINFO_LIST"//播放列表
         const val ACTION_JOIN_LISTEN = "ACTION_JOIN_LISTEN"//加入听单
         const val ACTION_MORE_COMMENT = "ACTION_MORE_COMMENT"//更多评论
         const val ACTION_MORE_FINSH = "ACTION_MORE_FINSH"//关闭

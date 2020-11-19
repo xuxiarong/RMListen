@@ -168,6 +168,8 @@ class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, 
 
     override fun initModelBrId() = BR.viewModel
 
+    override fun isShowPlayWhenEmptyUrl() = true
+
     override fun startObserve() {
 
     }

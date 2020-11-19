@@ -77,7 +77,6 @@
                                 corner="@{8f}"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_GET_PLAYINFO_LIST+viewModel.curTime)}"
                                 android:scaleType="fitXY"
                                 tools:layout_editor_absoluteX="49dp" />
 
