@@ -15,11 +15,6 @@ import com.rm.component_comm.router.ApplicationProvider
  * version: 1.0
  */
 interface PlayService : ApplicationProvider {
-    //获取全局播放器按钮
-    fun getGlobalPlay(): View
-
-    //显示播放器按钮
-    fun showView(context: Context)
 
     fun startPlayActivity(
         context: Context,
@@ -30,9 +25,6 @@ interface PlayService : ApplicationProvider {
         currentDuration : Long = 0L,
         sortType: String = AudioSortType.SORT_ASC
     )
-
-    //播放历史
-    fun queryPlayBookList(): List<ListenAudioEntity>?
 
     /**
      * 评论中心跳转

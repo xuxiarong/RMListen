@@ -2,6 +2,8 @@ package com.rm.module_listen.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
@@ -19,7 +21,9 @@ class ListenHistorySearchActivity :
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.activity_listen_history_search
 
-
+    private val footView by lazy {
+        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
+    }
 
     override fun startObserve() {
         mViewModel.allHistory.observe(this, Observer {
@@ -27,6 +31,9 @@ class ListenHistorySearchActivity :
                 mViewModel.showDataEmpty()
             }else{
                 mViewModel.mSwipeAdapter.addData(it)
+                if(mViewModel.mSwipeAdapter.footerLayout == null){
+                    mViewModel.mSwipeAdapter.addFooterView(footView)
+                }
             }
         })
     }

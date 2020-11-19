@@ -8,16 +8,21 @@
         <variable
             name="viewModel"
             type="com.rm.module_listen.viewmodel.ListenHistoryViewModel" />
+        <variable
+            name="editorInfo"
+            type="android.view.inputmethod.EditorInfo" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.ListenHistorySearchActivity">
 
         <androidx.appcompat.widget.AppCompatEditText
             style="@style/BusinessTextStyleFirst_2"
-            afterTextChanged="@{viewModel.startSearchHistory}"
+            afterTextChanged="@{()->viewModel.startSearchHistory}"
+            bindAction="@{editorInfo.IME_ACTION_SEARCH}"
+            bindBlock="@{viewModel.bindActionListener}"
             android:layout_width="match_parent"
             android:layout_height="38dp"
             android:layout_marginStart="@dimen/dp_16"
@@ -39,10 +44,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginTop="@dimen/dp_100"
+            >
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_100"
@@ -68,5 +71,5 @@
             android:layout_marginEnd="@dimen/dp_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </layout>

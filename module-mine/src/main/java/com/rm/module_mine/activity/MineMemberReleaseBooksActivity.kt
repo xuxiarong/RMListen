@@ -53,8 +53,8 @@ class MineMemberReleaseBooksActivity :
         mViewModel.refreshStatusModel.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStatusModel.noMoreData.get()
-                if (hasMore == true) {
+                val noMoreData = mViewModel.refreshStatusModel.noMoreData.get()
+                if (noMoreData == true) {
                     mViewModel.mAdapter.removeAllFooterView()
                     mViewModel.mAdapter.addFooterView(footView)
                 } else {

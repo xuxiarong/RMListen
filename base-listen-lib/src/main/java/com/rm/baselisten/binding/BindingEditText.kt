@@ -50,7 +50,6 @@ fun EditText.afterTextChanged(action: ((Context, String) -> Unit)?) {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             action(context,s.toString())
-            context.applicationContext
         }
     })
 }

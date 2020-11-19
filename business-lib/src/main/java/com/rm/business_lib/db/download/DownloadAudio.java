@@ -55,6 +55,8 @@ public class DownloadAudio implements Serializable {
     private String audio_cover_url;
     private String anchor_name;
     private long updateMillis;
+    private String sortType;
+    private String listenChapterId;
     @Convert(columnType = String.class, converter = AnchorConvert.class)
     private Anchor anchor;
     @Convert(columnType = String.class, converter = DetailTagsConvert.class)
@@ -79,16 +81,14 @@ public class DownloadAudio implements Serializable {
     @Generated(hash = 265156160)
     private transient DownloadAudioDao myDao;
 
-    @Generated(hash = 443972825)
-    public DownloadAudio(Long audio_id, String audio_type, String audio_name, String original_name,
-                         String status, String author_intro, String anchor_id, String short_intro,
-                         String audio_intro, String audio_cover, String cover_url, String audio_label,
-                         String quality, String progress, String play_count, String created_at,
-                         String chapter_updated_at, String author, String member_id, String nickname,
-                         String subscription_count, String last_sequence, String audio_cover_url, String anchor_name,
-                         long updateMillis, Anchor anchor, List<DetailTags> tags, boolean is_subscribe,
-                         boolean is_fav, int download_num, long down_size, boolean edit_select,
-                         boolean listen_finish) {
+    @Generated(hash = 161900114)
+    public DownloadAudio(Long audio_id, String audio_type, String audio_name, String original_name, String status,
+            String author_intro, String anchor_id, String short_intro, String audio_intro, String audio_cover,
+            String cover_url, String audio_label, String quality, String progress, String play_count, String created_at,
+            String chapter_updated_at, String author, String member_id, String nickname, String subscription_count,
+            String last_sequence, String audio_cover_url, String anchor_name, long updateMillis, String sortType,
+            String listenChapterId, Anchor anchor, List<DetailTags> tags, boolean is_subscribe, boolean is_fav,
+            int download_num, long down_size, boolean edit_select, boolean listen_finish) {
         this.audio_id = audio_id;
         this.audio_type = audio_type;
         this.audio_name = audio_name;
@@ -114,6 +114,8 @@ public class DownloadAudio implements Serializable {
         this.audio_cover_url = audio_cover_url;
         this.anchor_name = anchor_name;
         this.updateMillis = updateMillis;
+        this.sortType = sortType;
+        this.listenChapterId = listenChapterId;
         this.anchor = anchor;
         this.tags = tags;
         this.is_subscribe = is_subscribe;
@@ -466,5 +468,21 @@ public class DownloadAudio implements Serializable {
 
     public void setUpdateMillis(long updateMillis) {
         this.updateMillis = updateMillis;
+    }
+
+    public String getSortType() {
+        return this.sortType;
+    }
+
+    public void setSortType(String sortType) {
+        this.sortType = sortType;
+    }
+
+    public String getListenChapterId() {
+        return this.listenChapterId;
+    }
+
+    public void setListenChapterId(String listenChapterId) {
+        this.listenChapterId = listenChapterId;
     }
 }

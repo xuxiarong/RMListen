@@ -25,19 +25,12 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
         }
     }
 
-    val globalView by lazy {
-        GlobalPlay(Cxt.context).apply {
-            setRadius(Cxt.context.dip(19).toFloat())
-            setBarWidth(Cxt.context.dip(2).toFloat())
-        }
-    }
 
     fun addOnPlayerEventListener() {
         musicPlayerManger.addOnPlayerEventListener(this)
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
-        globalView.showPlayError()
         ExoplayerLogger.exoLog("playerState=${playerState},message=${message}")
     }
 

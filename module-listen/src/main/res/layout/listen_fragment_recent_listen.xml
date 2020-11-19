@@ -13,6 +13,7 @@
         android:id="@+id/listenRecentRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="43dp"
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd="@dimen/dp_16" />
 </layout>
