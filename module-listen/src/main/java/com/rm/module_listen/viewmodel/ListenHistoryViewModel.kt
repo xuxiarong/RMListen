@@ -104,7 +104,7 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
     fun startListenRecentDetail(context: Context) {
-        ListenHistorySearchActivity.startListenHistorySearch(context)
+//        ListenHistorySearchActivity.startListenHistorySearch(context)
     }
 
     fun deleteItem(item: ListenHistoryModel) {
