@@ -73,6 +73,7 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         val resultList = ArrayList<ListenHistoryModel>()
 
         if (TextUtils.isEmpty(search) && sourceList != null) {
+            searchHasData.set(true)
             mSwipeAdapter.data.clear()
             mSwipeAdapter.addData(sourceList)
             mSwipeAdapter.footerLayout?.visibility = View.VISIBLE
@@ -98,6 +99,8 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
     fun deleteAllHistory() {
+
+
         DaoUtil(ListenChapterEntity::class.java, "").deleteAll()
         DaoUtil(ListenAudioEntity::class.java, "").deleteAll()
         allHistory.value = mutableListOf()

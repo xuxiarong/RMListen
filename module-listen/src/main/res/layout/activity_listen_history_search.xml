@@ -20,7 +20,7 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             style="@style/BusinessTextStyleFirst_2"
-            afterTextChanged="@{()->viewModel.startSearchHistory}"
+            afterTextChanged="@{viewModel.startSearchHistory}"
             bindAction="@{editorInfo.IME_ACTION_SEARCH}"
             bindBlock="@{viewModel.bindActionListener}"
             android:layout_width="match_parent"
@@ -29,6 +29,7 @@
             android:layout_marginTop="@dimen/dp_12"
             android:layout_marginEnd="@dimen/dp_16"
             android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:background="@drawable/business_shape_f7f7f7_12dp"
             android:drawableStart="@drawable/business_icon_search"
             android:drawablePadding="@dimen/dp_6"

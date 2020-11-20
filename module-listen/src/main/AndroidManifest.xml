@@ -3,8 +3,14 @@
     package="com.rm.module_listen">
 
     <application>
-        <activity android:name=".activity.ListenHistorySearchActivity"></activity>
-        <activity android:name=".player.TestPalyerActivity" /> <!-- 已购 -->
+        <activity
+            android:name=".activity.ListenHistorySearchActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".player.TestPalyerActivity"
+            android:screenOrientation="portrait" /> <!-- 已购 -->
         <activity
             android:name=".activity.ListenBoughtActivity"
             android:screenOrientation="portrait" /> <!-- 订阅 -->
