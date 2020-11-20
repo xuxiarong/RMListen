@@ -387,7 +387,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 process.set(startChapter.listen_duration.toFloat())
                 startChapter.updateMillis = System.currentTimeMillis()
                 startChapter.duration *= 1000
-//                playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(startChapter))
+                playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(startChapter))
                 startChapter.duration /= 1000
             }
         }

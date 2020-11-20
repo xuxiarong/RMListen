@@ -20,11 +20,14 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
         val INSTANCE: GlobalPlayHelper by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             GlobalPlayHelper()
         }
+        var listener: MusicPlayerEventListener? = null
     }
 
-
     fun addOnPlayerEventListener() {
-        musicPlayerManger.addOnPlayerEventListener(this)
+        if(listener == null){
+            listener = this
+            musicPlayerManger.addOnPlayerEventListener(this)
+        }
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
