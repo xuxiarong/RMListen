@@ -36,7 +36,7 @@
         <com.rm.module_mine.widget.MineCommonSettingView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:setting_checked="true"
+            app:setting_checked="false"
             app:setting_name="@string/mine_play_setting_last_play_name"
             app:setting_tip="@string/mine_play_setting_last_play_tip" />
 

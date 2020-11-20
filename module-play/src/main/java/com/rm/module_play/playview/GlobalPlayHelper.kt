@@ -2,10 +2,7 @@ package com.rm.module_play.playview
 
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
-import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.dip
-import com.rm.business_lib.play.PlayState
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener

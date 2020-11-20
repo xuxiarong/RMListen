@@ -84,7 +84,6 @@ class ListenMyListenFragment :
     }
 
     override fun initData() {
-        mViewModel.getSubsTotalNumberFromService()
     }
 
 

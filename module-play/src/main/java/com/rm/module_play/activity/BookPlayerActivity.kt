@@ -360,5 +360,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         getBaseContainer().background.mutate().alpha = 1
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
 
 }

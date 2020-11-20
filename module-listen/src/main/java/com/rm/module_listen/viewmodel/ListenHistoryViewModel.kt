@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -31,6 +32,9 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     var startSearchHistory: (String) -> Unit = { searchHistory(it) }
 
     var searchHasData = ObservableBoolean(true)
+
+    val keyword = ObservableField<String>("")
+
 
     //输入法搜索按钮监听
     val bindActionListener: (View) -> Unit = { clickSearchFun(it) }
@@ -73,11 +77,13 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         val resultList = ArrayList<ListenHistoryModel>()
 
         if (TextUtils.isEmpty(search) && sourceList != null) {
+            keyword.set(search)
             searchHasData.set(true)
             mSwipeAdapter.data.clear()
             mSwipeAdapter.addData(sourceList)
             mSwipeAdapter.footerLayout?.visibility = View.VISIBLE
         } else {
+            keyword.set(search)
             if (sourceList != null && sourceList.isNotEmpty()) {
                 sourceList.forEach {
                     if (it.audio.audio_name.contains(search)  ){

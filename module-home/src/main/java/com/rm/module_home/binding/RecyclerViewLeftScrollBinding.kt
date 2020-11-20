@@ -42,6 +42,7 @@ fun LeftAutoScrollRecyclerView.bindLeftScroll(model: HomeAudioHorDoubleRvModel) 
                         model.block.topic_id,
                         model.block.block_name
                     )
+                    smoothScrollToPosition(itemCount - 3)
                 }
                 firstScrollLast = lastItemPosition == itemCount - 1
             }
