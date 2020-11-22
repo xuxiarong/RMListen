@@ -71,6 +71,8 @@ public class BusinessConvert {
         listenAudioEntity.setChapter_updated_at(downloadAudio.getChapter_updated_at());
         listenAudioEntity.setAnchor_name(downloadAudio.getAnchor_name());
         listenAudioEntity.setUpdateMillis(downloadAudio.getUpdateMillis());
+        listenAudioEntity.setSortType(downloadAudio.getSortType());
+        listenAudioEntity.setListenChapterId(downloadAudio.getListenChapterId());
         listenAudioEntity.setAuthor(downloadAudio.getAuthor());
         listenAudioEntity.setMember_id(downloadAudio.getMember_id());
         listenAudioEntity.setNickname(downloadAudio.getNickname());

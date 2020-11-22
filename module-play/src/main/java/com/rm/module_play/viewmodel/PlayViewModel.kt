@@ -261,7 +261,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 设置播放路径
      */
-    fun setAudioPlayPath(chapterList: MutableList<DownloadChapter>) {
+    private fun setAudioPlayPath(chapterList: MutableList<DownloadChapter>) {
         val tempList = mutableListOf<BaseAudioInfo>()
         chapterList.forEach {
             tempList.add(
@@ -320,6 +320,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             playUrl = audio.audio_cover_url
         )
         audio.updateMillis = System.currentTimeMillis()
+        playChapterListSort.get()?.let {
+            audio.sortType = it
+        }
         playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
     }
 
@@ -362,9 +365,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             chapter.updateMillis = System.currentTimeMillis()
             chapter.duration = totalDuration
             playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
+            DLog.d("suolong"," name = ${chapter.chapter_name } chapter_id = ${chapter.chapter_id } audio_id = ${chapter.audio_id }")
             val audio = playAudioModel.get()
             if (audio != null) {
                 audio.updateMillis = System.currentTimeMillis()
+                audio.listenChapterId = chapter.chapter_id.toString()
                 playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
             }
         }

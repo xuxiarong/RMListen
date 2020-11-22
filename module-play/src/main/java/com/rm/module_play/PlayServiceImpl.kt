@@ -7,6 +7,7 @@ import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
+import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
@@ -20,11 +21,6 @@ import com.rm.module_play.playview.GlobalPlayHelper
  */
 @Route(path = ARouterModuleServicePath.PATH_PLAY_SERVICE)
 class PlayServiceImpl : PlayService {
-
-    override fun getGlobalPlay(): View = GlobalPlayHelper.INSTANCE.globalView
-    override fun showView(context: Context) {
-
-    }
 
     override fun startPlayActivity(
         context: Context,
@@ -45,9 +41,6 @@ class PlayServiceImpl : PlayService {
             sortType = sortType
         )
     }
-
-    override fun queryPlayBookList(): List<ListenAudioEntity>? =
-        DaoUtil(ListenAudioEntity::class.java, "").queryAll()
 
     override fun toCommentCenterActivity(context: Context, audioID: String) {
     }

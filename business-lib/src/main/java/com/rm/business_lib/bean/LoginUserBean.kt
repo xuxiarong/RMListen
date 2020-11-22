@@ -17,5 +17,5 @@ data class LoginUserBean(
     var avatar: String? = "", // 头像路径
     var avatar_url: String? = "", // 头像链接
     var fans: String? = "", // 粉丝数
-    var follows: String? = "" // 关注数
+    var follows: String? = "" // 订阅数
 )

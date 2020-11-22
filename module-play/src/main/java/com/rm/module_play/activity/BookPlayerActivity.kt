@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.os.SystemClock
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -100,6 +101,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
+        GlobalPlayHelper.INSTANCE.addOnPlayerEventListener()
+    }
+
     override fun onResume() {
         super.onResume()
         mViewModel.playManger.resumePlayState(true)
@@ -107,6 +114,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun finish() {
         super.finish()
+        mViewModel.playManger.removePlayerListener(this)
         overridePendingTransition(0, R.anim.activity_bottom_close)
     }
 
@@ -139,8 +147,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
         })
         mViewModel.playPath.observe(this, Observer { playPath ->
-            musicPlayerManger.addOnPlayerEventListener(this@BookPlayerActivity)
-            GlobalPlayHelper.INSTANCE.addOnPlayerEventListener()
             if (playPath.size <= 1) {
                 mViewModel.hasNextChapter.set(false)
                 mViewModel.hasPreChapter.set(false)
@@ -360,5 +366,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         getBaseContainer().background.mutate().alpha = 1
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
 
 }

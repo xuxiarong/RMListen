@@ -8,6 +8,7 @@ import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.loginUser
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
@@ -30,6 +31,7 @@ class ListenMyListenFragment :
     BaseVMFragment<ListenFragmentMyListenBinding, ListenMyListenViewModel>() {
 
     private lateinit var mViewPagerAdapter: ListenMyListenPagerAdapter
+
 
     private val mMyListenFragmentList = mutableListOf<Fragment>(
         ListenRecentListenFragment.newInstance(),
@@ -74,8 +76,14 @@ class ListenMyListenFragment :
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(isLogin.get()){
+            mViewModel.getSubsTotalNumberFromService()
+        }
+    }
+
     override fun initData() {
-        mViewModel.getSubsTotalNumberFromService()
     }
 
 

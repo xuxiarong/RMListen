@@ -8,6 +8,7 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
+import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
@@ -41,11 +42,14 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     fun getListenHistory() {
         showLoading()
         launchOnIO {
-            val queryPlayBookList = playService.queryPlayBookList()
+            var queryPlayBookList = ListenDaoUtils.getAllAudioByRecent()
             val audioList = ArrayList<MultiItemEntity>()
-            if (queryPlayBookList != null && queryPlayBookList.isNotEmpty()) {
+            if (queryPlayBookList.isNotEmpty()) {
                 showContentView()
                 audioList.add(ListenRecentDateModel())
+                if(queryPlayBookList.size>10){
+                    queryPlayBookList = queryPlayBookList.subList(0,10)
+                }
                 queryPlayBookList.forEach {
                     audioList.add(ListenHistoryModel(it))
                 }

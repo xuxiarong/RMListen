@@ -2,10 +2,7 @@ package com.rm.module_play.playview
 
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
-import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.dip
-import com.rm.business_lib.play.PlayState
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
@@ -23,21 +20,17 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
         val INSTANCE: GlobalPlayHelper by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             GlobalPlayHelper()
         }
-    }
-
-    val globalView by lazy {
-        GlobalPlay(Cxt.context).apply {
-            setRadius(Cxt.context.dip(19).toFloat())
-            setBarWidth(Cxt.context.dip(2).toFloat())
-        }
+        var listener: MusicPlayerEventListener? = null
     }
 
     fun addOnPlayerEventListener() {
-        musicPlayerManger.addOnPlayerEventListener(this)
+        if(listener == null){
+            listener = this
+            musicPlayerManger.addOnPlayerEventListener(this)
+        }
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
-        globalView.showPlayError()
         ExoplayerLogger.exoLog("playerState=${playerState},message=${message}")
     }
 

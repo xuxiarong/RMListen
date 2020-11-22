@@ -259,12 +259,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 MUSIC_PLAYER_BUFFER -> {
                 }
                 MUSIC_PLAYER_PLAYING -> {
-                    mExoPlayer.playWhenReady = false
-
+                    pause()
                 }
                 MUSIC_PLAYER_PAUSE -> {
-                    mIsPassive = false
-                    mExoPlayer.playWhenReady = true
+                    play()
                 }
                 MUSIC_PLAYER_ERROR -> {
 

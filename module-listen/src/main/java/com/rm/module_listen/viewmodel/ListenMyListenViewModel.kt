@@ -5,6 +5,7 @@ import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.loginUser
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.repository.ListenRepository
@@ -18,6 +19,7 @@ class ListenMyListenViewModel(val repository: ListenRepository) : BaseVMViewMode
 
     var subsNumber = ObservableInt(0)
     var downloadNumber = ObservableInt(0)
+    var currentLoginUser = loginUser
 
     val mSwipeAdapter : CommonMultiSwipeVmAdapter by lazy {
         CommonMultiSwipeVmAdapter(this, mutableListOf(),
@@ -32,7 +34,7 @@ class ListenMyListenViewModel(val repository: ListenRepository) : BaseVMViewMode
         launchOnIO {
             repository.getSubsNumber().checkResult(
                 onSuccess = {
-                    subsNumber.set(it.subNumber)
+                    subsNumber.set(it.subscription_total)
                 },
                 onError = {
                     DLog.d("suolong","$it")

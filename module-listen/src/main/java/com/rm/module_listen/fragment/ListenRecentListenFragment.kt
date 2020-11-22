@@ -34,8 +34,8 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
     }
 
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         mViewModel.getListenHistory()
     }
 

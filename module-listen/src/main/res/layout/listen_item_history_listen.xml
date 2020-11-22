@@ -61,7 +61,7 @@
 
             <TextView
                 android:id="@+id/home_book_adapter_tips"
-                style="@style/BusinessLabStyleHalfRound_FFDF85_TO_FFBA56"
+                style="@style/BusinessLabStyleHalfRound_FF5E5E"
                 app:layout_constraintRight_toRightOf="@id/listenItemRecentIv"
                 app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
                 bindText="@{item.audio.audio_label}"
@@ -77,6 +77,9 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
                 android:text="@{item.audio.audio_name}"
+                bindSpanColor="@{@color/base_ff5e5e}"
+                bindSpanContent="@{item.audio.audio_name}"
+                bindSpanKeyword="@{viewModel.keyword}"
                 tools:text="心要大，脚要实" />
 
             <androidx.appcompat.widget.AppCompatTextView
