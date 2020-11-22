@@ -32,7 +32,7 @@ var isLogin = ObservableBoolean(false)
 // 当前登陆的用户信息
 var loginUser = ObservableField<LoginUserBean>()
 
-object HomeGlobalData{
+object HomeGlobalData {
     var isHomeDouClick = MutableLiveData(false)
     var homeGlobalSelectTab = ObservableInt(0)
 }
@@ -78,10 +78,11 @@ object PlayGlobalData {
 }
 
 object AudioSortType {
-    //正序
-    const val SORT_DESC = "desc"
 
     //倒序
+    const val SORT_DESC = "desc"
+
+    //正序
     const val SORT_ASC = "asc"
 }
 

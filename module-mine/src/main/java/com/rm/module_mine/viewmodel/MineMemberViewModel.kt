@@ -6,7 +6,9 @@ import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
@@ -113,11 +115,30 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                 quicklyLogin(it)
             } else {
                 if (isAttention.get()) {
-                    unAttentionAnchor(followId)
+                    showDialog(context, followId)
                 } else {
                     attentionAnchor(followId)
                 }
             }
+        }
+    }
+
+    private fun showDialog(context: Context,followId: String){
+        getActivity(context)?.let { activity ->
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = context.String(R.string.business_sure_cancel_attention)
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnText = context.String(R.string.business_sure)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    unAttentionAnchor(followId)
+                    dismiss()
+                }
+            }.show(activity)
         }
     }
 

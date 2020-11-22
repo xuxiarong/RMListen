@@ -2,6 +2,7 @@ package com.rm.module_home.adapter
 
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.module_home.BR
@@ -27,6 +28,12 @@ class HomeDetailChapterAdapter(mViewModel: HomeDetailViewModel) :
 
     fun setSort(sort: String) {
         mSort = sort
+        setList(data.reversed())
+    }
+
+    fun setSortList(sort: String, list: Collection<DownloadChapter>?) {
+        mSort = sort
+        setList(list)
     }
 
     override fun convert(holder: BaseViewHolder, item: DownloadChapter) {
@@ -36,7 +43,7 @@ class HomeDetailChapterAdapter(mViewModel: HomeDetailViewModel) :
         } else {
             holder.setText(
                 R.id.detail_chapter_number_tx,
-                "${itemCount - (holder.adapterPosition + 1)}"
+                "${itemCount - holder.adapterPosition - footerLayoutCount}"
             )
         }
     }

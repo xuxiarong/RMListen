@@ -91,9 +91,9 @@ class MineMemberFollowAndFansActivity :
         titles.add("粉丝($fansNum)")
 
         BendTabLayoutMediator(
-            mDataBind.mineMemberFansTab, mDataBind.mineMemberFansViewpager,
-            BendTabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                tab.text = titles[position]
-            }).attach()
+            mDataBind.mineMemberFansTab, mDataBind.mineMemberFansViewpager
+        ) { tab, position ->
+            tab.text = titles[position]
+        }.attach()
     }
 }

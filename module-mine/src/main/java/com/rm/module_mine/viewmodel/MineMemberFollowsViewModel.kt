@@ -1,14 +1,22 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineMemberActivity
+import com.rm.module_mine.bean.MineMemberFansDetailBean
 import com.rm.module_mine.bean.MineMemberFollowBean
 import com.rm.module_mine.bean.MineMemberFollowDetailBean
 import com.rm.module_mine.repository.MineRepository
@@ -66,16 +74,13 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
      * 关注主播
      */
     private fun attentionAnchor(bean: MineMemberFollowDetailBean) {
-        showLoading()
         launchOnIO {
             repository.attentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
-                    showContentView()
                     changeState(bean, 1)
                     showTip("关注成功")
                 },
                 onError = {
-                    showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
 
@@ -87,17 +92,14 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
      * 取消关注主播
      */
     private fun unAttentionAnchor(bean: MineMemberFollowDetailBean) {
-        showLoading()
         launchOnIO {
             repository.unAttentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
-                    showContentView()
                     changeState(bean, 0)
                     showTip("取消关注成功")
                 },
                 onError = {
                     DLog.i("--->", "$it")
-                    showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
 
                 })
@@ -142,6 +144,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
             refreshStatusModel.finishLoadMore(true)
             followAdapter.addData(bean.list)
         }
+        followPage++
         refreshStatusModel.setNoHasMore(followAdapter.data.size >= bean.total || bean.list.size < pageSize)
     }
 
@@ -159,26 +162,59 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
      * 加载更多数据
      */
     fun loadMoreData() {
-        ++followPage
         mineMemberFollowList()
     }
 
     /**
      * item点击事件
      */
-    fun clickItemFun() {}
+    fun clickItemFun(context: Context, bean: MineMemberFollowDetailBean) {
+        MineMemberActivity.newInstance(context, bean.member_id)
+    }
 
     /**
      * item关注点击事件
      */
     fun clickItemFollowFun(context: Context, bean: MineMemberFollowDetailBean) {
         getActivity(context)?.let {
-            if (bean.is_follow == 1) {
-                unAttentionAnchor(bean)
+            if (isLogin.get()) {
+                if (bean.is_follow == 1) {
+                    showDialog(context, bean)
+                } else {
+                    attentionAnchor(bean)
+                }
             } else {
-                attentionAnchor(bean)
+                getActivity(context)?.let { quicklyLogin(it) }
             }
         }
     }
 
+    private fun showDialog(context: Context, bean: MineMemberFollowDetailBean) {
+        getActivity(context)?.let { activity ->
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = context.String(R.string.business_sure_cancel_attention)
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnText = context.String(R.string.business_sure)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    unAttentionAnchor(bean)
+                    dismiss()
+                }
+            }.show(activity)
+        }
+    }
+
+    /**
+     * 快捷登陆
+     */
+    private fun quicklyLogin(it: FragmentActivity) {
+        RouterHelper.createRouter(LoginService::class.java)
+            .quicklyLogin(this, it, loginSuccess = {
+                refreshData()
+            })
+    }
 }

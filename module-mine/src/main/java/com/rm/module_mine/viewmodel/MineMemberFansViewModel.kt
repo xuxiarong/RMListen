@@ -1,14 +1,21 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.login.LoginService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineMemberActivity
 import com.rm.module_mine.bean.MineMemberFansBean
 import com.rm.module_mine.bean.MineMemberFansDetailBean
 import com.rm.module_mine.repository.MineRepository
@@ -65,7 +72,6 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
      * 关注主播
      */
     private fun attentionAnchor(bean: MineMemberFansDetailBean) {
-        showLoading()
         launchOnIO {
             repository.attentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
@@ -85,7 +91,6 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
      * 取消关注主播
      */
     private fun unAttentionAnchor(bean: MineMemberFansDetailBean) {
-        showLoading()
         launchOnIO {
             repository.unAttentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
@@ -140,6 +145,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
             refreshStatusModel.finishLoadMore(true)
             fanAdapter.addData(bean.list)
         }
+        fansPage++
         refreshStatusModel.setNoHasMore(fanAdapter.data.size >= bean.total || bean.list.size < pageSize)
     }
 
@@ -157,26 +163,59 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
      * 加载更多数据
      */
     fun loadMoreData() {
-        ++fansPage
         mineMemberFansList()
     }
 
     /**
      * item点击事件
      */
-    fun clickItemFun() {}
+    fun clickItemFun(context: Context, bean: MineMemberFansDetailBean) {
+        MineMemberActivity.newInstance(context, bean.member_id)
+    }
 
     /**
      * item关注点击事件
      */
     fun clickItemFollowFun(context: Context, bean: MineMemberFansDetailBean) {
         getActivity(context)?.let {
-            if (bean.is_follow == 1) {
-                unAttentionAnchor(bean)
+            if (isLogin.get()) {
+                if (bean.is_follow == 1) {
+                    showDialog(context,bean)
+                } else {
+                    attentionAnchor(bean)
+                }
             } else {
-                attentionAnchor(bean)
+                quicklyLogin(it)
             }
         }
     }
 
+    private fun showDialog(context: Context,bean: MineMemberFansDetailBean){
+        getActivity(context)?.let { activity ->
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = context.String(R.string.business_sure_cancel_attention)
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnText = context.String(R.string.business_sure)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    unAttentionAnchor(bean)
+                    dismiss()
+                }
+            }.show(activity)
+        }
+    }
+
+    /**
+     * 快捷登陆
+     */
+    private fun quicklyLogin(it: FragmentActivity) {
+        RouterHelper.createRouter(LoginService::class.java)
+            .quicklyLogin(this, it, loginSuccess = {
+                refreshData()
+            })
+    }
 }

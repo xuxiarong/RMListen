@@ -171,8 +171,10 @@ class HomeDetailActivity :
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val hasMore = mViewModel.chapterRefreshStatus.noMoreData.get()
                 if (hasMore == true) {
-                    mViewModel.chapterAdapter.removeAllFooterView()
-                    mViewModel.chapterAdapter.addFooterView(chapterFootView)
+                    if (mViewModel.chapterAdapter.footerLayoutCount == 0) {
+                        mViewModel.chapterAdapter.removeAllFooterView()
+                        mViewModel.chapterAdapter.addFooterView(chapterFootView)
+                    }
                 } else {
                     mViewModel.chapterAdapter.removeAllFooterView()
                 }
