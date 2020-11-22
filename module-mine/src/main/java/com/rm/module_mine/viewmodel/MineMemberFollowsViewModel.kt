@@ -74,13 +74,16 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
      * 关注主播
      */
     private fun attentionAnchor(bean: MineMemberFollowDetailBean) {
+        showLoading()
         launchOnIO {
             repository.attentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
+                    showContentView()
                     changeState(bean, 1)
                     showTip("关注成功")
                 },
                 onError = {
+                    showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
 
@@ -92,13 +95,16 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
      * 取消关注主播
      */
     private fun unAttentionAnchor(bean: MineMemberFollowDetailBean) {
+        showLoading()
         launchOnIO {
             repository.unAttentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
+                    showContentView()
                     changeState(bean, 0)
                     showTip("取消关注成功")
                 },
                 onError = {
+                    showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
 
@@ -121,8 +127,10 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
      * 处理失败数据
      */
     private fun processFailureData(msg: String?) {
+        showContentView()
         if (followPage == 1) {
             refreshStatusModel.finishRefresh(false)
+            showServiceError()
         } else {
             refreshStatusModel.finishLoadMore(false)
         }

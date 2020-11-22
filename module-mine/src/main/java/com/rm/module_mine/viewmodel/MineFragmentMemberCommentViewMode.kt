@@ -117,6 +117,7 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
     private fun processFailureData(msg: String?) {
         if (mPage == 1) {
             refreshStateModel.finishRefresh(false)
+            showServiceError()
         } else {
             refreshStateModel.finishLoadMore(false)
             mPage--

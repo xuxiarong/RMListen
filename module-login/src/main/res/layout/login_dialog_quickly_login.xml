@@ -148,7 +148,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_34"
                 android:focusable="@{!viewModel.isShowPhoneInputLay}"
-                android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_phone_tips"
                 app:vcv_et_bg="@drawable/business_shape_stroke_rect_b1b1b1"
                 app:vcv_et_cursor_visible="false"
@@ -161,7 +160,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/BusinessTextStyleTips"
-                bindText="@{viewModel.countDownTime + @string/login_count_down_tips}"
+                android:text="@{viewModel.countDownTime + @string/login_count_down_tips}"
                 isVisible="@{viewModel.countDownTime > 0}"
                 android:layout_marginTop="@dimen/dp_20"
                 android:gravity="center"

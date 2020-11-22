@@ -214,11 +214,6 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                     mBaseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
                     mBaseBinding.baseLoad.viewStub?.inflate()
                 }
-                if (mDataShowView != null) {
-                    mDataShowView!!.visibility = View.GONE
-                } else {
-                    mChildView?.visibility = View.GONE
-                }
             }
             BaseNetStatus.BASE_SHOW_CONTENT -> {
                 if (mDataShowView != null) {

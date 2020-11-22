@@ -88,7 +88,6 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         //添加通用的提示框
     }
 
-
     /**
      * 获取InputMethodManager，隐藏软键盘
      * @param token
@@ -221,11 +220,6 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
                 if (!mBaseBinding.baseLoad.isInflated) {
                     mBaseBinding.baseLoad.viewStub?.layoutResource = initLoadLayout()
                     mBaseBinding.baseLoad.viewStub?.inflate()
-                }
-                if (mDataShowView != null) {
-                    mDataShowView!!.visibility = View.GONE
-                } else {
-                    mChildView?.visibility = View.GONE
                 }
             }
             BaseNetStatus.BASE_SHOW_CONTENT -> {
