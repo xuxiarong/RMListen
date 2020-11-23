@@ -44,7 +44,7 @@ import java.util.*
  */
 internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     //更新播放进度时间频率
-    val UPDATE_PROGRESS_DELAY = 1000L
+    val UPDATE_PROGRESS_DELAY = 500L
     private val mOnPlayerEventListeners = arrayListOf<MusicPlayerEventListener>()
     private val mEventListener = ExoPlayerEventListener()
 
@@ -121,7 +121,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
         override fun handleMessage(msg: Message) {
             val duration =
-                (getCurrentPlayerMusic()?.duration?.times(1000) ?: mExoPlayer.contentDuration)
+                (getCurrentPlayerMusic()?.duration?: mExoPlayer.contentDuration)
             val currentPosition = mExoPlayer.contentPosition
             onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
@@ -384,11 +384,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         } else {
             mExoPlayer.seekTo(currentTime)
         }
-        Log.d("suolong", "currentTime = $currentTime}")
     }
 
     override fun getCurrentPlayerMusic(): BaseAudioInfo? =
-        mAudios.getOrNull(mCurrentPlayIndex) as? BaseAudioInfo
+        mAudios.getOrNull(mCurrentPlayIndex)
 
     override fun getCurrentPlayList(): List<*> {
         return mAudios

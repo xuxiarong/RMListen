@@ -1,5 +1,6 @@
 package com.rm.baselisten.binding
 
+import android.os.SystemClock
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
@@ -126,5 +127,17 @@ fun RecyclerView.divLinearItemDecoration(span: Int, divHeight: Int, @ColorInt di
             .setDivHeight(divHeight)
             .setDivColor(divColor)
     )
+}
+
+@BindingAdapter("bindRecyclerViewScroll")
+fun RecyclerView.bindRecyclerViewScroll(action : ((View)-> Unit)?) {
+    action?.let {
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                action(recyclerView)
+            }
+        })
+    }
 }
 

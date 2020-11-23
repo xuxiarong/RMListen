@@ -689,8 +689,6 @@ public final class TimeUtils {
     }
 
 
-
-
     //获取今年是哪一年
     public static int getNowYear() {
         Date date = new Date();
@@ -706,8 +704,8 @@ public final class TimeUtils {
         return gc.get(1);
     }
 
-    public static boolean isCurrentYear(long millis){
-        return getNowYear() == getYear(millis) ;
+    public static boolean isCurrentYear(long millis) {
+        return getNowYear() == getYear(millis);
     }
 
 
@@ -1548,8 +1546,8 @@ public final class TimeUtils {
         return CHINESE_ZODIAC[year % 12];
     }
 
-    private static final int[]    ZODIAC_FLAGS = {20, 19, 21, 21, 21, 22, 23, 23, 23, 24, 23, 22};
-    private static final String[] ZODIAC       = {
+    private static final int[] ZODIAC_FLAGS = {20, 19, 21, 21, 21, 22, 23, 23, 23, 24, 23, 22};
+    private static final String[] ZODIAC = {
             "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座",
             "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "魔羯座"
     };
@@ -1643,14 +1641,39 @@ public final class TimeUtils {
     }
 
     public static String getListenDuration(long millis) {
-        if (millis  <= 0){
+        if (millis <= 0) {
             return "00:00";
         }
-        return getListenDuration(millis * 1000L,4);
+        return getListenDuration(millis * 1000L, 4);
+    }
+
+    public static String getPlayDuration(long millis) {
+        int second = (int) (millis/1000);
+        if (second <= 0) {
+            return "00:00";
+        }else if(second<60){
+            return "00:"+ getTimeString(second%60);
+        }else if(second<100 * 60){
+            return getTimeString(second/60) + ":" +  getTimeString(second%60);
+        }else {
+            return "99:"+getTimeString(second%60);
+        }
+    }
+
+    private static String getTimeString(int num){
+        if(num<=0){
+            return "00";
+        }else if(num<10){
+            return "0"+num;
+        }else if(num<100){
+            return ""+num;
+        }else{
+            return "99";
+        }
     }
 
 
-        public static String getListenDuration(long millis, int precision) {
+    public static String getListenDuration(long millis, int precision) {
         if (precision <= 0) return null;
         precision = Math.min(precision, 4);
         String[] units = {":", ":", ":", ":"};
@@ -1665,12 +1688,12 @@ public final class TimeUtils {
             if (millis >= unitLen[i]) {
                 long mode = millis / unitLen[i];
                 millis -= mode * unitLen[i];
-                if(mode<10){
+                if (mode < 10) {
                     sb.append(0).append(mode);
-                }else {
+                } else {
                     sb.append(mode);
                 }
-                if(i < precision-1){
+                if (i < precision - 1) {
                     sb.append(units[i]);
                 }
             }
@@ -1680,6 +1703,7 @@ public final class TimeUtils {
 
     /**
      * 获取今天，昨天，更早的日期
+     *
      * @param second
      * @return
      */
@@ -1688,29 +1712,30 @@ public final class TimeUtils {
         // 获取当天 00:00
         long wee = getWeeOfToday();
         if (millis >= wee) {
-            return"今天";
+            return "今天";
         } else if (millis >= wee - TimeConstants.DAY) {
             return "昨天";
         } else {
-            if(isCurrentYear(millis)){
-                return millis2String(millis,"MM/dd") ;
-            }else {
-                return millis2String(millis,"yyyy/MM/dd") ;
+            if (isCurrentYear(millis)) {
+                return millis2String(millis, "MM/dd");
+            } else {
+                return millis2String(millis, "yyyy/MM/dd");
             }
         }
     }
 
     /**
      * 获取今天，昨天，更早的日期
+     *
      * @param second
      * @return
      */
     public static String getListenYearTime(final long second) {
         long millis = second * 1000;
-        if(isCurrentYear(millis)){
-            return millis2String(millis,"MM/dd") ;
-        }else {
-            return millis2String(millis,"yyyy/MM/dd") ;
+        if (isCurrentYear(millis)) {
+            return millis2String(millis, "MM/dd");
+        } else {
+            return millis2String(millis, "yyyy/MM/dd");
         }
     }
 

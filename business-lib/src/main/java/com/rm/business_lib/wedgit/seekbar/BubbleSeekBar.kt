@@ -16,6 +16,7 @@ import android.view.WindowManager.LayoutParams.*
 import androidx.annotation.ColorInt
 import androidx.annotation.Nullable
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.TimeUtils
 import com.rm.business_lib.R
 import java.io.File
 import java.io.FileInputStream
@@ -42,9 +43,9 @@ class BubbleSeekBar @JvmOverloads constructor(
     View(context, attrs, defStyleAttr) {
     private var mOnProgressChangedListener: OnProgressChangedListener? = null
     private var mMin //最小
-            : Float
+            : Float = 0f
     private var mMax //最大
-            : Float
+            : Float = 0f
     private var mProgress //当前量
             = 0f
     private var mThumb //轨道
@@ -119,6 +120,9 @@ class BubbleSeekBar @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if(mMax<=0){
+            return false
+        }
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 performClick()
@@ -126,33 +130,28 @@ class BubbleSeekBar @JvmOverloads constructor(
 
                 isThumbOnDragging = true
                 mOnProgressChangedListener?.onStartTrackingTouch(this)
-                DLog.d("suolong", "开始按下")
-//                showBubble()
             }
             MotionEvent.ACTION_MOVE -> {
-                DLog.d("suolong", "正在拖动")
-
                 mThumbOffset = event.x.toInt() - mThumbWidth / 2
                 if (mThumbOffset < 0) mThumbOffset =
                     0 else if (mThumbOffset > mTrackLength) mThumbOffset = mTrackLength
                 mProgress =
                     if (mTrackLength != 0) mMin + (mMax - mMin) * mThumbOffset / mTrackLength else mMin
                 mThumbText =
-                    "${formatTimeInMillisToString(mProgress.toLong())}/${formatTimeInMillisToString(
-                        getMax().toLong()
-                    )}"
+                    "${TimeUtils.getPlayDuration(mProgress.toLong())}/${TimeUtils.getPlayDuration(getMax().toLong())}"
                 mOnProgressChangedListener?.onProgressChanged(this, getProgress(), mThumbText,true)
-//                calculateBubble()
                 postInvalidate()
 
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 parent.requestDisallowInterceptTouchEvent(false)
-
-                DLog.d("suolong", "手指离开")
-                mOnProgressChangedListener?.onStopTrackingTouch(this, getProgress())
+                var seekToDuration = getProgress()
+                if(seekToDuration>=(mMax - 1500)){
+                    seekToDuration = mMax - 1500
+                    mThumbText = "${TimeUtils.getPlayDuration(seekToDuration.toLong())}/${TimeUtils.getPlayDuration(getMax().toLong())}"
+                }
+                mOnProgressChangedListener?.onStopTrackingTouch(this, seekToDuration)
                 isThumbOnDragging = false
-//                hideBubble()
             }
         }
         return true
@@ -497,35 +496,6 @@ class BubbleSeekBar @JvmOverloads constructor(
             mSecondTrack?.draw(canvas)
         }
         canvas.restoreToCount(save)
-    }
-
-    fun formatTimeInMillisToString(timeInMillis: Long): String {
-        var timeInMillis = timeInMillis
-        var sign = ""
-        if (timeInMillis < 0) {
-            sign = "-"
-            timeInMillis = abs(timeInMillis)
-        }
-
-        val minutes = timeInMillis / TimeUnit.MINUTES.toMillis(1)
-        val seconds = timeInMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1)
-
-        val formatted = StringBuilder(20)
-        formatted.append(sign)
-        formatted.append(String.format("%02d", minutes))
-        formatted.append(String.format(":%02d", seconds))
-
-        return try {
-            var result = String(formatted.toString().toByteArray(), Charset.forName("UTF-8"))
-            if(result == "0/0"){
-                result = "00:00/00:00"
-            }
-            return result
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            "00:00"
-        }
-
     }
 
     private val mPoint = IntArray(2)
