@@ -20,12 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/business_dialog_top_9bg" />
+
         <FrameLayout
             android:id="@+id/login_root"
-            android:layout_marginTop="@dimen/dp_32"
-            android:background="@drawable/business_shape_white_top_radius_24dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_32"
+            android:background="@drawable/business_shape_white_top_radius_24dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/login_quickly_input_phone"
@@ -66,8 +67,8 @@
                     android:id="@+id/login_by_verify_code_get_btn"
                     style="@style/ButtonStyle"
                     bindClick="@{viewModel.getCode}"
-                    bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
                     bindCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
+                    bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_52"
                     android:layout_marginTop="@dimen/dp_40"
@@ -75,6 +76,17 @@
                     app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
                     app:layout_constraintRight_toRightOf="@id/login_quickly_phone_input_lay"
                     app:layout_constraintTop_toBottomOf="@id/login_quickly_phone_input_lay" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    bindShadowCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
+                    bindShadowPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/business_menu_red_bg"
+                    app:layout_constraintEnd_toEndOf="@id/login_by_verify_code_get_btn"
+                    app:layout_constraintStart_toStartOf="@id/login_by_verify_code_get_btn"
+                    app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_get_btn" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -90,7 +102,7 @@
                         android:layout_width="@dimen/dp_22"
                         android:layout_height="@dimen/dp_22"
                         android:button="@drawable/login_selector_check_box_button"
-                        android:checked="@={viewModel.isCheck}"/>
+                        android:checked="@={viewModel.isCheck}" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/login_quickly_tips"
@@ -160,10 +172,10 @@
                     app:vcv_et_bg="@drawable/business_shape_stroke_rect_b1b1b1"
                     app:vcv_et_cursor_visible="false"
                     app:vcv_et_height="@dimen/dp_50"
-                    app:vcv_et_text_size = "@dimen/business_text_size_8sp"
                     app:vcv_et_inputType="number"
                     app:vcv_et_number="6"
                     app:vcv_et_text_color="@color/business_text_color_333333"
+                    app:vcv_et_text_size="@dimen/business_text_size_8sp"
                     app:vcv_et_width="@dimen/dp_46" />
 
                 <androidx.appcompat.widget.AppCompatTextView
