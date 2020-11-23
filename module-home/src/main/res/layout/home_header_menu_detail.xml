@@ -88,15 +88,14 @@
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/business_menu_red_bg"
-            android:translationY="@dimen/dp_18"
             isVisible="@{!headerViewModel.isFavor}"
-            app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_collected"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/business_menu_red_bg"
             app:layout_constraintEnd_toEndOf="@id/home_menu_detail_collected"
             app:layout_constraintStart_toStartOf="@id/home_menu_detail_collected"
-            app:layout_constraintTop_toTopOf="@id/home_menu_detail_collected" />
+            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_collected" />
 
         <com.rm.business_lib.wedgit.expandtextview.ExpandableTextView
             android:id="@+id/home_menu_detail_brief"
