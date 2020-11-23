@@ -11,187 +11,187 @@
             type="com.rm.module_login.viewmodel.dialog.LoginQuicklyViewModel" />
     </data>
 
+
     <FrameLayout
-        android:id="@+id/login_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/business_shape_white_top_radius_24dp"
-        android:elevation="5dp">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/login_quickly_input_phone"
-            isVisible="@{viewModel.isShowPhoneInputLay}"
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_289"
-            android:paddingTop="@dimen/dp_16">
+            android:layout_height="wrap_content"
+            android:src="@drawable/business_dialog_top_9bg" />
+        <FrameLayout
+            android:id="@+id/login_root"
+            android:layout_marginTop="@dimen/dp_32"
+            android:background="@drawable/business_shape_white_top_radius_24dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/login_quickly_top_tips"
-                style="@style/BusinessTextStyleFirst_2"
-                android:text="@string/login_quickly_tips"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <include
-                android:id="@+id/login_quickly_phone_input_lay"
-                layout="@layout/login_include_layout_phone_input"
-                android:layout_width="@dimen/dp_315"
-                android:layout_height="@dimen/dp_56"
-                android:layout_marginTop="@dimen/dp_28"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_quickly_top_tips"
-                bind:phoneInputViewModel="@{viewModel.phoneInputViewModel}" />
-
-            <TextView
-                style="@style/BusinessTextStyleErrorTips"
-                bindText="@{viewModel.errorTips}"
-                android:layout_marginStart="@dimen/dp_22"
-                android:layout_marginTop="@dimen/dp_6"
-                app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
-                app:layout_constraintTop_toBottomOf="@id/login_quickly_phone_input_lay"
-                tools:text="手机号有误" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/login_by_verify_code_get_btn"
-                style="@style/ButtonStyle"
-                bindClick="@{viewModel.getCode}"
-                bindCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
-                bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_52"
-                android:layout_marginTop="@dimen/dp_40"
-                android:text="@string/login_get_verify_code"
-                app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
-                app:layout_constraintRight_toRightOf="@id/login_quickly_phone_input_lay"
-                app:layout_constraintTop_toBottomOf="@id/login_quickly_phone_input_lay" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                bindShadowCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
-                bindShadowPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:src="@drawable/business_menu_red_bg"
-                app:layout_constraintEnd_toEndOf="@id/login_by_verify_code_get_btn"
-                app:layout_constraintStart_toStartOf="@id/login_by_verify_code_get_btn"
-                app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_get_btn" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_13"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
-                app:layout_constraintRight_toRightOf="@id/login_quickly_phone_input_lay"
-                app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_get_btn">
-
-                <CheckBox
-                    android:layout_width="@dimen/dp_22"
-                    android:layout_height="@dimen/dp_22"
-                    android:button="@drawable/login_selector_check_box_button"
-                    android:checked="@={viewModel.isCheck}" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/login_quickly_input_phone"
+                isVisible="@{viewModel.isShowPhoneInputLay}"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_289">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/login_quickly_tips"
-                    style="@style/BusinessTextStyleSecond_4"
+                    android:id="@+id/login_quickly_top_tips"
+                    style="@style/BusinessTextStyleFirst_2"
+                    android:text="@string/login_quickly_tips"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    android:id="@+id/login_quickly_phone_input_lay"
+                    layout="@layout/login_include_layout_phone_input"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_56"
+                    android:layout_marginTop="@dimen/dp_28"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/login_quickly_top_tips"
+                    bind:phoneInputViewModel="@{viewModel.phoneInputViewModel}" />
+
+                <TextView
+                    style="@style/BusinessTextStyleErrorTips"
+                    bindText="@{viewModel.errorTips}"
+                    android:layout_marginStart="@dimen/dp_22"
+                    android:layout_marginTop="@dimen/dp_6"
+                    app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
+                    app:layout_constraintTop_toBottomOf="@id/login_quickly_phone_input_lay"
+                    tools:text="手机号有误" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/login_by_verify_code_get_btn"
+                    style="@style/ButtonStyle"
+                    bindClick="@{viewModel.getCode}"
+                    bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
+                    bindCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_52"
+                    android:layout_marginTop="@dimen/dp_40"
+                    android:text="@string/login_get_verify_code"
+                    app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
+                    app:layout_constraintRight_toRightOf="@id/login_quickly_phone_input_lay"
+                    app:layout_constraintTop_toBottomOf="@id/login_quickly_phone_input_lay" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="@id/login_quickly_phone_input_lay"
+                    app:layout_constraintRight_toRightOf="@id/login_quickly_phone_input_lay"
+                    app:layout_constraintTop_toBottomOf="@id/login_by_verify_code_get_btn">
+
+                    <CheckBox
+                        android:layout_width="@dimen/dp_22"
+                        android:layout_height="@dimen/dp_22"
+                        android:button="@drawable/login_selector_check_box_button"
+                        android:checked="@={viewModel.isCheck}"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/login_quickly_tips"
+                        style="@style/BusinessTextStyleSecond_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_6"
+                        tools:text="未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/login_quickly_input_verify_code"
+                isVisible="@{!viewModel.isShowPhoneInputLay}"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_289"
+                android:paddingStart="@dimen/dp_16"
+                android:paddingEnd="@dimen/dp_16"
+                tools:visibility="gone">
+
+                <com.rm.business_lib.wedgit.arrow.ArrowView
+                    android:id="@+id/login_quickly_back_btn"
+                    bindClick="@{viewModel.back}"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_28"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:paddingStart="@dimen/dp_9"
+                    android:paddingTop="@dimen/dp_3"
+                    android:paddingEnd="@dimen/dp_9"
+                    android:paddingBottom="@dimen/dp_3"
+                    app:arrow_direction="left"
+                    app:arrow_line_color="@color/business_text_color_333333"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/login_quickly_verify_code_input_top_tips"
+                    style="@style/BusinessTextStyleFirst_2"
+                    android:text="@string/login_input_verification_code"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/login_quickly_back_btn"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/login_quickly_back_btn" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/login_quickly_verify_code_phone_tips"
+                    style="@style/BusinessTextStyleSecond_3"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/dp_25"
+                    android:singleLine="true"
+                    android:text="@{@string/login_verify_send_code_tips + viewModel.formatPhone}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/login_quickly_back_btn"
+                    tools:text="验证码已发送至+86 134****7856" />
+
+                <com.rm.module_login.widget.verification.VerificationCodeView
+                    android:id="@+id/login_quickly_verify_code_input_et"
+                    inputTextChange="@{viewModel.completeInput}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_6"
-                    tools:text="未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策" />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_marginTop="@dimen/dp_34"
+                    android:focusable="@{!viewModel.isShowPhoneInputLay}"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_phone_tips"
+                    app:vcv_et_bg="@drawable/business_shape_stroke_rect_b1b1b1"
+                    app:vcv_et_cursor_visible="false"
+                    app:vcv_et_height="@dimen/dp_50"
+                    app:vcv_et_text_size = "@dimen/business_text_size_8sp"
+                    app:vcv_et_inputType="number"
+                    app:vcv_et_number="6"
+                    app:vcv_et_text_color="@color/business_text_color_333333"
+                    app:vcv_et_width="@dimen/dp_46" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/login_quickly_input_verify_code"
-            isVisible="@{!viewModel.isShowPhoneInputLay}"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_289"
-            android:paddingStart="@dimen/dp_16"
-            android:paddingTop="@dimen/dp_16"
-            android:paddingEnd="@dimen/dp_16"
-            tools:visibility="gone">
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/BusinessTextStyleTips"
+                    bindText="@{viewModel.countDownTime + @string/login_count_down_tips}"
+                    isVisible="@{viewModel.countDownTime > 0}"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_input_et"
+                    tools:text="52s后重新获取" />
 
-            <com.rm.business_lib.wedgit.arrow.ArrowView
-                android:id="@+id/login_quickly_back_btn"
-                bindClick="@{viewModel.back}"
-                android:layout_width="@dimen/dp_30"
-                android:layout_height="@dimen/dp_28"
-                android:layout_marginEnd="@dimen/dp_12"
-                android:paddingStart="@dimen/dp_9"
-                android:paddingTop="@dimen/dp_3"
-                android:paddingEnd="@dimen/dp_9"
-                android:paddingBottom="@dimen/dp_3"
-                app:arrow_direction="left"
-                app:arrow_line_color="@color/business_text_color_333333"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/BusinessTextStyleFirst_2"
+                    bindClick="@{viewModel.reGetVerifyCode}"
+                    isVisible="@{viewModel.countDownTime == 0}"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    android:text="@string/login_re_get_verify_code"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_input_et" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/login_quickly_verify_code_input_top_tips"
-                style="@style/BusinessTextStyleFirst_2"
-                android:text="@string/login_input_verification_code"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/login_quickly_back_btn"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/login_quickly_back_btn" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/login_quickly_verify_code_phone_tips"
-                style="@style/BusinessTextStyleSecond_3"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/dp_25"
-                android:singleLine="true"
-                android:text="@{@string/login_verify_send_code_tips + viewModel.formatPhone}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_quickly_back_btn"
-                tools:text="验证码已发送至+86 134****7856" />
-
-            <com.rm.module_login.widget.verification.VerificationCodeView
-                android:id="@+id/login_quickly_verify_code_input_et"
-                inputTextChange="@{viewModel.completeInput}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_34"
-                android:focusable="@{!viewModel.isShowPhoneInputLay}"
-                app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_phone_tips"
-                app:vcv_et_bg="@drawable/business_shape_stroke_rect_b1b1b1"
-                app:vcv_et_cursor_visible="false"
-                app:vcv_et_height="@dimen/dp_50"
-                app:vcv_et_inputType="number"
-                app:vcv_et_number="6"
-                app:vcv_et_text_color="@color/business_text_color_333333"
-                app:vcv_et_text_size="@dimen/business_text_size_8sp"
-                app:vcv_et_width="@dimen/dp_46" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/BusinessTextStyleTips"
-                isVisible="@{viewModel.countDownTime > 0}"
-                android:layout_marginTop="@dimen/dp_20"
-                android:gravity="center"
-                android:text="@{viewModel.countDownTime + @string/login_count_down_tips}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_input_et"
-                tools:text="52s后重新获取" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/BusinessTextStyleFirst_2"
-                bindClick="@{viewModel.reGetVerifyCode}"
-                isVisible="@{viewModel.countDownTime == 0}"
-                android:layout_marginTop="@dimen/dp_15"
-                android:gravity="center"
-                android:padding="@dimen/dp_5"
-                android:text="@string/login_re_get_verify_code"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_quickly_verify_code_input_et" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
+
 </layout>
