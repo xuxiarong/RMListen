@@ -31,6 +31,20 @@ object ListenDaoUtils {
         return mutableListOf()
     }
 
+    fun getAllAudioByRecentLimit10() : MutableList<ListenAudioEntity>{
+        try {
+            val queryBuilder = listenAudioDao.queryBuilder()
+            if(queryBuilder!=null){
+                val result = queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).limit(10).list()
+                return result
+            }
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
+        return mutableListOf()
+    }
+
+
     fun saveOrUpdateAudio(audioEntity: ListenAudioEntity){
 
     }

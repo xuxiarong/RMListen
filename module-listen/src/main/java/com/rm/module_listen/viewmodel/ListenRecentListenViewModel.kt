@@ -42,14 +42,11 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     fun getListenHistory() {
         showLoading()
         launchOnIO {
-            var queryPlayBookList = ListenDaoUtils.getAllAudioByRecent()
+            val queryPlayBookList = ListenDaoUtils.getAllAudioByRecentLimit10()
             val audioList = ArrayList<MultiItemEntity>()
             if (queryPlayBookList.isNotEmpty()) {
                 showContentView()
                 audioList.add(ListenRecentDateModel())
-                if(queryPlayBookList.size>10){
-                    queryPlayBookList = queryPlayBookList.subList(0,10)
-                }
                 queryPlayBookList.forEach {
                     audioList.add(ListenHistoryModel(it))
                 }
@@ -69,8 +66,8 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         playService.startPlayActivity(
             context = context,
             audioId = model.audio.audio_id.toString(),
-            chapterId = model.audio.listenChapterList.last().chapter_id.toString(),
-            currentDuration = model.audio.listenChapterList.last().listen_duration
+            chapterId = model.audio.listenChapterList.first().chapter_id.toString(),
+            currentDuration = model.audio.listenChapterList.first().listen_duration
         )
     }
 
@@ -79,6 +76,7 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         mSwipeAdapter.data.remove(item)
         DaoUtil(ListenChapterEntity::class.java, "").delete(item.audio.listenChapterList)
         DaoUtil(ListenAudioEntity::class.java, "").delete(item.audio)
+        getListenHistory()
     }
 
 }

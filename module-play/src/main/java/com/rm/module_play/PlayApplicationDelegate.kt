@@ -2,6 +2,7 @@ package com.rm.module_play
 
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getFloattMMKV
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
@@ -47,16 +48,13 @@ class PlayApplicationDelegate : IApplicationDelegate {
 
     private fun initPlayHistory() {
         try {
+            //每次进入应用时，做一下数据的过滤，只展示最近一年的收听记录
             val playList = DaoUtil(ListenAudioEntity::class.java, "").queryAll()
-            if (playList != null && playList.isNotEmpty() && playList.last().listenChapterList != null && playList.last().listenChapterList.isNotEmpty()) {
-                val audio = playList.last()
-                val chapter = playList.last().listenChapterList.last()
-//                BaseConstance.updateBaseAudioId(
-//                    playUrl = audio.audio_cover_url,
-//                    audioId = audio.audio_id.toString()
-//                )
-//                BaseConstance.updateBaseChapterId(chapterId = chapter.chapter_id.toString())
-//                BaseConstance.updateBaseProgress(process = chapter.listen_duration)
+            playList?.let { audioList ->
+                audioList.forEach{ audio ->
+                    if(System.currentTimeMillis() - audio.updateMillis > (365 * 24 * 60 * 60 * 1000L))
+                        DaoUtil(ListenAudioEntity::class.java, "").delete(audio)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()

@@ -46,7 +46,7 @@ fun TextView.listenBindChapterTime(audio: ListenHistoryModel) {
     text = ""
     try {
         if (audio.audio.listenChapterList.isNotEmpty()) {
-            text = TimeUtils.getListenDuration(audio.audio.listenChapterList.last().duration/1000)
+            text = TimeUtils.getListenDuration(audio.audio.listenChapterList.first().duration/1000)
         }
     } catch (e: Exception) {
         e.printStackTrace()
@@ -60,7 +60,7 @@ fun TextView.listenBindChapterStatus(audio: ListenHistoryModel) {
     try {
         val chapterList = audio.audio.listenChapterList
         if (chapterList.isNotEmpty()) {
-            val lastChapter = chapterList.last()
+            val lastChapter = chapterList.first()
             var result = lastChapter.listen_duration
             if (result <= 0) {
                 result = 0

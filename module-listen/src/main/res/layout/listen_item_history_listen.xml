@@ -45,7 +45,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_80"
-            android:onClick="@{()->viewModel.startListenRecentDetail(context)}"
+            android:onClick="@{()->viewModel.startListenRecentDetail(context,item)}"
             >
 
             <androidx.appcompat.widget.AppCompatImageView

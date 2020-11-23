@@ -15,6 +15,7 @@ import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -44,7 +45,6 @@ import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.Comments
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
-import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
@@ -53,6 +53,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  *
@@ -271,7 +272,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     filename = it.chapter_name,
                     audioId = it.audio_id.toString(),
                     chapterId = it.chapter_id.toString(),
-                    duration = it.duration,
+                    duration = it.duration * 1000L,
                     playCount = it.play_count.toString()
                 )
             )
@@ -293,7 +294,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     filename = it.chapter_name,
                     audioId = it.audio_id.toString(),
                     chapterId = it.chapter_id.toString(),
-                    duration = it.duration,
+                    duration = it.duration * 1000L,
                     playCount = it.play_count.toString()
                 )
             )
@@ -328,7 +329,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     fun initPlayChapter(chapter: DownloadChapter) {
         playChapter.set(chapter)
-        maxProcess.set(chapter.duration * 1000F)
         process.set(chapter.listen_duration.toFloat())
         playChapterId.set(chapter.chapter_id.toString())
         chapter.duration *= 1000
@@ -344,34 +344,39 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         totalDuration: Long = 0L,
         isPlayFinish: Boolean = false
     ) {
-        val chapter = playChapter.get()
-        if (chapter != null) {
-            maxProcess.set(totalDuration.toFloat())
-            process.set(currentDuration.toFloat())
-            updateThumbText.set(
-                "${formatTimeInMillisToString(currentDuration)}/${
-                    formatTimeInMillisToString(
+        try {
+            val chapter = playChapter.get()
+            if (chapter != null) {
+                process.set(currentDuration.toFloat())
+                updateThumbText.set(
+                    "${TimeUtils.getPlayDuration(currentDuration)}/${TimeUtils.getPlayDuration(
                         totalDuration
                     )
-                }"
-            )
-            chapter.listen_duration = if (isPlayFinish) {
-                totalDuration
-            } else {
-                currentDuration
+                    }"
+                )
+                chapter.listen_duration = if (isPlayFinish) {
+                    totalDuration
+                } else {
+                    currentDuration
+                }
+                playChapter.set(chapter)
+                playChapterId.set(chapter.chapter_id.toString())
+                chapter.updateMillis = System.currentTimeMillis()
+                chapter.duration = totalDuration
+                playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
+                DLog.d(
+                    "suolong",
+                    " name = ${chapter.chapter_name} chapter_id = ${chapter.chapter_id} audio_id = ${chapter.audio_id}"
+                )
+                val audio = playAudioModel.get()
+                if (audio != null) {
+                    audio.updateMillis = System.currentTimeMillis()
+                    audio.listenChapterId = chapter.chapter_id.toString()
+                    playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
+                }
             }
-            playChapter.set(chapter)
-            playChapterId.set(chapter.chapter_id.toString())
-            chapter.updateMillis = System.currentTimeMillis()
-            chapter.duration = totalDuration
-            playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
-            DLog.d("suolong"," name = ${chapter.chapter_name } chapter_id = ${chapter.chapter_id } audio_id = ${chapter.audio_id }")
-            val audio = playAudioModel.get()
-            if (audio != null) {
-                audio.updateMillis = System.currentTimeMillis()
-                audio.listenChapterId = chapter.chapter_id.toString()
-                playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -383,7 +388,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
                 playChapter.set(startChapter)
                 playChapterId.set(startChapter.chapter_id.toString())
-                maxProcess.set(startChapter.duration * 1000F)
                 process.set(startChapter.listen_duration.toFloat())
                 startChapter.updateMillis = System.currentTimeMillis()
                 startChapter.duration *= 1000

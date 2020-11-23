@@ -36,7 +36,7 @@ class ListenHistorySearchActivity :
                 mViewModel.showDataEmpty()
             }else{
                 mViewModel.mSwipeAdapter.addData(it)
-                if(mViewModel.mSwipeAdapter.footerLayout == null){
+                if(mViewModel.mSwipeAdapter.footerLayout == null && it.size>8){
                     mViewModel.mSwipeAdapter.addFooterView(footView)
                 }
             }

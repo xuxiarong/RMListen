@@ -241,7 +241,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     ) {
         musicPlayerManger.updateMusicPlayerData(audios = playPath, chapterId = chapterId)
         musicPlayerManger.startPlayMusic(chapterId = chapterId)
-        mViewModel.maxProcess.set(currentPlayerMusic.duration.toFloat())
+//        mViewModel.maxProcess.set(currentPlayerMusic.duration.toFloat())
         when {
             playCurrentDuration <= 0 -> {
                 mViewModel.process.set(0F)
@@ -296,8 +296,14 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun onPrepared(totalDurtion: Long) {
-        DLog.d("suolong", "'${System.currentTimeMillis()}")
+        DLog.d("suolong", "totalDurtion = $totalDurtion")
         mViewModel.maxProcess.set(totalDurtion.toFloat())
+        mViewModel.playManger.getCurrentPlayerMusic()?.let {
+            it.duration = totalDurtion
+        }
+        mViewModel.playChapter.get()?.let {
+            it.duration = totalDurtion
+        }
     }
 
     override fun onBufferingUpdate(percent: Int) {

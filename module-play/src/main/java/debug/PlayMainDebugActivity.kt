@@ -2,7 +2,6 @@ package debug
 
 import android.widget.SeekBar
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
-import com.rm.music_exoplayer_lib.ext.formatTimeInMillisToString
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
@@ -87,7 +86,6 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
 
     override fun onPrepared(totalDurtion: Long) {
         seek_bar.max = totalDurtion.toInt()
-        tv_end.text = formatTimeInMillisToString(totalDurtion)
     }
 
     override fun onBufferingUpdate(percent: Int) {
@@ -112,8 +110,7 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        seek_bar.progress = currentDurtion.toInt()
-        tv_process.text = formatTimeInMillisToString(currentDurtion)
+
         ExoplayerLogger.exoLog(
             "currentDurtion=${currentDurtion.toInt()} duration=${totalDurtion.toInt()}"
         )

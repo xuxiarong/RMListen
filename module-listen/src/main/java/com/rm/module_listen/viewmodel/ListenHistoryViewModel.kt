@@ -19,6 +19,7 @@ import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenHistorySearchActivity
 import com.rm.module_listen.model.ListenHistoryModel
+import kotlinx.coroutines.delay
 
 /**
  * desc   :
@@ -38,6 +39,7 @@ class ListenHistoryViewModel : BaseVMViewModel() {
 
     //输入法搜索按钮监听
     val bindActionListener: (View) -> Unit = { clickSearchFun(it) }
+
 
     private val playService by lazy {
         RouterHelper.createRouter(PlayService::class.java)
@@ -81,7 +83,11 @@ class ListenHistoryViewModel : BaseVMViewModel() {
             searchHasData.set(true)
             mSwipeAdapter.data.clear()
             mSwipeAdapter.addData(sourceList)
-            mSwipeAdapter.footerLayout?.visibility = View.VISIBLE
+            if(sourceList.size>8){
+                mSwipeAdapter.footerLayout?.visibility = View.VISIBLE
+            }else{
+                mSwipeAdapter.footerLayout?.visibility = View.GONE
+            }
         } else {
             keyword.set(search)
             if (sourceList != null && sourceList.isNotEmpty()) {
@@ -112,8 +118,14 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         allHistory.value = mutableListOf()
     }
 
-    fun startListenRecentDetail(context: Context) {
-//        ListenHistorySearchActivity.startListenHistorySearch(context)
+    fun startListenRecentDetail(context: Context,model:ListenHistoryModel) {
+
+        playService.startPlayActivity(
+            context = context,
+            audioId = model.audio.audio_id.toString(),
+            chapterId = model.audio.listenChapterList.first().chapter_id.toString(),
+            currentDuration = model.audio.listenChapterList.last().listen_duration
+        )
     }
 
     fun deleteItem(item: ListenHistoryModel) {
@@ -121,12 +133,15 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         mSwipeAdapter.data.remove(item)
         DaoUtil(ListenChapterEntity::class.java, "").delete(item.audio.listenChapterList)
         DaoUtil(ListenAudioEntity::class.java, "").delete(item.audio)
+        if(mSwipeAdapter.data.size<8){
+            mSwipeAdapter.footerLayout?.visibility = View.GONE
+        }
     }
 
     /**
      * 搜索点击事件
      */
-    private fun clickSearchFun(view: View?) {
+     private fun clickSearchFun(view: View?) {
         view?.let {
             val imm =
                 it.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -135,6 +150,4 @@ class ListenHistoryViewModel : BaseVMViewModel() {
             }
         }
     }
-
-
 }

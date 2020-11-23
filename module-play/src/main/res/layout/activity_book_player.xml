@@ -446,8 +446,8 @@
                             tools:ignore="MissingConstraints">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/play_main_header_anchor_name"
-                                bindText="@{viewModel.playAudioModel.anchor.anchor_name}"
+                                android:id="@+id/play_main_header_audio_name"
+                                bindText="@{viewModel.playAudioModel.audio_name}"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/dp_8"
@@ -471,7 +471,7 @@
                                 android:textSize="12sp"
                                 app:layout_constraintEnd_toStartOf="@id/play_main_header_anchor_subscriber"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/play_main_header_anchor_name"
+                                app:layout_constraintTop_toBottomOf="@id/play_main_header_audio_name"
                                 tools:text="123" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -502,7 +502,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:layout_marginEnd="@dimen/dp_16"
                             android:background="@drawable/shape_radius_f7f7f7"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             app:layout_constraintTop_toBottomOf="@id/play_main_header_subscriber_layout">
 
                             <!-- 主播 -->
