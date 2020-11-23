@@ -171,7 +171,6 @@ class HomeTopListActivity : ComponentShowPlayActivity<HomeActivityTopListBinding
                     dismiss()
                 }
             }
-            elevation = resources.getDimension(R.dimen.dp_4)
             contentView = rootView
 
             isOutsideTouchable = true
