@@ -15,10 +15,10 @@
         android:layout_height="match_parent">
 
 
-        <com.rm.business_lib.wedgit.shadow.ShadowLayout
+        <FrameLayout
             isVisible="@{!viewModel.userLogin}"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:layout_marginTop="@dimen/dp_82"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -45,10 +45,17 @@
                 app:layout_roundRadius="@dimen/dp_8"
                 app:layout_shadowColor="#55b1b1b1"
                 app:rv_backgroundColor="@color/base_ff5e5e"
-                app:rv_isRadiusHalfHeight="true">
+                app:rv_isRadiusHalfHeight="true"/>
 
-            </com.flyco.roundview.RoundTextView>
-        </com.rm.business_lib.wedgit.shadow.ShadowLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="176dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_100"
+                android:scaleType="fitXY"
+                android:src="@drawable/business_menu_red_bg" />
+
+        </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listenSubsDataRv"
