@@ -6,8 +6,8 @@ package com.rm.baselisten.model
  * version: 1.0
  */
 data class BasePlayStatusModel constructor(
-    var playReady : Boolean = true,
-    var playStatus : Int = 2
+    var playReady : Boolean = false,
+    var playStatus : Int = 3
 ){
     fun isStart() : Boolean{
         return playStatus == STATE_READY && playReady

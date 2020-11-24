@@ -11,49 +11,70 @@ import com.rm.business_lib.db.ListenAudioEntityDao
 object ListenDaoUtils {
 
     private val listenAudioDao by lazy {
-        DaoUtil(ListenAudioEntity::class.java,"")
+        DaoUtil(ListenAudioEntity::class.java, "")
     }
 
     private val listenChapterDao by lazy {
-        DaoUtil(ListenChapterEntity::class.java,"")
+        DaoUtil(ListenChapterEntity::class.java, "")
     }
 
-    fun getAllAudioByRecent() : MutableList<ListenAudioEntity>{
+    fun getAllAudioByRecent(): MutableList<ListenAudioEntity> {
         try {
             val queryBuilder = listenAudioDao.queryBuilder()
-            if(queryBuilder!=null){
-                val result = queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).list()
+            if (queryBuilder != null) {
+                val result =
+                    queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).list()
                 return result
             }
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return mutableListOf()
     }
 
-    fun getAllAudioByRecentLimit10() : MutableList<ListenAudioEntity>{
+    fun getAllAudioByRecentLimit10(): MutableList<ListenAudioEntity> {
         try {
             val queryBuilder = listenAudioDao.queryBuilder()
-            if(queryBuilder!=null){
-                val result = queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).limit(10).list()
+            if (queryBuilder != null) {
+                val result =
+                    queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).limit(10)
+                        .list()
                 return result
             }
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return mutableListOf()
     }
 
+    fun queryAudioById(audioId: Long): ListenAudioEntity? {
+        try {
+            val queryBuilder = listenAudioDao.queryBuilder()
+            if (queryBuilder != null) {
+                val result =
+                    queryBuilder.where(ListenAudioEntityDao.Properties.Audio_id.eq(audioId)).list()
+                return if (null != result && result.isNotEmpty()) {
+                    result[0]
+                } else {
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 
-    fun saveOrUpdateAudio(audioEntity: ListenAudioEntity){
+
+    fun saveOrUpdateAudio(audioEntity: ListenAudioEntity) {
 
     }
 
-    fun queryChapterByAudioId(){
+    fun queryChapterByAudioId() {
 
     }
 
-    fun queryAllChapterByUpdateTimeDesc(){
+    fun queryAllChapterByUpdateTimeDesc() {
 
     }
 

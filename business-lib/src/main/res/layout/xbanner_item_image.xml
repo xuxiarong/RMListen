@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scaleType="fitXY" />
+    android:layout_height="190dp"
+    android:scaleType="fitXY" >
+    <ImageView
+        android:id="@+id/banner_img"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_176"
+        android:scaleType="fitXY" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_176"
+        android:layout_gravity="bottom"
+        android:scaleType="fitXY"
+        android:src="@drawable/business_banner_bg"
+        />
+</FrameLayout>

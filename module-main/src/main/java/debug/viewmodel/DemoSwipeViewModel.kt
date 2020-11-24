@@ -21,6 +21,7 @@ class DemoSwipeViewModel : BaseVMViewModel() {
         CommonSwipeVmAdapter(this, mutableListOf<DemoSwipeModel>(),
             R.layout.demo_swipe_rv_item,
             R.id.demoRvSwipe,
+            R.id.demoRvSwipe,
             BR.viewModel,
             BR.item)
     }

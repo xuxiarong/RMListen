@@ -9,6 +9,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
@@ -25,6 +26,8 @@ import com.rm.business_lib.bean.DataStr
 import com.rm.business_lib.bean.DetailTags
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.db.listen.ListenAudioEntity
+import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -131,6 +134,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     var audioId = ObservableField<String>("")
 
     /**
+     * 音频收听记录的对象
+     */
+
+    var listenAudio = ObservableField<ListenAudioEntity>()
+
+    /**
      * 当前的排序类型
      */
     var mCurSort = AudioSortType.SORT_ASC
@@ -225,12 +234,24 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         }
     }
 
+    fun queryAudioListenRecord(){
+        audioId.get()?.let {
+            launchOnIO {
+                try {
+                    val audioRecord = ListenDaoUtils.queryAudioById(it.toLong())
+                    listenAudio.set(audioRecord)
+                }catch (e: Exception){
+                    listenAudio.set(null)
+                }
+            }
+        }
+    }
 
     /**
      * 获取书籍详情信息
      */
     fun intDetailInfo(audioID: String) {
-        launchOnUI {
+        launchOnIO {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
                     showContentView()
@@ -301,12 +322,35 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 跳转到播放器页面
      */
     fun clickPlayPage(context: Context) {
+        val playService = RouterHelper.createRouter(PlayService::class.java)
+        val playInfo = BaseConstance.basePlayInfoModel.get()
+        val playStatus = BaseConstance.basePlayStatusModel.get()
+        val playProgress = BaseConstance.basePlayProgressModel.get()
+
         detailInfoData.get()?.let {
-            RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
-                context = context,
-                audioId = audioId.get()!!,
-                sortType = mCurSort
-            )
+            when{
+                playInfo?.playAudioId == audioId.get()->{
+                    if(playStatus!=null && playStatus.isStart()){
+                        playService.pausePlay()
+                    }else{
+                        RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
+                                context = context,
+                                audioId = audioId.get()!!,
+                                chapterId = playInfo!!.playChapterId,
+                                currentDuration = playProgress!!.currentDuration,
+                                sortType = mCurSort
+                        )
+                    }
+                }
+                else ->{
+                    val listenRecord = listenAudio.get()
+                    if(listenRecord!=null){
+
+                    }else{
+
+                    }
+                }
+            }
         }
     }
 

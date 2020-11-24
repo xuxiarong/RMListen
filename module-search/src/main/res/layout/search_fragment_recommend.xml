@@ -9,26 +9,28 @@
             type="com.rm.module_search.viewmodel.SearchRecommendViewModel" />
     </data>
 
-    <com.rm.business_lib.wedgit.shadow.ShadowLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/content_rv"
-            bindVerticalLayout="@{viewModel.adapter}"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/dp_8"
+        android:paddingEnd="@dimen/dp_8">
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_noSolid="true"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_10"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:paddingTop="@dimen/dp_6"
-            android:paddingBottom="@dimen/dp_6"
-            app:layout_roundRadius="@dimen/dp_8"
-            app:layout_shadowColor="#55b1b1b1"
-            app:layout_shadowRadius="@dimen/dp_4" />
-    </com.rm.business_lib.wedgit.shadow.ShadowLayout>
+            android:layout_marginTop="@dimen/dp_14"
+            android:background="@drawable/business_menu_bg">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/content_rv"
+                bindVerticalLayout="@{viewModel.adapter}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_noSolid="true"
+                android:layout_marginTop="-2dp"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_6"
+                app:layout_roundRadius="@dimen/dp_8" />
+        </FrameLayout>
+    </FrameLayout>
 
 </layout>

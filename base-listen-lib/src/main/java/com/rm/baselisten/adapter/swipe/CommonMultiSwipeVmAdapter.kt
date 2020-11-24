@@ -20,6 +20,7 @@ class CommonMultiSwipeVmAdapter constructor(
     var swipeData: MutableList<MultiItemEntity>,
     var swipeItemLayoutId: Int,
     var swipeId : Int,
+    var lottieId : Int,
     swipeViewModelId: Int,
     swipeDataBrId: Int
 ) : CommonMultiVMAdapter(
@@ -49,6 +50,10 @@ class CommonMultiSwipeVmAdapter constructor(
 
     override fun getSwipeLayoutResourceId(position: Int): Int {
         return swipeId
+    }
+
+    override fun getLottieResourceId(position: Int): Int {
+        return lottieId
     }
 
     override fun openItem(position: Int) {

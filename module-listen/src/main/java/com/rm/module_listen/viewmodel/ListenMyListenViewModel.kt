@@ -19,26 +19,16 @@ class ListenMyListenViewModel(val repository: ListenRepository) : BaseVMViewMode
 
     var subsNumber = ObservableInt(0)
     var downloadNumber = ObservableInt(0)
-    var currentLoginUser = loginUser
 
-    val mSwipeAdapter : CommonMultiSwipeVmAdapter by lazy {
-        CommonMultiSwipeVmAdapter(this, mutableListOf(),
-            R.layout.listen_item_recent_listen,
-            R.id.listenRecentSl,
-            BR.viewModel,
-            BR.item)
-    }
-
-
-    fun getSubsTotalNumberFromService(){
+    fun getSubsTotalNumberFromService() {
         launchOnIO {
             repository.getSubsNumber().checkResult(
-                onSuccess = {
-                    subsNumber.set(it.subscription_total)
-                },
-                onError = {
-                    DLog.d("suolong","$it")
-                }
+                    onSuccess = {
+                        subsNumber.set(it.subscription_total)
+                    },
+                    onError = {
+                        DLog.d("suolong", "$it")
+                    }
             )
         }
     }

@@ -23,14 +23,14 @@
         <FrameLayout
             android:layout_width="80dp"
             android:layout_height="80dp"
-            bindClick="@{()->viewModel.deleteItem(item)}"
+            android:onClick="@{(View)->viewModel.showLottie(View)}"
             android:background="@drawable/business_shape_round_ff5e5e_32dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="26dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/listen_icon_swipe_delete"
                 />
             <androidx.appcompat.widget.AppCompatTextView
@@ -38,8 +38,20 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="45dp"
                 android:layout_marginStart="26dp"
+                android:textColor="@color/businessWhite"
                 android:text="@string/business_delete"
                 />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/swipe_delete"
+                android:visibility="gone"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="10dp"
+                app:lottie_fileName="business_swipe_delete.json"
+                android:onClick="@{()->viewModel.deleteItem(item)}"
+                />
+
         </FrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -12,6 +12,8 @@
             type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
 
         <import type="com.rm.business_lib.wedgit.ShadowDrawableUtil" />
+        <import type="com.rm.baselisten.BaseConstance" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,7 +165,9 @@
                     android:paddingTop="@dimen/dp_9"
                     android:paddingEnd="@dimen/dp_16"
                     android:paddingBottom="@dimen/dp_9"
-                    android:text="@string/home_play_all"
+                    bindPlayStatusModel="@{BaseConstance.INSTANCE.basePlayStatusModel}"
+                    bindPlayAudioModel="@{BaseConstance.INSTANCE.basePlayInfoModel}"
+                    bindPlayListenModel="@{viewModel.listenAudio}"
                     android:textColor="@color/business_text_color_666666"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"

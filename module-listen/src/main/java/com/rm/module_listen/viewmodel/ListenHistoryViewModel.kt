@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.airbnb.lottie.LottieAnimationView
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.DaoUtil
@@ -17,9 +18,7 @@ import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.activity.ListenHistorySearchActivity
 import com.rm.module_listen.model.ListenHistoryModel
-import kotlinx.coroutines.delay
 
 /**
  * desc   :
@@ -47,11 +46,12 @@ class ListenHistoryViewModel : BaseVMViewModel() {
 
     val mSwipeAdapter: CommonMultiSwipeVmAdapter by lazy {
         CommonMultiSwipeVmAdapter(
-            this, mutableListOf(),
-            R.layout.listen_item_history_listen,
-            R.id.listenRecentSl,
-            BR.viewModel,
-            BR.item
+                this, mutableListOf(),
+                R.layout.listen_item_history_listen,
+                R.id.listenRecentSl,
+                R.id.swipe_delete,
+                BR.viewModel,
+                BR.item
         )
     }
 
@@ -83,28 +83,28 @@ class ListenHistoryViewModel : BaseVMViewModel() {
             searchHasData.set(true)
             mSwipeAdapter.data.clear()
             mSwipeAdapter.addData(sourceList)
-            if(sourceList.size>8){
+            if (sourceList.size > 8) {
                 mSwipeAdapter.footerLayout?.visibility = View.VISIBLE
-            }else{
+            } else {
                 mSwipeAdapter.footerLayout?.visibility = View.GONE
             }
         } else {
             keyword.set(search)
             if (sourceList != null && sourceList.isNotEmpty()) {
                 sourceList.forEach {
-                    if (it.audio.audio_name.contains(search)  ){
+                    if (it.audio.audio_name.contains(search)) {
                         resultList.add(it)
                     }
                 }
-                if(resultList.isNotEmpty()){
+                if (resultList.isNotEmpty()) {
                     searchHasData.set(true)
                     mSwipeAdapter.data.clear()
                     mSwipeAdapter.addData(resultList)
                     mSwipeAdapter.footerLayout?.visibility = View.GONE
-                }else{
+                } else {
                     searchHasData.set(false)
                 }
-            }else{
+            } else {
                 searchHasData.set(false)
             }
         }
@@ -118,14 +118,22 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         allHistory.value = mutableListOf()
     }
 
-    fun startListenRecentDetail(context: Context,model:ListenHistoryModel) {
+    fun startListenRecentDetail(context: Context, model: ListenHistoryModel) {
 
         playService.startPlayActivity(
-            context = context,
-            audioId = model.audio.audio_id.toString(),
-            chapterId = model.audio.listenChapterList.first().chapter_id.toString(),
-            currentDuration = model.audio.listenChapterList.last().listen_duration
+                context = context,
+                audioId = model.audio.audio_id.toString(),
+                chapterId = model.audio.listenChapterList.first().chapter_id.toString(),
+                currentDuration = model.audio.listenChapterList.last().listen_duration
         )
+    }
+
+    fun showLottie(view: View?) {
+        view?.let {
+            val lottieAnimationView = it.findViewById<LottieAnimationView>(R.id.swipe_delete)
+            lottieAnimationView.visibility = View.VISIBLE
+            lottieAnimationView.playAnimation()
+        }
     }
 
     fun deleteItem(item: ListenHistoryModel) {
@@ -133,7 +141,7 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         mSwipeAdapter.data.remove(item)
         DaoUtil(ListenChapterEntity::class.java, "").delete(item.audio.listenChapterList)
         DaoUtil(ListenAudioEntity::class.java, "").delete(item.audio)
-        if(mSwipeAdapter.data.size<8){
+        if (mSwipeAdapter.data.size < 8) {
             mSwipeAdapter.footerLayout?.visibility = View.GONE
         }
     }
@@ -141,10 +149,10 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     /**
      * 搜索点击事件
      */
-     private fun clickSearchFun(view: View?) {
+    private fun clickSearchFun(view: View?) {
         view?.let {
             val imm =
-                it.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    it.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (imm.isActive) {
                 imm.hideSoftInputFromWindow(it.applicationWindowToken, 0)
             }

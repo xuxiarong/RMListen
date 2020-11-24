@@ -10,6 +10,7 @@ import androidx.databinding.BindingAdapter
 import com.google.gson.Gson
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
+import com.rm.business_lib.R
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.bean.BannerJumpBean
 import com.rm.business_lib.xbanner.XBanner
@@ -76,7 +77,7 @@ fun XBanner.bindBanner(bannerInfoList: List<BannerInfoBean>?) {
     loadImage { _, _, view, position ->
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
-            view as ImageView,
+                view.findViewById(R.id.banner_img) as ImageView,
             bannerInfoList[position].img_url
         )
     }
@@ -96,7 +97,7 @@ fun XBanner.paddingBindData(bannerInfoList: List<BannerInfoBean>?, isShadow: Boo
     loadImage { _, _, view, position ->
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
-            view as ImageView,
+            view.findViewById(R.id.banner_img) as ImageView,
             bannerInfoList[position].img_url
         )
 //        Glide.with(view).asBitmap()

@@ -1,7 +1,9 @@
 package com.rm.module_listen.viewmodel
 
 import android.content.Context
+import android.view.View
 import androidx.lifecycle.MutableLiveData
+import com.airbnb.lottie.LottieAnimationView
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -25,17 +27,19 @@ import com.rm.module_listen.model.ListenRecentDateModel
 class ListenRecentListenViewModel : BaseVMViewModel() {
 
     var allHistory = MutableLiveData<MutableList<MultiItemEntity>>()
+
     private val playService by lazy {
         RouterHelper.createRouter(PlayService::class.java)
     }
 
     val mSwipeAdapter: CommonMultiSwipeVmAdapter by lazy {
         CommonMultiSwipeVmAdapter(
-            this, mutableListOf(),
-            R.layout.listen_item_recent_listen,
-            R.id.listenRecentSl,
-            BR.viewModel,
-            BR.item
+                this, mutableListOf(),
+                R.layout.listen_item_recent_listen,
+                R.id.listenRecentSl,
+                R.id.swipe_delete,
+                BR.viewModel,
+                BR.item
         )
     }
 
@@ -64,10 +68,10 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
 
     fun startAudioPlay(context: Context, model: ListenHistoryModel) {
         playService.startPlayActivity(
-            context = context,
-            audioId = model.audio.audio_id.toString(),
-            chapterId = model.audio.listenChapterList.first().chapter_id.toString(),
-            currentDuration = model.audio.listenChapterList.first().listen_duration
+                context = context,
+                audioId = model.audio.audio_id.toString(),
+                chapterId = model.audio.listenChapterList.first().chapter_id.toString(),
+                currentDuration = model.audio.listenChapterList.first().listen_duration
         )
     }
 
@@ -77,6 +81,14 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         DaoUtil(ListenChapterEntity::class.java, "").delete(item.audio.listenChapterList)
         DaoUtil(ListenAudioEntity::class.java, "").delete(item.audio)
         getListenHistory()
+    }
+
+    fun showLottie(view: View?) {
+        view?.let {
+            val lottieAnimationView = it.findViewById<LottieAnimationView>(R.id.swipe_delete)
+            lottieAnimationView.visibility = View.VISIBLE
+            lottieAnimationView.playAnimation()
+        }
     }
 
 }

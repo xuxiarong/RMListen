@@ -66,35 +66,42 @@
                 app:layout_constraintStart_toEndOf="@+id/homeHorPlayCount" />
         </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeItemRecommendHorDoubleTopName"
-            bindText="@{item.singleModel.audio_name}"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="2"
-            android:ellipsize="end"
-            android:lineSpacingExtra="2dp"
             android:layout_marginTop="144dp"
-            android:textColor="@color/business_text_color_333333"
-            android:textSize="@dimen/business_text_size_14sp"
-            tools:text="Carolyn GregoryCarolyn GregoryCarolyn GregoryCarolyn GregoryCarolyn GregoryCarolyn Gregory" />
+            android:orientation="vertical"
+            >
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
-            bindText="@{item.singleModel.anchor_name}"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_17"
-            android:layout_marginTop="188dp"
-            android:lines="1"
-            android:ellipsize="end"
-            android:textColor="@color/business_color_b1b1b1"
-            android:textSize="@dimen/business_text_size_12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/homeItemRecommendHorDoubleTopName"
-            tools:text="小丸子小丸子小丸子小丸子小丸子小丸子小丸子小丸子" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homeItemRecommendHorDoubleTopName"
+                bindText="@{item.singleModel.audio_name}"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
+                android:textColor="@color/business_text_color_333333"
+                android:textSize="@dimen/business_text_size_14sp"
+                tools:text="Carolyn GregoryCarGregoryCarGregoryCarGregoryCarGregoryCar" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
+                bindText="@{item.singleModel.anchor_name}"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_17"
+                android:layout_marginTop="@dimen/dp_6"
+                android:lines="1"
+                android:ellipsize="end"
+                android:textColor="@color/business_color_b1b1b1"
+                android:textSize="@dimen/business_text_size_12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeItemRecommendHorDoubleTopName"
+                tools:text="小丸子小丸子小丸子小丸子小丸子小丸子小丸子小丸子" />
+
+        </LinearLayout>
 
     </FrameLayout>
-
 
 </layout>
