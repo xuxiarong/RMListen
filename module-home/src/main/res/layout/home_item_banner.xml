@@ -15,28 +15,17 @@
             type="com.rm.module_home.model.home.banner.HomeBannerRvModel" />
     </data>
 
-    <com.flyco.roundview.RoundFrameLayout
+
+
+    <com.rm.business_lib.xbanner.XBanner
+        android:id="@+id/mainBanner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:rv_cornerRadius="@dimen/dp_8">
+        android:layout_height="190dp"
+        app:AutoPlayTime="5000"
+        app:clipChildrenTopBottomMargin="0dp"
+        app:pageChangeDuration="1000"
+        app:pointsPosition="CENTER"
+        app:viewPagerClipChildren="true" />
 
-        <com.rm.business_lib.xbanner.XBanner
-            android:id="@+id/mainBanner"
-            android:layout_width="match_parent"
-            android:layout_height="176dp"
-            app:AutoPlayTime="5000"
-            app:clipChildrenTopBottomMargin="0dp"
-            app:pageChangeDuration="1000"
-            app:pointsPosition="CENTER"
-            app:viewPagerClipChildren="true" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="176dp"
-            android:src="@drawable/business_banner_bg"
-            />
-
-    </com.flyco.roundview.RoundFrameLayout>
 
 </layout>

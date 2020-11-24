@@ -321,7 +321,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
     private void init(Context context) {
         mAutoSwitchTask = new AutoSwitchTask(this);
         mPointLeftRightPading = XBannerUtils.dp2px(context, 3);
-        mPointTopBottomPading = XBannerUtils.dp2px(context, 6);
+        mPointTopBottomPading = XBannerUtils.dp2px(context, 14);
         mPointContainerLeftRightPadding = XBannerUtils.dp2px(context, 10);
         mClipChildrenLeftRightMargin = XBannerUtils.dp2px(context, 30);
         mClipChildrenTopBottomMargin = XBannerUtils.dp2px(context, 10);

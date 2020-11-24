@@ -72,6 +72,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
      * 关注主播
      */
     private fun attentionAnchor(bean: MineMemberFansDetailBean) {
+        showLoading()
         launchOnIO {
             repository.attentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
@@ -91,6 +92,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
      * 取消关注主播
      */
     private fun unAttentionAnchor(bean: MineMemberFansDetailBean) {
+        showLoading()
         launchOnIO {
             repository.unAttentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
@@ -124,6 +126,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
     private fun processFailureData(msg: String?) {
         if (fansPage == 1) {
             refreshStatusModel.finishRefresh(false)
+            showServiceError()
         } else {
             refreshStatusModel.finishLoadMore(false)
         }

@@ -59,9 +59,11 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
      * 关注主播
      */
     private fun attentionAnchor(followId: String) {
+        showLoading()
         launchOnIO {
             repository.attentionAnchor(followId).checkResult(
                 onSuccess = {
+                    showContentView()
                     isAttention.set(true)
                     fans.get()?.let {
                         fans.set(it + 1)
@@ -81,9 +83,11 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
      * 取消关注主播
      */
     private fun unAttentionAnchor(followId: String) {
+        showLoading()
         launchOnIO {
             repository.unAttentionAnchor(followId).checkResult(
                 onSuccess = {
+                    showContentView()
                     isAttention.set(false)
                     fans.get()?.let {
                         fans.set(it - 1)

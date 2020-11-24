@@ -60,14 +60,14 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/mine_adapter_member_follow_lv"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dp_25"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/dp_6"
                 android:layout_marginEnd="@dimen/dp_5"
                 android:text="LV5"
                 android:gravity="center"
                 android:textColor="@color/business_color_ff5e5e"
-                android:textSize="@dimen/business_text_size_12sp"
+                android:textSize="@dimen/business_text_size_10sp"
                 android:textStyle="bold|italic" />
         </LinearLayout>
 

@@ -25,109 +25,143 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            layout="@layout/login_include_layout_top_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_88"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- 手机号码输入框-->
-        <include
-            layout="@layout/login_include_layout_phone_input"
-            android:layout_width="@dimen/dp_315"
-            android:layout_height="@dimen/dp_56"
-            android:layout_marginTop="@dimen/dp_65"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_include_logo_lay"
-            bind:phoneInputViewModel="@{viewModel.phoneInputViewModel}" />
-
-        <!-- 密码输入框-->
-        <include
-            layout="@layout/login_include_layout_password_input"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_56"
-            android:layout_marginTop="@dimen/dp_24"
-            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
-            app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_include_phone_input_lay"
-            bind:passwordInputViewModel="@{viewModel.passwordInputViewModel}" />
-
-
-        <TextView
-            style="@style/BusinessTextStyleErrorTips"
-            bindText="@{viewModel.errorTips}"
-            android:layout_width="0dp"
-            android:layout_marginStart="@dimen/dp_22"
-            android:layout_marginTop="@dimen/dp_6"
-            android:singleLine="true"
-            app:layout_constraintLeft_toLeftOf="@id/login_include_password_input_lay"
-            app:layout_constraintRight_toLeftOf="@id/login_bu_password_forget_pwd"
-            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay"
-            tools:text="手机号有误" />
-
-        <TextView
-            android:id="@+id/login_bu_password_forget_pwd"
-            style="@style/BusinessTextStyleFirst_3"
-            android:layout_marginEnd="@dimen/dp_22"
-            android:onClick="@{()->viewModel.forgetPassword(context)}"
-            android:padding="@dimen/dp_6"
-            android:text="@string/login_forget_password"
-            app:layout_constraintRight_toRightOf="@id/login_include_password_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_by_password_login_btn"
-            style="@style/ButtonStyle"
-            bindClick="@{viewModel.login}"
-            bindCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
-            bindPasswordEnable="@{viewModel.passwordInputViewModel.password}"
-            bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_56"
-            android:layout_marginTop="@dimen/dp_82"
-            android:text="@string/login_login"
-            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
-            app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_19"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
-            app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
-            app:layout_constraintTop_toBottomOf="@id/login_by_password_login_btn">
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="@dimen/dp_22"
-                android:layout_height="@dimen/dp_22"
-                android:button="@drawable/login_selector_check_box_button"
-                android:checked="@={viewModel.isCheck}" />
-
-            <TextView
-                android:id="@+id/login_by_password_tips"
-                style="@style/BusinessTextStyleSecond_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_6"
-                tools:text="未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策" />
-        </LinearLayout>
-
-        <TextView
-            style="@style/BusinessTextStyleFirst_3"
-            bindClick="@{viewModel.loginByVerifyCode}"
-            android:layout_marginBottom="@dimen/dp_44"
-            android:padding="@dimen/dp_5"
-            android:text="@string/login_verify_code_login"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <include
+                layout="@layout/login_include_layout_top_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/inputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dp_65"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_include_logo_lay">
+
+                <!-- 手机号码输入框-->
+                <include
+                    layout="@layout/login_include_layout_phone_input"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_56"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    bind:phoneInputViewModel="@{viewModel.phoneInputViewModel}" />
+
+                <!-- 密码输入框-->
+                <include
+                    layout="@layout/login_include_layout_password_input"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_56"
+                    android:layout_marginTop="@dimen/dp_24"
+                    app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+                    app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
+                    app:layout_constraintTop_toBottomOf="@id/login_include_phone_input_lay"
+                    bind:passwordInputViewModel="@{viewModel.passwordInputViewModel}" />
+
+
+                <TextView
+                    style="@style/BusinessTextStyleErrorTips"
+                    bindText="@{viewModel.errorTips}"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="@dimen/dp_22"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:singleLine="true"
+                    app:layout_constraintLeft_toLeftOf="@id/login_include_password_input_lay"
+                    app:layout_constraintRight_toLeftOf="@id/login_bu_password_forget_pwd"
+                    app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay"
+                    tools:text="手机号有误" />
+
+                <TextView
+                    android:id="@+id/login_bu_password_forget_pwd"
+                    style="@style/BusinessTextStyleFirst_3"
+                    android:layout_marginEnd="@dimen/dp_22"
+                    android:onClick="@{()->viewModel.forgetPassword(context)}"
+                    android:padding="@dimen/dp_6"
+                    android:text="@string/login_forget_password"
+                    app:layout_constraintRight_toRightOf="@id/login_include_password_input_lay"
+                    app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    bindShadowCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
+                    bindShadowPasswordEnable="@{viewModel.passwordInputViewModel.password}"
+                    bindShadowPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/business_menu_red_bg"
+                    app:layout_constraintEnd_toEndOf="@id/login_by_password_login_btn"
+                    app:layout_constraintStart_toStartOf="@id/login_by_password_login_btn"
+                    app:layout_constraintTop_toBottomOf="@id/login_by_password_login_btn" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/login_by_password_login_btn"
+                    style="@style/ButtonStyle"
+                    bindClick="@{viewModel.login}"
+                    bindCountryCode="@{viewModel.phoneInputViewModel.countryCode}"
+                    bindPasswordEnable="@{viewModel.passwordInputViewModel.password}"
+                    bindPhoneEnable="@{viewModel.phoneInputViewModel.phone}"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_56"
+                    android:layout_marginTop="@dimen/dp_82"
+                    android:text="@string/login_login"
+                    app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+                    app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
+                    app:layout_constraintTop_toBottomOf="@id/login_include_password_input_lay" />
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_19"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="@id/login_include_phone_input_lay"
+                    app:layout_constraintRight_toRightOf="@id/login_include_phone_input_lay"
+                    app:layout_constraintTop_toBottomOf="@id/login_by_password_login_btn">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="@dimen/dp_22"
+                        android:layout_height="@dimen/dp_22"
+                        android:button="@drawable/login_selector_check_box_button"
+                        android:checked="@={viewModel.isCheck}" />
+
+                    <TextView
+                        android:id="@+id/login_by_password_tips"
+                        style="@style/BusinessTextStyleSecond_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_6"
+                        tools:text="未注册用户登录时将自动创建账号，且代表您已同意《用户协议》和《隐私保护协议》政策" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/BusinessTextStyleFirst_3"
+                    bindClick="@{viewModel.loginByVerifyCode}"
+                    android:layout_marginBottom="@dimen/dp_44"
+                    android:padding="@dimen/dp_5"
+                    android:text="@string/login_verify_code_login"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

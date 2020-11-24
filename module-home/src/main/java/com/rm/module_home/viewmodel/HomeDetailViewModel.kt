@@ -279,13 +279,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 订阅
      */
     private fun subscribe(context: Context, audioId: String) {
+        showLoading()
         launchOnIO {
             repository.subscribe(audioId).checkResult(
                 onSuccess = {
+                    showContentView()
                     isSubscribed.set(true)
                     subscribeSuccess(context)
                 },
                 onError = {
+                    showContentView()
                     DLog.i("------->", "订阅失败  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -297,13 +300,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 取消订阅
      */
     private fun unSubscribe(audioId: String) {
+        showLoading()
         launchOnIO {
             repository.unSubscribe(audioId).checkResult(
                 onSuccess = {
+                    showContentView()
                     isSubscribed.set(false)
                     showTip("取消订阅成功")
                 },
                 onError = {
+                    showContentView()
                     DLog.i("------->", "取消订阅  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -586,9 +592,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 评论点赞
      */
     private fun likeComment(bean: CommentList) {
+        showLoading()
         launchOnIO {
             repository.homeLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
+                    showContentView()
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = true
                     bean.likes = bean.likes + 1
@@ -597,6 +605,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = {
+                    showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
@@ -608,9 +617,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 取消评论点赞
      */
     private fun unLikeComment(bean: CommentList) {
+        showLoading()
         launchOnIO {
             repository.homeUnLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
+                    showContentView()
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = false
                     bean.likes = bean.likes - 1
@@ -618,6 +629,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = {
+                    showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -661,13 +673,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 关注主播
      */
     private fun attentionAnchor(followId: String) {
+        showLoading()
         launchOnIO {
             repository.attentionAnchor(followId).checkResult(
                 onSuccess = {
+                    showContentView()
                     isAttention.set(true)
                     showTip("关注成功")
                 },
                 onError = {
+                    showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
@@ -677,13 +692,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 取消关注主播
      */
     private fun unAttentionAnchor(followId: String) {
+        showLoading()
         launchOnIO {
             repository.unAttentionAnchor(followId).checkResult(
                 onSuccess = {
+                    showContentView()
                     isAttention.set(false)
                     showTip("取消关注成功")
                 },
                 onError = {
+                    showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
         }

@@ -47,6 +47,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
      * 发布的书籍
      */
     fun mineMemberReleaseBookList() {
+        showLoading()
         launchOnIO {
             repository.minePublishList(memberId, mPage, pageSize).checkResult(
                 onSuccess = {
@@ -65,6 +66,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
     private fun processFailureData(msg: String?) {
         if (mPage == 1) {
             refreshStatusModel.finishRefresh(false)
+            showServiceError()
         } else {
             refreshStatusModel.finishLoadMore(false)
         }
