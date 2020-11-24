@@ -13,6 +13,7 @@ import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.playview.GlobalPlayHelper
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
 /**
  * desc   : play module 路由服务实现类
@@ -43,6 +44,10 @@ class PlayServiceImpl : PlayService {
     }
 
     override fun toCommentCenterActivity(context: Context, audioID: String) {
+    }
+
+    override fun pausePlay() {
+        MusicPlayerManager.musicPlayerManger.pause()
     }
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {

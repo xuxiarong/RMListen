@@ -52,7 +52,7 @@ data class HomeAudioModel(
     val audio_id: String,
     val audio_intro: String,
     val audio_label: String,
-    val audio_name: String,
+    var audio_name: String,
     val audio_type: Int,
     val author: String,
     val author_intro: String,

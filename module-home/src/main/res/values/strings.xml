@@ -54,6 +54,8 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="home_detail_chapter_total">共%d集</string>
     <string name="home_play_all">全部播放</string>
+    <string name="home_resume_pay">继续播放</string>
+    <string name="home_pause_play">全部暂停</string>
 
 </resources>
 

@@ -33,4 +33,10 @@ interface PlayService : ApplicationProvider {
         context: Context,
         audioID: String
     )
+
+    /**
+     * 暂停播放
+     */
+
+    fun pausePlay()
 }

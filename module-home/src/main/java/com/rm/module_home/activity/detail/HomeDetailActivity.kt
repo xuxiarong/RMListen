@@ -62,6 +62,7 @@ class HomeDetailActivity :
             mViewModel.chapterRefreshStatus.setResetNoMoreData(true)
             mViewModel.nextChapterPage = 1
             mViewModel.previousChapterPage = 1
+            mViewModel.queryAudioListenRecord()
             mViewModel.getChapterList(1, HomeDetailViewModel.CHAPTER_REFRESH_PAGE) //初始化章节列表
 
             mViewModel.commentPage = 1
@@ -96,7 +97,7 @@ class HomeDetailActivity :
             mViewModel.chapterRefreshStatus.setNoHasMore(false)
 
             mViewModel.commentRefreshStateMode.setNoHasMore(false)
-
+            mViewModel.queryAudioListenRecord()
             mViewModel.getChapterList(1, HomeDetailViewModel.CHAPTER_REFRESH_PAGE) //初始化章节列表
             mViewModel.getCommentList(it)
         }
