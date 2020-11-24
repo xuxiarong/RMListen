@@ -54,7 +54,6 @@
             android:layout_height="@dimen/dp_72"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_18"
-            android:background="@drawable/business_shape_white_top_radius_24dp"
             android:onClick="@{()->viewModel.userInfoClick(context)}"
             app:layout_constraintDimensionRatio="W,1:1"
             app:layout_constraintStart_toStartOf="parent"

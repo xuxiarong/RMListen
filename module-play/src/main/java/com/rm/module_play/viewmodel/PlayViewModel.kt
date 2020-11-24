@@ -12,7 +12,6 @@ import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.addAll
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
@@ -223,15 +222,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             this,
             mutableListOf(),
             R.layout.play_item_comment,
-            BR.commentViewModel,
-            BR.commentItem
+            BR.viewModel,
+            BR.item
         )
     }
-
-    /**
-     * 章节列表View的控制显示状态
-     */
-    var showChapter = ObservableBoolean(false)
 
     /**
      * 章节列表的Adapter
@@ -258,6 +252,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         const val ACTION_MORE_COMMENT = "ACTION_MORE_COMMENT"//更多评论
         const val ACTION_MORE_FINSH = "ACTION_MORE_FINSH"//关闭
     }
+
 
     /**
      * 设置播放路径
@@ -349,9 +344,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             if (chapter != null) {
                 process.set(currentDuration.toFloat())
                 updateThumbText.set(
-                    "${TimeUtils.getPlayDuration(currentDuration)}/${TimeUtils.getPlayDuration(
-                        totalDuration
-                    )
+                    "${TimeUtils.getPlayDuration(currentDuration)}/${
+                        TimeUtils.getPlayDuration(
+                            totalDuration
+                        )
                     }"
                 )
                 chapter.listen_duration = if (isPlayFinish) {

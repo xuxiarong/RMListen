@@ -68,6 +68,11 @@ class HomeDetailActivity :
             topMargin = getStateHeight(this@HomeDetailActivity)
         }
 
+//        if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
+//            val data = intent.data
+//            data?.getQueryParameter("audioId")
+//        }
+//com.rm.listen.home://home_detail?audioId="123445667"
         intent?.getStringExtra(AUDIO_ID)?.let {
             mViewModel.audioId.set(it)
             mViewModel.intDetailInfo(it)
