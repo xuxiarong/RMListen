@@ -7,9 +7,9 @@
     <string name="search_anchor">主播</string>
     <string name="search_sheet">听单</string>
     <string name="search_all">全部</string>
-    <string name="search_books_num">(%d)</string>
+    <string name="search_books_num">(%s)</string>f
     <string name="search_anchor_level">LV%d</string>
     <string name="search_attention">关注</string>
-    <string name="search_fans">%s粉丝</string>
+    <string name="search_fans">粉丝</string>
     <string name="search_clearn_all">全部清空</string>
 </resources>

@@ -31,7 +31,7 @@ class ListenSubscriptionAdapter(
         super.convert(holder, item)
         val view = holder.getView<AppCompatTextView>(R.id.listen_subscription_adapter_num)
         if (item.unread > 9) {
-            view.width = view.resources.getDimensionPixelSize(R.dimen.dp_26)
+            view.width = view.resources.getDimensionPixelSize(R.dimen.dp_30)
         } else {
             view.width = view.resources.getDimensionPixelSize(R.dimen.dp_18)
         }

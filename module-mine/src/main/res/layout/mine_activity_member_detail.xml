@@ -152,14 +152,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/mine_member_detail_name"
                 app:layout_constraintTop_toTopOf="@id/mine_member_detail_name" />
-            <!-- android:text="@{viewModel.detailInfoData.member_intro}" -->
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tx_mine_member_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_4"
                 android:layout_marginEnd="@dimen/dp_16"
-                android:text="@{viewModel.detailInfoData.member_intro}"
+                android:text="@{viewModel.detailInfoData.signature}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -189,16 +189,15 @@
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
-                app:layout_constraintTop_toTopOf="@id/mine_member_attention"
-                />
+                app:layout_constraintTop_toTopOf="@id/mine_member_attention" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tx_mine_member_follows_num"
+                bindPlayCount="@{viewModel.follows}"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_26"
                 android:gravity="center"
                 android:onClick="@{()->viewModel.clickFollowFun(context,1)}"
-                bindPlayCount="@{viewModel.follows}"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_16sp"
                 android:textStyle="bold"
@@ -211,22 +210,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_26"
                 android:layout_marginStart="@dimen/dp_18"
-                android:text="@string/mine_fans_num"
                 android:gravity="center"
                 android:onClick="@{()->viewModel.clickFollowFun(context,2)}"
+                android:text="@string/mine_fans_num"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintStart_toEndOf="@id/tx_mine_member_follows_num"
-                app:layout_constraintTop_toTopOf="@id/mine_member_attention"
-                />
+                app:layout_constraintTop_toTopOf="@id/mine_member_attention" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tx_mine_member_fans_num"
+                bindPlayCount="@{viewModel.fans}"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_26"
                 android:gravity="center"
                 android:onClick="@{()->viewModel.clickFollowFun(context,2)}"
-                bindPlayCount="@{viewModel.fans}"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_16sp"
                 android:textStyle="bold"
@@ -268,9 +266,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/business_shape_white_top_radius_12dp"
-            android:translationY="@dimen/dp_300"
+            android:translationY="@dimen/dp_315"
             app:layout_behavior="com.rm.module_mine.behavior.ContentBehavior">
-
 
             <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
                 android:id="@+id/tab_mine_member_list"

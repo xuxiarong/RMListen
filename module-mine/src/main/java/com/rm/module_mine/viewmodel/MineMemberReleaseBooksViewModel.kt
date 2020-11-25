@@ -47,7 +47,9 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
      * 发布的书籍
      */
     fun mineMemberReleaseBookList() {
-        showLoading()
+        if (mPage == 1) {
+            showLoading()
+        }
         launchOnIO {
             repository.minePublishList(memberId, mPage, pageSize).checkResult(
                 onSuccess = {
@@ -68,7 +70,9 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
             refreshStatusModel.finishRefresh(false)
             showServiceError()
         } else {
+            showContentView()
             refreshStatusModel.finishLoadMore(false)
+            showTip("$msg", R.color.business_color_ff5e5e)
         }
         DLog.i("---->", "$msg")
     }
@@ -77,6 +81,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
      * 处理成功数据
      */
     private fun processSuccessData(bean: MinePublishBean) {
+        showContentView()
         if (mPage == 1) {
             refreshStatusModel.finishRefresh(true)
             if (bean.list.isNotEmpty()) {
@@ -89,6 +94,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
             mAdapter.addData(bean.list)
         }
         refreshStatusModel.setNoHasMore(mAdapter.data.size >= bean.total || bean.list.size < pageSize)
+        ++mPage
     }
 
 
@@ -105,7 +111,6 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
      * 加载更多数据
      */
     fun loadMoreData() {
-        ++mPage
         mineMemberReleaseBookList()
     }
 

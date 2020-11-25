@@ -60,6 +60,7 @@
     <string name="listen_know">我知道了</string>
     <string name="listen_goto_look">去看看</string>
     <string name="listen_add_success_content">可在“我听-听单”中查看</string>
+    <string name="listen_max_sub_num">99+</string>
 
 
 </resources>

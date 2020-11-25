@@ -30,21 +30,7 @@ fun TextView.bindPlayCount(count: Int) {
 
 @BindingAdapter("bindPlayCount", "bindPlayCountUnit", requireAll = false)
 fun TextView.bindPlayCount(count: Int, unit: String? = null) {
-    val charSequence: CharSequence = when {
-        count < 10000 -> {
-            count.toString()
-        }
-        count > 99999999 -> {
-            "9999w+"
-        }
-        else -> {
-            val wan = count / 10000
-            val qian = count % 10000 / 1000
-            val bai = count % 1000 / 100
-            "$wan" + "." + "$qian" + "w"
-        }
-    }
-    val bf = StringBuffer(charSequence)
+    val bf = StringBuffer(getPlayCount(count))
     if (unit != null) {
         bf.append(unit)
     }
@@ -60,4 +46,41 @@ fun TextView.bindPlayCountString(count: String?, unit: String? = null) {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+
+}
+
+fun getPlayCount(count: Int): String {
+    return when {
+        count < 10000 -> {
+            count.toString()
+        }
+        count > 99999999 -> {
+            "9999w+"
+        }
+        else -> {
+            val wan = count / 10000
+            val qian = count % 10000 / 1000
+            val bai = count % 1000 / 100
+            "$wan" + "." + "$qian" + "w"
+        }
+    }
+
+}
+
+fun getPlayCount(count: Long): String {
+    return when {
+        count < 10000 -> {
+            count.toString()
+        }
+        count > 99999999 -> {
+            "9999w+"
+        }
+        else -> {
+            val wan = count / 10000
+            val qian = count % 10000 / 1000
+            val bai = count % 1000 / 100
+            "$wan" + "." + "$qian" + "w"
+        }
+    }
+
 }

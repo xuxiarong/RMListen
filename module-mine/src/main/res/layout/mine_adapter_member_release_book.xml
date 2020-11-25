@@ -71,7 +71,7 @@
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_12"
             android:singleLine="true"
-            android:text="@{item.short_intro}"
+            android:text="@{item.audio_intro}"
             app:layout_constraintBottom_toTopOf="@id/mine_release_book_adapter_chapter_num"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/mine_release_book_adapter_icon"

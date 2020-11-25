@@ -77,7 +77,8 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/BusinessTextStyleThird_4"
-            bindText="@{@string/search_fans(item.fans)}"
+            bindPlayCountString="@{item.fans}"
+            bindPlayCountUnit="@{@string/search_fans}"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_4"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_avatar"
