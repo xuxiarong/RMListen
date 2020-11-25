@@ -78,12 +78,15 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_collected"
-            style="@style/BusinessTextStyleFourth_3"
+            android:layout_width="@dimen/dp_141"
+            android:layout_height="@dimen/dp_30"
             android:layout_marginStart="@dimen/dp_12"
+            android:gravity="center"
             android:background="@{headerViewModel.isFavor?@drawable/home_select_menu_collected_unselect:@drawable/home_select_menu_collected_select}"
             android:onClick="@{(view)->headerViewModel.clickCollectionRelated(view)}"
             android:text="@{headerViewModel.isFavor?@string/home_menu_detail_collected:@string/home_menu_detail_add_collected}"
             android:textColor="@{headerViewModel.isFavor? @color/business_text_color_b1b1b1: @color/business_text_color_ffffff}"
+            android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_front_cover"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover" />
 

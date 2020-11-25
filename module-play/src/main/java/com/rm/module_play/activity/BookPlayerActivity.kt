@@ -8,12 +8,18 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
@@ -27,6 +33,7 @@ import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.R.anim.activity_top_open
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
+import com.rm.module_play.databinding.PlayPlayHeadBinding
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
@@ -128,9 +135,42 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     @SuppressLint("ResourceAsColor")
     override fun initView() {
-        setStatusBar(R.color.businessWhite)
-        swipe_back_layout.setDragEdge(SwipeBackLayout.DragEdge.TOP)
-        swipe_back_layout.setOnSwipeBackListener(this)
+        setTransparentStatusBar()
+        mDataBind.swipeBackLayout.apply {
+            setDragEdge(SwipeBackLayout.DragEdge.TOP)
+            setOnSwipeBackListener(this@BookPlayerActivity)
+            setScrollChild(mDataBind.playCommentRv)
+        }
+        setTitleTpoMargin()
+        recycleScrollListener()
+
+        mDataBind.playCommentRv.apply {
+            bindVerticalLayout(mViewModel.mCommentAdapter)
+            createHead(this)
+        }
+    }
+
+    private fun createHead(rv: RecyclerView) {
+        DataBindingUtil.inflate<PlayPlayHeadBinding>(
+            LayoutInflater.from(rv.context),
+            R.layout.play_play_head,
+            rv,
+            false
+        ).apply {
+            mViewModel.mCommentAdapter.addHeaderView(this.root)
+            setVariable(BR.viewModel, mViewModel)
+        }
+    }
+
+    /**
+     * 设置顶部的margin
+     */
+    private fun setTitleTpoMargin() {
+        (mDataBind.reportWhyArrow.layoutParams as ViewGroup.MarginLayoutParams).apply {
+            //动态获取状态栏的高度,并设置标题栏的topMargin
+            topMargin =
+                getStateHeight(this@BookPlayerActivity) + resources.getDimensionPixelOffset(R.dimen.dp_10)
+        }
     }
 
     override fun startObserve() {
@@ -213,7 +253,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                                 .showMySheetListDialog(
                                     this@BookPlayerActivity,
                                     mViewModel.playAudioId.get()!!
-                                ){
+                                ) {
                                     mViewModel.showTip("添加成功")
                                 }
                         }
@@ -372,9 +412,26 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         getBaseContainer().background.mutate().alpha = 1
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    /**
+     * recyclerView滑动监听
+     */
+    private fun recycleScrollListener() {
+        mDataBind.playCommentRv.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            private var totalDy = 0
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val height = mDataBind.bg.height
+                totalDy += dy
+                if (totalDy > 0) {
+                    val alpha = if (totalDy.toFloat() / (height) > 1f) {
+                        1f
+                    } else {
+                        totalDy.toFloat() / height
+                    }
+                    mDataBind.bg.alpha = alpha
+                }
+            }
+        })
     }
-
 }
