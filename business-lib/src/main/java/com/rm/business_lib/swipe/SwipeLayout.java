@@ -21,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
 
+import com.rm.baselisten.util.DLog;
 import com.rm.business_lib.R;
 
 import java.lang.reflect.Method;
@@ -332,16 +333,19 @@ public class SwipeLayout extends FrameLayout {
         }
 
         boolean isCloseBeforeDrag = true;
+        int totalMoveX = 0;
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
             processHandRelease(xvel, yvel, isCloseBeforeDrag);
+            DLog.INSTANCE.d("suolong onViewReleased","xvel = " + xvel);
             for (SwipeListener l : mSwipeListeners) {
                 l.onHandRelease(SwipeLayout.this, xvel, yvel);
             }
-
+//            DLog.INSTANCE.d();
             invalidate();
+            totalMoveX = 0;
         }
 
         @Override
@@ -357,6 +361,13 @@ public class SwipeLayout extends FrameLayout {
 
                 if (mShowMode == ShowMode.PullOut && currentBottomView != null) {
                     if (mCurrentDragEdge == DragEdge.Left || mCurrentDragEdge == DragEdge.Right) {
+//                        totalMoveX+=dx;
+//                        if(totalMoveX>mDragDistance){
+//                            return;
+//                        }
+//                        if(totalMoveX<-mDragDistance){
+//                            return;
+//                        }
                         currentBottomView.offsetLeftAndRight(dx);
                     } else {
                         currentBottomView.offsetTopAndBottom(dy);
