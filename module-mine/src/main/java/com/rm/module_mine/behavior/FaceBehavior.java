@@ -54,7 +54,7 @@ public class FaceBehavior extends CoordinatorLayout.Behavior<View> {
         int statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
         topBarHeight = (int) context.getResources().getDimension(R.dimen.dp_48) + statusBarHeight;
         contentTransY = (int) context.getResources().getDimension(R.dimen.dp_160);
-        downEndY = (int) context.getResources().getDimension(R.dimen.dp_300);
+        downEndY = (int) context.getResources().getDimension(R.dimen.dp_315);
         //faceTransY = context.getResources().getDimension(R.dimen.dp_1);
 
         //抽取图片资源的亮色或者暗色作为蒙层的背景渐变色

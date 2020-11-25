@@ -18,8 +18,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{(view)->viewModel.clickSheetFun(view,item)}"
-        android:layout_marginBottom="@dimen/dp_20">
+        android:layout_marginBottom="@dimen/dp_20"
+        android:onClick="@{(view)->viewModel.clickSheetFun(view,item)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search_adapter_icon"
@@ -50,8 +50,8 @@
             bindSpanContent="@{item.sheet_name}"
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
-            android:maxLines="2"
             android:layout_marginStart="@dimen/dp_12"
+            android:maxLines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/search_adapter_view"
@@ -73,7 +73,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_book_num"
             style="@style/BusinessTextStyleThird_4"
-            bindText="@{item.audio_num}"
+            bindPlayCountString="@{String.valueOf(item.audio_num)}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_book_num"
@@ -85,7 +85,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_collected"
             style="@style/BusinessTextStyleThird_4"
-            bindText="@{item.favour_num}"
+            bindPlayCount="@{item.favour_num}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_unfavorites"

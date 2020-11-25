@@ -684,7 +684,12 @@ public final class TimeUtils {
         } else if (millis >= wee - TimeConstants.DAY) {
             return String.format("昨天%tR", millis);
         } else {
-            return String.format("%tF", millis);
+//            return String.format("%tF", millis);
+            if (isCurrentYear(millis)) {
+                return millis2String(millis, "MM/dd");
+            } else {
+                return millis2String(millis, "yyyy/MM/dd");
+            }
         }
     }
 

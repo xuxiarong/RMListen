@@ -51,6 +51,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/search_result_edit_text"
                 style="@style/BusinessTextStyleFirst_2"
+                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
                 afterTextChanged="@{viewModel.inputKeyWord}"
                 bindAction="@{editorInfo.IME_ACTION_SEARCH}"
                 bindBlock="@{viewModel.bindActionListener}"

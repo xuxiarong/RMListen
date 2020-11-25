@@ -75,6 +75,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
+                    android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
                     android:id="@+id/home_dialog_comment_ed"
                     afterTextChanged="@{homeCommentDialogViewModel.inputText}"
                     android:layout_width="match_parent"

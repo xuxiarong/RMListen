@@ -108,6 +108,7 @@
                 android:id="@+id/et_times"
                 android:hint="请输入定时时间(秒)"
                 android:textSize="12sp"
+                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
                 android:layout_width="150dp"
                 android:layout_height="40dp"/>
             <Button

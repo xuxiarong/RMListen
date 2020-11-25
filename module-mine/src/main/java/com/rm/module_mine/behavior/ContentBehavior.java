@@ -56,8 +56,8 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
         topBarHeight = (int) context.getResources().getDimension(R.dimen.dp_48) + statusBarHeight;
-        contentTransY = (int) context.getResources().getDimension(R.dimen.dp_300);
-        downEndY = (int) context.getResources().getDimension(R.dimen.dp_300);
+        contentTransY = (int) context.getResources().getDimension(R.dimen.dp_315);
+        downEndY = (int) context.getResources().getDimension(R.dimen.dp_315);
 
         restoreAnimator = new ValueAnimator();
         restoreAnimator.addUpdateListener(animation -> translation(mLlContent, (float) animation.getAnimatedValue()));

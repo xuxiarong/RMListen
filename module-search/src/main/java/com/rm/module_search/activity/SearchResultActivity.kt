@@ -129,7 +129,6 @@ class SearchResultActivity :
 
     override fun onDestroy() {
         super.onDestroy()
-        searchKeyword.set("")
         mDataBind.root.viewTreeObserver.removeOnGlobalLayoutListener(windowListener)
     }
 

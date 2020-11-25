@@ -24,6 +24,7 @@
             afterTextChanged="@{viewModel.inputAction}"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_110"
+            android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
             android:layout_marginTop="@dimen/dp_24"
             android:background="@drawable/business_shape_f7f7f7_8dp"
             android:gravity="start|top"

@@ -37,6 +37,7 @@
             android:hint="@string/listen_search"
             android:paddingStart="@dimen/dp_12"
             android:paddingEnd="@dimen/dp_12"
+            android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

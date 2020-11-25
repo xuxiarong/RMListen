@@ -154,8 +154,8 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     override fun onResume() {
         super.onResume()
-        val keyword = searchKeyword.get()!!
-        mViewModel.keyWord.set(keyword)
+        searchKeyword.set("")
+        mViewModel.keyWord.set("")
         mViewModel.suggestIsVisible.set(false)
         mViewModel.recommendVisible.set(true)
         mViewModel.hintBannerList.get()?.let { startHintBanner() }
