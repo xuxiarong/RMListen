@@ -26,6 +26,7 @@ public class DownloadChapter implements Serializable {
     private String down_speed;
     private long current_offset;
     private long duration;
+    private long realDuration;
     private int need_pay;
     private double amount;
     private String play_count;
@@ -43,13 +44,12 @@ public class DownloadChapter implements Serializable {
     // 处于下载队列是否被选中
     private boolean down_edit_select;
 
-    @Generated(hash = 369077968)
-    public DownloadChapter(Long chapter_id, Long audio_id, String audio_name,
-                           int sequence, String chapter_name, long size, String down_speed,
-                           long current_offset, long duration, int need_pay, double amount,
-                           String play_count, String created_at, String file_path, String path_url,
-                           int down_status, long listen_duration, long updateMillis,
-                           boolean chapter_edit_select, boolean down_edit_select) {
+    @Generated(hash = 2113078784)
+    public DownloadChapter(Long chapter_id, Long audio_id, String audio_name, int sequence,
+            String chapter_name, long size, String down_speed, long current_offset, long duration,
+            long realDuration, int need_pay, double amount, String play_count, String created_at,
+            String file_path, String path_url, int down_status, long listen_duration, long updateMillis,
+            boolean chapter_edit_select, boolean down_edit_select) {
         this.chapter_id = chapter_id;
         this.audio_id = audio_id;
         this.audio_name = audio_name;
@@ -59,6 +59,7 @@ public class DownloadChapter implements Serializable {
         this.down_speed = down_speed;
         this.current_offset = current_offset;
         this.duration = duration;
+        this.realDuration = realDuration;
         this.need_pay = need_pay;
         this.amount = amount;
         this.play_count = play_count;
@@ -246,5 +247,13 @@ public class DownloadChapter implements Serializable {
 
     public void setUpdateMillis(long updateMillis) {
         this.updateMillis = updateMillis;
+    }
+
+    public long getRealDuration() {
+        return this.realDuration > 0?this.realDuration : this.duration * 1000;
+    }
+
+    public void setRealDuration(long realDuration) {
+        this.realDuration = realDuration;
     }
 }

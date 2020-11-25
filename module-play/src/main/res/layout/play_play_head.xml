@@ -57,7 +57,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/playChapterName"
-            android:layout_width="180dp"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:ellipsize="end"
@@ -82,6 +82,7 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            isVisible="@{TextUtils.isEmpty(viewModel.seekText)}"
             android:id="@+id/tv_music_title"
             android:layout_width="@dimen/dp_100"
             android:layout_height="0dp"
@@ -101,6 +102,7 @@
 
 
         <com.flyco.roundview.RoundTextView
+            isVisible="@{TextUtils.isEmpty(viewModel.seekText)}"
             android:id="@+id/play_add_sheet"
             android:layout_width="82dp"
             android:layout_height="26dp"
@@ -108,7 +110,7 @@
             android:layout_marginTop="@dimen/dp_11"
             android:drawableStart="@drawable/business_icon_unfavorites"
             android:gravity="center"
-            android:onClick="@{()->viewModel.playControlAction(viewModel.ACTION_JOIN_LISTEN+viewModel.curTime)}"
+            android:onClick="@{()->viewModel.joinListenList(context)}"
             android:paddingStart="@dimen/dp_8"
             android:paddingEnd="@dimen/dp_8"
             android:text="@string/business_join_listen_list"
@@ -136,35 +138,6 @@
             app:layout_constraintTop_toBottomOf="@id/playChapterName"
             tools:text="00:12/00:12"
             tools:visibility="gone" />
-
-        <com.rm.module_play.view.BubbleSeekBar
-            android:id="@+id/bsb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:paddingTop="7dp"
-            android:visibility="gone"
-            app:bsb_bubble_color="@color/base_b1b1b1"
-            app:bsb_bubble_text_color="@color/business_text_color_ffffff"
-            app:bsb_hide_bubble="true"
-            app:bsb_max="100"
-            app:bsb_min="0"
-            app:bsb_progress="0"
-            app:bsb_second_track_color="@color/base_ff5e5e"
-            app:bsb_second_track_size="4.5dp"
-            app:bsb_section_text_position="bottom_sides"
-            app:bsb_show_progress_in_float="true"
-            app:bsb_show_section_text="true"
-            app:bsb_show_thumb_text="true"
-            app:bsb_thumb_radius="@dimen/dp_8"
-            app:bsb_track_color="@color/business_color_f0f0f0"
-            app:bsb_track_size="4.5dp"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/play_add_sheet" />
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_music_left_next"
@@ -308,6 +281,7 @@
             android:gravity="center"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="@dimen/business_text_size_8sp"
+            android:onClick="@{()->viewModel.showPlaySettingDialog(context)}"
             app:layout_constraintBottom_toTopOf="@id/music_play_point"
             app:layout_constraintEnd_toEndOf="@id/music_play_point"
             app:layout_constraintStart_toStartOf="@id/music_play_point"
@@ -319,8 +293,9 @@
         <com.rm.business_lib.wedgit.menupoint.MenuPointView
             android:id="@+id/music_play_point"
             android:layout_width="@dimen/dp_24"
-            android:layout_height="@dimen/dp_24"
+            android:layout_height="@dimen/dp_28"
             android:layout_marginEnd="@dimen/dp_24"
+            android:onClick="@{()->viewModel.showPlaySettingDialog(context)}"
             app:layout_constraintBottom_toBottomOf="@id/play_control_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/play_control_bg"
@@ -335,6 +310,7 @@
             android:layout_height="@dimen/dp_14"
             android:gravity="center"
             android:text="@{viewModel.countdownTime}"
+            android:onClick="@{()->viewModel.showPlaySettingDialog(context)}"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintEnd_toEndOf="@id/music_play_point"

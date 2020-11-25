@@ -1,7 +1,13 @@
 package com.rm.module_play.dialog
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -10,7 +16,9 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.base.dialogfragment.SuperBottomSheetDialogFragment
+import com.rm.module_play.BR
 import com.rm.module_play.R
+import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.*
 
@@ -21,8 +29,10 @@ import kotlinx.android.synthetic.main.music_play_dialog_speed_setting.*
  * @Version: 1.0.0
  */
 
-fun FragmentActivity.showMusicPlaySpeedDialog() {
-    MusicPlaySpeedDialog().show(supportFragmentManager, "MusicPlayTimeSettingDialog")
+fun FragmentActivity.showMusicPlaySpeedDialog(viewModel: PlayViewModel) {
+    MusicPlaySpeedDialog().apply {
+        this.viewModel = viewModel
+    }.show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
 //速度集合
@@ -38,6 +48,22 @@ internal val timeSet by lazy {
 }
 
 class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
+
+    lateinit var viewModel: PlayViewModel
+    lateinit var mDataBind: ViewDataBinding
+
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        mDataBind = DataBindingUtil.inflate(inflater, getLayoutResId(), container, false)
+        mDataBind.setVariable(BR.viewModel, viewModel)
+        mDataBind.apply {
+            lifecycleOwner = this@MusicPlaySpeedDialog
+        }
+        return mDataBind.root
+    }
 
     private val timeSAdapter by lazy {
         val timeList = mutableListOf<String>()

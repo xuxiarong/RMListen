@@ -2,10 +2,15 @@ package com.rm.module_play.dialog
 
 import android.content.DialogInterface
 import android.graphics.Rect
+import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +21,9 @@ import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialogfragment.SuperBottomSheetDialogFragment
 import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
+import com.rm.module_play.BR
 import com.rm.module_play.R
+import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.constants.MUSIC_ALARM_MODEL_0
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.music_play_dialog_time_setting.*
@@ -28,13 +35,30 @@ import kotlinx.android.synthetic.main.music_play_dialog_time_setting.*
  * @data: 8/26/20 6:46 PM
  * @Version: 1.0.0
  */
-fun FragmentActivity.showMusicPlayTimeSettingDialog(callbacks: (types: Boolean) -> Unit) {
+fun FragmentActivity.showMusicPlayTimeSettingDialog( viewModel: PlayViewModel) {
     MusicPlayTimeSettingDialog().apply {
-        mBack = callbacks
+        this.viewModel = viewModel
     }.show(supportFragmentManager, "MusicPlayTimeSettingDialog")
 }
 
 class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
+
+    lateinit var viewModel: PlayViewModel
+    lateinit var mDataBind: ViewDataBinding
+
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        mDataBind = DataBindingUtil.inflate(inflater, getLayoutResId(), container, false)
+        mDataBind.setVariable(BR.viewModel, viewModel)
+        mDataBind.apply {
+            lifecycleOwner = this@MusicPlayTimeSettingDialog
+        }
+        return mDataBind.root
+    }
+
     private val timeSAdapter by lazy {
         TimeSAdapter(timeList).apply {
             setOnItemClickListener { _, _, position ->
@@ -71,7 +95,6 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
         //占位 add
         mutableListOf("10", "20", "30", "40", "60", "1", "2", "3", "4", "5")
     }
-    var mBack: (type: Boolean) -> Unit = {}//选择回调
     override fun getLayoutResId(): Int = R.layout.music_play_dialog_time_setting
     override fun onInitialize() {
         rv_music_play_time_setting.layoutManager =
@@ -97,7 +120,7 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
     }
 
     private fun setCheckBox() {
-        mBack(!checkbox_music_play_time_setting_check.isChecked)
+//        mBack(!checkbox_music_play_time_setting_check.isChecked)
         checkbox_music_play_time_setting_check.background =
             if (checkbox_music_play_time_setting_check.isChecked) {
                 ContextCompat.getDrawable(

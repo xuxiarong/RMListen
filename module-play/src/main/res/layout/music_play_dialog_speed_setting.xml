@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="500dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/business_dialog_top_9bg"
-        />
+        android:layout_height="500dp">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/business_dialog_top_9bg" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_music_play_time_setting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:layout_marginTop="@dimen/dp_41"
-        android:overScrollMode="never">
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_music_play_time_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_41"
+            android:background="@android:color/white"
+            android:overScrollMode="never">
+        </androidx.recyclerview.widget.RecyclerView>
 
-</FrameLayout>
+    </FrameLayout>
+</layout>
