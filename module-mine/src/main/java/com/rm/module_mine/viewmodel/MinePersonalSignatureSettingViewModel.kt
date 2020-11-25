@@ -34,15 +34,6 @@ class MinePersonalSignatureSettingViewModel(private val repository: MineReposito
      */
     private fun inputChange(content: String) {
         inputText.set(content)
-        val titleModel = baseTitleModel.value
-        if (inputText.get()?.length ?: 0 in 1..50) {
-            titleModel?.setRightEnabled(true)
-            titleModel?.setRightTextColor(R.color.business_color_ff5e5e)
-        } else {
-            titleModel?.setRightEnabled(false)
-            titleModel?.setRightTextColor(R.color.business_text_color_666666)
-        }
-        baseTitleModel.value = titleModel
     }
 
     /**
@@ -65,7 +56,7 @@ class MinePersonalSignatureSettingViewModel(private val repository: MineReposito
                         setResultAndFinish(RESULT_CODE_SIGNATURE)
                     },
                     onError = {
-                        showTip("修改失败",R.color.business_color_ff5e5e)
+                        showTip("$it", R.color.business_color_ff5e5e)
                         DLog.i("------>", "$it")
                     }
                 )

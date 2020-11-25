@@ -1,6 +1,7 @@
 package com.rm.module_home.activity.boutique
 
-import com.rm.baselisten.adapter.single.CommonBindAdapter
+import android.content.Context
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.BR
@@ -25,18 +26,13 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
 
     var categoryTabBean: CategoryTabBean? = null
     val bookAdapter by lazy {
-        CommonBindAdapter<DownloadAudio>(
+        CommonBindVMAdapter<DownloadAudio>(
+            this,
             mutableListOf(),
-            R.layout.business_adapter_auto_noraml_item,
+            R.layout.home_adapter_boutique_item,
+            BR.viewModel,
             BR.audioItem
-        ).apply {
-            setOnItemClickListener { _, _, position ->
-                startActivity(
-                    HomeDetailActivity::class.java,
-                    HomeDetailActivity.getIntent(data[position].audio_id.toString())
-                )
-            }
-        }
+        )
     }
 
     fun getBookList() {
@@ -98,5 +94,14 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
                     }
                 )
         }
+    }
+
+    /**
+     * item点击事件
+     */
+    fun itemClick(context: Context, bean: DownloadAudio) {
+        HomeDetailActivity.startActivity(
+            context, bean.audio_id.toString()
+        )
     }
 }

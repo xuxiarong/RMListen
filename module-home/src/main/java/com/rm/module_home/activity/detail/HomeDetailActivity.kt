@@ -35,12 +35,6 @@ class HomeDetailActivity :
             intent.putExtra(AUDIO_ID, audioID)
             context.startActivity(intent)
         }
-
-        fun getIntent(audioId: String): HashMap<String, Any> {
-            return hashMapOf(
-                Pair(AUDIO_ID, audioId)
-            )
-        }
     }
 
     private val commentFootView by lazy {

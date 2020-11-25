@@ -18,9 +18,7 @@ import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.AudioSortType
-import com.rm.business_lib.IS_FIRST_SUBSCRIBE
-import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.*
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.converter.BusinessConvert
@@ -28,7 +26,6 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
-import com.rm.business_lib.isLogin
 import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -309,6 +306,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     fun initPlayAudio(audio: DownloadAudio) {
         playAudioModel.set(audio)
+
+        loginUser.get()?.let { user ->
+            attentionVisibility.set(user.id != audio.anchor_id)
+        }
+
         isAttention.set(audio.anchor.status)
         isSubscribe.set(audio.is_subscribe)
         BaseConstance.updateBaseAudioId(

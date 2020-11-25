@@ -28,7 +28,31 @@
             android:layout_height="@dimen/dp_106"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="#33ff0000" />
+
+        <View
+            android:id="@+id/home_book_adapter_play_bg"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_28"
+            android:background="@drawable/business_shape_gradient_boutique"
+            app:layout_constraintBottom_toBottomOf="@id/home_top_list_book_adapter_icon"
+            app:layout_constraintEnd_toEndOf="@id/home_top_list_book_adapter_icon"
+            app:layout_constraintStart_toStartOf="@id/home_top_list_book_adapter_icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            bindPlayCount="@{item.play_count}"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_28"
+            android:drawablePadding="@dimen/dp_2"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:drawableStart="@drawable/business_icon_subs_play"
+            android:textColor="@color/business_text_color_ffffff"
+            android:textSize="@dimen/business_text_size_12sp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_play_bg"
+            app:layout_constraintEnd_toEndOf="@id/home_top_list_book_adapter_icon"
+            tools:text="123" />
 
         <com.flyco.roundview.RoundTextView
             android:id="@+id/home_top_list_book_adapter_label"
@@ -40,17 +64,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:rv_cornerRadius_BR="@dimen/dp_12"
-            app:rv_cornerRadius_TL="@dimen/dp_2" />
+            app:rv_cornerRadius_TL="@dimen/dp_2"
+            tools:background="@color/base_ff5e5e"
+            tools:text="1" />
 
         <com.flyco.roundview.RoundTextView
             android:id="@+id/home_top_list_book_adapter_tips"
+            bindText="@{item.audio_label}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_16"
             android:enabled="false"
             android:gravity="center"
             android:paddingStart="@dimen/dp_4"
             android:paddingEnd="@dimen/dp_4"
-            bindText="@{item.audio_label}"
             android:textColor="@color/businessWhite"
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintRight_toRightOf="@id/home_top_list_book_adapter_icon"
@@ -69,7 +95,8 @@
             android:layout_marginTop="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_top_list_book_adapter_icon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/app_name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_top_list_book_adapter_author"
@@ -81,7 +108,8 @@
             android:maxHeight="@dimen/dp_40"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_top_list_book_adapter_icon" />
+            app:layout_constraintStart_toEndOf="@id/home_top_list_book_adapter_icon"
+            tools:text="@string/app_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
