@@ -30,7 +30,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="26dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/listen_icon_swipe_delete"
                 />
             <androidx.appcompat.widget.AppCompatTextView
@@ -38,14 +38,16 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="45dp"
                 android:layout_marginStart="26dp"
+                android:textColor="@color/businessWhite"
                 android:text="@string/business_delete"
                 />
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/swipe_delete"
                 android:visibility="gone"
-                android:layout_width="@dimen/dp_76"
-                android:layout_height="@dimen/dp_76"
-                android:layout_gravity="center"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="10dp"
                 app:lottie_fileName="business_swipe_delete.json"
                 android:onClick="@{()->viewModel.deleteItem(item)}"
                 />

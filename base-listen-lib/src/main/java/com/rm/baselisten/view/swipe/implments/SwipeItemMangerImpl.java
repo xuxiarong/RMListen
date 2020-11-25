@@ -50,9 +50,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     public void bind(View view, int position) {
         int resId = swipeAdapterInterface.getSwipeLayoutResourceId(position);
-        int lottieResourceId = swipeAdapterInterface.getLottieResourceId(position);
         SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(resId);
-        LottieAnimationView lottieAnimationView = view.findViewById(lottieResourceId);
         if (swipeLayout == null)
             throw new IllegalStateException("can not find SwipeLayout in target view");
 
@@ -69,8 +67,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             valueBox.onLayoutListener.setPosition(position);
             valueBox.position = position;
         }
-        lottieAnimationView.cancelAnimation();
-        lottieAnimationView.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -193,6 +190,10 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             } else {
                 mOpenPosition = INVALID_POSITION;
             }
+            int lottieResourceId = swipeAdapterInterface.getLottieResourceId(position);
+            LottieAnimationView lottieAnimationView = layout.findViewById(lottieResourceId);
+            lottieAnimationView.cancelAnimation();
+            lottieAnimationView.setVisibility(View.GONE);
         }
 
         @Override
