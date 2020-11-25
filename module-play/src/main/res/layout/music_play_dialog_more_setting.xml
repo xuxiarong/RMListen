@@ -38,10 +38,13 @@
                 app:rv_strokeColor="@color/business_color_e8e8e8"
                 app:rv_strokeWidth="1dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
                     android:layout_gravity="center"
+                    app:lottie_loop="true"
+                    app:lottie_fileName="play_timer.json"
+                    app:lottie_autoPlay="true"
                     android:src="@drawable/music_play_ic_icon_timing_ce" />
             </com.flyco.roundview.RoundFrameLayout>
 

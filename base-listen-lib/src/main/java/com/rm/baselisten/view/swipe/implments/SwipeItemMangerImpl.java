@@ -2,6 +2,7 @@ package com.rm.baselisten.view.swipe.implments;
 
 import android.view.View;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.rm.baselisten.view.swipe.SimpleSwipeListener;
 import com.rm.baselisten.view.swipe.SwipeLayout;
 import com.rm.baselisten.view.swipe.interfaces.SwipeAdapterInterface;
@@ -24,8 +25,8 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     protected int mOpenPosition = INVALID_POSITION;
 
-    protected Set<Integer> mOpenPositions = new HashSet<Integer>();
-    protected Set<SwipeLayout> mShownLayouts = new HashSet<SwipeLayout>();
+    protected HashSet<Integer> mOpenPositions = new HashSet<Integer>();
+    protected HashSet<SwipeLayout> mShownLayouts = new HashSet<SwipeLayout>();
 
     protected SwipeAdapterInterface swipeAdapterInterface;
 
@@ -49,7 +50,9 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     public void bind(View view, int position) {
         int resId = swipeAdapterInterface.getSwipeLayoutResourceId(position);
+        int lottieResourceId = swipeAdapterInterface.getLottieResourceId(position);
         SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(resId);
+        LottieAnimationView lottieAnimationView = view.findViewById(lottieResourceId);
         if (swipeLayout == null)
             throw new IllegalStateException("can not find SwipeLayout in target view");
 
@@ -66,6 +69,8 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             valueBox.onLayoutListener.setPosition(position);
             valueBox.position = position;
         }
+        lottieAnimationView.cancelAnimation();
+        lottieAnimationView.setVisibility(View.GONE);
     }
 
     @Override

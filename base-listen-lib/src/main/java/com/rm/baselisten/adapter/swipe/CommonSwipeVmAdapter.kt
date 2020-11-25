@@ -19,6 +19,7 @@ class CommonSwipeVmAdapter<T> constructor(
     var swipeData: MutableList<T>,
     swipeItemLayoutId: Int,
     var swipeLayoutId : Int,
+    var commonLottieId : Int,
     swipeViewModelId: Int,
     swipeDataBrId: Int
 ) : CommonBindVMAdapter<T>(
@@ -49,6 +50,10 @@ class CommonSwipeVmAdapter<T> constructor(
 
     override fun getSwipeLayoutResourceId(position: Int): Int {
         return swipeLayoutId
+    }
+
+    override fun getLottieResourceId(position: Int): Int {
+        return commonLottieId
     }
 
     override fun openItem(position: Int) {
