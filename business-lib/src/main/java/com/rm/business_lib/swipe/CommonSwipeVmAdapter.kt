@@ -1,12 +1,11 @@
-package com.rm.baselisten.adapter.swipe
+package com.rm.business_lib.swipe
 
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.view.swipe.SwipeLayout
-import com.rm.baselisten.view.swipe.implments.SwipeItemMangerImpl
-import com.rm.baselisten.view.swipe.interfaces.SwipeAdapterInterface
-import com.rm.baselisten.view.swipe.interfaces.SwipeItemMangerInterface
-import com.rm.baselisten.view.swipe.util.Attributes
+import com.rm.business_lib.swipe.implments.SwipeItemMangerImpl
+import com.rm.business_lib.swipe.interfaces.SwipeAdapterInterface
+import com.rm.business_lib.swipe.interfaces.SwipeItemMangerInterface
+import com.rm.business_lib.swipe.util.Attributes
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 /**

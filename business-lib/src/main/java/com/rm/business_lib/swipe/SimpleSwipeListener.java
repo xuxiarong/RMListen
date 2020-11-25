@@ -1,4 +1,4 @@
-package com.rm.baselisten.view.swipe;
+package com.rm.business_lib.swipe;
 
 public class SimpleSwipeListener implements SwipeLayout.SwipeListener {
 

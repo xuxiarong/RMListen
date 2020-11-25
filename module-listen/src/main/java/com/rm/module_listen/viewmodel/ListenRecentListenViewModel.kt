@@ -5,7 +5,8 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.airbnb.lottie.LottieAnimationView
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
+import com.rm.business_lib.swipe.CommonMultiSwipeVmAdapter
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.listen.ListenAudioEntity
@@ -84,10 +85,12 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     }
 
     fun showLottie(view: View?) {
+        DLog.d("suolong time = ${System.currentTimeMillis()}","确认删除被点击")
         view?.let {
             val lottieAnimationView = it.findViewById<LottieAnimationView>(R.id.swipe_delete)
             lottieAnimationView.visibility = View.VISIBLE
             lottieAnimationView.playAnimation()
+            DLog.d("suolong time = ${System.currentTimeMillis()}","开始播放删除动画")
         }
     }
 

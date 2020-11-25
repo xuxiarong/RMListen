@@ -1,7 +1,7 @@
 package debug.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.adapter.swipe.CommonSwipeVmAdapter
+import com.rm.business_lib.swipe.CommonSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_main.BR
 import com.rm.module_main.R

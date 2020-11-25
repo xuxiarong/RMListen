@@ -1,13 +1,9 @@
 package com.rm.module_listen.viewmodel
 
 import androidx.databinding.ObservableInt
-import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.loginUser
-import com.rm.module_listen.BR
-import com.rm.module_listen.R
 import com.rm.module_listen.repository.ListenRepository
 
 /**
