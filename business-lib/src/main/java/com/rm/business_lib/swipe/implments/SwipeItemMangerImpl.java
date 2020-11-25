@@ -1,19 +1,19 @@
-package com.rm.baselisten.view.swipe.implments;
+package com.rm.business_lib.swipe.implments;
 
 import android.view.View;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.rm.baselisten.view.swipe.SimpleSwipeListener;
-import com.rm.baselisten.view.swipe.SwipeLayout;
-import com.rm.baselisten.view.swipe.interfaces.SwipeAdapterInterface;
-import com.rm.baselisten.view.swipe.interfaces.SwipeItemMangerInterface;
-import com.rm.baselisten.view.swipe.util.Attributes;
+import com.rm.business_lib.swipe.SimpleSwipeListener;
+import com.rm.business_lib.swipe.SwipeLayout;
+import com.rm.business_lib.swipe.interfaces.SwipeAdapterInterface;
+import com.rm.business_lib.swipe.interfaces.SwipeItemMangerInterface;
+import com.rm.business_lib.swipe.util.Attributes;
+import com.rm.business_lib.wedgit.swipe.SwipeDeleteLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * SwipeItemMangerImpl is a helper class to help all the adapters to maintain open status.
@@ -190,10 +190,6 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             } else {
                 mOpenPosition = INVALID_POSITION;
             }
-            int lottieResourceId = swipeAdapterInterface.getLottieResourceId(position);
-            LottieAnimationView lottieAnimationView = layout.findViewById(lottieResourceId);
-            lottieAnimationView.cancelAnimation();
-            lottieAnimationView.setVisibility(View.GONE);
         }
 
         @Override
@@ -201,6 +197,9 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             if (mode == Attributes.Mode.Single) {
                 closeAllExcept(layout);
             }
+            int lottieResourceId = swipeAdapterInterface.getLottieResourceId(position);
+            SwipeDeleteLayout lottieAnimationView = layout.findViewById(lottieResourceId);
+            lottieAnimationView.reset();
         }
 
         @Override

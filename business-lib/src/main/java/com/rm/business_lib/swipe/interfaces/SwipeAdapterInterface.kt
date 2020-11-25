@@ -1,4 +1,4 @@
-package com.rm.baselisten.view.swipe.interfaces
+package com.rm.business_lib.swipe.interfaces
 
 interface SwipeAdapterInterface {
     fun getSwipeLayoutResourceId(position: Int): Int

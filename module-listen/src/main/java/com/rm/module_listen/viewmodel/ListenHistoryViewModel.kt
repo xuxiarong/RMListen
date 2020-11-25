@@ -8,7 +8,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.airbnb.lottie.LottieAnimationView
-import com.rm.baselisten.adapter.swipe.CommonMultiSwipeVmAdapter
+import com.rm.business_lib.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.listen.ListenAudioEntity

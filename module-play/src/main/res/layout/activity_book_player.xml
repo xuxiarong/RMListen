@@ -18,6 +18,7 @@
         <com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
             android:id="@+id/swipe_back_layout"
             android:layout_width="match_parent"
+
             android:layout_height="match_parent">
 
             <androidx.core.widget.NestedScrollView

@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.rm.baselisten.view.swipe.SwipeLayout
+        <com.rm.business_lib.swipe.SwipeLayout
             android:id="@+id/sw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
             </RelativeLayout>
 
 
-        </com.rm.baselisten.view.swipe.SwipeLayout>
+        </com.rm.business_lib.swipe.SwipeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/demoSwipeRv"

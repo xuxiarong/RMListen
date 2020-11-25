@@ -1,7 +1,7 @@
-package com.rm.baselisten.view.swipe.interfaces;
+package com.rm.business_lib.swipe.interfaces;
 
-import com.rm.baselisten.view.swipe.SwipeLayout;
-import com.rm.baselisten.view.swipe.util.Attributes;
+import com.rm.business_lib.swipe.SwipeLayout;
+import com.rm.business_lib.swipe.util.Attributes;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.rm.baselisten.view.swipe;
+package com.rm.business_lib.swipe;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -20,7 +20,8 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
-import com.rm.baselisten.R;
+
+import com.rm.business_lib.R;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

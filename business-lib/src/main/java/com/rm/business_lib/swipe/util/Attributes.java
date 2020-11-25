@@ -1,4 +1,4 @@
-package com.rm.baselisten.view.swipe.util;
+package com.rm.business_lib.swipe.util;
 
 
 public class Attributes {
