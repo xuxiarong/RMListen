@@ -15,7 +15,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.rm.baselisten.BaseConstance
 import com.rm.business_lib.AudioSortType
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.business_lib.binding.bindChapterList
 import com.rm.business_lib.binding.bindDateString
@@ -103,20 +105,20 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         }
         play_iv_download.setOnClickListener {
             RouterHelper.createRouter(DownloadService::class.java)
-                .startDownloadChapterSelectionActivity(activity!!, viewModel.playAudioModel.get()!!)
+                .startDownloadChapterSelectionActivity(activity!!, PlayGlobalData.playAudioModel.get()!!)
         }
 
-        if(AudioSortType.SORT_ASC == viewModel.playChapterListSort.get()){
+        if(AudioSortType.SORT_ASC == PlayGlobalData.playChapterListSort.get()){
             play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_ort_ce)
         }else{
             play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_inverted_ce)
         }
         play_cb_chapter_sort.setOnClickListener {
-            if(AudioSortType.SORT_ASC == viewModel.playChapterListSort.get()){
-                viewModel.playChapterListSort.set(AudioSortType.SORT_DESC)
+            if(AudioSortType.SORT_ASC == PlayGlobalData.playChapterListSort.get()){
+                PlayGlobalData.playChapterListSort.set(AudioSortType.SORT_DESC)
                 play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_inverted_ce)
             }else{
-                viewModel.playChapterListSort.set(AudioSortType.SORT_ASC)
+                PlayGlobalData.playChapterListSort.set(AudioSortType.SORT_ASC)
                 play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_ort_ce)
             }
             chapterAdapter.data.reverse()
@@ -132,7 +134,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             viewModel.getPrePageChapterList()
         }
         smart_refresh_layout_play.setOnLoadMoreListener {
-            if(!TextUtils.isEmpty(viewModel.playAudioId.get())){
+            if(!TextUtils.isEmpty(PlayGlobalData.playAudioId.get())){
                 viewModel.getNextPageChapterList()
             }
         }
@@ -146,7 +148,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
                 chapterAdapter.notifyDataSetChanged()
             }
         })
-        viewModel.playChapterList.observe(viewLifecycleOwner, Observer {
+        PlayGlobalData.playChapterList.observe(viewLifecycleOwner, Observer {
             chapterAdapter.setList(it)
         })
 //        viewModel.chapterRefreshModel.isHasMore.addOnPropertyChangedCallback(object :
@@ -172,14 +174,14 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     internal class TimeSAdapter(val viewModel: PlayViewModel) :
         BaseQuickAdapter<DownloadChapter, BaseViewHolder>(
             R.layout.music_play_item_book_list,
-            viewModel.playChapterList.value
+                PlayGlobalData.playChapterList.value
         ) {
         override fun convert(holder: BaseViewHolder, item: DownloadChapter) {
             val playChapter =
                 item.chapter_id == musicPlayerManger.getCurrentPlayerMusic()?.chapterId?.toLong()
             holder.setVisible(R.id.music_play_book_list_position, !playChapter)
             if (playChapter) {
-                if (viewModel.playStatusBean.get()!!.isStart()) {
+                if (BaseConstance.basePlayStatusModel.get()!!.isStart()) {
                     holder.getView<LivingView>(R.id.living_img).startAnim()
                 } else {
                     holder.getView<LivingView>(R.id.living_img).pauseAnim()
@@ -190,11 +192,11 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
             holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCountString(item.play_count)
-            holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.duration)
+            holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.realDuration)
             holder.getView<TextView>(R.id.tv_music_play_up_time).bindDateString(item.created_at)
             val downloadStatusView = holder.getView<DownloadStatusView>(R.id.image_music_play_down)
             downloadStatusView.bindChapterList(
-                viewModel.playAudioModel.get(),
+                PlayGlobalData.playAudioModel.get(),
                 item,
                 DownloadMemoryCache.downloadingChapter.get()
             )

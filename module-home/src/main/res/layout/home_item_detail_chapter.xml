@@ -80,7 +80,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/detail_chapter_duration_tx"
-                bindDuration="@{DetailChapterViewModel.duration}"
+                bindDuration="@{DetailChapterViewModel.realDuration}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

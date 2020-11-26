@@ -1,13 +1,12 @@
 package com.rm.module_play.view
 
-import android.animation.Animator
 import android.content.Context
 import android.util.AttributeSet
 import com.airbnb.lottie.LottieAnimationView
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
-import com.rm.baselisten.util.DLog
-import com.rm.business_lib.play.PlayState
-import com.rm.music_exoplayer_lib.constants.STATE_ENDED
+import com.rm.baselisten.util.setPlayOnClickNotDoubleListener
+
 
 /**
  * desc   :
@@ -15,118 +14,70 @@ import com.rm.music_exoplayer_lib.constants.STATE_ENDED
  * version: 1.0
  */
 class PlayControlView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    LottieAnimationView(context, attrs, defStyleAttr){
+        LottieAnimationView(context, attrs, defStyleAttr) {
+    var startPlayVar: (() -> Unit)? = {}
+    var pausePlayVar: (() -> Unit)? = {}
+    var initFinish = false
+    var isStart = false
 
-    var playAnimName = ""
-    var playFinish = true
-    var action: (() -> Unit)? = {}
-    private val pauseListener by lazy {
-        PauseAnimatorListener()
-    }
-    private val startListener by lazy {
-        StartAnimatorListener()
-    }
-
-    fun startOrPause(playState: BasePlayStatusModel,action: (() -> Unit)?){
-        this.action = action
-        //代表播放列表已经播放完
-        if(playState.playStatus == STATE_ENDED){
-            setAnimation("play_pause.json")
-            playAnimation()
+    fun processPlayStatus(playState: BasePlayStatusModel) {
+        if(playState.isBuffering()){
             return
         }
-
-        if(isAnimating ){
-            DLog.d("suolongg","z正在动画中，退出")
+        if (!initFinish) {
+            init()
             return
         }
-
-        if (!playState.playReady &&  playState.playStatus == 3 && playFinish && (playAnimName == "play_start.json"||playAnimName == "")) {
-            setAnimation("play_pause.json")
-            addAnimatorListener(pauseListener)
-            playAnimName = "play_pause.json"
-            playAnimation()
-            DLog.d("suolongg","播放暂停动画")
-
-        } else if(playState.playReady && playState.playStatus == 3 && playFinish && playAnimName == "play_pause.json"||playAnimName == "") {
-            setAnimation("play_start.json")
-            addAnimatorListener(startListener)
-            playAnimName = "play_start.json"
-            DLog.d("suolongg","播放开始动画")
-            playAnimation()
+        if (playState.isStart() && !isStart) {
+            startAnim()
+        } else if (playState.isPause() && isStart) {
+            pauseAnim()
         }
     }
 
-    private fun setClickFun(action: (() -> Unit)?){
+    fun init() {
         postDelayed({
-            playFinish = true
-            if(action!=null){
-                setOnClickListener {
-                    action()
+            startAnim()
+            BaseConstance.basePlayStatusModel.get()?.let {
+                if (it.isPause()) {
+                    startPlayVar?.let {
+                        it()
+                    }
                 }
             }
-        },50)
+            setPlayOnClickNotDoubleListener {
+                if(isStart){
+                    pauseAnim()
+                    pausePlayVar?.let {
+                        it()
+                    }
+                }else{
+                    startAnim()
+                    startPlayVar?.let {
+                        it()
+                    }
+                }
+            }
+
+        },300)
+        initFinish = true
     }
 
-    fun clearClick(){
-        setOnClickListener {
-            DLog.d("suolong","正在动画中，不执行点击事件")
+    private fun startAnim() {
+        isStart = true
+        setAnimation("play_start.json")
+        if (isAnimating) {
+            clearAnimation()
         }
+        playAnimation()
     }
 
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        playAnimName = ""
-        playFinish = true
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        playAnimName = ""
-        playFinish = true
-    }
-
-    inner class PauseAnimatorListener : Animator.AnimatorListener{
-        override fun onAnimationRepeat(animation: Animator?) {
-            clearClick()
-            DLog.d("suolong","play_pause onAnimationRepeat")
+    private fun pauseAnim() {
+        isStart = false
+        setAnimation("play_pause.json")
+        if (isAnimating) {
+            clearAnimation()
         }
-
-        override fun onAnimationEnd(animation: Animator?) {
-            setClickFun(action = action)
-            DLog.d("suolong","play_pause onAnimationEnd")
-        }
-
-        override fun onAnimationCancel(animation: Animator?) {
-            setClickFun(action = action)
-            DLog.d("suolong","play_pause onAnimationCancel")
-
-        }
-
-        override fun onAnimationStart(animation: Animator?) {
-            clearClick()
-            DLog.d("suolong","play_pause onAnimationStart")
-        }
-    }
-
-    inner class StartAnimatorListener : Animator.AnimatorListener{
-        override fun onAnimationRepeat(animation: Animator?) {
-            clearClick()
-        }
-
-        override fun onAnimationEnd(animation: Animator?) {
-            setClickFun(action = action)
-            DLog.d("suolong","play_start onAnimationEnd")
-        }
-
-        override fun onAnimationCancel(animation: Animator?) {
-            setClickFun(action = action)
-        }
-
-        override fun onAnimationStart(animation: Animator?) {
-            clearClick()
-            DLog.d("suolong","play_start onAnimationStart")
-        }
+        playAnimation()
     }
 }

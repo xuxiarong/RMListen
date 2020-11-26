@@ -10,6 +10,8 @@
         <variable
             name="item"
             type="com.rm.business_lib.db.download.DownloadChapter" />
+        <import type="com.rm.business_lib.PlayGlobalData"/>
+        <import type="com.rm.baselisten.BaseConstance"/>
         <import type="com.rm.baselisten.util.TimeUtils"/>
         <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
     </data>
@@ -106,7 +108,7 @@
         <com.rm.business_lib.wedgit.download.DownloadStatusView
             android:id="@+id/image_music_play_down"
             bindCurrentDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
-            bindDownloadAudio="@{viewModel.playAudioModel}"
+            bindDownloadAudio="@{PlayGlobalData.INSTANCE.playAudioModel}"
             bindDownloadStatusChapter="@{item}"
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24"
