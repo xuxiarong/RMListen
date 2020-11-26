@@ -1,99 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="190dp"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <androidx.appcompat.widget.AppCompatImageView
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/business_dialog_top_9bg"
-        />
+        android:layout_height="190dp">
 
-    <com.flyco.roundview.RoundLinearLayout
-        android:id="@+id/content_root"
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/dp_35"
-        android:layout_height="155dp"
-        android:padding="@dimen/dp_25"
-        app:rv_backgroundColor="@android:color/white"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
 
-        <LinearLayout
-            android:id="@+id/music_play_times"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:orientation="vertical">
+            android:src="@drawable/business_dialog_top_9bg"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.flyco.roundview.RoundFrameLayout
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                app:rv_cornerRadius="48dp"
-                app:rv_strokeColor="@color/business_color_e8e8e8"
-                app:rv_strokeWidth="1dp">
+        <com.flyco.roundview.RoundLinearLayout
+            android:id="@+id/content_root"
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:layout_marginTop="@dimen/dp_35"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_25"
+            app:rv_backgroundColor="@android:color/white"
+            tools:ignore="MissingConstraints">
 
-                <com.airbnb.lottie.LottieAnimationView
-                    android:layout_width="@dimen/dp_24"
-                    android:layout_height="@dimen/dp_24"
-                    android:layout_gravity="center"
-                    app:lottie_loop="true"
-                    app:lottie_fileName="play_timer.json"
-                    app:lottie_autoPlay="true"
-                    android:src="@drawable/music_play_ic_icon_timing_ce" />
-            </com.flyco.roundview.RoundFrameLayout>
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/music_play_times"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="7dp"
-                android:text="@string/play_timer"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="14sp" />
+                android:layout_marginStart="17dp"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <com.flyco.roundview.RoundFrameLayout
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    app:rv_cornerRadius="48dp"
+                    app:rv_strokeColor="@color/business_color_e8e8e8"
+                    app:rv_strokeWidth="1dp">
 
-        <LinearLayout
-            android:id="@+id/music_play_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="62dp"
-            android:orientation="vertical">
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="@dimen/dp_24"
+                        android:layout_height="@dimen/dp_24"
+                        android:layout_gravity="center"
+                        android:src="@drawable/music_play_ic_icon_timing_ce"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="play_timer.json"
+                        app:lottie_loop="true" />
+                </com.flyco.roundview.RoundFrameLayout>
 
-            <com.flyco.roundview.RoundFrameLayout
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                app:rv_cornerRadius="48dp"
-                app:rv_strokeColor="@color/business_color_e8e8e8"
-                app:rv_strokeWidth="1dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/play_timer"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="14sp" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/playSpeedSettingIv"
-                android:layout_width="@dimen/dp_44"
-                android:layout_height="@dimen/dp_24"
-                android:layout_gravity="center"
-                android:src="@drawable/play_ic_speed_1x"
-                />
-            </com.flyco.roundview.RoundFrameLayout>
+            </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/music_play_speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="7dp"
-                android:text="@string/play_speed"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="14sp" />
-        </LinearLayout>
+                android:layout_marginStart="62dp"
+                android:orientation="vertical">
 
-    </com.flyco.roundview.RoundLinearLayout>
+                <com.flyco.roundview.RoundFrameLayout
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    app:rv_cornerRadius="48dp"
+                    app:rv_strokeColor="@color/business_color_e8e8e8"
+                    app:rv_strokeWidth="1dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/playSpeedSettingIv"
+                        android:layout_width="@dimen/dp_44"
+                        android:layout_height="@dimen/dp_24"
+                        android:layout_gravity="center"
+                        android:src="@drawable/play_ic_speed_1x" />
+                </com.flyco.roundview.RoundFrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/play_speed"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </com.flyco.roundview.RoundLinearLayout>
 
 
-
-</FrameLayout>
+    </FrameLayout>
+</layout>

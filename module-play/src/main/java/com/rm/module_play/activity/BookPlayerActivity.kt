@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
@@ -24,29 +23,17 @@ import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
-import com.rm.component_comm.listen.ListenService
-import com.rm.component_comm.login.LoginService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.R.anim.activity_top_open
 import com.rm.module_play.databinding.ActivityBookPlayerBinding
 import com.rm.module_play.databinding.PlayPlayHeadBinding
-import com.rm.module_play.dialog.showMusicPlayMoreDialog
-import com.rm.module_play.dialog.showMusicPlaySpeedDialog
-import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.playview.GlobalPlayHelper
 import com.rm.module_play.viewmodel.PlayViewModel
-import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_JOIN_LISTEN
-import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_COMMENT
-import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_MORE_FINSH
-import com.rm.module_play.viewmodel.PlayViewModel.Companion.ACTION_PLAY_OPERATING
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import kotlinx.android.synthetic.main.activity_book_player.*
 
 
 @SuppressLint("InflateParams")
@@ -221,57 +208,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 }
             }
         })
-
-        mViewModel.playControlAction.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val controlTime = mViewModel.playControlAction.get()
-                when {
-                    controlTime?.contains(ACTION_PLAY_OPERATING) == true -> {
-                        showMusicPlayMoreDialog { it1 ->
-                            if (it1 == 0) {
-                                showMusicPlayTimeSettingDialog {
-                                    if (it) {
-                                        mViewModel.countdown()
-                                        if (mViewModel.playManger.getRemainingSetInt() > 0) {
-                                            mViewModel.countdownTime.set("${mViewModel.playManger.getRemainingSetInt()}集")
-                                        }
-                                    }
-                                }
-                            } else {
-                                showMusicPlaySpeedDialog()
-                            }
-                        }
-                    }
-
-                    controlTime?.contains(ACTION_JOIN_LISTEN) == true -> {
-                        if (!isLogin.get()) {
-                            RouterHelper.createRouter(LoginService::class.java)
-                                .quicklyLogin(mViewModel, this@BookPlayerActivity)
-                        } else {
-                            RouterHelper.createRouter(ListenService::class.java)
-                                .showMySheetListDialog(
-                                    this@BookPlayerActivity,
-                                    mViewModel.playAudioId.get()!!
-                                ) {
-                                    mViewModel.showTip("添加成功")
-                                }
-                        }
-                    }
-                    controlTime?.contains(ACTION_MORE_COMMENT) == true -> {
-                        mViewModel.playAudioId.get()?.let {
-
-                        }
-                    }
-                    controlTime?.contains(ACTION_MORE_FINSH) == true -> {
-                        finish()
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-        })
     }
 
     private fun startPlayChapter(
@@ -287,8 +223,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 mViewModel.process.set(0F)
             }
             else -> {
-                if (playCurrentDuration > currentPlayerMusic.duration * 1000) {
-                    playCurrentDuration = currentPlayerMusic.duration * 1000
+                if (playCurrentDuration > currentPlayerMusic.duration) {
+                    playCurrentDuration = currentPlayerMusic.duration
                 }
                 musicPlayerManger.seekTo(playCurrentDuration)
             }
@@ -314,7 +250,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             } else {
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
                 if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
-                    mViewModel.maxProcess.set(currentPlayerMusic.duration * 1000F)
+                    mViewModel.maxProcess.set(currentPlayerMusic.duration.toFloat())
                     mViewModel.process.set(musicPlayerManger.getCurDurtion().toFloat())
                 }
                 mViewModel.playChapterId.set(playChapterId)

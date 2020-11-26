@@ -39,7 +39,7 @@ fun TextView.bindDateString(time: String) {
 @BindingAdapter("bindDuration")
 fun TextView.bindDuration(duration: Long) {
     try {
-        text = TimeUtils.getListenDuration(duration)
+        text = TimeUtils.getPlayDuration(duration)
     } catch (e: Exception) {
         e.printStackTrace()
     }

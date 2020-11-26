@@ -1,50 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="500dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/business_dialog_top_9bg" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+    </data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="42dp"
-        android:background="@color/businessWhite"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20">
+        android:layout_height="500dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_22"
-            android:text="@string/play_close_timer"
-            android:textColor="@color/business_text_color_333333"
-            android:textSize="14sp" />
-
-        <CheckBox
-            android:id="@+id/checkbox_music_play_time_setting_check"
-            android:layout_width="@dimen/dp_22"
-            android:layout_height="@dimen/dp_22"
-            android:layout_gravity="end"
-            android:button="@null" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="39dp"
-            android:background="@color/business_color_e8e8e8" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_music_play_time_setting"
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:overScrollMode="never">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:src="@drawable/business_dialog_top_9bg" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="42dp"
+            android:background="@color/businessWhite"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_22"
+                android:text="@string/play_close_timer"
+                android:textColor="@color/business_text_color_333333"
+                android:textSize="14sp" />
+
+            <CheckBox
+                android:id="@+id/checkbox_music_play_time_setting_check"
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_gravity="end"
+                android:button="@null" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="39dp"
+                android:background="@color/business_color_e8e8e8" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_music_play_time_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+
+        </FrameLayout>
 
     </FrameLayout>
-
-</FrameLayout>
+</layout>

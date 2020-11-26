@@ -43,26 +43,13 @@ object PlayGlobalData {
     /**
      * 以下状态是Google的播放器原生状态，请不要随意修改
      */
-    /**
-     * The player does not have any media to play.(空闲中)
-     */
+    //空闲
     var STATE_IDLE = 1
-
-    /**
-     * The player is not able to immediately play from its current position. This state typically
-     * occurs when more data needs to be loaded.
-     */
+    //缓冲
     var STATE_BUFFERING = 2
-
-    /**
-     * The player is able to immediately play from its current position. The player will be playing if
-     * [.getPlayWhenReady] is true, and paused otherwise.
-     */
+    //播放准备好
     var STATE_READY = 3
-
-    /**
-     * The player has finished playing the media.
-     */
+    //全部播放完毕
     var STATE_ENDED = 4
 
     //全局播放器定时时间
@@ -123,4 +110,3 @@ const val LISTEN_SHEET_LIST_COLLECTED_LIST = 1 //收藏听单
 
 
 val SAVA_SPEED = "savaSpeed"
-
