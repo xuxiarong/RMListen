@@ -2,6 +2,7 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.putMMKV
@@ -23,6 +24,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 /**
  * desc   : 验证码输入ViewModel
@@ -43,10 +45,14 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
     // 倒计时时间
     var countDownTime = ObservableField(-1)
 
+    //是否清空输入
+    var inputClear = ObservableField(false)
+
     val errorTips = ObservableField<String>("")
 
     // 监听绑定输入框内容变化
     var completeInput: (String) -> Unit = {
+        inputClear.set(false)
         completeInput(it)
     }
 
@@ -61,7 +67,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 // 登录类型,验证码登陆
                 loginByVerifyCode(content)
             }
-            TYPE_RESET_PWD,TYPE_FORGET_PWD -> {
+            TYPE_RESET_PWD, TYPE_FORGET_PWD -> {
                 // 重置密码类型，校验验证码是否正确
                 verificationCode(content)
             }
@@ -89,6 +95,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
 
                 },
                 onError = {
+                    inputClear.set(true)
                     showContentView()
 //                    it?.let { showToast(it) }
                     errorTips.set(it)
@@ -113,6 +120,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                         finish()
                     },
                     onError = {
+                        inputClear.set(true)
                         showContentView()
                         errorTips.set(it)
 //                        it?.let { showToast(it) }
@@ -127,9 +135,16 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
     private fun logout(code: String) {
         launchOnIO {
             repository.logout(code).checkResult(onSuccess = {
-                loginOut()
+                showContentView()
+                showTip("注销成功")
+                viewModelScope.launch {
+                    delay(1000)
+                    loginOut()
+                }
             }, onError = {
 //                showToast("$it")
+                inputClear.set(true)
+                showContentView()
                 errorTips.set(it)
             })
         }
@@ -167,7 +182,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
             TYPE_LOGOUT -> {
                 sendCodeMessage(CODE_TYPE_CLOSE_ACCOUNT)
             }
-            TYPE_FORGET_PWD->{
+            TYPE_FORGET_PWD -> {
                 sendCodeMessage(CODE_TYPE_FORGET_PWD)
             }
         }
@@ -186,7 +201,10 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     showContentView()
                 },
                 onError = {
-                    showTip(CONTEXT.getString(R.string.login_send_failed),R.color.business_color_ff5e5e)
+                    showTip(
+                        CONTEXT.getString(R.string.login_send_failed),
+                        R.color.business_color_ff5e5e
+                    )
                     showContentView()
                 }
             )

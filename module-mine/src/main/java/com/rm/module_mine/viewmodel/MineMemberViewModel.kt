@@ -32,8 +32,6 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
     var fans = ObservableField(0)
     var follows = ObservableField(0)
 
-    var isVisible = ObservableBoolean(false)
-
     /**
      * 获取个人/主播详情
      */

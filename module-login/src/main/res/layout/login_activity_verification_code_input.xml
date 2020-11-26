@@ -39,6 +39,7 @@
         <com.rm.module_login.widget.verification.VerificationCodeView
             android:id="@+id/loginVerificationCodeInput"
             inputTextChange="@{viewModel.completeInput}"
+            inputTextClear="@{viewModel.inputClear}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_54"
@@ -64,11 +65,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/BusinessTextStyleTips"
-            bindText="@{viewModel.countDownTime + @string/login_count_down_tips}"
             isVisible="@{viewModel.countDownTime > 0}"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_12"
             android:gravity="center"
+            android:text="@{viewModel.countDownTime + @string/login_count_down_tips}"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintRight_toRightOf="@id/loginVerificationCodeInput"
             app:layout_constraintTop_toBottomOf="@id/loginVerificationCodeInput"

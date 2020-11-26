@@ -9,6 +9,8 @@
         <variable
             name="headerViewModel"
             type="com.rm.module_home.viewmodel.HomeMenuDetailViewModel" />
+
+        <import type="android.text.TextUtils" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,11 +80,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_collected"
+            isVisible="@{!TextUtils.equals(headerViewModel.data.member_id,headerViewModel.userInfo.id)}"
             android:layout_width="@dimen/dp_141"
             android:layout_height="@dimen/dp_30"
             android:layout_marginStart="@dimen/dp_12"
-            android:gravity="center"
             android:background="@{headerViewModel.isFavor?@drawable/home_select_menu_collected_unselect:@drawable/home_select_menu_collected_select}"
+            android:gravity="center"
             android:onClick="@{(view)->headerViewModel.clickCollectionRelated(view)}"
             android:text="@{headerViewModel.isFavor?@string/home_menu_detail_collected:@string/home_menu_detail_add_collected}"
             android:textColor="@{headerViewModel.isFavor? @color/business_text_color_b1b1b1: @color/business_text_color_ffffff}"
@@ -91,7 +94,7 @@
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_front_cover" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            isVisible="@{!headerViewModel.isFavor}"
+            isVisible="@{!headerViewModel.isFavor&amp;&amp;!TextUtils.equals(headerViewModel.data.member_id,headerViewModel.userInfo.id)}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"

@@ -78,7 +78,6 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      */
     private fun successData(bean: SheetFavorBean) {
         showContentView()
-
         if (mPage == 1) {
             //刷新完成
             refreshStateModel.finishRefresh(true)
@@ -93,9 +92,9 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
             refreshStateModel.finishLoadMore(true)
             mAdapter.addData(bean.list)
         }
-        mPage++
         //是否有更多数据
         refreshStateModel.setNoHasMore(bean.list.size < pageSize)
+        mPage++
     }
 
     /**

@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.util.DLog
+import com.rm.business_lib.loginUser
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineMemberActivity.Companion.MEMBER_ID

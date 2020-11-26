@@ -64,7 +64,6 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
      * 加载更多
      */
     fun loadData() {
-        ++mPage
         getAudioList()
     }
 
@@ -73,6 +72,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
      */
     fun getSheetInfo(sheetId: String) {
         this.sheetId = sheetId
+        showLoading()
         launchOnIO {
             repository.getSheetInfo(sheetId).checkResult(
                 onSuccess = {
@@ -81,15 +81,21 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
                     //刷新完成
                     refreshStateModel.finishRefresh(true)
                     //设置新数据源
-                    mAdapter.setList(it.audio_list.list)
 
+                    if (it.audio_list.list.size > 0) {
+                        mAdapter.setList(it.audio_list.list)
+                    } else {
+                        showDataEmpty()
+                    }
                     //是否有更多数据
                     refreshStateModel.setNoHasMore(it.audio_list.list.size < pageSize)
+                    ++mPage
                 },
 
                 onError = {
                     showContentView()
                     refreshStateModel.finishRefresh(false)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -104,11 +110,12 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
                 onSuccess = {
                     refreshStateModel.finishLoadMore(true)
                     mAdapter.addData(it.list)
-
                     refreshStateModel.setNoHasMore(it.list.size < pageSize)
+                    ++mPage
                 },
                 onError = {
                     refreshStateModel.finishLoadMore(false)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }
@@ -190,6 +197,9 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
                 onSuccess = {
                     showContentView()
                     mAdapter.remove(bean)
+                    if(mAdapter.data.size <=0){
+                        showDataEmpty()
+                    }
                     DLog.i("-------->", "移除成功  $it")
                 },
                 onError = {

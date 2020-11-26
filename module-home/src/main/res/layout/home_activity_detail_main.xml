@@ -16,8 +16,9 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.rm.module_home.widget.EnableConstraintLayout
         android:id="@+id/bottom_sheet_root"
+        bindIsNoClick="@{viewModel.isNoClick}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -268,5 +269,5 @@
             </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
         </com.rm.module_home.widget.HomeDetailInterceptLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.rm.module_home.widget.EnableConstraintLayout>
 </layout>

@@ -18,6 +18,7 @@ import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.SheetDetailInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
@@ -43,6 +44,8 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
 
     //听单Id
     var sheetId = ObservableField<String>()
+
+    val userInfo = loginUser
 
     //当前加载的页码
     private var mPage = 1

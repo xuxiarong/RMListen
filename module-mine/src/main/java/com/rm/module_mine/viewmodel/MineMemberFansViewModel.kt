@@ -183,7 +183,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
         getActivity(context)?.let {
             if (isLogin.get()) {
                 if (bean.is_follow == 1) {
-                    showDialog(context,bean)
+                    showDialog(context, bean)
                 } else {
                     attentionAnchor(bean)
                 }
@@ -193,7 +193,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
         }
     }
 
-    private fun showDialog(context: Context,bean: MineMemberFansDetailBean){
+    private fun showDialog(context: Context, bean: MineMemberFansDetailBean) {
         getActivity(context)?.let { activity ->
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)
@@ -218,7 +218,9 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
             .quicklyLogin(this, it, loginSuccess = {
-                refreshData()
+                fansPage = 1
+                refreshStatusModel.setNoHasMore(false)
+                mineMemberFansList()
             })
     }
 }
