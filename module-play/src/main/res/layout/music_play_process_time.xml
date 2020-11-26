@@ -8,6 +8,8 @@
         <variable
             name="viewModel"
             type="com.rm.module_play.viewmodel.PlayViewModel" />
+        <import type="com.rm.business_lib.PlayGlobalData"/>
+        <import type="com.rm.baselisten.BaseConstance"/>
     </data>
 
     <RelativeLayout
@@ -32,9 +34,9 @@
             android:id="@+id/music_play_bubbleSeekBar"
             android:layout_width="260dp"
             app:progressChangedListener="@{viewModel.seekChangeVar}"
-            app:setProgress="@{viewModel.process}"
-            app:setProgressMax="@{viewModel.maxProcess}"
-            app:updateThumbText="@{viewModel.updateThumbText}"
+            app:setProgress="@{PlayGlobalData.INSTANCE.process}"
+            app:setProgressMax="@{PlayGlobalData.INSTANCE.maxProcess}"
+            app:updateThumbText="@{PlayGlobalData.INSTANCE.updateThumbText}"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv_music_left_next"
             app:barHeight="4dp"

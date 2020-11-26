@@ -9,6 +9,10 @@
             name="viewModel"
             type="com.rm.module_play.viewmodel.PlayViewModel" />
 
+        <import type="com.rm.business_lib.PlayGlobalData" />
+
+        <import type="com.rm.baselisten.BaseConstance" />
+
         <import type="android.text.TextUtils" />
     </data>
 
@@ -16,13 +20,14 @@
         android:id="@+id/swipe_back_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/business_text_color_ffffff">
 
             <androidx.appcompat.widget.AppCompatImageView
-                blurUrl="@{viewModel.playAudioModel.audio_cover_url}"
+                blurUrl="@{PlayGlobalData.INSTANCE.playAudioModel.audio_cover_url}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:foreground="@drawable/business_invalid_name"
@@ -59,7 +64,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/report_why_arrow"
-                bindClick="@{()->viewModel.finishActivity(viewModel.ACTION_MORE_FINSH+viewModel.curTime)}"
+                bindClick="@{()->viewModel.finishActivity(context)}"
                 android:layout_width="@dimen/dp_28"
                 android:layout_height="@dimen/dp_28"
                 android:layout_marginStart="@dimen/dp_16"
