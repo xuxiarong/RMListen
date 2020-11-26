@@ -72,6 +72,6 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     private fun doReplenishStockAction(context: Context?) {
         ExoplayerLogger.exoLog("关闭音乐播放器")
 //        Toast.makeText(context, "关闭音乐播放", Toast.LENGTH_SHORT).show()
-        musicPlayerManger.pause()
+//        musicPlayerManger.pause()
     }
 }

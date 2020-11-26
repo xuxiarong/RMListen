@@ -318,6 +318,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
                         initPlayChapter(chapterList[0])
                         chapterRefreshModel.canRefresh.set(false)
+                        PlayGlobalData.playChapterList.value?.clear()
                     }
                     playNextPage++
                     setAudioPlayPath(chapterList)

@@ -146,12 +146,21 @@ fun LottieAnimationView.bindPlayOrPause(state: PlayState) {
 
 }
 
-@BindingAdapter("bindPlayControl","bindPlayControlClick")
-fun PlayControlView.bindPlayControl(playState: BasePlayStatusModel?,action: (() -> Unit)?) {
-    if (playState==null){
-        return
+@BindingAdapter("bindPlayControl")
+fun PlayControlView.bindPlayControl(playState: BasePlayStatusModel?) {
+    playState?.let {
+        processPlayStatus(it)
     }
-    startOrPause(playState = playState,action = action)
+}
+
+@BindingAdapter("bindStartPlayClick")
+fun PlayControlView.bindStartPlayClick(startPlay: (() -> Unit)?) {
+    startPlayVar = startPlay
+}
+
+@BindingAdapter("bindPausePlayClick")
+fun PlayControlView.bindPausePlayClick(pausePlay: (() -> Unit)?) {
+    pausePlayVar = pausePlay
 }
 
 //@BindingAdapter("bindPlayControlClick")

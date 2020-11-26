@@ -267,8 +267,9 @@
 
         <com.rm.module_play.view.PlayControlView
             android:id="@+id/animation_view"
+            bindStartPlayClick="@{viewModel.playManger.play}"
+            bindPausePlayClick="@{viewModel.playManger.pause}"
             bindPlayControl="@{BaseConstance.INSTANCE.basePlayStatusModel}"
-            bindPlayControlClick="@{viewModel.playManger.playOrPause}"
             android:layout_width="@dimen/dp_56"
             android:layout_height="@dimen/dp_56"
             android:layout_gravity="center"

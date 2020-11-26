@@ -7,7 +7,7 @@ package com.rm.baselisten.model
  */
 data class BasePlayStatusModel constructor(
     var playReady : Boolean = false,
-    var playStatus : Int = 3
+    var playStatus : Int = 1
 ){
     fun isStart() : Boolean{
         return playStatus == STATE_READY && playReady
@@ -15,6 +15,10 @@ data class BasePlayStatusModel constructor(
 
     fun isPause() : Boolean{
         return playStatus == STATE_ENDED || (playStatus == STATE_READY && !playReady)
+    }
+
+    fun isBuffering() : Boolean{
+        return playStatus == STATE_BUFFERING
     }
 
     var STATE_IDLE = 1
