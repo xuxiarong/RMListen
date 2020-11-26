@@ -32,12 +32,12 @@ fun BubbleSeekBar.progressChangedListener(action: ((String) -> Unit)?) {
         return
     }
     setOnProgressChangedListener(object :
-        BubbleSeekBar.OnProgressChangedListener {
+            BubbleSeekBar.OnProgressChangedListener {
         override fun onProgressChanged(
-            bubbleSeekBar: BubbleSeekBar?,
-            progress: Float,
-            thumbText: String,
-            fromUser: Boolean
+                bubbleSeekBar: BubbleSeekBar?,
+                progress: Float,
+                thumbText: String,
+                fromUser: Boolean
         ) {
             if (fromUser) {
                 action(thumbText)
@@ -68,7 +68,7 @@ fun BubbleSeekBar.setProgressMax(max: Float) {
 
 @BindingAdapter("updateThumbText")
 fun BubbleSeekBar.updateThumbText(str: String?) {
-    if (str==null){
+    if (str == null) {
         return
     }
     updateThumbText(str)
@@ -163,6 +163,11 @@ fun PlayControlView.bindPausePlayClick(pausePlay: (() -> Unit)?) {
     pausePlayVar = pausePlay
 }
 
+@BindingAdapter("bindResetPlay")
+fun PlayControlView.bindResetPlay(resetPlay: (() -> Unit)?) {
+    resetPlayVar = resetPlay
+}
+
 //@BindingAdapter("bindPlayControlClick")
 //fun PlayControlView.bindPlayControlClick(action: (() -> Unit)?) {
 //    if (action != null) {
@@ -178,29 +183,29 @@ fun PlayControlView.bindPausePlayClick(pausePlay: (() -> Unit)?) {
 @BindingAdapter("bindPlayPreSrc")
 fun ImageView.bindPlayPreSrc(hasPre: Boolean) {
     setImageResource(
-        if (hasPre) {
-            R.drawable.play_ic_has_pre
-        } else {
-            R.drawable.play_ic_none_pre
-        }
+            if (hasPre) {
+                R.drawable.play_ic_has_pre
+            } else {
+                R.drawable.play_ic_none_pre
+            }
     )
 }
 
 @BindingAdapter("bindPlayNextSrc")
 fun ImageView.bindPlayNextSrc(hasNext: Boolean) {
     setImageResource(
-        if (hasNext) {
-            R.drawable.play_ic_has_next
-        } else {
-            R.drawable.play_ic_none_next
-        }
+            if (hasNext) {
+                R.drawable.play_ic_has_next
+            } else {
+                R.drawable.play_ic_none_next
+            }
     )
 }
 
 
 @BindingAdapter("bindPlayPrepareProgress")
 fun CircularProgressView.bindPlayPrepareProgress(playStatus: BasePlayStatusModel?) {
-    if(playStatus==null){
+    if (playStatus == null) {
         return
     }
     if (playStatus.playStatus == STATE_BUFFERING) {
@@ -227,18 +232,17 @@ fun TextView.bindPlaySpeedText(float: Float?) {
         visibility = View.INVISIBLE
         return
     }
-    if (float <= 0) {
+    if (float <= 0 || (0.75 < float && float <= 1.0F)) {
         visibility = View.INVISIBLE
         return
     }
+    visibility = View.VISIBLE
 
     text = (
             if (0F < float && float <= 0.5F) {
                 "0.5x"
             } else if (0.5F < float && float <= 0.75F) {
                 "0.75x"
-            } else if (0.75F < float && float <= 1.0F) {
-                "1.0x"
             } else if (1.0F < float && float <= 1.25F) {
                 "1.25x"
             } else if (1.25F < float && float <= 1.5F) {
@@ -262,19 +266,19 @@ fun ImageView.bindPlaySpeedSrc(float: Float?) {
     }
 
     setImageResource(
-        if (0F < float && float <= 0.5F) {
-            R.drawable.play_ic_speed_0_5x
-        } else if (0.5F < float && float <= 0.75F) {
-            R.drawable.play_ic_speed_0_7_5x
-        } else if (0.75F < float && float <= 1.0F) {
-            R.drawable.play_ic_speed_1x
-        } else if (1.0F < float && float <= 1.25F) {
-            R.drawable.play_ic_speed_1_2_5x
-        } else if (1.25F < float && float <= 1.5F) {
-            R.drawable.play_ic_speed_1_5x
-        } else {
-            R.drawable.play_ic_speed_2x
-        }
+            if (0F < float && float <= 0.5F) {
+                R.drawable.play_ic_speed_0_5x
+            } else if (0.5F < float && float <= 0.75F) {
+                R.drawable.play_ic_speed_0_7_5x
+            } else if (0.75F < float && float <= 1.0F) {
+                R.drawable.play_ic_speed_1x
+            } else if (1.0F < float && float <= 1.25F) {
+                R.drawable.play_ic_speed_1_2_5x
+            } else if (1.25F < float && float <= 1.5F) {
+                R.drawable.play_ic_speed_1_5x
+            } else {
+                R.drawable.play_ic_speed_2x
+            }
     )
 
 }

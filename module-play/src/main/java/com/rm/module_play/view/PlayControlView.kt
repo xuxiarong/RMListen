@@ -6,6 +6,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.setPlayOnClickNotDoubleListener
+import com.rm.business_lib.PlayGlobalData
 
 
 /**
@@ -17,6 +18,7 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
         LottieAnimationView(context, attrs, defStyleAttr) {
     var startPlayVar: (() -> Unit)? = {}
     var pausePlayVar: (() -> Unit)? = {}
+    var resetPlayVar: (() -> Unit)? = {}
     var initFinish = false
     var isStart = false
 
@@ -40,21 +42,30 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
             startAnim()
             BaseConstance.basePlayStatusModel.get()?.let {
                 if (it.isPause()) {
-                    startPlayVar?.let {
-                        it()
+                    startPlayVar?.let { startPlay ->
+                        startPlay()
                     }
                 }
             }
             setPlayOnClickNotDoubleListener {
                 if(isStart){
                     pauseAnim()
-                    pausePlayVar?.let {
-                        it()
+                    pausePlayVar?.let { pausePlay ->
+                        pausePlay()
                     }
                 }else{
                     startAnim()
-                    startPlayVar?.let {
-                        it()
+                    startPlayVar?.let { startPlay ->
+                        val statusModel = BaseConstance.basePlayStatusModel.get()
+                        if(statusModel!=null){
+                            if(statusModel.playEnd()){
+                                resetPlayVar?.let { resetPlay ->
+                                    resetPlay()
+                                }
+                            }else{
+                                startPlay()
+                            }
+                        }
                     }
                 }
             }

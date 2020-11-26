@@ -17,7 +17,7 @@ ext {
             minSdkVersion    : 21,
             targetSdkVersion : 29,
             versionCode      : 1,
-            versionName      : "0.0.16.20201125",    //必须是int或者float，否则影响线上升级
+            versionName      : "0.0.17.20201126",    //必须是int或者float，否则影响线上升级
             databaseVersion  : 1 // 数据库版本号
     ]
 

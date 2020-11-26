@@ -21,6 +21,10 @@ data class BasePlayStatusModel constructor(
         return playStatus == STATE_BUFFERING
     }
 
+    fun playEnd() : Boolean{
+        return playStatus == STATE_ENDED
+    }
+
     var STATE_IDLE = 1
 
     /**

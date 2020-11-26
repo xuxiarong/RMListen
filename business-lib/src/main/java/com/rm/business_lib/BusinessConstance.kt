@@ -149,7 +149,6 @@ object PlayGlobalData {
 
     fun initPlayAudio(audio: DownloadAudio) {
         playAudioModel.set(audio)
-
         BaseConstance.updateBaseAudioId(
                 audioId = audio.audio_id.toString(),
                 playUrl = audio.audio_cover_url
@@ -157,6 +156,9 @@ object PlayGlobalData {
         audio.updateMillis = System.currentTimeMillis()
         playChapterListSort.get()?.let {
             audio.sortType = it
+        }
+        playChapterId.get()?.let {
+            audio.listenChapterId = it
         }
         playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
     }
@@ -176,30 +178,23 @@ object PlayGlobalData {
         try {
             val chapter = playChapter.get()
             if (chapter != null) {
-                process.set(currentDuration.toFloat())
+
+                 if (isPlayFinish) {
+                     chapter.listen_duration =  chapter.realDuration
+                } else {
+                     chapter.listen_duration =  currentDuration
+                }
+                process.set(chapter.listen_duration.toFloat())
                 updateThumbText.set(
-                        "${TimeUtils.getPlayDuration(currentDuration)}/${
-                        TimeUtils.getPlayDuration(
-                                totalDuration
-                        )
+                        "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
+                        TimeUtils.getPlayDuration(chapter.realDuration)
                         }"
                 )
-                chapter.listen_duration = if (isPlayFinish) {
-                    totalDuration
-                } else {
-                    currentDuration
-                }
                 playChapter.set(chapter)
                 playChapterId.set(chapter.chapter_id.toString())
                 chapter.updateMillis = System.currentTimeMillis()
                 chapter.duration = totalDuration
                 playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
-                val audio = playAudioModel.get()
-                if (audio != null) {
-                    audio.updateMillis = System.currentTimeMillis()
-                    audio.listenChapterId = chapter.chapter_id.toString()
-                    playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
-                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -216,6 +211,12 @@ object PlayGlobalData {
                 process.set(startChapter.listen_duration.toFloat())
                 startChapter.updateMillis = System.currentTimeMillis()
                 playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(startChapter))
+                val audio = playAudioModel.get()
+                if (audio != null) {
+                    audio.updateMillis = System.currentTimeMillis()
+                    audio.listenChapterId = startChapter.chapter_id.toString()
+                    playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
+                }
             }
         }
     }

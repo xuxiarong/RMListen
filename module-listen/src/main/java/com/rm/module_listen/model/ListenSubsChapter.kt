@@ -1,6 +1,7 @@
 package com.rm.module_listen.model
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.business_lib.xbanner.XBanner
 import com.rm.module_listen.R
 
 /**
@@ -26,7 +27,8 @@ data class ListenAudioChapter(
     val play_count: Int,
     val sequence: String,
     val size: String,
-    val upgrade_time: Long
+    val upgrade_time: Long,
+    var position: Int = 0
 ):MultiItemEntity{
     override var itemType = R.layout.listen_item_subs_list_chapter
 }

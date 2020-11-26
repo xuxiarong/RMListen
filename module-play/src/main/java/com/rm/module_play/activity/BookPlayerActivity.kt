@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.AudioSortType
@@ -32,7 +31,6 @@ import com.rm.module_play.databinding.PlayPlayHeadBinding
 import com.rm.module_play.playview.GlobalPlayHelper
 import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
-import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 
 
@@ -224,7 +222,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
             else -> {
                 if (playCurrentDuration > currentPlayerMusic.duration) {
-                    playCurrentDuration = currentPlayerMusic.duration
+                    playCurrentDuration = 0
                 }
                 musicPlayerManger.seekTo(playCurrentDuration)
             }
@@ -251,7 +249,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
                 if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
                     PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
-                    PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
+                    if(musicPlayerManger.getCurDurtion()>=currentPlayerMusic.duration){
+                        PlayGlobalData.process.set(0F)
+                        musicPlayerManger.seekTo(0L)
+                    }else{
+                        PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
+                    }
                 }
                 PlayGlobalData.playChapterId.set(playChapterId)
                 mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)

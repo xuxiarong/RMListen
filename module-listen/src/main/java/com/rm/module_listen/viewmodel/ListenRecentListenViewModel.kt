@@ -84,14 +84,4 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         getListenHistory()
     }
 
-    fun showLottie(view: View?) {
-        DLog.d("suolong time = ${System.currentTimeMillis()}","确认删除被点击")
-        view?.let {
-            val lottieAnimationView = it.findViewById<LottieAnimationView>(R.id.swipe_delete)
-            lottieAnimationView.visibility = View.VISIBLE
-            lottieAnimationView.playAnimation()
-            DLog.d("suolong time = ${System.currentTimeMillis()}","开始播放删除动画")
-        }
-    }
-
 }

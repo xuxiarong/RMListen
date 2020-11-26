@@ -228,7 +228,12 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     fun getAudioAdapter(audio: ListenAudio): CommonMultiVMAdapter {
         val rvList = ArrayList<MultiItemEntity>()
         rvList.add(audio.info)
-        rvList.addAll(audio.chapter)
+        for (i in 0 until audio.chapter.size){
+            audio.chapter[i].position = i+1
+            rvList.add(audio.chapter[i])
+        }
+
+
         return CommonMultiVMAdapter(
             this,
             rvList,

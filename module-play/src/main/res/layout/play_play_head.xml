@@ -269,6 +269,7 @@
             android:id="@+id/animation_view"
             bindStartPlayClick="@{viewModel.playManger.play}"
             bindPausePlayClick="@{viewModel.playManger.pause}"
+            bindResetPlay="@{()->viewModel.playManger.seekTo(0L)}"
             bindPlayControl="@{BaseConstance.INSTANCE.basePlayStatusModel}"
             android:layout_width="@dimen/dp_56"
             android:layout_height="@dimen/dp_56"
