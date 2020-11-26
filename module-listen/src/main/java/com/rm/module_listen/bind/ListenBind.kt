@@ -46,7 +46,7 @@ fun TextView.listenBindChapterTime(audio: ListenHistoryModel) {
     text = ""
     try {
         if (audio.audio.listenChapterList.isNotEmpty()) {
-            text = TimeUtils.getListenDuration(audio.audio.listenChapterList.first().realDuration/1000)
+            text = TimeUtils.getPlayDuration(audio.audio.listenChapterList.first().realDuration)
         }
     } catch (e: Exception) {
         e.printStackTrace()

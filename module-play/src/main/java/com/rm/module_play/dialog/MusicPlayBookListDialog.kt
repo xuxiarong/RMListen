@@ -192,7 +192,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
             holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCountString(item.play_count)
-            holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.duration)
+            holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.realDuration)
             holder.getView<TextView>(R.id.tv_music_play_up_time).bindDateString(item.created_at)
             val downloadStatusView = holder.getView<DownloadStatusView>(R.id.image_music_play_down)
             downloadStatusView.bindChapterList(
