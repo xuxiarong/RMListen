@@ -53,8 +53,8 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_num"
-            bindText="@{item.unread-item.last_unread>99?@string/listen_max_sub_num:item.unread-item.last_unread}"
-            isVisible="@{item.unread>item.last_unread}"
+            android:text="@{(item.unread-item.last_unread)>99?@string/listen_max_sub_num:String.valueOf(item.unread-item.last_unread)}"
+            isVisible="@{(item.unread-item.last_unread)>0}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_16"

@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindAdapter
@@ -46,6 +47,10 @@ import com.rm.module_home.model.home.detail.CommentList
 import com.rm.module_home.model.home.detail.HomeCommentBean
 import com.rm.module_home.repository.HomeRepository
 import com.rm.module_home.util.HomeCommentDialogHelper
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import okhttp3.internal.waitMillis
 import kotlin.math.ceil
 
 
@@ -169,6 +174,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     var commentTotal = ObservableField(0)
 
+
+    //整个页面是否可以点击
+    var isNoClick = ObservableField<Boolean>(false)
+
     /**
      * 头部dataBinding对象
      */
@@ -234,13 +243,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         }
     }
 
-    fun queryAudioListenRecord(){
+    fun queryAudioListenRecord() {
         audioId.get()?.let {
             launchOnIO {
                 try {
                     val audioRecord = ListenDaoUtils.queryAudioById(it.toLong())
                     listenAudio.set(audioRecord)
-                }catch (e: Exception){
+                } catch (e: Exception) {
                     listenAudio.set(null)
                 }
             }
@@ -266,7 +275,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailTagsAdapter.setList(it.list.tags)
                 }, onError = {
                     if (it?.contains("下架") == true || it?.contains("违规") == true) {
-                        finish()
+                        isNoClick.set(true)
+                        viewModelScope.launch {
+                            delay(1500)
+                            finish()
+                        }
+                    } else {
+                        isNoClick.set(false)
                     }
                     showTip(it.toString(), R.color.business_color_ff5e5e)
                 }
@@ -328,25 +343,25 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         val playProgress = BaseConstance.basePlayProgressModel.get()
 
         detailInfoData.get()?.let {
-            when{
-                playInfo?.playAudioId == audioId.get()->{
-                    if(playStatus!=null && playStatus.isStart()){
+            when {
+                playInfo?.playAudioId == audioId.get() -> {
+                    if (playStatus != null && playStatus.isStart()) {
                         playService.pausePlay()
-                    }else{
+                    } else {
                         RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
-                                context = context,
-                                audioId = audioId.get()!!,
-                                chapterId = playInfo!!.playChapterId,
-                                currentDuration = playProgress!!.currentDuration,
-                                sortType = mCurSort
+                            context = context,
+                            audioId = audioId.get()!!,
+                            chapterId = playInfo!!.playChapterId,
+                            currentDuration = playProgress!!.currentDuration,
+                            sortType = mCurSort
                         )
                     }
                 }
-                else ->{
+                else -> {
                     val listenRecord = listenAudio.get()
-                    if(listenRecord!=null){
+                    if (listenRecord != null) {
 
-                    }else{
+                    } else {
 
                     }
                 }

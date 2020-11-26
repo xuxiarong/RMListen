@@ -655,7 +655,7 @@ public final class TimeUtils {
      * @param millis The milliseconds.
      * @return the friendly time span by now
      * <ul>
-     * <li>如果小于 1 秒钟内，显示刚刚</li>
+     * <li>如果小于 10 秒钟内，显示刚刚</li>
      * <li>如果在 1 分钟内，显示 XXX秒前</li>
      * <li>如果在 1 小时内，显示 XXX分钟前</li>
      * <li>如果在 1 小时外的今天内，显示今天15:32</li>
@@ -670,7 +670,7 @@ public final class TimeUtils {
         if (span < 0)
             // U can read http://www.apihome.cn/api/java/Formatter.html to understand it.
             return String.format("%tc", millis);
-        if (span < 1000) {
+        if (span < 10000) {
             return "刚刚";
         } else if (span < TimeConstants.MIN) {
             return String.format(Locale.getDefault(), "%d秒前", span / TimeConstants.SEC);

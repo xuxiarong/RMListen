@@ -49,8 +49,13 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
     // 倒计时时间
     var countDownTime = ObservableField(-1)
 
+    //是否清空输入
+    var inputClear = ObservableField(false)
+
+
     // 监听绑定输入框内容变化
     var completeInput: (String) -> Unit = {
+        inputClear.set(false)
         completeInput(it)
     }
 
@@ -93,6 +98,7 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
                 },
                 onError = {
                     mViewModel.showContentView()
+                    inputClear.set(true)
                     errorTips.set(it)
                 }
             )

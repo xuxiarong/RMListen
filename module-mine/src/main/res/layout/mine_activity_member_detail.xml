@@ -59,7 +59,6 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tx_mime_detail_title"
-                isVisible="@{!viewModel.isVisible}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_8"
@@ -77,7 +76,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tx_mime_detail_follow"
-                isVisible="@{viewModel.attentionVisibility &amp;&amp; !viewModel.isVisible}"
+                isVisible="@{viewModel.attentionVisibility}"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_26"
                 android:layout_marginStart="@dimen/dp_16"

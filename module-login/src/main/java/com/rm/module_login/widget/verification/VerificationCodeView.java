@@ -2,10 +2,12 @@ package com.rm.module_login.widget.verification;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Service;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -14,6 +16,8 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -456,5 +460,26 @@ public class VerificationCodeView extends LinearLayout implements TextWatcher, V
                 editText.requestFocus();
             }
         }
+
+        startAnim();
+        startVibrator();
+    }
+
+    /**
+     * 震动
+     */
+    private void startVibrator() {
+        Vibrator vb = (Vibrator) getContext().getSystemService(Service.VIBRATOR_SERVICE);
+        if (vb.hasVibrator()) {
+            vb.vibrate(500);
+        }
+    }
+
+    /**
+     * 抖动动画
+     */
+    private void startAnim() {
+        Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+        this.startAnimation(shake);
     }
 }

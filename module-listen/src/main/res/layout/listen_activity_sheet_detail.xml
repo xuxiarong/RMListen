@@ -73,9 +73,9 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/listen_sheet_detail_refresh"
-            bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
             bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+            bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.loadData}"
             bindOnRefreshListener="@{viewModel.refreshData}"
             android:layout_width="match_parent"
@@ -93,5 +93,6 @@
                 android:paddingEnd="@dimen/dp_16" />
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

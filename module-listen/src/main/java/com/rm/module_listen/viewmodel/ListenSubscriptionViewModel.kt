@@ -111,9 +111,9 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
             setTop(listListen)
             mAdapter.addData(listListen)
         }
-        ++mPage
         //是否有更多数据
         refreshStatusModel.setNoHasMore(listListen.size < pageSize)
+        ++mPage
     }
 
     private var topSize = 0
@@ -188,6 +188,9 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                         mAdapter.setTopSize(--topSize)
                     }
                     mAdapter.remove(subscriptionData.get()!!)
+                    if (mAdapter.data.size <= 0) {
+                        showDataEmpty()
+                    }
                 },
                 onError = {
                     showContentView()

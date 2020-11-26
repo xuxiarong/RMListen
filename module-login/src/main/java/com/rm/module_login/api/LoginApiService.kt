@@ -4,6 +4,7 @@ import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.module_login.bean.LoginInfo
 import com.rm.module_login.bean.ValidateCodeBean
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 
@@ -112,7 +113,7 @@ interface LoginApiService {
      * @param code String
      * @return BaseResponse<Any>
      */
-    @POST("member/close-account")
+    @PUT("member/close-account")
     suspend fun logout(@Query("code") code: String): BaseResponse<Any>
 
 

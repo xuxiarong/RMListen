@@ -11,7 +11,7 @@ import com.rm.baselisten.util.DLog
  */
 @BindingAdapter(value = ["inputTextChange"])
 fun VerificationCodeView.inputTextChange(action: ((String) -> Unit)?) {
-    if(action == null){
+    if (action == null) {
         return
     }
     onCodeFinishListener = object : VerificationCodeView.OnCodeFinishListener {
@@ -23,5 +23,12 @@ fun VerificationCodeView.inputTextChange(action: ((String) -> Unit)?) {
         override fun onTextChange(view: View?, content: String) {
             DLog.d("llj", "输入改变---content------>>>$content")
         }
+    }
+}
+
+@BindingAdapter(value = ["inputTextClear"])
+fun VerificationCodeView.inputTextClear(isClear: Boolean?) {
+    if (isClear == true) {
+        setEmpty()
     }
 }

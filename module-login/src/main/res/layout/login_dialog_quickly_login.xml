@@ -163,6 +163,7 @@
                 <com.rm.module_login.widget.verification.VerificationCodeView
                     android:id="@+id/login_quickly_verify_code_input_et"
                     inputTextChange="@{viewModel.completeInput}"
+                    inputTextClear="@{viewModel.inputClear}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_34"
@@ -180,7 +181,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/BusinessTextStyleTips"
-                    bindText="@{viewModel.countDownTime + @string/login_count_down_tips}"
+                    android:text="@{viewModel.countDownTime + @string/login_count_down_tips}"
                     isVisible="@{viewModel.countDownTime > 0}"
                     android:layout_marginTop="@dimen/dp_20"
                     android:gravity="center"

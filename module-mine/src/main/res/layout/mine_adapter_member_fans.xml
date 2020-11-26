@@ -12,6 +12,8 @@
         <variable
             name="fansViewModel"
             type="com.rm.module_mine.viewmodel.MineMemberFansViewModel" />
+
+        <import type="android.text.TextUtils" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,10 +79,10 @@
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_5"
             android:layout_marginBottom="@dimen/dp_10"
+            android:singleLine="true"
             android:text="@{fansItem.signature}"
             android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_12sp"
-            android:singleLine="true"
             app:layout_constraintEnd_toStartOf="@id/mine_adapter_member_fans_follow"
             app:layout_constraintStart_toEndOf="@id/mine_adapter_member_fans_icon"
             app:layout_constraintStart_toStartOf="@id/mine_adapter_member_fans_layout"
@@ -90,7 +92,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_adapter_member_fans_follow"
-            isVisible="@{fansViewModel.userInfo.id!=fansItem.member_id}"
+            isVisible="@{!TextUtils.equals(fansViewModel.userInfo.id,fansItem.member_id)}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_26"
             android:background="@{fansItem.is_follow==1 ? @drawable/business_attention_un_select  : @drawable/business_attentionselect}"
