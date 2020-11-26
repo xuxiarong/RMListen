@@ -466,7 +466,7 @@
                 android:drawableStart="@{viewModel.isAttention ? @drawable/business_icon_attention_eb : @drawable/business_icon_attention_ea}"
                 android:drawablePadding="@dimen/dp_4"
                 android:gravity="center"
-                android:onClick="@{()->viewModel.clickAttentionFun(context,PlayGlobalData.INSTANCE.playAudioModel.member_id)}"
+                android:onClick="@{()->viewModel.clickAttentionFun(context,PlayGlobalData.INSTANCE.playAudioModel.anchor_id)}"
                 android:orientation="horizontal"
                 android:paddingStart="@dimen/dp_15"
                 android:paddingEnd="@dimen/dp_15"

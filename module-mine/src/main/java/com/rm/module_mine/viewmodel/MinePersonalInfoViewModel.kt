@@ -79,7 +79,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                         showTip("修改成功")
                     },
                     onError = {
-                        showTip("修改失败", R.color.business_color_ff5e5e)
+                        showTip("$it", R.color.business_color_ff5e5e)
                     }
                 )
             }
@@ -100,7 +100,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                 },
                 onError = {
 //                    showToast("")
-                    showTip("修改失败", R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
 
                 }
             )

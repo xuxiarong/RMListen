@@ -25,7 +25,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
             bindUrl="@{item.singleModel.cover_url}"
-            corner="@{8.0f}"
+            corner="@{4.0f}"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:scaleType="fitXY" />
@@ -57,8 +57,8 @@
                 tools:text="14W" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="2dp"
                 android:layout_toStartOf="@+id/homeHorPlayCount"
