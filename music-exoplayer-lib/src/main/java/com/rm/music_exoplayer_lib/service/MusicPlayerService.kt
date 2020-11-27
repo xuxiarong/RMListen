@@ -1,10 +1,11 @@
 package com.rm.music_exoplayer_lib.service
 
 import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.Service
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.media.AudioManager
 import android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
 import android.net.Uri
@@ -12,7 +13,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
-import android.util.Log
 import com.example.music_exoplayer_lib.manager.BookAlarmManger
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util.getUserAgent
+import com.rm.music_exoplayer_lib.R
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
@@ -128,7 +129,48 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_NOT_STICKY
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int) : Int{
+        val CHANNEL_ID = "CHANNEL_ID"
+        val CHANNEL_NAME = "听书"
+        val notificationChannel: NotificationChannel
+        //进行8.0的判断
+        //进行8.0的判断
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationChannel = NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.setShowBadge(true)
+            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            val manager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(notificationChannel)
+        }
+
+        val notifyIntent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://www.baidu.com")
+        )
+        val pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0)
+
+        var notification: Notification? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notification = Notification.Builder(this, CHANNEL_ID)
+                .setTicker("听书")
+                .setContentTitle("听书标题")
+                .setContentIntent(pendingIntent)
+                .setContentText("听书需要启动音乐播放器服务")
+                .build()
+        }
+        notification!!.flags = notification.flags or Notification.FLAG_NO_CLEAR
+        //在service里再调用startForeground方法，不然就会出现ANR
+        //在service里再调用startForeground方法，不然就会出现ANR
+        startForeground(1, notification)
+        return START_STICKY
+    }
 
     //音频焦点
     var requestAudioFocus = -1
@@ -285,9 +327,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     fun showNotification() {
         getCurrentPlayerMusic()?.let {
             notificationManger?.showNotification(this, it, "")
-
         }
-
     }
 
     /**

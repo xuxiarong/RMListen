@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.IBinder
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.MUSIC_ALARM_MODEL_0
@@ -49,19 +50,19 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     }
 
-    fun initialize(
-        context: Context,
-        callBack: MusicInitializeCallBack
-    ) {
+    fun initialize(context: Context) {
         mConnection = MusicPlayerServiceConnection()
         mConnection?.let {
             val intent = Intent(context, MusicPlayerService::class.java)
-            context.startService(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent)
+            } else {
+                context.startService(intent)
+            }
             context.bindService(
                 intent, it,
                 Context.BIND_AUTO_CREATE
             )
-            callBack.onSuccess()
         }
 
     }

@@ -290,7 +290,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 上报
      */
     fun playReport(audioID: String, chapterId: String) {
-        launchOnUI {
+        launchOnIO {
             repository.playerReport(audioID, chapterId).checkResult(onSuccess = {
                 ExoplayerLogger.exoLog(it)
             }, onError = {
@@ -303,7 +303,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 通过音频ID直接获取下一页的章节列表，从第一页开始，这里成功后需要记录chapterId
      */
     fun getNextPageChapterList() {
-        launchOnUI {
+        launchOnIO {
             repository.chapterList(
                     PlayGlobalData.playAudioId.get()!!,
                     playNextPage,
@@ -349,7 +349,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             return
         }
         playPrePage--
-        launchOnUI {
+        launchOnIO {
             repository.chapterList(
                     audioId!!,
                     playPrePage,
@@ -379,7 +379,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             audioId: String,
             chapterId: String
     ) {
-        launchOnUI {
+        launchOnIO {
             repository.chapterPageList(
                     audioId = audioId,
                     chapterId = chapterId,
@@ -417,7 +417,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 获取书籍详情信息
      */
     fun getDetailInfo(audioID: String) {
-        launchOnUI {
+        launchOnIO {
             repository.getDetailInfo(audioID).checkResult(
                     onSuccess = {
                         PlayGlobalData.initPlayAudio(it.list)
@@ -432,7 +432,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 取消评论点赞
      */
     private fun unLikeComment(bean: Comments) {
-        launchOnUI {
+        launchOnIO {
             repository.homeUnLikeComment(bean.id).checkResult(
                     onSuccess = {
 
@@ -454,7 +454,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 评论点赞
      */
     private fun likeComment(bean: Comments) {
-        launchOnUI {
+        launchOnIO {
             repository.homeLikeComment(bean.id).checkResult(
                     onSuccess = {
 
@@ -476,7 +476,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 订阅
      */
     private fun subscribe(context: Context, audioId: String) {
-        launchOnUI {
+        launchOnIO {
             repository.subscribe(audioId).checkResult(
                     onSuccess = {
                         isSubscribe.set(true)
@@ -495,7 +495,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 取消订阅
      */
     private fun unSubscribe(audioId: String) {
-        launchOnUI {
+        launchOnIO {
             repository.unSubscribe(audioId).checkResult(
                     onSuccess = {
                         isSubscribe.set(false)
@@ -514,7 +514,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      *评论列表
      */
     fun getCommentList() {
-        launchOnUI {
+        launchOnIO {
             repository.commentAudioComments(PlayGlobalData.playAudioId.get()!!, commentPage, pageSize)
                     .checkResult(onSuccess = {
                         processCommentSuccessData(it)
@@ -665,7 +665,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun attentionAnchor(followId: String) {
         showLoading()
-        launchOnUI {
+        launchOnIO {
             repository.attentionAnchor(followId).checkResult(
                     onSuccess = {
                         showContentView()
@@ -684,7 +684,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun unAttentionAnchor(followId: String) {
         showLoading()
-        launchOnUI {
+        launchOnIO {
             repository.unAttentionAnchor(followId).checkResult(
                     onSuccess = {
                         showContentView()

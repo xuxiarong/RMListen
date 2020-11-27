@@ -124,8 +124,6 @@ object PlayGlobalData {
     //全局播放器播放速度
     var playSpeed = ObservableFloat(1.0f)
 
-    var playState = ObservableField<PlayState>(PlayState())
-
     /**
      * 是否有上一章
      */

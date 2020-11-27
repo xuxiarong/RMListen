@@ -3,10 +3,14 @@ package com.rm.module_play.playview
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.getFloattMMKV
 import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.SAVA_SPEED
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
+import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
@@ -45,12 +49,13 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         ExoplayerLogger.exoLog("playerState=${playerState},message=${message}")
-        playStatusListener?.let {
-            it.onMusicPlayerState(playerState,message)
-        }
+        playStatusListener?.onMusicPlayerState(playerState,message)
     }
 
     override fun onPrepared(totalDurtion: Long) {
+        SAVA_SPEED.getFloattMMKV(1f).let {
+            musicPlayerManger.setPlayerMultiple(it)
+        }
         PlayGlobalData.maxProcess.set(totalDurtion.toFloat())
         musicPlayerManger.getCurrentPlayerMusic()?.let {
             it.duration = totalDurtion
