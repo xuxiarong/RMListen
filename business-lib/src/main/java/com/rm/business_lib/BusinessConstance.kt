@@ -195,6 +195,12 @@ object PlayGlobalData {
                 chapter.updateMillis = System.currentTimeMillis()
                 chapter.duration = totalDuration
                 playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
+                val audio = playAudioModel.get()
+                if (audio != null) {
+                    audio.updateMillis = System.currentTimeMillis()
+                    audio.listenChapterId = chapter.chapter_id.toString()
+                    playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()

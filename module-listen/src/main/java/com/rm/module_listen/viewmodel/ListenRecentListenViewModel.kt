@@ -2,6 +2,7 @@ package com.rm.module_listen.viewmodel
 
 import android.content.Context
 import android.view.View
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import com.airbnb.lottie.LottieAnimationView
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -29,6 +30,8 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
 
     var allHistory = MutableLiveData<MutableList<MultiItemEntity>>()
 
+    var dataEmpty = ObservableBoolean(false)
+
     private val playService by lazy {
         RouterHelper.createRouter(PlayService::class.java)
     }
@@ -45,19 +48,18 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     }
 
     fun getListenHistory() {
-        showLoading()
         launchOnIO {
             val queryPlayBookList = ListenDaoUtils.getAllAudioByRecentLimit10()
             val audioList = ArrayList<MultiItemEntity>()
             if (queryPlayBookList.isNotEmpty()) {
-                showContentView()
+                dataEmpty.set(false)
                 audioList.add(ListenRecentDateModel())
                 queryPlayBookList.forEach {
                     audioList.add(ListenHistoryModel(it))
                 }
                 allHistory.postValue(audioList)
             } else {
-                showDataEmpty()
+                dataEmpty.set(true)
             }
         }
     }

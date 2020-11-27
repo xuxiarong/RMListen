@@ -27,13 +27,6 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
         })
     }
 
-
-    override fun initView() {
-        super.initView()
-        mDataBind.listenRecentRv.bindVerticalLayout(mViewModel.mSwipeAdapter)
-    }
-
-
     override fun onResume() {
         super.onResume()
         mViewModel.getListenHistory()
