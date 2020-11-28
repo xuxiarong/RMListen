@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.model.BasePlayInfoModel
+import com.rm.baselisten.model.BasePlayProgressModel
+import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.TimeUtils
 import com.rm.module_listen.R
 import com.rm.module_listen.model.ListenHistoryModel
@@ -50,23 +53,40 @@ fun TextView.listenBindChapterTime(historyModel: ListenHistoryModel) {
 }
 
 @SuppressLint("SetTextI18n")
-@BindingAdapter("listenBindChapterStatus")
-fun TextView.listenBindChapterStatus(historyModel: ListenHistoryModel) {
+@BindingAdapter(
+    "listenBindChapterStatus",
+    "listenBindPlayAudio",
+    "listenBindPlayProgress",
+    requireAll = true
+)
+fun TextView.listenBindChapterStatus(
+    historyModel: ListenHistoryModel,
+    playAudioModel: BasePlayInfoModel?,
+    progressModel: BasePlayProgressModel?
+) {
     text = ""
     try {
         val lastChapter = historyModel.chapter
-        var result = lastChapter.listen_duration
-        if (result <= 0) {
-            result = 0
+        if (progressModel != null && playAudioModel != null) {
+            var result = if (lastChapter.chapter_id.toString() == playAudioModel.playChapterId) {
+                progressModel.currentDuration
+            } else {
+                lastChapter.listen_duration
+            }
+            if (result <= 0) {
+                result = 0
+            }
+            if (result >= lastChapter.realDuration) {
+                text = context.getString(R.string.listen_finish)
+                setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
+            } else {
+                setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
+                text = "${String.format(
+                    context.getString(R.string.listen_progress),
+                    (result * 100 / lastChapter.duration)
+                )}%"
+            }
         }
-        if (result >= lastChapter.realDuration) {
-            text = context.getString(R.string.listen_finish)
-            setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
-        } else {
-            setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
-            text = "${String.format(context.getString(R.string.listen_progress), (result * 100 / lastChapter.duration))}%"
-        }
-
     } catch (e: Exception) {
         e.printStackTrace()
     }

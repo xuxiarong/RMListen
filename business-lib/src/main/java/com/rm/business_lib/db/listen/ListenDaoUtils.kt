@@ -48,6 +48,10 @@ object ListenDaoUtils {
         return mutableListOf()
     }
 
+    fun deleteAudio(audio : ListenAudioEntity){
+        listenAudioDao.delete(audio)
+    }
+
     fun queryAudioById(audioId: Long): ListenAudioEntity? {
         try {
             val queryBuilder = listenAudioDao.queryBuilder()

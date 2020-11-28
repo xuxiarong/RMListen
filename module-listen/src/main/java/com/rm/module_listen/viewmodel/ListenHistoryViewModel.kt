@@ -2,28 +2,22 @@ package com.rm.module_listen.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
-import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
-import com.airbnb.lottie.LottieAnimationView
-import com.rm.baselisten.dialog.CommonMvFragmentDialog
-import com.rm.business_lib.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
+import com.rm.business_lib.swipe.CommonSwipeVmAdapter
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
-import com.rm.module_listen.databinding.ListenDialogDeleteTipBindingImpl
 import com.rm.module_listen.model.ListenHistoryModel
-import kotlinx.android.synthetic.main.listen_dialog_delete_tip.*
 
 /**
  * desc   :
@@ -51,8 +45,8 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         RouterHelper.createRouter(PlayService::class.java)
     }
 
-    val mSwipeAdapter: CommonMultiSwipeVmAdapter by lazy {
-        CommonMultiSwipeVmAdapter(
+    val mSwipeAdapter: CommonSwipeVmAdapter<ListenHistoryModel> by lazy {
+        CommonSwipeVmAdapter<ListenHistoryModel>(
                 this, mutableListOf(),
                 R.layout.listen_item_history_listen,
                 R.id.listenRecentSl,
@@ -125,18 +119,26 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
     fun deleteAllHistory() {
-        DaoUtil(ListenChapterEntity::class.java, "").deleteAll()
-        DaoUtil(ListenAudioEntity::class.java, "").deleteAll()
-        allHistory.value = mutableListOf()
+        if(deleteListenFinish.get()){
+            val deleteList = mSwipeAdapter.data
+            val iterator = deleteList.iterator()
+            while (iterator.hasNext()){
+                val next = iterator.next()
+                if(next.chapter.listen_duration>=next.chapter.realDuration){
+                    ListenDaoUtils.deleteAudio(next.audio)
+                    iterator.remove()
+                }
+            }
+            mSwipeAdapter.setList(deleteList)
+        }else{
+            DaoUtil(ListenAudioEntity::class.java, "").deleteAll()
+            allHistory.value = mutableListOf()
+            mSwipeAdapter.data.clear()
+        }
+
     }
-
-    fun showDeleteAllDialog(context: Context) {
-
-    }
-
 
     fun startListenRecentDetail(context: Context, model: ListenHistoryModel) {
-
         playService.startPlayActivity(
                 context = context,
                 audioId = model.audio.audio_id.toString(),

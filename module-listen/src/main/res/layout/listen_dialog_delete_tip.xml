@@ -74,7 +74,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/listen_tip_sure"
+            app:layout_constraintRight_toLeftOf="@+id/listen_delete_sure"
             tools:ignore="MissingConstraints,SpUsage" />
 
         <View
@@ -94,11 +94,11 @@
             android:background="@color/stroke_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/listen_delete_cancel"
-            app:layout_constraintRight_toLeftOf="@+id/listen_tip_sure"
+            app:layout_constraintRight_toLeftOf="@+id/listen_delete_sure"
             tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/listen_tip_sure"
+            android:id="@+id/listen_delete_sure"
             style="@style/BusinessTextStyleSecond_3"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_58"
@@ -106,7 +106,6 @@
             android:text="@string/business_sure"
             android:textStyle="bold"
             android:textColor="@color/base_ff5e5e"
-            android:onClick="@{()->viewModel.deleteAllHistory()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintLeft_toRightOf="@+id/listen_delete_cancel"

@@ -11,6 +11,7 @@
         <variable
             name="item"
             type="com.rm.module_listen.model.ListenHistoryModel" />
+        <import type="com.rm.baselisten.BaseConstance" />
     </data>
 
     <com.rm.business_lib.swipe.SwipeLayout
@@ -102,6 +103,8 @@
                 android:id="@+id/home_book_adapter_author"
                 style="@style/BusinessTextStyleThird_4"
                 listenBindChapterStatus="@{item}"
+                listenBindPlayAudio="@{BaseConstance.INSTANCE.basePlayInfoModel}"
+                listenBindPlayProgress="@{BaseConstance.INSTANCE.basePlayProgressModel}"
                 android:layout_marginStart="@dimen/dp_12"
                 app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
                 app:layout_constraintStart_toEndOf="@id/listenRecentTimeTv"

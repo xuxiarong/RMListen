@@ -12,15 +12,12 @@ import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ActivityListenHistorySearchBinding
-import com.rm.module_listen.databinding.ListenDialogDeleteTipBindingImpl
 import com.rm.module_listen.viewmodel.ListenHistoryViewModel
 import kotlinx.android.synthetic.main.activity_listen_history_search.*
-import kotlinx.android.synthetic.main.listen_dialog_delete_tip.*
 
 class ListenHistorySearchActivity :
     ComponentShowPlayActivity<ActivityListenHistorySearchBinding, ListenHistoryViewModel>() {
 
-    private var mDeleteTipDialog : CommonMvFragmentDialog? = null
 
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.activity_listen_history_search
@@ -31,11 +28,12 @@ class ListenHistorySearchActivity :
 
     override fun startObserve() {
         mViewModel.allHistory.observe(this, Observer {
-            if(it.isEmpty()){
+            if (it.isEmpty()) {
+                mViewModel.mSwipeAdapter.swipeData.clear()
                 mViewModel.showDataEmpty()
-            }else{
+            } else {
                 mViewModel.mSwipeAdapter.addData(it)
-                if(mViewModel.mSwipeAdapter.footerLayout == null && it.size>8){
+                if (mViewModel.mSwipeAdapter.footerLayout == null && it.size > 8) {
                     mViewModel.mSwipeAdapter.addFooterView(footView)
                 }
             }
@@ -60,41 +58,28 @@ class ListenHistorySearchActivity :
     }
 
 
-
-    companion object{
-        fun startListenHistorySearch(context: Context){
-            context.startActivity(Intent(context,ListenHistorySearchActivity::class.java))
+    companion object {
+        fun startListenHistorySearch(context: Context) {
+            context.startActivity(Intent(context, ListenHistorySearchActivity::class.java))
         }
     }
 
-    private fun showDeleteDialog(){
-        if(mDeleteTipDialog == null){
-            mDeleteTipDialog = CommonMvFragmentDialog().apply {
-                gravity = Gravity.CENTER
-                dialogHasBackground = true
-                initDialog = {
-//                    if(null!=mDataBind && mDataBind is ListenDialogDeleteTipBindingImpl){
-//                        mDataBind.listenDeleteCancel.setOnClickListener {
-//                            dismiss()
-//                        }
-//                        mDataBind.listen_tip_sure.setOnClickListener {
-//                            dismiss()
-//                            mViewModel.deleteAllHistory()
-//                        }
-//                    }
-                }
+    private fun showDeleteDialog() {
+
+        CommonMvFragmentDialog().apply {
+            gravity = Gravity.CENTER
+            dialogHasBackground = true
+            disMissIdMap[R.id.listen_delete_cancel] = {}
+            disMissIdMap[R.id.listen_delete_sure] = {
+                mViewModel.deleteAllHistory()
             }
-        }
-        mDeleteTipDialog?.showCommonDialog(
-                activity = this,
-                layoutId = R.layout.listen_dialog_delete_tip,
-                viewModelBrId = BR.viewModel,
-                viewModel = mViewModel
+        }.showCommonDialog(
+            activity = this,
+            layoutId = R.layout.listen_dialog_delete_tip,
+            viewModelBrId = BR.viewModel,
+            viewModel = mViewModel
         )
-
     }
-
-
 
 }
 

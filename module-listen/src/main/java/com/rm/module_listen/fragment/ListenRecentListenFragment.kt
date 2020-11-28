@@ -4,8 +4,8 @@ import android.text.TextUtils
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.BaseConstance
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.business_lib.HomeGlobalData
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenFragmentRecentListenBinding
@@ -28,10 +28,21 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
         mViewModel.allHistory.observe(this, Observer {
             mViewModel.mSwipeAdapter.setList(it)
         })
+        //如果播放的书籍，章节列表有改变，则重新加载一下数据库
         BaseConstance.basePlayInfoModel.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 BaseConstance.basePlayInfoModel.get()?.let {
                     if(!TextUtils.isEmpty(it.playAudioId)){
+                        mViewModel.getListenHistory()
+                    }
+                }
+            }
+        })
+        //如果首页几个Tab切换后选择了我听，则重新加载一下数据库
+        HomeGlobalData.homeGlobalSelectTab.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                HomeGlobalData.homeGlobalSelectTab.get().let {
+                    if(HomeGlobalData.LISTEN_SELECT == it){
                         mViewModel.getListenHistory()
                     }
                 }
@@ -52,6 +63,4 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
             return ListenRecentListenFragment()
         }
     }
-
-
 }

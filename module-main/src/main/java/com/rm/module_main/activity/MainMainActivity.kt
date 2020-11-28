@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.rm.business_lib.HomeGlobalData
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_main.BR
 import com.rm.module_main.R
@@ -107,15 +108,8 @@ class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, 
             })
         }.build()
         navigationController.addPlaceholder(2)
-
-        view_pager.adapter = MyViewPagerAdapter(
-                supportFragmentManager,
-                navigationController.itemCount
-            )
-
-        view_pager.offscreenPageLimit = 5
-//        navigationController.setMessageNumber(3, 8)
-//        navigationController.setHasMessage(1, true)
+        view_pager.adapter = MyViewPagerAdapter(supportFragmentManager, navigationController.itemCount)
+        view_pager.offscreenPageLimit = 4
         navigationController.setupWithViewPager(view_pager)
 
         view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
@@ -133,6 +127,7 @@ class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, 
 
             override fun onPageSelected(position: Int) {
                 currentTab = position
+                HomeGlobalData.homeGlobalSelectTab.set(position)
             }
         })
 
@@ -140,9 +135,6 @@ class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, 
 
     override fun onResume() {
         super.onResume()
-//        val playService = RouterHelper.createRouter(PlayService::class.java)
-//        rootViewAddView(playService.getGlobalPlay())
-//        playService.showView(this)
         if(view_pager.currentItem!= currentTab){
             view_pager.setCurrentItem(currentTab,false)
         }

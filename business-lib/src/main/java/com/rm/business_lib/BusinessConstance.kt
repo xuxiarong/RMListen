@@ -44,8 +44,14 @@ var isLogin = ObservableBoolean(false)
 var loginUser = ObservableField<LoginUserBean>()
 
 object HomeGlobalData {
+
+    const val HOME_SELECT = 0
+    const val SEARCH_SELECT = 1
+    const val LISTEN_SELECT = 2
+    const val MINE_SELECT = 3
+
     var isHomeDouClick = MutableLiveData(false)
-    var homeGlobalSelectTab = ObservableInt(0)
+    var homeGlobalSelectTab = ObservableInt(HOME_SELECT)
 }
 
 

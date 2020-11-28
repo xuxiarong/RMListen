@@ -28,8 +28,9 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
 
     var initDialog : (() -> Unit) = {}
 
-//    vararg clicks : ()->
+    val clickMap : HashMap<Int,()->Unit> = HashMap()
 
+    val disMissIdMap : HashMap<Int,()->Unit> = HashMap()
     /**
      * 开启子类的LiveData观察者
      */
@@ -43,7 +44,22 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
         if(viewModelBrId>0 && viewModel!=null){
             mDataBind?.setVariable(viewModelBrId,viewModel)
         }
+        disMissIdMap.forEach { entry ->
+            mDataBind?.root?.findViewById<View>(entry.key)?.setOnClickListener {
+                dismiss()
+                entry.value()
+            }
+        }
         initDialog()
         return mDataBind?.root
     }
+
+    fun setClicks(viewId : Int,viewClickAction : ()->Unit){
+        clickMap[viewId] = viewClickAction
+    }
+
+    fun setDismissIdAndAction(id : Int, action : ()->Unit){
+        disMissIdMap[id] = action
+    }
+
 }
