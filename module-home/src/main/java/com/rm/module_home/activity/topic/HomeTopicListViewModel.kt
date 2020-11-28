@@ -1,12 +1,12 @@
 package com.rm.module_home.activity.topic
 
 import android.content.Context
-import com.rm.baselisten.adapter.single.CommonBindAdapter
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.BR
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.repository.HomeRepository
@@ -27,10 +27,12 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
     val mAdapter by lazy {
-        CommonBindAdapter<DownloadAudio>(
-            mutableListOf(),
-            R.layout.home_adapter_topic_list_item,
-            BR.audioItem
+        CommonBindVMAdapter<DownloadAudio>(
+           viewModel =  this,
+           commonData =  mutableListOf(),
+            commonItemLayoutId = R.layout.home_adapter_topic_list_item,
+            commonDataBrId = BR.audioItem,
+            commonViewModelId = BR.viewModel
         )
     }
 

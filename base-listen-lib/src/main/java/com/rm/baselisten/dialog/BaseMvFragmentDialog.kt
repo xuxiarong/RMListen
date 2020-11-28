@@ -28,6 +28,8 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
 
     var initDialog : (() -> Unit) = {}
 
+//    vararg clicks : ()->
+
     /**
      * 开启子类的LiveData观察者
      */

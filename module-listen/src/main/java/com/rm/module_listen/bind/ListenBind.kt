@@ -30,24 +30,20 @@ fun TextView.bindSubsText(number: Int?) {
 }
 
 @BindingAdapter("listenBindChapterName")
-fun TextView.listenBindChapterName(audio: ListenHistoryModel) {
+fun TextView.listenBindChapterName(historyModel: ListenHistoryModel) {
     text = ""
     try {
-        if (audio.audio.listenChapterList.isNotEmpty()) {
-            text = audio.audio.listenChapterList[0].chapter_name
-        }
+        text = historyModel.chapter.chapter_name
     } catch (e: Exception) {
         e.printStackTrace()
     }
 }
 
 @BindingAdapter("listenBindChapterTime")
-fun TextView.listenBindChapterTime(audio: ListenHistoryModel) {
+fun TextView.listenBindChapterTime(historyModel: ListenHistoryModel) {
     text = ""
     try {
-        if (audio.audio.listenChapterList.isNotEmpty()) {
-            text = TimeUtils.getPlayDuration(audio.audio.listenChapterList.first().realDuration)
-        }
+        text = TimeUtils.getPlayDuration(historyModel.chapter.realDuration)
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -55,24 +51,22 @@ fun TextView.listenBindChapterTime(audio: ListenHistoryModel) {
 
 @SuppressLint("SetTextI18n")
 @BindingAdapter("listenBindChapterStatus")
-fun TextView.listenBindChapterStatus(audio: ListenHistoryModel) {
+fun TextView.listenBindChapterStatus(historyModel: ListenHistoryModel) {
     text = ""
     try {
-        val chapterList = audio.audio.listenChapterList
-        if (chapterList.isNotEmpty()) {
-            val lastChapter = chapterList.first()
-            var result = lastChapter.listen_duration
-            if (result <= 0) {
-                result = 0
-            }
-            if (result >= lastChapter.realDuration) {
-                text = context.getString(R.string.listen_finish)
-                setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
-            } else {
-                setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
-                text = "${String.format(context.getString(R.string.listen_progress), (result * 100 /lastChapter.duration))}%"
-            }
+        val lastChapter = historyModel.chapter
+        var result = lastChapter.listen_duration
+        if (result <= 0) {
+            result = 0
         }
+        if (result >= lastChapter.realDuration) {
+            text = context.getString(R.string.listen_finish)
+            setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
+        } else {
+            setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
+            text = "${String.format(context.getString(R.string.listen_progress), (result * 100 / lastChapter.duration))}%"
+        }
+
     } catch (e: Exception) {
         e.printStackTrace()
     }

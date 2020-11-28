@@ -350,9 +350,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     } else {
                         RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                             context = context,
-                            audioId = audioId.get()!!,
-                            chapterId = playInfo!!.playChapterId,
-                            currentDuration = playProgress!!.currentDuration,
+                            audioId = audioId.get() ?: "",
+                            chapterId = playInfo?.playChapterId ?: "",
+                            currentDuration = playProgress?.currentDuration ?: 0,
                             sortType = mCurSort
                         )
                     }
@@ -360,9 +360,23 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 else -> {
                     val listenRecord = listenAudio.get()
                     if (listenRecord != null) {
-
+                        val queryChapterRecentUpdate = ListenDaoUtils.queryChapterRecentUpdate(
+                            listenRecord.audio_id,
+                            listenRecord.listenChapterId.toLong()
+                        )
+                        RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
+                            context = context,
+                            audioId = audioId.get() ?: "",
+                            chapterId = listenRecord.listenChapterId ?: "",
+                            currentDuration = queryChapterRecentUpdate?.listen_duration ?: 0,
+                            sortType = mCurSort
+                        )
                     } else {
-
+                        RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
+                            context = context,
+                            audioId = audioId.get() ?: "",
+                            sortType = mCurSort
+                        )
                     }
                 }
             }

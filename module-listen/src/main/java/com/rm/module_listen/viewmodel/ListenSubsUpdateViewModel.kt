@@ -57,10 +57,6 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
     var userLogin = isLogin
     var subsDateVisible = ObservableBoolean(true)
-//    private var allSubsRvList = MutableLiveData<MutableList<MultiItemEntity>>()
-//    private var allAudioList = MutableLiveData<MutableList<ListenAudio>>()
-//    private var allDateList = MutableLiveData<MutableList<ListenSubsDateModel>>()
-
     private var currentPage = 1
     private val pageSize = 12
 

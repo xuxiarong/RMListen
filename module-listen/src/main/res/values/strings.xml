@@ -36,7 +36,7 @@
     <string name="listen_bought">已购</string>
     <string name="listen_my_sheet">我的听单</string>
     <string name="listen_create_sheet">创建的听单</string>
-    <string name="listen_collected_sheet">收藏听单</string>
+    <string name="listen_collected_sheet">收藏的听单</string>
     <string name="listen_subscription">订阅</string>
 
 
@@ -63,5 +63,7 @@
     <string name="listen_max_sub_num">99+</string>
     <string name="listen_sheet_no_data">此听单还没内容，快去添加一个吧！</string>
 
+    <string name="listen_delete_content">确定清除所有的播放记录</string>
+    <string name="listen_delete_listen_finish">仅删除已听完</string>
 
 </resources>

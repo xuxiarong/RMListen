@@ -1,6 +1,9 @@
 package com.rm.module_listen.fragment
 
+import android.text.TextUtils
+import androidx.databinding.Observable
 import androidx.lifecycle.Observer
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
@@ -24,6 +27,15 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
     override fun startObserve() {
         mViewModel.allHistory.observe(this, Observer {
             mViewModel.mSwipeAdapter.setList(it)
+        })
+        BaseConstance.basePlayInfoModel.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                BaseConstance.basePlayInfoModel.get()?.let {
+                    if(!TextUtils.isEmpty(it.playAudioId)){
+                        mViewModel.getListenHistory()
+                    }
+                }
+            }
         })
     }
 

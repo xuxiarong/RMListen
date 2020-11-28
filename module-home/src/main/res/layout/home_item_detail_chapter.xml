@@ -10,6 +10,7 @@
             type="com.rm.business_lib.db.download.DownloadChapter" />
 
         <import type="com.rm.business_lib.download.DownloadMemoryCache" />
+        <import type="com.rm.baselisten.BaseConstance" />
 
         <variable
             name="chapterclick"
@@ -28,16 +29,34 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_chapter_number_tx"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_14"
+            bindPlayStatusModel="@{BaseConstance.INSTANCE.basePlayStatusModel}"
+            bindPlayAudioModel="@{BaseConstance.INSTANCE.basePlayInfoModel}"
+            bindDetailChapter="@{DetailChapterViewModel}"
+            android:gravity="center"
             android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="1" />
+            tools:text="1111" />
+
+        <com.rm.business_lib.wedgit.LivingView
+            android:id="@+id/detail_chapter_living"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            bindPlayStatusModel="@{BaseConstance.INSTANCE.basePlayStatusModel}"
+            bindPlayAudioModel="@{BaseConstance.INSTANCE.basePlayInfoModel}"
+            bindDetailChapter="@{DetailChapterViewModel}"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_18"
+            android:clickable="false"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:line_color="@color/business_color_ff5e5e"
+            tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_chapter_name_tx"

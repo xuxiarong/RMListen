@@ -157,7 +157,7 @@ class LivingView
         } else{
             pauseAnim()
         }
-            clearAnimation()
+        clearAnimation()
     }
 
     fun startAnim() {
@@ -188,6 +188,11 @@ class LivingView
         animation.duration = (line_duration * 10).toInt().toLong()
         animation.repeatCount = 0
         startAnimation(animation)
+    }
+
+    fun stopAnimAndGone(){
+        clearAnimation()
+        visibility = GONE
     }
 
 }

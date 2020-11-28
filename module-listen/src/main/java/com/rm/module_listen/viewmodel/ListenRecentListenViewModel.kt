@@ -53,11 +53,20 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
             val audioList = ArrayList<MultiItemEntity>()
             if (queryPlayBookList.isNotEmpty()) {
                 dataEmpty.set(false)
-                audioList.add(ListenRecentDateModel())
-                queryPlayBookList.forEach {
-                    audioList.add(ListenHistoryModel(it))
+                queryPlayBookList.forEach { audio ->
+                    val recentChapter = ListenDaoUtils.queryChapterRecentUpdate(audio.audio_id,audio.listenChapterId.toLong())
+                    recentChapter?.let { chapter ->
+                        val listenHistoryModel = ListenHistoryModel(audio, chapter)
+                        listenHistoryModel.itemType = R.layout.listen_item_recent_listen
+                        audioList.add(listenHistoryModel)
+                    }
                 }
-                allHistory.postValue(audioList)
+                if(audioList.isNotEmpty()){
+                    audioList.add(0,ListenRecentDateModel())
+                    allHistory.postValue(audioList)
+                }else{
+                    dataEmpty.set(false)
+                }
             } else {
                 dataEmpty.set(true)
             }
@@ -73,8 +82,8 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         playService.startPlayActivity(
                 context = context,
                 audioId = model.audio.audio_id.toString(),
-                chapterId = model.audio.listenChapterList.first().chapter_id.toString(),
-                currentDuration = model.audio.listenChapterList.first().listen_duration
+                chapterId = model.chapter.chapter_id.toString(),
+                currentDuration = model.chapter.listen_duration
         )
     }
 

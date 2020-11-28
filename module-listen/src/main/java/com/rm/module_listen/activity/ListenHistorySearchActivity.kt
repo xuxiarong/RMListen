@@ -2,26 +2,25 @@ package com.rm.module_listen.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.model.BaseTitleModel
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
-import com.rm.business_lib.db.download.DownloadAudio
-import com.rm.business_lib.download.DownloadMemoryCache
-import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ActivityListenHistorySearchBinding
+import com.rm.module_listen.databinding.ListenDialogDeleteTipBindingImpl
 import com.rm.module_listen.viewmodel.ListenHistoryViewModel
 import kotlinx.android.synthetic.main.activity_listen_history_search.*
+import kotlinx.android.synthetic.main.listen_dialog_delete_tip.*
 
 class ListenHistorySearchActivity :
     ComponentShowPlayActivity<ActivityListenHistorySearchBinding, ListenHistoryViewModel>() {
 
+    private var mDeleteTipDialog : CommonMvFragmentDialog? = null
 
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.activity_listen_history_search
@@ -50,7 +49,7 @@ class ListenHistorySearchActivity :
             .setLeftIconClick {
                 finish()
             }.setRightIcon(R.drawable.listen_icon_delete).setRightIconClick {
-                mViewModel.deleteAllHistory()
+                showDeleteDialog()
             }
         mViewModel.baseTitleModel.value = baseTitleModel
         listenHistorySearchRv.bindVerticalLayout(mViewModel.mSwipeAdapter)
@@ -69,32 +68,32 @@ class ListenHistorySearchActivity :
     }
 
     private fun showDeleteDialog(){
-//        TipsFragmentDialog().apply {
-//            titleText = "删除提醒"
-//            contentText = "确定清空历史记录？"
-//            leftBtnText = "取消"
-//            rightBtnText = "确定"
-//            leftBtnTextColor = R.color.business_text_color_333333
-//            rightBtnTextColor = R.color.business_color_ff5e5e
-//            leftBtnClick = {
-//                dismiss()
-//            }
-//            rightBtnClick = {
-//                val iterator = downloadFinishAdapter.data.iterator()
-//                val tempList = mutableListOf<DownloadAudio>()
-//                while (iterator.hasNext()) {
-//                    val next = iterator.next()
-//                    if (next.edit_select) {
-//                        tempList.add(next)
+        if(mDeleteTipDialog == null){
+            mDeleteTipDialog = CommonMvFragmentDialog().apply {
+                gravity = Gravity.CENTER
+                dialogHasBackground = true
+                initDialog = {
+//                    if(null!=mDataBind && mDataBind is ListenDialogDeleteTipBindingImpl){
+//                        mDataBind.listenDeleteCancel.setOnClickListener {
+//                            dismiss()
+//                        }
+//                        mDataBind.listen_tip_sure.setOnClickListener {
+//                            dismiss()
+//                            mViewModel.deleteAllHistory()
+//                        }
 //                    }
-//                }
-//                DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
-//                downloadFinishSelectNum.set(downloadFinishSelectNum.get() - tempList.size)
-//                DownLoadFileUtils.deleteAudioFile(tempList)
-//                dismiss()
-//            }
-//        }.show(this)
+                }
+            }
+        }
+        mDeleteTipDialog?.showCommonDialog(
+                activity = this,
+                layoutId = R.layout.listen_dialog_delete_tip,
+                viewModelBrId = BR.viewModel,
+                viewModel = mViewModel
+        )
+
     }
+
 
 
 }

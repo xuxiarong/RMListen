@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -201,6 +202,11 @@ class HomeDetailActivity :
     override fun onStart() {
         super.onStart()
         mViewModel.chapterAdapter.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mViewModel.queryAudioListenRecord()
     }
 
 }

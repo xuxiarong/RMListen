@@ -2,12 +2,15 @@ package com.rm.module_listen.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.airbnb.lottie.LottieAnimationView
+import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.business_lib.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.DaoUtil
@@ -18,7 +21,9 @@ import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.databinding.ListenDialogDeleteTipBindingImpl
 import com.rm.module_listen.model.ListenHistoryModel
+import kotlinx.android.synthetic.main.listen_dialog_delete_tip.*
 
 /**
  * desc   :
@@ -35,9 +40,11 @@ class ListenHistoryViewModel : BaseVMViewModel() {
 
     val keyword = ObservableField<String>("")
 
+    val deleteListenFinish = ObservableBoolean(false)
 
     //输入法搜索按钮监听
     val bindActionListener: (View) -> Unit = { clickSearchFun(it) }
+
 
 
     private val playService by lazy {
@@ -60,13 +67,20 @@ class ListenHistoryViewModel : BaseVMViewModel() {
             val queryPlayBookList = ListenDaoUtils.getAllAudioByRecent()
             val audioList = ArrayList<ListenHistoryModel>()
             if (queryPlayBookList.isNotEmpty()) {
-                searchHasData.set(true)
-                queryPlayBookList.forEach {
-                    val listenHistoryModel = ListenHistoryModel(it)
-                    listenHistoryModel.itemType = R.layout.listen_item_history_listen
-                    audioList.add(listenHistoryModel)
+                queryPlayBookList.forEach { audio ->
+                    val recentChapter = ListenDaoUtils.queryChapterRecentUpdate(audio.audio_id, audio.listenChapterId.toLong())
+                    recentChapter?.let { chapter ->
+                        val listenHistoryModel = ListenHistoryModel(audio, chapter)
+                        listenHistoryModel.itemType = R.layout.listen_item_history_listen
+                        audioList.add(listenHistoryModel)
+                    }
                 }
-                allHistory.postValue(audioList)
+                if (audioList.isNotEmpty()) {
+                    searchHasData.set(true)
+                    allHistory.postValue(audioList)
+                } else {
+                    searchHasData.set(false)
+                }
             } else {
                 searchHasData.set(false)
             }
@@ -111,29 +125,24 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
     fun deleteAllHistory() {
-
-
         DaoUtil(ListenChapterEntity::class.java, "").deleteAll()
         DaoUtil(ListenAudioEntity::class.java, "").deleteAll()
         allHistory.value = mutableListOf()
     }
+
+    fun showDeleteAllDialog(context: Context) {
+
+    }
+
 
     fun startListenRecentDetail(context: Context, model: ListenHistoryModel) {
 
         playService.startPlayActivity(
                 context = context,
                 audioId = model.audio.audio_id.toString(),
-                chapterId = model.audio.listenChapterList.first().chapter_id.toString(),
-                currentDuration = model.audio.listenChapterList.last().listen_duration
+                chapterId = model.chapter.chapter_id.toString(),
+                currentDuration = model.chapter.listen_duration
         )
-    }
-
-    fun showLottie(view: View?) {
-        view?.let {
-            val lottieAnimationView = it.findViewById<LottieAnimationView>(R.id.swipe_delete)
-            lottieAnimationView.visibility = View.VISIBLE
-            lottieAnimationView.playAnimation()
-        }
     }
 
     fun deleteItem(item: ListenHistoryModel) {
@@ -158,4 +167,9 @@ class ListenHistoryViewModel : BaseVMViewModel() {
             }
         }
     }
+
+    fun changeCheckListenFinish() {
+        deleteListenFinish.set(deleteListenFinish.get().not())
+    }
+
 }

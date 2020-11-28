@@ -1,11 +1,14 @@
 package com.rm.module_home.binding
 
 import android.annotation.SuppressLint
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.model.BasePlayInfoModel
 import com.rm.baselisten.model.BasePlayStatusModel
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
+import com.rm.business_lib.wedgit.LivingView
 import com.rm.module_home.R
 
 /**
@@ -43,3 +46,26 @@ fun TextView.bindPlayStatusText(statusModel: BasePlayStatusModel?, playAudioMode
         setCompoundDrawables(resDrawable, null, null, null)
     }
 }
+@BindingAdapter("bindPlayStatusModel", "bindPlayAudioModel", "bindDetailChapter", requireAll = true)
+fun TextView.bindPlayChapterText(statusModel: BasePlayStatusModel?, playAudioModel: BasePlayInfoModel?, chapter: DownloadChapter){
+    if(statusModel != null && playAudioModel != null && playAudioModel.playChapterId == chapter.chapter_id.toString()){
+        visibility = View.INVISIBLE
+    }else{
+        visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter("bindPlayStatusModel", "bindPlayAudioModel", "bindDetailChapter", requireAll = true)
+fun LivingView.bindPlayChapter(statusModel: BasePlayStatusModel?, playAudioModel: BasePlayInfoModel?, chapter: DownloadChapter){
+    if(statusModel != null && playAudioModel != null && playAudioModel.playChapterId == chapter.chapter_id.toString()){
+       if(statusModel.isStart()){
+           startAnim()
+       }else{
+           pauseAnim()
+       }
+    }else{
+        stopAnimAndGone()
+        visibility = View.GONE
+    }
+}
+

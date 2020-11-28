@@ -2,6 +2,7 @@ package com.rm.business_lib.db.listen
 
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.ListenAudioEntityDao
+import com.rm.business_lib.db.ListenChapterEntityDao
 
 /**
  * desc   :
@@ -23,7 +24,7 @@ object ListenDaoUtils {
             val queryBuilder = listenAudioDao.queryBuilder()
             if (queryBuilder != null) {
                 val result =
-                    queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).list()
+                        queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).list()
                 return result
             }
         } catch (e: Exception) {
@@ -37,8 +38,8 @@ object ListenDaoUtils {
             val queryBuilder = listenAudioDao.queryBuilder()
             if (queryBuilder != null) {
                 val result =
-                    queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).limit(10)
-                        .list()
+                        queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).limit(10)
+                                .list()
                 return result
             }
         } catch (e: Exception) {
@@ -52,7 +53,7 @@ object ListenDaoUtils {
             val queryBuilder = listenAudioDao.queryBuilder()
             if (queryBuilder != null) {
                 val result =
-                    queryBuilder.where(ListenAudioEntityDao.Properties.Audio_id.eq(audioId)).list()
+                        queryBuilder.where(ListenAudioEntityDao.Properties.Audio_id.eq(audioId)).list()
                 return if (null != result && result.isNotEmpty()) {
                     result[0]
                 } else {
@@ -70,7 +71,27 @@ object ListenDaoUtils {
 
     }
 
-    fun queryChapterByAudioId() {
+    /**
+     * 根据AudioID,chapterID，时间倒叙查询第一条章节
+     */
+    fun queryChapterRecentUpdate(audioId: Long, chapterID: Long): ListenChapterEntity? {
+        try {
+            val queryBuilder = listenChapterDao.queryBuilder()
+            if (queryBuilder != null) {
+                val result = queryBuilder
+                        .where(ListenChapterEntityDao.Properties.Audio_id.eq(audioId))
+                        .where(ListenChapterEntityDao.Properties.Chapter_id.eq(chapterID))
+                        .orderDesc(ListenChapterEntityDao.Properties.UpdateMillis).list()
+                return if (null != result && result.isNotEmpty()) {
+                    result[0]
+                } else {
+                    null
+                }
+            }
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
+        return null
 
     }
 

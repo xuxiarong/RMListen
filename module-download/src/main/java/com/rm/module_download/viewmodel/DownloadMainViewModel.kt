@@ -232,10 +232,10 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             return
         }
         TipsFragmentDialog().apply {
-            titleText = "删除提醒"
-            contentText = "确定要删除所选内容吗"
-            leftBtnText = "取消"
-            rightBtnText = "确定"
+            titleText = context.getString(R.string.business_delete_tip_title)
+            contentText = context.getString(R.string.business_delete_tip_content)
+            leftBtnText = context.getString(R.string.business_cancel)
+            rightBtnText = context.getString(R.string.business_sure)
             leftBtnTextColor = R.color.business_text_color_333333
             rightBtnTextColor = R.color.business_color_ff5e5e
             leftBtnClick = {

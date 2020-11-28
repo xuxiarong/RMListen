@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rm.module_listen.viewmodel.ListenHistoryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/business_shape_white_16dp">
+
+        <!-- 标题部分，为什么要包这一层？当标题隐藏时，内容距离顶部的距离就变小了，上下距离就没居中了-->
+        <FrameLayout
+            android:id="@+id/listen_tips_dialog_title_lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/business_tips_dialog_title"
+                style="@style/BusinessTextStyleFirst_1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:lines="1"
+                android:textStyle="bold"
+                tools:ignore="MissingConstraints,SpUsage"
+                android:text="@string/business_delete_tip_title"
+                tools:text="删除提醒" />
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/business_tips_dialog_content"
+            style="@style/BusinessTextStyleFirst_2"
+            android:padding="@dimen/dp_8"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listen_tips_dialog_title_lay"
+            tools:ignore="MissingConstraints,UnusedAttribute"
+            android:text="@string/listen_delete_content" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/business_tips_delete_finish"
+            style="@style/BusinessTextStyleFirst_2"
+            android:padding="@dimen/dp_8"
+            android:gravity="center"
+            android:drawableStart="@{viewModel.deleteListenFinish?@drawable/business_ic_check_true:@drawable/business_ic_check_false}"
+            android:onClick="@{()->viewModel.changeCheckListenFinish()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/business_tips_dialog_content"
+            tools:ignore="MissingConstraints,UnusedAttribute"
+            android:text="@string/listen_delete_listen_finish" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/listen_delete_cancel"
+            style="@style/BusinessTextStyleSecond_3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_58"
+            android:gravity="center"
+            android:text="@string/business_cancel"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/listen_tip_sure"
+            tools:ignore="MissingConstraints,SpUsage" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginBottom="@dimen/dp_58"
+            android:background="@color/stroke_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/business_tips_delete_finish"
+            tools:ignore="MissingConstraints" />
+
+        <View
+            android:id="@+id/listen_tip_cancel"
+            android:layout_width="0.5dp"
+            android:layout_height="@dimen/dp_58"
+            android:background="@color/stroke_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/listen_delete_cancel"
+            app:layout_constraintRight_toLeftOf="@+id/listen_tip_sure"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/listen_tip_sure"
+            style="@style/BusinessTextStyleSecond_3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_58"
+            android:gravity="center"
+            android:text="@string/business_sure"
+            android:textStyle="bold"
+            android:textColor="@color/base_ff5e5e"
+            android:onClick="@{()->viewModel.deleteAllHistory()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toRightOf="@+id/listen_delete_cancel"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints,SpUsage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

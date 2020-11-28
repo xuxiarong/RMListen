@@ -45,7 +45,6 @@ class ListenDialogSheetViewModel(
         CommonMvFragmentDialog().apply {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
-            dialogHeightIsMatchParent = true
             dialogHasBackground = true
             initDialog = {
                 dataBinding = mDataBind as ListenDialogSheetListBinding

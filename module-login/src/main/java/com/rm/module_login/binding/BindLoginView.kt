@@ -16,8 +16,8 @@ import com.rm.module_login.R
 fun ImageView.bindLoginStatus(loginStatus : Int){
     when(loginStatus){
         LoginConstants.LOGIN_LOGGING -> setImageResource(R.drawable.login_ic_close_eyes)
-        LoginConstants.LOGIN_SUCCESS -> setImageResource(R.drawable.login_ic_checkbox_true)
-        LoginConstants.LOGIN_FAILED -> setImageResource(R.drawable.login_ic_checkbox_false)
+        LoginConstants.LOGIN_SUCCESS -> setImageResource(R.drawable.business_ic_check_true)
+        LoginConstants.LOGIN_FAILED -> setImageResource(R.drawable.business_ic_check_false)
     }
 }
 
