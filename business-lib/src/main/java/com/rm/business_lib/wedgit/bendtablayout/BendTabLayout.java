@@ -56,6 +56,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.flyco.roundview.RoundFrameLayout;
 import com.rm.baselisten.util.DLog;
 import com.rm.business_lib.R;
 
@@ -1420,6 +1421,7 @@ public class BendTabLayout extends HorizontalScrollView {
         private BendTab mTab;
         private TextView mTextView;
         private ImageView mIconView;
+        private RoundFrameLayout mPoint;
 
         private View mCustomView;
         private TextView mCustomTextView;
@@ -1621,9 +1623,10 @@ public class BendTabLayout extends HorizontalScrollView {
                     mIconView = iconView;
                 }
                 if (mTextView == null) {
-                    TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.layout_bend_tab_text, this, false);
-                    textView.setPadding(dpToPx(6), 0, dpToPx(6), 0);
-                    addView(textView);
+                    View frameLayout = LayoutInflater.from(getContext()).inflate(R.layout.layout_bend_tab_text, this, false);
+                    TextView textView = frameLayout.findViewById(R.id.bend_tab_tv);
+                    mPoint = frameLayout.findViewById(R.id.bend_tab_point);
+                    addView(frameLayout);
                     mTextView = textView;
                     mDefaultMaxLines = TextViewCompat.getMaxLines(mTextView);
                 }
@@ -1697,6 +1700,12 @@ public class BendTabLayout extends HorizontalScrollView {
          */
         private float approximateLineWidth(Layout layout, int line, float textSize) {
             return layout.getLineWidth(line) * (textSize / layout.getPaint().getTextSize());
+        }
+
+        public void setRedPointVisible(boolean isVisible) {
+            if (mPoint != null) {
+                mPoint.setVisibility(isVisible ? VISIBLE : GONE);
+            }
         }
     }
 

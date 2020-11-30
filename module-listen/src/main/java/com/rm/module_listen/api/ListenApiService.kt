@@ -68,6 +68,16 @@ interface ListenApiService {
         @Query("page_size") page_size: Int
     ): BaseResponse<ListenChapterList>
 
+
+    /**
+     * 订阅更新上报
+     */
+    @POST("report/report")
+    suspend fun listenSubsReport(
+        @Query("report_type") report_type: String,
+        @Query("member_id") member_id: String
+        ): BaseResponse<Any>
+
     /**
      * 最近收听
      */

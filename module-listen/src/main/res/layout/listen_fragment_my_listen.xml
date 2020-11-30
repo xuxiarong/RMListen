@@ -12,229 +12,240 @@
             type="com.rm.module_listen.viewmodel.ListenMyListenViewModel" />
     </data>
 
+     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+         android:id="@+id/listen_my_listen_srl"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_marginTop="20dp"
+         bindOnRefreshListener="@{viewModel.refresh}"
+         bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+         app:srlEnableLoadMore="false"
+         app:srlEnableAutoLoadMore="false"
+         >
+         <androidx.coordinatorlayout.widget.CoordinatorLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/listen_appbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:background="@color/businessWhite"
-            android:orientation="vertical"
-            android:stateListAnimator="@drawable/business_app_bar_elevation">
-
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="@dimen/dp_45"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="@dimen/dp_54"
-                    android:src="@drawable/business_my_listen_bg"
-                    android:rotation="180"
-                    />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_collapseMode="none">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/listenMyListenTitle"
-                        style="@style/BusinessTextStyleFirst_0"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="@dimen/dp_16"
-                        android:gravity="center_vertical"
-                        android:text="@string/listen_my_listen_title"
-                        android:visibility="gone"
-                        android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:id="@+id/listenMyListenHeadLl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_16"
-                        android:layout_marginTop="@dimen/dp_35"
-                        android:layout_marginEnd="@dimen/dp_16"
-                        android:layout_marginBottom="@dimen/dp_15"
-                        android:orientation="horizontal"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/listenMyListenTitle">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/listenSubCl"
-                            style="@style/ListenTopCl">
-
-                            <View
-                                android:id="@+id/listenSubBgView"
-                                style="@style/ListenTopBgView"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                style="@style/ListenTopIcon"
-                                android:src="@drawable/listen_icon_subscription"
-                                app:layout_constraintBottom_toBottomOf="@+id/listenSubBgView"
-                                app:layout_constraintEnd_toEndOf="@+id/listenSubBgView"
-                                app:layout_constraintStart_toStartOf="@+id/listenSubBgView"
-                                app:layout_constraintTop_toTopOf="@+id/listenSubBgView" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/ListenTopText"
-                                bindSubsText="@{viewModel.subsNumber}"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/listenDownloadCl"
-                            style="@style/ListenTopCl">
-
-                            <View
-                                android:id="@+id/listenDownloadBgView"
-                                style="@style/ListenTopBgView"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                style="@style/ListenTopIcon"
-                                android:src="@drawable/listen_icon_download"
-                                app:layout_constraintBottom_toBottomOf="@+id/listenDownloadBgView"
-                                app:layout_constraintEnd_toEndOf="@+id/listenDownloadBgView"
-                                app:layout_constraintStart_toStartOf="@+id/listenDownloadBgView"
-                                app:layout_constraintTop_toTopOf="@+id/listenDownloadBgView" />
-
-                            <com.flyco.roundview.RoundTextView
-                                android:id="@+id/download_chapter_num"
-                                bindDownloadNum="@{DownloadMemoryCache.INSTANCE.downloadingNum}"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginTop="2dp"
-                                android:gravity="center"
-                                app:layout_constraintTop_toTopOf="@+id/listenDownloadBgView"
-                                app:layout_constraintEnd_toEndOf="@+id/listenDownloadBgView"
-                                android:text="@{String.valueOf(viewModel.downloadNumber)}"
-                                android:textColor="@color/business_text_color_ffffff"
-                                android:textSize="@dimen/business_text_size_12sp"
-                                app:rv_backgroundColor="@color/base_ff5e5e"
-                                app:rv_isRadiusHalfHeight="true" />
+             <com.google.android.material.appbar.AppBarLayout
+                 android:id="@+id/listen_appbar_layout"
+                 android:layout_width="match_parent"
+                 android:layout_height="210dp"
+                 android:background="@color/businessWhite"
+                 android:orientation="vertical"
+                 android:stateListAnimator="@drawable/business_app_bar_elevation">
 
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/ListenTopText"
-                                android:text="@string/listen_my_listen_download"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
+                 <com.google.android.material.appbar.CollapsingToolbarLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:minHeight="@dimen/dp_45"
+                     app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                     <androidx.appcompat.widget.AppCompatImageView
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="bottom"
+                         android:layout_marginBottom="@dimen/dp_54"
+                         android:src="@drawable/business_my_listen_bg"
+                         android:rotation="180"
+                         />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/listenBuyCl"
-                            style="@style/ListenTopCl">
+                     <FrameLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         app:layout_collapseMode="none">
 
-                            <View
-                                android:id="@+id/listenBuyBgView"
-                                style="@style/ListenTopBgView"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                         <androidx.appcompat.widget.AppCompatTextView
+                             android:id="@+id/listenMyListenTitle"
+                             style="@style/BusinessTextStyleFirst_0"
+                             android:layout_width="match_parent"
+                             android:layout_height="40dp"
+                             android:layout_marginStart="@dimen/dp_16"
+                             android:gravity="center_vertical"
+                             android:text="@string/listen_my_listen_title"
+                             android:visibility="gone"
+                             android:textSize="20sp"
+                             app:layout_constraintStart_toStartOf="parent"
+                             app:layout_constraintTop_toTopOf="parent" />
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                style="@style/ListenTopIcon"
-                                android:src="@drawable/listen_icon_buy"
-                                app:layout_constraintBottom_toBottomOf="@+id/listenBuyBgView"
-                                app:layout_constraintEnd_toEndOf="@+id/listenBuyBgView"
-                                app:layout_constraintStart_toStartOf="@+id/listenBuyBgView"
-                                app:layout_constraintTop_toTopOf="@+id/listenBuyBgView" />
+                         <LinearLayout
+                             android:id="@+id/listenMyListenHeadLl"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_marginStart="@dimen/dp_16"
+                             android:layout_marginTop="@dimen/dp_35"
+                             android:layout_marginEnd="@dimen/dp_16"
+                             android:layout_marginBottom="@dimen/dp_15"
+                             android:orientation="horizontal"
+                             app:layout_constraintStart_toStartOf="parent"
+                             app:layout_constraintTop_toBottomOf="@id/listenMyListenTitle">
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/ListenTopText"
-                                android:text="@string/listen_my_listen_buy"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
+                             <androidx.constraintlayout.widget.ConstraintLayout
+                                 android:id="@+id/listenSubCl"
+                                 style="@style/ListenTopCl">
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                 <View
+                                     android:id="@+id/listenSubBgView"
+                                     style="@style/ListenTopBgView"
+                                     app:layout_constraintEnd_toEndOf="parent"
+                                     app:layout_constraintStart_toStartOf="parent"
+                                     app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/listenListCl"
-                            style="@style/ListenTopCl">
+                                 <androidx.appcompat.widget.AppCompatImageView
+                                     style="@style/ListenTopIcon"
+                                     android:src="@drawable/listen_icon_subscription"
+                                     app:layout_constraintBottom_toBottomOf="@+id/listenSubBgView"
+                                     app:layout_constraintEnd_toEndOf="@+id/listenSubBgView"
+                                     app:layout_constraintStart_toStartOf="@+id/listenSubBgView"
+                                     app:layout_constraintTop_toTopOf="@+id/listenSubBgView" />
 
-                            <View
-                                android:id="@+id/listenListBgView"
-                                style="@style/ListenTopBgView"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                 <androidx.appcompat.widget.AppCompatTextView
+                                     style="@style/ListenTopText"
+                                     bindSubsText="@{viewModel.subsNumber}"
+                                     app:layout_constraintBottom_toBottomOf="parent"
+                                     app:layout_constraintEnd_toEndOf="parent"
+                                     app:layout_constraintStart_toStartOf="parent" />
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                style="@style/ListenTopIcon"
-                                android:src="@drawable/listen_icon_list"
-                                app:layout_constraintBottom_toBottomOf="@+id/listenListBgView"
-                                app:layout_constraintEnd_toEndOf="@+id/listenListBgView"
-                                app:layout_constraintStart_toStartOf="@+id/listenListBgView"
-                                app:layout_constraintTop_toTopOf="@+id/listenListBgView" />
+                             </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/ListenTopText"
-                                android:text="@string/listen_my_listen_list"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
+                             <androidx.constraintlayout.widget.ConstraintLayout
+                                 android:id="@+id/listenDownloadCl"
+                                 style="@style/ListenTopCl">
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </LinearLayout>
+                                 <View
+                                     android:id="@+id/listenDownloadBgView"
+                                     style="@style/ListenTopBgView"
+                                     app:layout_constraintEnd_toEndOf="parent"
+                                     app:layout_constraintStart_toStartOf="parent"
+                                     app:layout_constraintTop_toTopOf="parent" />
 
-                </FrameLayout>
+                                 <androidx.appcompat.widget.AppCompatImageView
+                                     style="@style/ListenTopIcon"
+                                     android:src="@drawable/listen_icon_download"
+                                     app:layout_constraintBottom_toBottomOf="@+id/listenDownloadBgView"
+                                     app:layout_constraintEnd_toEndOf="@+id/listenDownloadBgView"
+                                     app:layout_constraintStart_toStartOf="@+id/listenDownloadBgView"
+                                     app:layout_constraintTop_toTopOf="@+id/listenDownloadBgView" />
 
-                <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
-                    android:id="@+id/listenMyListenRtl"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_45"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginTop="10dp"
-                    app:bendTabIndicatorAnimation="true"
-                    app:bendTabIndicatorColor="@color/business_color_ff5e5e"
-                    app:bendTabIndicatorHeight="@dimen/dp_1"
-                    app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
-                    app:bendTabIndicatorWidth="@dimen/dp_24"
-                    app:bendTabMode="fixed"
-                    app:bendTabBackground="@null"
-                    app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
-                    app:bendTabTextSize="@dimen/business_text_size_16sp"
-                    app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
-                    app:layout_collapseMode="pin" />
+                                 <com.flyco.roundview.RoundTextView
+                                     android:id="@+id/download_chapter_num"
+                                     bindDownloadNum="@{DownloadMemoryCache.INSTANCE.downloadingNum}"
+                                     android:layout_width="20dp"
+                                     android:layout_height="20dp"
+                                     android:layout_marginTop="2dp"
+                                     android:gravity="center"
+                                     app:layout_constraintTop_toTopOf="@+id/listenDownloadBgView"
+                                     app:layout_constraintEnd_toEndOf="@+id/listenDownloadBgView"
+                                     android:text="@{String.valueOf(viewModel.downloadNumber)}"
+                                     android:textColor="@color/business_text_color_ffffff"
+                                     android:textSize="@dimen/business_text_size_12sp"
+                                     app:rv_backgroundColor="@color/base_ff5e5e"
+                                     app:rv_isRadiusHalfHeight="true" />
 
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        </com.google.android.material.appbar.AppBarLayout>
+                                 <androidx.appcompat.widget.AppCompatTextView
+                                     style="@style/ListenTopText"
+                                     android:text="@string/listen_my_listen_download"
+                                     app:layout_constraintBottom_toBottomOf="parent"
+                                     app:layout_constraintEnd_toEndOf="parent"
+                                     app:layout_constraintStart_toStartOf="parent" />
 
-        <com.rm.business_lib.wedgit.NoTouchViewPager
-            android:id="@+id/listenMyListenVp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="-30dp"
-            android:layout_marginBottom="30dp"
-            android:orientation="horizontal"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                             </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                             <androidx.constraintlayout.widget.ConstraintLayout
+                                 android:id="@+id/listenBuyCl"
+                                 style="@style/ListenTopCl">
+
+                                 <View
+                                     android:id="@+id/listenBuyBgView"
+                                     style="@style/ListenTopBgView"
+                                     app:layout_constraintEnd_toEndOf="parent"
+                                     app:layout_constraintStart_toStartOf="parent"
+                                     app:layout_constraintTop_toTopOf="parent" />
+
+                                 <androidx.appcompat.widget.AppCompatImageView
+                                     style="@style/ListenTopIcon"
+                                     android:src="@drawable/listen_icon_buy"
+                                     app:layout_constraintBottom_toBottomOf="@+id/listenBuyBgView"
+                                     app:layout_constraintEnd_toEndOf="@+id/listenBuyBgView"
+                                     app:layout_constraintStart_toStartOf="@+id/listenBuyBgView"
+                                     app:layout_constraintTop_toTopOf="@+id/listenBuyBgView" />
+
+                                 <androidx.appcompat.widget.AppCompatTextView
+                                     style="@style/ListenTopText"
+                                     android:text="@string/listen_my_listen_buy"
+                                     app:layout_constraintBottom_toBottomOf="parent"
+                                     app:layout_constraintEnd_toEndOf="parent"
+                                     app:layout_constraintStart_toStartOf="parent" />
+
+                             </androidx.constraintlayout.widget.ConstraintLayout>
+
+                             <androidx.constraintlayout.widget.ConstraintLayout
+                                 android:id="@+id/listenListCl"
+                                 style="@style/ListenTopCl">
+
+                                 <View
+                                     android:id="@+id/listenListBgView"
+                                     style="@style/ListenTopBgView"
+                                     app:layout_constraintEnd_toEndOf="parent"
+                                     app:layout_constraintStart_toStartOf="parent"
+                                     app:layout_constraintTop_toTopOf="parent" />
+
+                                 <androidx.appcompat.widget.AppCompatImageView
+                                     style="@style/ListenTopIcon"
+                                     android:src="@drawable/listen_icon_list"
+                                     app:layout_constraintBottom_toBottomOf="@+id/listenListBgView"
+                                     app:layout_constraintEnd_toEndOf="@+id/listenListBgView"
+                                     app:layout_constraintStart_toStartOf="@+id/listenListBgView"
+                                     app:layout_constraintTop_toTopOf="@+id/listenListBgView" />
+
+                                 <androidx.appcompat.widget.AppCompatTextView
+                                     style="@style/ListenTopText"
+                                     android:text="@string/listen_my_listen_list"
+                                     app:layout_constraintBottom_toBottomOf="parent"
+                                     app:layout_constraintEnd_toEndOf="parent"
+                                     app:layout_constraintStart_toStartOf="parent" />
+
+                             </androidx.constraintlayout.widget.ConstraintLayout>
+                         </LinearLayout>
+
+                     </FrameLayout>
+
+                     <com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
+                         android:id="@+id/listenMyListenRtl"
+                         android:layout_width="match_parent"
+                         android:layout_height="@dimen/dp_45"
+                         android:layout_gravity="center_horizontal|bottom"
+                         android:layout_marginTop="10dp"
+                         app:bendTabIndicatorAnimation="true"
+                         app:bendTabIndicatorColor="@color/business_color_ff5e5e"
+                         app:bendTabIndicatorHeight="@dimen/dp_1"
+                         app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
+                         app:bendTabIndicatorWidth="@dimen/dp_24"
+                         app:bendTabMode="fixed"
+                         app:bendTabBackground="@null"
+                         app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
+                         app:bendTabTextSize="@dimen/business_text_size_16sp"
+                         app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
+                         app:layout_collapseMode="pin" />
+
+                 </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+             </com.google.android.material.appbar.AppBarLayout>
+
+             <com.rm.business_lib.wedgit.NoTouchViewPager
+                 android:id="@+id/listenMyListenVp"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:layout_gravity="bottom"
+                 android:layout_marginTop="-30dp"
+                 android:layout_marginBottom="30dp"
+                 android:orientation="horizontal"
+                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 
 </layout>

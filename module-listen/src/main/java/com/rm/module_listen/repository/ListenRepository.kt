@@ -49,6 +49,7 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
     ): BaseResult<SheetFavorBean> {
         return apiCall { service.listenSheetFavoriteList(page, pageSize, memberId) }
     }
+
     /**
      * 收藏听单列表
      */
@@ -65,7 +66,10 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
      * @param sheet_name 听单名称
      * @param description 听单简介
      */
-    suspend fun createSheet(sheet_name: String, description: String): BaseResult<ListenCreateSheetModel> {
+    suspend fun createSheet(
+        sheet_name: String,
+        description: String
+    ): BaseResult<ListenCreateSheetModel> {
         return apiCall { service.listenCreateSheetList(sheet_name, description) }
     }
 
@@ -150,6 +154,12 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
         pageSize: Int
     ): BaseResult<MutableList<ListenSubscriptionListBean>> {
         return apiCall { service.listenSubscriptionList(page, pageSize) }
+    }
+
+    suspend fun listenSubsReport(report_type: String, member_id: String): BaseResult<Any> {
+        return apiCall {
+            service.listenSubsReport(report_type, member_id)
+        }
     }
 
     /**

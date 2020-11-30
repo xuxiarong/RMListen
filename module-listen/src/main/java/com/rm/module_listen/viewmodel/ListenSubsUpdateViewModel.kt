@@ -13,7 +13,9 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.AudioSortType
+import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
@@ -23,10 +25,7 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
-import com.rm.module_listen.model.ListenAudio
-import com.rm.module_listen.model.ListenAudioChapter
-import com.rm.module_listen.model.ListenAudioInfo
-import com.rm.module_listen.model.ListenSubsDateModel
+import com.rm.module_listen.model.*
 import com.rm.module_listen.repository.ListenRepository
 
 /**
@@ -52,6 +51,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     private var currentDatePosition = 0
     private var currentSubsDateFirstPosition = 0
     private var isClickScroll = false
+    private var isShowFooter = false
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -72,6 +72,26 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         }
     }
 
+    fun checkRedPointStatus() {
+        if (HomeGlobalData.isShowSubsRedPoint.get()) {
+            reportSubsUpgradeRead()
+            HomeGlobalData.isShowSubsRedPoint.set(false)
+        }
+    }
+
+    private fun reportSubsUpgradeRead() {
+        launchOnIO {
+            repository.listenSubsReport(
+                report_type = "listen_upgrade_red_point",
+                member_id = loginUser.get()?.id ?: ""
+            ).checkResult(onSuccess = {
+                DLog.d("suolong","订阅更新上报成功")
+            },onError = {
+                DLog.d("suolong","订阅更新上报失败 ${it?:"原因为空"}")
+            })
+        }
+    }
+
     fun getSubsDataFromService() {
         showLoading()
         launchOnIO {
@@ -80,8 +100,42 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                     showContentView()
                     refreshStatusModel.setNoHasMore(it.list.size < pageSize)
                     refreshStatusModel.finishLoadMore(true)
+                    if (it.list.size < pageSize) {
+                        isShowFooter = !(pageSize == 1 && (it.list.size in 1..4))
+                    }
                     currentPage++
                     dealData(it.list)
+                }, onError = {
+                    showServiceError()
+                    refreshStatusModel.finishLoadMore(false)
+                    DLog.d("suolong", "on error")
+                }
+            )
+        }
+    }
+
+    fun refreshSubsDataFromService() {
+        currentPage = 1
+        launchOnIO {
+            repository.getListenSubsUpgradeList(currentPage, pageSize).checkResult(
+                onSuccess = {
+                    refreshStatusModel.setNoHasMore(it.list.size < pageSize)
+                    refreshStatusModel.finishLoadMore(true)
+                    if (it.list.size > 0) {
+                        if (it.list.size < pageSize) {
+                            isShowFooter = !(pageSize == 1 && (it.list.size in 1..4))
+                        }
+                        currentPage++
+                        subsAudioAdapter.data.clear()
+                        dealData(it.list)
+                        if(HomeGlobalData.myListenSelectTab.get() == HomeGlobalData.LISTEN_SELECT_MY_LISTEN){
+                            HomeGlobalData.isShowSubsRedPoint.set(it.total_unread>it.last_unread)
+                        }else{
+                            HomeGlobalData.isShowSubsRedPoint.set(false)
+                        }
+                    } else {
+                        HomeGlobalData.isShowSubsRedPoint.set(false)
+                    }
                 }, onError = {
                     showServiceError()
                     refreshStatusModel.finishLoadMore(false)
@@ -126,7 +180,10 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         chapterList.forEach { chapter ->
             var hasChapter = false
             audioList.forEach { audio ->
-                if (audio.info.audio_id == chapter.audio_id) {
+                if (audio.info.audio_id == chapter.audio_id && TimeUtils.getListenSubsUpdateTime(
+                        audio.info.upgrade_time
+                    ) == TimeUtils.getListenSubsUpdateTime(chapter.upgrade_time)
+                ) {
                     audio.chapter.add(chapter)
                     hasChapter = true
                 }
@@ -192,6 +249,9 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             }
             subsAudioAdapter.addData(audio)
         }
+        if (isShowFooter) {
+            subsAudioAdapter.addData(ListenSubsFooterModel())
+        }
     }
 
     /**
@@ -207,7 +267,10 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             chapter.itemType = R.layout.listen_item_subs_list_chapter
             if (tempAllAudioList.size > 0) {
                 val lastAudio = tempAllAudioList.last() as ListenAudio
-                if (lastAudio.info.audio_id == chapter.audio_id) {
+                if (lastAudio.info.audio_id == chapter.audio_id && TimeUtils.getListenSubsUpdateTime(
+                        lastAudio.info.upgrade_time
+                    ) == TimeUtils.getListenSubsUpdateTime(chapter.upgrade_time)
+                ) {
                     lastAudio.chapter.add(chapter)
                     iterator.remove()
                 }
@@ -224,8 +287,8 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     fun getAudioAdapter(audio: ListenAudio): CommonMultiVMAdapter {
         val rvList = ArrayList<MultiItemEntity>()
         rvList.add(audio.info)
-        for (i in 0 until audio.chapter.size){
-            audio.chapter[i].position = i+1
+        for (i in 0 until audio.chapter.size) {
+            audio.chapter[i].position = i + 1
             rvList.add(audio.chapter[i])
         }
 

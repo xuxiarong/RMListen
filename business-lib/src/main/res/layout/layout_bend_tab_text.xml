@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:ellipsize="end"
-    android:gravity="center"
-    android:maxLines="2"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/bend_tab_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_8"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        tools:text="订阅更新"/>
+    <com.flyco.roundview.RoundFrameLayout
+        android:id="@+id/bend_tab_point"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        app:rv_isRadiusHalfHeight="true"
+        android:visibility="gone"
+        app:rv_backgroundColor="@color/base_ff5e5e"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="@dimen/dp_10"
+        />
+</FrameLayout>

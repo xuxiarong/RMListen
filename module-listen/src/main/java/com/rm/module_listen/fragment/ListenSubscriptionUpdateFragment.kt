@@ -4,6 +4,7 @@ import androidx.databinding.Observable
 import com.rm.baselisten.binding.bindHorizontalLayout
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.isLogin
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -26,7 +27,14 @@ class ListenSubscriptionUpdateFragment :
         isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if(isLogin.get()){
-                    mViewModel.getSubsDataFromService()
+                    mViewModel.refreshSubsDataFromService()
+                }
+            }
+        })
+        HomeGlobalData.myListenSelectTab.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(HomeGlobalData.myListenSelectTab.get() == HomeGlobalData.LISTEN_SELECT_SUBS_UPDATE && isLogin.get()){
+                    mViewModel.checkRedPointStatus()
                 }
             }
         })
@@ -37,10 +45,15 @@ class ListenSubscriptionUpdateFragment :
 
     override fun initData() {
         if(isLogin.get()){
-            mViewModel.getSubsDataFromService()
+            mViewModel.refreshSubsDataFromService()
         }
     }
 
+    fun refreshSubsData(){
+        if(isLogin.get()){
+            mViewModel.refreshSubsDataFromService()
+        }
+    }
 
     override fun initView() {
         super.initView()
