@@ -11,21 +11,8 @@ import androidx.databinding.BindingAdapter
  */
 @SuppressLint("SetTextI18n")
 @BindingAdapter("bindPlayCount")
-fun TextView.bindPlayCount(count: Int) {
-    text = when {
-        count < 10000 -> {
-            count.toString()
-        }
-        count > 99999999 -> {
-            "9999w+"
-        }
-        else -> {
-            val wan = count / 10000
-            val qian = count % 10000 / 1000
-            val bai = count % 1000 / 100
-            "$wan" + "." + "$qian" + "w"
-        }
-    }
+fun TextView.bindPlayCount(count: Int? = 0) {
+    text = getPlayCount(count)
 }
 
 @BindingAdapter("bindPlayCount", "bindPlayCountUnit", requireAll = false)
@@ -49,36 +36,38 @@ fun TextView.bindPlayCountString(count: String?, unit: String? = null) {
 
 }
 
-fun getPlayCount(count: Int): String {
+fun getPlayCount(count: Int?): String {
+    val i = count ?: 0
     return when {
-        count < 10000 -> {
-            count.toString()
+        i < 10000 -> {
+            i.toString()
         }
-        count > 99999999 -> {
+        i > 99999999 -> {
             "9999w+"
         }
         else -> {
-            val wan = count / 10000
-            val qian = count % 10000 / 1000
-            val bai = count % 1000 / 100
+            val wan = i / 10000
+            val qian = i % 10000 / 1000
+            val bai = i % 1000 / 100
             "$wan" + "." + "$qian" + "w"
         }
     }
 
 }
 
-fun getPlayCount(count: Long): String {
+fun getPlayCount(count: Long?): String {
+    val i = count ?: 0
     return when {
-        count < 10000 -> {
-            count.toString()
+        i < 10000 -> {
+            intArrayOf().toString()
         }
-        count > 99999999 -> {
+        i > 99999999 -> {
             "9999w+"
         }
         else -> {
-            val wan = count / 10000
-            val qian = count % 10000 / 1000
-            val bai = count % 1000 / 100
+            val wan = i / 10000
+            val qian = i % 10000 / 1000
+            val bai = i % 1000 / 100
             "$wan" + "." + "$qian" + "w"
         }
     }

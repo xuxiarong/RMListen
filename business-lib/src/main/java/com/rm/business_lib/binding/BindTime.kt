@@ -28,7 +28,10 @@ fun TextView.bindDate(time: Long) {
 }
 
 @BindingAdapter("bindDateString")
-fun TextView.bindDateString(time: String) {
+fun TextView.bindDateString(time: String?) {
+    if (time == null) {
+        return
+    }
     try {
         bindDate(time.toLong())
     } catch (e: Exception) {

@@ -29,9 +29,12 @@ class HomeMenuDetailActivity :
             context.startActivityForResult(intent, 100)
         }
     }
+
     private val footView by lazy {
         LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
     }
+
+    private var dataBinding: HomeHeaderMenuDetailBinding? = null
 
     override fun getLayoutId() = R.layout.home_activity_listen_menu_detail
 
@@ -44,19 +47,19 @@ class HomeMenuDetailActivity :
 
         setTransparentStatusBar()//设置透明沉浸状态栏
 
-        val layoutParams = (mDataBind.homeMenuDetailTitleCl.layoutParams) as ConstraintLayout.LayoutParams
+        val layoutParams =
+            (mDataBind.homeMenuDetailTitleCl.layoutParams) as ConstraintLayout.LayoutParams
         layoutParams.apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin
             val stateHeight = getStateHeight(this@HomeMenuDetailActivity)
             topMargin = stateHeight
         }
 
-        recycleScrollListener()
-
         mDataBind.homeMenuDetailRecyclerView.apply {
             bindVerticalLayout(mViewModel.mAdapter)
             createHeader()
         }
+        recycleScrollListener()
     }
 
     override fun initData() {
@@ -65,14 +68,14 @@ class HomeMenuDetailActivity :
     }
 
     private fun createHeader() {
-        mViewModel.dataBinding = DataBindingUtil.inflate<HomeHeaderMenuDetailBinding>(
+        dataBinding = DataBindingUtil.inflate<HomeHeaderMenuDetailBinding>(
             LayoutInflater.from(this@HomeMenuDetailActivity),
             R.layout.home_header_menu_detail,
             mDataBind.homeMenuDetailRecyclerView,
             false
         ).apply {
-            this.root.visibility = View.GONE
-            mViewModel.mAdapter.addHeaderView(this.root)
+            mViewModel.mAdapter.addHeaderView(root)
+            setVariable(BR.headerViewModel, mViewModel)
         }
     }
 
@@ -103,8 +106,8 @@ class HomeMenuDetailActivity :
             private var totalDy = 0
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val top = mViewModel.dataBinding?.homeMenuDetailFrontCover?.top ?: 0
-                val height = mViewModel.dataBinding?.homeMenuDetailFrontCover?.height ?: 0
+                val top = dataBinding?.homeMenuDetailFrontCover?.top ?: 0
+                val height = dataBinding?.homeMenuDetailFrontCover?.height ?: 0
                 totalDy += dy
                 if (totalDy > 0) {
                     val alpha = if (totalDy.toFloat() / (top + height) > 1f) {

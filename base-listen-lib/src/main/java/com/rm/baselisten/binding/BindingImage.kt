@@ -89,11 +89,6 @@ fun ImageView.blurUrl(blurUrl: String?) {
     loadBlurImage(this, url)
 }
 
-@BindingAdapter("blurRoundUrl")
-fun ImageView.blurRoundUrl(blurUrl: String?) {
-    val url = blurUrl ?: ""
-    loadRoundCornersImage(8.0f,this, url)
-}
 
 @BindingAdapter("bindPlayRotation")
 fun ImageView.bindPlayRotation(model : BasePlayStatusModel?){

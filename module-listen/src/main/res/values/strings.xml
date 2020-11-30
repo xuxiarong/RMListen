@@ -22,8 +22,8 @@
     <string name="listen_unsubscribe">取消订阅</string>
     <string name="listen_delete">删除</string>
 
-    <string name="listen_add_to_book_list">添加到书单</string>
-    <string name="listen_create_book_list">+新建书单</string>
+    <string name="listen_add_to_book_list">添加到听单</string>
+    <string name="listen_create_book_list">+新建听单</string>
 
     <string name="listen_create_sheet_list">新建听单</string>
     <string name="listen_title_text">标题：</string>
@@ -45,6 +45,7 @@
     <string name="listen_edit_fail">编辑失败</string>
     <string name="listen_edit_success_tip">修改成功,请到我的听单中查看</string>
     <string name="listen_input_char_tip">不能输入特殊字符</string>
+    <string name="listen_input_no_null_tip">名称不能为空</string>
     <string name="listen_input_length_tip">长度不能大于20</string>
     <string name="listen_add_success">添加成功</string>
     <string name="listen_edit_sheet">编辑听单</string>
@@ -54,7 +55,7 @@
     <string name="listen_cancel_top_success">取消置顶成功</string>
     <string name="listen_create_success">创建成功</string>
     <string name="listen_create_failure">创建失败</string>
-    <string name="listen_book_num">共%d本</string>
+    <string name="listen_book_num">共%s本</string>
 
 
     <string name="listen_know">我知道了</string>
@@ -62,6 +63,7 @@
     <string name="listen_add_success_content">可在“我听-听单”中查看</string>
     <string name="listen_max_sub_num">99+</string>
     <string name="listen_sheet_no_data">此听单还没内容，快去添加一个吧！</string>
+    <string name="listen_sheet_quilt_delete">书单书籍已被作者删除～</string>
 
     <string name="listen_delete_content">确定清除所有的播放记录</string>
     <string name="listen_delete_listen_finish">仅删除已听完</string>

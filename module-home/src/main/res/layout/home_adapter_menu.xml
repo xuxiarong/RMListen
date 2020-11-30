@@ -12,6 +12,8 @@
         <variable
             name="itemViewModel"
             type="com.rm.module_home.viewmodel.HomeMenuViewModel" />
+
+        <import type="com.rm.business_lib.binding.BindPlayCountKt"/>
     </data>
 
     <com.rm.business_lib.wedgit.shadow.ShadowLayout
@@ -34,22 +36,25 @@
             app:layout_shadowColor="#55b1b1b1"
             app:layout_shadowRadius="@dimen/dp_6">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_menu_adapter_name"
                 style="@style/TextViewHeadStyle"
                 android:layout_width="0dp"
+                android:layout_marginEnd="@dimen/dp_20"
                 android:layout_weight="1"
+                android:singleLine="true"
                 android:text="@{menuItemBean.sheet_name}"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/home_menu_adapter_total_books_number"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="幻海航行 | 领略科幻的海洋" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_menu_adapter_total_books_number"
                 style="@style/TextViewSecondStyle"
                 android:drawableEnd="@drawable/business_ic_next"
-                android:text="@{@string/home_audio_size(menuItemBean.num_audio)}"
                 android:drawablePadding="@dimen/dp_2"
+                android:text="@{@string/home_audio_size(BindPlayCountKt.getPlayCount(menuItemBean.num_audio))}"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_name"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/home_menu_adapter_name"
@@ -57,9 +62,10 @@
 
 
             <!-- 作者信息部分-->
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_menu_adapter_author_icon"
                 bindUrl="@{menuItemBean.avatar_url}"
+                defaultIcon="@{@drawable/business_ic_default_user}"
                 isCircle="@{true}"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
@@ -68,17 +74,18 @@
                 app:layout_constraintTop_toBottomOf="@id/home_menu_adapter_name"
                 tools:src="#00ff00" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_menu_adapter_author_name"
                 style="@style/BusinessTextStyleSecond_4"
                 android:layout_marginStart="@dimen/dp_6"
+                android:maxWidth="@dimen/dp_250"
                 android:text="@{menuItemBean.nickname}"
                 app:layout_constraintBottom_toBottomOf="@id/home_menu_adapter_author_icon"
-                app:layout_constraintLeft_toRightOf="@id/home_menu_adapter_author_icon"
+                app:layout_constraintStart_toEndOf="@id/home_menu_adapter_author_icon"
                 app:layout_constraintTop_toTopOf="@id/home_menu_adapter_author_icon"
                 tools:text="小丸子" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_menu_adapter_collection_number_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,7 +95,7 @@
                 app:layout_constraintLeft_toRightOf="@id/home_menu_adapter_author_name"
                 app:layout_constraintTop_toTopOf="@id/home_menu_adapter_author_name" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_menu_adapter_collection_number"
                 style="@style/BusinessTextStyleSecond_4"
                 bindPlayCount="@{menuItemBean.num_favor}"

@@ -15,6 +15,7 @@ import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_A
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_ANCHOR
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_BOOKS
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_SHEET
+import com.rm.module_search.bean.SearchResultBean
 import com.rm.module_search.repository.SearchRepository
 
 /**
@@ -175,15 +176,29 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     fun searchResult(keyword: String) {
         oldKeyword = keyword
         saveHistory(keyword)
+        showLoading()
         launchOnIO {
             repository.searchResult(keyword, REQUEST_TYPE_ALL, 1, 12).checkResult(
                 onSuccess = {
+                    showContentView()
                     searchResultData.postValue(it)
                     historyVisible.set(false)
                     suggestIsVisible.set(false)
                     contentIsVisible.set(true)
                 },
                 onError = {
+                    showContentView()
+                    searchResultData.postValue(
+                        SearchResultBean(
+                            0,
+                            mutableListOf(),
+                            0,
+                            mutableListOf(),
+                            0,
+                            mutableListOf()
+                        )
+                    )
+                    showTip("$it")
                     DLog.i("------>", "$it")
                 })
         }
@@ -220,7 +235,6 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         val iterator = list.iterator()
         while (iterator.hasNext()) {
             val next = iterator.next()
-            DLog.i("----->", "$next   $keyword")
             if (next == keyword) {
                 iterator.remove()
             }

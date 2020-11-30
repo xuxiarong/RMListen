@@ -6,12 +6,9 @@
 
     <data>
 
-        <variable
-            name="item"
-            type="com.rm.business_lib.bean.SheetInfoBean" />
 
         <variable
-            name="header"
+            name="headViewModel"
             type="com.rm.module_listen.viewmodel.ListenSheetDetailViewModel" />
     </data>
 
@@ -22,7 +19,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_detail_front_cover"
-            bindUrl="@{item.cover_url}"
+            bindUrl="@{headViewModel.data.cover_url}"
             corner="@{8f}"
             android:layout_width="@dimen/dp_144"
             android:layout_height="@dimen/dp_144"
@@ -34,10 +31,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_detail_description"
             style="@style/BusinessTextStyleFirst_1"
-            bindText="@{item.sheet_name}"
+            bindText="@{headViewModel.data.sheet_name}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginEnd="@dimen/dp_16"
+            android:maxLines="2"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/listen_sheet_detail_front_cover"
@@ -47,7 +45,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_detail_create"
             style="@style/BusinessTextStyleSecond_4"
-            bindDateString="@{item.created_at}"
+            isVisible="@{headViewModel.data.created_from!=3}"
+            bindDateString="@{headViewModel.data.created_at}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"
@@ -62,7 +61,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_detail_read_num"
             style="@style/BusinessTextStyleSecond_4"
-            bindPlayCount="@{item.num_audio}"
+            bindPlayCount="@{headViewModel.audioNum}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_8"

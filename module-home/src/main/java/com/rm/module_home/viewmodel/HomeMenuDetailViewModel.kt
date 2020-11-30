@@ -30,8 +30,7 @@ import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_I
 import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.repository.HomeRepository
 
-class HomeMenuDetailViewModel(private var repository: HomeRepository) :
-    BaseVMViewModel() {
+class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMViewModel() {
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -45,6 +44,11 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
     //听单Id
     var sheetId = ObservableField<String>()
 
+
+    //是否显示没数据
+    val showNoData = ObservableField<Boolean>(false)
+
+
     val userInfo = loginUser
 
     //当前加载的页码
@@ -52,8 +56,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
 
     //每次加载数据的条数
     private val pageSize = 5
-
-    var dataBinding: HomeHeaderMenuDetailBinding? = null
 
     //创建adapter
     val mAdapter by lazy {
@@ -148,13 +150,14 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
 
                         data.set(it)
 
-                        dataBinding?.let { binding ->
-                            binding.root.visibility = View.VISIBLE
-                            binding.setVariable(BR.headerViewModel, this@HomeMenuDetailViewModel)
-                        }
                         //刷新完成
                         refreshStatusModel.finishRefresh(true)
-                        mAdapter.setList(it.audio_list?.list)
+                        if (it.audio_list?.list?.size ?: 0 > 0) {
+                            mAdapter.setList(it.audio_list?.list)
+                            showNoData.set(false)
+                        } else {
+                            showNoData.set(true)
+                        }
                         //是否有更多数据
                         ++mPage
                         refreshStatusModel.setNoHasMore(it.audio_list?.list?.size ?: 0 < pageSize)
@@ -177,11 +180,14 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) :
                     onSuccess = {
                         showContentView()
                         //加载更多完成
-                        it.list.let { list -> mAdapter.addData(list) }
+                        it.list?.let { list -> mAdapter.addData(list) }
                         refreshStatusModel.finishLoadMore(true)
                         //是否有更多数据
-                        refreshStatusModel.setNoHasMore(it.list.size < pageSize)
-                        ++mPage
+                        if (it.list?.size ?: 0 < pageSize || mAdapter.data.size >= it.total) {
+                            refreshStatusModel.setNoHasMore(true)
+                        } else {
+                            ++mPage
+                        }
                     },
                     onError = {
                         showTip("$it", R.color.business_color_ff5e5e)

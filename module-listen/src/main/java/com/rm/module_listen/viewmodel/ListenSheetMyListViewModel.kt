@@ -153,23 +153,27 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
         clickBean.get()?.let {
             if (it.sheet_id.toString() == sheetId) {
                 mAdapter.remove(it)
-                showTip("编辑成功")
+                showTip("删除成功")
             }
         }
     }
 
     /**
-     * 编辑听单回调
+     * 修改听单数据
      */
-    fun changeData(sheetId: String, sheetName: String) {
+    fun changeData(sheetId: String, sheetName: String, sheetAudioNum: Int) {
         clickBean.get()?.let {
             if (it.sheet_id.toString() == sheetId) {
                 val indexOf = mAdapter.data.indexOf(it)
                 if (indexOf != -1) {
-                    mAdapter.data[indexOf].sheet_name = sheetName
+                    if (mAdapter.data[indexOf].sheet_name != sheetName) {
+                        mAdapter.data[indexOf].sheet_name = sheetName
+                    }
+                    mAdapter.data[indexOf].num_audio = sheetAudioNum
                     mAdapter.notifyItemChanged(indexOf)
                 }
             }
         }
     }
+
 }

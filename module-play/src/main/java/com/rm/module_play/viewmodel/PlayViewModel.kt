@@ -5,27 +5,19 @@ import android.text.TextUtils
 import android.widget.ImageView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableFloat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
-import com.rm.business_lib.db.DaoUtil
-import com.rm.business_lib.db.converter.BusinessConvert
-import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.db.listen.ListenAudioEntity
-import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.utils.mmSS
 import com.rm.business_lib.utils.time2format
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -52,7 +44,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 /**
  *
@@ -61,7 +52,7 @@ import java.lang.Exception
  * @Version: 1.0.0
  */
 open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMViewModel() {
-    
+
     /**
      * 当前播放的列表
      */
@@ -71,7 +62,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 加载下一页的当前页码
      */
     var playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
-    
+
     /**
      * 加载上一页的当前页码
      */
@@ -86,7 +77,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 播放器实例对象
      */
     val playManger: MusicPlayerManager = musicPlayerManger
-    
+
     /**
      * 拖动进度条时显示的文案
      */
@@ -137,11 +128,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     val mCommentAdapter by lazy {
         CommonBindVMAdapter<Comments>(
-                this,
-                mutableListOf(),
-                R.layout.play_item_comment,
-                BR.viewModel,
-                BR.item
+            this,
+            mutableListOf(),
+            R.layout.play_item_comment,
+            BR.viewModel,
+            BR.item
         )
     }
 
@@ -150,11 +141,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     val chapterListAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
-                this,
-                mutableListOf(),
-                R.layout.play_dialog_item_chapter,
-                BR.viewModel,
-                BR.item
+            this,
+            mutableListOf(),
+            R.layout.play_dialog_item_chapter,
+            BR.viewModel,
+            BR.item
         )
     }
 
@@ -171,15 +162,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         val tempList = mutableListOf<BaseAudioInfo>()
         chapterList.forEach {
             tempList.add(
-                    BaseAudioInfo(
-                            audioPath = it.path_url,
-                            audioName = it.chapter_name,
-                            filename = it.chapter_name,
-                            audioId = it.audio_id.toString(),
-                            chapterId = it.chapter_id.toString(),
-                            duration = it.realDuration,
-                            playCount = it.play_count.toString()
-                    )
+                BaseAudioInfo(
+                    audioPath = it.path_url,
+                    audioName = it.chapter_name,
+                    filename = it.chapter_name,
+                    audioId = it.audio_id.toString(),
+                    chapterId = it.chapter_id.toString(),
+                    duration = it.realDuration,
+                    playCount = it.play_count.toString()
+                )
             )
         }
         PlayGlobalData.playChapterList.addAll(chapterList)
@@ -193,15 +184,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         tempChapterList.addAll(chapterList)
         chapterList.forEach {
             tempPathList.add(
-                    BaseAudioInfo(
-                            audioPath = it.path_url,
-                            audioName = it.chapter_name,
-                            filename = it.chapter_name,
-                            audioId = it.audio_id.toString(),
-                            chapterId = it.chapter_id.toString(),
-                            duration = it.realDuration,
-                            playCount = it.play_count.toString()
-                    )
+                BaseAudioInfo(
+                    audioPath = it.path_url,
+                    audioName = it.chapter_name,
+                    filename = it.chapter_name,
+                    audioId = it.audio_id.toString(),
+                    chapterId = it.chapter_id.toString(),
+                    duration = it.realDuration,
+                    playCount = it.play_count.toString()
+                )
             )
         }
         val currentPathList = playPath.value
@@ -249,7 +240,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
     fun finishActivity(context: Context) {
-        if(context is FragmentActivity){
+        if (context is FragmentActivity) {
             finish()
         }
     }
@@ -280,10 +271,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
-                .quicklyLogin(this, it, loginSuccess = {
-                    commentPage = 1
-                    getCommentList()
-                })
+            .quicklyLogin(this, it, loginSuccess = {
+                commentPage = 1
+                getCommentList()
+            })
     }
 
     /**
@@ -305,10 +296,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun getNextPageChapterList() {
         launchOnIO {
             repository.chapterList(
-                    PlayGlobalData.playAudioId.get()!!,
-                    playNextPage,
-                    playChapterPageSize,
-                    PlayGlobalData.playChapterListSort.get()!!
+                PlayGlobalData.playAudioId.get()!!,
+                playNextPage,
+                playChapterPageSize,
+                PlayGlobalData.playChapterListSort.get()!!
             ).checkResult(onSuccess = {
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
@@ -351,10 +342,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playPrePage--
         launchOnIO {
             repository.chapterList(
-                    audioId!!,
-                    playPrePage,
-                    playChapterPageSize,
-                    PlayGlobalData.playChapterListSort.get()!!
+                audioId!!,
+                playPrePage,
+                playChapterPageSize,
+                PlayGlobalData.playChapterListSort.get()!!
             ).checkResult(onSuccess = {
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
@@ -376,15 +367,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 通过音频ID，章节ID获取指定的章节列表，该接口会返回一个用于下次分页的page字段，需要记录
      */
     fun getChapterListWithId(
-            audioId: String,
-            chapterId: String
+        audioId: String,
+        chapterId: String
     ) {
         launchOnIO {
             repository.chapterPageList(
-                    audioId = audioId,
-                    chapterId = chapterId,
-                    page_size = playChapterPageSize,
-                    sort = PlayGlobalData.playChapterListSort.get()!!
+                audioId = audioId,
+                chapterId = chapterId,
+                page_size = playChapterPageSize,
+                sort = PlayGlobalData.playChapterListSort.get()!!
             ).checkResult(onSuccess = {
                 val chapterList = it.list
                 playNextPage = it.page
@@ -419,11 +410,13 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun getDetailInfo(audioID: String) {
         launchOnIO {
             repository.getDetailInfo(audioID).checkResult(
-                    onSuccess = {
-                        PlayGlobalData.initPlayAudio(it.list)
-                    }, onError = {
-                it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
-            }
+                onSuccess = {
+                    isSubscribe.set(it.list.is_subscribe)
+                    isAttention.set(it.list.anchor.status)
+                    PlayGlobalData.initPlayAudio(it.list)
+                }, onError = {
+                    it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
+                }
             )
         }
     }
@@ -434,18 +427,18 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     private fun unLikeComment(bean: Comments) {
         launchOnIO {
             repository.homeUnLikeComment(bean.id).checkResult(
-                    onSuccess = {
+                onSuccess = {
 
-                        val indexOf = mCommentAdapter.data.indexOf(bean)
-                        bean.is_liked = false
-                        bean.likes = bean.likes - 1
-                        val headerLayoutCount = mCommentAdapter.headerLayoutCount
-                        mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    val indexOf = mCommentAdapter.data.indexOf(bean)
+                    bean.is_liked = false
+                    bean.likes = bean.likes - 1
+                    val headerLayoutCount = mCommentAdapter.headerLayoutCount
+                    mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
 
-                    },
-                    onError = {
-                        DLog.i("----->", "评论点赞:$it")
-                    }
+                },
+                onError = {
+                    DLog.i("----->", "评论点赞:$it")
+                }
             )
         }
     }
@@ -456,18 +449,18 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     private fun likeComment(bean: Comments) {
         launchOnIO {
             repository.homeLikeComment(bean.id).checkResult(
-                    onSuccess = {
+                onSuccess = {
 
-                        val indexOf = mCommentAdapter.data.indexOf(bean)
-                        bean.is_liked = true
-                        bean.likes = bean.likes + 1
-                        //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
-                        val headerLayoutCount = mCommentAdapter.headerLayoutCount
-                        mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
-                    },
-                    onError = {
-                        DLog.i("----->", "评论点赞:$it")
-                    })
+                    val indexOf = mCommentAdapter.data.indexOf(bean)
+                    bean.is_liked = true
+                    bean.likes = bean.likes + 1
+                    //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
+                    val headerLayoutCount = mCommentAdapter.headerLayoutCount
+                    mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                },
+                onError = {
+                    DLog.i("----->", "评论点赞:$it")
+                })
         }
     }
 
@@ -478,16 +471,19 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     private fun subscribe(context: Context, audioId: String) {
         launchOnIO {
             repository.subscribe(audioId).checkResult(
-                    onSuccess = {
-                        isSubscribe.set(true)
-                        subscribeSuccess(context)
-                    },
-                    onError = {
-                        DLog.i("------->", "订阅失败  $it")
-                        showTip("$it", R.color.business_color_ff5e5e)
+                onSuccess = {
+                    isSubscribe.set(true)
+                    PlayGlobalData.playAudioModel.get()?.let {
+                        it.is_subscribe = true
+                        PlayGlobalData.initPlayAudio(it)
                     }
+                    subscribeSuccess(context)
+                },
+                onError = {
+                    DLog.i("------->", "订阅失败  $it")
+                    showTip("$it", R.color.business_color_ff5e5e)
+                }
             )
-
         }
     }
 
@@ -497,14 +493,18 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     private fun unSubscribe(audioId: String) {
         launchOnIO {
             repository.unSubscribe(audioId).checkResult(
-                    onSuccess = {
-                        isSubscribe.set(false)
-                        showTip("取消订阅成功")
-                    },
-                    onError = {
-                        DLog.i("------->", "取消订阅  $it")
-                        showTip("$it", R.color.business_color_ff5e5e)
+                onSuccess = {
+                    PlayGlobalData.playAudioModel.get()?.let {
+                        it.is_subscribe = false
+                        PlayGlobalData.initPlayAudio(it)
                     }
+                    isSubscribe.set(false)
+                    showTip("取消订阅成功")
+                },
+                onError = {
+                    DLog.i("------->", "取消订阅  $it")
+                    showTip("$it", R.color.business_color_ff5e5e)
+                }
             )
         }
     }
@@ -515,12 +515,16 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun getCommentList() {
         launchOnIO {
-            repository.commentAudioComments(PlayGlobalData.playAudioId.get()!!, commentPage, pageSize)
-                    .checkResult(onSuccess = {
-                        processCommentSuccessData(it)
-                    }, onError = {
-                        processCommentFailureData(it)
-                    })
+            repository.commentAudioComments(
+                PlayGlobalData.playAudioId.get()!!,
+                commentPage,
+                pageSize
+            )
+                .checkResult(onSuccess = {
+                    processCommentSuccessData(it)
+                }, onError = {
+                    processCommentFailureData(it)
+                })
         }
     }
 
@@ -572,11 +576,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             if (isLogin.get()) {
                 PlayGlobalData.playAudioId.get()?.let { audioId ->
                     RouterHelper.createRouter(HomeService::class.java)
-                            .showCommentDialog(it, audioId) {
-                                showTip("评论成功")
-                                commentPage = 1
-                                getCommentList()
-                            }
+                        .showCommentDialog(it, audioId) {
+                            showTip("评论成功")
+                            commentPage = 1
+                            getCommentList()
+                        }
                 }
 
             } else {
@@ -606,7 +610,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun commentAvatarClick(context: Context, member_id: String) {
         RouterHelper.createRouter(MineService::class.java)
-                .toMineCommentFragment(context = context, memberId = member_id)
+            .toMineCommentFragment(context = context, memberId = member_id)
     }
 
     /**
@@ -634,15 +638,21 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         showLoading()
         launchOnIO {
             repository.attentionAnchor(followId).checkResult(
-                    onSuccess = {
-                        showContentView()
-                        isAttention.set(true)
-                        showTip("关注成功")
-                    },
-                    onError = {
-                        showContentView()
-                        showTip("$it", R.color.business_color_ff5e5e)
-                    })
+                onSuccess = {
+                    showContentView()
+                    PlayGlobalData.playAudioModel.get()?.let {
+                        it.anchor?.let { anchor ->
+                            anchor.status = true
+                            PlayGlobalData.initPlayAudio(it)
+                        }
+                    }
+                    isAttention.set(true)
+                    showTip("关注成功")
+                },
+                onError = {
+                    showContentView()
+                    showTip("$it", R.color.business_color_ff5e5e)
+                })
         }
     }
 
@@ -653,15 +663,21 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         showLoading()
         launchOnIO {
             repository.unAttentionAnchor(followId).checkResult(
-                    onSuccess = {
-                        showContentView()
-                        isAttention.set(false)
-                        showTip("取消关注成功")
-                    },
-                    onError = {
-                        showContentView()
-                        showTip("$it", R.color.business_color_ff5e5e)
-                    })
+                onSuccess = {
+                    showContentView()
+                    PlayGlobalData.playAudioModel.get()?.let {
+                        it.anchor?.let { anchor ->
+                            anchor.status = false
+                            PlayGlobalData.initPlayAudio(it)
+                        }
+                    }
+                    isAttention.set(false)
+                    showTip("取消关注成功")
+                },
+                onError = {
+                    showContentView()
+                    showTip("$it", R.color.business_color_ff5e5e)
+                })
         }
     }
 
@@ -672,7 +688,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (isLogin.get()) {
             PlayGlobalData.playAudioModel.get()?.let {
                 RouterHelper.createRouter(MineService::class.java)
-                        .toMineMember(context, it.anchor_id)
+                    .toMineMember(context, it.anchor_id)
             }
         } else {
             getActivity(context)?.let { quicklyLogin(it) }
@@ -718,11 +734,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (context is FragmentActivity) {
             if (!isLogin.get()) {
                 RouterHelper.createRouter(LoginService::class.java)
-                        .quicklyLogin(this, context)
+                    .quicklyLogin(this, context)
             } else {
                 RouterHelper.createRouter(ListenService::class.java).showMySheetListDialog(
-                        context,
-                        PlayGlobalData.playAudioId.get()!!
+                    context,
+                    PlayGlobalData.playAudioId.get()!!
                 ) {
                     showTip("添加成功")
                 }
@@ -751,7 +767,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     dismiss()
                 }
                 customView =
-                        ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
+                    ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(activity)
         } else {
             showTip(context.getString(R.string.business_subscribe_success_tip))

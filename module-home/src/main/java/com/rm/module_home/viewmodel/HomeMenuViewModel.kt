@@ -3,6 +3,7 @@ package com.rm.module_home.viewmodel
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.SheetListBean
@@ -66,7 +67,6 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
         launchOnIO {
             repository.sheet().checkResult(
                 onSuccess = {
-                    showContentView()
                     menuList.value = it
                     mPageId = it.page_id
                 },
@@ -98,8 +98,12 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
         showContentView()
         if (mPage == 1) {
             //刷新完成
-            menuAdapter.setList(processList(bean.list))
-            processList(bean.list)
+            val list = processList(bean.list)
+            if (list?.size ?: 0 > 0) {
+                menuAdapter.setList(list)
+            } else {
+                showDataEmpty()
+            }
             refreshStatusModel.finishRefresh(true)
         } else {
             //加载完成
@@ -109,7 +113,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
             refreshStatusModel.finishLoadMore(true)
         }
 
-        if (menuAdapter.data.size >= bean.total) {
+        if (menuAdapter.data.size >= bean.total || bean.list?.size ?: 0 < pageSize) {
             //没用更多数据
             refreshStatusModel.setNoHasMore(true)
         } else {
@@ -125,7 +129,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
         val iterator = list?.iterator()
         while (iterator?.hasNext() == true) {
             val next = iterator.next()
-            if (next.audio_list.size < 3) {
+            if (next.audio_list?.size ?: 0 < 3) {
                 iterator.remove()
             }
         }

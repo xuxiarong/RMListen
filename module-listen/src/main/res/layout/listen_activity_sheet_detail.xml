@@ -71,6 +71,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/listen_sheet_detail_refresh"
             bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
@@ -78,6 +79,7 @@
             bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.loadData}"
             bindOnRefreshListener="@{viewModel.refreshData}"
+            isVisible="@{!viewModel.showNoData}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_12"
@@ -86,13 +88,36 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listen_sheet_detail_recycler_view"
-                bindVerticalLayout="@{viewModel.mAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingStart="@dimen/dp_16"
                 android:paddingEnd="@dimen/dp_16" />
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            isVisible="@{viewModel.showNoData}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/listen_sheet_detail_title_cl">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/base_no_data" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/listen_sheet_no_data"
+                android:textColor="@color/base_b1b1b1"
+                android:textSize="14sp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

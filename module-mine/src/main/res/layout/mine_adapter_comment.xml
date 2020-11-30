@@ -25,6 +25,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mine_comment_author_icon"
             bindUrl="@{commentItem.member.avatar_url}"
+            defaultIcon="@{@drawable/business_ic_default_user}"
             isCircle="@{true}"
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"

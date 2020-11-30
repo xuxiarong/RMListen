@@ -7,9 +7,10 @@ import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
+import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL
 import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_DELETE
-import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_EDIT
 import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.LISTEN_SHEET_DETAIL_REQUEST_CODE
+import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.SHEET_AUDIO_NUM
 import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.SHEET_ID
 import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.SHEET_NAME
 import com.rm.module_listen.activity.ListenSheetListActivity.Companion.MEMBER_ID
@@ -73,11 +74,13 @@ class ListenSheetMyListFragment :
                 LISTEN_SHEET_DETAIL_DELETE -> {
                     mViewModel.remove(sheetId)
                 }
-                //编辑成功
-                LISTEN_SHEET_DETAIL_EDIT -> {
+
+                LISTEN_SHEET_DETAIL -> {
                     val sheetName = data?.getStringExtra(SHEET_NAME) ?: ""
-                    mViewModel.changeData(sheetId, sheetName)
+                    val sheetAudioNum = data?.getIntExtra(SHEET_AUDIO_NUM, 0) ?: 0
+                    mViewModel.changeData(sheetId, sheetName, sheetAudioNum)
                 }
+
             }
         }
     }

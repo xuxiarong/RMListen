@@ -26,17 +26,17 @@
             bindUrl="@{dialogItem.sheet_cover}"
             corner="@{4f}"
             android:layout_width="@dimen/dp_80"
-            android:foreground="@{dialogItem.created_from==3?@color/business_color_0f000000:@color/business_transparent}"
             android:layout_height="@dimen/dp_80"
+            android:foreground="@{dialogItem.created_from==3?@color/business_color_0f000000:@color/business_transparent}"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
 
         <ImageView
+            isVisible="@{dialogItem.created_from==3}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            isVisible="@{dialogItem.created_from==3}"
             android:src="@drawable/business_icon_love"
             app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_book_adapter_icon"
             app:layout_constraintEnd_toEndOf="@id/home_menu_detail_book_adapter_icon"
@@ -60,6 +60,7 @@
             bindText="@{dialogItem.sheet_name}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_view"
             app:layout_constraintTop_toTopOf="@id/home_menu_detail_book_adapter_view"
@@ -68,7 +69,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_menu_detail_book_adapter_author"
             style="@style/BusinessTextStyleThird_4"
-            bindText="@{dialogItem.num_audio}"
+            bindPlayCount="@{dialogItem.num_audio}"
+            bindPlayCountUnit="@{@string/business_book_unit}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_book_num"

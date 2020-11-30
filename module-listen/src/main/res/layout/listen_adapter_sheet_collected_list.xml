@@ -12,6 +12,8 @@
         <variable
             name="viewModel"
             type="com.rm.module_listen.viewmodel.ListenSheetCollectedListViewModel" />
+
+        <import type="com.rm.business_lib.binding.BindPlayCountKt" />
     </data>
 
     <com.rm.business_lib.wedgit.shadow.ShadowLayout
@@ -37,18 +39,20 @@
                 style="@style/TextViewHeadStyle"
                 bindText="@{item.sheet_name}"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:singleLine="true"
                 android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/listen_sheet_collected_adapter_total_books_number"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="幻海航行 | 领略科幻的海洋" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_sheet_collected_adapter_total_books_number"
                 style="@style/TextViewSecondStyle"
-                bindText="@{@string/listen_book_num(item.audio_total)}"
                 android:drawableEnd="@drawable/business_icon_arrow_right"
                 android:drawablePadding="@dimen/dp_2"
+                android:text="@{@string/listen_book_num(BindPlayCountKt.getPlayCount(item.audio_total))}"
                 app:layout_constraintBottom_toBottomOf="@id/listen_sheet_collected_adapter_name"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/listen_sheet_collected_adapter_name"
@@ -59,18 +63,20 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/listen_sheet_collected_adapter_author_icon"
                 bindUrl="@{item.avatar_url}"
+                defaultIcon="@{@drawable/business_ic_default_user}"
                 isCircle="@{true}"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_9"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/listen_sheet_collected_adapter_name"
-                tools:src="#00ff00" />
+                tools:src="@drawable/business_ic_default_user" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_sheet_collected_adapter_author_name"
                 style="@style/TextViewSmallStyle"
                 android:layout_marginStart="@dimen/dp_6"
+                android:maxWidth="@dimen/dp_250"
                 android:text="@{item.member_name}"
                 app:layout_constraintBottom_toBottomOf="@id/listen_sheet_collected_adapter_author_icon"
                 app:layout_constraintLeft_toRightOf="@id/listen_sheet_collected_adapter_author_icon"
@@ -90,7 +96,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_sheet_collected_adapter_collection_number"
                 style="@style/TextViewSmallStyle"
-                bindText="@{item.num_favor}"
+                bindPlayCount="@{item.num_favor}"
                 android:layout_marginStart="@dimen/dp_2"
                 app:layout_constraintBottom_toBottomOf="@id/listen_sheet_collected_adapter_collection_number_img"
                 app:layout_constraintLeft_toRightOf="@id/listen_sheet_collected_adapter_collection_number_img"
@@ -103,6 +109,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_14"
+                app:layout_constraintTop_toBottomOf="@id/listen_sheet_collected_adapter_author_icon" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/listen_sheet_collected_adapter_no_book"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                android:gravity="center"
+                android:text="@string/listen_sheet_quilt_delete"
+                android:textColor="@color/base_333"
+                android:textSize="@dimen/business_text_size_14sp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/listen_sheet_collected_adapter_author_icon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.rm.business_lib.wedgit.shadow.ShadowLayout>

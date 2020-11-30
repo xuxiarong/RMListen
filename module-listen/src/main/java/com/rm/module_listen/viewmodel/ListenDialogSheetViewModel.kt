@@ -45,6 +45,7 @@ class ListenDialogSheetViewModel(
         CommonMvFragmentDialog().apply {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
+            dialogHeightIsMatchParent = true
             dialogHasBackground = true
             initDialog = {
                 dataBinding = mDataBind as ListenDialogSheetListBinding
@@ -187,7 +188,7 @@ class ListenDialogSheetViewModel(
                     ImageView(mActivity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(mActivity)
         } else {
-          successBlock()
+            successBlock()
         }
         dismissFun()
         IS_FIRST_ADD_SHEET.putMMKV(false)
