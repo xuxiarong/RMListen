@@ -261,7 +261,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             }
         }
         playChapterId = ""
-        mViewModel.countdown()
         mViewModel.getCommentList()
 
     }

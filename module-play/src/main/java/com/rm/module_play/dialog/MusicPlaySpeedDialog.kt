@@ -102,10 +102,10 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
             holder.getView<ImageView>(R.id.music_play_speed_setting_check).background =
                 if (isCheckPos == timeSet[item]) ContextCompat.getDrawable(
                     context,
-                    R.drawable.music_play_item_time_selected_ic_icon_chosen_da
+                    R.drawable.play_timer_item_position_select
                 ) else ContextCompat.getDrawable(
                     context,
-                    R.drawable.music_play_item_ic_icon_select_df
+                    R.drawable.play_timer_item_position_unselect
                 )
             holder.setText(R.id.tv_music_play_setting_time, item)
         }

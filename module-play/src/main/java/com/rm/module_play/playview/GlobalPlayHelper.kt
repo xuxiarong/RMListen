@@ -26,6 +26,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
             GlobalPlayHelper()
         }
         var listener: MusicPlayerEventListener? = null
+
     }
 
     var playStatusListener : IPlayStatusListener? = null
@@ -96,7 +97,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
             PlayGlobalData.hasNextChapter.set(false)
             PlayGlobalData.hasNextChapter.set(false)
         }
-
+        PlayGlobalData.updateCountChapterSize()
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -113,6 +114,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
             totalDuration = totalDurtion
         )
         PlayGlobalData.updatePlayChapterProgress(currentDurtion, totalDurtion)
+        PlayGlobalData.updateCountSecond()
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
@@ -123,6 +125,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
         if (playbackState == STATE_ENDED) {
             BaseConstance.updatePlayFinish()
             PlayGlobalData.updatePlayChapterProgress(isPlayFinish = true)
+            PlayGlobalData.checkCountChapterPlayEnd(playWhenReady)
         }
         val currentStatus = BaseConstance.basePlayStatusModel.get()
         if (currentStatus != null) {

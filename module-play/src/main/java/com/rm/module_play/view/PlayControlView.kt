@@ -74,7 +74,7 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
         initFinish = true
     }
 
-    private fun startAnim() {
+    fun startAnim() {
         isStart = true
         setAnimation("play_start.json")
         if (isAnimating) {
@@ -83,7 +83,7 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
         playAnimation()
     }
 
-    private fun pauseAnim() {
+    fun pauseAnim() {
         isStart = false
         setAnimation("play_pause.json")
         if (isAnimating) {

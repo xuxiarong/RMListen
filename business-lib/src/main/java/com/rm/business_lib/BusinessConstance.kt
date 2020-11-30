@@ -1,6 +1,7 @@
 package com.rm.business_lib
 
 import android.content.Context
+import android.util.SparseArray
 import androidx.annotation.IntDef
 import androidx.databinding.*
 import androidx.lifecycle.MutableLiveData
@@ -55,7 +56,7 @@ object HomeGlobalData {
     var isShowSubsRedPoint = ObservableBoolean(false)
 
     var LISTEN_SELECT_MY_LISTEN = 0
-    var LISTEN_SELECT_SUBS_UPDATE= 1
+    var LISTEN_SELECT_SUBS_UPDATE = 1
     var myListenSelectTab = ObservableInt(LISTEN_SELECT_MY_LISTEN)
 }
 
@@ -146,6 +147,30 @@ object PlayGlobalData {
     var hasNextChapter = ObservableBoolean(false)
 
     /**
+     * 剩余倒计时秒数
+     */
+    var playCountDownSecond = ObservableLong(-10000L)
+
+    /**
+     *  剩余倒计时集数
+     */
+    var playCountDownChapterSize = ObservableInt(-5)
+
+    /**
+     *选择倒计时的position
+     */
+    var playCountSelectPosition = ObservableInt(-1)
+
+    /**
+     * 倒计时一共十个选项 其中前五项为时间秒数倒计时，后五项为集数倒计时
+     * ["10", "20", "30", "40", "60", "1", "2", "3", "4", "5"]
+     */
+    val playCountTimerList by lazy {
+        arrayListOf(10, 20, 30, 40, 60, 1, 2, 3, 4, 5)
+    }
+
+
+    /**
      * 书籍播放的数据库对象
      */
     private val playAudioDao = DaoUtil(ListenAudioEntity::class.java, "")
@@ -188,10 +213,10 @@ object PlayGlobalData {
             val chapter = playChapter.get()
             if (chapter != null) {
 
-                 if (isPlayFinish) {
-                     chapter.listen_duration =  chapter.realDuration
+                if (isPlayFinish) {
+                    chapter.listen_duration = chapter.realDuration
                 } else {
-                     chapter.listen_duration =  currentDuration
+                    chapter.listen_duration = currentDuration
                 }
                 process.set(chapter.listen_duration.toFloat())
                 updateThumbText.set(
@@ -235,6 +260,42 @@ object PlayGlobalData {
             }
         }
     }
+
+    fun updateCountSecond() {
+        if (playCountDownSecond.get() > 0L) {
+            //因为播放器的回掉是500ms一次，所以一次也是减去500ms
+            if(playCountDownSecond.get() < 1500){
+                playCountSelectPosition.set(-1)
+            }
+            playCountDownSecond.set(playCountDownSecond.get() - 500L)
+        }else{
+            playCountDownSecond.set(-500L)
+            playCountSelectPosition.set(-1)
+        }
+    }
+
+    fun updateCountChapterSize() {
+        if (playCountDownChapterSize.get() > 0) {
+            playCountDownChapterSize.set(playCountDownChapterSize.get() - 1)
+        }
+    }
+
+    fun checkCountChapterPlayEnd(allPlayEnd: Boolean) {
+        if (allPlayEnd || playCountDownChapterSize.get() == 1) {
+            playCountDownChapterSize.set(-1)
+            playCountSelectPosition.set(-1)
+        }
+    }
+
+    fun setCountDownTimer(position: Int){
+        playCountSelectPosition.set(position)
+        if(playCountTimerList[position] in 1..5){
+            playCountDownChapterSize.set(playCountTimerList[position])
+        }else{
+            playCountDownSecond.set(playCountTimerList[position]  * 1000L)
+        }
+    }
+
 }
 
 object AudioSortType {

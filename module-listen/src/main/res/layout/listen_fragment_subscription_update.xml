@@ -13,6 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.core.widget.NestedScrollView
             isVisible="@{!viewModel.userLogin}"
             android:layout_width="match_parent"
@@ -20,9 +21,11 @@
             android:layout_marginTop="@dimen/dp_100"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="53dp"
@@ -43,7 +46,7 @@
                     android:textSize="@dimen/business_text_size_16sp"
                     app:layout_roundRadius="@dimen/dp_8"
                     app:rv_backgroundColor="@color/base_ff5e5e"
-                    app:rv_isRadiusHalfHeight="true"/>
+                    app:rv_isRadiusHalfHeight="true" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="176dp"
@@ -55,12 +58,41 @@
 
             </FrameLayout>
 
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.core.widget.NestedScrollView
+            isVisible="@{viewModel.subsDataEmpty &amp;&amp; viewModel.userLogin}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_100">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/base_no_data" />
+
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="105dp"
+                    android:text="@string/base_fine_no_data"
+                    android:textColor="@color/base_b1b1b1"
+                    android:textSize="14sp" />
+            </FrameLayout>
         </androidx.core.widget.NestedScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listenSubsDataRv"
             bindHorizontalLayout="@{viewModel.subsDateAdapter}"
-            isVisible="@{viewModel.subsDateVisible &amp;&amp; viewModel.userLogin}"
+            isVisible="@{viewModel.subsDateVisible &amp;&amp; viewModel.userLogin &amp;&amp; !viewModel.subsDataEmpty}"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginStart="@dimen/dp_16"
@@ -68,10 +100,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
+            bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.getSubsDataFromService}"
-            isVisible="@{viewModel.userLogin}"
+            isVisible="@{viewModel.userLogin&amp;&amp; !viewModel.subsDataEmpty}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="44dp"

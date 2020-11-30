@@ -601,39 +601,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         this.seekText.set(changeText)
     }
 
-
-    val countdownTime = ObservableField<String>()
-
-    //倒计时
-    private var countdownScope: Job? = null
-    fun countdown() {
-        if (countdownScope?.isActive == true) {
-            countdownScope?.cancel()
-        }
-        val times = (musicPlayerManger.getPlayerAlarmTime() - System.currentTimeMillis()) / 1000
-        if (times > 0) {
-            countdownScope = viewModelScope.launch {
-                flow {
-                    (times downTo 0).forEach { it ->
-                        delay(1000)
-                        emit(it)
-                    }
-                }.flowOn(Dispatchers.Default).onStart {
-                    // 倒计时开始
-                }.onCompletion {
-                    // 倒计时结束
-                    if (playManger.getRemainingSetInt() <= 0) {
-                        countdownTime.set("")
-                    }
-                }.collect {
-                    countdownTime.set(mmSS.time2format(it * 1000))
-                }
-            }
-        }
-
-
-    }
-
     /**
      * 评论头像点击事件
      */

@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="44dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_music_play_time_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/business_text_color_333333"
-        android:textSize="14sp"
-        tools:text="10分钟" />
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_music_play_time_down"
-        android:layout_marginEnd="@dimen/dp_30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|center_vertical"
-        android:textColor="@color/business_color_b1b1b1"
-        android:textSize="14sp"
-        tools:text="10分钟" />
+    <data>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/music_play_time_setting_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|center_vertical"
-        />
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
 
-</FrameLayout>
+        <import type="com.rm.business_lib.PlayGlobalData" />
+
+        <variable
+            name="item"
+            type="com.rm.module_play.model.PlayCountTimerModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_music_play_time_play"
+            bindPlayTimerItemText="@{item.position}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="14sp"
+            tools:text="10分钟" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_music_play_time_down"
+            bindPlayCountDownSecondText="@{PlayGlobalData.INSTANCE.playCountDownSecond}"
+            bindPlayCountDownSizeText="@{PlayGlobalData.INSTANCE.playCountDownChapterSize}"
+            bindPlayCountPosition="@{PlayGlobalData.INSTANCE.playCountSelectPosition}"
+            bindItemPosition="@{item.position}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/dp_30"
+            android:textColor="@color/business_color_b1b1b1"
+            android:textSize="14sp"
+            tools:text="10分钟" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/music_play_time_setting_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:src="@{PlayGlobalData.INSTANCE.playCountSelectPosition == item.position?@drawable/play_timer_item_position_select:@drawable/play_timer_item_position_unselect}" />
+
+    </FrameLayout>
+</layout>
