@@ -47,10 +47,8 @@ import com.rm.module_home.model.home.detail.CommentList
 import com.rm.module_home.model.home.detail.HomeCommentBean
 import com.rm.module_home.repository.HomeRepository
 import com.rm.module_home.util.HomeCommentDialogHelper
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.internal.waitMillis
 import kotlin.math.ceil
 
 
@@ -249,6 +247,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 try {
                     val audioRecord = ListenDaoUtils.queryAudioById(it.toLong())
                     listenAudio.set(audioRecord)
+                    isAttention.set(audioRecord?.anchor?.status?: false)
+                    isSubscribed.set(audioRecord?.is_subscribe)
                 } catch (e: Exception) {
                     listenAudio.set(null)
                 }
@@ -271,8 +271,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     }
                     detailInfoData.set(it)
                     isAttention.set(it.list.anchor.status)
+                    isSubscribed.set(it.list.is_subscribe)
                     anchorId.set(it.list.anchor_id)
                     homeDetailTagsAdapter.setList(it.list.tags)
+                    showStatus(it)
                 }, onError = {
                     if (it?.contains("下架") == true || it?.contains("违规") == true) {
                         isNoClick.set(true)
@@ -287,7 +289,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 }
             )
         }
-        showStatus()
     }
 
     /**
@@ -343,8 +344,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         val playProgress = BaseConstance.basePlayProgressModel.get()
 
         detailInfoData.get()?.let {
-            when {
-                playInfo?.playAudioId == audioId.get() -> {
+            when (playInfo?.playAudioId) {
+                audioId.get() -> {
                     if (playStatus != null && playStatus.isStart()) {
                         playService.pausePlay()
                     } else {
@@ -386,11 +387,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 书籍状态
      */
-    private fun showStatus() {
-        when (detailInfoData.get()?.list?.progress?.toInt()) {
-            0 -> showStatus.set("未开播")
-            1 -> showStatus.set("已连载" + detailInfoData.get()?.list?.last_sequence + "集")
-            else -> showStatus.set("已完结")
+    private fun showStatus(bean: AudioDetailBean?) {
+        bean?.list?.let {
+            when (it.progress) {
+                1 -> showStatus.set("未开播")
+                2 -> showStatus.set("已连载${it.count_sequence}集")
+                3 -> showStatus.set("已完结（总共${it.count_sequence}集）")
+            }
         }
     }
 
@@ -684,7 +687,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 评论列表
      */
     fun getCommentList(audio_id: String) {
-        launchOnUI {
+        launchOnIO {
             repository.getCommentInfo(audio_id, commentPage, mPageSize).checkResult(
                 onSuccess = {
                     commentTotal.set(it.total)
@@ -892,7 +895,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         }
         RouterHelper.createRouter(MineService::class.java)
             .toMineMember(context, memberId!!)
-
     }
 
     /**

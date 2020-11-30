@@ -46,4 +46,6 @@
     <string name="business_delete_tip_title">删除提醒</string>
     <string name="business_delete_tip_content">确定要删除所选内容吗</string>
 
+    <string name="business_book_unit">本</string>
+
 </resources>

@@ -28,7 +28,6 @@ import com.rm.module_listen.repository.ListenRepository
 class ListenDialogCreateSheetViewModel(
     private val mActivity: FragmentActivity,
     private val successBlock: () -> Unit
-
 ) : BaseVMViewModel() {
 
     private val repository by lazy {
@@ -178,27 +177,26 @@ class ListenDialogCreateSheetViewModel(
      * 检测文本信息
      */
     private fun checkText() {
-        if (inputText.get() != null) {
-            val str = inputText.get()!!
-            val description =
-                dataBinding?.listenDialogCreateSheetEditSynopsis?.text.toString()
-            when {
-                EmojiUtils.containsEmoji(str) -> {
-                    showErrorTip(msg = CONTEXT.getString(R.string.listen_input_char_tip))
-                }
-                numberOfWords(str) -> {
-                    showErrorTip(msg = CONTEXT.getString(R.string.listen_input_length_tip))
-                }
-                else -> {
-                    if (sheetId.get() == null) {
-                        createSheet(str, description)
-                    } else {
-                        editSheet(ListenPatchSheetBean(str, description, sheetId.get()!!))
-                    }
+        val str = inputText.get()!!.trim().trimEnd()
+        val description =
+            dataBinding?.listenDialogCreateSheetEditSynopsis?.text.toString()
+        when {
+            str.isEmpty() -> {
+                showErrorTip(msg = CONTEXT.getString(R.string.listen_input_no_null_tip))
+            }
+            EmojiUtils.containsEmoji(str) -> {
+                showErrorTip(msg = CONTEXT.getString(R.string.listen_input_char_tip))
+            }
+            numberOfWords(str) -> {
+                showErrorTip(msg = CONTEXT.getString(R.string.listen_input_length_tip))
+            }
+            else -> {
+                if (sheetId.get() == null) {
+                    createSheet(str, description)
+                } else {
+                    editSheet(ListenPatchSheetBean(str, description, sheetId.get()!!))
                 }
             }
-        } else {
-            showErrorTip(msg = CONTEXT.getString(R.string.listen_input_title))
         }
     }
 

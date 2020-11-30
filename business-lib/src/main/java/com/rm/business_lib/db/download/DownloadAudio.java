@@ -1,6 +1,5 @@
 package com.rm.business_lib.db.download;
 
-import android.os.SystemClock;
 
 import com.rm.business_lib.bean.Anchor;
 import com.rm.business_lib.bean.DetailTags;
@@ -18,7 +17,6 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +41,7 @@ public class DownloadAudio implements Serializable {
     private String cover_url;
     private String audio_label;
     private String quality;
-    private String progress;
+    private int progress;
     private String play_count;
     private String created_at;
     private String chapter_updated_at;
@@ -52,6 +50,7 @@ public class DownloadAudio implements Serializable {
     private String nickname;
     private String subscription_count;
     private String last_sequence;
+    private int count_sequence;
     private String audio_cover_url;
     private String anchor_name;
     private long updateMillis;
@@ -70,25 +69,26 @@ public class DownloadAudio implements Serializable {
 
     @ToMany(referencedJoinProperty = "audio_id")
     private List<DownloadChapter> chapterList;
-    /**
-     * Used to resolve relations
-     */
+    /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /**
-     * Used for active entity operations.
-     */
+    /** Used for active entity operations. */
     @Generated(hash = 265156160)
     private transient DownloadAudioDao myDao;
 
-    @Generated(hash = 161900114)
-    public DownloadAudio(Long audio_id, String audio_type, String audio_name, String original_name, String status,
-            String author_intro, String anchor_id, String short_intro, String audio_intro, String audio_cover,
-            String cover_url, String audio_label, String quality, String progress, String play_count, String created_at,
-            String chapter_updated_at, String author, String member_id, String nickname, String subscription_count,
-            String last_sequence, String audio_cover_url, String anchor_name, long updateMillis, String sortType,
-            String listenChapterId, Anchor anchor, List<DetailTags> tags, boolean is_subscribe, boolean is_fav,
-            int download_num, long down_size, boolean edit_select, boolean listen_finish) {
+    @Generated(hash = 697042537)
+    public DownloadAudio(Long audio_id, String audio_type, String audio_name,
+            String original_name, String status, String author_intro,
+            String anchor_id, String short_intro, String audio_intro,
+            String audio_cover, String cover_url, String audio_label,
+            String quality, int progress, String play_count, String created_at,
+            String chapter_updated_at, String author, String member_id,
+            String nickname, String subscription_count, String last_sequence,
+            int count_sequence, String audio_cover_url, String anchor_name,
+            long updateMillis, String sortType, String listenChapterId,
+            Anchor anchor, List<DetailTags> tags, boolean is_subscribe,
+            boolean is_fav, int download_num, long down_size, boolean edit_select,
+            boolean listen_finish) {
         this.audio_id = audio_id;
         this.audio_type = audio_type;
         this.audio_name = audio_name;
@@ -111,6 +111,7 @@ public class DownloadAudio implements Serializable {
         this.nickname = nickname;
         this.subscription_count = subscription_count;
         this.last_sequence = last_sequence;
+        this.count_sequence = count_sequence;
         this.audio_cover_url = audio_cover_url;
         this.anchor_name = anchor_name;
         this.updateMillis = updateMillis;
@@ -234,11 +235,11 @@ public class DownloadAudio implements Serializable {
         this.quality = quality;
     }
 
-    public String getProgress() {
+    public int getProgress() {
         return this.progress;
     }
 
-    public void setProgress(String progress) {
+    public void setProgress(int progress) {
         this.progress = progress;
     }
 
@@ -306,6 +307,14 @@ public class DownloadAudio implements Serializable {
         this.last_sequence = last_sequence;
     }
 
+    public int getCount_sequence() {
+        return this.count_sequence;
+    }
+
+    public void setCount_sequence(int count_sequence) {
+        this.count_sequence = count_sequence;
+    }
+
     public String getAudio_cover_url() {
         return this.audio_cover_url;
     }
@@ -322,8 +331,32 @@ public class DownloadAudio implements Serializable {
         this.anchor_name = anchor_name;
     }
 
+    public long getUpdateMillis() {
+        return this.updateMillis;
+    }
+
+    public void setUpdateMillis(long updateMillis) {
+        this.updateMillis = updateMillis;
+    }
+
+    public String getSortType() {
+        return this.sortType;
+    }
+
+    public void setSortType(String sortType) {
+        this.sortType = sortType;
+    }
+
+    public String getListenChapterId() {
+        return this.listenChapterId;
+    }
+
+    public void setListenChapterId(String listenChapterId) {
+        this.listenChapterId = listenChapterId;
+    }
+
     public Anchor getAnchor() {
-        return this.anchor == null ? new Anchor() : this.anchor;
+        return this.anchor;
     }
 
     public void setAnchor(Anchor anchor) {
@@ -331,7 +364,7 @@ public class DownloadAudio implements Serializable {
     }
 
     public List<DetailTags> getTags() {
-        return this.tags == null ? new ArrayList<DetailTags>() : this.tags;
+        return this.tags;
     }
 
     public void setTags(List<DetailTags> tags) {
@@ -409,9 +442,7 @@ public class DownloadAudio implements Serializable {
         return chapterList;
     }
 
-    /**
-     * Resets a to-many relationship, making the next get call to query for a fresh result.
-     */
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     @Generated(hash = 1743307878)
     public synchronized void resetChapterList() {
         chapterList = null;
@@ -453,36 +484,11 @@ public class DownloadAudio implements Serializable {
         myDao.update(this);
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 584871444)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDownloadAudioDao() : null;
     }
 
-    public long getUpdateMillis() {
-        return this.updateMillis;
-    }
-
-    public void setUpdateMillis(long updateMillis) {
-        this.updateMillis = updateMillis;
-    }
-
-    public String getSortType() {
-        return this.sortType;
-    }
-
-    public void setSortType(String sortType) {
-        this.sortType = sortType;
-    }
-
-    public String getListenChapterId() {
-        return this.listenChapterId;
-    }
-
-    public void setListenChapterId(String listenChapterId) {
-        this.listenChapterId = listenChapterId;
-    }
 }

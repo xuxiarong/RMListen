@@ -264,7 +264,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/business_attentionselect"
+                android:background="@drawable/business_attention_select"
                 android:paddingStart="@dimen/dp_20"
                 android:paddingTop="@dimen/dp_5"
                 android:paddingEnd="@dimen/dp_20"
@@ -290,6 +290,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_detail_anchor_url"
                 bindUrl="@{viewModel.detailInfoData.list.anchor.anchor_avatar}"
+                defaultIcon="@{@drawable/business_ic_default_user}"
                 isCircle="@{true}"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -353,7 +354,7 @@
                 isVisible="@{viewModel.attentionVisibility}"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_26"
-                android:background="@{viewModel.isAttention ? @drawable/business_attention_un_select  : @drawable/business_attentionselect}"
+                android:background="@{viewModel.isAttention ? @drawable/business_attention_un_select  : @drawable/business_attention_select}"
                 android:drawableStart="@{viewModel.isAttention ? @drawable/business_icon_attention_eb : @drawable/business_icon_attention_ea}"
                 android:drawablePadding="@dimen/dp_4"
                 android:gravity="center"

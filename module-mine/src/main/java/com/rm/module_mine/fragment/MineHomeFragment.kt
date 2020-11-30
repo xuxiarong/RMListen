@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.binding.bindUrl
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
+import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.loginUser
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
@@ -58,7 +60,14 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
     override fun onResume() {
         super.onResume()
         loginUser.get()?.let {
-            mDataBind.mineHomeUserIcon.bindUrl(bindUrl = it.avatar_url, isCircle = true)
+            mDataBind.mineHomeUserIcon.bindUrl(
+                bindUrl = it.avatar_url,
+                isCircle = true,
+                defaultIcon = ContextCompat.getDrawable(
+                    mDataBind.mineHomeUserIcon.context,
+                    R.drawable.business_ic_default_user
+                )
+            )
         }
     }
 

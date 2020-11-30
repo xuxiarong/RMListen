@@ -27,6 +27,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mine_adapter_member_fans_icon"
             bindUrl="@{fansItem.avatar_url}"
+            defaultIcon="@{@drawable/business_ic_default_user}"
             isCircle="@{true}"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -95,7 +96,7 @@
             isVisible="@{!TextUtils.equals(fansViewModel.userInfo.id,fansItem.member_id)}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_26"
-            android:background="@{fansItem.is_follow==1 ? @drawable/business_attention_un_select  : @drawable/business_attentionselect}"
+            android:background="@{fansItem.is_follow==1 ? @drawable/business_attention_un_select  : @drawable/business_attention_select}"
             android:drawableStart="@{fansItem.is_follow==1 ? @drawable/business_icon_attention_eb : @drawable/business_icon_attention_ea}"
             android:drawablePadding="@dimen/dp_4"
             android:gravity="center_vertical"

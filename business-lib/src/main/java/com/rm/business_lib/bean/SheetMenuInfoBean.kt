@@ -3,7 +3,7 @@ package com.rm.business_lib.bean
 import com.rm.business_lib.db.download.DownloadAudio
 
 data class SheetMenuInfoBean(
-    var audio_list: MutableList<DownloadAudio>,//音频列表
+    var audio_list: MutableList<DownloadAudio>?,//音频列表
     var avatar_url: String,//创建者头像URL
     var cover_url: String,//听单封面URL
     var created_at: String,//创建时间，格式：YYYY-mm-dd HH:ii:ss

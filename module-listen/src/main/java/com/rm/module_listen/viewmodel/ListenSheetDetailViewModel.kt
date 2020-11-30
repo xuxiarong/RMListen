@@ -48,6 +48,12 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
 
     private lateinit var sheetId: String
 
+    //是否显示没数据
+    val showNoData = ObservableField<Boolean>(false)
+
+    //音频书籍数量
+    val audioNum = ObservableField(0)
+
     //编辑成功
     var blockSuccess: (String) -> Unit = {}
 
@@ -77,19 +83,25 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
             repository.getSheetInfo(sheetId).checkResult(
                 onSuccess = {
                     showContentView()
+                    audioNum.set(it.num_audio)
+
                     data.set(it)
                     //刷新完成
                     refreshStateModel.finishRefresh(true)
                     //设置新数据源
 
-                    if (it.audio_list.list.size > 0) {
-                        mAdapter.setList(it.audio_list.list)
+                    if (it.audio_list?.list?.size ?: 0 > 0) {
+                        mAdapter.setList(it.audio_list?.list)
+                        showNoData.set(false)
                     } else {
-                        showDataEmpty()
+                        showNoData.set(true)
                     }
                     //是否有更多数据
-                    refreshStateModel.setNoHasMore(it.audio_list.list.size < pageSize)
-                    ++mPage
+                    if (mAdapter.data.size >= it.audio_list?.total ?: 0 && it.audio_list?.list?.size ?: 0 < pageSize) {
+                        refreshStateModel.setNoHasMore(true)
+                    } else {
+                        ++mPage
+                    }
                 },
 
                 onError = {
@@ -109,9 +121,14 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
             repository.getAudioList(mPage, pageSize).checkResult(
                 onSuccess = {
                     refreshStateModel.finishLoadMore(true)
-                    mAdapter.addData(it.list)
-                    refreshStateModel.setNoHasMore(it.list.size < pageSize)
-                    ++mPage
+                    it.list?.let { audioList ->
+                        mAdapter.addData(audioList)
+                    }
+                    if (mAdapter.data.size >= it.total && it.list?.size ?: 0 < pageSize) {
+                        refreshStateModel.setNoHasMore(true)
+                    } else {
+                        ++mPage
+                    }
                 },
                 onError = {
                     refreshStateModel.finishLoadMore(false)
@@ -145,6 +162,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     private fun deleteSuccess() {
         val hasMap = getHasMap()
         hasMap[ListenMySheetDetailActivity.SHEET_ID] = sheetId
+        hasMap[ListenMySheetDetailActivity.SHEET_AUDIO_NUM] = audioNum.get()!!
         setResultAndFinish(ListenMySheetDetailActivity.LISTEN_SHEET_DETAIL_DELETE, hasMap)
     }
 
@@ -173,10 +191,15 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     private fun editSuccess(sheetName: String) {
         mDialog.dismiss()
         blockSuccess(sheetName)
+        setResult(sheetName)
+    }
+
+    private fun setResult(sheetName: String) {
         val map = getHasMap()
         map[ListenMySheetDetailActivity.SHEET_ID] = sheetId
         map[ListenMySheetDetailActivity.SHEET_NAME] = sheetName
-        setResult(ListenMySheetDetailActivity.LISTEN_SHEET_DETAIL_EDIT, map)
+        map[ListenMySheetDetailActivity.SHEET_AUDIO_NUM] = audioNum.get()!!
+        setResult(ListenMySheetDetailActivity.LISTEN_SHEET_DETAIL, map)
     }
 
     /**
@@ -197,10 +220,11 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
                 onSuccess = {
                     showContentView()
                     mAdapter.remove(bean)
-                    if(mAdapter.data.size <=0){
-                        showDataEmpty()
+                    audioNum.set(audioNum.get()!! - 1)
+                    if (mAdapter.data.size <= 0) {
+                        showNoData.set(true)
                     }
-                    DLog.i("-------->", "移除成功  $it")
+                    setResult(data.get()?.sheet_name ?: "")
                 },
                 onError = {
                     DLog.i("-------->", "移除失败  $it")

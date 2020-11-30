@@ -33,7 +33,7 @@
     <string name="home_praise_list">好评榜</string>
 
 
-    <string name="home_audio_size">共%d本</string>
+    <string name="home_audio_size">共%s本</string>
     <string name="home_detail_comment_hint">快来发表你的评论吧</string>
     <string name="home_top_10">TOP10</string>
     <string name="home_detail_hot_anchor">热门主播</string>
@@ -56,6 +56,7 @@
     <string name="home_play_all">全部播放</string>
     <string name="home_resume_pay">继续播放</string>
     <string name="home_pause_play">全部暂停</string>
+    <string name="home_menu_detail_no_data">此页面空荡荡的…什么都没有</string>
 
 </resources>
 

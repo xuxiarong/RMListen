@@ -23,7 +23,8 @@ import kotlinx.android.synthetic.main.listen_activity_sheet_list.*
  * 听单界面
  */
 class
-ListenSheetListActivity : ComponentShowPlayActivity<ListenActivitySheetListBinding, BaseVMViewModel>() {
+ListenSheetListActivity :
+    ComponentShowPlayActivity<ListenActivitySheetListBinding, BaseVMViewModel>() {
 
     companion object {
         const val SHEET_LIST_TYPE = "sheetListType"
@@ -31,8 +32,7 @@ ListenSheetListActivity : ComponentShowPlayActivity<ListenActivitySheetListBindi
         fun startActivity(context: Activity, @ListenSheetListType sheetListType: Int) {
             context.startActivityForResult(
                 Intent(context, ListenSheetListActivity::class.java)
-                    .putExtra(SHEET_LIST_TYPE, sheetListType)
-                , 300
+                    .putExtra(SHEET_LIST_TYPE, sheetListType), 300
             )
         }
 
@@ -44,8 +44,7 @@ ListenSheetListActivity : ComponentShowPlayActivity<ListenActivitySheetListBindi
             context.startActivityForResult(
                 Intent(context, ListenSheetListActivity::class.java)
                     .putExtra(SHEET_LIST_TYPE, sheetListType)
-                    .putExtra(MEMBER_ID, memberId)
-                , 300
+                    .putExtra(MEMBER_ID, memberId), 300
             )
         }
     }
@@ -65,6 +64,7 @@ ListenSheetListActivity : ComponentShowPlayActivity<ListenActivitySheetListBindi
 
     override fun startObserve() {
     }
+
     override fun initView() {
         super.initView()
         sheetType = intent.getIntExtra(SHEET_LIST_TYPE, LISTEN_SHEET_LIST_MY_LIST)
@@ -76,7 +76,6 @@ ListenSheetListActivity : ComponentShowPlayActivity<ListenActivitySheetListBindi
     private fun createFragment() {
         if (memberId == null || TextUtils.isEmpty(memberId)) {
             memberId = ""
-//            memberId = loginUser.get()!!.id
         }
         if (TextUtils.isEmpty(memberId) || memberId == loginUser.get()?.id) {
             mListTabText[0] = CONTEXT.getString(R.string.listen_my_sheet)
@@ -103,10 +102,11 @@ ListenSheetListActivity : ComponentShowPlayActivity<ListenActivitySheetListBindi
     }
 
     private fun attachViewPager() {
-        BendTabLayoutMediator(listen_sheet_list_tab, listen_sheet_list_view_pager,
-            BendTabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                tab.text = mListTabText[position]
-            }).attach()
+        BendTabLayoutMediator(
+            listen_sheet_list_tab, listen_sheet_list_view_pager
+        ) { tab, position ->
+            tab.text = mListTabText[position]
+        }.attach()
 
     }
 
@@ -117,7 +117,6 @@ ListenSheetListActivity : ComponentShowPlayActivity<ListenActivitySheetListBindi
             it.onActivityResult(requestCode, resultCode, data)
         }
     }
-
 
 
 }

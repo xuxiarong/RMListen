@@ -105,7 +105,7 @@
             style="@style/BusinessTextStyleThird_4"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
-            android:text="@{item.author}"
+            android:text="@{item.anchor_name}"
             app:layout_constraintBottom_toBottomOf="@id/home_menu_detail_book_adapter_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_menu_detail_book_adapter_icon"

@@ -22,7 +22,7 @@ data class Anchor(
     val anchor_name: String = "",
     val anchor_avatar: String = "",
     val anchor_follows: String = "",
-    val status: Boolean = false
+    var status: Boolean = false
 ) : Serializable
 
 

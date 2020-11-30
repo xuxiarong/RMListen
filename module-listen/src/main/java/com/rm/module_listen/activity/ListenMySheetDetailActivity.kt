@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -27,14 +28,14 @@ class ListenMySheetDetailActivity :
         //删除成功回调code
         const val LISTEN_SHEET_DETAIL_DELETE = 0x1001
 
-        //编辑成功回调code
-        const val LISTEN_SHEET_DETAIL_EDIT = 0x1002
+        const val LISTEN_SHEET_DETAIL = 0x1002
 
         //跳转过来的code
         const val LISTEN_SHEET_DETAIL_REQUEST_CODE = 0x101
 
         const val SHEET_ID = "sheetId"
         const val SHEET_NAME = "sheetName"
+        const val SHEET_AUDIO_NUM = "sheetAudioNum"
         fun startActivity(context: Activity, sheetId: String) {
             context.startActivityForResult(
                 Intent(
@@ -82,7 +83,10 @@ class ListenMySheetDetailActivity :
         mViewModel.blockSuccess = {
             headerDataBind?.listenSheetDetailDescription?.text = it
         }
-
+        mDataBind.listenSheetDetailRecyclerView.apply {
+            bindVerticalLayout(mViewModel.mAdapter)
+            createHeader()
+        }
         recycleScrollListener()
 
     }
@@ -90,7 +94,7 @@ class ListenMySheetDetailActivity :
     /**
      * 创建头部
      */
-    private fun createHeader(bean: SheetInfoBean) {
+    private fun createHeader() {
         headerDataBind = DataBindingUtil.inflate<ListenHeaderSheetDetailBinding>(
             LayoutInflater.from(this),
             R.layout.listen_header_sheet_detail,
@@ -98,8 +102,8 @@ class ListenMySheetDetailActivity :
             false
         ).apply {
             //头部数据绑定
-            setVariable(BR.item, bean)
             mViewModel.mAdapter.addHeaderView(root)
+            setVariable(BR.headViewModel, mViewModel)
         }
     }
 
@@ -111,15 +115,6 @@ class ListenMySheetDetailActivity :
     }
 
     override fun startObserve() {
-        mViewModel.data.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (mViewModel.mAdapter.headerLayoutCount == 0) {
-                    createHeader(mViewModel.data.get()!!)
-                }
-            }
-        })
-
         mViewModel.refreshStateModel.noMoreData.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
@@ -133,7 +128,6 @@ class ListenMySheetDetailActivity :
             }
         })
     }
-
 
     /**
      * recyclerView滑动监听

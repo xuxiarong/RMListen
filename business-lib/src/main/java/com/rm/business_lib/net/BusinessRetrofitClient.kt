@@ -1,6 +1,9 @@
 package com.rm.business_lib.net
 
 import androidx.annotation.Nullable
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.rm.baselisten.jsondeserializer.JsonObjectAdapter
 import com.rm.baselisten.net.api.BaseRetrofitClient
 import okhttp3.Call
 import okhttp3.HttpUrl
@@ -35,7 +38,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         const val TYPE_MOCK = 2
         const val TYPE_DEVELOP = 3
         const val TYPE_STG = 4
-
+//"http://192.168.13.244:9602/api/v1_0/"
         var currentType = TYPE_TEST
 
         fun getBaseUrl(): String {
@@ -66,12 +69,13 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
     override fun handleBuilder(builder: OkHttpClient.Builder) {
         super.handleBuilder(builder)
         builder.addInterceptor(CustomInterceptor())
+//        builder.addInterceptor(RefreshTokenInterceptor())
     }
 
     fun <S> getService(serviceClass: Class<S>): S {
 
-//        val gson = GsonBuilder()
-//            .serializeNulls()
+        val gson = GsonBuilder()
+            .serializeNulls()
 //            .registerTypeHierarchyAdapter(BigDecimal::class.java, BigDecimalAdapter())
 //            .registerTypeHierarchyAdapter(BigInteger::class.java, BigIntegerAdapter())
 //            .registerTypeHierarchyAdapter(Boolean::class.java, BooleanAdapter())
@@ -79,13 +83,13 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
 //            .registerTypeHierarchyAdapter(Character::class.java, CharacterAdapter())
 //            .registerTypeHierarchyAdapter(Double::class.java, DoubleAdapter())
 //            .registerTypeHierarchyAdapter(Float::class.java, FloatAdapter())
-//            .registerTypeHierarchyAdapter(JsonObject::class.java, JsonObjectAdapter())
+            .registerTypeHierarchyAdapter(JsonObject::class.java, JsonObjectAdapter())
 //            .registerTypeHierarchyAdapter(List::class.java, ListAdapter())
 //            .registerTypeHierarchyAdapter(Long::class.java, LongAdapter())
 //            .registerTypeHierarchyAdapter(Short::class.java, ShortAdapter())
 //            .registerTypeHierarchyAdapter(String::class.java, StringAdapter())
 //            .registerTypeHierarchyAdapter(Integer::class.java, IntegerAdapter())
-//            .create()
+            .create()
 
         return Retrofit.Builder()
             .client(client)
@@ -104,7 +108,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
                     return null
                 }
             })
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(getBaseUrl())
             .build().create(serviceClass)
     }

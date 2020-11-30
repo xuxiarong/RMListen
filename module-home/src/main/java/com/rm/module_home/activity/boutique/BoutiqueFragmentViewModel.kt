@@ -5,6 +5,7 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.BR
+import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.R
@@ -43,25 +44,12 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
             repository.getBoutiqueRecommendInfoList(categoryTabBean!!.class_id, page, pageSize)
                 .checkResult(
                     onSuccess = {
-                        bookAdapter.data.addAll(it.list)
-                        bookAdapter.notifyDataSetChanged()
-                        if (page == 1) {
-                            if (it.list.isEmpty()) {
-                                showDataEmpty()
-                            } else {
-                                showContentView()
-                            }
-                        } else {
-                            // 加载更多
-                            refreshStatusModel.finishLoadMore(true)
-                        }
-                        // 设置是否还有下一页数据
-                        refreshStatusModel.setNoHasMore(bookAdapter.data.size >= it.total)
-                        page++
+                        processSuccess(it)
                     },
                     onError = {
                         if (page == 1) {
                             showServiceError()
+                            refreshStatusModel.finishRefresh(false)
                         } else {
                             // 获取下一页失败，显示列表加载失败的视图
                             refreshStatusModel.finishLoadMore(false)
@@ -71,29 +59,41 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
         }
     }
 
+    private fun processSuccess(audioListBean: AudioListBean) {
+        showContentView()
+        if (page == 1) {
+            if (audioListBean.list?.size ?: 0 > 0) {
+                bookAdapter.setList(audioListBean.list)
+            } else {
+                showDataEmpty()
+            }
+            refreshStatusModel.finishRefresh(true)
+        } else {
+            // 加载更多
+            audioListBean.list?.let {
+                bookAdapter.addData(it)
+            }
+            refreshStatusModel.finishLoadMore(true)
+        }
+        // 设置是否还有下一页数据
+        if (bookAdapter.data.size >= audioListBean.total || audioListBean.list?.size ?: 0 < pageSize) {
+            refreshStatusModel.setNoHasMore(true)
+        } else {
+            page++
+        }
+    }
+
     fun refresh() {
         refreshStatusModel.setNoHasMore(false)
         page = 1
-        launchOnIO {
-            repository.getBoutiqueRecommendInfoList(categoryTabBean!!.class_id, page, pageSize)
-                .checkResult(
-                    onSuccess = {
-                        // 清空所有数据
-                        bookAdapter.data.clear()
-                        it.list.let { it1 -> bookAdapter.data.addAll(it1) }
-                        bookAdapter.notifyDataSetChanged()
-                        page++
-                        refreshStatusModel.finishRefresh(true)
-                        // 设置是否还有下一页数据
-                        refreshStatusModel.setNoHasMore(bookAdapter.data.size >= it.total)
+        getBookList()
+    }
 
-                    },
-                    onError = {
-                        // 下拉刷新失败
-                        refreshStatusModel.finishRefresh(false)
-                    }
-                )
-        }
+    /**
+     * 加载更多
+     */
+    fun loadData() {
+        getBookList()
     }
 
     /**

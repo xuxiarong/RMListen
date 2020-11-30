@@ -4,6 +4,7 @@ import android.content.Context
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.BR
@@ -28,8 +29,8 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
 
     val mAdapter by lazy {
         CommonBindVMAdapter<DownloadAudio>(
-           viewModel =  this,
-           commonData =  mutableListOf(),
+            viewModel = this,
+            commonData = mutableListOf(),
             commonItemLayoutId = R.layout.home_adapter_topic_list_item,
             commonDataBrId = BR.audioItem,
             commonViewModelId = BR.viewModel
@@ -46,26 +47,14 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
         launchOnIO {
             repository.getTopicList(pageId, blockId, topicId, page, pageSize).checkResult(
                 onSuccess = {
-                    mAdapter.data.addAll(it.list)
-                    mAdapter.notifyDataSetChanged()
-                    if (page == 1) {
-                        if (it.list.isEmpty()) {
-                            showDataEmpty()
-                        } else {
-                            showContentView()
-                        }
-                    } else {
-                        // 加载更多
-                        refreshStatusModel.finishLoadMore(true)
-                    }
-                    // 设置是否还有下一页数据
-                    refreshStatusModel.setNoHasMore(mAdapter.data.size >= it.total)
-                    page++
+                    processSuccess(it)
+
                 },
                 onError = {
                     if (page == 1) {
                         // 获取第一页数据就失败
                         // 显示错误视图
+                        refreshStatusModel.finishRefresh(false)
                         showServiceError()
                     } else {
                         // 获取下一页失败，显示列表加载失败的视图
@@ -76,30 +65,41 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
         }
     }
 
+    private fun processSuccess(audioListBean: AudioListBean) {
+        showContentView()
+        if (page == 1) {
+            if (audioListBean.list?.size ?: 0 > 0) {
+                mAdapter.setList(audioListBean.list)
+            } else {
+                showDataEmpty()
+            }
+            refreshStatusModel.finishRefresh(true)
+        } else {
+            // 加载更多
+            audioListBean.list?.let {
+                mAdapter.addData(it)
+            }
+            refreshStatusModel.finishLoadMore(true)
+        }
+        // 设置是否还有下一页数据
+        if (mAdapter.data.size >= audioListBean.total || audioListBean.list?.size ?: 0 < pageSize) {
+            refreshStatusModel.setNoHasMore(true)
+        } else {
+            page++
+        }
+    }
+
     /**
      * 下拉刷新时调用
      */
     fun refresh() {
         refreshStatusModel.setNoHasMore(false)
-        launchOnIO {
-            page = 1
-            repository.getTopicList(pageId, blockId, topicId, page, pageSize).checkResult(
-                onSuccess = {
-                    // 清空所有数据
-                    mAdapter.data.clear()
-                    it.list.let { it1 -> mAdapter.data.addAll(it1) }
-                    mAdapter.notifyDataSetChanged()
-                    page++
-                    refreshStatusModel.finishRefresh(true)
-                    // 设置是否还有下一页数据
-                    refreshStatusModel.setNoHasMore(mAdapter.data.size >= it.total)
-                },
-                onError = {
-                    // 下拉刷新失败
-                    refreshStatusModel.finishRefresh(false)
-                }
-            )
-        }
+        page = 1
+        getTopicList()
+    }
+
+    fun loadData() {
+        getTopicList()
     }
 
     /**

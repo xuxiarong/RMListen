@@ -30,7 +30,7 @@ class MenuListAdapter(private val mViewModel: HomeMenuViewModel) :
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
             if (tag != true) {
                 tag = true
-                item.audio_list.let {
+                item.audio_list?.let {
                     val list = if (it.size > 3) {
                         it.subList(0, 3)
                     } else {
