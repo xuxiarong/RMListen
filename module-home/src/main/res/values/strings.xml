@@ -57,6 +57,11 @@
     <string name="home_resume_pay">继续播放</string>
     <string name="home_pause_play">全部暂停</string>
     <string name="home_menu_detail_no_data">此页面空荡荡的…什么都没有</string>
-
+    <string name="home_private_and_service">隐私政策及服务条款概要</string>
+    <string name="home_agree_private_service">同意</string>
+    <string name="home_not_use_private_service">暂不使用</string>
+    <string name="home_private_service_content">欢迎你使用听书！我们将通过《听书用户个人信息保护及隐私政策协议》和《听书软件许可及服务协议》帮助你了解我们收集、使用、存储和共享个人信息的情况，特别是我们所采集的个人信息类型及其用途。同时，你还可以了解到你所享有的相关权利和实现途径以及我们为了保护好你的个人信息安全所采用的相关策略。如你同意，可以点击“同意”开始接受我们的服务。欢迎你使用听书！</string>
+    <string name="home_private_protocol">《听书用户个人信息保护及隐私政策协议》</string>
+    <string name="home_service_protocol">《听书软件许可及服务协议》</string>
 </resources>
 

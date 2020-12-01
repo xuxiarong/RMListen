@@ -58,6 +58,9 @@ object HomeGlobalData {
     var LISTEN_SELECT_MY_LISTEN = 0
     var LISTEN_SELECT_SUBS_UPDATE = 1
     var myListenSelectTab = ObservableInt(LISTEN_SELECT_MY_LISTEN)
+
+    const val HOME_IS_AGREE_PRIVATE_PROTOCOL = "home_is_agree_private_protocol"
+
 }
 
 

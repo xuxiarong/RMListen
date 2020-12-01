@@ -70,7 +70,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
     /**
      * dialog的宽度
      */
-    var dialogWidth = 0;
+    var dialogWidth = 0
 
     /**
      * dialog的高度

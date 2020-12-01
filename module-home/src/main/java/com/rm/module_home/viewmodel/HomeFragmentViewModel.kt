@@ -1,5 +1,6 @@
 package com.rm.module_home.viewmodel
 
+import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -45,6 +46,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     var doubleRvLeftScrollOpenDetail: () -> Unit = {}
     var errorMsg = ObservableField<String>()
     var showNetError = ObservableBoolean(false)
+
+    var dialogUrl = ObservableField<String>("http://ls-book.leimans.com/common/groups/3651/79059fd63435150c4c1eb557ebdde0c3.jpg")
 
     var homeAllData = MutableLiveData<MutableList<MultiItemEntity>>()
 
