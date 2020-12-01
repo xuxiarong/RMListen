@@ -8,11 +8,9 @@ import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
-import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
+import com.rm.music_exoplayer_lib.constants.STATE_READY
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 /**
  *
@@ -49,8 +47,9 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
 
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
-        ExoplayerLogger.exoLog("playerState=${playerState},message=${message}")
+        DLog.d("suolong","播放出错 playerState = $playerState 出错信息 = ${message?:"为空"}")
         playStatusListener?.onMusicPlayerState(playerState,message)
+        BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(false, STATE_READY))
     }
 
     override fun onPrepared(totalDurtion: Long) {
@@ -146,9 +145,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
             "suolong",
             " playWhenReady = $playWhenReady --- status = $playbackState --- time = ${System.currentTimeMillis()}"
         )
-    }
-
-    override fun onCompletionPlay() {
     }
 
     interface IPlayStatusListener{

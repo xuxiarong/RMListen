@@ -248,15 +248,6 @@ interface MusicPlayerPresenter {
     //获取播放模式
     fun getPlayerModel(): Int
 
-    //设置定时模式
-    fun setPlayerAlarmModel(model: Int)
-
-    //获取闹钟模式
-    fun getPlayerAlarmModel(): Int
-
-    //获取闹钟时长
-    fun getPlayerAlarmTime(): Long
-
     /**
      * 开启通知
      */
@@ -266,9 +257,6 @@ interface MusicPlayerPresenter {
      * 服务名称
      */
     fun getServiceName(): String
-
-    //剩余集数
-    fun getRemainingSetInt(): Int
 
     /**
      * 获取配速

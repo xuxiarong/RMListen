@@ -1,12 +1,9 @@
 package debug
 
-import android.widget.SeekBar
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
-import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 import com.rm.baselisten.debug.BaseDebugActivity
-import com.rm.baselisten.util.ToastUtil
 import com.rm.module_play.R
 import kotlinx.android.synthetic.main.play_activity_main.*
 
@@ -71,8 +68,4 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
 
     }
-
-    override fun onCompletionPlay() {
-    }
-
 }

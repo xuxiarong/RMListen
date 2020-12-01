@@ -23,12 +23,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         var action = intent?.action
         //定时通知
         when (action) {
-            ACTION_ALARM_SYNCHRONIZE -> {
-                doSynchronizeAction(context)
-            }
-            ACTION_ALARM_REPLENISH_STOCK -> {
-                doReplenishStockAction(context)
-            }
+
             //通知栏操作
             //耳机拔出
             ACTION_AUDIO_BECOMING_NOISY -> {
@@ -62,16 +57,4 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
 
     }
 
-    private fun doSynchronizeAction(context: Context?) {
-        Toast.makeText(context, "同步", Toast.LENGTH_SHORT).show()
-    }
-
-    /**
-     * 执行补充库存动作, 即下单/定货
-     */
-    private fun doReplenishStockAction(context: Context?) {
-        ExoplayerLogger.exoLog("关闭音乐播放器")
-//        Toast.makeText(context, "关闭音乐播放", Toast.LENGTH_SHORT).show()
-//        musicPlayerManger.pause()
-    }
 }

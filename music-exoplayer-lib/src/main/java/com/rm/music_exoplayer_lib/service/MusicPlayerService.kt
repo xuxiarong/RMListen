@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
-import com.example.music_exoplayer_lib.manager.BookAlarmManger
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -22,7 +21,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util.getUserAgent
-import com.rm.music_exoplayer_lib.R
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
@@ -68,15 +66,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private var mPlayModel = MUSIC_MODEL_ORDER
     private var mNotificationEnable: Boolean = true
 
-    //用户设定的闹钟模式,默认:MusicAlarmModel.MUSIC_ALARM_MODEL_0
-    private var mMusicAlarmModel = MUSIC_ALARM_MODEL_0
-
-    //定时剩余集数
-    private var mRemainingSet = -1
-
-    //闹钟总时长
-    var alarmTimes = 0L
-
     //播放速度
     var playerMultiples = 1f
 
@@ -89,9 +78,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             NotificationManger(this, it, getPlayerState())
 
         }
-    }
-    private val alarmManger by lazy {
-        BookAlarmManger(this)
     }
 
     //是否被动暂停，用来处理音频焦点失去标记
@@ -217,15 +203,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             })
         registerReceiver()
         initPlayerConfig()
-        initAlarmConfig()
     }
 
     //注册广播
     private fun registerReceiver() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
-        intentFilter.addAction(ACTION_ALARM_REPLENISH_STOCK)
-        intentFilter.addAction(ACTION_ALARM_SYNCHRONIZE)
         intentFilter.addAction(MUSIC_INTENT_ACTION_ROOT_VIEW)
         intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_LAST)
         intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_NEXT)
@@ -477,17 +460,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      */
     private fun onFinishPlay() {
         mUpdateProgressHandler.removeMessages(0)
-        if (mMusicAlarmModel in 1..5) {
-            mRemainingSet--
-            //定时集已经播完
-            if (mRemainingSet <= 0) {
-                setPlayerAlarmModel(MUSIC_ALARM_MODEL_0)
-            }
-            mOnPlayerEventListeners.forEach {
-                it.onCompletionPlay()
-            }
-            return
-        }
         when (mPlayModel) {
             //顺序播放
             MUSIC_MODEL_ORDER -> {
@@ -590,57 +562,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     override fun getPlayerModel(): Int = mPlayModel
 
-    //初始化闹钟
-    private fun initAlarmConfig() {
-        alarmManger.setAlarm(alarmTimes)
-
-    }
-
-    /**
-     * 设置闹钟模式
-     */
-    override fun setPlayerAlarmModel(model: Int) {
-        mMusicAlarmModel = model//倒计时模式
-        alarmTimes = 0L
-        if (model < 10) {
-            mRemainingSet = model//集数记录
-        } else {
-            mRemainingSet = -1
-        }
-        when (model) {
-            MUSIC_ALARM_MODEL_20,
-            MUSIC_ALARM_MODEL_30,
-            MUSIC_ALARM_MODEL_40,
-            MUSIC_ALARM_MODEL_10,
-            MUSIC_ALARM_MODEL_60 -> {
-                alarmTimes = System.currentTimeMillis() + model * 60 * 1000
-                alarmManger.setAlarm(alarmTimes)
-            }
-
-            MUSIC_ALARM_MODEL_EPISODE_ONE,
-            MUSIC_ALARM_MODEL_EPISODE_TWO,
-            MUSIC_ALARM_MODEL_EPISODE_THREE,
-            MUSIC_ALARM_MODEL_EPISODE_FOUR,
-            MUSIC_ALARM_MODEL_EPISODE_FIVE -> {
-                alarmTimes = -1
-                alarmManger.cancelAlarm()
-            }
-
-            MUSIC_ALARM_MODEL_0 -> {
-                alarmManger.cancelAlarm()
-            }
-            else -> {
-
-            }
-        }
-
-
-    }
-
-    override fun getPlayerAlarmModel(): Int = mMusicAlarmModel
-
-
-    override fun getPlayerAlarmTime(): Long = alarmTimes
 
     override fun setNotificationEnable(enable: Boolean) {
         this.mNotificationEnable = enable
@@ -650,7 +571,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun getServiceName(): String =
         "com.rm.music_exoplayer_lib.service.${MusicPlayerService::class.simpleName.toString()}"
 
-    override fun getRemainingSetInt(): Int = mRemainingSet
+
     override fun getPlayerMultiple(): Float = playerMultiples
     override fun resumePlayState(state: Boolean) {
         if (requestAudioFocus != 1) {
@@ -669,12 +590,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private fun initPlayerConfig() {
         this.mPlayModel = CacheUtils.instance.getInt(PLAY_MODEL, MUSIC_MODEL_ORDER)
 
-    }
-
-    private fun resetMusicAlarmModel() {
-        if (mMusicAlarmModel in 1..5 && mRemainingSet > 0) {
-            setPlayerAlarmModel(mMusicAlarmModel)
-        }
     }
 
     /**

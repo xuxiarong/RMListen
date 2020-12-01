@@ -103,6 +103,7 @@
             bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
             bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.getSubsDataFromService}"
+            bindResetNoMoreData="@{viewModel.refreshStatusModel.resetNoMoreData}"
             isVisible="@{viewModel.userLogin&amp;&amp; !viewModel.subsDataEmpty}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

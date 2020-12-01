@@ -131,6 +131,7 @@ class ListenMyListenFragment :
             if (!isLogin.get()) {
                 router.quicklyLogin(mViewModel, activity!!)
             } else {
+                (mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment).checkRedPointStatus()
                 ListenSubscriptionActivity.startActivity(it.context)
             }
         }

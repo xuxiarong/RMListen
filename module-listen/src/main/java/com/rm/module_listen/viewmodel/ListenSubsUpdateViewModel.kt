@@ -77,7 +77,6 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     fun checkRedPointStatus() {
         if (HomeGlobalData.isShowSubsRedPoint.get()) {
             reportSubsUpgradeRead()
-            HomeGlobalData.isShowSubsRedPoint.set(false)
         }
     }
 
@@ -87,15 +86,19 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                 report_type = "listen_upgrade_red_point",
                 member_id = loginUser.get()?.id ?: ""
             ).checkResult(onSuccess = {
+                HomeGlobalData.isShowSubsRedPoint.set(false)
                 DLog.d("suolong","订阅更新上报成功")
             },onError = {
+                HomeGlobalData.isShowSubsRedPoint.set(false)
                 DLog.d("suolong","订阅更新上报失败 ${it?:"原因为空"}")
             })
         }
     }
 
     fun getSubsDataFromService() {
-        showLoading()
+        if(currentPage == 1){
+            showLoading()
+        }
         launchOnIO {
             repository.getListenSubsUpgradeList(currentPage, pageSize).checkResult(
                 onSuccess = {
@@ -109,6 +112,8 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                         }else{
                             subsDataEmpty.set(false)
                         }
+                    }else{
+                        isShowFooter = false
                     }
                     currentPage++
                     dealData(it.list)
@@ -126,13 +131,16 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         launchOnIO {
             repository.getListenSubsUpgradeList(currentPage, pageSize).checkResult(
                 onSuccess = {
+                    refreshStatusModel.setResetNoMoreData(true)
                     refreshStatusModel.setNoHasMore(it.list.size < pageSize)
-                    refreshStatusModel.finishLoadMore(true)
                     if (it.list.size > 0) {
-                        if (it.list.size < pageSize) {
-                            isShowFooter = !(pageSize == 1 && (it.list.size in 1..4))
+                        isShowFooter = if (it.list.size < pageSize) {
+                            !(pageSize == 1 && (it.list.size in 1..4))
+                        }else{
+                            false
                         }
                         currentPage++
+                        subsDateAdapter.data.clear()
                         subsAudioAdapter.data.clear()
                         dealData(it.list)
                         if(HomeGlobalData.myListenSelectTab.get() == HomeGlobalData.LISTEN_SELECT_MY_LISTEN){
@@ -258,8 +266,10 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             }
             subsAudioAdapter.addData(audio)
         }
-        if (isShowFooter) {
-            subsAudioAdapter.addData(ListenSubsFooterModel())
+        if (isShowFooter && subsAudioAdapter.data.size>0) {
+            if(subsAudioAdapter.data.last() !is ListenSubsFooterModel){
+                subsAudioAdapter.addData(ListenSubsFooterModel())
+            }
         }
     }
 
