@@ -268,7 +268,7 @@ object PlayGlobalData {
                 playCountSelectPosition.set(-1)
             }
             playCountDownSecond.set(playCountDownSecond.get() - 500L)
-        }else{
+        }else if(playCountDownSecond.get()<= 0 && playCountSelectPosition.get() >=0){
             playCountDownSecond.set(-500L)
             playCountSelectPosition.set(-1)
         }
