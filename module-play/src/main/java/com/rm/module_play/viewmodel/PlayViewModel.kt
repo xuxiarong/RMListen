@@ -7,7 +7,6 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.net.checkResult
@@ -18,8 +17,6 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.utils.mmSS
-import com.rm.business_lib.utils.time2format
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.listen.ListenService
@@ -39,11 +36,6 @@ import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 /**
  *
@@ -66,12 +58,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 加载上一页的当前页码
      */
-    var playPrePage = PlayGlobalData.PLAY_FIRST_PAGE
+    private var playPrePage = PlayGlobalData.PLAY_FIRST_PAGE
 
     /**
      * 章节每页数量
      */
-    var playChapterPageSize = PlayGlobalData.PLAY_PAGE_SIZE
+    private var playChapterPageSize = PlayGlobalData.PLAY_PAGE_SIZE
 
     /**
      * 播放器实例对象
@@ -178,7 +170,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playPath.postValue(tempList)
     }
 
-    fun insertPlayPath(chapterList: MutableList<DownloadChapter>) {
+    private fun insertPlayPath(chapterList: MutableList<DownloadChapter>) {
         val tempChapterList = mutableListOf<DownloadChapter>()
         val tempPathList = mutableListOf<BaseAudioInfo>()
         tempChapterList.addAll(chapterList)
@@ -208,7 +200,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playPath.postValue(tempPathList)
     }
 
-    fun initPlayChapter(chapter: DownloadChapter) {
+    private fun initPlayChapter(chapter: DownloadChapter) {
         PlayGlobalData.initPlayChapter(chapter)
         PlayGlobalData.playChapterId.get()?.let {
             playReport(PlayGlobalData.playAudioId.get()!!, it)
@@ -280,7 +272,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 上报
      */
-    fun playReport(audioID: String, chapterId: String) {
+    private fun playReport(audioID: String, chapterId: String) {
         launchOnIO {
             repository.playerReport(audioID, chapterId).checkResult(onSuccess = {
                 ExoplayerLogger.exoLog(it)
@@ -385,6 +377,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.noMoreData.set(chapterList.size < playChapterPageSize)
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == PlayGlobalData.playChapterId.get()) {
+                            PlayGlobalData.playChapterList.value = mutableListOf()
                             initPlayChapter(chapter)
                             setAudioPlayPath(chapterList)
                             return@forEach
@@ -601,7 +594,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-    fun seekTextChange(changeText: String) {
+    private fun seekTextChange(changeText: String) {
         this.seekText.set(changeText)
     }
 
