@@ -55,4 +55,9 @@ class ListenMyListenViewModel(val repository: ListenRepository) : BaseVMViewMode
         }
     }
 
+    fun loadMore(){
+        DLog.d("suolong","loadMore")
+    }
+
+
 }

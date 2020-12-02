@@ -1,17 +1,14 @@
 package com.rm.module_play.binding
 
-import android.animation.Animator
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.airbnb.lottie.LottieAnimationView
 import com.rm.baselisten.model.BasePlayStatusModel
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
-import com.rm.baselisten.util.setPlayOnClickNotDoubleListener
 import com.rm.baselisten.view.progressbar.CircularProgressView
-import com.rm.business_lib.play.PlayState
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
 import com.rm.module_play.view.PlayControlView
@@ -74,78 +71,6 @@ fun BubbleSeekBar.updateThumbText(str: String?) {
     updateThumbText(str)
 }
 
-
-@BindingAdapter("bindPlayOrPause")
-fun LottieAnimationView.bindPlayOrPause(state: PlayState) {
-    var playAnimName = ""
-    var playFinish = true
-
-    if (isAnimating) {
-        DLog.d("suolongg", "z正在动画中，退出")
-        return
-    }
-
-    if (!state.read && (state.state == 4 || state.state == 3) && playFinish && (playAnimName == "play_start.json" || playAnimName == "")) {
-        setAnimation("play_pause.json")
-        addAnimatorListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {
-                playAnimName = "play_pause.json"
-                playFinish = false
-                DLog.d("suolong", "play_pause onAnimationRepeat")
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                playFinish = true
-                playAnimName = "play_pause.json"
-                DLog.d("suolong", "play_pause onAnimationEnd")
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-                playAnimName = "play_pause.json"
-                playFinish = true
-                DLog.d("suolong", "play_pause onAnimationCancel")
-
-            }
-
-            override fun onAnimationStart(animation: Animator?) {
-                playFinish = false
-                playAnimName = "play_pause.json"
-                DLog.d("suolong", "play_pause onAnimationStart")
-            }
-        })
-        playAnimation()
-
-    } else if (state.read && state.state == 3 && playFinish && playAnimName == "play_pause.json" || playAnimName == "") {
-        setAnimation("play_start.json")
-        addAnimatorListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {
-                playAnimName = "play_start.json"
-                playFinish = false
-                DLog.d("suolong", "play_start onAnimationRepeat")
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                playAnimName = "play_start.json"
-                playFinish = true
-                DLog.d("suolong", "play_start onAnimationEnd")
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {
-                playAnimName = "play_start.json"
-                playFinish = true
-                DLog.d("suolong", "play_start onAnimationCancel")
-            }
-
-            override fun onAnimationStart(animation: Animator?) {
-                playFinish = false
-                DLog.d("suolong", "play_start onAnimationStart")
-            }
-        })
-        playAnimation()
-    }
-
-}
-
 @BindingAdapter("bindPlayControl")
 fun PlayControlView.bindPlayControl(playState: BasePlayStatusModel?) {
     playState?.let {
@@ -168,39 +93,72 @@ fun PlayControlView.bindResetPlay(resetPlay: (() -> Unit)?) {
     resetPlayVar = resetPlay
 }
 
-//@BindingAdapter("bindPlayControlClick")
-//fun PlayControlView.bindPlayControlClick(action: (() -> Unit)?) {
-//    if (action != null) {
-//        setPlayOnClickNotDoubleListener {
-//            if (playFinish) {
-//                action()
-//            }
-//        }
-//    }
-//}
-
-
-@BindingAdapter("bindPlayPreSrc")
-fun ImageView.bindPlayPreSrc(hasPre: Boolean) {
-    setImageResource(
-            if (hasPre) {
-                R.drawable.play_ic_has_pre
-            } else {
-                R.drawable.play_ic_none_pre
-            }
-    )
+@BindingAdapter("bindPlayCountDownSecond")
+fun PlayControlView.bindPlayCountDownSecond(second: Long) {
+    if (second <= 0 && second >= -1000L) {
+        pausePlayVar?.let {
+            pauseAnim()
+            it()
+        }
+    }
 }
 
-@BindingAdapter("bindPlayNextSrc")
-fun ImageView.bindPlayNextSrc(hasNext: Boolean) {
-    setImageResource(
-            if (hasNext) {
-                R.drawable.play_ic_has_next
-            } else {
-                R.drawable.play_ic_none_next
-            }
-    )
+
+@BindingAdapter("bindPlayCountDownSize")
+fun PlayControlView.bindPlayCountDownSize(chapterSize: Int) {
+    if (chapterSize == 0) {
+        pausePlayVar?.let {
+            pauseAnim()
+            it()
+        }
+    }
 }
+
+@BindingAdapter("bindPlayTimerItemText")
+fun TextView.bindPlayTimerItemText(position: Int) {
+    if(position in 0..9){
+        text = if(PlayGlobalData.playCountTimerList[position] in 1..5){
+            String.format(context.getString(R.string.play_timer_chapter),PlayGlobalData.playCountTimerList[position])
+        }else{
+            String.format(context.getString(R.string.play_timer_second),PlayGlobalData.playCountTimerList[position])
+        }
+    }
+}
+
+
+@BindingAdapter("bindPlayCountDownSecondText")
+fun TextView.bindPlayCountDownSecondText(second: Long) {
+    if (second > 0L) {
+        text = TimeUtils.getListenDuration(second)
+        visibility = View.VISIBLE
+    } else {
+        text = ""
+        visibility = View.GONE
+    }
+}
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("bindPlayCountDownSizeText","bindPlayCountDownSecondText","bindPlayCountPosition","bindItemPosition",requireAll = false)
+fun TextView.bindPlayCountDownSizeText(chapterSize: Int,second: Long,playPosition: Int = 0,itemPosition : Int = 0) {
+    if(playPosition == itemPosition){
+        if (second > 1000L) {
+            text = TimeUtils.getPlayDuration(second)
+            visibility = View.VISIBLE
+        }else if (chapterSize > 0) {
+            visibility = View.VISIBLE
+            text = String.format(context.getString(R.string.play_timer_count_chapter),chapterSize)
+
+        }else{
+            text = ""
+            visibility = View.GONE
+        }
+    }else{
+        text = ""
+        visibility = View.GONE
+    }
+}
+
+
 
 
 @BindingAdapter("bindPlayPrepareProgress")
@@ -212,17 +170,6 @@ fun CircularProgressView.bindPlayPrepareProgress(playStatus: BasePlayStatusModel
         startAutoProgress()
     } else {
         stopAutoProgress()
-    }
-}
-
-@BindingAdapter("bindPlayTimeCountText")
-fun TextView.bindPlayTimeCountText(timeCount: Long) {
-    if (timeCount <= 0) {
-        visibility = View.GONE
-        return
-    } else {
-        visibility = View.VISIBLE
-        text = TimeUtils.getListenDuration(timeCount)
     }
 }
 
@@ -238,20 +185,17 @@ fun TextView.bindPlaySpeedText(float: Float?) {
     }
     visibility = View.VISIBLE
 
-    text = (
-            if (0F < float && float <= 0.5F) {
-                "0.5x"
-            } else if (0.5F < float && float <= 0.75F) {
-                "0.75x"
-            } else if (1.0F < float && float <= 1.25F) {
-                "1.25x"
-            } else if (1.25F < float && float <= 1.5F) {
-                "1.5x"
-            } else {
-                "2.0x"
-            }
-            )
-
+    text = if (0F < float && float <= 0.5F) {
+        "0.5x"
+    } else if (0.5F < float && float <= 0.75F) {
+        "0.75x"
+    } else if (1.0F < float && float <= 1.25F) {
+        "1.25x"
+    } else if (1.25F < float && float <= 1.5F) {
+        "1.5x"
+    } else {
+        "2.0x"
+    }
 }
 
 @BindingAdapter("bindPlaySpeedSrc")
@@ -264,7 +208,6 @@ fun ImageView.bindPlaySpeedSrc(float: Float?) {
         setImageResource(R.drawable.play_ic_speed_1x)
         return
     }
-
     setImageResource(
             if (0F < float && float <= 0.5F) {
                 R.drawable.play_ic_speed_0_5x
@@ -280,5 +223,4 @@ fun ImageView.bindPlaySpeedSrc(float: Float?) {
                 R.drawable.play_ic_speed_2x
             }
     )
-
 }

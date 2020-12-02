@@ -1,16 +1,32 @@
 package com.rm.module_home.fragment
 
+import android.content.Intent
+import android.view.Gravity
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.receiver.NetworkChangeReceiver
+import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.util.getBooleanMMKV
+import com.rm.baselisten.util.putMMKV
+import com.rm.baselisten.util.spannable.ChangeItem
+import com.rm.baselisten.util.spannable.SpannableHelper
+import com.rm.baselisten.util.spannable.TextClickListener
+import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.DisplayUtils
+import com.rm.baselisten.utilExt.String
+import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.web.BaseWebActivity
+import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.HomeGlobalData.isHomeDouClick
+import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity
@@ -19,6 +35,8 @@ import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuActivity
 import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.adapter.HomeAdapter
+import com.rm.module_home.databinding.HomeDialogHomeAdBinding
+import com.rm.module_home.databinding.HomeDialogPrivateServiceBinding
 import com.rm.module_home.databinding.HomeHomeFragmentBinding
 import com.rm.module_home.model.home.HomeAudioModel
 import com.rm.module_home.model.home.HomeBlockModel
@@ -36,6 +54,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     private val mHomeAdapter: HomeAdapter by lazy {
         HomeAdapter(mViewModel, BR.viewModel, BR.item)
     }
+    private var privateDialogShowing = false
 
     override fun initLayoutId() = R.layout.home_home_fragment
 
@@ -67,8 +86,101 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                 isHomeDouClick.value = false
             }
         })
-
+        showPrivateServiceDialog()
+        showHomeAdDialog("LBook://native?page=search")
     }
+
+    private fun showHomeAdDialog(jumpUrl : String) {
+        if (!privateDialogShowing) {
+            activity?.let { fragmentActivity ->
+                CommonMvFragmentDialog().apply {
+                    dialogHasBackground = true
+                    dialogCanceledOnTouchOutside = false
+                    dialogWidth = fragmentActivity.dip(320f)
+                    initDialog = {
+                        mDataBind?.let {
+                            val dialogBand = mDataBind as HomeDialogHomeAdBinding
+                            dialogBand.homeDialogAdClose.setOnClickListener {
+                                BannerJumpUtils.onBannerClick(fragmentActivity,jumpUrl)
+                                dismiss()
+                            }
+                        }
+                    }
+                }.showCommonDialog(activity = activity as FragmentActivity, layoutId = R.layout.home_dialog_home_ad, viewModel = mViewModel, viewModelBrId = BR.viewModel)
+            }
+        }
+    }
+
+    /**
+     * 显示隐私政策弹窗
+     */
+    private fun showPrivateServiceDialog() {
+        if (!HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.getBooleanMMKV(false)) {
+            privateDialogShowing = true
+            activity?.let {
+                CommonMvFragmentDialog().apply {
+                    dialogHasBackground = true
+                    dialogCanceledOnTouchOutside = false
+                    dialogWidth = it.dip(320f)
+                    initDialog = {
+                        mDataBind?.let {
+                            val dialogBand = mDataBind as HomeDialogPrivateServiceBinding
+                            setSpannableText(activity as FragmentActivity, dialogBand.homeDialogPrivateServiceContent)
+                            dialogBand.homeDialogAgreeProtocol.setOnClickListener {
+                                HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.putMMKV(true)
+                                dismiss()
+                                privateDialogShowing = false
+                                showHomeAdDialog("LBook://native?page=search")
+                            }
+                            dialogBand.homeDialogNotAgreeProtocol.setOnClickListener {
+                                dismiss()
+                                privateDialogShowing = false
+                                showHomeAdDialog("LBook://native?page=search")
+                            }
+                        }
+                    }
+
+                }.showCommonDialog(activity = activity as FragmentActivity, layoutId = R.layout.home_dialog_private_service, viewModel = mViewModel, viewModelBrId = BR.viewModel)
+            }
+        }
+    }
+
+    /**
+     * 设置富文本
+     * @param textView TextView
+     */
+    private fun setSpannableText(fragmentActivity: FragmentActivity, textView: TextView) {
+        SpannableHelper.with(
+                textView,
+                fragmentActivity.resources.getString(R.string.home_private_service_content))
+                .addChangeItem(
+                        ChangeItem(
+                                fragmentActivity.String(R.string.home_private_protocol),
+                                ChangeItem.Type.COLOR,
+                                fragmentActivity.Color(R.color.business_color_789dcb),
+                                object : TextClickListener {
+                                    override fun onTextClick(clickContent: String) {
+                                        activity?.let {
+                                            BaseWebActivity.startBaseWebActivity(it, "www.baidu.com")
+                                        }
+                                    }
+                                })
+                )
+                .addChangeItem(
+                        ChangeItem(
+                                fragmentActivity.String(R.string.home_service_protocol),
+                                ChangeItem.Type.COLOR,
+                                fragmentActivity.Color(R.color.business_color_789dcb),
+                                object : TextClickListener {
+                                    override fun onTextClick(clickContent: String) {
+                                        activity?.let {
+                                            BaseWebActivity.startBaseWebActivity(it, "www.baidu.com")
+                                        }
+                                    }
+                                })
+                ).build()
+    }
+
 
     private fun initCollectClick(model: HomeMenuModel) {
         when (model.menu_name) {
@@ -93,20 +205,20 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         })
 
         mViewModel.errorMsg.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
 
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.errorMsg.get() != null) {
                     (activity as BaseActivity).tipView.showTipView(
-                        activity = activity as FragmentActivity,
-                        tipText = mViewModel.errorMsg.get()!!
+                            activity = activity as FragmentActivity,
+                            tipText = mViewModel.errorMsg.get()!!
                     )
                 }
             }
         })
 
         mViewModel.showNetError.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
 
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.showNetError.get()) {
@@ -116,12 +228,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         })
 
         NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (NetworkChangeReceiver.isAvailable.get()) {
                     if (mViewModel.baseStatusModel.value != null) {
                         if (mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR
-                            || mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR
+                                || mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR
                         ) {
                             mViewModel.getHomeDataFromService()
                         }
@@ -173,11 +285,11 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
      */
     private fun onBlockClick(blockModel: HomeBlockModel) {
         HomeTopicListActivity.startActivity(
-            activity!!,
-            blockModel.page_id,
-            blockModel.block_id,
-            blockModel.topic_id,
-            blockModel.block_name
+                activity!!,
+                blockModel.page_id,
+                blockModel.block_id,
+                blockModel.topic_id,
+                blockModel.block_name
         )
     }
 

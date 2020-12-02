@@ -228,21 +228,12 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun getPlayerModel(): Int = mBinder?.getPlayerModel() ?: 0
 
-    override fun setPlayerAlarmModel(model: Int) {
-        mBinder?.setPlayerAlarmModel(model)
-    }
-
-    override fun getPlayerAlarmModel(): Int = mBinder?.getPlayerAlarmModel() ?: MUSIC_ALARM_MODEL_0
-
-    override fun getPlayerAlarmTime(): Long = mBinder?.getPlayerAlarmTime() ?: -1
-
     override fun setNotificationEnable(enable: Boolean) {
         mBinder?.setNotificationEnable(enable)
 
     }
 
     override fun getServiceName(): String = mBinder?.getServiceName() ?: ""
-    override fun getRemainingSetInt(): Int = mBinder?.getRemainingSetInt() ?: 0
     override fun getPlayerMultiple(): Float = mBinder?.getPlayerMultiple() ?: 1f
     override fun resumePlayState(state: Boolean) {
         mBinder?.resumePlayState(state)

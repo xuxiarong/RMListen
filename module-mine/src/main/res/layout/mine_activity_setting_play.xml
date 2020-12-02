@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MinePlaySettingViewModel" />
+        <import type="com.rm.business_lib.PlaySettingData"/>
     </data>
 
     <LinearLayout
@@ -14,7 +17,8 @@
         <com.rm.module_mine.widget.MineCommonSettingView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:setting_checked="true"
+            bindMineChecked="@{PlaySettingData.INSTANCE.getNetwork234GAlert()}"
+            bindMineCheckAction="@{viewModel.network234GAlertVal}"
             app:setting_name="@string/mine_play_setting_net_name"
             app:setting_tip="@string/mine_play_setting_net_tip" />
 
@@ -29,14 +33,16 @@
         <com.rm.module_mine.widget.MineCommonSettingView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:setting_checked="true"
+            bindMineChecked="@{PlaySettingData.INSTANCE.getAutoPlayNext()}"
+            bindMineCheckAction="@{viewModel.autoPlayNextVal}"
             app:setting_name="@string/mine_play_setting_next_name"
             app:setting_tip="@string/mine_play_setting_next_tip" />
 
         <com.rm.module_mine.widget.MineCommonSettingView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:setting_checked="false"
+            bindMineChecked="@{PlaySettingData.INSTANCE.getContinueLastPlay()}"
+            bindMineCheckAction="@{viewModel.continueLastPlayVal}"
             app:setting_name="@string/mine_play_setting_last_play_name"
             app:setting_tip="@string/mine_play_setting_last_play_tip" />
 

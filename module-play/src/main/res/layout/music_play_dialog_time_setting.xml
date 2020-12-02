@@ -32,12 +32,13 @@
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="14sp" />
 
-            <CheckBox
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/checkbox_music_play_time_setting_check"
                 android:layout_width="@dimen/dp_22"
                 android:layout_height="@dimen/dp_22"
                 android:layout_gravity="end"
-                android:button="@null" />
+                android:src="@drawable/play_timer_item_position_unselect"
+                 />
 
             <View
                 android:layout_width="match_parent"
@@ -46,11 +47,12 @@
                 android:background="@color/business_color_e8e8e8" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_music_play_time_setting"
+                android:id="@+id/play_timer_count_down_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:overScrollMode="never"></androidx.recyclerview.widget.RecyclerView>
+                android:overScrollMode="never">
+            </androidx.recyclerview.widget.RecyclerView>
 
         </FrameLayout>
 

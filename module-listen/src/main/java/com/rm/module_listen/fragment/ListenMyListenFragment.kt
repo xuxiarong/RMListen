@@ -78,9 +78,9 @@ class ListenMyListenFragment :
         HomeGlobalData.isShowSubsRedPoint.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if(HomeGlobalData.isShowSubsRedPoint.get()){
-                    listenMyListenRtl.getTabAt(1)?.tabView?.setRedPointVisible(true)
+                    listenMyListenRtl?.getTabAt(1)?.tabView?.setRedPointVisible(true)
                 }else{
-                    listenMyListenRtl.getTabAt(1)?.tabView?.setRedPointVisible(false)
+                    listenMyListenRtl?.getTabAt(1)?.tabView?.setRedPointVisible(false)
                 }
             }
         })
@@ -131,6 +131,7 @@ class ListenMyListenFragment :
             if (!isLogin.get()) {
                 router.quicklyLogin(mViewModel, activity!!)
             } else {
+                (mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment).checkRedPointStatus()
                 ListenSubscriptionActivity.startActivity(it.context)
             }
         }

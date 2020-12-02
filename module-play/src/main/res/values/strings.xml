@@ -9,5 +9,7 @@
     <string name="play_subscriber_num">人订阅</string>
     <string name="play_close_timer">关闭定时</string>
     <string name="play_hot_anchor">热门主播</string>
-
+    <string name="play_timer_second">%d分钟</string>
+    <string name="play_timer_chapter">%d集</string>
+    <string name="play_timer_count_chapter">剩%d集</string>
 </resources>

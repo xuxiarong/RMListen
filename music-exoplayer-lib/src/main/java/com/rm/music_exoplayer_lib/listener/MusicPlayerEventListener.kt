@@ -81,7 +81,4 @@ interface MusicPlayerEventListener {
      */
     fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int)
 
-    fun onCompletionPlay()
-
-
 }

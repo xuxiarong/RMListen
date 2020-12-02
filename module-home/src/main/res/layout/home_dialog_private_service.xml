@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+    </data>
+
+    <com.flyco.roundview.RoundLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="475dp"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/dp_28"
+        android:layout_marginEnd="@dimen/dp_28"
+        app:rv_backgroundColor="@color/businessWhite"
+        app:rv_cornerRadius="@dimen/dp_16">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/business_text_size_18sp"
+            android:textColor="@color/business_text_color_333333"
+            android:textStyle="bold"
+            android:text="@string/home_private_and_service"
+            />
+
+        <TextView
+            android:id="@+id/home_dialog_private_service_content"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="@dimen/dp_10"
+            android:text="@string/home_private_service_content"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/business_text_size_14sp" />
+
+<!--        bindSpanColor="@{@color/business_color_789dcb}"-->
+<!--        bindSpanContent="@{@string/home_private_service_content}"-->
+<!--        bindSpanKeyword="@{viewModel.keyword}"-->
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_24">
+
+            <com.flyco.roundview.RoundFrameLayout
+                android:id="@+id/home_dialog_agree_protocol"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_44"
+                app:rv_backgroundColor="@color/base_ff5e5e"
+                app:rv_cornerRadius="@dimen/dp_16"
+                app:rv_isRadiusHalfHeight="true">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/home_agree_private_service"
+                    android:textColor="@color/businessWhite"
+                    android:textSize="@dimen/business_text_size_14sp" />
+
+            </com.flyco.roundview.RoundFrameLayout>
+
+        </FrameLayout>
+
+        <com.flyco.roundview.RoundFrameLayout
+            android:id="@+id/home_dialog_not_agree_protocol"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_44"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:layout_marginBottom="@dimen/dp_24"
+            app:rv_isRadiusHalfHeight="true"
+            app:rv_strokeColor="@color/base_b1b1b1"
+            app:rv_strokeWidth="@dimen/dp_1">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/home_not_use_private_service"
+                android:textColor="@color/business_text_color_666666"
+                android:textSize="@dimen/business_text_size_14sp" />
+
+        </com.flyco.roundview.RoundFrameLayout>
+
+
+    </com.flyco.roundview.RoundLinearLayout>
+</layout>
