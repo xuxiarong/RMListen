@@ -198,9 +198,14 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
             EndCause.CANCELED -> { DLog.d(TAG, "下载失败,原因是:任务被取消")
 //                DownloadMemoryCache.pauseDownloadingChapter()
             }
-            EndCause.SAME_TASK_BUSY,EndCause.FILE_BUSY->{
+            EndCause.SAME_TASK_BUSY->{
                 DLog.d(TAG, "下载失败,原因是 EndCause.SAME_TASK_BUSY ${realCause?.message}")
             }
+            EndCause.FILE_BUSY ->{
+                DLog.d(TAG, "下载失败,原因是 EndCause.FILE_BUSY ${realCause?.message}")
+            }
+
+
             else -> {
 //                if(!DownloadMemoryCache.isPauseAll.get()){
 //                    DownloadMemoryCache.pauseCurrentAndDownNextChapter()
@@ -228,7 +233,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         responseCode: Int,
         responseHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-//        DLog.d(TAG, " connectEnd name = ${task.filename}")
+        DLog.d(TAG, " connectEnd name = ${task.filename}")
     }
 
     override fun connectStart(
@@ -236,7 +241,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         blockIndex: Int,
         requestHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-//        DLog.d(TAG, " connectStart name = ${task.filename}")
+        DLog.d(TAG, " connectStart name = ${task.filename}")
     }
 
     override fun infoReady(
@@ -245,7 +250,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         fromBreakpoint: Boolean,
         model: Listener4SpeedAssistExtend.Listener4SpeedModel
     ) {
-//        DLog.d(TAG, " infoReady name = ${task.filename}")
+        DLog.d(TAG, " infoReady name = ${task.filename}")
 
     }
 

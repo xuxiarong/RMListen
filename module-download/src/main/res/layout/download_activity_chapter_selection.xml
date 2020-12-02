@@ -5,7 +5,9 @@
     <data>
 
         <import type="com.rm.baselisten.util.SDCardUtils" />
-        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
+
+        <import type="com.rm.business_lib.download.DownloadMemoryCache" />
+
         <import type="com.rm.baselisten.util.ConvertUtils" />
 
         <variable
@@ -14,14 +16,11 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <FrameLayout
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_48"
             android:orientation="horizontal"
@@ -33,8 +32,8 @@
                 android:id="@+id/download_ic_finish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="6dp"
                 android:src="@drawable/base_icon_back" />
 
             <TextView
@@ -49,18 +48,18 @@
                 android:id="@+id/download_ic_download"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_gravity="right|center_vertical"
+                android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/download_ic_download" />
 
             <com.flyco.roundview.RoundTextView
                 android:id="@+id/download_chapter_num"
+                bindDownloadNum="@{DownloadMemoryCache.INSTANCE.downloadingNum}"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_marginTop="2dp"
                 android:gravity="center"
-                bindDownloadNum="@{DownloadMemoryCache.INSTANCE.downloadingNum}"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:rv_backgroundColor="@color/base_ff5e5e"
@@ -69,16 +68,18 @@
         </FrameLayout>
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/download_audio_list_refresh"
-            android:layout_marginTop="@dimen/dp_48"
-            android:layout_marginBottom="80dp"
+            bindIsLoadMoreSuccess="@{viewModel.refreshModel.isLoadMoreSuccess()}"
+            bindNoMoreData="@{viewModel.refreshModel.noMoreData}"
+            bindOnLoadMoreListener="@{()->viewModel.getDownloadChapterList(context)}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_marginTop="@dimen/dp_48"
+            android:layout_marginBottom="80dp"
+            app:srlEnableAutoLoadMore="true"
+            app:srlEnableRefresh="false">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/download_rv_audio_list"
-                bindVerticalLayout="@{viewModel.MAdapter}"
+                bindVerticalLayout="@{viewModel.mAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -87,33 +88,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_22"
                 android:layout_height="@dimen/dp_22"
-                android:onClick="@{()->viewModel.changeAllChapterSelect()}"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/dp_25"
+                android:onClick="@{()->viewModel.changeAllChapterSelect()}"
                 android:src="@{viewModel.isSelectAll?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_22"
-                android:text="@string/download_check_all"
-                android:onClick="@{()->viewModel.changeAllChapterSelect()}"
-                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginTop="@dimen/dp_23"
+                android:onClick="@{()->viewModel.changeAllChapterSelect()}"
+                android:text="@string/download_check_all"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/sp_14" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="@dimen/dp_20"
-                android:layout_marginLeft="12dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -148,12 +148,12 @@
                 android:textSize="@dimen/sp_14" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="@dimen/dp_16"
                 bindClick="@{viewModel.downloadList}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_16"
                 android:background="@drawable/business_shape_round_ff5e5e"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_5"
@@ -162,159 +162,8 @@
                 android:text="@string/download_download"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="@dimen/sp_14" />
-
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/download_tv_clear"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginLeft="12dp"-->
-            <!--                android:layout_marginRight="@dimen/dp_16"-->
-            <!--                android:background="@drawable/business_shape_round_ff5e5e"-->
-            <!--                android:paddingLeft="@dimen/dp_10"-->
-            <!--                android:paddingTop="@dimen/dp_5"-->
-            <!--                android:paddingRight="@dimen/dp_10"-->
-            <!--                android:paddingBottom="@dimen/dp_5"-->
-            <!--                android:text="测试清空"-->
-            <!--                android:textColor="@color/business_text_color_ffffff"-->
-            <!--                android:textSize="@dimen/business_text_size_10sp" />-->
-
         </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/download_shape_select_chapter"-->
-<!--            android:gravity="center_horizontal"-->
-<!--            android:orientation="vertical"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            android:padding="@dimen/dp_24">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/download_dialog_tv_title"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/download_edit_chapter_selection"-->
-<!--                android:textColor="@color/business_text_color_333333"-->
-<!--                android:textSize="@dimen/business_text_size_16sp" />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="@dimen/dp_24"-->
-<!--                android:background="@drawable/download_dialog_edit_bg"-->
-<!--                android:gravity="center_vertical"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:padding="@dimen/dp_12">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/download_chapter_begin"-->
-<!--                    android:textColor="@color/download_text_color_789dcb"-->
-<!--                    android:textSize="@dimen/business_text_size_12sp" />-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/download_et_start"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@null"-->
-<!--                    android:digits="0123456789"-->
-<!--                    android:focusableInTouchMode="true"-->
-<!--                    android:focusedByDefault="true"-->
-<!--                    android:gravity="center"-->
-<!--                    android:inputType="number"-->
-<!--                    android:lines="1"-->
-<!--                    android:maxLength="4"-->
-<!--                    android:nextFocusForward="@id/download_et_end"-->
-<!--                    android:text="1"-->
-<!--                    android:textColor="@color/business_text_color_333333"-->
-<!--                    android:textSize="@dimen/business_text_size_24sp" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/download_to"-->
-<!--                    android:textColor="@color/business_text_color_333333"-->
-<!--                    android:textSize="@dimen/business_text_size_16sp" />-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/download_et_end"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@null"-->
-<!--                    android:digits="0123456789"-->
-<!--                    android:gravity="center"-->
-<!--                    android:inputType="number"-->
-<!--                    android:lines="1"-->
-<!--                    android:maxLength="4"-->
-<!--                    android:textColor="@color/business_text_color_333333"-->
-<!--                    android:textSize="@dimen/business_text_size_24sp" />-->
-
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/download_chapter_end"-->
-<!--                    android:textColor="@color/download_text_color_789dcb"-->
-<!--                    android:textSize="@dimen/business_text_size_12sp" />-->
-
-<!--            </LinearLayout>-->
-
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/download_btn_download"-->
-<!--                style="@style/ButtonStyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="@dimen/dp_44"-->
-<!--                android:layout_marginLeft="@dimen/dp_36"-->
-<!--                android:layout_marginTop="@dimen/dp_54"-->
-<!--                android:layout_marginRight="@dimen/dp_36"-->
-<!--                android:text="@string/download_download" />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="@dimen/dp_13"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/download_disk_use"-->
-<!--                    android:textColor="@color/business_text_color_b1b1b1"-->
-<!--                    android:textSize="@dimen/business_text_size_10sp" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="1.6G"-->
-<!--                    android:textColor="@color/business_text_color_333333"-->
-<!--                    android:textSize="@dimen/business_text_size_10sp" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginLeft="@dimen/dp_5"-->
-<!--                    android:text="@string/download_disk_free"-->
-<!--                    android:textColor="@color/business_text_color_b1b1b1"-->
-<!--                    android:textSize="@dimen/business_text_size_10sp" />-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="160G"-->
-<!--                    android:textColor="@color/business_text_color_333333"-->
-<!--                    android:textSize="@dimen/business_text_size_10sp" />-->
-<!--            </LinearLayout>-->
-
-
-<!--        </LinearLayout>-->
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 </layout>

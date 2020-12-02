@@ -1,5 +1,7 @@
 package com.rm.module_download.viewmodel
 
+import android.content.Context
+import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
@@ -18,6 +20,8 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.module_download.BR
 import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.download.file.DownLoadFileUtils
+import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.bean.DownloadChapterUIStatus
@@ -32,9 +36,10 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     var isSelectAll = ObservableBoolean(false)
     var selectChapterNum = ObservableInt(0)
     var selectChapterSize = ObservableLong(0L)
-
     var downloadAudio = ObservableField<DownloadAudio>()
     val audioChapterList = MutableLiveData<MutableList<DownloadChapter>>()
+    val refreshModel = SmartRefreshLayoutStatusModel()
+
 
     val mAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
@@ -83,6 +88,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             return
         }
         if (item.chapter_edit_select) {
+            isSelectAll.set(false)
             selectChapterNum.set(selectChapterNum.get() - 1)
             selectChapterSize.set(selectChapterSize.get() - item.size)
         } else {
@@ -91,59 +97,71 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         }
         item.chapter_edit_select = item.chapter_edit_select.not()
         mAdapter.notifyItemChanged(mAdapter.data.indexOf(item))
+        mAdapter.data.forEach {
+            if (!it.chapter_edit_select) {
+                return
+            }
+        }
+        isSelectAll.set(true)
     }
 
     fun changeAllChapterSelect() {
         val selectAll = isSelectAll.get().not()
         isSelectAll.set(selectAll)
+        var selectNum = 0
+        var selectSize = 0L
         mAdapter.data.forEach {
             if (it.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
-                if (!selectAll && it.chapter_edit_select) {
-                    selectChapterNum.set(selectChapterNum.get() - 1)
-                    selectChapterSize.set(selectChapterSize.get() - it.size)
-                    it.chapter_edit_select = it.chapter_edit_select.not()
-                } else if (selectAll && !it.chapter_edit_select) {
-                    selectChapterNum.set(selectChapterNum.get() + 1)
-                    selectChapterSize.set(selectChapterSize.get() + it.size)
-                    it.chapter_edit_select = it.chapter_edit_select.not()
+                if (selectAll) {
+                    selectNum++
+                    selectSize+=it.size
+                    it.chapter_edit_select = true
+                } else {
+                    it.chapter_edit_select = false
                 }
             }
         }
+        selectChapterNum.set(selectNum)
+        selectChapterSize.set(selectSize)
         mAdapter.notifyDataSetChanged()
-
     }
 
-    fun hasMore(): Boolean {
-        return (page * pageSize) < total
-    }
-
-
-    fun convertDownloadStatus(downloadUIStatus: DownloadUIStatus): DownloadChapterUIStatus {
-        return when (downloadUIStatus) {
-            DownloadUIStatus.DOWNLOAD_PAUSED,
-            DownloadUIStatus.DOWNLOAD_PENDING,
-            DownloadUIStatus.DOWNLOAD_IN_PROGRESS -> DownloadChapterUIStatus.DOWNLOADING
-            DownloadUIStatus.DOWNLOAD_COMPLETED -> DownloadChapterUIStatus.COMPLETED
-            else -> DownloadChapterUIStatus.UNCHECK
-        }
-    }
-
-    fun getDownloadChapterList(audioId: Long) {
-        launchOnIO {
-            repository.downloadChapterList(page = page, pageSize = pageSize, audioId = audioId)
-                .checkResult(
-                    onSuccess = {
-                        page++
-                        total = it.total
-                        it.list?.let { list ->
-                            audioChapterList.addAll(getChapterStatus(list))
+    fun getDownloadChapterList(context: Context) {
+        downloadAudio.get()?.audio_id?.let {
+            launchOnIO {
+                repository.downloadChapterList(page = page, pageSize = pageSize, audioId = it)
+                    .checkResult(
+                        onSuccess = {
+                            page++
+                            total = it.total
+                            refreshModel.finishLoadMore(true)
+                            it.list?.let { list ->
+                                refreshModel.noMoreData.set(list.size < pageSize)
+                                if (isSelectAll.get()) {
+                                    val chapterStatusList = getChapterStatus(list)
+                                    chapterStatusList.forEach { statusChapter ->
+                                        if(statusChapter.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD){
+                                            selectChapterNum.set(selectChapterNum.get() + 1)
+                                            selectChapterSize.set(selectChapterSize.get() + statusChapter.size)
+                                            statusChapter.chapter_edit_select = true
+                                        }
+                                    }
+                                    mAdapter.addData(chapterStatusList)
+                                } else {
+                                    mAdapter.addData(list)
+                                }
+                                if (list.size < pageSize && mAdapter.footerLayout == null) {
+                                    mAdapter.addFooterView(View.inflate(context, R.layout.business_foot_view, null))
+                                }
+                            }
+                        },
+                        onError = {
+                            refreshModel.finishLoadMore(false)
+                            showTip("$it", R.color.business_color_ff5e5e)
+                            DLog.e("download", "$it")
                         }
-                    },
-                    onError = {
-                        showTip("$it",R.color.business_color_ff5e5e)
-                        DLog.e("download", "$it")
-                    }
-                )
+                    )
+            }
         }
     }
 
@@ -153,7 +171,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         chapterList.forEach {
             it.audio_name = audioName
             it.audio_id = audioId
-//            DownLoadFileUtils.checkChapterIsDownload(chapter = it)
+            DownLoadFileUtils.checkChapterIsDownload(chapter = it)
         }
         return chapterList.toMutableList()
     }
@@ -166,12 +184,13 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                         it.list?.let { list ->
                             val chapterStatusList = getChapterStatus(list)
                             DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
+                            mAdapter.notifyDataSetChanged()
                         }
 //                        audioChapterList.addAll(chapterStatusList)
                     },
                     onError = {
                         DLog.i("download", "$it")
-                        showTip("$it",R.color.business_color_ff5e5e)
+                        showTip("$it", R.color.business_color_ff5e5e)
                     }
                 )
         }

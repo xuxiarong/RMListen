@@ -13,36 +13,29 @@ import com.rm.module_download.dialog.DownloadSelectChaptersDialog
 import com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel
 import kotlinx.android.synthetic.main.download_activity_chapter_selection.*
 
-class DownloadChapterSelectionActivity : BaseVMActivity<DownloadActivityChapterSelectionBinding, DownloadChapterSelectionViewModel>() {
-
-    lateinit var downloadAudio: DownloadAudio
+class DownloadChapterSelectionActivity :
+    BaseVMActivity<DownloadActivityChapterSelectionBinding, DownloadChapterSelectionViewModel>() {
 
 
     companion object {
         private const val EXTRA_AUDIO_ID = "EXTRA_AUDIO_ID"
         fun startActivity(context: Context, downloadAudio: DownloadAudio) {
-            context.startActivity(Intent(context, DownloadChapterSelectionActivity::class.java).apply {
-                putExtra(EXTRA_AUDIO_ID, downloadAudio)
-            })
+            context.startActivity(
+                Intent(
+                    context,
+                    DownloadChapterSelectionActivity::class.java
+                ).apply {
+                    putExtra(EXTRA_AUDIO_ID, downloadAudio)
+                })
         }
     }
 
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
-
-        mViewModel.audioChapterList.observe(this@DownloadChapterSelectionActivity) {
-            if (mViewModel.page == 1) {
-                //设置新的数据
-                mViewModel.mAdapter.setList(it)
-            } else {
-                //添加数据
-                mViewModel.mAdapter.addData(it)
-            }
-            if (!mViewModel.hasMore()) {
-                download_audio_list_refresh.finishLoadMoreWithNoMoreData()
-            }
-        }
+//        mViewModel.audioChapterList.observe(this@DownloadChapterSelectionActivity) {
+//            mViewModel.mAdapter.setList(it)
+//        }
     }
 
     override fun onStart() {
@@ -51,39 +44,29 @@ class DownloadChapterSelectionActivity : BaseVMActivity<DownloadActivityChapterS
     }
 
     override fun initData() {
-        mViewModel.downloadAudio.set(downloadAudio)
-        mViewModel.getDownloadChapterList(downloadAudio.audio_id)
+        mViewModel.downloadAudio.set(intent.getSerializableExtra(EXTRA_AUDIO_ID) as DownloadAudio)
+        mViewModel.getDownloadChapterList(this)
     }
 
     override fun getLayoutId(): Int = R.layout.download_activity_chapter_selection
 
     override fun initView() {
         super.initView()
-        downloadAudio = intent.getSerializableExtra(EXTRA_AUDIO_ID) as DownloadAudio
         val baseTitleModel = BaseTitleModel().apply {
             noTitle = true
         }
         mViewModel.baseTitleModel.value = baseTitleModel
 
-        download_audio_list_refresh.setEnableRefresh(false)
-        download_audio_list_refresh.setEnableLoadMore(true)
-        download_audio_list_refresh.setOnLoadMoreListener {
-            mViewModel.getDownloadChapterList(downloadAudio.audio_id)
-        }
-
         download_ic_finish.setOnClickListener { finish() }
         download_ic_download.setOnClickListener { DownloadMainActivity.startActivity(this) }
         download_chapter_num.setOnClickListener { DownloadMainActivity.startActivity(this) }
-//        download_tv_download.setOnClickListener {
-//            mAdapter.data.filter { it.downloadChapterUIStatus == DownloadChapterUIStatus.CHECKED }?.run {
-//                mViewModel.downloadList(this)
-//            }
-//        }
 
         download_tv_select_chapters.setOnClickListener {
             DownloadSelectChaptersDialog(100).apply {
                 downloadClick = { start, end ->
-                    mViewModel.downloadChapterSelection(downloadAudio.audio_id, (start..end).toList())
+                    mViewModel.downloadChapterSelection(
+                        mViewModel.downloadAudio.get()?.audio_id ?: 0L, (start..end).toList()
+                    )
                     dismiss()
                 }
                 //TODO 计算内存占用 待实现

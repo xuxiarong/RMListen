@@ -84,16 +84,18 @@ fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
 }
 
 
-@BindingAdapter("bindDownloadChapterStatus")
-fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter) {
+@BindingAdapter("bindDownloadChapterStatus","bindDownloadChapterSelectAll")
+fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter,isSelectAll : Boolean) {
     DownLoadFileUtils.checkChapterIsDownload(chapter)
     if (chapter.down_status != DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
         setImageResource(R.drawable.download_ic_item_disable)
         return
     }
-    if (chapter.chapter_edit_select) {
+    if (chapter.chapter_edit_select || isSelectAll) {
+        chapter.chapter_edit_select = true
         setImageResource(R.drawable.download_ic_item_checked)
     } else {
+        chapter.chapter_edit_select = false
         setImageResource(R.drawable.download_ic_item_unchecked)
     }
 }
