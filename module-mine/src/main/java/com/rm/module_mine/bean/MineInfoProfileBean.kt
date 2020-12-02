@@ -44,7 +44,8 @@ data class FavorSheetBean(
     val num_favor: String,//收藏数
     val pre_deleted_from: String,//预删除来源；0:不打算删除；1:后管删除；2:创建者删除
     val sheet_id: String,//书单id
-    val sheet_name: String//书单名
+    val sheet_name: String,//书单名
+    val sheet_cover: String//书单封面
 )
 
 data class SheetBean(

@@ -39,6 +39,9 @@
     <string name="mine_message_notice">消息通知</string>
     <string name="mine_favorable_comment">给个好评</string>
     <string name="mine_app_version">版本信息</string>
+    <string name="mine_about_us">关于我们</string>
+    <string name="mine_now_version">当前版本V</string>
+
 
     <string name="mine_free_book">免费求书</string>
     <string name="mine_sign_out">退出登录</string>
@@ -108,10 +111,31 @@
     <string name="mine_release_books">发布的书籍</string>
     <string name="mine_create_sheet">创建的听单</string>
     <string name="mine_favor_sheet">收藏的听单</string>
-    <string name="mine_num">(%d)</string>
     <string name="mine_fans_num">粉丝：</string>
     <string name="mine_attention_num">关注：</string>
     <string name="mine_chapter">章</string>
+    <string name="mine_prefix">(</string>
+    <string name="mine_suffix">)</string>
 
+    <string name="mine_author_name">作者名</string>
+    <string name="mine_hint_book_info_tips">填写你想要的书籍名称</string>
+    <string name="mine_book_info">书籍信息</string>
+    <string name="mine_hint_optional_tips">(选填)</string>
+    <string name="mine_member_name">主播名</string>
+    <string name="mine_contact">联系方式</string>
+    <string name="mine_submit">提交</string>
+    <string name="mine_hint_contact_tips">您的手机号/邮箱/微信 (选填)</string>
+
+    <string name="mine_feedback">意见反馈</string>
+    <string name="mine_feedback_type">意见反馈类型</string>
+    <string name="mine_product_suggestion">产品建议</string>
+    <string name="mine_malfunction">功能异常</string>
+    <string name="mine_poor_experience">体验不佳</string>
+    <string name="mine_feedback_contact">添加联系方式</string>
+    <string name="mine_question_depict">问题描述</string>
+    <string name="mine_feedback_content_num">/500</string>
+    <string name="mine_feedback_hint_content_tips">请尽量详细，方便我们快速定位解决</string>
+    <string name="mine_feedback_hint_contact_tips">请输入您的手机号/邮箱/微信</string>
+    <string name="mine_feedback_txt">图片(4/5)</string>
 
 </resources>

@@ -42,24 +42,36 @@ class MineAccountSecuritySettingViewModel : BaseVMViewModel() {
      * 注销账号
      */
     fun clickLogoutFun(context: Context) {
+
         getActivity(context)?.let { activity ->
-            TipsFragmentDialog().apply {
-                titleText = context.String(R.string.mine_loginout_title)
-                contentText = context.String(R.string.mine_loginout_tips)
-                leftBtnText = context.String(R.string.mine_loginout_sure)
-                rightBtnText = context.String(R.string.mine_loginout_cancel)
-                rightBtnTextColor = R.color.business_color_ff5e5e
-                leftBtnClick = {
-                    dismiss()
-                }
-                rightBtnClick = {
-                    loginUser.get()?.let {
-                        RouterHelper.createRouter(LoginService::class.java)
-                            .startVerificationInput(context, it.area_code!!, it.account!!, 2)
-                        finish()
+            if (loginUser.get()?.member_type == 2) {
+                TipsFragmentDialog().apply {
+                    titleText = context.String(R.string.business_tips)
+                    contentText = "主播账号不允许销户"
+                    leftBtnText = context.String(R.string.business_sure)
+                    leftBtnClick = {
+                        dismiss()
                     }
-                }
-            }.show(activity)
+                }.show(activity)
+            } else {
+                TipsFragmentDialog().apply {
+                    titleText = context.String(R.string.mine_loginout_title)
+                    contentText = context.String(R.string.mine_loginout_tips)
+                    leftBtnText = context.String(R.string.mine_loginout_sure)
+                    rightBtnText = context.String(R.string.mine_loginout_cancel)
+                    rightBtnTextColor = R.color.business_color_ff5e5e
+                    leftBtnClick = {
+                        dismiss()
+                    }
+                    rightBtnClick = {
+                        loginUser.get()?.let {
+                            RouterHelper.createRouter(LoginService::class.java)
+                                .startVerificationInput(context, it.area_code!!, it.account!!, 2)
+                            finish()
+                        }
+                    }
+                }.show(activity)
+            }
         }
     }
 }

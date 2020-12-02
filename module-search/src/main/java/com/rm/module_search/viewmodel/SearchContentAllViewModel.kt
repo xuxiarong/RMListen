@@ -121,7 +121,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
             if (!isLogin.get()) {
                 quicklyLogin(it)
             } else {
-                if (bean.is_follow == 1L) {
+                if (bean.is_follow == 1) {
                     unAttentionAnchor(bean)
                 } else {
                     attentionAnchor(bean)

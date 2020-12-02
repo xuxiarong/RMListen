@@ -40,6 +40,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mine_member_publish_num"
+                    bindPlayCount="@{viewModel.data.publish_info.total}"
+                    bindPlayCountPrefix="@{@string/mine_prefix}"
+                    bindPlayCountSuffix="@{@string/mine_suffix}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/business_color_b1b1b1"
@@ -86,6 +89,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mine_member_create_sheet_num"
+                    bindPlayCount="@{viewModel.data.sheet_info.total}"
+                    bindPlayCountPrefix="@{@string/mine_prefix}"
+                    bindPlayCountSuffix="@{@string/mine_suffix}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/business_color_b1b1b1"
@@ -132,6 +138,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mine_member_favor_sheet_num"
+                    bindPlayCount="@{viewModel.data.favor_sheet_info.total}"
+                    bindPlayCountPrefix="@{@string/mine_prefix}"
+                    bindPlayCountSuffix="@{@string/mine_suffix}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/business_color_b1b1b1"
@@ -166,7 +175,8 @@
                 android:drawableTop="@drawable/base_no_data"
                 android:gravity="center_horizontal"
                 android:paddingTop="@dimen/dp_20"
-                android:text="@string/base_fine_no_data" />
+                android:text="@string/base_fine_no_data"
+                tools:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

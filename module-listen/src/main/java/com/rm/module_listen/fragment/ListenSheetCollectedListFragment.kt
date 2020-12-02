@@ -42,18 +42,18 @@ class ListenSheetCollectedListFragment :
     }
 
     override fun startObserve() {
-        mViewModel.refreshStateModel.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStateModel.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.mAdapter.removeAllFooterView()
-                    mViewModel.mAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.mAdapter.removeAllFooterView()
-                }
-            }
-        })
+//        mViewModel.refreshStateModel.noMoreData.addOnPropertyChangedCallback(object :
+//            Observable.OnPropertyChangedCallback() {
+//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+//                val hasMore = mViewModel.refreshStateModel.noMoreData.get()
+//                if (hasMore == true) {
+//                    mViewModel.mAdapter.removeAllFooterView()
+//                    mViewModel.mAdapter.addFooterView(footView)
+//                } else {
+//                    mViewModel.mAdapter.removeAllFooterView()
+//                }
+//            }
+//        })
     }
 
     /**

@@ -17,7 +17,6 @@ import com.rm.module_login.utils.CountryListDialogHelper
 import com.rm.module_login.viewmodel.LoginByPasswordViewModel
 import kotlinx.android.synthetic.main.login_activity_login_by_passowrd.*
 import kotlinx.android.synthetic.main.login_include_layout_phone_input.*
-import kotlinx.android.synthetic.main.login_include_layout_top_logo.*
 
 
 /**
@@ -58,12 +57,12 @@ class LoginByPasswordActivity :
         }
         login_by_verify_code_input.bindKeyboardVisibilityListener {
             if (it) {
-                startScaleAnim(login_include_logo_lay, 0.5f)
+                startScaleAnim(layout_top_logo, 0.5f)
                 val translation = -resources.getDimension(R.dimen.dp_30)
                 startTranslationAnim(rootLayout, translation)
                 startTranslationAnim(inputLayout, -resources.getDimension(R.dimen.dp_50))
             } else {
-                startScaleAnim(login_include_logo_lay, 1f)
+                startScaleAnim(layout_top_logo, 1f)
                 startTranslationAnim(rootLayout, 0f)
                 startTranslationAnim(inputLayout, 0f)
             }

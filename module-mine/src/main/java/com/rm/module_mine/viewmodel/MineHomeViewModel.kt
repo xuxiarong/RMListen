@@ -2,16 +2,13 @@ package com.rm.module_mine.viewmodel
 
 import android.content.Context
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
-import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
-import com.rm.module_mine.BR
 import com.rm.module_mine.R
-import com.rm.module_mine.activity.MineMemberActivity
-import com.rm.module_mine.activity.MineSettingActivity
+import com.rm.module_mine.activity.*
 import com.rm.module_mine.adapter.MineHomeAdapter
 import com.rm.module_mine.bean.MineHomeBean
 import com.rm.module_mine.bean.MineHomeDetailBean
@@ -24,6 +21,17 @@ import com.rm.module_mine.bean.MineHomeDetailBean
  *
  */
 class MineHomeViewModel : BaseVMViewModel() {
+    companion object {
+        const val TYPE_MY_DATE = 1
+        const val TYPE_FEEDBACK = 2
+        const val TYPE_PLAY_ST = 3
+        const val TYPE_READING = 4
+        const val TYPE_PRAISE = 5
+        const val TYPE_COOPERATION = 6
+        const val TYPE_MY_GRADE = 7
+        const val TYPE_UP_DOWN = 8
+    }
+
     val mAdapter by lazy { MineHomeAdapter(this) }
 
     var currentLoginUser = loginUser
@@ -31,17 +39,40 @@ class MineHomeViewModel : BaseVMViewModel() {
 
 
     fun getData() {
-        val list = mutableListOf<MineHomeBean>()
-        list.add(MineHomeBean(CONTEXT.getString(R.string.mine_my_service), getMyServiceList()))
-        list.add(MineHomeBean(CONTEXT.getString(R.string.mine_essential_tools), getToolList()))
+        val list = mutableListOf(
+            MineHomeBean(CONTEXT.getString(R.string.mine_my_service), getMyServiceList()),
+            MineHomeBean(/*CONTEXT.getString(R.string.mine_essential_tools)*/"支持我们",
+                getToolList()
+            )
+        )
         mAdapter.setList(list)
-        mAdapter.notifyDataSetChanged()
     }
 
 
     private fun getMyServiceList(): MutableList<MineHomeDetailBean> {
-        val list = mutableListOf<MineHomeDetailBean>()
-        list.add(
+        return mutableListOf(
+            MineHomeDetailBean(
+                R.drawable.business_icon_mydate,
+                "个人资料",
+                TYPE_MY_DATE
+            ),
+            MineHomeDetailBean(
+                R.drawable.business_icon_feedback,
+                "问题反馈",
+                TYPE_FEEDBACK
+            ),
+            MineHomeDetailBean(
+                R.drawable.business_icon_playst,
+                "播放设置",
+                TYPE_PLAY_ST
+            ),
+            MineHomeDetailBean(
+                R.drawable.business_icon_reading,
+                "免费求书",
+                TYPE_READING
+            )
+        )
+        /*list.add(
             MineHomeDetailBean(
                 R.drawable.mine_icon_mywallet,
                 CONTEXT.getString(R.string.mine_my_wallet),
@@ -69,19 +100,41 @@ class MineHomeViewModel : BaseVMViewModel() {
                 1
             )
         )
-        return list
+        return list*/
     }
 
     private fun getToolList(): MutableList<MineHomeDetailBean> {
-        val list = mutableListOf<MineHomeDetailBean>()
-        list.add(
+//        list.add(
+//            MineHomeDetailBean(
+//                R.drawable.mine_icon_timing,
+//                CONTEXT.getString(R.string.mine_timing_play),
+//                1
+//            )
+//        )
+
+        return mutableListOf(
             MineHomeDetailBean(
-                R.drawable.mine_icon_timing,
-                CONTEXT.getString(R.string.mine_timing_play),
-                1
+                R.drawable.business_icon_praise,
+                "好评支持",
+                TYPE_PRAISE
+            ),
+            MineHomeDetailBean(
+                R.drawable.business_icon_cooperation,
+                "业务合作",
+                TYPE_COOPERATION
+            ),
+            MineHomeDetailBean(
+                R.drawable.business_icon_mygrade,
+                "特色功能",
+                TYPE_MY_GRADE
+            ),
+            MineHomeDetailBean(
+                R.drawable.business_icon_updown,
+                "检查更新",
+                TYPE_UP_DOWN
             )
+
         )
-        return list
     }
 
     /**
@@ -123,5 +176,61 @@ class MineHomeViewModel : BaseVMViewModel() {
      * @param context Context
      */
     fun getVipClick(context: Context) {
+    }
+
+    fun itemClickFun(context: Context, bean: MineHomeDetailBean) {
+        when (bean.type) {
+            //个人资料
+            TYPE_MY_DATE -> {
+                if (isLogin.get()) {
+                    startActivity(MinePersonalInfoActivity::class.java)
+                } else {
+                    quicklyLogin(context)
+                }
+            }
+            //问题反馈
+            TYPE_FEEDBACK -> {
+                if (isLogin.get()) {
+                    MimeFeedbackActivity.startActivity(context)
+                } else {
+                    quicklyLogin(context)
+                }
+            }
+            //播放设置
+            TYPE_PLAY_ST -> {
+
+            }
+            //免费求书
+            TYPE_READING -> {
+                if (isLogin.get()) {
+                    MimeGetBookActivity.startActivity(context)
+                } else {
+                    quicklyLogin(context)
+                }
+            }
+            //好评支持
+            TYPE_PRAISE -> {
+
+            }
+            //业务合作
+            TYPE_COOPERATION -> {
+
+            }
+            //特色功能
+            TYPE_MY_GRADE -> {
+
+            }
+            //检查更新
+            TYPE_UP_DOWN -> {
+
+            }
+        }
+    }
+
+    private fun quicklyLogin(context: Context) {
+        getActivity(context)?.let {
+            RouterHelper.createRouter(LoginService::class.java)
+                .quicklyLogin(this, it)
+        }
     }
 }

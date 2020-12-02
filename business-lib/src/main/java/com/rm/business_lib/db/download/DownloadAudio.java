@@ -17,6 +17,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,6 +77,7 @@ public class DownloadAudio implements Serializable {
     @Generated(hash = 265156160)
     private transient DownloadAudioDao myDao;
 
+
     @Generated(hash = 697042537)
     public DownloadAudio(Long audio_id, String audio_type, String audio_name,
             String original_name, String status, String author_intro,
@@ -130,6 +132,7 @@ public class DownloadAudio implements Serializable {
     @Generated(hash = 1552335181)
     public DownloadAudio() {
     }
+
 
     public Long getAudio_id() {
         return this.audio_id;
@@ -356,7 +359,7 @@ public class DownloadAudio implements Serializable {
     }
 
     public Anchor getAnchor() {
-        return this.anchor;
+        return this.anchor == null ? new Anchor() : this.anchor;
     }
 
     public void setAnchor(Anchor anchor) {
@@ -364,7 +367,7 @@ public class DownloadAudio implements Serializable {
     }
 
     public List<DetailTags> getTags() {
-        return this.tags;
+        return this.tags == null ? new ArrayList<DetailTags>() : this.tags;
     }
 
     public void setTags(List<DetailTags> tags) {
@@ -490,5 +493,6 @@ public class DownloadAudio implements Serializable {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDownloadAudioDao() : null;
     }
+    
 
 }

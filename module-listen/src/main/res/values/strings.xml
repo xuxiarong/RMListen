@@ -55,7 +55,8 @@
     <string name="listen_cancel_top_success">取消置顶成功</string>
     <string name="listen_create_success">创建成功</string>
     <string name="listen_create_failure">创建失败</string>
-    <string name="listen_book_num">共%s本</string>
+    <string name="listen_book_prefix">共</string>
+    <string name="listen_book_suffix">本</string>
 
 
     <string name="listen_know">我知道了</string>

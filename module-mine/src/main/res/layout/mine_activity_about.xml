@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineAboutViewModel" />
+
+        <import type="com.rm.module_mine.BuildConfig" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mine_home_bg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_236"
+            android:scaleType="fitXY"
+            android:src="@mipmap/mine_main_top_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mine_about_back"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_44"
+            android:onClick="@{()->viewModel.finish()}"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            android:src="@drawable/business_icon_return_bc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            android:text="@string/mine_about_us"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/business_text_size_18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/mine_about_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/mine_about_back" />
+
+        <include
+            android:id="@+id/mine_about_logo"
+            layout="@layout/business_include_layout_top_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_35"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mine_about_back" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_about_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_18"
+            android:text="@{@string/mine_now_version(BuildConfig.VERSION_NAME)}"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/business_text_size_14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mine_about_logo"
+            tools:text="当前版本V1.0.1" />
+
+        <com.rm.module_mine.widget.MineCommonMaterialView
+            android:id="@+id/mine_about_update_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/mine_about_version"
+            app:material_name="版本更新" />
+
+        <com.rm.module_mine.widget.MineCommonMaterialView
+            android:id="@+id/mine_about_business_cooperation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/mine_about_update_version"
+            app:material_name="业务合作" />
+
+        <com.rm.module_mine.widget.MineCommonMaterialView
+            android:id="@+id/mine_about_web_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/mine_about_business_cooperation"
+            app:material_name="官网地址" />
+
+        <com.rm.module_mine.widget.MineCommonMaterialView
+            android:id="@+id/mine_about_user_pact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/mine_about_web_address"
+            app:material_name="《用户协议》" />
+
+        <com.rm.module_mine.widget.MineCommonMaterialView
+            android:id="@+id/mine_about_private_pact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/mine_about_user_pact"
+            app:material_name="《个人信息保护及隐私政策协议》" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:text="深圳雷漫网络科技"
+            android:textColor="@color/business_color_b1b1b1"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

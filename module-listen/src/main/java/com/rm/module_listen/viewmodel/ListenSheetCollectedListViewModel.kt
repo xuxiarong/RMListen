@@ -1,13 +1,18 @@
 package com.rm.module_listen.viewmodel
 
+import android.app.Dialog
+import android.content.Context
 import android.text.TextUtils
 import android.view.View
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_listen.R
 import com.rm.module_listen.adapter.ListenSheetCollectedListAdapter
 import com.rm.module_listen.bean.SheetFavorBean
 import com.rm.module_listen.bean.SheetFavorDataBean
@@ -74,6 +79,23 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
     }
 
     /**
+     * 听单取消收藏
+     */
+    private fun unFavoriteSheet(sheetId: String, dialog: Dialog?) {
+        launchOnIO {
+            repository.listenUnFavoriteSheet(sheetId).checkResult(
+                onSuccess = {
+                    removeIndex(sheetId)
+                    dialog?.dismiss()
+                },
+                onError = {
+                    showTip("$it", R.color.business_color_ff5e5e)
+                }
+            )
+        }
+    }
+
+    /**
      * 处理成功数据
      */
     private fun successData(bean: SheetFavorBean) {
@@ -114,7 +136,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      */
     fun refreshData() {
         mPage = 1
-        refreshStateModel.setNoHasMore(false)
+        refreshStateModel.setResetNoMoreData(true)
         getData(memberId)
     }
 
@@ -128,13 +150,42 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
     /**
      * item点击事件
      */
-    fun itemClickFun(view: View, bean: SheetFavorDataBean) {
-        getActivity(view.context)?.let {
-            clickBean = bean
-            RouterHelper.createRouter(HomeService::class.java)
-                .startHomeSheetDetailActivity(it, bean.sheet_id.toString())
+    fun itemClickFun(context: Context, bean: SheetFavorDataBean) {
+        when (bean.pre_deleted_from) {
+            "1" -> {
+                showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否取消收藏？", bean.sheet_id.toString())
+            }
+            "2" -> {
+                showTipDialog(context, "该听单已被作者删除，是否取消收藏？", bean.sheet_id.toString())
+            }
+            else -> {
+                getActivity(context)?.let {
+                    clickBean = bean
+                    RouterHelper.createRouter(HomeService::class.java)
+                        .startHomeSheetDetailActivity(it, bean.sheet_id.toString())
+                }
+            }
         }
     }
+
+    private fun showTipDialog(context: Context, content: String, sheetId: String) {
+        getActivity(context)?.let {
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = content
+                rightBtnText = context.String(R.string.business_sure)
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    unFavoriteSheet(sheetId, dialog)
+                }
+            }.show(it)
+        }
+    }
+
 
     /**
      * 子view item点击事件

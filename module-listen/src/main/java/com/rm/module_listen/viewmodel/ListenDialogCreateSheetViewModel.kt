@@ -34,7 +34,7 @@ class ListenDialogCreateSheetViewModel(
         ListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
 
-    //  输入的密码值
+    //  输入的值
     val inputText = ObservableField<String>("")
 
     //编辑成功
@@ -166,7 +166,8 @@ class ListenDialogCreateSheetViewModel(
                     mDialog?.dismiss()
                 },
                 onError = {
-                    showErrorTip(msg = CONTEXT.getString(R.string.listen_edit_fail))
+//                    showErrorTip(msg = CONTEXT.getString(R.string.listen_edit_fail))
+                    showErrorTip(msg = "$it")
                 }
             )
         }
@@ -252,7 +253,7 @@ class ListenDialogCreateSheetViewModel(
         }
     }
 
-    private fun hideTipView() {
+    fun hideTipView() {
         dataBinding?.listenDialogCreateSheetLayout?.visibility = View.GONE
     }
 

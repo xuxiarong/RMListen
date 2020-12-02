@@ -19,6 +19,8 @@ import com.rm.business_lib.bean.SheetDetailInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
+import com.rm.business_lib.share.Share2
+import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
@@ -55,7 +57,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     private var mPage = 1
 
     //每次加载数据的条数
-    private val pageSize = 5
+    private val pageSize = 12
 
     //创建adapter
     val mAdapter by lazy {
@@ -109,7 +111,16 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     /**
      * 分享点击事件
      */
-    fun clickShare() {
+    fun clickShare(context: Context) {
+        getActivity(context)?.let {
+            Share2.Builder(it)
+                .setContentType(ShareContentType.TEXT)
+                .setTitle("分享测试")
+                .setTextContent("http://www.baidu.com")
+                .build()
+                .shareBySystem()
+
+        }
     }
 
     /**
@@ -241,7 +252,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
         val activity = getActivity(context)
         if (IS_FIRST_FAVORITES.getBooleanMMKV(true) && activity != null) {
             CustomTipsFragmentDialog().apply {
-                titleText = context.getString(R.string.business_favorites_success)
+                titleText = context.getString(R.string.business_collect_success)
                 contentText = context.getString(R.string.business_favorites_success_content)
                 leftBtnText = context.getString(R.string.business_know)
                 rightBtnText = context.getString(R.string.business_goto_look)

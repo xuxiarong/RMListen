@@ -34,6 +34,9 @@
         <activity android:name=".activity.MineMemberReleaseBooksActivity" />
         <activity android:name=".activity.MineCropActivity" />
         <activity android:name=".activity.MineImageActivity" />
+        <activity android:name=".activity.MineAboutUsActivity" />
+        <activity android:name=".activity.MimeGetBookActivity" />
+        <activity android:name=".activity.MimeFeedbackActivity" />
 
 
     </application>

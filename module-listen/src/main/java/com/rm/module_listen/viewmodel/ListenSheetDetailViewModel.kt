@@ -1,12 +1,15 @@
 package com.rm.module_listen.viewmodel
 
+import android.content.Context
 import android.view.View
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -18,8 +21,7 @@ import com.rm.module_listen.activity.ListenMySheetDetailActivity
 import com.rm.module_listen.repository.ListenRepository
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 
-class ListenSheetDetailViewModel(private val repository: ListenRepository) :
-    BaseVMViewModel() {
+class ListenSheetDetailViewModel(private val repository: ListenRepository) : BaseVMViewModel() {
 
     /**
      * 懒加载构建adapter对象
@@ -118,7 +120,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
      */
     private fun getAudioList() {
         launchOnIO {
-            repository.getAudioList(mPage, pageSize).checkResult(
+            repository.getAudioList(mPage, pageSize,sheetId).checkResult(
                 onSuccess = {
                     refreshStateModel.finishLoadMore(true)
                     it.list?.let { audioList ->
@@ -137,10 +139,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
         }
     }
 
-    /**
-     * 删除点击事件
-     */
-    fun dialogSheetDetailDeleteFun() {
+    private fun deleteSheet() {
         showLoading()
         launchOnIO {
             repository.deleteSheet("${data.get()?.sheet_id}").checkResult(
@@ -157,6 +156,28 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     }
 
     /**
+     * 删除点击事件
+     */
+    fun dialogSheetDetailDeleteClickFun(context: Context) {
+        getActivity(context)?.let {
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = "确认删除该听单？"
+                leftBtnText = "再想想"
+                rightBtnText ="删除"
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                    mDialog.dismiss()
+                }
+                rightBtnClick = {
+                    deleteSheet()
+                }
+            }.show(it)
+        }
+    }
+
+    /**
      * 删除成功
      */
     private fun deleteSuccess() {
@@ -169,12 +190,13 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     /**
      * 编辑点击事件
      */
-    fun dialogSheetDetailEditSheetFun(view: View) {
+    fun dialogSheetDetailEditSheetFun(context: Context) {
         data.get()?.let {
-            getActivity(view.context)?.let { activity ->
+            getActivity(context)?.let { activity ->
+                mDialog.dismiss()
                 ListenDialogCreateSheetHelper(activity) {
-
                 }.showEditDialog(
+                    it.sheet_name,
                     it.sheet_id,
                     success = { sheetName ->
                         editSuccess(sheetName)
@@ -205,7 +227,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) :
     /**
      * 取消点击事件
      */
-    fun dialogSheetDetailCancelFun() {
+    fun dialogSheetDetailCancelClickFun() {
         mDialog.dismiss()
     }
 

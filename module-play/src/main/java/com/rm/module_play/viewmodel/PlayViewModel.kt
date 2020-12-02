@@ -17,6 +17,8 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.share.Share2
+import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.listen.ListenService
@@ -231,11 +233,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-    fun finishActivity(context: Context) {
-        if (context is FragmentActivity) {
-            finish()
-        }
-    }
 
     //点赞
     fun playLikeBook(context: Context, bean: Comments) {
@@ -255,6 +252,21 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (audioId != null) {
             RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
             finish()
+        }
+    }
+
+    /**
+     * 分享
+     */
+    fun clickShare(context: Context){
+        getActivity(context)?.let {
+            Share2.Builder(it)
+                .setContentType(ShareContentType.TEXT)
+                .setTitle("分享测试")
+                .setTextContent("http://www.baidu.com")
+                .build()
+                .shareBySystem()
+
         }
     }
 

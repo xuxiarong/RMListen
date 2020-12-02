@@ -43,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="@id/mine_sign_text"
             app:layout_constraintEnd_toStartOf="@id/mine_sign_text"
             app:layout_constraintTop_toTopOf="@id/mine_sign_text"
-            tools:text="50/50" />
+            tools:text="50/" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mine_sign_text"
@@ -56,6 +56,6 @@
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mine_sign_ed"
-            tools:text="50/50" />
+            tools:text="50" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

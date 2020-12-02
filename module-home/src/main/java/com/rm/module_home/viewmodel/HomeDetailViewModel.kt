@@ -31,6 +31,8 @@ import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
+import com.rm.business_lib.share.Share2
+import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.listen.ListenService
@@ -247,7 +249,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 try {
                     val audioRecord = ListenDaoUtils.queryAudioById(it.toLong())
                     listenAudio.set(audioRecord)
-                    isAttention.set(audioRecord?.anchor?.status?: false)
+                    isAttention.set(audioRecord?.anchor?.status ?: false)
                     isSubscribed.set(audioRecord?.is_subscribe)
                 } catch (e: Exception) {
                     listenAudio.set(null)
@@ -900,7 +902,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 分享
      */
-    fun clickShare() {
+    fun clickShare(context: Context) {
+        getActivity(context)?.let {
+            Share2.Builder(it)
+                .setContentType(ShareContentType.TEXT)
+                .setTitle("分享测试")
+                .setTextContent("http://www.baidu.com")
+                .build()
+                .shareBySystem()
+
+        }
     }
 
 

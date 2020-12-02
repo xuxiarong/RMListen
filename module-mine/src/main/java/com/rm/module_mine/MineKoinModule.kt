@@ -1,6 +1,5 @@
 package com.rm.module_mine
 
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.login.LoginViewModel
@@ -33,6 +32,9 @@ val viewModelModule = module {
     viewModel { MineMemberFollowsViewModel(get()) }
     viewModel { MineMemberReleaseBooksViewModel(get()) }
     viewModel { MineVersionUpdateViewModel() }
+    viewModel { MineAboutViewModel() }
+    viewModel { MineGetBookViewModel(get()) }
+    viewModel { MineFeedbackViewModel(get()) }
 
 }
 

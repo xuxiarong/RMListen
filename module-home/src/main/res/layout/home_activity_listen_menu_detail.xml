@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_16"
-                android:onClick="@{()->viewModel.clickShare()}"
+                android:onClick="@{()->viewModel.clickShare(context)}"
                 android:paddingTop="@dimen/dp_9"
                 android:paddingBottom="@dimen/dp_9"
                 android:src="@drawable/home_icon_share"

@@ -1,11 +1,14 @@
 package com.rm.module_listen.viewmodel
 
+import android.content.Context
 import android.view.View
 import androidx.databinding.ObservableField
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.share.Share2
+import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -163,7 +166,16 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     /**
      * dialog 分享
      */
-    fun dialogShareFun() {
+    fun dialogShareFun(context:Context) {
+        getActivity(context)?.let {
+            Share2.Builder(it)
+                .setContentType(ShareContentType.TEXT)
+                .setTitle("分享测试")
+                .setTextContent("http://www.baidu.com")
+                .build()
+                .shareBySystem()
+
+        }
         mDialog.dismiss()
     }
 
