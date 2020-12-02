@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/login_include_logo_lay"
+    android:id="@+id/business_include_logo_lay"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -9,17 +9,17 @@
     <View
         android:layout_width="@dimen/dp_15"
         android:layout_height="@dimen/dp_65"
-        android:background="@drawable/login_shape_top_bottom_round" />
+        android:background="@drawable/business_shape_top_bottom_round" />
 
     <View
         android:layout_width="@dimen/dp_15"
         android:layout_height="@dimen/dp_100"
         android:layout_marginStart="@dimen/dp_15"
-        android:background="@drawable/login_shape_top_bottom_round" />
+        android:background="@drawable/business_shape_top_bottom_round" />
 
     <View
         android:layout_width="@dimen/dp_15"
         android:layout_height="@dimen/dp_65"
         android:layout_marginStart="@dimen/dp_15"
-        android:background="@drawable/login_shape_top_bottom_round" />
+        android:background="@drawable/business_shape_top_bottom_round" />
 </LinearLayout>

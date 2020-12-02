@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_18"
-        android:onClick="@{(view)->click.itemClick(view,item)}">
+        android:onClick="@{()->click.itemClick(context,item)}">
 
 
         <androidx.appcompat.widget.AppCompatImageView

@@ -8,7 +8,6 @@
             name="viewModel"
             type="com.rm.module_search.viewmodel.SearchContentAllViewModel" />
 
-        <import type="com.rm.business_lib.binding.BindPlayCountKt" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -39,7 +38,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/BusinessTextStyleThird_2"
-                    android:text="@{@string/search_books_num(BindPlayCountKt.getPlayCount(viewModel.data.audio))}"
+                    bindPlayCount="@{viewModel.data.audio}"
+                    bindPlayCountPrefix="@{@string/search_books_prefix}"
+                    bindPlayCountSuffix="@{@string/search_books_suffix}"
                     app:layout_constraintBottom_toBottomOf="@id/search_content_all_books_text"
                     app:layout_constraintStart_toEndOf="@id/search_content_all_books_text"
                     app:layout_constraintTop_toTopOf="@id/search_content_all_books_text" />
@@ -77,7 +78,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/BusinessTextStyleThird_2"
-                    android:text="@{@string/search_books_num(BindPlayCountKt.getPlayCount(viewModel.data.member))}"
+                    bindPlayCount="@{viewModel.data.member}"
+                    bindPlayCountPrefix="@{@string/search_books_prefix}"
+                    bindPlayCountSuffix="@{@string/search_books_suffix}"
                     app:layout_constraintBottom_toBottomOf="@id/search_content_all_anchor_text"
                     app:layout_constraintStart_toEndOf="@id/search_content_all_anchor_text"
                     app:layout_constraintTop_toTopOf="@id/search_content_all_anchor_text" />
@@ -115,7 +118,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/BusinessTextStyleThird_2"
-                    android:text="@{@string/search_books_num(BindPlayCountKt.getPlayCount(viewModel.data.sheet))}"
+                    bindPlayCount="@{viewModel.data.sheet}"
+                    bindPlayCountPrefix="@{@string/search_books_prefix}"
+                    bindPlayCountSuffix="@{@string/search_books_suffix}"
                     app:layout_constraintBottom_toBottomOf="@id/search_content_all_sheet_text"
                     app:layout_constraintStart_toEndOf="@id/search_content_all_sheet_text"
                     app:layout_constraintTop_toTopOf="@id/search_content_all_sheet_text" />

@@ -32,6 +32,7 @@
 
 
 
+    <string name="business_collect_success">收藏成功</string>
     <string name="business_favorites_success">订阅成功</string>
     <string name="business_know">我知道了</string>
     <string name="business_goto_look">去看看</string>

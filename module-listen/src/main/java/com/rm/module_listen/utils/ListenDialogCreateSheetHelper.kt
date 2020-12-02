@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.view.DragCloseLayout
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenDialogCreateSheetBinding
@@ -18,7 +19,6 @@ import com.rm.module_listen.viewmodel.ListenDialogCreateSheetViewModel
 class ListenDialogCreateSheetHelper(
     private val mActivity: FragmentActivity,
     private val successBlock: () -> Unit
-
 ) {
 
     /**
@@ -63,18 +63,21 @@ class ListenDialogCreateSheetHelper(
     }
 
 
-    fun showEditDialog(sheetId: String, success: (String) -> Unit) {
+    fun showEditDialog(sheetName: String, sheetId: String, success: (String) -> Unit) {
         mViewModel.sheetId.set(sheetId)
         mViewModel.editSuccess = { success(it) }
-        mViewModel.mDialog = CommonDragMvDialog().apply {
+        mViewModel.mDialog = CommonDragMvDialog(moveListener).apply {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
             dialogHeightIsMatchParent = true
             dialogHasBackground = true
             initDialog = {
                 mViewModel.dataBinding = mDataBind as ListenDialogCreateSheetBinding
-                (mDataBind as ListenDialogCreateSheetBinding).listenDialogCreateSheetTitle.text =
+                mViewModel.dataBinding?.listenDialogCreateSheetTitle?.text =
                     (BaseApplication.CONTEXT.getString(R.string.listen_edit_sheet))
+                mViewModel.inputText.set(sheetName)
+                mViewModel.dataBinding?.listenDialogCreateSheetEditName?.setText(sheetName)
+                mViewModel.dataBinding?.listenDialogCreateSheetEditName?.setSelection(sheetName.length)
 
                 dialog?.setOnShowListener {
                     mViewModel.dataBinding?.listenDialogCreateSheetEditName?.postDelayed({
@@ -90,6 +93,7 @@ class ListenDialogCreateSheetHelper(
                         inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
                     }, 50)
                 }
+
             }
         }.showCommonDialog(
             mActivity,
@@ -97,5 +101,12 @@ class ListenDialogCreateSheetHelper(
             mViewModel,
             BR.dialogViewModel
         )
+    }
+
+    /**
+     * 拖拽监听
+     */
+    private val moveListener = DragCloseLayout.IDragMoveListener {
+        mViewModel.hideTipView()
     }
 }

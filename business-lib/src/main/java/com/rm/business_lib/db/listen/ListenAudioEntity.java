@@ -357,7 +357,7 @@ public class ListenAudioEntity implements Serializable {
     }
 
     public Anchor getAnchor() {
-        return this.anchor;
+        return this.anchor == null ? new Anchor() : this.anchor;
     }
 
     public void setAnchor(Anchor anchor) {
@@ -365,7 +365,7 @@ public class ListenAudioEntity implements Serializable {
     }
 
     public List<DetailTags> getTags() {
-        return this.tags;
+        return this.tags == null ? new ArrayList<DetailTags>() : this.tags;
     }
 
     public void setTags(List<DetailTags> tags) {

@@ -60,6 +60,7 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
         return apiCall { service.listenSheetFavoriteList(page, pageSize) }
     }
 
+
     /**
      * 创建听单
      *
@@ -125,8 +126,8 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
      * @param page Int
      * @param pageSize Int
      */
-    suspend fun getAudioList(page: Int, pageSize: Int): BaseResult<AudioListBean> {
-        return apiCall { service.listenAudioList(page, pageSize) }
+    suspend fun getAudioList(page: Int, pageSize: Int,sheetId:String): BaseResult<AudioListBean> {
+        return apiCall { service.listenAudioList(page, pageSize,sheetId) }
     }
 
     /**
@@ -144,6 +145,14 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
      */
     suspend fun removeAudio(sheet_id: String, audioId: String): BaseResult<Any> {
         return apiCall { service.listenRemoveAudio(sheet_id, audioId) }
+    }
+
+    /**
+     * 听单取消收藏
+     * @param sheet_id 听单Id
+     */
+    suspend fun listenUnFavoriteSheet(sheet_id: String): BaseResult<Any> {
+        return apiCall { service.listenUnFavoriteSheet(sheet_id) }
     }
 
     /**

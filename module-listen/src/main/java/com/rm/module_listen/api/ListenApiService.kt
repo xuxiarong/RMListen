@@ -139,7 +139,8 @@ interface ListenApiService {
     @GET("sheet/list")
     suspend fun listenAudioList(
         @Query("page") page: Int,
-        @Query("page_size") page_size: Int
+        @Query("page_size") page_size: Int,
+        @Query("sheet_id") sheet_id: String
     ): BaseResponse<AudioListBean>
 
 
@@ -192,5 +193,14 @@ interface ListenApiService {
         @Query("sheet_id") sheetId: String,
         @Query("audio_id") audioId: String
     ): BaseResponse<Any>
+
+
+    /**
+     * 取消收藏
+     *  @param sheet_id 听单Id
+     */
+    @DELETE("sheet/my-favorite")
+    suspend fun listenUnFavoriteSheet(@Query("sheet_id") sheet_id: String): BaseResponse<Any>
+
 
 }

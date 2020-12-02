@@ -41,6 +41,30 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="#00ff00" />
 
+            <View
+                android:id="@+id/home_book_adapter_play_bg"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_28"
+                android:background="@drawable/business_shape_gradient_boutique"
+                app:layout_constraintBottom_toBottomOf="@id/listen_book_adapter_icon"
+                app:layout_constraintEnd_toEndOf="@id/listen_book_adapter_icon"
+                app:layout_constraintStart_toStartOf="@id/listen_book_adapter_icon" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                bindPlayCountString="@{item.play_count}"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:drawablePadding="@dimen/dp_2"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/business_icon_subs_play"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_12sp"
+                app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_play_bg"
+                app:layout_constraintEnd_toEndOf="@id/listen_book_adapter_icon"
+                tools:text="123" />
+
+
             <com.flyco.roundview.RoundTextView
                 android:id="@+id/listen_book_adapter_tips"
                 bindText="@{item.audio_label}"

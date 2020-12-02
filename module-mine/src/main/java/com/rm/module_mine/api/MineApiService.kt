@@ -142,5 +142,60 @@ interface MineApiService {
         @Query("page_size") page_size: Int
     ): BaseResponse<MinePublishBean>
 
+    /**
+     * 关于我们
+     */
+    @GET("others/about-us")
+    suspend fun mineAboutUs(): BaseResponse<MineAboutUsBean>
+
+    /**
+     *获取app最新版本接口
+     */
+    @GET("personal/get-latest-version")
+    suspend fun mineGetLaseVersion(@Query("platform") platform: String): BaseResponse<MineGetLastVersionBean>
+
+    /**
+     * 免费求书
+     * @param book_name 书名
+     * @param author 作者名
+     * @param anchor_name 播音员名称
+     * @param contact 联系方式
+     * @param device_id 设备id
+     */
+    @POST("personal/request-book")
+    suspend fun mineRequestBook(
+        @Field("book_name") book_name: String,
+        @Field("author") author: String,
+        @Field("anchor_name") anchor_name: String,
+        @Field("contact") contact: String,
+        @Field("device_id") device_id: String
+    ): BaseResponse<Any>
+
+    /**
+     * 获取app包下载接口
+     * @param version 书名
+     * @param platform 作者名
+     */
+    @POST("personal/get-version-url")
+    suspend fun mineGetLaseUrl(
+        @Field("version") version: String,
+        @Field("platform") platform: String
+    ): BaseResponse<MineVersionUrlBean>
+
+    /**
+     * 反馈意见
+     * @param content 反馈内容
+     * @param feedback_type 反馈类型（0：其它，1：功能异常，2：体验不佳，3：产品建议）
+     * @param contact 联系方式
+
+     */
+    @POST("member/feedback")
+    suspend fun mineFeedback(
+        @Field("feedback_type") feedback_type: String,
+        @Field("content") content: String,
+        @Field("img_list") img_list: Array<String>,
+        @Field("contact") contact: String
+    ): BaseResponse<Any>
+
 
 }

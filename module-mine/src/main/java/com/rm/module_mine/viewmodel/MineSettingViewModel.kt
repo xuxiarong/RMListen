@@ -90,6 +90,13 @@ class MineSettingViewModel : BaseVMViewModel() {
         startActivity(MineVersionUpdateActivity::class.java)
     }
 
+    /**
+     * 关于我们
+     */
+    fun clickAboutUs(context: Context) {
+        MineAboutUsActivity.startActivity(context)
+    }
+
     private fun quicklyLogin(context: Context) {
         getActivity(context)?.let {
             RouterHelper.createRouter(LoginService::class.java)

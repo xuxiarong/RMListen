@@ -17,5 +17,6 @@ data class SheetFavorDataBean(
     var num_audio: Long,
     var num_favor: Int,
     var sheet_id: Long,
-    var sheet_name: String
+    var sheet_name: String,
+    var pre_deleted_from: String//预删除来源；0:不打算删除；1:后管删除；2:创建者删除
 )

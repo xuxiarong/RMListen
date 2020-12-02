@@ -2,14 +2,11 @@ package com.rm.module_mine.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
-import com.rm.baselisten.util.TimeUtils
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.bean.*
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
@@ -111,6 +108,41 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         pageSize: Int
     ): BaseResult<MinePublishBean> {
         return apiCall { service.minePublishList(member_id, page, pageSize) }
+    }
+
+    /**
+     * 免费求书
+     */
+    suspend fun mineRequestBook(
+        book_name: String,
+        author: String,
+        anchor_name: String,
+        contact: String,
+        device_id: String
+    ): BaseResult<Any> {
+        return apiCall {
+            service.mineRequestBook(
+                book_name,
+                author,
+                anchor_name,
+                contact,
+                device_id
+            )
+        }
+    }
+
+    /**
+     * 关于我们
+     */
+    suspend fun mineAboutUs(): BaseResult<MineAboutUsBean> {
+        return apiCall { service.mineAboutUs() }
+    }
+
+    /**
+     * 关于我们
+     */
+    suspend fun mineGetLaseVersion(): BaseResult<MineGetLastVersionBean> {
+        return apiCall { service.mineGetLaseVersion("android") }
     }
 
     /**

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feedbackItem"
+            type="com.rm.module_mine.bean.MineFeedbackImgBean" />
+
+        <variable
+            name="feedbackViewModel"
+            type="com.rm.module_mine.viewmodel.MineFeedbackViewModel" />
+        <import type="android.text.TextUtils"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_70">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mine_adapter_feedback_img"
+            corner="@{8f}"
+            bindUrl="@{feedbackItem.path}"
+            isVisible="@{!TextUtils.isEmpty(feedbackItem.path)}"
+            android:layout_width="@dimen/dp_62"
+            android:layout_height="@dimen/dp_62"
+            android:src="@color/business_color_ffba56"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:src="@drawable/business_icon_del_da"
+            isVisible="@{!TextUtils.isEmpty(feedbackItem.path)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.flyco.roundview.RoundFrameLayout
+            android:layout_width="@dimen/dp_62"
+            android:layout_height="@dimen/dp_62"
+            isVisible="@{TextUtils.isEmpty(feedbackItem.path)}"
+            android:onClick="@{()->feedbackViewModel.clickCamera(context)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rv_cornerRadius="@dimen/dp_8"
+            app:rv_strokeColor="@color/business_color_b1b1b1"
+            app:rv_strokeWidth="@dimen/dp_1">
+
+            <View
+                android:layout_width="@dimen/dp_1"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_14"
+                android:background="@color/business_color_b1b1b1" />
+
+            <View
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_1"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_24"
+                android:background="@color/business_color_b1b1b1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:textColor="@color/base_b1b1b1"
+                android:textSize="@dimen/business_text_size_10sp"
+                android:text="@string/mine_feedback_txt" />
+        </com.flyco.roundview.RoundFrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

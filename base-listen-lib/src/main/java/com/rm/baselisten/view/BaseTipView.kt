@@ -37,7 +37,7 @@ class BaseTipView @JvmOverloads constructor(
     }
 
     private val hideAnim by lazy {
-        ObjectAnimator.ofFloat(this, "translationY", dip(96).toFloat(), 0f).apply {
+        ObjectAnimator.ofFloat(this, "translationY", dip(96).toFloat(), -20f).apply {
             duration = 200
         }
     }

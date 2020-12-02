@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            layout="@layout/login_include_layout_top_logo"
+            layout="@layout/business_include_layout_top_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_88"
@@ -41,7 +41,7 @@
             android:layout_marginTop="@dimen/dp_50"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_include_logo_lay"
+            app:layout_constraintTop_toBottomOf="@id/business_include_logo_lay"
             bind:phoneInputViewModel="@{viewModel.phoneInputViewModel}" />
 
         <TextView

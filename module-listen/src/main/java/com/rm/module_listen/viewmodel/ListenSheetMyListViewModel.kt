@@ -1,12 +1,14 @@
 package com.rm.module_listen.viewmodel
 
+import android.content.Context
 import android.text.TextUtils
-import android.view.View
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenMySheetDetailActivity
@@ -133,16 +135,22 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
     /**
      * item点击事件
      */
-    fun itemClick(view: View, bean: ListenSheetBean) {
-        getActivity(view.context)?.let {
-            clickBean.set(bean)
-            val hasMap = getHasMap()
-            hasMap[SHEET_ID] = bean.sheet_id.toString()
-
-            startActivityForResult(
-                ListenMySheetDetailActivity::class.java, hasMap,
-                ListenMySheetDetailActivity.LISTEN_SHEET_DETAIL_REQUEST_CODE
-            )
+    fun itemClick(context: Context, bean: ListenSheetBean) {
+        if (TextUtils.isEmpty(memberId)){
+            getActivity(context)?.let {
+                clickBean.set(bean)
+                val hasMap = getHasMap()
+                hasMap[SHEET_ID] = bean.sheet_id.toString()
+                startActivityForResult(
+                    ListenMySheetDetailActivity::class.java, hasMap,
+                    ListenMySheetDetailActivity.LISTEN_SHEET_DETAIL_REQUEST_CODE
+                )
+            }
+        }else{
+            getActivity(context)?.let {
+                RouterHelper.createRouter(HomeService::class.java)
+                    .startHomeSheetDetailActivity(it, bean.sheet_id.toString())
+            }
         }
     }
 

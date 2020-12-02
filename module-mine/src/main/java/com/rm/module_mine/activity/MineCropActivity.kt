@@ -1,8 +1,13 @@
 package com.rm.module_mine.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.mvvm.BaseActivity
+import com.rm.baselisten.util.DLog
 import com.rm.module_mine.R
 import com.rm.module_mine.util.BitmapUtil
 import com.rm.module_mine.widget.CropImageView
@@ -23,7 +28,14 @@ class MineCropActivity : BaseActivity(), CropImageView.OnBitmapSaveCompleteListe
     companion object {
         const val FILE_PATH = "filePath"
         const val RESULT_CODE_CROP = 500
+
+        fun startActivityForResult(activity: Activity, filePath: String, code: Int) {
+            val intent = Intent(activity,MineCropActivity::class.java)
+            intent.putExtra(FILE_PATH, filePath)
+            activity.startActivityForResult(intent, code)
+        }
     }
+
 
     override fun getLayoutId() = R.layout.mine_activity_image_crop
     override fun initView() {

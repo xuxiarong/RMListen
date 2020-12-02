@@ -35,10 +35,12 @@ public class DragCloseLayout extends RelativeLayout {
 
     //滑动关闭的监听器
     private IDragCloseListener mDragCloseListener;
+    private IDragMoveListener moveListener;
 
     public DragCloseLayout(Context context) {
         this(context, null);
     }
+
     public DragCloseLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
@@ -48,7 +50,11 @@ public class DragCloseLayout extends RelativeLayout {
         this.mDragCloseListener = dragCloseListener;
     }
 
-    public void setDialog (Dialog dialog){
+    public void setDragMoveListener(IDragMoveListener moveListener) {
+        this.moveListener = moveListener;
+    }
+
+    public void setDialog(Dialog dialog) {
         this.mDialog = dialog;
     }
 
@@ -69,7 +75,7 @@ public class DragCloseLayout extends RelativeLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mMeasureHeight = getMeasuredHeight();
-        if( mMeasureHeight!= 0){
+        if (mMeasureHeight != 0) {
             mDragCallback.setCloseHeight(mMeasureHeight);
             mDragCallback.setCloseRatio(0.4f);
         }
@@ -97,27 +103,30 @@ public class DragCloseLayout extends RelativeLayout {
      * 子控件位置改变时触发（包括X和Y轴方向）
      *
      * @param changedView 发生位置变化的View.
-     * @param left position.
-     * @param top  position.
-     * @param dx   change in X position from the last call.
-     * @param dy   change in Y position from the last call.
+     * @param left        position.
+     * @param top         position.
+     * @param dx          change in X position from the last call.
+     * @param dy          change in Y position from the last call.
      */
-    public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy){
+    public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
         mTotalDragY += dy;
-        if(mTotalDragY>0){
+        if (moveListener != null) {
+            moveListener.onMoveListener();
+        }
+        if (mTotalDragY > 0) {
             float dimAmount = 0.5f - ((float) mTotalDragY) / ((float) mMeasureHeight);
             setupWindowDimAmount(dimAmount);
         }
     }
 
-    private void setupWindowDimAmount(float dimAmount){
-        if(mDialog == null || closeAlpha){
+    private void setupWindowDimAmount(float dimAmount) {
+        if (mDialog == null || closeAlpha) {
             return;
         }
         Window window = mDialog.getWindow();
-        if(window!=null){
+        if (window != null) {
             WindowManager.LayoutParams lp = window.getAttributes();
-            lp.dimAmount = dimAmount ;
+            lp.dimAmount = dimAmount;
             window.setAttributes(lp);
         }
     }
@@ -139,7 +148,7 @@ public class DragCloseLayout extends RelativeLayout {
         if (viewDragHelper.smoothSlideViewTo(this, 0, getHeight())) {
             ViewCompat.postInvalidateOnAnimation(this);
             mTotalDragY = 0;
-            if(mDragCloseListener!=null){
+            if (mDragCloseListener != null) {
                 mDragCloseListener.onDragClose();
             }
         }
@@ -158,5 +167,9 @@ public class DragCloseLayout extends RelativeLayout {
 
     public interface IDragCloseListener {
         void onDragClose();
+    }
+
+    public interface IDragMoveListener {
+        void onMoveListener();
     }
 }

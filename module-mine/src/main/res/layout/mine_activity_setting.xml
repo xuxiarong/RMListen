@@ -117,14 +117,22 @@
                 android:id="@+id/mine_setting_favorable_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:material_name="@string/mine_favorable_comment" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
                 android:id="@+id/mine_setting_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:onClick="@{()->viewModel.clickVersionUpdate(context)}"
                 app:material_name="@string/mine_app_version" />
+
+            <com.rm.module_mine.widget.MineCommonMaterialView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.clickAboutUs(context)}"
+                app:material_name="@string/mine_about_us" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/mine_setting_sign_out"

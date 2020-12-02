@@ -23,7 +23,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mine_favor_sheet_adapter_icon"
-            bindUrl="@{favorSheetItem.avatar_url}"
+            bindUrl="@{favorSheetItem.sheet_cover}"
             corner="@{4f}"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
