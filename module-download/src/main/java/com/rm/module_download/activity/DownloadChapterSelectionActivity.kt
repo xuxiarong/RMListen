@@ -61,18 +61,18 @@ class DownloadChapterSelectionActivity :
         download_ic_download.setOnClickListener { DownloadMainActivity.startActivity(this) }
         download_chapter_num.setOnClickListener { DownloadMainActivity.startActivity(this) }
 
-        download_tv_select_chapters.setOnClickListener {
-            DownloadSelectChaptersDialog(100).apply {
-                downloadClick = { start, end ->
-                    mViewModel.downloadChapterSelection(
-                        mViewModel.downloadAudio.get()?.audio_id ?: 0L, (start..end).toList()
-                    )
-                    dismiss()
-                }
-                //TODO 计算内存占用 待实现
-                calcMemoryUse = { start, end -> (start + end).toString() }
-            }.show(this)
-        }
+//        download_tv_select_chapters.setOnClickListener {
+//            DownloadSelectChaptersDialog(100).apply {
+//                downloadClick = { start, end ->
+//                    mViewModel.downloadChapterSelection(
+//                        mViewModel.downloadAudio.get()?.audio_id ?: 0L, (start..end).toList()
+//                    )
+//                    dismiss()
+//                }
+//                //TODO 计算内存占用 待实现
+//                calcMemoryUse = { start, end -> (start + end).toString() }
+//            }.show(this)
+//        }
 
     }
 

@@ -9,6 +9,7 @@ import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
+import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.converter.BusinessConvert
@@ -63,6 +64,23 @@ object HomeGlobalData {
 
 }
 
+object PlaySettingData {
+    const val PLAY_NETWORK_234G_ALERT = "play_network_234g_alert"
+    const val PLAY_AUTO_PLAY_NEXT = "play_auto_play_next"
+    const val PLAY_CONTINUE_LAST_PLAY = "play_continue_last_play"
+
+    fun getNetwork234GAlert(): Boolean {
+        return PLAY_NETWORK_234G_ALERT.getBooleanMMKV(true)
+    }
+
+    fun getAutoPlayNext(): Boolean {
+        return PLAY_AUTO_PLAY_NEXT.getBooleanMMKV(true)
+    }
+
+    fun getContinueLastPlay(): Boolean {
+        return PLAY_CONTINUE_LAST_PLAY.getBooleanMMKV(false)
+    }
+}
 
 object PlayGlobalData {
 
@@ -187,8 +205,8 @@ object PlayGlobalData {
     fun initPlayAudio(audio: DownloadAudio) {
         playAudioModel.set(audio)
         BaseConstance.updateBaseAudioId(
-                audioId = audio.audio_id.toString(),
-                playUrl = audio.audio_cover_url
+            audioId = audio.audio_id.toString(),
+            playUrl = audio.audio_cover_url
         )
         audio.updateMillis = System.currentTimeMillis()
         playChapterListSort.get()?.let {
@@ -208,9 +226,9 @@ object PlayGlobalData {
     }
 
     fun updatePlayChapterProgress(
-            currentDuration: Long = 0L,
-            totalDuration: Long = 0L,
-            isPlayFinish: Boolean = false
+        currentDuration: Long = 0L,
+        totalDuration: Long = 0L,
+        isPlayFinish: Boolean = false
     ) {
         try {
             val chapter = playChapter.get()
@@ -223,9 +241,9 @@ object PlayGlobalData {
                 }
                 process.set(chapter.listen_duration.toFloat())
                 updateThumbText.set(
-                        "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
-                        TimeUtils.getPlayDuration(chapter.realDuration)
-                        }"
+                    "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
+                    TimeUtils.getPlayDuration(chapter.realDuration)
+                    }"
                 )
                 playChapter.set(chapter)
                 playChapterId.set(chapter.chapter_id.toString())
@@ -267,11 +285,11 @@ object PlayGlobalData {
     fun updateCountSecond() {
         if (playCountDownSecond.get() > 0L) {
             //因为播放器的回掉是500ms一次，所以一次也是减去500ms
-            if(playCountDownSecond.get() < 1500){
+            if (playCountDownSecond.get() < 1500) {
                 playCountSelectPosition.set(-1)
             }
             playCountDownSecond.set(playCountDownSecond.get() - 500L)
-        }else if(playCountDownSecond.get()<= 0 && playCountSelectPosition.get() >=0){
+        } else if (playCountDownSecond.get() <= 0 && playCountSelectPosition.get() >= 0) {
             playCountDownSecond.set(-500L)
             playCountSelectPosition.set(-1)
         }
@@ -290,12 +308,12 @@ object PlayGlobalData {
         }
     }
 
-    fun setCountDownTimer(position: Int){
+    fun setCountDownTimer(position: Int) {
         playCountSelectPosition.set(position)
-        if(playCountTimerList[position] in 1..5){
+        if (playCountTimerList[position] in 1..5) {
             playCountDownChapterSize.set(playCountTimerList[position])
-        }else{
-            playCountDownSecond.set(playCountTimerList[position]  * 1000L)
+        } else {
+            playCountDownSecond.set(playCountTimerList[position] * 1000L)
         }
     }
 

@@ -2,20 +2,21 @@ package com.rm.module_download.viewmodel
 
 import android.content.Context
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.databinding.ObservableLong
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.ktx.addAll
+import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.download.DownloadConstant
-import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.module_download.BR
@@ -24,11 +25,11 @@ import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
-import com.rm.module_download.bean.DownloadChapterUIStatus
 import com.rm.module_download.repository.DownloadRepository
+import kotlinx.android.synthetic.main.download_dialog_select_chapter.*
 
 class DownloadChapterSelectionViewModel(private val repository: DownloadRepository) :
-    BaseVMViewModel() {
+        BaseVMViewModel() {
     val data = MutableLiveData<MutableList<DownloadChapterAdapterBean>>()
     var page = 1
     private val pageSize = 12
@@ -43,11 +44,11 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
 
     val mAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
-            this,
-            mutableListOf(),
-            R.layout.download_item_chapter_selection,
-            BR.viewModel,
-            BR.itemBean
+                this,
+                mutableListOf(),
+                R.layout.download_item_chapter_selection,
+                BR.viewModel,
+                BR.itemBean
         )
     }
 
@@ -63,8 +64,8 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             }
             if (tempDownloadList.size == 0) {
                 ToastUtil.show(
-                    BaseApplication.CONTEXT,
-                    BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist)
+                        BaseApplication.CONTEXT,
+                        BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist)
                 )
                 return
             }
@@ -72,7 +73,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             //将音频信息存储
             downloadAudio.get()?.let {
                 DownloadMemoryCache.addAudioToDownloadMemoryCache(
-                    it
+                        it
                 )
             }
             //存储已选择的下载章节
@@ -114,7 +115,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             if (it.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
                 if (selectAll) {
                     selectNum++
-                    selectSize+=it.size
+                    selectSize += it.size
                     it.chapter_edit_select = true
                 } else {
                     it.chapter_edit_select = false
@@ -130,37 +131,37 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         downloadAudio.get()?.audio_id?.let {
             launchOnIO {
                 repository.downloadChapterList(page = page, pageSize = pageSize, audioId = it)
-                    .checkResult(
-                        onSuccess = {
-                            page++
-                            total = it.total
-                            refreshModel.finishLoadMore(true)
-                            it.list?.let { list ->
-                                refreshModel.noMoreData.set(list.size < pageSize)
-                                if (isSelectAll.get()) {
-                                    val chapterStatusList = getChapterStatus(list)
-                                    chapterStatusList.forEach { statusChapter ->
-                                        if(statusChapter.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD){
-                                            selectChapterNum.set(selectChapterNum.get() + 1)
-                                            selectChapterSize.set(selectChapterSize.get() + statusChapter.size)
-                                            statusChapter.chapter_edit_select = true
+                        .checkResult(
+                                onSuccess = {
+                                    page++
+                                    total = it.total
+                                    refreshModel.finishLoadMore(true)
+                                    it.list?.let { list ->
+                                        refreshModel.noMoreData.set(list.size < pageSize)
+                                        if (isSelectAll.get()) {
+                                            val chapterStatusList = getChapterStatus(list)
+                                            chapterStatusList.forEach { statusChapter ->
+                                                if (statusChapter.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
+                                                    selectChapterNum.set(selectChapterNum.get() + 1)
+                                                    selectChapterSize.set(selectChapterSize.get() + statusChapter.size)
+                                                    statusChapter.chapter_edit_select = true
+                                                }
+                                            }
+                                            mAdapter.addData(chapterStatusList)
+                                        } else {
+                                            mAdapter.addData(list)
+                                        }
+                                        if (list.size < pageSize && mAdapter.footerLayout == null) {
+                                            mAdapter.addFooterView(View.inflate(context, R.layout.business_foot_view, null))
                                         }
                                     }
-                                    mAdapter.addData(chapterStatusList)
-                                } else {
-                                    mAdapter.addData(list)
+                                },
+                                onError = {
+                                    refreshModel.finishLoadMore(false)
+                                    showTip("$it", R.color.business_color_ff5e5e)
+                                    DLog.e("download", "$it")
                                 }
-                                if (list.size < pageSize && mAdapter.footerLayout == null) {
-                                    mAdapter.addFooterView(View.inflate(context, R.layout.business_foot_view, null))
-                                }
-                            }
-                        },
-                        onError = {
-                            refreshModel.finishLoadMore(false)
-                            showTip("$it", R.color.business_color_ff5e5e)
-                            DLog.e("download", "$it")
-                        }
-                    )
+                        )
             }
         }
     }
@@ -179,21 +180,42 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     fun downloadChapterSelection(audioId: Long, sequences: List<Int>) {
         launchOnIO {
             repository.downloadChapterSelection(audioId = audioId, sequences = sequences)
-                .checkResult(
-                    onSuccess = {
-                        it.list?.let { list ->
-                            val chapterStatusList = getChapterStatus(list)
-                            DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
-                            mAdapter.notifyDataSetChanged()
-                        }
+                    .checkResult(
+                            onSuccess = {
+                                it.list?.let { list ->
+                                    val chapterStatusList = getChapterStatus(list)
+                                    DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
+                                    mAdapter.notifyDataSetChanged()
+                                }
 //                        audioChapterList.addAll(chapterStatusList)
-                    },
-                    onError = {
-                        DLog.i("download", "$it")
-                        showTip("$it", R.color.business_color_ff5e5e)
-                    }
-                )
+                            },
+                            onError = {
+                                DLog.i("download", "$it")
+                                showTip("$it", R.color.business_color_ff5e5e)
+                            }
+                    )
         }
     }
+
+    fun showChapterSelectDialog(context: Context) {
+        (context as FragmentActivity).let {
+            CommBottomDialog().apply {
+                initDialog = {
+                    dialog?.setOnShowListener {
+                        download_start_et.postDelayed({
+                            download_start_et.isFocusable = true
+                            download_start_et.requestFocus()
+                            download_start_et.isFocusableInTouchMode = true
+                            val inputManager =
+                                    download_start_et.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+                            download_start_et.setSelection(download_start_et.text.length)
+                        }, 50)
+                    }
+                }
+            }.showCommonDialog(context, R.layout.download_dialog_select_chapter, this, BR.viewModel)
+        }
+    }
+
 
 }

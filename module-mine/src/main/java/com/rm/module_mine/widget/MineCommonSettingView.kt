@@ -1,28 +1,14 @@
 package com.rm.module_mine.widget
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.TypedValue
-import android.util.TypedValue.COMPLEX_UNIT_PX
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.RelativeLayout
-import androidx.annotation.DimenRes
-import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.binding.bindUrl
 import com.rm.baselisten.binding.isVisible
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.dimen
 import com.rm.module_mine.R
 
@@ -41,7 +27,7 @@ class MineCommonSettingView @JvmOverloads constructor(
     RelativeLayout(context, attrs, defStyleAttr) {
     private lateinit var settingName: AppCompatTextView
     private lateinit var settingTip: AppCompatTextView
-    private lateinit var settingSwitch: SwitchCompat
+    lateinit var settingSwitch: SwitchCompat
     private lateinit var settingIcon: AppCompatImageView
 
     private var settingNameStr: String? = ""
@@ -57,8 +43,10 @@ class MineCommonSettingView @JvmOverloads constructor(
         settingNameStr = ta.getString(R.styleable.MineCommonSettingView_setting_name)
         settingTipStr = ta.getString(R.styleable.MineCommonSettingView_setting_tip)
         settingChecked = ta.getBoolean(R.styleable.MineCommonSettingView_setting_checked, false)
-        settingShowIcon = ta.getBoolean(R.styleable.MineCommonSettingView_setting_show_icon, settingShowIcon)
-        settingShowSwitch = ta.getBoolean(R.styleable.MineCommonSettingView_setting_show_switch, settingShowSwitch)
+        settingShowIcon =
+            ta.getBoolean(R.styleable.MineCommonSettingView_setting_show_icon, settingShowIcon)
+        settingShowSwitch =
+            ta.getBoolean(R.styleable.MineCommonSettingView_setting_show_switch, settingShowSwitch)
         ta.recycle()
     }
 
@@ -91,7 +79,16 @@ class MineCommonSettingView @JvmOverloads constructor(
     }
 }
 
-@BindingAdapter("bindChecked")
-fun MineCommonSettingView.bindChecked(checked: Boolean?) {
-    setChecked(checked == true)
+@BindingAdapter("bindMineCheckAction")
+fun MineCommonSettingView.bindMineCheckAction(action: ((Boolean) -> Unit)?) {
+    settingSwitch.setOnCheckedChangeListener { _, isChecked ->
+        action?.let {
+            it(isChecked)
+        }
+    }
 }
+@BindingAdapter("bindMineChecked")
+fun MineCommonSettingView.bindMineChecked(checked: Boolean) {
+    settingSwitch.isChecked = checked
+}
+
