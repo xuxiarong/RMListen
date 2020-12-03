@@ -26,6 +26,7 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.repository.DownloadRepository
+import com.tencent.bugly.proguard.s
 import kotlinx.android.synthetic.main.download_dialog_select_chapter.*
 
 class DownloadChapterSelectionViewModel(private val repository: DownloadRepository) :
@@ -41,6 +42,12 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     val audioChapterList = MutableLiveData<MutableList<DownloadChapter>>()
     val refreshModel = SmartRefreshLayoutStatusModel()
 
+    //选集下载的逻辑
+    val selectDownChapterList = MutableLiveData<MutableList<DownloadChapter>>()
+    var chapterStartSequence = "1"
+    var chapterEndSequence = "1"
+    var startSequence = ObservableField<String>("1")
+    var endSequence = ObservableField<String>("")
 
     val mAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
@@ -140,11 +147,14 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                                         refreshModel.noMoreData.set(list.size < pageSize)
                                         if (isSelectAll.get()) {
                                             val chapterStatusList = getChapterStatus(list)
-                                            chapterStatusList.forEach { statusChapter ->
-                                                if (statusChapter.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
+                                            for (i in 0 until chapterStatusList.size) {
+                                                if (page == 2 && i == 0) {
+                                                    chapterStartSequence = chapterStatusList[0].sequence.toString()
+                                                }
+                                                if (chapterStatusList[i].down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
                                                     selectChapterNum.set(selectChapterNum.get() + 1)
-                                                    selectChapterSize.set(selectChapterSize.get() + statusChapter.size)
-                                                    statusChapter.chapter_edit_select = true
+                                                    selectChapterSize.set(selectChapterSize.get() + chapterStatusList[i].size)
+                                                    chapterStatusList[i].chapter_edit_select = true
                                                 }
                                             }
                                             mAdapter.addData(chapterStatusList)
@@ -177,23 +187,25 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         return chapterList.toMutableList()
     }
 
-    fun downloadChapterSelection(audioId: Long, sequences: List<Int>) {
-        launchOnIO {
-            repository.downloadChapterSelection(audioId = audioId, sequences = sequences)
-                    .checkResult(
-                            onSuccess = {
-                                it.list?.let { list ->
-                                    val chapterStatusList = getChapterStatus(list)
-                                    DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
-                                    mAdapter.notifyDataSetChanged()
-                                }
+    private fun downloadChapterSelection(sequences: List<Int>) {
+        downloadAudio.get()?.audio_id?.let { audioId ->
+            launchOnIO {
+                repository.downloadChapterSelection(audioId = audioId, sequences = sequences)
+                        .checkResult(
+                                onSuccess = {
+                                    it.list?.let { list ->
+                                        val chapterStatusList = getChapterStatus(list)
+                                        DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
+                                        mAdapter.notifyDataSetChanged()
+                                    }
 //                        audioChapterList.addAll(chapterStatusList)
-                            },
-                            onError = {
-                                DLog.i("download", "$it")
-                                showTip("$it", R.color.business_color_ff5e5e)
-                            }
-                    )
+                                },
+                                onError = {
+                                    DLog.i("download", "$it")
+                                    showTip("$it", R.color.business_color_ff5e5e)
+                                }
+                        )
+            }
         }
     }
 
@@ -211,11 +223,35 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                             inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
                             download_start_et.setSelection(download_start_et.text.length)
                         }, 50)
+                        download_dialog_start_select_chapter.setOnClickListener {
+                            startSelectChapter()
+                            dismiss()
+                        }
                     }
                 }
             }.showCommonDialog(context, R.layout.download_dialog_select_chapter, this, BR.viewModel)
         }
     }
 
+    private fun startSelectChapter() {
+        var startIndex = 1
+        var endIndex = 1
+        try {
+            startIndex = startSequence.get()?.toInt()?:1
+            endIndex = endSequence.get()?.toInt()?:1
+            startIndex = startIndex.coerceAtMost(endIndex)
+            endIndex = startIndex.coerceAtLeast(endIndex)
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
+        downloadChapterSelection((startIndex..endIndex).toList())
+    }
 
+    fun inputStartSequence() {
+        startSequence.set(chapterStartSequence)
+    }
+
+    fun inputEndSequence() {
+        endSequence.set(downloadAudio.get()?.last_sequence ?: chapterEndSequence)
+    }
 }

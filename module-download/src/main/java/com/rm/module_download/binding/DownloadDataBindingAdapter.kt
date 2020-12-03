@@ -1,11 +1,16 @@
 package com.rm.module_download.binding
 
 import android.annotation.SuppressLint
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
 import com.rm.business_lib.db.download.DownloadChapter
@@ -84,8 +89,8 @@ fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
 }
 
 
-@BindingAdapter("bindDownloadChapterStatus","bindDownloadChapterSelectAll")
-fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter,isSelectAll : Boolean) {
+@BindingAdapter("bindDownloadChapterStatus", "bindDownloadChapterSelectAll")
+fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter, isSelectAll: Boolean) {
     DownLoadFileUtils.checkChapterIsDownload(chapter)
     if (chapter.down_status != DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
         setImageResource(R.drawable.download_ic_item_disable)
@@ -102,8 +107,8 @@ fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter,isSelectAll : B
 
 @BindingAdapter("bindItemChapter", "bindDownChapter")
 fun ImageView.bindDownOrPause(
-    chapter: DownloadChapter,
-    downloadChapter: DownloadChapter?
+        chapter: DownloadChapter,
+        downloadChapter: DownloadChapter?
 ) {
     if (downloadChapter == null) {
         return
@@ -115,7 +120,7 @@ fun ImageView.bindDownOrPause(
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
             setImageResource(R.drawable.download_ic_pause_download)
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE,DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE, DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
             setImageResource(R.drawable.download_ic_start_download)
         }
     }
@@ -124,8 +129,8 @@ fun ImageView.bindDownOrPause(
 
 @BindingAdapter("bindDownChapter", "bindDownProgressChapter")
 fun ProgressBar.bindDownProgressChapter(
-    chapter: DownloadChapter,
-    downloadChapter: DownloadChapter?
+        chapter: DownloadChapter,
+        downloadChapter: DownloadChapter?
 ) {
     if (downloadChapter == null) {
         return
@@ -167,9 +172,9 @@ fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: 
                 val currentSize = ConvertUtils.byte2FitMemorySize(chapter.current_offset, 1)
                 val totalSize = ConvertUtils.byte2FitMemorySize(chapter.size, 1)
                 text = String.format(
-                    context.getString(R.string.business_down_and_total_size),
-                    currentSize,
-                    totalSize
+                        context.getString(R.string.business_down_and_total_size),
+                        currentSize,
+                        totalSize
                 )
             }
         }
@@ -179,9 +184,9 @@ fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: 
             val currentSize = ConvertUtils.byte2FitMemorySize(chapter.current_offset, 1)
             val totalSize = ConvertUtils.byte2FitMemorySize(chapter.size, 1)
             text = String.format(
-                context.getString(R.string.business_down_and_total_size),
-                currentSize,
-                totalSize
+                    context.getString(R.string.business_down_and_total_size),
+                    currentSize,
+                    totalSize
             )
         }
         DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {
@@ -242,8 +247,8 @@ fun TextView.bindDownloadListen(chapter: DownloadChapter) {
 
 @BindingAdapter("bindDownloadStatusChapter", "bindCurrentDownChapter")
 fun DownloadStatusView.bindDownloadStatusChapter(
-    chapter: DownloadChapter,
-    downloadChapter: DownloadChapter?
+        chapter: DownloadChapter,
+        downloadChapter: DownloadChapter?
 ) {
     DownLoadFileUtils.checkChapterIsDownload(chapter)
 
@@ -257,8 +262,8 @@ fun DownloadStatusView.bindDownloadStatusChapter(
 
 @BindingAdapter("bindChapterList", "bindCurrentDownChapter")
 fun DownloadStatusView.bindChapterList(
-    chapter: DownloadChapter,
-    downloadChapter: DownloadChapter?
+        chapter: DownloadChapter,
+        downloadChapter: DownloadChapter?
 ) {
     val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
     if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
@@ -266,4 +271,40 @@ fun DownloadStatusView.bindChapterList(
         chapter.current_offset = downloadChapter.current_offset
     }
     setDownloadStatus(checkChapter)
+}
+
+@BindingAdapter("bindDownloadMaxSequence", "bindDownloadEtCanClear")
+fun EditText.bindDownloadMaxSequence(maxSelectSequence: Int, canClear: Boolean) {
+
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            s?.let {
+                try {
+                    if (!TextUtils.isEmpty(s)) {
+                        val result = s.toString().toInt()
+                        if (result > maxSelectSequence) {
+                            setText(maxSelectSequence.toString())
+                        }
+                        setSelection(s.length)
+                    } else {
+                        if (!canClear) {
+                            setText(R.string.download_1)
+                        }
+                    }
+                } catch (e: Exception) {
+                    if (!canClear) {
+                        setText(R.string.download_1)
+                    }
+                    e.printStackTrace()
+                }
+            }
+        }
+    })
+
 }

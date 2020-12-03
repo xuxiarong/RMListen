@@ -101,7 +101,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                         mDataBind?.let {
                             val dialogBand = mDataBind as HomeDialogHomeAdBinding
                             dialogBand.homeDialogAdClose.setOnClickListener {
-                                BannerJumpUtils.onBannerClick(fragmentActivity,jumpUrl)
+//                                BannerJumpUtils.onBannerClick(fragmentActivity,jumpUrl)
                                 dismiss()
                             }
                         }
