@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
+import com.rm.baselisten.util.SDCardUtils
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.file.DownLoadFileUtils
@@ -273,8 +274,8 @@ fun DownloadStatusView.bindChapterList(
     setDownloadStatus(checkChapter)
 }
 
-@BindingAdapter("bindDownloadMaxSequence", "bindDownloadEtCanClear")
-fun EditText.bindDownloadMaxSequence(maxSelectSequence: Int, canClear: Boolean) {
+@BindingAdapter("bindDownloadMaxSequence")
+fun EditText.bindDownloadMaxSequence(maxSelectSequence: String) {
 
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -288,23 +289,27 @@ fun EditText.bindDownloadMaxSequence(maxSelectSequence: Int, canClear: Boolean) 
                 try {
                     if (!TextUtils.isEmpty(s)) {
                         val result = s.toString().toInt()
-                        if (result > maxSelectSequence) {
-                            setText(maxSelectSequence.toString())
+                        if (result > maxSelectSequence.toInt()) {
+                            setText(maxSelectSequence)
                         }
                         setSelection(s.length)
-                    } else {
-                        if (!canClear) {
-                            setText(R.string.download_1)
-                        }
                     }
                 } catch (e: Exception) {
-                    if (!canClear) {
-                        setText(R.string.download_1)
-                    }
                     e.printStackTrace()
                 }
             }
         }
     })
 
+}
+
+@BindingAdapter("bindDownSelectChapterSize")
+fun TextView.bindDownSelectChapterSize(size: Long) {
+    try {
+        text = String.format(context.getString(R.string.download_audio_size_and_total_size),
+                ConvertUtils.byte2FitMemorySize(size, 1),
+                ConvertUtils.byte2FitMemorySize(SDCardUtils.getExternalAvailableSize(), 1))
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 }

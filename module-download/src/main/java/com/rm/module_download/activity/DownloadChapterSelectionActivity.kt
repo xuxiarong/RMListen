@@ -2,6 +2,7 @@ package com.rm.module_download.activity
 
 import android.content.Context
 import android.content.Intent
+import androidx.databinding.Observable
 import androidx.lifecycle.observe
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
@@ -14,28 +15,39 @@ import com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel
 import kotlinx.android.synthetic.main.download_activity_chapter_selection.*
 
 class DownloadChapterSelectionActivity :
-    BaseVMActivity<DownloadActivityChapterSelectionBinding, DownloadChapterSelectionViewModel>() {
+        BaseVMActivity<DownloadActivityChapterSelectionBinding, DownloadChapterSelectionViewModel>() {
 
 
     companion object {
         private const val EXTRA_AUDIO_ID = "EXTRA_AUDIO_ID"
         fun startActivity(context: Context, downloadAudio: DownloadAudio) {
             context.startActivity(
-                Intent(
-                    context,
-                    DownloadChapterSelectionActivity::class.java
-                ).apply {
-                    putExtra(EXTRA_AUDIO_ID, downloadAudio)
-                })
+                    Intent(
+                            context,
+                            DownloadChapterSelectionActivity::class.java
+                    ).apply {
+                        putExtra(EXTRA_AUDIO_ID, downloadAudio)
+                    })
         }
     }
 
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
-//        mViewModel.audioChapterList.observe(this@DownloadChapterSelectionActivity) {
-//            mViewModel.mAdapter.setList(it)
-//        }
+        mViewModel.audioChapterList.observe(this@DownloadChapterSelectionActivity) {
+            mViewModel.mAdapter.setList(it)
+        }
+
+        mViewModel.startSequence.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                mViewModel.getDialogSelectChapterList()
+            }
+        })
+        mViewModel.endSequence.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                mViewModel.getDialogSelectChapterList()
+            }
+        })
     }
 
     override fun onStart() {
@@ -60,19 +72,6 @@ class DownloadChapterSelectionActivity :
         download_ic_finish.setOnClickListener { finish() }
         download_ic_download.setOnClickListener { DownloadMainActivity.startActivity(this) }
         download_chapter_num.setOnClickListener { DownloadMainActivity.startActivity(this) }
-
-//        download_tv_select_chapters.setOnClickListener {
-//            DownloadSelectChaptersDialog(100).apply {
-//                downloadClick = { start, end ->
-//                    mViewModel.downloadChapterSelection(
-//                        mViewModel.downloadAudio.get()?.audio_id ?: 0L, (start..end).toList()
-//                    )
-//                    dismiss()
-//                }
-//                //TODO 计算内存占用 待实现
-//                calcMemoryUse = { start, end -> (start + end).toString() }
-//            }.show(this)
-//        }
 
     }
 

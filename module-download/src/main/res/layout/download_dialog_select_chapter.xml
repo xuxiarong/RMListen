@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,6 +9,12 @@
             type="com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel" />
 
         <import type="android.text.TextUtils" />
+
+        <import type="com.rm.baselisten.util.SDCardUtils" />
+
+        <import type="com.rm.business_lib.download.DownloadMemoryCache" />
+
+        <import type="com.rm.baselisten.util.ConvertUtils" />
     </data>
 
     <FrameLayout
@@ -50,16 +57,18 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/download_chapter_begin"
+                    android:layout_height="@dimen/dp_33"
+                    android:gravity="center"
                     android:onClick="@{()->viewModel.inputStartSequence()}"
+                    android:paddingEnd="@dimen/dp_5"
+                    android:text="@string/download_chapter_begin"
                     android:textColor="@color/download_text_color_789dcb"
-                    android:textSize="@dimen/business_text_size_12sp" />
+                    android:textSize="@dimen/business_text_size_12sp"
+                    tools:ignore="RtlSymmetry" />
 
                 <EditText
                     android:id="@+id/download_start_et"
-                    bindDownloadEtCanClear="@{false}"
-                    bindDownloadMaxSequence="@{1000}"
+                    bindDownloadMaxSequence="@{viewModel.downloadAudio.last_sequence}"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_33"
                     android:layout_weight="1"
@@ -84,8 +93,7 @@
                     android:textSize="@dimen/business_text_size_16sp" />
 
                 <EditText
-                    bindDownloadEtCanClear="@{true}"
-                    bindDownloadMaxSequence="@{2000}"
+                    bindDownloadMaxSequence="@{viewModel.downloadAudio.last_sequence}"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_33"
                     android:layout_weight="1"
@@ -102,8 +110,10 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/dp_33"
+                    android:gravity="center"
                     android:onClick="@{()->viewModel.inputEndSequence()}"
+                    android:paddingStart="@dimen/dp_5"
                     android:text="@string/download_chapter_end"
                     android:textColor="@color/download_text_color_789dcb"
                     android:textSize="@dimen/business_text_size_12sp" />
@@ -130,9 +140,9 @@
                 android:src="@{!TextUtils.isEmpty(viewModel.startSequence) &amp;&amp; !TextUtils.isEmpty(viewModel.endSequence)?@drawable/business_menu_red_bg:@drawable/business_banner_bg}" />
 
             <TextView
+                bindDownSelectChapterSize="@{viewModel.dialogSelectChapterSize}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/download_audio_size_and_total_size"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_10sp" />
 

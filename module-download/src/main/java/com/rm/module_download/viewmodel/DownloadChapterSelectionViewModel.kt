@@ -1,6 +1,8 @@
 package com.rm.module_download.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableBoolean
@@ -11,7 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.dialog.CommBottomDialog
+import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
@@ -26,7 +28,6 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterAdapterBean
 import com.rm.module_download.repository.DownloadRepository
-import com.tencent.bugly.proguard.s
 import kotlinx.android.synthetic.main.download_dialog_select_chapter.*
 
 class DownloadChapterSelectionViewModel(private val repository: DownloadRepository) :
@@ -43,11 +44,13 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     val refreshModel = SmartRefreshLayoutStatusModel()
 
     //选集下载的逻辑
-    val selectDownChapterList = MutableLiveData<MutableList<DownloadChapter>>()
     var chapterStartSequence = "1"
-    var chapterEndSequence = "1"
-    var startSequence = ObservableField<String>("1")
+    var startSequence = ObservableField<String>("")
     var endSequence = ObservableField<String>("")
+    var lastChangStartIndex = 0
+    var selectDownChapterList = mutableListOf<DownloadChapter>()
+    var lastChangeEndIndex = 0
+    var dialogSelectChapterSize = ObservableLong(0L)
 
     val mAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
@@ -187,31 +190,17 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         return chapterList.toMutableList()
     }
 
-    private fun downloadChapterSelection(sequences: List<Int>) {
-        downloadAudio.get()?.audio_id?.let { audioId ->
-            launchOnIO {
-                repository.downloadChapterSelection(audioId = audioId, sequences = sequences)
-                        .checkResult(
-                                onSuccess = {
-                                    it.list?.let { list ->
-                                        val chapterStatusList = getChapterStatus(list)
-                                        DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
-                                        mAdapter.notifyDataSetChanged()
-                                    }
-//                        audioChapterList.addAll(chapterStatusList)
-                                },
-                                onError = {
-                                    DLog.i("download", "$it")
-                                    showTip("$it", R.color.business_color_ff5e5e)
-                                }
-                        )
-            }
-        }
-    }
 
+    /**
+     * 显示选集下载的dialog
+     */
     fun showChapterSelectDialog(context: Context) {
+        startSequence.set("")
+        endSequence.set("")
         (context as FragmentActivity).let {
-            CommBottomDialog().apply {
+            CommonDragMvDialog().apply {
+                gravity = Gravity.BOTTOM
+                dialogWidthIsMatchParent = true
                 initDialog = {
                     dialog?.setOnShowListener {
                         download_start_et.postDelayed({
@@ -224,7 +213,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                             download_start_et.setSelection(download_start_et.text.length)
                         }, 50)
                         download_dialog_start_select_chapter.setOnClickListener {
-                            startSelectChapter()
+                            startDownSelectChapter()
                             dismiss()
                         }
                     }
@@ -233,18 +222,83 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         }
     }
 
-    private fun startSelectChapter() {
-        var startIndex = 1
-        var endIndex = 1
-        try {
-            startIndex = startSequence.get()?.toInt()?:1
-            endIndex = endSequence.get()?.toInt()?:1
-            startIndex = startIndex.coerceAtMost(endIndex)
-            endIndex = startIndex.coerceAtLeast(endIndex)
-        }catch (e : Exception){
-            e.printStackTrace()
+    /**
+     * 检测该次请求数据是否是合法数据，也就是最后一次输入的起始集数据
+     */
+    private fun checkDialogSelectChapterLegal(list: MutableList<DownloadChapter>) {
+        if (lastChangStartIndex.toString() == startSequence.get() && lastChangeEndIndex.toString() == endSequence.get()
+                || lastChangStartIndex.toString() == endSequence.get() && lastChangeEndIndex.toString() == startSequence.get()) {
+            var chapterSize = 0L
+            selectDownChapterList = list
+            list.forEach {
+                chapterSize += it.size
+            }
+            dialogSelectChapterSize.set(chapterSize)
+        } else {
+            selectDownChapterList.clear()
         }
-        downloadChapterSelection((startIndex..endIndex).toList())
+    }
+
+    /**
+     * 选集下载弹窗的点击事件
+     */
+    private fun startDownSelectChapter() {
+        if (lastChangStartIndex.toString() == startSequence.get() && lastChangeEndIndex.toString() == endSequence.get()
+                || lastChangStartIndex.toString() == endSequence.get() && lastChangeEndIndex.toString() == startSequence.get()) {
+            if (selectDownChapterList.size > 0) {
+                val chapterStatusList = getChapterStatus(selectDownChapterList)
+                DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
+                mAdapter.notifyDataSetChanged()
+            } else {
+                showTip("数据正在加载中，请稍后")
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private fun getDialogStartToEndIndexChapterList(startIndex: Int, endIndex: Int) {
+        lastChangStartIndex = startIndex
+        lastChangeEndIndex = endIndex
+        downloadAudio.get()?.audio_id?.let { audioId ->
+            launchOnIO {
+                repository.downloadChapterSelection(audioId = audioId, sequences = (startIndex..endIndex).toList())
+                        .checkResult(
+                                onSuccess = {
+                                    it.list?.let { list ->
+                                        if (list.size > 0) {
+                                            DLog.i("suolong_download downloadChapterSelection ", "startIndex = $startIndex  endIndex = $endIndex chapterName = ${list[0].chapter_name}  chapterSequences = ${list[0].sequence}")
+                                        }
+                                        checkDialogSelectChapterLegal(list)
+                                    }
+                                },
+                                onError = {
+                                    DLog.i("download", "$it")
+                                    showTip("$it", R.color.business_color_ff5e5e)
+                                }
+                        )
+            }
+        }
+    }
+
+    /**
+     * 校验输入起始集和终止集，正常的话去获取数据
+     */
+    fun getDialogSelectChapterList() {
+        if (!TextUtils.isEmpty(startSequence.get()) && !TextUtils.isEmpty(endSequence.get())) {
+            var startIndex = 1
+            var endIndex = 1
+            try {
+                startIndex = startSequence.get()?.toInt() ?: 1
+                endIndex = endSequence.get()?.toInt() ?: 1
+                startIndex = startIndex.coerceAtMost(endIndex)
+                endIndex = startIndex.coerceAtLeast(endIndex)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            getDialogStartToEndIndexChapterList(startIndex, endIndex)
+        }
     }
 
     fun inputStartSequence() {
@@ -252,6 +306,6 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     }
 
     fun inputEndSequence() {
-        endSequence.set(downloadAudio.get()?.last_sequence ?: chapterEndSequence)
+        endSequence.set(downloadAudio.get()?.last_sequence ?: "1")
     }
 }
