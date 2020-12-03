@@ -34,10 +34,6 @@ class DownloadChapterSelectionActivity :
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
-        mViewModel.audioChapterList.observe(this@DownloadChapterSelectionActivity) {
-            mViewModel.mAdapter.setList(it)
-        }
-
         mViewModel.startSequence.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 mViewModel.getDialogSelectChapterList()

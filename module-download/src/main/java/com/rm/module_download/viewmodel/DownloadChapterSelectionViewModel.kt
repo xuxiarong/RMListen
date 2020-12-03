@@ -33,23 +33,22 @@ import kotlinx.android.synthetic.main.download_dialog_select_chapter.*
 class DownloadChapterSelectionViewModel(private val repository: DownloadRepository) :
         BaseVMViewModel() {
     val data = MutableLiveData<MutableList<DownloadChapterAdapterBean>>()
-    var page = 1
+    private var page = 1
     private val pageSize = 12
     private var total = 0
     var isSelectAll = ObservableBoolean(false)
     var selectChapterNum = ObservableInt(0)
     var selectChapterSize = ObservableLong(0L)
     var downloadAudio = ObservableField<DownloadAudio>()
-    val audioChapterList = MutableLiveData<MutableList<DownloadChapter>>()
     val refreshModel = SmartRefreshLayoutStatusModel()
 
     //选集下载的逻辑
-    var chapterStartSequence = "1"
+    private var chapterStartSequence = "1"
     var startSequence = ObservableField<String>("")
     var endSequence = ObservableField<String>("")
-    var lastChangStartIndex = 0
-    var selectDownChapterList = mutableListOf<DownloadChapter>()
-    var lastChangeEndIndex = 0
+    private var lastChangStartIndex = 0
+    private var selectDownChapterList = mutableListOf<DownloadChapter>()
+    private var lastChangeEndIndex = 0
     var dialogSelectChapterSize = ObservableLong(0L)
 
     val mAdapter by lazy {
@@ -63,34 +62,33 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     }
 
     fun downloadList() {
-        if (audioChapterList.value != null) {
-            val tempDownloadList = mutableListOf<DownloadChapter>()
-            //筛选已选择的章节
-            audioChapterList.value!!.forEach {
-                if (it.chapter_edit_select && it.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
-                    it.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
-                    tempDownloadList.add(it)
-                }
+        val tempDownloadList = mutableListOf<DownloadChapter>()
+        //筛选已选择的章节
+        mAdapter.data.forEach {
+            if (it.chapter_edit_select && it.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
+                it.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+                tempDownloadList.add(it)
             }
-            if (tempDownloadList.size == 0) {
-                ToastUtil.show(
-                        BaseApplication.CONTEXT,
-                        BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist)
-                )
-                return
-            }
-
-            //将音频信息存储
-            downloadAudio.get()?.let {
-                DownloadMemoryCache.addAudioToDownloadMemoryCache(
-                        it
-                )
-            }
-            //存储已选择的下载章节
-            DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
-            //调用下载服务开始下载
-            mAdapter.notifyDataSetChanged()
         }
+        if (tempDownloadList.size == 0) {
+            ToastUtil.show(
+                    BaseApplication.CONTEXT,
+                    BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist)
+            )
+            return
+        }
+
+        //将音频信息存储
+        downloadAudio.get()?.let {
+            DownloadMemoryCache.addAudioToDownloadMemoryCache(
+                    it
+            )
+        }
+        //存储已选择的下载章节
+        DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
+        //调用下载服务开始下载
+        mAdapter.notifyDataSetChanged()
+
     }
 
 
@@ -242,7 +240,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     /**
      * 选集下载弹窗的点击事件
      */
-    private fun startDownSelectChapter() {
+    fun startDownSelectChapter() {
         if (lastChangStartIndex.toString() == startSequence.get() && lastChangeEndIndex.toString() == endSequence.get()
                 || lastChangStartIndex.toString() == endSequence.get() && lastChangeEndIndex.toString() == startSequence.get()) {
             if (selectDownChapterList.size > 0) {
@@ -256,7 +254,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     }
 
     /**
-     *
+     * 获取选集下载的数据
      */
     private fun getDialogStartToEndIndexChapterList(startIndex: Int, endIndex: Int) {
         lastChangStartIndex = startIndex
