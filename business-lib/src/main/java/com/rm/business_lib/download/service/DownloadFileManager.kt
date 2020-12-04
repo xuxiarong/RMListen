@@ -20,6 +20,10 @@ import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils.getParentFile
 import com.rm.business_lib.download.util.TagUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 
 class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
@@ -35,7 +39,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         @JvmStatic
         val INSTANCE: DownloadFileManager by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { DownloadFileManager() }
         var downloadingTask : DownloadTask? = null
-        const val minIntervalMillisCallbackProcess = 800  //回掉间隔毫秒数
+        const val minIntervalMillisCallbackProcess = 1000  //回掉间隔毫秒数
         const val maxParallelRunningCount = 1  //最大并行数
         const val TAG = "DownloadFileManager_suolong"
     }
@@ -73,10 +77,48 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
                 taskList[chapter.path_url] = it
             }.run {
                 downloadingTask = this
-                enqueue(queueListener)
+                GlobalScope.launch(Dispatchers.IO){
+                    DLog.d(TAG,"name = ${chapter.chapter_name}  开始下载")
+                    execute(object : DownloadListener4WithSpeed(){
+                        override fun taskStart(task: DownloadTask) {
+                            DLog.d(TAG,"name = ${chapter.chapter_name}  taskStart")
+                            DownloadMemoryCache.downloadingChapter.set(chapter)
+                        }
+
+                        override fun blockEnd(task: DownloadTask, blockIndex: Int, info: BlockInfo?, blockSpeed: SpeedCalculator) {
+                            DLog.d(TAG,"name = ${chapter.chapter_name}  blockEnd")
+                        }
+
+                        override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, taskSpeed: SpeedCalculator) {
+                            DLog.d(TAG,"name = ${chapter.chapter_name}  taskEnd")
+                            DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
+
+                        }
+
+                        override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
+                            DLog.d(TAG,"name = ${chapter.chapter_name}  progress")
+                        }
+
+                        override fun connectEnd(task: DownloadTask, blockIndex: Int, responseCode: Int, responseHeaderFields: MutableMap<String, MutableList<String>>) {
+                            DLog.d(TAG,"name = ${chapter.chapter_name}  connectEnd")
+                        }
+
+                        override fun connectStart(task: DownloadTask, blockIndex: Int, requestHeaderFields: MutableMap<String, MutableList<String>>) {
+                            DLog.d(TAG,"name = ${chapter.chapter_name}  connectStart")
+                        }
+
+                        override fun infoReady(task: DownloadTask, info: BreakpointInfo, fromBreakpoint: Boolean, model: Listener4SpeedAssistExtend.Listener4SpeedModel) {
+                            DLog.d(TAG,"name = ${chapter.chapter_name}  infoReady")
+                        }
+
+                        override fun progressBlock(task: DownloadTask, blockIndex: Int, currentBlockOffset: Long, blockSpeed: SpeedCalculator) {
+                            DLog.d(TAG,"name = ${chapter.chapter_name}  progressBlock")
+                        }
+                    })
+                }
             }
         }catch (e : Exception){
-
+            DLog.d(TAG,"name = ${chapter.chapter_name}  下载异常: ${e.message?:"异常信息为空"}")
         }
 
     }
@@ -186,10 +228,10 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         info: BlockInfo?,
         blockSpeed: SpeedCalculator
     ) {
-//        DLog.d(
-//            TAG,
-//            " blockEnd name = ${task.filename} --- blockIndex = $blockIndex --- blockSpeed = ${blockSpeed.speed()}"
-//        )
+        DLog.d(
+            TAG,
+            " blockEnd name = ${task.filename} --- blockIndex = $blockIndex --- blockSpeed = ${blockSpeed.speed()}"
+        )
     }
 
     /**
@@ -239,7 +281,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         responseCode: Int,
         responseHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        DLog.d(TAG, " connectEnd name = ${task.filename}")
+        DLog.d(TAG, " connectEnd name = ${task.filename} responseCode = $responseCode")
     }
 
     override fun connectStart(
@@ -266,7 +308,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         currentBlockOffset: Long,
         blockSpeed: SpeedCalculator
     ) {
-//        DLog.d(TAG, " progressBlock name = ${task.filename}")
+        DLog.d(TAG, " progressBlock name = ${task.filename}")
     }
 
 }

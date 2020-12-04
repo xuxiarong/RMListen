@@ -91,9 +91,13 @@
                 android:id="@+id/download_tv_speaker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="140dp"
+                android:lines="1"
+                android:ellipsize="end"
                 android:drawableLeft="@drawable/download_ic_speaker"
                 android:text="@{itemBean.anchor.anchor_name}"
                 android:textColor="@color/business_text_color_666666"
+                tools:text="撒开多久啊手机控雷达数据看了大手大脚快乐"
                 android:textSize="@dimen/business_text_size_12sp" />
 
             <TextView
@@ -103,6 +107,7 @@
                 android:drawableLeft="@drawable/download_ic_book_chapter"
                 android:text="@{String.valueOf(itemBean.last_sequence)}"
                 android:layout_marginLeft="@dimen/dp_12"
+                tools:text="56.78M"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
 
@@ -112,7 +117,9 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_downloaded"
                 android:text="@{String.valueOf(itemBean.download_num)}"
-                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginStart="@dimen/dp_12"
+                android:layout_marginEnd="@dimen/dp_16"
+                tools:text="12345"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
 
