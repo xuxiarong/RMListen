@@ -77,6 +77,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
                 taskList[chapter.path_url] = it
             }.run {
                 downloadingTask = this
+
                 GlobalScope.launch(Dispatchers.IO){
                     DLog.d(TAG,"name = ${chapter.chapter_name}  开始下载")
                     execute(object : DownloadListener4WithSpeed(){
@@ -90,8 +91,27 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
                         }
 
                         override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, taskSpeed: SpeedCalculator) {
-                            DLog.d(TAG,"name = ${chapter.chapter_name}  taskEnd")
-                            DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
+                            when (cause) {
+                                EndCause.COMPLETED -> {
+                                    DLog.d(TAG, "taskEnd name = ${task.filename}下载完成")
+                                    DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
+                                }
+                                EndCause.CANCELED -> { DLog.d(TAG, "taskEnd name = ${task.filename} 下载取消")
+                                    DownloadMemoryCache.pauseDownloadingChapter()
+                                }
+                                EndCause.SAME_TASK_BUSY->{
+                                    DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是 EndCause.SAME_TASK_BUSY ${realCause?.message}")
+                                }
+                                EndCause.FILE_BUSY ->{
+                                    DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是 EndCause.FILE_BUSY ${realCause?.message}")
+                                }
+                                else -> {
+                                    if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+                                        task.enqueue(queueListener)
+                                    }
+                                    DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是${cause.ordinal.toString()} ${realCause?.message}")
+                                }
+                            }
 
                         }
 

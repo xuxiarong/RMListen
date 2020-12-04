@@ -41,7 +41,8 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
+                    android:layout_marginStart="22dp"
+                    android:paddingStart="@dimen/dp_6"
                     android:layout_marginTop="@dimen/dp_14"
                     android:onClick="@{()->viewModel.changeDownloadFinishAll()}"
                     android:text="@string/download_check_all"
@@ -59,7 +60,8 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_100"
+                    android:layout_marginStart="94dp"
+                    android:paddingStart="@dimen/dp_6"
                     android:layout_marginTop="@dimen/dp_14"
                     android:onClick="@{()->viewModel.changeSelectListenFinish()}"
                     android:text="@string/download_delete_listen_finish"

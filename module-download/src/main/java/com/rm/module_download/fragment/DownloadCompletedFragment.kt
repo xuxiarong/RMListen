@@ -26,6 +26,7 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
         mViewModel.downloadAudioList.observe(this, Observer {
             if(it.size>0){
                 showData()
+                it.reverse()
                 mViewModel.downloadFinishAdapter.setList(it)
             }else{
                 showEmpty()

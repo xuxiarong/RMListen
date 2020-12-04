@@ -24,21 +24,21 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
     val downloadingAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
-            this,
-            mutableListOf(),
-            R.layout.download_item_in_progress,
-            BR.viewModel,
-            BR.itemBean
+                this,
+                mutableListOf(),
+                R.layout.download_item_in_progress,
+                BR.viewModel,
+                BR.itemBean
         )
     }
 
     val downloadFinishAdapter by lazy {
         CommonBindVMAdapter<DownloadAudio>(
-            this,
-            mutableListOf(),
-            R.layout.download_item_download_completed,
-            BR.viewModel,
-            BR.itemBean
+                this,
+                mutableListOf(),
+                R.layout.download_item_download_completed,
+                BR.viewModel,
+                BR.itemBean
         )
     }
 
@@ -56,15 +56,15 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
     var downloadAudioList = DownloadMemoryCache.downloadingAudioList
 
-    fun operatingAll(){
+    fun operatingAll() {
         DownloadMemoryCache.operatingAll()
     }
 
 
     fun getDownloadFromDao() {
-        if(downloadAudioList.value == null){
+        if (downloadAudioList.value == null) {
             DownloadMemoryCache.getDownAudioOnAppCreate()
-        }else{
+        } else {
             val tempList = downloadAudioList.value!!
             tempList.forEach {
                 it.edit_select = false
@@ -74,25 +74,25 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     }
 
     fun editDownloading() {
-        if(downloadingAdapter.data.isEmpty()){
+        if (downloadingAdapter.data.isEmpty()) {
             return
         }
         if (downloadingEdit.get()) {
             DownloadMemoryCache.resumeDownloadingChapter()
-        }else{
+        } else {
             DownloadMemoryCache.pauseDownloadingChapter()
         }
         downloadingEdit.set(downloadingEdit.get().not())
     }
 
     fun editDownloadFinish() {
-        if(downloadFinishAdapter.data.isEmpty()){
+        if (downloadFinishAdapter.data.isEmpty()) {
             return
         }
-        if(!downloadFinishEdit.get()){
+        if (!downloadFinishEdit.get()) {
             downloadFinishSelectAll.set(false)
             downloadFinishDeleteListenFinish.set(false)
-        }else{
+        } else {
             downloadFinishAdapter.data.forEach {
                 it.edit_select = false
             }
@@ -155,56 +155,77 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
 
     fun changeDownloadFinishAll() {
-        if(downloadFinishSelectAll.get()){
-            return
-        }
         val selectAll = downloadFinishSelectAll.get().not()
         downloadFinishSelectAll.set(selectAll)
-        if(selectAll){
-            downloadFinishSelectNum.set(0)
-            downloadFinishDeleteListenFinish.set(false)
-        }
+        var selectNum = 0
+        downloadFinishDeleteListenFinish.set(false)
+
         downloadFinishAdapter.data.forEach {
             if (selectAll) {
-                downloadFinishSelectNum.set(downloadFinishSelectNum.get() + 1)
+                selectNum += 1
                 it.edit_select = true
+            } else {
+                it.edit_select = false
             }
         }
+        downloadFinishSelectNum.set(selectNum)
         downloadFinishAdapter.notifyDataSetChanged()
     }
 
     fun changeDownloadFinishSelect(audio: DownloadAudio) {
         audio.edit_select = audio.edit_select.not()
+        //该次Item是选中事件
         if (audio.edit_select) {
+            //先设置选中数量+1
             downloadFinishSelectNum.set(downloadFinishSelectNum.get() + 1)
+            //如果选中数量等于了列表的长度，则说明全选了
+            if(downloadFinishSelectNum.get() == downloadFinishAdapter.data.size){
+                downloadFinishSelectAll.set(true)
+                downloadFinishDeleteListenFinish.set(false)
+                return
+            }
+            //检测是否所有选中的都是已听完
+            if(audio.listen_finish && !downloadFinishDeleteListenFinish.get()){
+                downloadFinishAdapter.data.forEach {
+                    //只要有一个已听完的书籍没被选择，则跳出for循环，说明该次选中至少有一个已听完的没被选择
+                    if(it.listen_finish && !it.edit_select){
+                        return
+                    }else if(!it.listen_finish && it.edit_select){
+                        return
+                    }
+                }
+            }
+            downloadFinishDeleteListenFinish.set(true)
         } else {
+            if(downloadFinishSelectAll.get()){
+                downloadFinishSelectAll.set(false)
+            }
+            if(downloadFinishDeleteListenFinish.get() && audio.listen_finish){
+                downloadFinishDeleteListenFinish.set(false)
+            }
             downloadFinishSelectNum.set(downloadFinishSelectNum.get() - 1)
         }
     }
 
     fun changeSelectListenFinish() {
-        if(downloadFinishDeleteListenFinish.get()){
-            return
-        }
-
-        if(!downloadFinishDeleteListenFinish.get()){
-            downloadFinishSelectAll.set(false)
-            downloadFinishSelectNum.set(0)
-            downloadFinishAdapter.data.forEach {
-                if(it.listen_finish){
-                    it.edit_select = true
-                    downloadFinishSelectNum.set(downloadFinishSelectNum.get() + 1)
-                }else{
-                    it.edit_select = false
-                }
+        val selectListenFinish = downloadFinishDeleteListenFinish.get().not()
+        downloadFinishDeleteListenFinish.set(selectListenFinish)
+        var selectNum = 0
+        downloadFinishSelectAll.set(false)
+        downloadFinishAdapter.data.forEach {
+            if (selectListenFinish && it.listen_finish) {
+                it.edit_select = true
+                selectNum+=1
+            } else {
+                it.edit_select = false
             }
-            downloadFinishAdapter.notifyDataSetChanged()
         }
-        downloadFinishDeleteListenFinish.set(downloadFinishDeleteListenFinish.get().not())
+        downloadFinishSelectNum.set(selectNum)
+        downloadFinishAdapter.notifyDataSetChanged()
     }
 
-    fun selectFinishDelete(){
-        if(!downloadFinishDeleteListenFinish.get()){
+    fun selectFinishDelete() {
+        if (!downloadFinishDeleteListenFinish.get()) {
             downloadFinishDeleteListenFinish.set(true)
             downloadFinishSelectAll.set(false)
         }
@@ -215,8 +236,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             changeDownloadFinishSelect(audio = audio)
             downloadFinishAdapter.notifyDataSetChanged()
         } else {
-//            homeService.toDetailActivity(context, audio.audio_id.toString())
-            DownloadBookDetailActivity.startActivity(context,audio = audio)
+            DownloadBookDetailActivity.startActivity(context, audio = audio)
         }
     }
 
