@@ -57,6 +57,13 @@ interface MineApiService {
     suspend fun uploadAvatar(@Part body: MultipartBody.Part): BaseResponse<MineUploadPic>
 
     /**
+     * 文件上传
+     */
+    @Multipart
+    @POST("file/upload/common")
+    suspend fun uploadCommon(@Part body: MultipartBody.Part): BaseResponse<MineUploadPic>
+
+    /**
      * 用户/主播详情
      */
     @GET("member/detail")
@@ -191,10 +198,11 @@ interface MineApiService {
      */
     @POST("member/feedback")
     suspend fun mineFeedback(
-        @Field("feedback_type") feedback_type: String,
+        @Field("feedback_type") feedback_type: Int,
         @Field("content") content: String,
         @Field("img_list") img_list: Array<String>,
-        @Field("contact") contact: String
+        @Field("contact") contact: String,
+        @Field("device_id") device_id: String
     ): BaseResponse<Any>
 
 

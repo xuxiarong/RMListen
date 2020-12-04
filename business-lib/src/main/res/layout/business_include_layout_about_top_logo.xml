@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/business_include_logo_lay"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="@dimen/dp_15"
+        android:layout_height="@dimen/dp_50"
+        android:background="@drawable/business_shape_top_bottom_round" />
+
+    <View
+        android:layout_width="@dimen/dp_15"
+        android:layout_height="@dimen/dp_75"
+        android:layout_marginStart="@dimen/dp_15"
+        android:background="@drawable/business_shape_top_bottom_round" />
+
+    <View
+        android:layout_width="@dimen/dp_15"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginStart="@dimen/dp_15"
+        android:background="@drawable/business_shape_top_bottom_round" />
+</LinearLayout>

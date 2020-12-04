@@ -39,4 +39,6 @@ public @interface ShareContentType {
      * Share File
      */
     final String FILE = "*/*";
+
+    String HTML = "text/html";
 }

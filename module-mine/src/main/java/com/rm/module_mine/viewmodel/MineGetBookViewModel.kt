@@ -60,8 +60,7 @@ class MineGetBookViewModel(private val repository: MineRepository) : BaseVMViewM
                 bookName.get()!!,
                 author,
                 member,
-                contact,
-                DeviceUtils.uniqueDeviceId
+                contact
             ).checkResult(
                 onSuccess = {
                     showTip("提交成功")

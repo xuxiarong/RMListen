@@ -137,5 +137,11 @@
     <string name="mine_feedback_hint_content_tips">请尽量详细，方便我们快速定位解决</string>
     <string name="mine_feedback_hint_contact_tips">请输入您的手机号/邮箱/微信</string>
     <string name="mine_feedback_txt">图片(4/5)</string>
+    <string name="mine_update_version">版本更新</string>
+    <string name="mine_cooperation">业务合作</string>
+    <string name="mine_web_address">官网地址</string>
+    <string name="mine_user_pact">《用户协议》</string>
+    <string name="mine_private_pact">《个人信息保护及隐私政策协议》</string>
+    <string name="mine_lm_name">深圳雷漫网络科技</string>
 
 </resources>

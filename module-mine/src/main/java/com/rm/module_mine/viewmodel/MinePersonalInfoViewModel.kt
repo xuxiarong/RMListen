@@ -20,7 +20,7 @@ import com.rm.module_mine.activity.MineSettingPersonalSignatureActivity
 import com.rm.module_mine.bean.UpdateUserInfoBean
 import com.rm.module_mine.databinding.MineDialogBottomSelectBirthdayBinding
 import com.rm.module_mine.repository.MineRepository
-import com.rm.module_mine.util.CommentTakePhotoHelp
+import com.rm.module_mine.util.CommonTakePhotoHelp
 
 
 /**
@@ -117,7 +117,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      */
     fun clickAvatar(view: View) {
         getActivity(view.context)?.let {
-            CommentTakePhotoHelp(it, true).showTakePhoto()
+            CommonTakePhotoHelp(activity = it, isCropPic = true).showTakePhoto()
         }
     }
 

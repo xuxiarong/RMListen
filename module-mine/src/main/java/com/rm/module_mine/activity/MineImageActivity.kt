@@ -3,12 +3,9 @@ package com.rm.module_mine.activity
 import android.content.Context
 import android.content.Intent
 import com.rm.baselisten.binding.bindUrl
-import com.rm.baselisten.model.BaseTitleModel
-import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.component_comm.activity.ComponentShowPlayActivity
-import com.rm.module_mine.BR
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.module_mine.R
-import com.rm.module_mine.databinding.MineActivityImageBinding
+import kotlinx.android.synthetic.main.mine_activity_image.*
 
 /**
  *
@@ -17,7 +14,7 @@ import com.rm.module_mine.databinding.MineActivityImageBinding
  * @description 图片查看
  *
  */
-class MineImageActivity : ComponentShowPlayActivity<MineActivityImageBinding, BaseVMViewModel>() {
+class MineImageActivity : BaseActivity() {
     companion object {
         const val IMAGE_URL = "imageUrl"
         fun startActivity(context: Context, imageUrl: String) {
@@ -32,20 +29,12 @@ class MineImageActivity : ComponentShowPlayActivity<MineActivityImageBinding, Ba
 
     override fun getLayoutId() = R.layout.mine_activity_image
 
-    override fun initModelBrId() = BR.viewModel
-
-    override fun startObserve() {
-    }
 
     override fun initData() {
-//        val titleModel = BaseTitleModel()
-//            .setLeftIcon(R.drawable.business_icon_return_bc)
-//            .setLeftIcon1Click { finish() }
-//
-//        mViewModel.baseTitleModel.value = titleModel
+        setTransparentStatusBar()
         intent.getStringExtra(IMAGE_URL)?.let {
-            mDataBind.mineImage.bindUrl(bindUrl = it)
+            mine_image.bindUrl(bindUrl = it)
         }
-        mDataBind.mineImage.setOnClickListener { finish() }
+        mine_image.setOnClickListener { finish() }
     }
 }

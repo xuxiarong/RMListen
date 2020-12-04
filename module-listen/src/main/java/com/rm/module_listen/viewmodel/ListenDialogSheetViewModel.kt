@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -98,8 +99,8 @@ class ListenDialogSheetViewModel(
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {
-                    processFailData()
+                onError = { msg ->
+                    processFailData(msg)
                 }
             )
         }
@@ -153,12 +154,13 @@ class ListenDialogSheetViewModel(
     /**
      * 处理失败数据
      */
-    private fun processFailData() {
+    private fun processFailData(msg: String?) {
         if (page == 1) {
             refreshStateModel.finishRefresh(false)
         } else {
             refreshStateModel.finishLoadMore(false)
         }
+        showTip(msg = "$msg", color = R.color.business_color_ff5e5e)
     }
 
     /**

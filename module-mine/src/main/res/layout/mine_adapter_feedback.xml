@@ -26,6 +26,8 @@
             isVisible="@{!TextUtils.isEmpty(feedbackItem.path)}"
             android:layout_width="@dimen/dp_62"
             android:layout_height="@dimen/dp_62"
+            android:scaleType="fitXY"
+            android:onClick="@{()->feedbackViewModel.clickImage(context,feedbackItem)}"
             android:src="@color/business_color_ffba56"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +37,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="@dimen/dp_22"
             android:layout_height="@dimen/dp_22"
+            android:onClick="@{()->feedbackViewModel.clickDeleteImg(feedbackItem)}"
             android:src="@drawable/business_icon_del_da"
             isVisible="@{!TextUtils.isEmpty(feedbackItem.path)}"
             app:layout_constraintEnd_toEndOf="parent"

@@ -21,7 +21,8 @@ import java.io.File
  * @description
  *
  */
-class MineCropActivity : BaseActivity(), CropImageView.OnBitmapSaveCompleteListener {
+class MineCropActivity() :
+    BaseActivity(), CropImageView.OnBitmapSaveCompleteListener {
     private var mBitmap: Bitmap? = null
     private var mIsSaveRectangle = false
 
@@ -30,7 +31,7 @@ class MineCropActivity : BaseActivity(), CropImageView.OnBitmapSaveCompleteListe
         const val RESULT_CODE_CROP = 500
 
         fun startActivityForResult(activity: Activity, filePath: String, code: Int) {
-            val intent = Intent(activity,MineCropActivity::class.java)
+            val intent = Intent(activity, MineCropActivity::class.java)
             intent.putExtra(FILE_PATH, filePath)
             activity.startActivityForResult(intent, code)
         }

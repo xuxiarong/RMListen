@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.HomeGlobalData
 import com.rm.component_comm.activity.ComponentShowPlayActivity
+import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_main.BR
 import com.rm.module_main.R
 import com.rm.module_main.adapter.MyViewPagerAdapter
@@ -20,7 +22,8 @@ import kotlinx.android.synthetic.main.main_activity_main.*
  * date   : 2020/08/12
  * version: 1.0
  */
-class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, HomeMainViewModel>() {
+class MainMainActivity :
+    ComponentShowPlayActivity<MainActivityMainBindingImpl, HomeMainViewModel>() {
 
     private lateinit var navigationController: NavigationController
 
@@ -108,11 +111,12 @@ class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, 
             })
         }.build()
         navigationController.addPlaceholder(2)
-        view_pager.adapter = MyViewPagerAdapter(supportFragmentManager, navigationController.itemCount)
+        view_pager.adapter =
+            MyViewPagerAdapter(supportFragmentManager, navigationController.itemCount)
         view_pager.offscreenPageLimit = 4
         navigationController.setupWithViewPager(view_pager)
 
-        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -130,13 +134,17 @@ class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, 
                 HomeGlobalData.homeGlobalSelectTab.set(position)
             }
         })
-
+        if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
+            val data = intent.data
+            BannerJumpUtils.onBannerClick(context = this, url = data.toString())
+            DLog.i("------>", "data:${data.toString()}")
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if(view_pager.currentItem!= currentTab){
-            view_pager.setCurrentItem(currentTab,false)
+        if (view_pager.currentItem != currentTab) {
+            view_pager.setCurrentItem(currentTab, false)
         }
     }
 
@@ -144,17 +152,17 @@ class MainMainActivity : ComponentShowPlayActivity<MainActivityMainBindingImpl, 
 
     }
 
-    companion object{
+    companion object {
 
         var currentTab = 0
 
-        fun startMainActivity(context: Context,selectTab : Int = 0){
+        fun startMainActivity(context: Context, selectTab: Int = 0) {
             //如果context 已经是MainMainActivity，而且想跳转tab等于当前tab则不需要跳转了
-            if(context is MainMainActivity && selectTab == currentTab){
+            if (context is MainMainActivity && selectTab == currentTab) {
                 return
             }
             currentTab = selectTab
-            context.startActivity(Intent(context,MainMainActivity::class.java))
+            context.startActivity(Intent(context, MainMainActivity::class.java))
         }
     }
 

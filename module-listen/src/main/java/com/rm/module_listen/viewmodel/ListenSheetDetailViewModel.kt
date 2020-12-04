@@ -10,6 +10,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -48,7 +49,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
     //当前请求数据的页码
     private var mPage = 1
 
-    private lateinit var sheetId: String
+    var sheetId: String = ""
 
     //是否显示没数据
     val showNoData = ObservableField<Boolean>(false)
@@ -64,8 +65,8 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
      */
     fun refreshData() {
         mPage = 1
-        refreshStateModel.setNoHasMore(false)
-        getSheetInfo(sheetId)
+        refreshStateModel.setResetNoMoreData(true)
+        getAudioList()
     }
 
     /**
@@ -78,32 +79,14 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
     /**
      * 获取听单列表
      */
-    fun getSheetInfo(sheetId: String) {
-        this.sheetId = sheetId
+    fun getSheetInfo() {
         showLoading()
         launchOnIO {
             repository.getSheetInfo(sheetId).checkResult(
                 onSuccess = {
                     showContentView()
                     audioNum.set(it.num_audio)
-
                     data.set(it)
-                    //刷新完成
-                    refreshStateModel.finishRefresh(true)
-                    //设置新数据源
-
-                    if (it.audio_list?.list?.size ?: 0 > 0) {
-                        mAdapter.setList(it.audio_list?.list)
-                        showNoData.set(false)
-                    } else {
-                        showNoData.set(true)
-                    }
-                    //是否有更多数据
-                    if (mAdapter.data.size >= it.audio_list?.total ?: 0 && it.audio_list?.list?.size ?: 0 < pageSize) {
-                        refreshStateModel.setNoHasMore(true)
-                    } else {
-                        ++mPage
-                    }
                 },
 
                 onError = {
@@ -118,25 +101,45 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
     /**
      * 获取音频列表
      */
-    private fun getAudioList() {
+    fun getAudioList() {
         launchOnIO {
-            repository.getAudioList(mPage, pageSize,sheetId).checkResult(
+            repository.getAudioList(mPage, pageSize, sheetId).checkResult(
                 onSuccess = {
-                    refreshStateModel.finishLoadMore(true)
-                    it.list?.let { audioList ->
-                        mAdapter.addData(audioList)
-                    }
-                    if (mAdapter.data.size >= it.total && it.list?.size ?: 0 < pageSize) {
-                        refreshStateModel.setNoHasMore(true)
-                    } else {
-                        ++mPage
-                    }
+                    processAudioList(it)
                 },
                 onError = {
-                    refreshStateModel.finishLoadMore(false)
-                    showTip("$it", R.color.business_color_ff5e5e)
+                    if (mPage == 1) {
+                        refreshStateModel.finishRefresh(false)
+                    } else {
+                        refreshStateModel.finishLoadMore(false)
+                    }
                 })
         }
+    }
+
+    private fun processAudioList(bean: AudioListBean) {
+        if (mPage == 1) {
+            //刷新完成
+            refreshStateModel.finishRefresh(true)
+            if (bean.list?.size ?: 0 > 0) {
+                mAdapter.setList(bean.list)
+                showNoData.set(false)
+            } else {
+                showNoData.set(true)
+            }
+
+        } else {
+            refreshStateModel.finishLoadMore(true)
+            bean.list?.let { audioList ->
+                mAdapter.addData(audioList)
+            }
+        }
+        if (mAdapter.data.size >= bean.total || bean.list?.size ?: 0 < pageSize) {
+            refreshStateModel.setNoHasMore(true)
+        } else {
+            ++mPage
+        }
+
     }
 
     private fun deleteSheet() {
@@ -164,7 +167,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                 titleText = context.String(R.string.business_tips)
                 contentText = "确认删除该听单？"
                 leftBtnText = "再想想"
-                rightBtnText ="删除"
+                rightBtnText = "删除"
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
                     dismiss()

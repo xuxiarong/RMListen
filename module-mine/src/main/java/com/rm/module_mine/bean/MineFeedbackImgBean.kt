@@ -8,5 +8,5 @@ package com.rm.module_mine.bean
  *
  */
 data class MineFeedbackImgBean(
-    val path: String?
+    var path: String?
 )

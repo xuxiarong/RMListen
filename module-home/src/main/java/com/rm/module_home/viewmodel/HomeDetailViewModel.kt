@@ -1,9 +1,13 @@
 package com.rm.module_home.viewmodel
 
+import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -911,7 +915,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 .setTextContent("http://www.baidu.com")
                 .build()
                 .shareBySystem()
-
         }
     }
 

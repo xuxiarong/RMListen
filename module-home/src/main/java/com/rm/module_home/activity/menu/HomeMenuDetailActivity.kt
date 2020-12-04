@@ -63,8 +63,8 @@ class HomeMenuDetailActivity :
     }
 
     override fun initData() {
-        mViewModel.showLoading()
         mViewModel.getData()
+        mViewModel.getAudioList()
     }
 
     private fun createHeader() {

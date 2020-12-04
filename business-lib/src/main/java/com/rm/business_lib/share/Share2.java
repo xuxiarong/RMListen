@@ -151,6 +151,9 @@ public class Share2 {
                     }
                 }
                 break;
+            case ShareContentType.HTML:
+
+                break;
             default:
                 Log.e(TAG, contentType + " is not support share type.");
                 shareIntent = null;

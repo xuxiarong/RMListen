@@ -76,7 +76,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
                     onSuccess = {
                         successData(it)
                     },
-                    onError = { msg ->
+                    onError = {msg ->
                         failData(msg)
                     }
                 )

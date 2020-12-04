@@ -20,11 +20,13 @@ import com.rm.module_mine.util.GlideEngine
  * @description
  *
  */
-class MineCommentTakPhotoViewModel(val activity: FragmentActivity, val isCropPic: Boolean) :
-    BaseVMViewModel() {
-
+class MineCommonTakPhotoViewModel(
+    val activity: FragmentActivity,
+    val isCropPic: Boolean,
+    val onSuccess: (String) -> Unit?,
+    val onFailure: (String) -> Unit?
+) : BaseVMViewModel() {
     val imageDialog by lazy { CommBottomDialog() }
-
 
     /**
      * 相机
@@ -43,13 +45,18 @@ class MineCommentTakPhotoViewModel(val activity: FragmentActivity, val isCropPic
                 override fun onResult(result: MutableList<LocalMedia>?) {
                     //返回结果
                     result?.let {
-                        cropPic(it[0].androidQToPath)
+                        if (isCropPic) {
+                            cropPic(it[0].androidQToPath)
+                        } else {
+                            onSuccess(it[0].androidQToPath)
+                        }
                     }
                 }
 
                 override fun onCancel() {
                     //取消
                     DLog.i("---->拍照", "取消")
+                    onFailure("拍照取消")
                 }
             }
         )
@@ -74,8 +81,8 @@ class MineCommentTakPhotoViewModel(val activity: FragmentActivity, val isCropPic
                     result?.let {
                         if (isCropPic) {
                             cropPic(it[0].androidQToPath)
-                        }else{
-
+                        } else {
+                            onSuccess(it[0].androidQToPath)
                         }
                     }
                 }
@@ -83,6 +90,7 @@ class MineCommentTakPhotoViewModel(val activity: FragmentActivity, val isCropPic
                 override fun onCancel() {
                     //取消
                     DLog.i("---->相册", "取消")
+                    onFailure("相册取消")
                 }
             }
         )

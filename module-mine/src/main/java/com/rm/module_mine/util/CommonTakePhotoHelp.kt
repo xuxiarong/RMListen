@@ -3,7 +3,7 @@ package com.rm.module_mine.util
 import androidx.fragment.app.FragmentActivity
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
-import com.rm.module_mine.viewmodel.MineCommentTakPhotoViewModel
+import com.rm.module_mine.viewmodel.MineCommonTakPhotoViewModel
 
 /**
  *
@@ -12,10 +12,14 @@ import com.rm.module_mine.viewmodel.MineCommentTakPhotoViewModel
  * @description
  *
  */
-class CommentTakePhotoHelp(val activity: FragmentActivity,isCropPic:Boolean) {
-
+class CommonTakePhotoHelp @JvmOverloads constructor(
+    val activity: FragmentActivity,
+    isCropPic: Boolean = false,
+    onSuccess: (String) -> Unit? = {},
+    onFailure: (String) -> Unit? = {}
+) {
     private val mViewModel by lazy {
-        MineCommentTakPhotoViewModel(activity,isCropPic)
+        MineCommonTakPhotoViewModel(activity, isCropPic, onSuccess, onFailure)
     }
 
     fun showTakePhoto() {

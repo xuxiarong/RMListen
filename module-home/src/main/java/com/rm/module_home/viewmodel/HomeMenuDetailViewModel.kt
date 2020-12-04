@@ -3,18 +3,16 @@ package com.rm.module_home.viewmodel
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
-import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_FAVORITES
 import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
+import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetDetailInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
@@ -29,7 +27,6 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity.Companion.SHEET_ID
-import com.rm.module_home.databinding.HomeHeaderMenuDetailBinding
 import com.rm.module_home.repository.HomeRepository
 
 class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMViewModel() {
@@ -128,8 +125,8 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
      */
     fun refreshData() {
         mPage = 1
-        refreshStatusModel.setNoHasMore(false)
-        getData()
+        refreshStatusModel.setResetNoMoreData(true)
+       getAudioList()
     }
 
     /**
@@ -156,26 +153,12 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                 .checkResult(
                     onSuccess = {
                         showContentView()
-
                         setFavorState(it.favor == 1)
-
                         data.set(it)
-
-                        //刷新完成
-                        refreshStatusModel.finishRefresh(true)
-                        if (it.audio_list?.list?.size ?: 0 > 0) {
-                            mAdapter.setList(it.audio_list?.list)
-                            showNoData.set(false)
-                        } else {
-                            showNoData.set(true)
-                        }
-                        //是否有更多数据
-                        ++mPage
-                        refreshStatusModel.setNoHasMore(it.audio_list?.list?.size ?: 0 < pageSize)
                     },
                     onError = {
                         showServiceError()
-                        refreshStatusModel.finishRefresh(false)
+                        showTip("$it", R.color.business_color_ff5e5e)
                     }
                 )
         }
@@ -184,27 +167,46 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     /**
      * 获取听单音频列表
      */
-    private fun getAudioList() {
+    fun getAudioList() {
         launchOnIO {
             repository.getAudioList(sheetId.get() ?: "", mPage, pageSize)
                 .checkResult(
                     onSuccess = {
-                        showContentView()
-                        //加载更多完成
-                        it.list?.let { list -> mAdapter.addData(list) }
-                        refreshStatusModel.finishLoadMore(true)
-                        //是否有更多数据
-                        if (it.list?.size ?: 0 < pageSize || mAdapter.data.size >= it.total) {
-                            refreshStatusModel.setNoHasMore(true)
-                        } else {
-                            ++mPage
-                        }
+                        processAudioList(it)
                     },
                     onError = {
-                        showTip("$it", R.color.business_color_ff5e5e)
-                        refreshStatusModel.finishLoadMore(false)
+                        if (mPage==1){
+                            refreshStatusModel.finishRefresh(false)
+                        }else{
+                            refreshStatusModel.finishLoadMore(false)
+                        }
                     }
                 )
+        }
+    }
+
+    private fun processAudioList(bean: AudioListBean) {
+        showContentView()
+        if (mPage == 1) {
+            //刷新完成
+            refreshStatusModel.finishRefresh(true)
+            if (bean.list?.size ?: 0 > 0) {
+                mAdapter.setList(bean.list)
+                showNoData.set(false)
+            } else {
+                showNoData.set(true)
+            }
+        } else {
+            refreshStatusModel.finishLoadMore(true)
+            //加载更多完成
+            bean.list?.let { list -> mAdapter.addData(list) }
+        }
+
+        //是否有更多数据
+        if (bean.list?.size ?: 0 < pageSize || mAdapter.data.size >= bean.total) {
+            refreshStatusModel.setNoHasMore(true)
+        } else {
+            ++mPage
         }
     }
 

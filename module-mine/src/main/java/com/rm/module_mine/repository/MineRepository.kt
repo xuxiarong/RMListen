@@ -3,6 +3,7 @@ package com.rm.module_mine.repository
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.LoginUserBean
+import com.rm.business_lib.utils.DeviceUtils
 import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.bean.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -117,8 +118,7 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         book_name: String,
         author: String,
         anchor_name: String,
-        contact: String,
-        device_id: String
+        contact: String
     ): BaseResult<Any> {
         return apiCall {
             service.mineRequestBook(
@@ -126,7 +126,7 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
                 author,
                 anchor_name,
                 contact,
-                device_id
+                DeviceUtils.uniqueDeviceId
             )
         }
     }
@@ -146,6 +146,26 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
     }
 
     /**
+     * 问题反馈
+     */
+    suspend fun mineFeedback(
+        feedback_type: Int,
+        content: String,
+        img_list: Array<String>,
+        contact: String
+    ): BaseResult<Any> {
+        return apiCall {
+            service.mineFeedback(
+                feedback_type,
+                content,
+                img_list,
+                contact,
+                DeviceUtils.uniqueDeviceId
+            )
+        }
+    }
+
+    /**
      * 上传头像
      * @param filePath Int
      */
@@ -159,6 +179,22 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
             .build()
 
         return apiCall { service.uploadAvatar(request.parts[0]) }
+    }
+
+    /**
+     * 上传文件
+     * @param filePath Int
+     */
+    suspend fun uploadCommon(
+        filePath: String
+    ): BaseResult<MineUploadPic> {
+        val file = File(filePath)
+        val img = file.asRequestBody("image/png".toMediaType())
+        val request = MultipartBody.Builder()
+            .addFormDataPart("file", filePath, img)
+            .build()
+
+        return apiCall { service.uploadCommon(request.parts[0]) }
     }
 
 }

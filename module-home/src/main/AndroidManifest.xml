@@ -21,16 +21,6 @@
         <activity
             android:name=".activity.detail.HomeDetailActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="home_detail"
-                    android:scheme="com.rm.listen" />
-            </intent-filter>
         </activity> <!-- 专题列表 -->
         <activity
             android:name=".activity.topic.HomeTopicListActivity"

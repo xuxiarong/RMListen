@@ -9,7 +9,6 @@ import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.utilExt.getStateHeight
-import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -109,8 +108,9 @@ class ListenMySheetDetailActivity :
 
     override fun initData() {
         mSheetId?.let {
-            mViewModel.showLoading()
-            mViewModel.getSheetInfo(it)
+            mViewModel.sheetId = it
+            mViewModel.getSheetInfo()
+            mViewModel.getAudioList()
         }
     }
 

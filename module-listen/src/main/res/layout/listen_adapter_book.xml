@@ -111,7 +111,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_book_adapter_author"
                 style="@style/BusinessTextStyleThird_4"
-                bindText="@{item.author}"
+                bindText="@{item.anchor_name}"
                 app:layout_constraintBottom_toBottomOf="@id/listen_book_adapter_icon"
                 app:layout_constraintLeft_toLeftOf="@id/listen_book_adapter_name"
                 tools:text="楼芸蓓" />

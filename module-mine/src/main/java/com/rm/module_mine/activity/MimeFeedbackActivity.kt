@@ -42,19 +42,5 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
     override fun initData() {
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        DLog.i("----->onActivityResult", "requestCode:$requestCode   resultCode:$resultCode ")
-        if (requestCode == 100) {
-            when (resultCode) {
-                MineCropActivity.RESULT_CODE_CROP -> {
-                    data?.getStringExtra(MineCropActivity.FILE_PATH)?.let {
-                        DLog.i("----->onActivityResult", "CROP $it")
-                        mViewModel.addImageView(it)
-                    }
-                }
-            }
-        }
-    }
 
 }

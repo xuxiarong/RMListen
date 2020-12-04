@@ -3,6 +3,7 @@ package com.rm.module_mine.viewmodel
 import android.content.Context
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
@@ -30,5 +31,9 @@ class MineAboutViewModel : BaseVMViewModel() {
             RouterHelper.createRouter(LoginService::class.java)
                 .quicklyLogin(this, it)
         }
+    }
+
+    fun clickCooperation(context: Context) {
+        BaseWebActivity.startBaseWebActivity(context, "http://www.baidu.com")
     }
 }

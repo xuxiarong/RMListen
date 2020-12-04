@@ -10,6 +10,7 @@ import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
@@ -83,11 +84,6 @@ class HomeDetailActivity :
             topMargin = getStateHeight(this@HomeDetailActivity)
         }
 
-//        if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
-//            val data = intent.data
-//            data?.getQueryParameter("audioId")
-//        }
-//com.rm.listen.home://home_detail?audioId="123445667"
         intent?.getStringExtra(AUDIO_ID)?.let {
             mViewModel.audioId.set(it)
             mViewModel.intDetailInfo(it)

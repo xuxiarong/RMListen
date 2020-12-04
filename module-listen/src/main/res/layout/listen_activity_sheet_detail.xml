@@ -79,6 +79,7 @@
             bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.loadData}"
             bindOnRefreshListener="@{viewModel.refreshData}"
+            bindResetNoMoreData="@{viewModel.refreshStateModel.resetNoMoreData}"
             isVisible="@{!viewModel.showNoData}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
