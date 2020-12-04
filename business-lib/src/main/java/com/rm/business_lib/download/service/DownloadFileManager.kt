@@ -1,6 +1,5 @@
 package com.rm.business_lib.download.service
 
-import android.util.ArrayMap
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.OkDownload
 import com.liulishuo.okdownload.SpeedCalculator
@@ -13,6 +12,7 @@ import com.liulishuo.okdownload.core.listener.DownloadListener4WithSpeed
 import com.liulishuo.okdownload.core.listener.assist.Listener4SpeedAssistExtend
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.NetWorkUtils
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadChapter
@@ -24,7 +24,8 @@ import java.io.File
 
 class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
 
-    private val taskList = ArrayMap<String, DownloadTask>()
+    private val taskList = HashMap<String, DownloadTask>()
+
     private val context = BaseApplication.CONTEXT
 
     private val queueListener: DownloadListener4WithSpeed by lazy { this@DownloadFileManager }
@@ -33,6 +34,7 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     companion object {
         @JvmStatic
         val INSTANCE: DownloadFileManager by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { DownloadFileManager() }
+        var downloadingTask : DownloadTask? = null
         const val minIntervalMillisCallbackProcess = 800  //回掉间隔毫秒数
         const val maxParallelRunningCount = 1  //最大并行数
         const val TAG = "DownloadFileManager_suolong"
@@ -65,26 +67,36 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
 
 
     fun startDownloadWithCache(chapter: DownloadChapter) {
-        createTask(chapter.path_url, chapter.audio_id.toString(), chapter.chapter_name).also {
-            TagUtil.saveHolder(it, chapter)
-            taskList[chapter.path_url] = it
-        }.run {
-            enqueue(queueListener)
+        try {
+            createTask(chapter.path_url, chapter.audio_id.toString(), chapter.chapter_name).also {
+                TagUtil.saveHolder(it, chapter)
+                taskList[chapter.path_url] = it
+            }.run {
+                downloadingTask = this
+                enqueue(queueListener)
+            }
+        }catch (e : Exception){
+
         }
+
     }
 
     fun startDownloadWithCache(modelList: List<DownloadChapter>) {
-        var taskList = Array(modelList.size) { index ->
-            createTask(
-                modelList[index].path_url,
-                modelList[index].audio_id.toString(),
-                modelList[index].chapter_name
-            ).also {
-                TagUtil.saveHolder(it, modelList[index])
-                taskList[modelList[index].path_url] = it
+        if(modelList.isNotEmpty()){
+            val taskList = Array(modelList.size) { index ->
+                createTask(
+                        modelList[index].path_url,
+                        modelList[index].audio_id.toString(),
+                        modelList[index].chapter_name
+                ).also {
+                    TagUtil.saveHolder(it, modelList[index])
+                    taskList[modelList[index].path_url] = it
+                }
+            }
+            if(getTaskStatus(modelList[0])!=DownloadUIStatus.DOWNLOAD_IN_PROGRESS && getTaskStatus(modelList[0])!=DownloadUIStatus.DOWNLOAD_COMPLETED){
+                startDownloadWithCache(modelList[0])
             }
         }
-        DownloadTask.enqueue(taskList, queueListener)
     }
 
     fun pauseDownload(chapter: DownloadChapter): Boolean {
@@ -192,34 +204,28 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
         DLog.d(TAG, " taskEnd name = ${task.filename} --- cause = $cause --- taskSpeed = ${taskSpeed.speed()}")
         when (cause) {
             EndCause.COMPLETED -> {
-                DLog.d(TAG, "下载完成")
+                DLog.d(TAG, "taskEnd name = ${task.filename}下载完成")
                 DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
             }
-            EndCause.CANCELED -> { DLog.d(TAG, "下载失败,原因是:任务被取消")
-//                DownloadMemoryCache.pauseDownloadingChapter()
+            EndCause.CANCELED -> { DLog.d(TAG, "taskEnd name = ${task.filename} 下载取消")
+                DownloadMemoryCache.pauseDownloadingChapter()
             }
             EndCause.SAME_TASK_BUSY->{
-                DLog.d(TAG, "下载失败,原因是 EndCause.SAME_TASK_BUSY ${realCause?.message}")
+                DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是 EndCause.SAME_TASK_BUSY ${realCause?.message}")
             }
             EndCause.FILE_BUSY ->{
-                DLog.d(TAG, "下载失败,原因是 EndCause.FILE_BUSY ${realCause?.message}")
+                DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是 EndCause.FILE_BUSY ${realCause?.message}")
             }
-
-
             else -> {
-//                if(!DownloadMemoryCache.isPauseAll.get()){
-//                    DownloadMemoryCache.pauseCurrentAndDownNextChapter()
-//                }
-                DLog.d(TAG, "下载失败,原因是${cause.ordinal.toString()} ${realCause?.message}")
+                if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+                    task.enqueue(queueListener)
+                }
+                DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是${cause.ordinal.toString()} ${realCause?.message}")
             }
         }
     }
 
     override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
-//        DLog.d(
-//            TAG,
-//            " progress name = ${task.filename} --- currentOffset = $currentOffset --- taskSpeed = ${taskSpeed.speed()}"
-//        )
         DownloadMemoryCache.updateDownloadingSpeed(
             speed = taskSpeed.speed(),
             currentOffset = currentOffset,

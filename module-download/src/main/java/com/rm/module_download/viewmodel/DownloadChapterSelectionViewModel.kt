@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.dialog.CommonDragMvDialog
+import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
@@ -71,19 +71,12 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             }
         }
         if (tempDownloadList.size == 0) {
-            ToastUtil.show(
-                    BaseApplication.CONTEXT,
-                    BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist)
-            )
+            showTip(BaseApplication.CONTEXT.getString(com.rm.business_lib.R.string.business_download_all_exist))
             return
         }
 
         //将音频信息存储
-        downloadAudio.get()?.let {
-            DownloadMemoryCache.addAudioToDownloadMemoryCache(
-                    it
-            )
-        }
+        downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
         //存储已选择的下载章节
         DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
         //调用下载服务开始下载
@@ -196,7 +189,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         startSequence.set("")
         endSequence.set("")
         (context as FragmentActivity).let {
-            CommonDragMvDialog().apply {
+            CommonMvFragmentDialog().apply {
                 gravity = Gravity.BOTTOM
                 dialogWidthIsMatchParent = true
                 initDialog = {

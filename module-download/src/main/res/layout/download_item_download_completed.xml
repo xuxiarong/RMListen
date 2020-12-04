@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/download_ic_speaker"
-                android:text="@{itemBean.author}"
+                android:text="@{itemBean.anchor.anchor_name}"
                 android:textColor="@color/business_text_color_666666"
                 android:textSize="@dimen/business_text_size_12sp" />
 

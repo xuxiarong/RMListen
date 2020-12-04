@@ -20,9 +20,9 @@ import kotlinx.android.synthetic.main.base_tip_view.view.*
  * version: 1.0
  */
 class BaseTipView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     init {
@@ -44,50 +44,53 @@ class BaseTipView @JvmOverloads constructor(
 
     fun showNetError(activity: Activity) {
         showTipView(
-            activity = activity,
-            tipText = activity.getString(R.string.net_error),
-            tipColor = R.color.base_ff5e5e,
-            tipProgress = false,
-            netError = true
+                activity = activity,
+                tipText = activity.getString(R.string.net_error),
+                tipColor = R.color.base_ff5e5e,
+                tipProgress = false,
+                netError = true
         )
     }
 
     fun showTipView(
-        activity: Activity,
-        tipText: String = "",
-        tipColor: Int = R.color.base_333,
-        tipProgress: Boolean = false,
-        netError: Boolean = false
+            activity: Activity,
+            tipText: String = "",
+            tipColor: Int = R.color.base_333,
+            tipProgress: Boolean = false,
+            netError: Boolean = false
     ) {
-        rootViewAddView(activity)
-        baseTipText.text = tipText
-        baseTipText.setTextColor(ContextCompat.getColor(activity, tipColor))
+        try {
+            rootViewAddView(activity)
+            baseTipText.text = tipText
+            baseTipText.setTextColor(ContextCompat.getColor(activity, tipColor))
 
-        if (netError) {
-            setOnClickListener { activity.startActivity(Intent(Settings.ACTION_WIFI_IP_SETTINGS)) }
-            baseNetErrorProgress.visibility = View.VISIBLE
-        } else {
-            baseNetErrorProgress.visibility = View.GONE
-            setOnClickListener {}
+            if (netError) {
+                setOnClickListener { activity.startActivity(Intent(Settings.ACTION_WIFI_IP_SETTINGS)) }
+                baseNetErrorProgress.visibility = View.VISIBLE
+            } else {
+                baseNetErrorProgress.visibility = View.GONE
+                setOnClickListener {}
+            }
+
+            if (tipProgress) {
+                baseTipProgress.visibility = View.VISIBLE
+            } else {
+                baseTipProgress.visibility = View.GONE
+            }
+            clearAnimation()
+            showAnim.start()
+            handler?.removeCallbacksAndMessages(null)
+            handler?.postDelayed({
+                hideTipView(activity)
+            }, 3000)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
-        if (tipProgress) {
-            baseTipProgress.visibility = View.VISIBLE
-        } else {
-            baseTipProgress.visibility = View.GONE
-        }
-        clearAnimation()
-        showAnim.start()
-        handler.removeCallbacksAndMessages(null)
-        handler.postDelayed({
-            hideTipView(activity)
-        }, 3000)
-
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        handler.removeCallbacksAndMessages(null)
+        handler?.removeCallbacksAndMessages(null)
     }
 
     fun hideTipView(activity: Activity) {
@@ -111,9 +114,9 @@ class BaseTipView @JvmOverloads constructor(
 
 
     protected open val tipViewLayoutParams by lazy {
-        FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
+        LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
         ).apply {
             gravity = Gravity.TOP
             setMargins(dip(8), dip(-64), dip(8), 0)

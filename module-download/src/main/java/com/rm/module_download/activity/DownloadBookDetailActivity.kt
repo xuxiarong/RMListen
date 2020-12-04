@@ -16,9 +16,9 @@ class DownloadBookDetailActivity :
     BaseVMActivity<DownloadActivityBookDetailBinding, DownloadBookDetailViewModel>() {
 
     companion object {
-        fun startActivity(context: Context,audio: DownloadAudio) {
+        fun startActivity(context: Context, audio: DownloadAudio) {
             val intent = Intent(context, DownloadBookDetailActivity::class.java)
-            intent.putExtra("download_audio",audio)
+            intent.putExtra("download_audio", audio)
             context.startActivity(intent)
         }
     }
@@ -30,16 +30,23 @@ class DownloadBookDetailActivity :
     }
 
     override fun initData() {
-        if(intent!=null){
+        if (intent != null) {
             val audio = intent.getSerializableExtra("download_audio") as DownloadAudio
             val qb = DaoUtil(DownloadAudio::class.java, "").queryBuilder()
             qb?.where(DownloadAudioDao.Properties.Audio_id.eq(audio.audio_id))
             val list = qb?.list()
             val end = System.currentTimeMillis()
-            if(list!=null && list.size>0){
+            if (list != null && list.size > 0) {
                 mViewModel.downloadAudio.set(list[0])
+                list[0].chapterList.sortWith(Comparator { o1, o2 ->
+                    return@Comparator if (o1.sequence > o2.sequence) {
+                        1
+                    } else {
+                        -1
+                    }
+                })
                 mViewModel.downloadingAdapter.setList(list[0].chapterList)
-            }else{
+            } else {
                 mViewModel.downloadAudio.set(audio)
                 mViewModel.downloadingAdapter.setList(audio.chapterList)
             }

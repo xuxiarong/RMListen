@@ -59,11 +59,14 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             setOnItemClickListener { adapter, view, position ->
                 val chapterId = data[position].chapter_id
                 if (chapterId == viewModel.playManger.getCurrentPlayerID()) {
-                    viewModel.playManger.play()
+                    if(viewModel.playManger.isPlaying()){
+                        viewModel.playManger.pause()
+                    }else{
+                        viewModel.playManger.play()
+                    }
                 } else {
                     viewModel.playManger.startPlayMusic(data[position].chapter_id.toString())
                 }
-                dismissAllowingStateLoss()
             }
         }
     }
@@ -150,6 +153,15 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         })
         PlayGlobalData.playChapterList.observe(viewLifecycleOwner, Observer {
             chapterAdapter.setList(it)
+        })
+        BaseConstance.basePlayStatusModel.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                BaseConstance.basePlayStatusModel.get()?.let {
+                    if(!it.isBuffering()){
+                        chapterAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
         })
 //        viewModel.chapterRefreshModel.isHasMore.addOnPropertyChangedCallback(object :
 //            Observable.OnPropertyChangedCallback() {

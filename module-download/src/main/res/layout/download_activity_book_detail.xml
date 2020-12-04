@@ -26,14 +26,17 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="54dp"
             android:textStyle="bold"
             android:layout_marginStart="172dp"
-            android:lineSpacingExtra="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:lineSpacingExtra="@dimen/dp_4"
+            android:lines="2"
+            android:ellipsize="end"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_18sp"
             android:text="@{viewModel.downloadAudio.audio_name}"
-            tools:text = "乐于揪头发，勇于照镜子"
+            tools:text = "乐于揪头发，勇于照镜子勇于照镜子勇于照镜子勇于照镜子勇于照镜子勇于照镜子勇于照镜子勇于照镜子勇于照镜子"
             />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -41,19 +44,20 @@
             android:layout_height="@dimen/dp_14"
             android:src="@drawable/business_anchor"
             android:layout_marginStart="172dp"
-            android:layout_marginTop="@dimen/dp_58"
+            android:layout_marginTop="@dimen/dp_62"
             />
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_17"
             android:src="@drawable/business_anchor"
             android:layout_marginStart="190dp"
-            android:layout_marginTop="@dimen/dp_56"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_60"
             android:textSize="@dimen/business_text_size_12sp"
             android:textColor="@color/base_666666"
             android:lines="1"
             android:ellipsize="end"
-            android:text="@{viewModel.downloadAudio.author}"
+            android:text="@{viewModel.downloadAudio.anchor.anchor_name}"
             tools:text="小丸子的朋友小丸子的朋友小丸子的朋友小丸子的朋友小丸子的朋友"
             />
 
@@ -62,14 +66,15 @@
             android:layout_height="@dimen/dp_14"
             android:src="@drawable/download_ic_memory_size_dark"
             android:layout_marginStart="172dp"
-            android:layout_marginTop="@dimen/dp_82"
+            android:layout_marginTop="@dimen/dp_86"
             />
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_17"
             android:src="@drawable/business_anchor"
             android:layout_marginStart="190dp"
-            android:layout_marginTop="@dimen/dp_80"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_84"
             android:textSize="@dimen/business_text_size_12sp"
             android:textColor="@color/base_666666"
             android:lines="1"

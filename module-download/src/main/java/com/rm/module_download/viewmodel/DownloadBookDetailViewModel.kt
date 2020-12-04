@@ -3,6 +3,7 @@ package com.rm.module_download.viewmodel
 import android.content.Context
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.adapter.single.CommonPositionVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
@@ -18,12 +19,13 @@ class DownloadBookDetailViewModel:BaseVMViewModel() {
     val playService = RouterHelper.createRouter(PlayService::class.java)
 
     val downloadingAdapter by lazy {
-        CommonBindVMAdapter<DownloadChapter>(
+        CommonPositionVMAdapter<DownloadChapter>(
             this,
             mutableListOf(),
             R.layout.download_item_audio_detail,
             BR.viewModel,
-            BR.itemBean
+            BR.itemBean,
+            R.id.download_tv_sequence
         )
     }
 
