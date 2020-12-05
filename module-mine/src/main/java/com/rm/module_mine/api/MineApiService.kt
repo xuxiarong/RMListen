@@ -4,6 +4,7 @@ import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.module_mine.bean.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 
@@ -198,11 +199,7 @@ interface MineApiService {
      */
     @POST("member/feedback")
     suspend fun mineFeedback(
-        @Field("feedback_type") feedback_type: Int,
-        @Field("content") content: String,
-        @Field("img_list") img_list: Array<String>,
-        @Field("contact") contact: String,
-        @Field("device_id") device_id: String
+        @Body body: RequestBody
     ): BaseResponse<Any>
 
 

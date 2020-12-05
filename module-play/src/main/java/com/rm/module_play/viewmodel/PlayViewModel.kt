@@ -745,7 +745,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     context,
                     PlayGlobalData.playAudioId.get()!!
                 ) {
-                    showTip("添加成功")
+                    showTip("在“我听-听单”中查看")
                 }
             }
         }

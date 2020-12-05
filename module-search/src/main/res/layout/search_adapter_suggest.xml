@@ -24,7 +24,7 @@
         android:layout_marginStart="@dimen/dp_24"
         android:layout_marginEnd="@dimen/dp_10"
         android:gravity="center_vertical"
-        android:onClick="@{()->viewModel.inputItemClickFun(inputItem)}"
+        android:onClick="@{()->viewModel.inputItemClickFun(context,inputItem)}"
         android:paddingTop="@dimen/dp_15"
         android:paddingBottom="@dimen/dp_15"
         android:singleLine="true"

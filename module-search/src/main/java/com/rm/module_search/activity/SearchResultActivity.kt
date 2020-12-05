@@ -1,5 +1,7 @@
 package com.rm.module_search.activity
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -28,8 +30,23 @@ import kotlin.math.abs
  */
 class SearchResultActivity :
     ComponentShowPlayActivity<SearchActivityResultBinding, SearchResultViewModel>() {
-    private lateinit var params: ConstraintLayout.LayoutParams
 
+    companion object {
+        const val KEY_WORD = "keyword"
+        fun startActivity(context: Context, keyword: String) {
+            context.startActivity(
+                Intent(
+                    context,
+                    SearchResultActivity::class.java
+                ).putExtra(KEY_WORD, keyword)
+            )
+        }
+    }
+
+    private lateinit var keyword: String
+
+    private lateinit var params: ConstraintLayout.LayoutParams
+    private lateinit var searchResultAdapter: SearchResultAdapter
 
     override fun initModelBrId() = BR.viewModel
 
@@ -37,11 +54,17 @@ class SearchResultActivity :
 
     override fun initView() {
         super.initView()
+        keyword = intent.getStringExtra(KEY_WORD) ?: ""
+
+        searchResultAdapter = SearchResultAdapter(this, mViewModel.tabList)
+        mViewModel.keyWord.set(keyword)
+
         params = mDataBind.searchResultSuggestLayout.layoutParams as ConstraintLayout.LayoutParams
         mDataBind.root.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
 
-        mDataBind.searchResultEditText.setText(searchKeyword.get()!!)
-        mDataBind.searchResultViewPager.adapter = SearchResultAdapter(this, mViewModel.tabList)
+        mDataBind.searchResultEditText.setText(keyword)
+
+        mDataBind.searchResultViewPager.adapter = searchResultAdapter
         attachViewPager()
 
         mDataBind.root.setOnClickListener {
@@ -54,9 +77,7 @@ class SearchResultActivity :
     }
 
     override fun initData() {
-        searchKeyword.get()?.let {
-            mViewModel.searchResult(it)
-        }
+        mViewModel.searchResult(keyword)
     }
 
     override fun startObserve() { //tab变化监听

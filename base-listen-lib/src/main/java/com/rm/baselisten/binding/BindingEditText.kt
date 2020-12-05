@@ -105,15 +105,15 @@ fun EditText.bindBlock(block: ((View) -> Unit)?, action: Int) {
 }
 
 @BindingAdapter("bindKeyboardVisibility")
-fun EditText.bindKeyboardVisibilityListener(block: ((Boolean) -> Unit)?) {
+fun EditText.bindKeyboardVisibilityListener(block: ((Boolean,Int) -> Unit)?) {
     if (block == null) {
         return
     }
     KeyboardStatusDetector()
         .registerVisibilityListener(this)
         .setVisibilityListener(object : KeyboardStatusDetector.KeyboardVisibilityListener {
-            override fun onVisibilityChanged(keyboardVisible: Boolean) {
-                block(keyboardVisible)
+            override fun onVisibilityChanged(keyboardVisible: Boolean,  keyboardHeight:Int) {
+                block(keyboardVisible,keyboardHeight)
             }
         })
 }

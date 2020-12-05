@@ -930,7 +930,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
                     .showMySheetListDialog(it, audioId.get()!!) {
-                        showTip("添加成功")
+                        showTip("在“我听-听单”中查看")
                     }
             }
         }

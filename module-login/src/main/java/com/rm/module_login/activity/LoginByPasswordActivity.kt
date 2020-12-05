@@ -55,7 +55,7 @@ class LoginByPasswordActivity :
         login_include_phone_input_arrow_view.setOnClickListener {
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
         }
-        login_by_verify_code_input.bindKeyboardVisibilityListener {
+        login_by_verify_code_input.bindKeyboardVisibilityListener {it,_->
             if (it) {
                 startScaleAnim(layout_top_logo, 0.5f)
                 val translation = -resources.getDimension(R.dimen.dp_30)

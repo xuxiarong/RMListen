@@ -29,9 +29,6 @@ class SearchContentSheetFragment :
     override fun initModelBrId() = BR.viewModel
 
     override fun initData() {
-        mViewModel.loadErrorBlock = {
-            shtTip(it)
-        }
     }
 
 

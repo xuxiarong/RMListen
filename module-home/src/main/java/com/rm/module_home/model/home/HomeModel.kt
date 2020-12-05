@@ -29,7 +29,7 @@ data class HomeBlockModel(
         val page_size: Int,
         val topic_id: Int,
         val relation_to: String,
-        val single_img_content: List<HomeSingleImgContentModel>
+        val single_img_content: HomeSingleImgContentModel
 )
 
 data class HomeMenuModel(

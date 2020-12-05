@@ -41,8 +41,6 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
     //每页展示数量
     private val mPageSize = 12
 
-    //加载失败
-    var loadErrorBlock: (String) -> Unit = {}
 
     /**
      * 刷新
@@ -111,8 +109,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
             refreshStateMode.finishLoadMore(false)
         }
 
-        loadErrorBlock("$msg")
-    }
+        showTip("$msg",R.color.business_color_ff5e5e)    }
 
     /**
      * item点击事件

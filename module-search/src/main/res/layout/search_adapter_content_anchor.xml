@@ -56,6 +56,7 @@
             android:layout_marginStart="@dimen/dp_2"
             android:textColor="@color/business_color_ff5e5e"
             android:textSize="@dimen/business_text_size_10sp"
+            android:visibility="gone"
             android:textStyle="italic|bold"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_name"
             app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_name"

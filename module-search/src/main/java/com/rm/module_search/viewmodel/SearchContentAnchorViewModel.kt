@@ -46,9 +46,6 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
     //每页展示数量
     private val mPageSize = 12
 
-    //加载失败
-    var loadErrorBlock: (String) -> Unit = {}
-
 
     /**
      * 刷新
@@ -116,7 +113,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         } else {
             refreshStateMode.finishLoadMore(false)
         }
-        loadErrorBlock("$msg")
+        showTip("$msg",R.color.business_color_ff5e5e)
     }
 
     /**

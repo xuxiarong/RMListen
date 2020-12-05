@@ -2,13 +2,17 @@ package com.rm.module_mine.repository
 
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.net.util.GsonUtils
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.utils.DeviceUtils
 import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.bean.*
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 /**
@@ -149,19 +153,22 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
      * 问题反馈
      */
     suspend fun mineFeedback(
-        feedback_type: Int,
+        feedback_type: Int?,
         content: String,
-        img_list: Array<String>,
-        contact: String
+        img_list: Array<String>?,
+        contact: String?
     ): BaseResult<Any> {
+        val bean = MineUploadFeedbackBean(
+            feedback_type,
+            content,
+            img_list,
+            contact,
+            DeviceUtils.uniqueDeviceId
+        )
+        val json = GsonUtils.toJson(bean)
+        val requestBody = json.toRequestBody("application/json; charset=utf-8".toMediaType())
         return apiCall {
-            service.mineFeedback(
-                feedback_type,
-                content,
-                img_list,
-                contact,
-                DeviceUtils.uniqueDeviceId
-            )
+            service.mineFeedback(requestBody)
         }
     }
 
