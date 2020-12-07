@@ -4,8 +4,6 @@ import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.module_main.model.MainAdResultModel
 import okhttp3.RequestBody
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 /**

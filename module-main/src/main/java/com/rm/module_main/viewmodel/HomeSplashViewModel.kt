@@ -1,13 +1,12 @@
 package com.rm.module_main.viewmodel
 
-import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.module_main.model.MainAdScreen
+import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.module_main.repository.MainRepository
 import kotlinx.coroutines.delay
 
@@ -19,7 +18,7 @@ import kotlinx.coroutines.delay
 class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
     var isSkipAd = ObservableBoolean(false)
     var skipSecond = ObservableInt(3)
-    var mainAdScreen = ObservableField<MainAdScreen>()
+    var mainAdScreen = ObservableField<BusinessAdModel>()
 
     fun startSkipTimerCount() {
         launchOnUI {
