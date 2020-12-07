@@ -1,5 +1,8 @@
 package com.rm.module_main
 
+import com.rm.business_lib.net.BusinessRetrofitClient
+import com.rm.module_main.api.MainApiService
+import com.rm.module_main.repository.MainRepository
 import com.rm.module_main.viewmodel.HomeMainViewModel
 import com.rm.module_main.viewmodel.HomeSplashViewModel
 import debug.repository.DemoMultiRepository
@@ -20,12 +23,15 @@ val viewModelModule = module {
     viewModel { DemoSingClickViewModel() }
     viewModel { DemoMultiClickViewModel(get()) }
     viewModel { DemoSwipeViewModel() }
-    viewModel { HomeSplashViewModel() }
+    viewModel { HomeSplashViewModel(get()) }
     single { HomeMainViewModel() }
 }
 
 val repositoryModule = module {
     single { DemoMultiRepository() }
+    single { MainRepository(get()) }
+    single { BusinessRetrofitClient().getService(MainApiService::class.java) }
+
 }
 
 val mainModules = listOf(viewModelModule, repositoryModule)
