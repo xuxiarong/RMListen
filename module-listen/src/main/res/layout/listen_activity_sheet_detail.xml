@@ -74,6 +74,7 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/listen_sheet_detail_refresh"
+            bindContentRvId="@{viewModel.contentRvId}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
             bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
             bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"

@@ -39,6 +39,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
 
 
     val refreshStateMode = SmartRefreshLayoutStatusModel()
+    val contentRvId = R.id.search_adapter_content_rv
 
     //页码
     var mPage = 1
@@ -73,7 +74,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
                     onSuccess = {
                         successData(it)
                     },
-                    onError = {msg ->
+                    onError = { msg ->
                         failData(msg)
                     }
                 )
@@ -113,7 +114,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         } else {
             refreshStateMode.finishLoadMore(false)
         }
-        showTip("$msg",R.color.business_color_ff5e5e)
+        showTip("$msg", R.color.business_color_ff5e5e)
     }
 
     /**

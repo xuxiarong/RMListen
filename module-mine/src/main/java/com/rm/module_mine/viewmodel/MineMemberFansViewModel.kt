@@ -38,6 +38,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
     var memberId = ""
 
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
+    val contentRvId = R.id.mine_adapter_member_fans
 
     //当前用户信息  用来判断当前用户是否是自己  控制是否显示关注按钮
     val userInfo = loginUser

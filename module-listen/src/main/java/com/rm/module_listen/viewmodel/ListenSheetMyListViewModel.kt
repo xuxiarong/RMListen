@@ -21,6 +21,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
     BaseVMViewModel() {
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
+    val contentRvId = R.id.listen_sheet_my_list_recycler_view
 
     //懒加载构建adapter对象
     val mAdapter by lazy {
@@ -136,7 +137,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
      * item点击事件
      */
     fun itemClick(context: Context, bean: ListenSheetBean) {
-        if (TextUtils.isEmpty(memberId)){
+        if (TextUtils.isEmpty(memberId)) {
             getActivity(context)?.let {
                 clickBean.set(bean)
                 val hasMap = getHasMap()
@@ -146,7 +147,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
                     ListenMySheetDetailActivity.LISTEN_SHEET_DETAIL_REQUEST_CODE
                 )
             }
-        }else{
+        } else {
             getActivity(context)?.let {
                 RouterHelper.createRouter(HomeService::class.java)
                     .startHomeSheetDetailActivity(it, bean.sheet_id.toString())

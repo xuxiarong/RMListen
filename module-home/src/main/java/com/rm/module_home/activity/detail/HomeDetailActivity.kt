@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
@@ -39,34 +41,6 @@ class HomeDetailActivity :
         }
     }
 
-    private val commentFootView by lazy {
-        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
-    }
-
-    private val chapterFootView by lazy {
-        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        intent?.getStringExtra(AUDIO_ID)?.let {
-            mViewModel.audioId.set(it)
-            mViewModel.intDetailInfo(it)
-
-            mViewModel.chapterRefreshStatus.setCanRefresh(false)
-            mViewModel.chapterRefreshStatus.setNoHasMore(false)
-            mViewModel.chapterRefreshStatus.setResetNoMoreData(true)
-            mViewModel.nextChapterPage = 1
-            mViewModel.previousChapterPage = 1
-            mViewModel.queryAudioListenRecord()
-            mViewModel.getChapterList(1, HomeDetailViewModel.CHAPTER_REFRESH_PAGE) //初始化章节列表
-
-            mViewModel.commentPage = 1
-            mViewModel.commentRefreshStateMode.setNoHasMore(false)
-            mViewModel.commentRefreshStateMode.setResetNoMoreData(true)
-            mViewModel.getCommentList(it)
-        }
-    }
 
     override fun initView() {
         super.initView()
@@ -163,33 +137,7 @@ class HomeDetailActivity :
 
 
     override fun startObserve() {
-        mViewModel.chapterRefreshStatus.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.chapterRefreshStatus.noMoreData.get()
-                if (hasMore == true) {
-                    if (mViewModel.chapterAdapter.footerLayoutCount == 0) {
-                        mViewModel.chapterAdapter.removeAllFooterView()
-                        mViewModel.chapterAdapter.addFooterView(chapterFootView)
-                    }
-                } else {
-                    mViewModel.chapterAdapter.removeAllFooterView()
-                }
-            }
-        })
 
-        mViewModel.commentRefreshStateMode.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.commentRefreshStateMode.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.homeDetailCommentAdapter.removeAllFooterView()
-                    mViewModel.homeDetailCommentAdapter.addFooterView(commentFootView)
-                } else {
-                    mViewModel.homeDetailCommentAdapter.removeAllFooterView()
-                }
-            }
-        })
     }
 
     override fun initData() {

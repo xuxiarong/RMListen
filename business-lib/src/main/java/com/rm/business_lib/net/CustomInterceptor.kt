@@ -23,6 +23,9 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.internal.notifyAll
+import okhttp3.internal.wait
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * desc   : 业务网络拦截器
@@ -98,9 +101,37 @@ class CustomInterceptor : Interceptor {
      * @return Array<Response>
      */
     private fun buildRequestResponse(chain: Interceptor.Chain): Array<Response> {
-        val request: Request = getRequestHeaderBuilder(chain.request().newBuilder()).build()
-        return arrayOf(chain.proceed(request))
+
+        // TODO: 12/5/20  部分请求，不需要toekn，请进行过滤
+        val url = chain.request().url
+        DLog.i("===========>>>>", "url:$url")
+
+        var filter = false;
+        if (filter) {
+            val request: Request = getRequestHeaderBuilder(chain.request().newBuilder()).build()
+            return arrayOf(chain.proceed(request))
+        } else {
+            //需token的网络请求，发现正在有刷新token的任务，阻塞
+            if (refreshIng.get()) {
+                awite()
+            }
+            val request: Request = getRequestHeaderBuilder(chain.request().newBuilder()).build()
+            return arrayOf(chain.proceed(request))
+        }
+
     }
+
+    /**
+     * 判断该请求是否需要token
+     */
+    private fun canToken() {
+
+    }
+
+    /**
+     * 是否有刷新token的任务进行着
+     */
+    var refreshIng = AtomicBoolean(false);
 
     /**
      * 拦截返回数据，判断是否需要刷新token等操作
@@ -117,21 +148,26 @@ class CustomInterceptor : Interceptor {
             responseBody.close()
             if (TextUtils.isEmpty(responseStr)) {
                 // 没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
-                originalResponse[0] = originalResponse[0].newBuilder().code(originalResponse[0].code)
-                    .body(responseStr.toResponseBody(contentType)).build()
+                originalResponse[0] =
+                    originalResponse[0].newBuilder().code(originalResponse[0].code)
+                        .body(responseStr.toResponseBody(contentType)).build()
                 return
             }
             val baseResponse = Gson().fromJson(responseStr, BaseResponse::class.java)
             if (baseResponse.code == CODE_REFRESH_TOKEN) {
+                refreshIng.set(true)
                 // 当前token过期，需要刷新token
                 DLog.d(TAG, "响应时，token已过期，刷新token")
                 // 注意，一定要在当前线程同步请求刷新接口，否则再重新请求之前的接口会抛异常
-                val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
-                if (result?.code == 0) {
-                    // 刷新token成功，保存最新token
-                    updateLocalToken(result.data.access, result.data.refresh)
+
+
+                val token: String
+                try {
+                    token = refreshToken()
+                    refreshIng.set(false)
                     // 将之前拦截的接口重新请求并下发
-                    val request: Request.Builder = getRequestHeaderBuilder(chain.request().newBuilder())
+                    val request: Request.Builder =
+                        getRequestHeaderBuilder(chain.request().newBuilder(), token)
                     try {
                         originalResponse[0] = chain.proceed(request.build())
                     } catch (e: Exception) {
@@ -140,30 +176,51 @@ class CustomInterceptor : Interceptor {
                         originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                             .body(responseStr.toResponseBody(contentType)).build()
                     }
-                } else {
-                    if (result?.code == CODE_REFRESH_TOKEN_FAILED) {
-                        // 刷新token失败，强制退出当前登陆
-                        GlobalScope.launch(Dispatchers.Main) {
-                            loginOut()
-                        }
+                } catch (e: java.lang.Exception) {
+
+                    // 刷新token失败，强制退出当前登陆
+                    GlobalScope.launch(Dispatchers.Main) {
+                        loginOut()
                     }
                     // TODO 如果刷新token失败，将之前请求的数据同样下发到具体位置，不过是否需要自己组一个账户已退出的消息数据进行下发？？？
                     originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                         .body(responseStr.toResponseBody(contentType)).build()
                 }
+
+
             } else if (baseResponse.code == CODE_LOGIN_OUT || baseResponse.code == CODE_NOT_LOGIN || baseResponse.code == CODE_REFRESH_TOKEN_FAILED) {
-                // 被挤下线，强制退出了  或者 直接是未登陆  或者 刷新token的时候，刷新token失败(每次app启动会有一个刷新token操作，所以也要在这里判断)
-                GlobalScope.launch(Dispatchers.Main) {
-                    loginOut()
+
+                if (baseResponse.code == CODE_NOT_LOGIN && refreshIng.get()) {
+                    //阻塞，直到获取到token
+                    var token = refreshToken()
+                    // 将之前拦截的接口重新请求并下发
+                    val request: Request.Builder =
+                        getRequestHeaderBuilder(chain.request().newBuilder(), token)
+                    try {
+                        originalResponse[0] = chain.proceed(request.build())
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        // 再次请求之前拦截的接口失败，就下发之前请求到的数据到具体位置
+                        originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
+                            .body(responseStr.toResponseBody(contentType)).build()
+                    }
+
+                } else {
+                    // 被挤下线，强制退出了  或者 直接是未登陆  或者 刷新token的时候，刷新token失败(每次app启动会有一个刷新token操作，所以也要在这里判断)
+                    GlobalScope.launch(Dispatchers.Main) {
+                        loginOut()
+                    }
+                    originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
+                        .body(responseStr.toResponseBody(contentType)).build()
                 }
-                originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
-                    .body(responseStr.toResponseBody(contentType)).build()
+
+
             } else {
                 // 正常请求,下发数据到具体请求位置
                 originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                     .body(responseStr.toResponseBody(contentType)).build()
             }
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -174,6 +231,7 @@ class CustomInterceptor : Interceptor {
      * @param access String
      * @param refresh String
      */
+
     private fun updateLocalToken(access: String, refresh: String) {
         ACCESS_TOKEN.putMMKV(access)
         REFRESH_TOKEN.putMMKV(refresh)
@@ -181,13 +239,76 @@ class CustomInterceptor : Interceptor {
         ACCESS_TOKEN_INVALID_TIMESTAMP.putMMKV(parseToken(access))
     }
 
+    var refreshInit = AtomicBoolean(false)
+
+    @Volatile
+    var newToken: String? = null
+
+
+    /**
+     * 采用生产与消费模型，一个网络请求负责刷新token,其余网络请求都阻塞等待消费token
+     */
+    private fun refreshToken(): String {
+        if (refreshInit.compareAndSet(false, true)) {
+            try {
+                newToken = null
+                return refreshRealToken();
+            } catch (e: java.lang.Exception) {
+                throw e;
+            } finally {
+                refreshInit.set(false)
+                //结果如何，最终一定要唤醒
+                awake()
+            }
+
+        } else {
+            awite()
+            if (TextUtils.isEmpty(newToken)) {
+                throw  Throwable("token refresh fail")
+            }
+            return REFRESH_TOKEN.getStringMMKV("");
+        }
+
+    }
+
+    /**
+     * 阻塞挂起
+     */
+    protected fun awite() {
+        synchronized(this) {
+            this.wait();
+        }
+    }
+
+    /**
+     * 全部唤醒
+     */
+    private fun awake() {
+        synchronized(this) {
+            this.notifyAll()
+        }
+    }
+
+    private fun refreshRealToken(): String {
+        val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
+        if (result?.code == 0) {
+            // 刷新token成功，保存最新token
+            updateLocalToken(result.data.access, result.data.refresh)
+            newToken = result.data.refresh
+            return newToken!!;
+        }
+        throw  Throwable("token refresh fail")
+    }
 
     /**
      * 添加公共的 header
      * @param requestBuilder Builder
      * @return Request.Builder
      */
-    private fun getRequestHeaderBuilder(requestBuilder: Request.Builder): Request.Builder {
+    private fun getRequestHeaderBuilder(
+        requestBuilder: Request.Builder,
+        token: String? = null
+    ): Request.Builder {
         // 时间戳
         val timestamp = System.currentTimeMillis() / 1000
         // 随机生成的16位数字符
@@ -201,7 +322,11 @@ class CustomInterceptor : Interceptor {
         requestBuilder.addHeader("APP-SIGN", encodeMD5(signSource))
         requestBuilder.addHeader("APP-VERSION", BuildConfig.VERSION_NAME)
         requestBuilder.addHeader("APP-CHANNEL", "0")
-        requestBuilder.addHeader("Authorization", "Bearer ${ACCESS_TOKEN.getStringMMKV()}")
+        if (TextUtils.isEmpty(token)) {
+            requestBuilder.addHeader("Authorization", "Bearer ${ACCESS_TOKEN.getStringMMKV()}")
+        } else {
+            requestBuilder.addHeader("Authorization", "Bearer $token")
+        }
         return requestBuilder
     }
 

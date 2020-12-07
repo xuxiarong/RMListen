@@ -10,6 +10,7 @@
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        bindContentRvId="@{viewModel.contentRvId}"
         android:id="@+id/search_fragment_content_anchor_refresh_layout"
         bindNoMoreData="@{viewModel.refreshStateMode.noMoreData}"
         bindIsLoadMoreSuccess="@{viewModel.refreshStateMode.isLoadMoreSuccess()}"

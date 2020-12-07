@@ -51,10 +51,6 @@ class HomeTopListContentFragment :
     private var mVisible = false//是否可见
     private var canRefreshData = false//是否能够刷新数据
 
-    private val footView by lazy {
-        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
-    }
-
     override fun initLayoutId() = R.layout.home_fragment_top_list_content
 
     override fun initModelBrId(): Int = BR.viewModel
@@ -115,18 +111,6 @@ class HomeTopListContentFragment :
 
 
     override fun startObserve() {
-        mViewModel.refreshStatusModel.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStatusModel.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.mAdapter.removeAllFooterView()
-                    mViewModel.mAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.mAdapter.removeAllFooterView()
-                }
-            }
-        })
     }
 
 }

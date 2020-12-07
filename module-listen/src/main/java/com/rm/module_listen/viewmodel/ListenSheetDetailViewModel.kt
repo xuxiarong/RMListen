@@ -39,6 +39,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
     private val mDialog by lazy { CommBottomDialog() }
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
+    val contentRvId=R.id.listen_sheet_detail_recycler_view
 
     //数据源
     val data = ObservableField<SheetInfoBean>()

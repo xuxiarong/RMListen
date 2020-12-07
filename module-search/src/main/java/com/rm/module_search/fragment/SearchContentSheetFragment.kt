@@ -20,10 +20,6 @@ import com.rm.module_search.viewmodel.SearchContentSheetViewModel
 class SearchContentSheetFragment :
     BaseVMFragment<SearchFragmentContentSheetBinding, SearchContentSheetViewModel>() {
 
-    private val footView by lazy {
-        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
-    }
-
     override fun initLayoutId() = R.layout.search_fragment_content_sheet
 
     override fun initModelBrId() = BR.viewModel
@@ -44,18 +40,6 @@ class SearchContentSheetFragment :
             }
         }
 
-        mViewModel.refreshStateMode.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStateMode.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.sheetAdapter.removeAllFooterView()
-                    mViewModel.sheetAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.sheetAdapter.removeAllFooterView()
-                }
-            }
-        })
     }
 
     override fun onResume() {

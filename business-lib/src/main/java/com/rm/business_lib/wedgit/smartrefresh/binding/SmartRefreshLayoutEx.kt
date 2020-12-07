@@ -1,6 +1,11 @@
 package com.rm.business_lib.wedgit.smartrefresh.binding
 
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.rm.baselisten.util.DLog
+import com.rm.business_lib.wedgit.smartrefresh.BaseLoadMoreFooter
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -49,7 +54,6 @@ fun SmartRefreshLayout.bindIsRefreshSuccess(isSuccess: Boolean?) {
  * 绑定加载更多完成处理
  * @receiver SmartRefreshLayout
  * @param isSuccess Boolean?
- * @param isHasMoreData Boolean? 是否还有下一页数据
  */
 @BindingAdapter("bindIsLoadMoreSuccess")
 fun SmartRefreshLayout.bindIsLoadMoreSuccess(isSuccess: Boolean?) {
@@ -58,10 +62,20 @@ fun SmartRefreshLayout.bindIsLoadMoreSuccess(isSuccess: Boolean?) {
     }
 }
 
-@BindingAdapter("bindNoMoreData")
-fun SmartRefreshLayout.bindNoMoreData(noMoreData: Boolean?) {
+/**
+ * 是否有更多数据
+ * @param noMoreData Boolean? 是否还有下一页数据
+ * @param contentRvId Int 填充内容的recyclerview
+ */
+@BindingAdapter("bindNoMoreData", "bindContentRvId", requireAll = false)
+fun SmartRefreshLayout.bindNoMoreData(noMoreData: Boolean?, contentRvId: Int? = -1) {
     // 没有更多数据了
     if (noMoreData == true) {
+        if (contentRvId != null && refreshFooter is BaseLoadMoreFooter) {
+            val rv = findViewById<RecyclerView>(contentRvId)
+            val footer = refreshFooter as BaseLoadMoreFooter
+            footer.bindRecyclerView(rv)
+        }
         finishLoadMoreWithNoMoreData()
     }
 }
@@ -81,3 +95,5 @@ fun SmartRefreshLayout.bindResetNoMoreData(resetNoMoreData: Boolean?) {
         resetNoMoreData()
     }
 }
+
+

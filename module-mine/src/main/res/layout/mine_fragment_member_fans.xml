@@ -10,6 +10,7 @@
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        bindContentRvId="@{viewModel.contentRvId}"
         bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
         bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess()}"
         bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess()}"
@@ -19,6 +20,7 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mine_adapter_member_fans"
             bindVerticalLayout="@{viewModel.fanAdapter}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

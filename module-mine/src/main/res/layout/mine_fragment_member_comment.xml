@@ -15,9 +15,10 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/mine_member_comment_refresh_layout"
-            bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
+            bindContentRvId="@{viewModel.contentRvId}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
             bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+            bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.loadMoreData}"
             bindOnRefreshListener="@{viewModel.refreshData}"
             android:layout_width="match_parent"
@@ -26,6 +27,7 @@
             android:layout_marginEnd="@dimen/dp_16">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mine_member_comment_recycler_view"
                 bindVerticalLayout="@{viewModel.commentAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

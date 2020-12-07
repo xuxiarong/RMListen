@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
 
@@ -12,6 +11,7 @@
             type="com.rm.module_home.viewmodel.HomeDetailViewModel" />
 
         <import type="com.rm.business_lib.wedgit.ShadowDrawableUtil" />
+
         <import type="com.rm.baselisten.BaseConstance" />
 
     </data>
@@ -94,8 +94,9 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/home_detail_comment_refresh"
-            bindNoMoreData="@{viewModel.commentRefreshStateMode.noMoreData}"
+            bindContentRvId="@{viewModel.commentContentRvId}"
             bindIsLoadMoreSuccess="@{viewModel.commentRefreshStateMode.isLoadMoreSuccess()}"
+            bindNoMoreData="@{viewModel.commentRefreshStateMode.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.commentLoadMoreData}"
             bindResetNoMoreData="@{viewModel.commentRefreshStateMode.resetNoMoreData}"
             android:layout_width="match_parent"
@@ -153,6 +154,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/home_detail_play_all"
+                    bindPlayAudioModel="@{BaseConstance.INSTANCE.basePlayInfoModel}"
+                    bindPlayListenModel="@{viewModel.listenAudio}"
+                    bindPlayStatusModel="@{BaseConstance.INSTANCE.basePlayStatusModel}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_4"
@@ -166,9 +170,6 @@
                     android:paddingTop="@dimen/dp_9"
                     android:paddingEnd="@dimen/dp_16"
                     android:paddingBottom="@dimen/dp_9"
-                    bindPlayStatusModel="@{BaseConstance.INSTANCE.basePlayStatusModel}"
-                    bindPlayAudioModel="@{BaseConstance.INSTANCE.basePlayInfoModel}"
-                    bindPlayListenModel="@{viewModel.listenAudio}"
                     android:textColor="@color/business_text_color_666666"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -243,10 +244,11 @@
 
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:id="@+id/home_chapter_detail_refresh"
+                bindContentRvId="@{viewModel.chapterContentRvId}"
                 bindCanRefresh="@{viewModel.chapterRefreshStatus.canRefresh}"
-                bindNoMoreData="@{viewModel.chapterRefreshStatus.noMoreData}"
                 bindIsLoadMoreSuccess="@{viewModel.chapterRefreshStatus.isLoadMoreSuccess()}"
                 bindIsRefreshSuccess="@{viewModel.chapterRefreshStatus.isRefreshSuccess()}"
+                bindNoMoreData="@{viewModel.chapterRefreshStatus.noMoreData}"
                 bindOnLoadMoreListener="@{viewModel.chapterLoadData}"
                 bindOnRefreshListener="@{viewModel.chapterRefreshData}"
                 bindResetNoMoreData="@{viewModel.chapterRefreshStatus.resetNoMoreData}"
@@ -259,7 +261,7 @@
                 app:srlEnableLoadMoreWhenContentNotFull="true">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/detail_directory_recycler"
+                    android:id="@+id/home_detail_chapter_rv"
                     bindVerticalLayout="@{viewModel.chapterAdapter}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

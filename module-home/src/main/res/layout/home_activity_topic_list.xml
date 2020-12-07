@@ -41,6 +41,7 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/home_topic_refreshLayout"
+            bindContentRvId="@{viewModel.contentRvId}"
             bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
             bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
             bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess}"
@@ -55,6 +56,7 @@
             app:layout_constraintTop_toBottomOf="@id/home_topic_back">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_topic_recycler_view"
                 bindVerticalLayout="@{viewModel.mAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

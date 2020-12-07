@@ -29,6 +29,8 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
+    val contentRvId=R.id.home_menu_recycler_view
+
     // 听单详情数据
     var menuList = MutableLiveData<MenuSheetBean>()
 

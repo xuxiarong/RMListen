@@ -34,6 +34,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
     }
 
     val refreshStateMode = SmartRefreshLayoutStatusModel()
+    val contentRvId=R.id.search_adapter_content_rv
 
     //页码
     var mPage = 1

@@ -35,6 +35,8 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
 
+    val contentRvId=R.id.mine_member_comment_recycler_view
+
     val isShowNoData = ObservableField<Boolean>(false)
 
     val commentAdapter by lazy {

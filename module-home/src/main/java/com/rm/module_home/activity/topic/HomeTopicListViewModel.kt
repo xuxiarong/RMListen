@@ -26,7 +26,7 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
-
+    val contentRvId = R.id.home_topic_recycler_view
     val mAdapter by lazy {
         CommonBindVMAdapter<DownloadAudio>(
             viewModel = this,
