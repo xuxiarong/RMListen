@@ -118,7 +118,6 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
      */
     private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
         keyboardIsVisibility.set(keyboardVisibility)
-        DLog.i("========>>>", "${keyWord.get()}    $keyboardVisibility")
         if (keyboardVisibility) {
             if (keyWord.get()!!.isEmpty()) {
                 historyIsVisible.set(HISTORY_KEY.getListString().size > 0)

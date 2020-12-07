@@ -37,6 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                bindContentRvId="@{viewModel.commentContentRvId}"
                 bindIsLoadMoreSuccess="@{viewModel.commentRefreshModel.isLoadMoreSuccess()}"
                 bindNoMoreData="@{viewModel.commentRefreshModel.noMoreData}"
                 bindOnLoadMoreListener="@{viewModel.commentLoadData}"

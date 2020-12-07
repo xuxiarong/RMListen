@@ -7,7 +7,7 @@ package com.rm.module_play.model
  * @Version: 1.0.0
  */
 data class AudioCommentsModel(
-    val list: List<Comments>,
+    val list: List<Comments>?,
     val total: Int
 )
 

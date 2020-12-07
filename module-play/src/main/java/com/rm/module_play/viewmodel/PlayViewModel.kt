@@ -7,6 +7,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.net.checkResult
@@ -27,12 +28,13 @@ import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
 import com.rm.module_play.R
+import com.rm.module_play.adapter.PlayDetailCommentAdapter
 import com.rm.module_play.dialog.showMusicPlayMoreDialog
 import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.model.AudioCommentsModel
-import com.rm.module_play.model.Comments
+import com.rm.module_play.model.PlayDetailAdvertiseModel
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -116,18 +118,13 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 评论 SmartRefreshLayout的状态变化
      */
     val commentRefreshModel = SmartRefreshLayoutStatusModel()
+    val commentContentRvId = R.id.play_comment_rv
 
     /**
      * 评论adapter
      */
     val mCommentAdapter by lazy {
-        CommonBindVMAdapter<Comments>(
-            this,
-            mutableListOf(),
-            R.layout.play_item_comment,
-            BR.viewModel,
-            BR.item
-        )
+        PlayDetailCommentAdapter(this@PlayViewModel, BR.viewModel, BR.item)
     }
 
     /**
@@ -235,9 +232,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
 
     //点赞
-    fun playLikeBook(context: Context, bean: Comments) {
+    fun playLikeBook(context: Context, bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity) {
         if (isLogin.get()) {
-            if (bean.is_liked) {
+            if (bean.data.is_liked) {
                 unLikeComment(bean)
             } else {
                 likeComment(bean)
@@ -258,7 +255,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 分享
      */
-    fun clickShare(context: Context){
+    fun clickShare(context: Context) {
         getActivity(context)?.let {
             Share2.Builder(it)
                 .setContentType(ShareContentType.TEXT)
@@ -429,16 +426,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 取消评论点赞
      */
-    private fun unLikeComment(bean: Comments) {
+    private fun unLikeComment(bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity) {
         launchOnIO {
-            repository.homeUnLikeComment(bean.id).checkResult(
+            repository.homeUnLikeComment(bean.data.id).checkResult(
                 onSuccess = {
-
                     val indexOf = mCommentAdapter.data.indexOf(bean)
-                    bean.is_liked = false
-                    bean.likes = bean.likes - 1
-                    val headerLayoutCount = mCommentAdapter.headerLayoutCount
-                    mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    if (indexOf != -1) {
+                        bean.data.is_liked = false
+                        bean.data.likes = bean.data.likes - 1
+                        val headerLayoutCount = mCommentAdapter.headerLayoutCount
+                        mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    }
 
                 },
                 onError = {
@@ -451,17 +449,18 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 评论点赞
      */
-    private fun likeComment(bean: Comments) {
+    private fun likeComment(bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity) {
         launchOnIO {
-            repository.homeLikeComment(bean.id).checkResult(
+            repository.homeLikeComment(bean.data.id).checkResult(
                 onSuccess = {
-
                     val indexOf = mCommentAdapter.data.indexOf(bean)
-                    bean.is_liked = true
-                    bean.likes = bean.likes + 1
-                    //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
-                    val headerLayoutCount = mCommentAdapter.headerLayoutCount
-                    mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    if (indexOf != -1) {
+                        bean.data.is_liked = true
+                        bean.data.likes = bean.data.likes + 1
+                        //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
+                        val headerLayoutCount = mCommentAdapter.headerLayoutCount
+                        mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    }
                 },
                 onError = {
                     DLog.i("----->", "评论点赞:$it")
@@ -538,16 +537,34 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun processCommentSuccessData(bean: AudioCommentsModel) {
         showContentView()
+        val list = mutableListOf<MultiItemEntity>()
         commentTotal.set(bean.total)
         if (commentPage == 1) {
-            mCommentAdapter.setList(bean.list)
+            bean.list?.let {
+                it.forEach { bean ->
+                    list.add(PlayDetailCommentAdapter.PlayDetailCommentItemEntity(bean))
+                }
+            }
+            mCommentAdapter.setList(list)
+
+            mCommentAdapter.addData(
+                3,
+                mutableListOf(PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity(
+                    PlayDetailAdvertiseModel(mutableListOf())
+                ))
+            )
             commentRefreshModel.finishRefresh(true)
         } else {
-            mCommentAdapter.addData(bean.list)
+            bean.list?.let {
+                it.forEach { bean ->
+                    list.add(PlayDetailCommentAdapter.PlayDetailCommentItemEntity(bean))
+                }
+                mCommentAdapter.addData(list)
+            }
             commentRefreshModel.finishLoadMore(true)
         }
 
-        if (mCommentAdapter.data.size >= bean.total || bean.list.size < pageSize) {
+        if (mCommentAdapter.data.size >= bean.total || bean.list?.size ?: 0 < pageSize) {
             commentRefreshModel.setNoHasMore(true)
         } else {
             commentPage++
