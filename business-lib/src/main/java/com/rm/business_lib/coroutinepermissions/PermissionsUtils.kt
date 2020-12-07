@@ -2,7 +2,6 @@ package com.rm.business_lib.coroutinepermissions
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -53,3 +52,4 @@ suspend fun Fragment.requestPermissionsForResult(
             })
             .requestPermissions(title = title, rationale = rationale, permissions = *permissions)
     }
+
