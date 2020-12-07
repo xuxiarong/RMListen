@@ -1,6 +1,7 @@
 package com.rm.module_search.viewmodel
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableField
@@ -30,7 +31,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     var keyWord = searchKeyword
 
     //输入法显示/隐藏监听
-    var keyboardVisibility: (Boolean) -> Unit = { keyboardVisibilityListener(it) }
+    var keyboardVisibility: (Boolean,Int) -> Unit = {it,_-> keyboardVisibilityListener(it) }
 
     //输入法是否显示
     val keyboardIsVisibility = ObservableField<Boolean>(false)
@@ -157,7 +158,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
      * 联想 item 点击事件
      */
     fun inputItemClickFun(view: View, content: String) {
-        searchKeyword.set(content)
+        keyWord.set(content)
         clickSearchFun(view)
     }
 
@@ -165,7 +166,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
      * 历史 item 点击事件
      */
     val historyItemClickFun: (View, String) -> Unit = { view, content ->
-        searchKeyword.set(content)
+        keyWord.set(content)
         clickSearchFun(view)
     }
 
@@ -174,6 +175,11 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
      * @param keyword 搜索关键字
      */
     fun searchResult(keyword: String) {
+        if (keyword.trim().trimEnd().isEmpty()) {
+            showTip("搜索的内容不能为空", R.color.business_color_ff5e5e)
+            DLog.i("=====", Log.getStackTraceString(Throwable()))
+            return
+        }
         oldKeyword = keyword
         saveHistory(keyword)
         showLoading()

@@ -64,7 +64,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     var inputKeyWord: (String) -> Unit = { inputContentChangeListener(it) }
 
     //输入法显示/隐藏监听
-    var keyboardVisibility: (Boolean) -> Unit = { keyboardVisibilityListener(it) }
+    var keyboardVisibility: (Boolean, Int) -> Unit = { it, _ -> keyboardVisibilityListener(it) }
 
     //输入法是否显示
     val keyboardIsVisibility = ObservableField<Boolean>(false)
@@ -93,9 +93,8 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     /**
      * 历史 item 点击事件
      */
-    val historyItemClickFun: (View, String) -> Unit = { _, content ->
-        searchKeyword.set(content)
-        startActivity(SearchResultActivity::class.java)
+    val historyItemClickFun: (View, String) -> Unit = { view, content ->
+        SearchResultActivity.startActivity(view.context, content)
     }
 
     /**
@@ -128,7 +127,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
             }
             recommendVisible.set(false)
         } else {
-            if (suggestIsVisible.get()!=true){
+            if (suggestIsVisible.get() != true) {
                 recommendVisible.set(true)
                 historyIsVisible.set(HISTORY_KEY.getListString().size > 0)
             }
@@ -146,12 +145,16 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                 imm.hideSoftInputFromWindow(it.applicationWindowToken, 0)
             }
         }
-        if (keyWord.get()!!.isEmpty()) {
-            searchKeyword.set(hintKeyword)
-        } else {
-            searchKeyword.set(keyWord.get())
+        val keyword =
+            if (keyWord.get()!!.isEmpty()) {
+                hintKeyword
+            } else {
+                keyWord.get()!!
+            }
+
+        view?.context?.let {
+            SearchResultActivity.startActivity(it, keyword)
         }
-        startActivity(SearchResultActivity::class.java)
     }
 
     /**
@@ -176,15 +179,14 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     /**
      * 联想 item 点击事件
      */
-    fun inputItemClickFun(content: String) {
-        toSearch(content)
+    fun inputItemClickFun(context: Context, content: String) {
+        toSearch(context, content)
     }
 
     /**
      * 清除输入内容
      */
     fun clickClearInput() {
-        searchKeyword.set("")
         keyWord.set("")
         inputAdapter.setList(null)
         suggestIsVisible.set(false)
@@ -194,16 +196,15 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     /**
      * 热搜推荐item  点击事件
      */
-    fun clickRecommendFun(recommend: String) {
-        toSearch(recommend)
+    fun clickRecommendFun(context: Context, recommend: String) {
+        toSearch(context, recommend)
     }
 
     /**
      * 跳转到搜索
      */
-    private fun toSearch(content: String) {
-        searchKeyword.set(content)
-        startActivity(SearchResultActivity::class.java)
+    private fun toSearch(context: Context, content: String) {
+        SearchResultActivity.startActivity(context, content)
     }
 
     /**

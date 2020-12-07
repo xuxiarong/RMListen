@@ -1,13 +1,9 @@
 package com.rm.module_home.viewmodel
 
-import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -179,8 +175,14 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     var commentTotal = ObservableField(0)
 
 
-    //整个页面是否可以点击
+    /**
+     * 整个页面是否可以点击
+     */
     var isNoClick = ObservableField<Boolean>(false)
+
+    val commentContentRvId=R.id.home_detail_comment_recycle_view
+
+    val chapterContentRvId=R.id.home_detail_chapter_rv
 
     /**
      * 头部dataBinding对象
@@ -930,7 +932,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
                     .showMySheetListDialog(it, audioId.get()!!) {
-                        showTip("添加成功")
+                        showTip("在“我听-听单”中查看")
                     }
             }
         }

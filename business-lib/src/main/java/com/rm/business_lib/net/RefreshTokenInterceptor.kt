@@ -1,6 +1,7 @@
 package com.rm.business_lib.net
 
 import android.os.Build
+import android.text.TextUtils
 import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.encodeMD5
@@ -18,8 +19,10 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import java.lang.Exception
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * desc   : 业务网络拦截器
@@ -52,7 +55,7 @@ class RefreshTokenInterceptor : Interceptor {
         )
     }
 
-    @Synchronized
+
     override fun intercept(chain: Interceptor.Chain): Response {
         try {
             val request: Request = getRequestHeaderBuilder(chain.request().newBuilder()).build()
@@ -89,23 +92,50 @@ class RefreshTokenInterceptor : Interceptor {
         }
     }
 
-    @Synchronized
-    private fun refreshToken(response: Response, chain: Interceptor.Chain): Response {
-        val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
-        //如果刷新成功
-        if (result?.code == 0) {
-            // 刷新token成功，保存最新token
-            DLog.i(TAG, "refreshToken:" + result.data.access)
-            updateLocalToken(result.data.access, result.data.refresh)
-            return chain.proceed(retryLoad(response))
-        } else {
-            if (result?.code == CODE_REFRESH_TOKEN_FAILED) {
-                loginOut()
-                return chain.proceed(retryLoad(response))
+    @Volatile
+    var token: String? = "";
+
+    var going = AtomicBoolean(false)
+
+    private fun refreshRealToken(): String {
+        synchronized(this) {
+            if (TextUtils.isEmpty(token)) {
+                try {
+                    val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
+                    //如果刷新成功
+                    if (result?.code == 0) {
+                        // 刷新token成功，保存最新token
+                        DLog.i(TAG, "refreshToken:" + result.data.access)
+                        updateLocalToken(result.data.access, result.data.refresh)
+                        token = result.data.refresh
+
+                        return token!!;
+                    }
+                    throw  Exception("token refresh error")
+                }finally {
+                    going.set(false)
+                }
+            } else {
+                return token!!;
             }
         }
+
+    }
+
+    private fun refreshToken(response: Response, chain: Interceptor.Chain): Response {
+
+        if (going.compareAndSet(false,true)){
+              token=null;
+        }
+        val result = refreshRealToken()
+
+
+
+        //如果刷新成功
+
         return response
     }
+
 
     /**
      * 重试

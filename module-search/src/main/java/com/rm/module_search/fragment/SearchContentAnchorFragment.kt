@@ -19,19 +19,11 @@ import com.rm.module_search.viewmodel.SearchContentAnchorViewModel
  */
 class SearchContentAnchorFragment :
     BaseVMFragment<SearchFragmentContentAnchorBinding, SearchContentAnchorViewModel>() {
-
-    private val footView by lazy {
-        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
-
-    }
     override fun initLayoutId() = R.layout.search_fragment_content_anchor
 
     override fun initModelBrId() = BR.viewModel
 
     override fun initData() {
-        mViewModel.loadErrorBlock = {
-            shtTip(it)
-        }
     }
 
     override fun startObserve() {
@@ -45,19 +37,6 @@ class SearchContentAnchorFragment :
                 mViewModel.anchorAdapter.setList(list)
             }
         }
-
-        mViewModel.refreshStateMode.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStateMode.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.anchorAdapter.removeAllFooterView()
-                    mViewModel.anchorAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.anchorAdapter.removeAllFooterView()
-                }
-            }
-        })
     }
 
     override fun onResume() {

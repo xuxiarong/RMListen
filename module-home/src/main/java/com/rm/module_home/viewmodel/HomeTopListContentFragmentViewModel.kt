@@ -7,6 +7,7 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
+import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeTopListContentAdapter
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.HomeTopListDataBean
@@ -25,6 +26,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
         )
     }
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
+    val contentRvId = R.id.home_top_list_recycler_content
 
     var mPage = 1//当前的页码
 

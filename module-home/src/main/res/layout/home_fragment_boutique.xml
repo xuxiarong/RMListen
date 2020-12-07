@@ -10,6 +10,7 @@
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/home_boutique_fragment_refresh_layout"
+        bindContentRvId="@{viewModel.contentRvId}"
         bindNoMoreData="@{viewModel.refreshStatusModel.noMoreData}"
         bindIsLoadMoreSuccess="@{viewModel.refreshStatusModel.isLoadMoreSuccess}"
         bindIsRefreshSuccess="@{viewModel.refreshStatusModel.isRefreshSuccess}"

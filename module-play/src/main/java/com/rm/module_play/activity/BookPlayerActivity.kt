@@ -110,10 +110,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         overridePendingTransition(0, R.anim.activity_bottom_close)
     }
 
-    private val footView by lazy {
-        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
-    }
-
     override fun getLayoutId(): Int = R.layout.activity_book_player
 
     override fun initModelBrId(): Int = BR.viewModel
@@ -159,18 +155,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun startObserve() {
-        mViewModel.commentRefreshModel.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.commentRefreshModel.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.mCommentAdapter.removeAllFooterView()
-                    mViewModel.mCommentAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.mCommentAdapter.removeAllFooterView()
-                }
-            }
-        })
+
         mViewModel.playPath.observe(this, Observer { playPath ->
             if (playPath.size <= 1) {
                 PlayGlobalData.hasNextChapter.set(false)

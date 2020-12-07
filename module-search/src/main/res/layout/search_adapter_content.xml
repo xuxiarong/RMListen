@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{()->viewModel.itemClickFun(item)}"
+        android:onClick="@{()->viewModel.itemClickFun(context,item)}"
         android:paddingStart="@dimen/dp_8"
         android:paddingTop="@dimen/dp_10"
         android:paddingEnd="@dimen/dp_8"

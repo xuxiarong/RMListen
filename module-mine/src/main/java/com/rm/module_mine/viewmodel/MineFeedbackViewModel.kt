@@ -2,6 +2,7 @@ package com.rm.module_mine.viewmodel
 
 import android.content.Context
 import androidx.databinding.ObservableField
+import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.net.util.GsonUtils
@@ -14,6 +15,8 @@ import com.rm.module_mine.bean.MineFeedbackImgBean
 import com.rm.module_mine.bean.MineUploadPic
 import com.rm.module_mine.repository.MineRepository
 import com.rm.module_mine.util.CommonTakePhotoHelp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  *
@@ -33,8 +36,8 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
      */
     val inputAction: (String) -> Unit = { inputText.set(it) }
 
-    private val successList = mutableListOf<MineUploadPic>()
-    private val failureList = mutableListOf<MineFeedbackImgBean>()
+    private val successList = mutableListOf<String>()
+    private val failureList = mutableListOf<String>()
     private var uploadIndex = -1
 
     var checkedId = -1
@@ -63,7 +66,7 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
                 launchOnIO {
                     repository.uploadCommon(it).checkResult(
                         onSuccess = { bean ->
-                            successList.add(bean)
+                            successList.add(bean.path)
                             uploadIndex++
                             if (mAdapter.data.size > uploadIndex && !mAdapter.data[uploadIndex].path.isNullOrEmpty()) {
                                 uploadPic(mAdapter.data[uploadIndex])
@@ -73,7 +76,7 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
                         },
                         onError = { msg ->
                             showContentView()
-                            failureList.add(bean)
+                            failureList.add(bean.path ?: "")
                             showTip("$msg", R.color.business_color_ff5e5e)
                         }
                     )
@@ -84,23 +87,27 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
 
     private fun feedback() {
         showContentView()
-        DLog.i("=========>", "$successList   ${getUploadType()}")
-//        GsonUtils.toJson()
-//        launchOnIO {
-//            repository.mineFeedback(getUploadType(),inputText.get()!!,,inputContact).checkResult(
-//                onSuccess = {
-//                    showContentView()
-//                    showTip("反馈成功")
-//                },
-//                onError = {msg->
-//                    showContentView()
-//                    showTip("$msg", R.color.business_color_ff5e5e)
-//                }
-//            )
-//        }
+        val toTypedArray: Array<String> = successList.toTypedArray()
+        launchOnIO {
+            repository.mineFeedback(getUploadType(), inputText.get()!!, toTypedArray, inputContact)
+                .checkResult(
+                    onSuccess = {
+                        showContentView()
+                        showTip("反馈成功")
+                        launch {
+                            delay(1000)
+                            finish()
+                        }
+                    },
+                    onError = { msg ->
+                        showContentView()
+                        showTip("$msg", R.color.business_color_ff5e5e)
+                    }
+                )
+        }
     }
 
-    private fun getUploadType(): Int {
+    private fun getUploadType(): Int? {
         return when (checkedId) {
             R.id.mine_feedback_one -> {
                 2
@@ -115,7 +122,7 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
                 0
             }
             else -> {
-                0
+                -1
             }
         }
 
@@ -128,6 +135,9 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
     fun requestBook() {
         if (inputText.get()!!.trim().trimEnd().isEmpty()) {
             showTip("反馈的内容不能为空", R.color.business_color_ff5e5e)
+            return
+        } else if (inputText.get()!!.length > 500) {
+            showTip("字数最多不能超过500个", R.color.business_color_ff5e5e)
             return
         }
 

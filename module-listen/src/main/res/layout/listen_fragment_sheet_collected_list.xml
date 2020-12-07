@@ -9,6 +9,7 @@
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        bindContentRvId="@{viewModel.contentRvId}"
         android:id="@+id/listen_sheet_collected_list_refresh"
         bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
         bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"

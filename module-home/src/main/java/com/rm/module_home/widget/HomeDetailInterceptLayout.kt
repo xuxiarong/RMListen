@@ -105,7 +105,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
         headerLayout = findViewById(R.id.home_detail_chapter_header)
-        mRecyclerView = findViewById(R.id.detail_directory_recycler)
+        mRecyclerView = findViewById(R.id.home_detail_chapter_rv)
         mRecyclerView1 = findViewById(R.id.detail_anthology_recycler)
     }
 

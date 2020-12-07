@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 class KeyboardStatusDetector {
     //纪录根视图的显示高度
     private var rootViewVisibleHeight = 0
+
     //接口回调
     private var mVisibilityListener: KeyboardVisibilityListener? = null
 
@@ -45,13 +46,16 @@ class KeyboardStatusDetector {
                 }
 
                 if (rootViewVisibleHeight - visibleHeight > 200) {
-                    mVisibilityListener?.onVisibilityChanged(true)
+                    mVisibilityListener?.onVisibilityChanged(
+                        true,
+                        rootViewVisibleHeight - visibleHeight
+                    )
                     rootViewVisibleHeight = visibleHeight
                     return@addOnGlobalLayoutListener
                 }
 
                 if (visibleHeight - rootViewVisibleHeight > 200) {
-                    mVisibilityListener?.onVisibilityChanged(false)
+                    mVisibilityListener?.onVisibilityChanged(false, 0)
                     rootViewVisibleHeight = visibleHeight
                     return@addOnGlobalLayoutListener
                 }
@@ -66,7 +70,7 @@ class KeyboardStatusDetector {
     }
 
     interface KeyboardVisibilityListener {
-        fun onVisibilityChanged(keyboardVisible: Boolean)
+        fun onVisibilityChanged(keyboardVisible: Boolean, keyboardHeight: Int)
     }
 
 }

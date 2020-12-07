@@ -32,6 +32,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
     var memberId = ""
 
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
+    val contentRvId = R.id.mine_member_release_book
 
     val mAdapter by lazy {
         CommonBindVMAdapter<MinePublishDetailBean>(

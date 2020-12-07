@@ -29,9 +29,6 @@ class MineMemberReleaseBooksActivity :
         }
     }
 
-    private val footView by lazy {
-        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
-    }
 
     override fun initModelBrId() = BR.viewModel
 
@@ -50,18 +47,7 @@ class MineMemberReleaseBooksActivity :
     }
 
     override fun startObserve() {
-        mViewModel.refreshStatusModel.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val noMoreData = mViewModel.refreshStatusModel.noMoreData.get()
-                if (noMoreData == true  ) {
-                    mViewModel.mAdapter.removeAllFooterView()
-                    mViewModel.mAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.mAdapter.removeAllFooterView()
-                }
-            }
-        })
+
     }
 
 }

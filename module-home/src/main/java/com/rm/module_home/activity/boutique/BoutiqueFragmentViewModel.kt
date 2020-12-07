@@ -25,6 +25,8 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
+    val contentRvId = R.id.home_boutique_fragment_recycler_view
+
     var categoryTabBean: CategoryTabBean? = null
     val bookAdapter by lazy {
         CommonBindVMAdapter<DownloadAudio>(

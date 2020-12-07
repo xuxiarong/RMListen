@@ -50,9 +50,6 @@ class ListenMySheetDetailActivity :
 
     private var headerDataBind: ListenHeaderSheetDetailBinding? = null
 
-    private val footView by lazy {
-        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
-    }
 
     override fun initModelBrId() = BR.viewModel
 
@@ -115,18 +112,6 @@ class ListenMySheetDetailActivity :
     }
 
     override fun startObserve() {
-        mViewModel.refreshStateModel.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStateModel.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.mAdapter.removeAllFooterView()
-                    mViewModel.mAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.mAdapter.removeAllFooterView()
-                }
-            }
-        })
     }
 
     /**

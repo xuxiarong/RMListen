@@ -28,10 +28,6 @@ class MineMemberFansFragment :
         }
     }
 
-    private val footView by lazy {
-        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
-    }
-
     override fun initModelBrId() = BR.viewModel
 
     override fun initLayoutId() = R.layout.mine_fragment_member_fans
@@ -44,17 +40,5 @@ class MineMemberFansFragment :
     }
 
     override fun startObserve() {
-        mViewModel.refreshStatusModel.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStatusModel.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.fanAdapter.removeAllFooterView()
-                    mViewModel.fanAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.fanAdapter.removeAllFooterView()
-                }
-            }
-        })
     }
 }

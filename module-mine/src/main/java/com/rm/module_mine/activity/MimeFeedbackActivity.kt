@@ -2,9 +2,11 @@ package com.rm.module_mine.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
+import android.widget.ScrollView
+import com.rm.baselisten.binding.bindKeyboardVisibilityListener
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.DLog
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivityFeedbackBinding
@@ -34,6 +36,17 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
             .setLeftIconClick { finish() }
 
         mViewModel.baseTitleModel.value = titleModel
+
+        mDataBind.mineFeedbackContent.bindKeyboardVisibilityListener { it, keyboardHeight ->
+            if (it) {
+                mDataBind.mineFeedbackView.apply {
+                    layoutParams.height = keyboardHeight
+                    visibility = View.VISIBLE
+                }
+            } else {
+                mDataBind.mineFeedbackView.visibility = View.GONE
+            }
+        }
     }
 
     override fun startObserve() {

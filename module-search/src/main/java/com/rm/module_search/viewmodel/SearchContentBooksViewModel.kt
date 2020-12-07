@@ -37,16 +37,13 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
     }
 
     val refreshStateMode = SmartRefreshLayoutStatusModel()
+    val contentRvId = R.id.search_adapter_content_rv
 
     //页码
     var mPage = 1
 
     //每页展示数量
     private val mPageSize = 12
-
-    //加载失败
-    var loadErrorBlock: (String) -> Unit = {}
-
 
     /**
      * 刷新
@@ -74,7 +71,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
                     onSuccess = {
                         successData(it)
                     },
-                    onError = {msg ->
+                    onError = { msg ->
                         failData(msg)
                     }
                 )
@@ -115,7 +112,7 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
         } else {
             refreshStateMode.finishLoadMore(false)
         }
-        loadErrorBlock("$msg")
+        showTip("$msg", R.color.business_color_ff5e5e)
     }
 
     /**

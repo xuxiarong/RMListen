@@ -30,6 +30,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     }
 
     var refreshStatusModel = SmartRefreshLayoutStatusModel()
+    val contentRvId = R.id.listen_subscription_recycler_view
 
     private val mDialog by lazy { CommBottomDialog() }
 
@@ -166,7 +167,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     /**
      * dialog 分享
      */
-    fun dialogShareFun(context:Context) {
+    fun dialogShareFun(context: Context) {
         getActivity(context)?.let {
             Share2.Builder(it)
                 .setContentType(ShareContentType.TEXT)

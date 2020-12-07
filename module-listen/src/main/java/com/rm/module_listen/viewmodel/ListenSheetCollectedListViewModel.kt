@@ -30,6 +30,8 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
 
+    val contentRvId = R.id.listen_sheet_collected_list_recycler_view
+
     //每页加载的数据
     private val pageSize = 12
 

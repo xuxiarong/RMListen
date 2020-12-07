@@ -47,6 +47,8 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     //是否显示没数据
     val showNoData = ObservableField<Boolean>(false)
 
+    //刷新控件内的recyclerview
+    val contentRvId=R.id.home_menu_detail_recycler_view
 
     val userInfo = loginUser
 

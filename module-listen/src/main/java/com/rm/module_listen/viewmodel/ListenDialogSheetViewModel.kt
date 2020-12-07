@@ -84,6 +84,7 @@ class ListenDialogSheetViewModel(
     }
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
+    val contentRvId=R.id.listen_dialog_sheet_recycler_view
 
     var dismiss: () -> Unit = {}
 

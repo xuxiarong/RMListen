@@ -22,22 +22,10 @@ class ListenHistorySearchActivity :
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.activity_listen_history_search
 
-    private val footView by lazy {
-        LayoutInflater.from(this).inflate(R.layout.business_foot_view, null)
-    }
+
 
     override fun startObserve() {
-        mViewModel.allHistory.observe(this, Observer {
-            if (it.isEmpty()) {
-                mViewModel.mSwipeAdapter.swipeData.clear()
-                mViewModel.showDataEmpty()
-            } else {
-                mViewModel.mSwipeAdapter.addData(it)
-                if (mViewModel.mSwipeAdapter.footerLayout == null && it.size > 8) {
-                    mViewModel.mSwipeAdapter.addFooterView(footView)
-                }
-            }
-        })
+
     }
 
     override fun initView() {

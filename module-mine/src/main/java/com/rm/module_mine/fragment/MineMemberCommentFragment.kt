@@ -30,9 +30,6 @@ class MineMemberCommentFragment :
 
     override fun initLayoutId() = R.layout.mine_fragment_member_comment
 
-    private val footView by lazy {
-        LayoutInflater.from(context).inflate(R.layout.business_foot_view, null)
-    }
 
     override fun initView() {
         super.initView()
@@ -49,17 +46,6 @@ class MineMemberCommentFragment :
     }
 
     override fun startObserve() {
-        mViewModel.refreshStateModel.noMoreData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                val hasMore = mViewModel.refreshStateModel.noMoreData.get()
-                if (hasMore == true) {
-                    mViewModel.commentAdapter.removeAllFooterView()
-                    mViewModel.commentAdapter.addFooterView(footView)
-                } else {
-                    mViewModel.commentAdapter.removeAllFooterView()
-                }
-            }
-        })
+
     }
 }

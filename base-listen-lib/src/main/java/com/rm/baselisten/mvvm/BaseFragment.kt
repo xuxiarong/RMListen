@@ -72,10 +72,4 @@ abstract class BaseFragment : Fragment() {
         immersionBarHelper.defaultInitWhiteFont()
     }
 
-    fun shtTip(content: String) {
-        if (activity is BaseActivity) {
-            val baseActivity = activity as BaseActivity
-            baseActivity.tipView.showTipView(baseActivity, content)
-        }
-    }
 }

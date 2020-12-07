@@ -4,6 +4,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.R
 import com.rm.module_listen.bean.ListenSubscriptionListBean
@@ -36,7 +37,9 @@ class ListenSubscriptionAdapter(
             view.width = view.resources.getDimensionPixelSize(R.dimen.dp_18)
         }
 
-        if (topSize > 0 && topSize != itemCount && topSize-1  == holder.adapterPosition) {
+        DLog.i("======","$topSize   $itemCount     ${holder.adapterPosition}")
+
+        if (topSize > 0 && topSize != itemCount-headerLayoutCount-footerLayoutCount && topSize-1  == holder.adapterPosition) {
             holder.getView<View>(R.id.listen_subscription_adapter_view1).visibility = View.VISIBLE
             holder.getView<View>(R.id.listen_subscription_adapter_view2).visibility = View.VISIBLE
         } else {
@@ -47,5 +50,6 @@ class ListenSubscriptionAdapter(
 
     fun setTopSize(topSize: Int) {
         this.topSize = topSize
+        notifyDataSetChanged()
     }
 }
