@@ -29,6 +29,7 @@ class SplashActivity :BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewMo
 
     override fun initData() {
         mViewModel.startSkipTimerCount()
+        mViewModel.getSplashAd()
     }
 
     override fun getLayoutId() = R.layout.home_activity_splash
