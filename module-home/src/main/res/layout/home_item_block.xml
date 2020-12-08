@@ -12,7 +12,7 @@
 
         <variable
             name="item"
-            type="com.rm.module_home.model.home.more.HomeBlockModel" />
+            type="com.rm.module_home.model.home.HomeBlockModel" />
 
 
     </data>
@@ -25,7 +25,7 @@
         android:layout_marginEnd="@dimen/dp_16">
 
         <androidx.appcompat.widget.AppCompatTextView
-            bindText="@{item.block.block_name}"
+            bindText="@{item.block_name}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_28"
             android:gravity="center_vertical"
@@ -40,7 +40,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemMoreText"
-            bindClick="@{()->viewModel.onBlockClick(item.block)}"
+            bindClick="@{()->viewModel.onBlockClick(item)}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_28"
             android:layout_gravity="end|center_vertical"

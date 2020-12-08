@@ -15,6 +15,7 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.model.home.HomeAudioModel
+import com.rm.module_home.model.home.HomeBlockModel
 import com.rm.module_home.model.home.HomeMenuModel
 import com.rm.module_home.model.home.HomeModel
 import com.rm.module_home.model.home.banner.HomeBannerRvModel
@@ -58,7 +59,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     var homeAllData = MutableLiveData<MutableList<MultiItemEntity>>()
 
     var audioClick: (HomeAudioModel) -> Unit = {}
-    var blockClick: (com.rm.module_home.model.home.HomeBlockModel) -> Unit = {}
+    var blockClick: (HomeBlockModel) -> Unit = {}
 
     //首页弹窗广告
     var homeDialogAdModel = ObservableField<BusinessAdModel>()
@@ -204,8 +205,10 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
      */
     private fun setBlockData(
             allData: ArrayList<MultiItemEntity>,
-            block: com.rm.module_home.model.home.HomeBlockModel
+            block: HomeBlockModel
     ) {
+        block.itemType = R.layout.home_item_block
+
         when (block.block_type_id) {
             BLOCK_HOR_DOUBLE -> {
                 val doubleHorList = ArrayList<MultiItemEntity>()
@@ -232,7 +235,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 if (doubleHorList.size >= 3) {
                     doubleHorList.add(HomeAudioHorDoubleFooterModel())
                 }
-                allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
+                allData.add(block)
                 allData.add(HomeAudioHorDoubleRvModel(doubleHorList, HomeAudioDoubleBlockModel(page_id = block.page_id, block_id = block.block_id, block_name = block.block_name, topic_id = block.topic_id)))
             }
             BLOCK_HOR_GRID -> {
@@ -240,7 +243,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 block.audio_list.list.forEach {
                     gridList.add(HomeGridAudioModel(it))
                 }
-                allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
+                allData.add(block)
                 allData.add(HomeGridAudioRvModel(gridList))
             }
             BLOCK_HOR_SINGLE -> {
@@ -248,7 +251,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 block.audio_list.list.forEach {
                     horSingList.add(HomeAudioHorSingleModel(it))
                 }
-                allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
+                allData.add(block)
                 allData.add(HomeAudioHorSingleRvModel(horSingList))
             }
             BLOCK_HOR_VER -> {
@@ -256,9 +259,15 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 block.audio_list.list.forEach {
                     verSingList.add(HomeAudioVerModel(it))
                 }
-                allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
+                allData.add(block)
                 allData.add(HomeAudioVerRvModel(verSingList))
             }
+            BLOCK__SINGLE_IMG -> {
+                if("image" == block.relation_to){
+                    allData.add(block.single_img_content)
+                }
+            }
+
             else -> {
 
             }
@@ -283,7 +292,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         audioClick(audioModel)
     }
 
-    fun onBlockClick(block: com.rm.module_home.model.home.HomeBlockModel) {
+    fun onBlockClick(block: HomeBlockModel) {
         blockClick(block)
     }
 
@@ -296,6 +305,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         const val BLOCK_HOR_GRID = 2
         const val BLOCK_HOR_DOUBLE = 3
         const val BLOCK_HOR_VER = 4
+        const val BLOCK__SINGLE_IMG = 5
     }
 
 }

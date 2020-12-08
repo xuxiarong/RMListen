@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.module_home.model.home.floor.HomeFloorAudioModel" />
+    </data>
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:layout_marginTop="@dimen/dp_12"
+        bindUrl="@{item.homeFloorModel.audio_cover}"
+        corner="@{8}"
+        />
+
+</layout>
