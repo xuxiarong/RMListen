@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.guide.MainGuideActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/splash"
+        />
+    <com.flyco.roundview.RoundTextView
+        android:id="@+id/main_guide_to_main"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="@dimen/dp_44"
+        app:rv_isRadiusHalfHeight="true"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/dp_300"
+        app:rv_backgroundColor="@color/base_ff5e5e"
+        android:textColor="@color/businessWhite"
+        android:textSize="@dimen/business_text_size_16sp"
+        android:text="@string/main_use_app"
+        />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="290dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/business_menu_red_bg"
+        />
+
+</FrameLayout>

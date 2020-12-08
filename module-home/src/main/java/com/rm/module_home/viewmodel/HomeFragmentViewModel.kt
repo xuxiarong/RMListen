@@ -61,7 +61,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     var blockClick: (com.rm.module_home.model.home.HomeBlockModel) -> Unit = {}
 
     //首页弹窗广告
-    var honeDialogAdList = MutableLiveData<MutableList<BusinessAdModel>>()
+    var homeDialogAdModel = ObservableField<BusinessAdModel>()
 
 
     fun getHomeDataFromService() {
@@ -102,7 +102,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
             repository.getHomeDialogAd(arrayOf("ad_index_alert")).checkResult(
                     onSuccess = {
                         it.ad_index_alert?.let { dialogAdList ->
-                            honeDialogAdList.postValue(dialogAdList)
+                            val randomAdPosition = Random.nextInt(dialogAdList.size)
+                            homeDialogAdModel.set(dialogAdList[randomAdPosition])
                         }
                     },
                     onError = {
@@ -112,6 +113,9 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         }
     }
 
+    /**
+     * 获取轮播广告
+     */
     fun getHomeBannerAd() {
         launchOnIO {
             repository.getHomeBannerAd(arrayOf("ad_index_banner")).checkResult(
@@ -123,8 +127,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                                     val currentBannerList = homeBannerInfoList.value
 
                                     currentBannerList?.let { bannerList ->
-                                        if(bannerList.size>0){
-                                           val adBanner =  BannerInfoBean(
+                                        if (bannerList.size > 0) {
+                                            val adBanner = BannerInfoBean(
                                                     banner_id = bannerList[0].banner_id,
                                                     banner_img = bannerAdList[randomAdPosition].image_path,
                                                     banner_jump = bannerAdList[randomAdPosition].jump_url,
@@ -135,7 +139,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                                             )
                                             if (bannerList.size > i) {
                                                 bannerList.add(i, adBanner)
-                                            }else{
+                                            } else {
                                                 bannerList.add(adBanner)
                                             }
                                             homeBannerInfoList.value = bannerList
@@ -180,7 +184,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         homeModel.block_list?.forEach {
             if (it.audio_list.list.size > 0) {
                 setBlockData(allData, it)
-                if (null == honeDialogAdList.value) {
+                if (null == homeDialogAdModel.get()) {
                     getHomeDialogAd()
                 }
             }
