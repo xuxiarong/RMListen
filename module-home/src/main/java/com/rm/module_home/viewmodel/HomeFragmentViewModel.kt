@@ -1,6 +1,5 @@
 package com.rm.module_home.viewmodel
 
-import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -10,9 +9,11 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BannerInfoBean
+import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.module_home.BR
 import com.rm.module_home.R
+import com.rm.module_home.adapter.HomeAdapter
 import com.rm.module_home.model.home.HomeAudioModel
 import com.rm.module_home.model.home.HomeMenuModel
 import com.rm.module_home.model.home.HomeModel
@@ -29,6 +30,7 @@ import com.rm.module_home.model.home.horsingle.HomeAudioHorSingleRvModel
 import com.rm.module_home.model.home.ver.HomeAudioVerModel
 import com.rm.module_home.model.home.ver.HomeAudioVerRvModel
 import com.rm.module_home.repository.HomeRepository
+import kotlin.random.Random
 
 /**
  * desc   :
@@ -37,10 +39,14 @@ import com.rm.module_home.repository.HomeRepository
  */
 class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() {
 
+    val homeAdapter: HomeAdapter by lazy {
+        HomeAdapter(this, BR.viewModel, BR.item)
+    }
+
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
-    var homeBannerInfoList = MutableLiveData<List<BannerInfoBean>>()
+    var homeBannerInfoList = MutableLiveData<MutableList<BannerInfoBean>>()
     var homeMenuList = MutableLiveData<MutableList<MultiItemEntity>>()
     var collectItemClickList: (HomeMenuModel) -> Unit = {}
     var doubleRvLeftScrollOpenDetail: () -> Unit = {}
@@ -54,57 +60,129 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     var audioClick: (HomeAudioModel) -> Unit = {}
     var blockClick: (com.rm.module_home.model.home.HomeBlockModel) -> Unit = {}
 
+    //首页弹窗广告
+    var honeDialogAdList = MutableLiveData<MutableList<BusinessAdModel>>()
+
+
     fun getHomeDataFromService() {
         refreshStatusModel.setNoHasMore(true)
         launchOnIO(block = {
             repository.getHomeData().checkResult(
-                onSuccess = {
-                    showContentView()
-                    refreshStatusModel.finishRefresh(true)
-                    dealHomeData(it)
-                }, onError = {
-                    refreshStatusModel.finishRefresh(false)
-                    if(homeAllData.value!=null){
+                    onSuccess = {
                         showContentView()
-                    }else{
-                        showServiceError()
+                        refreshStatusModel.finishRefresh(true)
+                        dealHomeData(it)
+                    },
+                    onError = {
+                        refreshStatusModel.finishRefresh(false)
+                        if (homeAllData.value != null) {
+                            showContentView()
+                        } else {
+                            showServiceError()
+                        }
+                        errorMsg.set(it)
+                        DLog.d("suolong ", "error = $it")
                     }
-                    errorMsg.set(it)
-                    DLog.d("suolong ", "error = $it")
-                }
             )
-        },netErrorBlock = {
+        }, netErrorBlock = {
             refreshStatusModel.finishRefresh(false)
             showNetError.set(true)
             showNetError.notifyChange()
-            if(homeAllData.value!=null){
+            if (homeAllData.value != null) {
                 showContentView()
-            }else{
+            } else {
                 showServiceError()
             }
             refreshStatusModel.finishRefresh(false)
         })
     }
 
+    fun getHomeDialogAd() {
+        launchOnIO {
+            repository.getHomeDialogAd(arrayOf("ad_index_alert")).checkResult(
+                    onSuccess = {
+                        it.ad_index_alert?.let { dialogAdList ->
+                            honeDialogAdList.postValue(dialogAdList)
+                        }
+                    },
+                    onError = {
+                        DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
+                    }
+            )
+        }
+    }
+
+    fun getHomeBannerAd() {
+        launchOnIO {
+            repository.getHomeBannerAd(arrayOf("ad_index_banner")).checkResult(
+                    onSuccess = {
+                        it.ad_index_banner?.let { bannerAdList ->
+                            for (i in 0 until homeAdapter.data.size) {
+                                val randomAdPosition = Random.nextInt(bannerAdList.size)
+                                if (homeAdapter.data[i] is HomeBannerRvModel) {
+                                    val currentBannerList = homeBannerInfoList.value
+
+                                    currentBannerList?.let { bannerList ->
+                                        if(bannerList.size>0){
+                                           val adBanner =  BannerInfoBean(
+                                                    banner_id = bannerList[0].banner_id,
+                                                    banner_img = bannerAdList[randomAdPosition].image_path,
+                                                    banner_jump = bannerAdList[randomAdPosition].jump_url,
+                                                    banner_seq = bannerList[0].banner_seq,
+                                                    page_id = bannerList[0].page_id,
+                                                    img_url = bannerAdList[randomAdPosition].image_path,
+                                                    isAd = true
+                                            )
+                                            if (bannerList.size > i) {
+                                                bannerList.add(i, adBanner)
+                                            }else{
+                                                bannerList.add(adBanner)
+                                            }
+                                            homeBannerInfoList.value = bannerList
+                                            homeAdapter.notifyDataSetChanged()
+                                            return@checkResult
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    onError = {
+                        DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
+                    }
+            )
+        }
+    }
+
+
     private fun dealHomeData(homeModel: HomeModel) {
 
         val allData = ArrayList<MultiItemEntity>()
 
-        homeBannerInfoList.value = homeModel.banner_list
+        homeModel.banner_list?.let {
+            if (it.isNotEmpty()) {
+                getHomeBannerAd()
+            }
+            homeBannerInfoList.value = it
 
-        allData.add(HomeBannerRvModel(homeModel.banner_list))
-
+            allData.add(HomeBannerRvModel(it))
+        }
 
         val menuList = ArrayList<MultiItemEntity>()
-        homeModel.menu_list.forEach {
+        homeModel.menu_list?.forEach {
             it.itemType = R.layout.home_item_menu
         }
-        menuList.addAll(homeModel.menu_list)
-        allData.add(HomeMenuRvModel())
+        homeModel.menu_list?.let {
+            menuList.addAll(homeModel.menu_list)
+            allData.add(HomeMenuRvModel())
+        }
 
-        homeModel.block_list.forEach {
+        homeModel.block_list?.forEach {
             if (it.audio_list.list.size > 0) {
                 setBlockData(allData, it)
+                if (null == honeDialogAdList.value) {
+                    getHomeDialogAd()
+                }
             }
         }
         homeMenuList.value = menuList
@@ -117,8 +195,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
      * @param block HomeBlockModel 板块
      */
     private fun setBlockData(
-        allData: ArrayList<MultiItemEntity>,
-        block: com.rm.module_home.model.home.HomeBlockModel
+            allData: ArrayList<MultiItemEntity>,
+            block: com.rm.module_home.model.home.HomeBlockModel
     ) {
         when (block.block_type_id) {
             BLOCK_HOR_DOUBLE -> {
@@ -147,7 +225,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     doubleHorList.add(HomeAudioHorDoubleFooterModel())
                 }
                 allData.add(com.rm.module_home.model.home.more.HomeBlockModel(block))
-                allData.add(HomeAudioHorDoubleRvModel(doubleHorList, HomeAudioDoubleBlockModel(page_id = block.page_id,block_id = block.block_id,block_name = block.block_name,topic_id = block.topic_id)))
+                allData.add(HomeAudioHorDoubleRvModel(doubleHorList, HomeAudioDoubleBlockModel(page_id = block.page_id, block_id = block.block_id, block_name = block.block_name, topic_id = block.topic_id)))
             }
             BLOCK_HOR_GRID -> {
                 val gridList = ArrayList<MultiItemEntity>()
@@ -181,10 +259,10 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
 
     fun getAdapterWithList(data: ArrayList<MultiItemEntity>): CommonMultiVMAdapter {
         return CommonMultiVMAdapter(
-            this,
-            data,
-            BR.viewModel,
-            BR.item
+                this,
+                data,
+                BR.viewModel,
+                BR.item
         )
     }
 

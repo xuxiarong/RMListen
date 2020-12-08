@@ -13,7 +13,8 @@ data class BannerInfoBean (
     var banner_jump: String,
     var banner_seq: Int,
     var page_id: Int,
-    var img_url: String
+    var img_url: String,
+    var isAd : Boolean = false
 ) : BaseBannerInfo {
     override fun getXBannerUrl(): Any {
         return img_url
@@ -21,5 +22,9 @@ data class BannerInfoBean (
 
     override fun getXBannerTitle(): String {
         return ""
+    }
+
+    override fun isAdBanner(): Boolean {
+        return isAd
     }
 }

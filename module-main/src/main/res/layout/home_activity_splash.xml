@@ -17,10 +17,13 @@
         tools:context=".module.guide.SplashActivity">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/splash_ad_img"
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="170dp"
+            tools:src="@mipmap/splash"
             />
 
         <com.flyco.roundview.RoundTextView
@@ -46,6 +49,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="@dimen/dp_24"
             android:src="@mipmap/ic_launcher"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="100dp"

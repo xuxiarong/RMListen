@@ -51,9 +51,7 @@ import kotlinx.android.synthetic.main.home_home_fragment.*
  */
 class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentViewModel>() {
 
-    private val mHomeAdapter: HomeAdapter by lazy {
-        HomeAdapter(mViewModel, BR.viewModel, BR.item)
-    }
+
     private var privateDialogShowing = false
 
     override fun initLayoutId() = R.layout.home_home_fragment
@@ -79,7 +77,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         mViewModel.doubleRvLeftScrollOpenDetail = { startBoutique() }
         mViewModel.audioClick = { onAudioClick(it) }
         mViewModel.blockClick = { onBlockClick(it) }
-        mDataBind.homeRv.bindVerticalLayout(mHomeAdapter)
+        mDataBind.homeRv.bindVerticalLayout(mViewModel.homeAdapter)
         isHomeDouClick.observe(this, Observer {
             if (it) {
                 mDataBind.homeRv.smoothScrollToPosition(0)
@@ -201,7 +199,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
      */
     override fun startObserve() {
         mViewModel.homeAllData.observe(this, Observer {
-            mHomeAdapter.setList(it)
+            mViewModel.homeAdapter.setList(it)
         })
 
         mViewModel.errorMsg.addOnPropertyChangedCallback(object :

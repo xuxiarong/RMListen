@@ -10,12 +10,14 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
- * download repository
+ * desc   :
+ * date   : 2020/12/07
+ * version: 1.0
  */
 class MainRepository( val apiService: MainApiService) : BaseRepository() {
 
     /**
-     *  获取章节列表
+     *  获取开屏广告
      */
     suspend fun getSplashAd(ad_key : Array<String>): BaseResult<MainAdResultModel> {
         return apiCall {

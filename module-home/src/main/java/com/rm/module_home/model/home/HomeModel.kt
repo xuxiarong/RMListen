@@ -12,9 +12,9 @@ import com.rm.module_home.R
 
 
 data class HomeModel(
-        val banner_list: List<BannerInfoBean>,
-        val menu_list: ArrayList<HomeMenuModel>,
-        val block_list: List<HomeBlockModel>,
+        val banner_list: MutableList<BannerInfoBean>?,
+        val menu_list: ArrayList<HomeMenuModel>?,
+        val block_list: List<HomeBlockModel>?,
         val page_id: Int,
         val page_name: String
 )

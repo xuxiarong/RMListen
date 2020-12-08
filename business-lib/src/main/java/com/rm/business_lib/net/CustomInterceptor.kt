@@ -254,7 +254,7 @@ class CustomInterceptor : Interceptor {
                 newToken = null
                 return refreshRealToken();
             } catch (e: java.lang.Exception) {
-                throw e
+                return "refreshToken fail"
             } finally {
                 refreshInit.set(false)
                 //结果如何，最终一定要唤醒
@@ -298,7 +298,7 @@ class CustomInterceptor : Interceptor {
             newToken = result.data.refresh
             return newToken!!
         }
-        throw  Throwable("token refresh fail")
+        return  "token refresh fail"
     }
 
     /**
