@@ -546,13 +546,16 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 }
             }
             mCommentAdapter.setList(list)
-
-            mCommentAdapter.addData(
-                3,
-                mutableListOf(PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity(
-                    PlayDetailAdvertiseModel(mutableListOf())
-                ))
-            )
+            if (list.size > 4) {
+                mCommentAdapter.addData(
+                    3,
+                    mutableListOf(
+                        PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity(
+                            PlayDetailAdvertiseModel(mutableListOf())
+                        )
+                    )
+                )
+            }
             commentRefreshModel.finishRefresh(true)
         } else {
             bean.list?.let {

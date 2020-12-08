@@ -101,22 +101,21 @@ class CustomInterceptor : Interceptor {
      * @return Array<Response>
      */
     private fun buildRequestResponse(chain: Interceptor.Chain): Array<Response> {
-
         // TODO: 12/5/20  部分请求，不需要toekn，请进行过滤
         val url = chain.request().url
         DLog.i("===========>>>>", "url:$url")
 
         var filter = false;
-        if (filter) {
+        return if (filter) {
             val request: Request = getRequestHeaderBuilder(chain.request().newBuilder()).build()
-            return arrayOf(chain.proceed(request))
+            arrayOf(chain.proceed(request))
         } else {
             //需token的网络请求，发现正在有刷新token的任务，阻塞
             if (refreshIng.get()) {
                 awite()
             }
             val request: Request = getRequestHeaderBuilder(chain.request().newBuilder()).build()
-            return arrayOf(chain.proceed(request))
+            arrayOf(chain.proceed(request))
         }
 
     }
@@ -157,14 +156,14 @@ class CustomInterceptor : Interceptor {
             if (baseResponse.code == CODE_REFRESH_TOKEN) {
                 refreshIng.set(true)
                 // 当前token过期，需要刷新token
-                DLog.d(TAG, "响应时，token已过期，刷新token")
+                DLog.d("======>", "响应时，token已过期，刷新token")
                 // 注意，一定要在当前线程同步请求刷新接口，否则再重新请求之前的接口会抛异常
-
 
                 val token: String
                 try {
                     token = refreshToken()
                     refreshIng.set(false)
+                    DLog.d("======>", "00000，刷新token   ${chain.request().url}")
                     // 将之前拦截的接口重新请求并下发
                     val request: Request.Builder =
                         getRequestHeaderBuilder(chain.request().newBuilder(), token)
@@ -172,12 +171,13 @@ class CustomInterceptor : Interceptor {
                         originalResponse[0] = chain.proceed(request.build())
                     } catch (e: Exception) {
                         e.printStackTrace()
+                        DLog.d("======>", "Exception1111，刷新token")
                         // 再次请求之前拦截的接口失败，就下发之前请求到的数据到具体位置
                         originalResponse[0] = originalResponse[0].newBuilder().code(responseCode)
                             .body(responseStr.toResponseBody(contentType)).build()
                     }
                 } catch (e: java.lang.Exception) {
-
+                    DLog.d("======>", "Exception22222，刷新token")
                     // 刷新token失败，强制退出当前登陆
                     GlobalScope.launch(Dispatchers.Main) {
                         loginOut()
@@ -192,7 +192,7 @@ class CustomInterceptor : Interceptor {
 
                 if (baseResponse.code == CODE_NOT_LOGIN && refreshIng.get()) {
                     //阻塞，直到获取到token
-                    var token = refreshToken()
+                    val token = refreshToken()
                     // 将之前拦截的接口重新请求并下发
                     val request: Request.Builder =
                         getRequestHeaderBuilder(chain.request().newBuilder(), token)
@@ -254,7 +254,7 @@ class CustomInterceptor : Interceptor {
                 newToken = null
                 return refreshRealToken();
             } catch (e: java.lang.Exception) {
-                throw e;
+                throw e
             } finally {
                 refreshInit.set(false)
                 //结果如何，最终一定要唤醒
@@ -263,9 +263,9 @@ class CustomInterceptor : Interceptor {
 
         } else {
             awite()
-            if (TextUtils.isEmpty(newToken)) {
-                throw  Throwable("token refresh fail")
-            }
+//            if (TextUtils.isEmpty(newToken)) {
+//                throw  Throwable("token refresh fail")
+//            }
             return REFRESH_TOKEN.getStringMMKV("");
         }
 
@@ -290,12 +290,13 @@ class CustomInterceptor : Interceptor {
     }
 
     private fun refreshRealToken(): String {
+        DLog.i("========>  refreshRealToken", "${REFRESH_TOKEN.getStringMMKV("")}")
         val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
         if (result?.code == 0) {
             // 刷新token成功，保存最新token
             updateLocalToken(result.data.access, result.data.refresh)
             newToken = result.data.refresh
-            return newToken!!;
+            return newToken!!
         }
         throw  Throwable("token refresh fail")
     }
@@ -325,6 +326,8 @@ class CustomInterceptor : Interceptor {
         if (TextUtils.isEmpty(token)) {
             requestBuilder.addHeader("Authorization", "Bearer ${ACCESS_TOKEN.getStringMMKV()}")
         } else {
+            DLog.i("========>  getRequestHeaderBuilder   22222", "$token")
+
             requestBuilder.addHeader("Authorization", "Bearer $token")
         }
         return requestBuilder
