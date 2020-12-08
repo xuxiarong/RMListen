@@ -62,11 +62,13 @@ class ListenHistoryViewModel : BaseVMViewModel() {
             val audioList = ArrayList<ListenHistoryModel>()
             if (queryPlayBookList.isNotEmpty()) {
                 queryPlayBookList.forEach { audio ->
-                    val recentChapter = ListenDaoUtils.queryChapterRecentUpdate(audio.audio_id, audio.listenChapterId.toLong())
-                    recentChapter?.let { chapter ->
-                        val listenHistoryModel = ListenHistoryModel(audio, chapter)
-                        listenHistoryModel.itemType = R.layout.listen_item_history_listen
-                        audioList.add(listenHistoryModel)
+                    if(!TextUtils.isEmpty(audio.listenChapterId)){
+                        val recentChapter = ListenDaoUtils.queryChapterRecentUpdate(audio.audio_id, audio.listenChapterId.toLong())
+                        recentChapter?.let { chapter ->
+                            val listenHistoryModel = ListenHistoryModel(audio, chapter)
+                            listenHistoryModel.itemType = R.layout.listen_item_history_listen
+                            audioList.add(listenHistoryModel)
+                        }
                     }
                 }
                 if (audioList.isNotEmpty()) {

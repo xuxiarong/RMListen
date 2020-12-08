@@ -1,6 +1,7 @@
 package com.rm.module_listen.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
@@ -54,11 +55,13 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
             if (queryPlayBookList.isNotEmpty()) {
                 dataEmpty.set(false)
                 queryPlayBookList.forEach { audio ->
-                    val recentChapter = ListenDaoUtils.queryChapterRecentUpdate(audio.audio_id,audio.listenChapterId.toLong())
-                    recentChapter?.let { chapter ->
-                        val listenHistoryModel = ListenHistoryModel(audio, chapter)
-                        listenHistoryModel.itemType = R.layout.listen_item_recent_listen
-                        audioList.add(listenHistoryModel)
+                    if(!TextUtils.isEmpty(audio.listenChapterId)){
+                        val recentChapter = ListenDaoUtils.queryChapterRecentUpdate(audio.audio_id,audio.listenChapterId.toLong())
+                        recentChapter?.let { chapter ->
+                            val listenHistoryModel = ListenHistoryModel(audio, chapter)
+                            listenHistoryModel.itemType = R.layout.listen_item_recent_listen
+                            audioList.add(listenHistoryModel)
+                        }
                     }
                 }
                 if(audioList.isNotEmpty()){

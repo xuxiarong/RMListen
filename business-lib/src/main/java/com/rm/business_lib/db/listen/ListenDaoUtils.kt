@@ -79,6 +79,7 @@ object ListenDaoUtils {
      * 根据AudioID,chapterID，时间倒叙查询第一条章节
      */
     fun queryChapterRecentUpdate(audioId: Long, chapterID: Long): ListenChapterEntity? {
+
         try {
             val queryBuilder = listenChapterDao.queryBuilder()
             if (queryBuilder != null) {

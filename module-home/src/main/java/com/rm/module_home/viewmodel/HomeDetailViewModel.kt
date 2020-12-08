@@ -368,7 +368,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 }
                 else -> {
                     val listenRecord = listenAudio.get()
-                    if (listenRecord != null) {
+                    if (listenRecord != null && !TextUtils.isEmpty(listenRecord.listenChapterId)) {
                         val queryChapterRecentUpdate = ListenDaoUtils.queryChapterRecentUpdate(
                             listenRecord.audio_id,
                             listenRecord.listenChapterId.toLong()
