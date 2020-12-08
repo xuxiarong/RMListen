@@ -21,7 +21,7 @@ object ToastUtil {
         try {
             if (null != context && !TextUtils.isEmpty(msg)) {
                 mToast?.cancel()
-                mToast = Toast.makeText(context, "", Toast.LENGTH_LONG)
+                mToast = Toast.makeText(context, "", Toast.LENGTH_SHORT)
                 mToast?.setText(msg)
                 mToast?.show()
             }
