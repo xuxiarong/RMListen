@@ -73,6 +73,7 @@ class ListenHistoryViewModel : BaseVMViewModel() {
                 }
                 if (audioList.isNotEmpty()) {
                     searchHasData.set(true)
+                    mSwipeAdapter.setList(audioList)
                     allHistory.postValue(audioList)
                 } else {
                     searchHasData.set(false)
