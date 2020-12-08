@@ -84,5 +84,7 @@ dependencies {
     implementation project(path: ':component-comm')
 //    implementation project(path: ':base-listen-lib')
     annotationProcessor rootProject.ext.dependencies["router_compiler"]
+//    implementation 'com.arialyy.aria:core:3.8.12'
+//    kapt 'com.arialyy.aria:compiler:3.8.12'
 //    implementation project(path: ':business-lib')
 }

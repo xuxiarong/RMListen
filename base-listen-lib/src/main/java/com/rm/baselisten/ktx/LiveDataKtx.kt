@@ -40,6 +40,10 @@ fun <E : Any> MutableLiveData<MutableList<E>>.remove(element: E) {
     }
 }
 
+fun <E : Any> MutableLiveData<MutableList<E>>.clear() {
+    this.value = mutableListOf()
+}
+
 fun <E : Any> MutableLiveData<MutableList<E>>.removeAll(elementList: List<E>) {
     if (null != this.value) {
         val tempList = this.value!!

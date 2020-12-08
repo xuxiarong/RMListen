@@ -85,7 +85,7 @@ object DownLoadFileUtils {
     }
 
 
-    private fun createFileWithAudio(audioName: String): File {
+    fun createFileWithAudio(audioName: String): File {
         return File(getParentFile(BaseApplication.CONTEXT), audioName)
     }
 

@@ -1,6 +1,7 @@
 package com.rm.business_lib
 
 import android.text.TextUtils
+import com.arialyy.aria.core.Aria
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.Cxt
 import com.rm.baselisten.util.getLongMMKV
@@ -60,8 +61,10 @@ open class BusinessApplication : BaseApplication() {
         }
         Cxt.context = CONTEXT
         DaoManager.daoManager.initDaoManger()
+        Aria.init(this)
         // 检测token是否过期
         checkToken()
+
     }
 
 

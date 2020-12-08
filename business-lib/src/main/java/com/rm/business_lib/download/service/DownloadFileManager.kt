@@ -16,24 +16,18 @@ import com.rm.baselisten.util.NetWorkUtils
 import com.rm.business_lib.bean.download.DownloadProgressUpdateBean
 import com.rm.business_lib.bean.download.DownloadUIStatus
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils.getParentFile
-import com.rm.business_lib.download.util.TagUtil
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 
-class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
+class DownloadFileManager private constructor() {
 
     private val taskList = HashMap<String, DownloadTask>()
 
     private val context = BaseApplication.CONTEXT
-
-    private val queueListener: DownloadListener4WithSpeed by lazy { this@DownloadFileManager }
-
 
     companion object {
         @JvmStatic
@@ -73,42 +67,39 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     fun startDownloadWithCache(chapter: DownloadChapter) {
         try {
             createTask(chapter.path_url, chapter.audio_id.toString(), chapter.chapter_name).also {
-                TagUtil.saveHolder(it, chapter)
                 taskList[chapter.path_url] = it
             }.run {
-                downloadingTask = this
-
+                DownloadMemoryCache.downloadingChapter.set(chapter)
                 GlobalScope.launch(Dispatchers.IO){
                     DLog.d(TAG,"name = ${chapter.chapter_name}  开始下载")
                     execute(object : DownloadListener4WithSpeed(){
                         override fun taskStart(task: DownloadTask) {
-                            DLog.d(TAG,"name = ${chapter.chapter_name}  taskStart")
-                            DownloadMemoryCache.downloadingChapter.set(chapter)
                         }
 
                         override fun blockEnd(task: DownloadTask, blockIndex: Int, info: BlockInfo?, blockSpeed: SpeedCalculator) {
                             DLog.d(TAG,"name = ${chapter.chapter_name}  blockEnd")
+//                            retryDownCurrentFailedChapter()
+
                         }
 
                         override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: java.lang.Exception?, taskSpeed: SpeedCalculator) {
                             when (cause) {
                                 EndCause.COMPLETED -> {
-                                    DLog.d(TAG, "taskEnd name = ${task.filename}下载完成")
+                                    DLog.d(TAG, "suolong下载 taskEnd name = ${task.filename}下载完成")
                                     DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
                                 }
                                 EndCause.CANCELED -> { DLog.d(TAG, "taskEnd name = ${task.filename} 下载取消")
                                     DownloadMemoryCache.pauseDownloadingChapter()
                                 }
                                 EndCause.SAME_TASK_BUSY->{
-                                    DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是 EndCause.SAME_TASK_BUSY ${realCause?.message}")
+                                    retryDownCurrentFailedChapter()
                                 }
                                 EndCause.FILE_BUSY ->{
+                                    retryDownCurrentFailedChapter()
                                     DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是 EndCause.FILE_BUSY ${realCause?.message}")
                                 }
                                 else -> {
-                                    if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
-                                        task.enqueue(queueListener)
-                                    }
+                                    retryDownCurrentFailedChapter()
                                     DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是${cause.ordinal.toString()} ${realCause?.message}")
                                 }
                             }
@@ -116,7 +107,11 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
                         }
 
                         override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
-                            DLog.d(TAG,"name = ${chapter.chapter_name}  progress")
+                            DownloadMemoryCache.updateDownloadingSpeed(
+                                    speed = taskSpeed.speed(),
+                                    currentOffset = currentOffset,
+                                    url = task.url
+                            )
                         }
 
                         override fun connectEnd(task: DownloadTask, blockIndex: Int, responseCode: Int, responseHeaderFields: MutableMap<String, MutableList<String>>) {
@@ -146,12 +141,11 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
     fun startDownloadWithCache(modelList: List<DownloadChapter>) {
         if(modelList.isNotEmpty()){
             val taskList = Array(modelList.size) { index ->
-                createTask(
+                createFinder(
                         modelList[index].path_url,
                         modelList[index].audio_id.toString(),
                         modelList[index].chapter_name
                 ).also {
-                    TagUtil.saveHolder(it, modelList[index])
                     taskList[modelList[index].path_url] = it
                 }
             }
@@ -170,6 +164,17 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
             )
         )
     }
+
+    fun retryDownCurrentFailedChapter(){
+        val currentChapter = DownloadMemoryCache.downloadingChapter.get()
+        if(currentChapter!=null && currentChapter.chapter_id>0){
+            if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+                DLog.d(TAG,"retryDownCurrentFailedChapter = currentChapter name = ${currentChapter.chapter_name}")
+                startDownloadWithCache(currentChapter)
+            }
+        }
+    }
+
 
     fun pauseDownload(modelList: List<DownloadChapter>) {
         val cancelList = arrayListOf<DownloadTask>()
@@ -233,102 +238,4 @@ class DownloadFileManager private constructor() : DownloadListener4WithSpeed() {
             taskList.clear()
         }
     }
-
-    override fun taskStart(task: DownloadTask) {
-        DLog.d(TAG, " taskStart name = ${task.filename}")
-        DownloadMemoryCache.updateDownloadingChapter(
-            task.url,
-            DownloadConstant.CHAPTER_STATUS_DOWNLOADING
-        )
-    }
-
-    override fun blockEnd(
-        task: DownloadTask,
-        blockIndex: Int,
-        info: BlockInfo?,
-        blockSpeed: SpeedCalculator
-    ) {
-        DLog.d(
-            TAG,
-            " blockEnd name = ${task.filename} --- blockIndex = $blockIndex --- blockSpeed = ${blockSpeed.speed()}"
-        )
-    }
-
-    /**
-     * 这里已经是UI线程，所以不用postValue，postValue在并发情况下会把之前的值覆盖，导致数据丢失
-     */
-    override fun taskEnd(
-        task: DownloadTask,
-        cause: EndCause,
-        realCause: Exception?,
-        taskSpeed: SpeedCalculator
-    ) {
-        DLog.d(TAG, " taskEnd name = ${task.filename} --- cause = $cause --- taskSpeed = ${taskSpeed.speed()}")
-        when (cause) {
-            EndCause.COMPLETED -> {
-                DLog.d(TAG, "taskEnd name = ${task.filename}下载完成")
-                DownloadMemoryCache.setDownloadFinishChapter(task.file?.absolutePath!!)
-            }
-            EndCause.CANCELED -> { DLog.d(TAG, "taskEnd name = ${task.filename} 下载取消")
-                DownloadMemoryCache.pauseDownloadingChapter()
-            }
-            EndCause.SAME_TASK_BUSY->{
-                DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是 EndCause.SAME_TASK_BUSY ${realCause?.message}")
-            }
-            EndCause.FILE_BUSY ->{
-                DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是 EndCause.FILE_BUSY ${realCause?.message}")
-            }
-            else -> {
-                if(NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
-                    task.enqueue(queueListener)
-                }
-                DLog.d(TAG, "taskEnd name = ${task.filename} 下载失败,原因是${cause.ordinal.toString()} ${realCause?.message}")
-            }
-        }
-    }
-
-    override fun progress(task: DownloadTask, currentOffset: Long, taskSpeed: SpeedCalculator) {
-        DownloadMemoryCache.updateDownloadingSpeed(
-            speed = taskSpeed.speed(),
-            currentOffset = currentOffset,
-            url = task.url
-        )
-    }
-
-    override fun connectEnd(
-        task: DownloadTask,
-        blockIndex: Int,
-        responseCode: Int,
-        responseHeaderFields: MutableMap<String, MutableList<String>>
-    ) {
-        DLog.d(TAG, " connectEnd name = ${task.filename} responseCode = $responseCode")
-    }
-
-    override fun connectStart(
-        task: DownloadTask,
-        blockIndex: Int,
-        requestHeaderFields: MutableMap<String, MutableList<String>>
-    ) {
-        DLog.d(TAG, " connectStart name = ${task.filename}")
-    }
-
-    override fun infoReady(
-        task: DownloadTask,
-        info: BreakpointInfo,
-        fromBreakpoint: Boolean,
-        model: Listener4SpeedAssistExtend.Listener4SpeedModel
-    ) {
-        DLog.d(TAG, " infoReady name = ${task.filename}")
-
-    }
-
-    override fun progressBlock(
-        task: DownloadTask,
-        blockIndex: Int,
-        currentBlockOffset: Long,
-        blockSpeed: SpeedCalculator
-    ) {
-        DLog.d(TAG, " progressBlock name = ${task.filename}")
-    }
-
 }

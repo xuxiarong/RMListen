@@ -5,13 +5,11 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
-import com.rm.baselisten.ktx.add
-import com.rm.baselisten.ktx.addAll
-import com.rm.baselisten.ktx.remove
-import com.rm.baselisten.ktx.removeAll
+import com.rm.baselisten.ktx.*
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.R
+import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
@@ -27,10 +25,14 @@ import kotlinx.coroutines.launch
  */
 object DownloadMemoryCache {
 
+    //正在下载的书籍列表
     var downloadingAudioList = MutableLiveData<MutableList<DownloadAudio>>(mutableListOf())
+    //正在下载的章节列表
     var downloadingChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
-    var downloadingChapter = ObservableField<DownloadChapter>()
+    //下载完成的章节列表
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
+    //正在下载的章节
+    var downloadingChapter = ObservableField<DownloadChapter>()
     var isPauseAll = ObservableBoolean(false)
     var isDownAll = ObservableBoolean(false)
 
@@ -145,7 +147,8 @@ object DownloadMemoryCache {
             ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
             downloadingChapterList.addAll(chapterList)
             downloadingNum.set(downloadingNum.get()+chapterList.size)
-            downloadService.startDownloadWithCache(chapterList)
+//            downloadService.startDownloadWithCache(chapterList)
+            AriaDownloadManager.startDownload(chapterList[0])
         }
     }
 
@@ -171,8 +174,8 @@ object DownloadMemoryCache {
      * 下载完成，自动下载下一章节
      */
     fun downFinishAndAutoDownNext(){
-        DLog.d("suolong下载","下载完成，自动下载下一章节")
         if(downloadingChapterList.value == null){
+            DLog.d("suolong下载 自动下载下一章","下载队列为空")
             return
         }
 
@@ -180,6 +183,7 @@ object DownloadMemoryCache {
             val downList = downloadingChapterList.value!!
             when (downList.size) {
                 0 -> {
+                    DLog.d("suolong下载 自动下载下一章","下载队列大小为0")
                     return
                 }
                 1 -> {
@@ -191,9 +195,13 @@ object DownloadMemoryCache {
                             tempChapter.path_url = ""
                             downloadingChapter.set(tempChapter)
                             downloadingChapter.notifyChange()
-                            downloadingChapterList.remove(downList[0])
-                            downloadingNum.set(downloadingNum.get()-1)
+                            downloadingChapterList.clear()
+                            downloadingNum.set(0)
+                        }else{
+                            DLog.d("suolong下载 自动下载下一章","downList[0] != downloadingChapter")
                         }
+                    }else{
+                        DLog.d("suolong下载 自动下载下一章","downloadingChapter == null")
                     }
                 }
                 else -> {
@@ -202,9 +210,13 @@ object DownloadMemoryCache {
                         for (i in 0 until downList.size){
                             if(downList[i].chapter_id == downloadChapter.chapter_id){
                                 if(i == downList.size -1){
+                                    DLog.d("suolong下载 自动下载下一章","开始下载downList[0] + name = ${downList[0].chapter_name}")
                                     downloadService.startDownloadWithCache(downList[0])
+//                                    AriaDownloadManager.startDownload(downList[0])
                                 }else{
+                                    DLog.d("suolong下载 自动下载下一章","开始下载downList[i+1] + name = ${downList[i+1].chapter_name}")
                                     downloadService.startDownloadWithCache(downList[i+1])
+//                                    AriaDownloadManager.startDownload(downList[1])
                                 }
                                 return
                             }
@@ -417,6 +429,7 @@ object DownloadMemoryCache {
                 chapter = finishChapter
             )
             if(isDownAll.get()){
+                DLog.d("suolong下载","下载_开始寻找下一个下载任务")
                 downFinishAndAutoDownNext()
             }
 
