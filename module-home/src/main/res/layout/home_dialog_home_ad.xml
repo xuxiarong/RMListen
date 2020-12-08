@@ -26,8 +26,7 @@
             android:layout_gravity="center_horizontal"
             corner="@{16f}"
             android:scaleType="fitXY"
-            bindUrl="@{viewModel.homeDialogAdModel.image_path}"
-            bindJumpUrl="@{viewModel.homeDialogAdModel.jump_url}" />
+            bindUrl="@{viewModel.homeDialogAdModel.image_path}" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_dialog_ad_close"

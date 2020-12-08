@@ -181,14 +181,18 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
             allData.add(HomeMenuRvModel())
         }
 
-        homeModel.block_list?.forEach {
-            if (it.audio_list.list.size > 0) {
-                setBlockData(allData, it)
-                if (null == homeDialogAdModel.get()) {
-                    getHomeDialogAd()
+        homeModel.block_list?.let { blockList ->
+            if (null == homeDialogAdModel.get() && blockList.isNotEmpty()) {
+                getHomeDialogAd()
+            }
+            blockList.forEach { blockModel ->
+                if (blockModel.audio_list.list.size > 0) {
+                    setBlockData(allData, blockModel)
                 }
             }
         }
+
+
         homeMenuList.value = menuList
         homeAllData.value = allData
     }
