@@ -59,9 +59,9 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 val adScreen = mViewModel.mainAdScreen.get()
                 if (null != adScreen && !TextUtils.isEmpty(adScreen.image_path)) {
                     val options: RequestOptions = RequestOptions() //图片加载出来前，显示的图片
-                        .placeholder(R.mipmap.splash) //url为空的时候,显示的图片
-                        .fallback(R.mipmap.splash) //图片加载失败后，显示的图片
-                        .error(R.mipmap.splash)
+                        .placeholder(R.drawable.splash) //url为空的时候,显示的图片
+                        .fallback(R.drawable.splash) //图片加载失败后，显示的图片
+                        .error(R.drawable.splash)
                     Glide.with(this@SplashActivity).load(adScreen.image_path)
                         .apply(options)
                         .into(splash_ad_img)
