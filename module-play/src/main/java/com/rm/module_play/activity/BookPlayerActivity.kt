@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
@@ -45,7 +44,6 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlay
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
         GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
     companion object {
-
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
         private var lastOpenTime: Long = 0L
         var playAudioId: String = ""
@@ -93,6 +91,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
     }
 
+    override fun getLayoutId(): Int = R.layout.activity_book_player
+
+    override fun initModelBrId(): Int = BR.viewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GlobalPlayHelper.INSTANCE.registerPlayStatusListener(this@BookPlayerActivity)
@@ -109,10 +111,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         GlobalPlayHelper.INSTANCE.unRegisterPlayStatusListener()
         overridePendingTransition(0, R.anim.activity_bottom_close)
     }
-
-    override fun getLayoutId(): Int = R.layout.activity_book_player
-
-    override fun initModelBrId(): Int = BR.viewModel
 
     @SuppressLint("ResourceAsColor")
     override fun initView() {
@@ -217,6 +215,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         PlayGlobalData.playAudioId.set(playAudioId)
         PlayGlobalData.playChapterListSort.set(playSortType)
+        mViewModel.getChapterAd()
+        mViewModel.getAudioFloorAd()
         //书籍信息未传入，获取书籍详情信息,有则直接使用
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
             mViewModel.getDetailInfo(playAudioId)
@@ -257,17 +257,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
 
     }
-
-//    //播放完成
-//    override fun onCompletionPlay() {
-//        if (mViewModel.playManger.getPlayerAlarmModel() < 10) {
-//            if (mViewModel.playManger.getRemainingSetInt() > 0) {
-//                mViewModel.countdownTime.set("${mViewModel.playManger.getRemainingSetInt()}集")
-//            } else {
-//                mViewModel.countdownTime.set("")
-//            }
-//        }
-//    }
 
     override fun onViewPositionChanged(fractionAnchor: Float, fractionScreen: Float) {
         getBaseContainer().background.mutate().alpha = 1

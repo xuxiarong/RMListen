@@ -19,8 +19,7 @@
         android:layout_width="156dp"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
-        android:onClick="@{()->viewModel.onAudioClick(context,item.singleModel)}"
-        tools:ignore="RtlSymmetry">
+        android:onClick="@{()->viewModel.onAudioClick(context,item.singleModel)}">
 
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -66,7 +65,6 @@
                 bindPlayCount="@{item.singleModel.play_count}"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="@dimen/business_text_size_12sp"
-                tools:ignore="RtlSymmetry"
                 tools:text="14W" />
 
             <androidx.appcompat.widget.AppCompatImageView

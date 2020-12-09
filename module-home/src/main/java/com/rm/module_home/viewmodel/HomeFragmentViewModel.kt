@@ -321,7 +321,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     ) {
         if (horSingleRvModel.data.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             adList.forEach {
-                if (it.is_attach_to_block == horSingleRvModel.block.block_id && it.sort < horSingleRvModel.data.size) {
+                if (it.attach_to_block_id == horSingleRvModel.block.block_id && it.sort < horSingleRvModel.data.size) {
                     val singItem = horSingleRvModel.data[it.sort]
                     if (singItem is HomeAudioHorSingleModel) {
                         singItem.singleModel.adModel = it
@@ -338,7 +338,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     ) {
         if (horDoubleRvModel.horDoubleList.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             adList.forEach {
-                if (it.is_attach_to_block == horDoubleRvModel.block.block_id && (it.sort * 2) < horDoubleRvModel.horDoubleList.size) {
+                if (it.attach_to_block_id == horDoubleRvModel.block.block_id && (it.sort * 2) < horDoubleRvModel.horDoubleList.size) {
                     val doubleItem = horDoubleRvModel.horDoubleList[it.sort / 2]
                     if (doubleItem is HomeAudioHorDoubleModel) {
                         if (it.sort % 2 == 0) {
@@ -359,7 +359,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     ) {
         if (gridRvModel.data.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             adList.forEach {
-                if (it.is_attach_to_block == gridRvModel.block.block_id && it.sort < gridRvModel.data.size) {
+                if (it.attach_to_block_id == gridRvModel.block.block_id && it.sort < gridRvModel.data.size) {
                     val singItem = gridRvModel.data[it.sort]
                     if (singItem is HomeGridAudioModel) {
                         singItem.gridRecommendRvModel.adModel = it
@@ -376,7 +376,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     ) {
         if (verRvModel.data.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             adList.forEach {
-                if (it.is_attach_to_block == verRvModel.block.block_id && it.sort < verRvModel.data.size) {
+                if (it.attach_to_block_id == verRvModel.block.block_id && it.sort < verRvModel.data.size) {
                     val singItem = verRvModel.data[it.sort]
                     if (singItem is HomeAudioVerModel) {
                         singItem.verModel.adModel = it
@@ -420,12 +420,15 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         blockClick(block)
     }
 
-    fun homeSingleImgAdClick(model: HomeSingleImgContentModel) {
-
+    fun homeSingleImgAdClick(context: Context,model: HomeSingleImgContentModel) {
+        model.img_ad_model?.let {
+            BannerJumpUtils.onBannerClick(context,it.jump_url)
+        }
     }
 
     fun homeSingleImgAdClose(model: HomeSingleImgContentModel) {
-
+        model.img_ad_model = null
+        homeAdapter.notifyDataSetChanged()
     }
 
 

@@ -8,7 +8,9 @@ import com.rm.business_lib.bean.BusinessAdRequestModel
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.model.AudioCommentsModel
+import com.rm.module_play.model.PlayAdChapterModel
 import com.rm.module_play.model.PlayAdResultModel
+import com.rm.module_play.model.PlayFloorAdModel
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
 import okhttp3.MediaType.Companion.toMediaType
@@ -137,7 +139,7 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
 
 
     /**
-     *  获取章节列表
+     *  获取评论列表的广告
      */
     suspend fun getCommentAd(): BaseResult<PlayAdResultModel> {
         return apiCall {
@@ -148,5 +150,32 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
             )
         }
     }
+
+    /**
+     *  获取章节的封面广告和音频流广告
+     */
+    suspend fun getChapterAd(): BaseResult<PlayAdChapterModel> {
+        return apiCall {
+            val requestBean = BusinessAdRequestModel(arrayOf("ad_player_voice","ad_player_audio_cover"))
+            playApi.getChapterAd(
+                    requestBean.toJson().toString()
+                            .toRequestBody("application/json;charset=utf-8".toMediaType())
+            )
+        }
+    }
+
+    /**
+     *  获取楼层广告
+     */
+    suspend fun getAudioFloorAd(): BaseResult<PlayFloorAdModel> {
+        return apiCall {
+            val requestBean = BusinessAdRequestModel(arrayOf("ad_player_streamer"))
+            playApi.getAudioFloorAd(
+                    requestBean.toJson().toString()
+                            .toRequestBody("application/json;charset=utf-8".toMediaType())
+            )
+        }
+    }
+
 
 }

@@ -82,7 +82,7 @@ data class HomeAudioModel(
     }
 
     fun getImageUrl(): String {
-        return adModel?.image_path ?: cover_url
+        return adModel?.image_url ?: cover_url
     }
 
     fun getImageName(): String {

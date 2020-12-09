@@ -41,6 +41,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     var result = false
 
     override fun initModelBrId() = BR.viewModel
+    override fun getLayoutId() = R.layout.home_activity_splash
 
     override fun startObserve() {
         mViewModel.isSkipAd.addOnPropertyChangedCallback(object :
@@ -68,6 +69,11 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             }
         })
 
+    }
+
+    override fun initView() {
+        super.initView()
+        setTransparentStatusBar()
     }
 
     override fun initData() {
@@ -172,8 +178,4 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     })
             ).build()
     }
-
-
-    override fun getLayoutId() = R.layout.home_activity_splash
-
 }

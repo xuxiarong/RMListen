@@ -63,6 +63,8 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
         PlayGlobalData.playChapter.get()?.let {
             it.realDuration = totalDurtion
         }
+        musicPlayerManger.play()
+
     }
 
     override fun onBufferingUpdate(percent: Int) {

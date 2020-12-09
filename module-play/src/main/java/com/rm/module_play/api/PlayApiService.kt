@@ -4,7 +4,9 @@ import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_play.model.AudioCommentsModel
+import com.rm.module_play.model.PlayAdChapterModel
 import com.rm.module_play.model.PlayAdResultModel
+import com.rm.module_play.model.PlayFloorAdModel
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
 import okhttp3.RequestBody
@@ -150,5 +152,17 @@ interface PlayApiService {
      */
     @POST("adv/content/list")
     suspend fun getCommentAd(@Body requestBody: RequestBody): BaseResponse<PlayAdResultModel>
+
+    /**
+     * 获取音频封面广告和章节音频流广告
+     */
+    @POST("adv/content/list")
+    suspend fun getChapterAd(@Body requestBody: RequestBody): BaseResponse<PlayAdChapterModel>
+
+    /**
+     * 获取音频楼层广告
+     */
+    @POST("adv/content/list")
+    suspend fun getAudioFloorAd(@Body requestBody: RequestBody): BaseResponse<PlayFloorAdModel>
 
 }

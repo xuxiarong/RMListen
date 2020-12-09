@@ -10,6 +10,7 @@ import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getBooleanMMKV
+import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.converter.BusinessConvert
@@ -200,6 +201,16 @@ object PlayGlobalData {
      * 章节播放的数据库对象
      */
     private val playChapterDao = DaoUtil(ListenChapterEntity::class.java, "")
+
+    /**
+     * 音频封面广告
+     */
+    var playAudioImgAd = ObservableField<BusinessAdModel>()
+
+    /**
+     * 音频流广告
+     */
+    var playChapterVoiceAd = ObservableField<BusinessAdModel>()
 
 
     fun initPlayAudio(audio: DownloadAudio) {
