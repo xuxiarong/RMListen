@@ -31,7 +31,7 @@ data class BusinessAdModel(
     var video_path: String
 )
 
-data class BusinessAdRequestModel (var ad_key: Array<String>) {
+data class BusinessAdRequestModel(var ad_key: Array<String>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

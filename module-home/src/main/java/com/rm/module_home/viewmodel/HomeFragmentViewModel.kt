@@ -14,10 +14,7 @@ import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusMod
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeAdapter
-import com.rm.module_home.model.home.HomeAudioModel
-import com.rm.module_home.model.home.HomeBlockModel
-import com.rm.module_home.model.home.HomeMenuModel
-import com.rm.module_home.model.home.HomeModel
+import com.rm.module_home.model.home.*
 import com.rm.module_home.model.home.banner.HomeBannerRvModel
 import com.rm.module_home.model.home.collect.HomeMenuRvModel
 import com.rm.module_home.model.home.grid.HomeGridAudioModel
@@ -54,8 +51,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     var errorMsg = ObservableField<String>()
     var showNetError = ObservableBoolean(false)
 
-    var dialogUrl = ObservableField<String>("http://ls-book.leimans.com/common/groups/3651/79059fd63435150c4c1eb557ebdde0c3.jpg")
-
     var homeAllData = MutableLiveData<MutableList<MultiItemEntity>>()
 
     var audioClick: (HomeAudioModel) -> Unit = {}
@@ -63,7 +58,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
 
     //首页弹窗广告
     var homeDialogAdModel = ObservableField<BusinessAdModel>()
-
+    //首页block为5的广告
+    var homeImgContentAdModel = MutableLiveData<MutableList<BusinessAdModel>>()
 
     fun getHomeDataFromService() {
         refreshStatusModel.setNoHasMore(true)
@@ -113,6 +109,25 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
             )
         }
     }
+
+    fun getHomeImgContentAd(){
+        if(homeImgContentAdModel.value ==null){
+            homeImgContentAdModel.value = mutableListOf()
+            launchOnIO {
+                repository.getHomeImgContentAd(arrayOf("ad_index_floor_streamer")).checkResult(
+                    onSuccess = {
+                        it.ad_index_floor_streamer?.let { floorList ->
+                            homeImgContentAdModel.value = floorList
+                        }
+                    },
+                    onError = {
+                        DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
+                    }
+                )
+            }
+        }
+    }
+
 
     /**
      * 获取轮播广告
@@ -187,13 +202,12 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 getHomeDialogAd()
             }
             blockList.forEach { blockModel ->
-                if (blockModel.audio_list.list.size > 0) {
+                if (blockModel.audio_list.list.size > 0 || "image" == blockModel.relation_to) {
                     setBlockData(allData, blockModel)
+                    DLog.d("suolong","type  = ${blockModel.block_type_id}")
                 }
             }
         }
-
-
         homeMenuList.value = menuList
         homeAllData.value = allData
     }
@@ -264,7 +278,13 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
             }
             BLOCK__SINGLE_IMG -> {
                 if("image" == block.relation_to){
-                    allData.add(block.single_img_content)
+                    block.isNoMore = true
+                    block.single_img_content?.let {
+                        allData.add(block)
+                        it.itemType = R.layout.home_item_audio_sing_img
+                        allData.add(it)
+                        getHomeImgContentAd()
+                    }
                 }
             }
 
@@ -296,9 +316,13 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         blockClick(block)
     }
 
-    fun doubleRvOpenDetail() {
-        doubleRvLeftScrollOpenDetail()
+    fun homeSingleImgAdClick(model : HomeSingleImgContentModel){
+
     }
+    fun homeSingleImgAdClose(model : HomeSingleImgContentModel){
+
+    }
+
 
     companion object {
         const val BLOCK_HOR_SINGLE = 1

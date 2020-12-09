@@ -2,6 +2,7 @@ package com.rm.module_home.model.home
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.business_lib.bean.BannerInfoBean
+import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.module_home.R
 
 /**
@@ -29,7 +30,8 @@ data class HomeBlockModel(
     val page_size: Int,
     val topic_id: Int,
     val relation_to: String,
-    val single_img_content: HomeSingleImgContentModel
+    var single_img_content: HomeSingleImgContentModel?,
+    var isNoMore :Boolean =  false
 ) : MultiItemEntity {
     override var itemType = R.layout.home_item_block
 }
@@ -78,9 +80,10 @@ data class HomeAudioModel(
 data class HomeSingleImgContentModel(
     val jump_url: String = "",
     val image_path: String = "",
-    val image_url: String = ""
+    val image_url: String = "",
+    var img_ad_model : BusinessAdModel? = null
 ) : MultiItemEntity {
-    override var itemType = R.layout.home_item_audio_ver
+    override var itemType = R.layout.home_item_audio_sing_img
 
 }
 

@@ -10,6 +10,7 @@ import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
 import com.rm.module_home.model.ad.HomeBannerAdResultModel
 import com.rm.module_home.model.ad.HomeDialogAdResultModel
+import com.rm.module_home.model.ad.HomeSingleImgAdResultModel
 import com.rm.module_home.model.home.HomeModel
 import com.rm.module_home.model.home.detail.HomeCommentBean
 import okhttp3.MediaType.Companion.toMediaType
@@ -229,6 +230,16 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
         return apiCall {
             val requestBean = BusinessAdRequestModel(ad_key = ad_key)
             homeService.getHomeBannerAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
+        }
+    }
+
+    /**
+     *  获取首页单图广告
+     */
+    suspend fun getHomeImgContentAd(ad_key : Array<String>): BaseResult<HomeSingleImgAdResultModel> {
+        return apiCall {
+            val requestBean = BusinessAdRequestModel(ad_key = ad_key)
+            homeService.getHomeImgContentAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
         }
     }
 }
