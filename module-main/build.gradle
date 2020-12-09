@@ -81,5 +81,6 @@ dependencies {
     implementation project(path: ':component-comm')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt rootProject.ext.dependencies["router_compiler"]
 }

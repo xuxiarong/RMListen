@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,14 +24,10 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.rm.business_lib.R;
-import com.rm.business_lib.wedgit.ShadowDrawableUtil;
-import com.rm.business_lib.xbanner.OnDoubleClickListener;
 import com.rm.business_lib.xbanner.entity.BaseBannerInfo;
 import com.rm.business_lib.xbanner.transformers.BasePageTransformer;
 import com.rm.business_lib.xbanner.transformers.Transformer;
@@ -111,7 +106,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
     /**
      * 资源集合
      */
-    private List<?> mDatas;
+    private List<? extends BaseBannerInfo> mDatas;
 
     /**
      * 处理少于三页时的无限轮播
@@ -498,7 +493,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
      * @param data
      */
     @Deprecated
-    private void setData(@NonNull List<View> views, @NonNull List<?> data, List<String> tips) {
+    private void setData(@NonNull List<View> views, @NonNull List<? extends BaseBannerInfo> data, List<String> tips) {
 
         if (mIsAutoPlay && views.size() < 3 && mLessViews == null) {
             mIsAutoPlay = false;
@@ -531,7 +526,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
      * @param models
      */
     @Deprecated
-    public void setData(@LayoutRes int layoutResId, @NonNull List<?> models, List<String> tips) {
+    public void setData(@LayoutRes int layoutResId, @NonNull List<? extends BaseBannerInfo> models, List<String> tips) {
         mViews = new ArrayList<>();
         if (models == null) {
             models = new ArrayList<>();
@@ -560,7 +555,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
      * @param models 每一页的数据模型集合
      */
     @Deprecated
-    public void setData(@NonNull List<?> models, List<String> tips) {
+    public void setData(@NonNull List<? extends BaseBannerInfo> models, List<String> tips) {
         setData(R.layout.xbanner_item_image, models, tips);
     }
 
@@ -839,6 +834,11 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
             }
             if (container.equals(view.getParent())) {
                 container.removeView(view);
+            }
+            if(realPosition<mDatas.size()){
+                if(mDatas.get(realPosition).isAdBanner()){
+                    view.findViewById(R.id.banner_ad_tv).setVisibility(View.VISIBLE);
+                }
             }
             if (mOnItemClickListener != null && mDatas.size() != 0) {
                 view.setOnClickListener(new OnDoubleClickListener() {

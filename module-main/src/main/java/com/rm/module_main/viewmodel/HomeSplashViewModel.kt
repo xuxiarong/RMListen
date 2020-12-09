@@ -19,6 +19,7 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
     var isSkipAd = ObservableBoolean(false)
     var skipSecond = ObservableInt(3)
     var mainAdScreen = ObservableField<BusinessAdModel>()
+    var isShowAd = ObservableBoolean(false)
 
     fun startSkipTimerCount() {
         launchOnUI {

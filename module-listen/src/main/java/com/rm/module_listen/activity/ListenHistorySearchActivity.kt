@@ -25,7 +25,9 @@ class ListenHistorySearchActivity :
 
 
     override fun startObserve() {
-
+        mViewModel.allHistory.observe(this, Observer {
+            mViewModel.mSwipeAdapter.setList(it)
+        })
     }
 
     override fun initView() {

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.module_home.model.home.HomeSingleImgContentModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_12"
+            android:scaleType="fitXY"
+            bindUrl="@{item.image_url}"
+            bindJumpUrl="@{item.jump_url}"
+            corner="@{8}"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_12"
+            android:scaleType="fitXY"
+            isVisible="@{!(item.img_ad_model == null)}"
+            bindBusinessAdModel="@{item.img_ad_model}"
+            android:onClick="@{()->viewModel.homeSingleImgAdClick(item)}"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            isVisible="@{!(item.img_ad_model == null)}"
+            android:onClick="@{()->viewModel.homeSingleImgAdClose(item)}"
+            android:src="@drawable/business_icon_swipe_delete"
+            />
+
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/banner_ad_tv"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_14"
+            app:rv_cornerRadius="@dimen/dp_4"
+            app:rv_backgroundColor="@color/business_color_4c333333"
+            android:text="@string/business_ad"
+            android:layout_gravity="end|bottom"
+            isVisible="@{!(item.img_ad_model == null)}"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="@dimen/business_text_size_8sp"
+            android:textColor="@color/businessWhite"
+            />
+
+    </FrameLayout>
+
+</layout>

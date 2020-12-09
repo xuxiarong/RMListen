@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
+            type="com.rm.module_main.viewmodel.HomeSplashViewModel" />
     </data>
 
     <com.flyco.roundview.RoundLinearLayout

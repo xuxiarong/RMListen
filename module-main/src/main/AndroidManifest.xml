@@ -1,12 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rm.module_main">
 
     <application>
+        <activity android:name=".activity.guide.MainGuideActivity"></activity>
         <activity
             android:name=".activity.MainMainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -16,16 +17,15 @@
                 <data android:scheme="lbook" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.rm.module_main.activity.splash.SplashActivity"
+            android:name=".activity.splash.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
+
 </manifest>

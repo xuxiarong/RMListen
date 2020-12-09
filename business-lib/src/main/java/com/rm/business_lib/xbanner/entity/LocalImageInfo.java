@@ -25,4 +25,9 @@ public class LocalImageInfo extends SimpleBannerInfo {
     public Integer getXBannerUrl() {
         return bannerRes;
     }
+
+    @Override
+    public Boolean isAdBanner() {
+        return false;
+    }
 }

@@ -5,8 +5,12 @@ import com.rm.business_lib.bean.*
 import com.rm.module_home.bean.CategoryTabListBean
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
+import com.rm.module_home.model.ad.HomeBannerAdResultModel
+import com.rm.module_home.model.ad.HomeDialogAdResultModel
+import com.rm.module_home.model.ad.HomeSingleImgAdResultModel
 import com.rm.module_home.model.home.HomeModel
 import com.rm.module_home.model.home.detail.HomeCommentBean
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 
@@ -210,4 +214,24 @@ interface HomeApiService {
     @DELETE("comment/like")
     suspend fun homeUnLikeComment(@Query("comment_id") comment_id: String): BaseResponse<Any>
 
+    /**
+     * 获取首页弹窗广告
+     * @param requestBody 请求的body
+     */
+    @POST("adv/content/list")
+    suspend fun getHomeDialogAd(@Body requestBody: RequestBody): BaseResponse<HomeDialogAdResultModel>
+
+    /**
+     * 获取首页弹窗广告
+     * @param requestBody 请求的body
+     */
+    @POST("adv/content/list")
+    suspend fun getHomeBannerAd(@Body requestBody: RequestBody): BaseResponse<HomeBannerAdResultModel>
+
+    /**
+     * 获取首页单图广告
+     * @param requestBody 请求的body
+     */
+    @POST("adv/content/list")
+    suspend fun getHomeImgContentAd(@Body requestBody: RequestBody): BaseResponse<HomeSingleImgAdResultModel>
 }

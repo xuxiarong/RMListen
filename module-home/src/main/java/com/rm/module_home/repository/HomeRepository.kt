@@ -1,5 +1,6 @@
 package com.rm.module_home.repository
 
+import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.*
@@ -7,8 +8,13 @@ import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.bean.CategoryTabListBean
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
+import com.rm.module_home.model.ad.HomeBannerAdResultModel
+import com.rm.module_home.model.ad.HomeDialogAdResultModel
+import com.rm.module_home.model.ad.HomeSingleImgAdResultModel
 import com.rm.module_home.model.home.HomeModel
 import com.rm.module_home.model.home.detail.HomeCommentBean
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * desc   :
@@ -207,4 +213,33 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
         return apiCall { homeService.homeUnLikeComment(comment_id) }
     }
 
+    /**
+     *  获取首页弹窗广告
+     */
+    suspend fun getHomeDialogAd(ad_key : Array<String>): BaseResult<HomeDialogAdResultModel> {
+        return apiCall {
+            val requestBean = BusinessAdRequestModel(ad_key = ad_key)
+            homeService.getHomeDialogAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
+        }
+    }
+
+    /**
+     *  获取首页Banner广告
+     */
+    suspend fun getHomeBannerAd(ad_key : Array<String>): BaseResult<HomeBannerAdResultModel> {
+        return apiCall {
+            val requestBean = BusinessAdRequestModel(ad_key = ad_key)
+            homeService.getHomeBannerAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
+        }
+    }
+
+    /**
+     *  获取首页单图广告
+     */
+    suspend fun getHomeImgContentAd(ad_key : Array<String>): BaseResult<HomeSingleImgAdResultModel> {
+        return apiCall {
+            val requestBean = BusinessAdRequestModel(ad_key = ad_key)
+            homeService.getHomeImgContentAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
+        }
+    }
 }

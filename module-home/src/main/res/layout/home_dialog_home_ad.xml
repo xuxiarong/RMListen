@@ -20,13 +20,13 @@
 
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/home_ad_dialog_img"
+            android:layout_width="280dp"
+            android:layout_height="386dp"
             android:layout_gravity="center_horizontal"
-            android:rotation="90"
             corner="@{16f}"
-            bindUrl="@{viewModel.dialogUrl}"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            bindUrl="@{viewModel.homeDialogAdModel.image_path}" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_dialog_ad_close"

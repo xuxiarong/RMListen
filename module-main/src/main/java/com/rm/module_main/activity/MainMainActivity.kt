@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.HomeGlobalData
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.component_comm.utils.BannerJumpUtils
@@ -26,6 +27,7 @@ class MainMainActivity :
     ComponentShowPlayActivity<MainActivityMainBindingImpl, HomeMainViewModel>() {
 
     private lateinit var navigationController: NavigationController
+    private var lastExitTime = 0L
 
     override fun getLayoutId() = R.layout.main_activity_main
 
@@ -150,6 +152,20 @@ class MainMainActivity :
 
     override fun initData() {
 
+    }
+
+    override fun onBackPressed() {
+        if(lastExitTime == 0L){
+            ToastUtil.show(this,"2秒内再次返回将退出雷曼听书App")
+            lastExitTime = System.currentTimeMillis()
+        }else{
+            if(System.currentTimeMillis() - lastExitTime <= 2000){
+                finish()
+            }else{
+                lastExitTime = System.currentTimeMillis()
+                ToastUtil.show(this,"2秒内再次返回将退出雷曼听书App")
+            }
+        }
     }
 
     companion object {
