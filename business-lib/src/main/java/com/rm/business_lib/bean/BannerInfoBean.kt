@@ -8,12 +8,12 @@ import com.rm.business_lib.xbanner.entity.BaseBannerInfo
  * version: 1.0
  */
 data class BannerInfoBean (
-    var banner_id: Int,
+    var banner_id: Int = 0,
     var banner_img: String,
-    var banner_jump: String,
-    var banner_seq: Int,
-    var page_id: Int,
-    var img_url: String,
+    var banner_jump: String = "",
+    var banner_seq: Int = 0,
+    var page_id: Int = 0,
+    var img_url: String = "",
     var isAd : Boolean = false
 ) : BaseBannerInfo {
     override fun getXBannerUrl(): Any {

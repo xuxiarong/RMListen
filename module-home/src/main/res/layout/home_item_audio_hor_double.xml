@@ -24,13 +24,13 @@
             android:id="@+id/homehorSingleItemRecommendHorDoubleTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.onAudioClick(item.topRecommendModel)}"
+            android:onClick="@{()->viewModel.onAudioClick(context,item.topRecommendModel)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
-                bindUrl="@{item.topRecommendModel.cover_url}"
+                bindUrl="@{item.topRecommendModel.imageUrl}"
                 corner="@{4.0f}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -38,7 +38,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.flyco.roundview.RoundTextView
+                style="@style/BusinessAdText"
+                app:rv_cornerRadius="@dimen/dp_4"
+                app:rv_backgroundColor="@color/business_color_4c333333"
+                isVisible="@{item.topRecommendModel.audioIsAd()}"
+                app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                />
+
             <androidx.appcompat.widget.AppCompatTextView
+                isVisible="@{!item.topRecommendModel.audioIsAd()}"
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopTag"
                 style="@style/BusinessLabStyleHalfRound_FF5E5E"
                 bindText="@{item.topRecommendModel.audio_label}"
@@ -47,7 +57,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopName"
-                bindText="@{item.topRecommendModel.audio_name}"
+                bindText="@{item.topRecommendModel.imageName}"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"
@@ -64,7 +74,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopAuthor"
-                bindText="@{item.topRecommendModel.anchor_name}"
+                bindText="@{item.topRecommendModel.imageAnchor}"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"
@@ -84,13 +94,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:onClick="@{()->viewModel.onAudioClick(item.bottomRecommendModel)}"
+            android:onClick="@{()->viewModel.onAudioClick(context,item.bottomRecommendModel)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleTop">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
-                bindUrl="@{item.bottomRecommendModel.cover_url}"
+                bindUrl="@{item.bottomRecommendModel.imageUrl}"
                 corner="@{4.0f}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -98,16 +108,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.flyco.roundview.RoundTextView
+                style="@style/BusinessAdText"
+                app:rv_cornerRadius="@dimen/dp_4"
+                app:rv_backgroundColor="@color/business_color_4c333333"
+                isVisible="@{item.bottomRecommendModel.audioIsAd()}"
+                app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomTag"
                 style="@style/BusinessLabStyleHalfRound_FF5E5E"
+                isVisible="@{!item.bottomRecommendModel.audioIsAd()}"
                 bindText="@{item.bottomRecommendModel.audio_label}"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomName"
-                bindText="@{item.bottomRecommendModel.audio_name}"
+                bindText="@{item.bottomRecommendModel.imageName}"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"
@@ -124,7 +144,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomAuthor"
-                bindText="@{item.bottomRecommendModel.anchor_name}"
+                bindText="@{item.bottomRecommendModel.imageAnchor}"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"

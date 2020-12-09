@@ -21,6 +21,9 @@ import com.rm.component_comm.router.RouterHelper
 
 object BannerJumpUtils {
     fun onBannerClick(context: Context, url: String) {
+        if(TextUtils.isEmpty(url)){
+            return
+        }
         if (url.startsWith("http")) {
             BaseWebActivity.startBaseWebActivity(context = context, url = url)
             return

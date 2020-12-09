@@ -14,6 +14,8 @@ import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.databinding.HomeItemBannerBinding
 import com.rm.module_home.databinding.HomeItemMenuRvBinding
+import com.rm.module_home.model.home.banner.HomeBannerRvModel
+import com.rm.module_home.model.home.collect.HomeMenuRvModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
 
 /**
@@ -22,9 +24,9 @@ import com.rm.module_home.viewmodel.HomeFragmentViewModel
  * version: 1.0
  */
 class HomeAdapter(
-    private var homeViewModel: HomeFragmentViewModel,
-    modelBrId: Int,
-    itemBrId: Int
+        private var homeViewModel: HomeFragmentViewModel,
+        modelBrId: Int,
+        itemBrId: Int
 ) : BaseMultiVMAdapter<MultiItemEntity>(homeViewModel, modelBrId, itemBrId) {
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
@@ -32,31 +34,33 @@ class HomeAdapter(
         when (getItemViewType(position)) {
             R.layout.home_item_banner -> {
                 val homeItemBannerBinding =
-                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
+                        DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemBannerBinding
                 homeItemBannerBinding.mainBanner.apply {
-                    paddingBindData(homeViewModel.homeBannerInfoList.value!!)
-                    this.setOnItemClickListener { _, _, _, position ->
-                        BannerJumpUtils.onBannerClick(context,homeViewModel.homeBannerInfoList.value!![position].banner_jump)
+                    val bannerData = data[position] as HomeBannerRvModel
+                    bannerData.bannerList?.let {
+                        paddingBindData(it)
+                        this.setOnItemClickListener { _, _, _, position ->
+                            BannerJumpUtils.onBannerClick(context, it[position].banner_jump)
+                        }
                     }
                 }
             }
             R.layout.home_item_menu_rv -> {
                 val homeItemBannerBinding =
-                    DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemMenuRvBinding
-                if (homeViewModel.homeMenuList.value != null) {
-                    val homeCollectAdapter =
-                        CommonMultiVMAdapter(
-                            homeViewModel,
-                            homeViewModel.homeMenuList.value!!,
-                            BR.viewModel,
-                            BR.item
+                        DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView) as HomeItemMenuRvBinding
+                val menuData = data[position] as HomeMenuRvModel
+                val homeCollectAdapter = CommonMultiVMAdapter(
+                                homeViewModel,
+                                menuData.menuList.toMutableList(),
+                                BR.viewModel,
+                                BR.item
                         )
-                    if(homeCollectAdapter.data.size<=3){
-                        homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayoutNoScroll(homeCollectAdapter)
-                    }else{
-                        homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayout(homeCollectAdapter)
-                    }
+                if (homeCollectAdapter.data.size <= 3) {
+                    homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayoutNoScroll(homeCollectAdapter)
+                } else {
+                    homeItemBannerBinding.homeItemRvCollect.bindHorizontalLayout(homeCollectAdapter)
                 }
+
             }
         }
     }

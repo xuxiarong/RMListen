@@ -17,6 +17,6 @@ fun ImageView.bindBusinessAdModel(model: BusinessAdModel?){
         visibility = View.GONE
     }else{
         visibility = View.VISIBLE
-        loadRoundCornersImage(8.0f,this,model.image_path)
+        loadRoundCornersImage(8.0f,this,model.image_url)
     }
 }

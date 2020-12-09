@@ -19,18 +19,30 @@
         android:layout_width="156dp"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
-        android:onClick="@{()->viewModel.onAudioClick(item.singleModel)}">
+        android:onClick="@{()->viewModel.onAudioClick(context,item.singleModel)}"
+        tools:ignore="RtlSymmetry">
 
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
-            bindUrl="@{item.singleModel.cover_url}"
+            bindUrl="@{item.singleModel.imageUrl}"
             corner="@{4.0f}"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:scaleType="fitXY" />
 
+        <com.flyco.roundview.RoundTextView
+            style="@style/BusinessAdText"
+            app:rv_cornerRadius="@dimen/dp_4"
+            app:rv_backgroundColor="@color/business_color_4c333333"
+            isVisible="@{item.singleModel.audioIsAd()}"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:layout_marginTop="125dp"
+            />
+
         <androidx.appcompat.widget.AppCompatTextView
+            isVisible="@{!item.singleModel.audioIsAd()}"
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
             bindText="@{item.singleModel.audio_label}"
@@ -39,6 +51,7 @@
         <RelativeLayout
             android:layout_width="140dp"
             android:layout_height="28dp"
+            isVisible="@{!item.singleModel.audioIsAd()}"
             android:layout_marginTop="112dp"
             android:background="@drawable/business_shape_gradient_0000000_66000000"
             android:orientation="horizontal">
@@ -75,7 +88,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homeItemRecommendHorDoubleTopName"
-                bindText="@{item.singleModel.audio_name}"
+                bindText="@{item.singleModel.imageName}"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,7 +101,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
-                bindText="@{item.singleModel.anchor_name}"
+                bindText="@{item.singleModel.imageAnchor}"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_17"
                 android:layout_marginTop="@dimen/dp_6"

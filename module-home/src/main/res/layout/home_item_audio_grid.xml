@@ -21,13 +21,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="12dp"
-        android:onClick="@{()->viewModel.onAudioClick(item.gridRecommendRvModel)}"
+        android:onClick="@{()->viewModel.onAudioClick(context,item.gridRecommendRvModel)}"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
-            bindUrl="@{item.gridRecommendRvModel.cover_url}"
+            bindUrl="@{item.gridRecommendRvModel.imageUrl}"
             corner="@{4.0f}"
             android:layout_width="106dp"
             android:layout_height="106dp"
@@ -35,7 +35,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.flyco.roundview.RoundTextView
+            style="@style/BusinessAdText"
+            app:rv_cornerRadius="@dimen/dp_4"
+            app:rv_backgroundColor="@color/business_color_4c333333"
+            isVisible="@{item.gridRecommendRvModel.audioIsAd()}"
+            app:layout_constraintBottom_toBottomOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:layout_marginBottom="@dimen/dp_4"
+            />
+
         <View
+            isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
             android:id="@+id/home_book_adapter_play_bg"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_28"
@@ -45,6 +58,7 @@
             app:layout_constraintStart_toStartOf="@id/homeItemRecommendHorDoubleTopIcon" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
             bindPlayCount="@{item.gridRecommendRvModel.play_count}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_28"
@@ -61,13 +75,14 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
+            isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
             bindText="@{item.gridRecommendRvModel.audio_label}"
             app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopName"
-            bindText="@{item.gridRecommendRvModel.audio_name}"
+            bindText="@{item.gridRecommendRvModel.imageName}"
             android:layout_width="106dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -82,7 +97,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
-            bindText="@{item.gridRecommendRvModel.anchor_name}"
+            bindText="@{item.gridRecommendRvModel.imageAnchor}"
             android:layout_width="106dp"
             android:layout_height="@dimen/dp_17"
             android:layout_marginTop="@dimen/dp_6"

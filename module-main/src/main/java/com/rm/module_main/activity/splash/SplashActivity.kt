@@ -22,7 +22,6 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.coroutinepermissions.requestPermissionsForResult
-import com.rm.business_lib.ext.PermissionExt
 import com.rm.module_main.BR
 import com.rm.module_main.R
 import com.rm.module_main.activity.MainMainActivity
@@ -57,12 +56,12 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val adScreen = mViewModel.mainAdScreen.get()
-                if (null != adScreen && !TextUtils.isEmpty(adScreen.image_path)) {
+                if (null != adScreen && !TextUtils.isEmpty(adScreen.image_url)) {
                     val options: RequestOptions = RequestOptions() //图片加载出来前，显示的图片
                         .placeholder(R.drawable.splash) //url为空的时候,显示的图片
                         .fallback(R.drawable.splash) //图片加载失败后，显示的图片
                         .error(R.drawable.splash)
-                    Glide.with(this@SplashActivity).load(adScreen.image_path)
+                    Glide.with(this@SplashActivity).load(adScreen.image_url)
                         .apply(options)
                         .into(splash_ad_img)
                 }

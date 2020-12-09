@@ -9,9 +9,6 @@ import com.rm.module_home.R
  * date   : 2020/08/20
  * version: 1.0
  */
-class HomeBannerRvModel(var bannerList: List<BannerInfoBean>?) : MultiItemEntity {
-
+class HomeBannerRvModel(var bannerList: MutableList<BannerInfoBean>?) : MultiItemEntity {
     override val itemType = R.layout.home_item_banner
-
-
 }

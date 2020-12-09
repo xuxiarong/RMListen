@@ -13,11 +13,11 @@ data class BusinessAdModel(
     var ad_sub_title: String,
     var ad_title: String,
     var ad_type_key: String,
-    var audio_path: String,
+    var audio_url: String,
     var created_at: Long,
     var creator: String,
     var end_time: Long,
-    var image_path: String,
+    var image_url: String,
     var is_attach_to_block: Int,
     var is_audio: String,
     var is_count_down: Int,
@@ -28,5 +28,10 @@ data class BusinessAdModel(
     var start_time: Int,
     var status: Int,
     var updated_at: Int,
-    var video_path: String
+    var video_url: String,
+    var image_path: String,
+    var audio_path: String,
+    var video_path: String,
+    var sort: Int,
+    var avatar_url: String
 )
