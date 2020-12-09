@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -20,9 +21,9 @@ import kotlinx.android.synthetic.main.base_tip_view.view.*
  * version: 1.0
  */
 class BaseTipView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     init {
@@ -44,21 +45,24 @@ class BaseTipView @JvmOverloads constructor(
 
     fun showNetError(activity: Activity) {
         showTipView(
-                activity = activity,
-                tipText = activity.getString(R.string.net_error),
-                tipColor = R.color.base_ff5e5e,
-                tipProgress = false,
-                netError = true
+            activity = activity,
+            tipText = activity.getString(R.string.net_error),
+            tipColor = R.color.base_ff5e5e,
+            tipProgress = false,
+            netError = true
         )
     }
 
     fun showTipView(
-            activity: Activity,
-            tipText: String = "",
-            tipColor: Int = R.color.base_333,
-            tipProgress: Boolean = false,
-            netError: Boolean = false
+        activity: Activity,
+        tipText: String = "",
+        tipColor: Int = R.color.base_333,
+        tipProgress: Boolean = false,
+        netError: Boolean = false
     ) {
+        if (TextUtils.isEmpty(tipText)) {
+            return
+        }
         try {
             rootViewAddView(activity)
             baseTipText.text = tipText
@@ -115,8 +119,8 @@ class BaseTipView @JvmOverloads constructor(
 
     protected open val tipViewLayoutParams by lazy {
         LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT
         ).apply {
             gravity = Gravity.TOP
             setMargins(dip(8), dip(-64), dip(8), 0)

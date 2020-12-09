@@ -1,4 +1,4 @@
-package com.rm.module_mine.bean
+package com.rm.business_lib.bean
 
 /**
  *
@@ -7,7 +7,7 @@ package com.rm.module_mine.bean
  * @description
  *
  */
-data class MineVersionUrlBean(
+data class BusinessVersionUrlBean(
     val version: String?,//版本号
     val package_name: String?,//程序包名
     val package_url: String?,//包下载地址

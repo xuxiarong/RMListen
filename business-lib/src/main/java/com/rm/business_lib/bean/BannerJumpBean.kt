@@ -5,6 +5,6 @@ package com.rm.business_lib.bean
  * date   : 2020/10/09
  * version: 1.0
  */
-data class BannerJumpBean constructor(val audio_id : String)
+data class BannerJumpBean constructor(val ids : String)
 
 data class BannerUrlBean constructor(val url : String)

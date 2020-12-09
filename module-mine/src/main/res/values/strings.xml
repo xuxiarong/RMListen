@@ -40,7 +40,7 @@
     <string name="mine_favorable_comment">给个好评</string>
     <string name="mine_app_version">版本信息</string>
     <string name="mine_about_us">关于我们</string>
-    <string name="mine_now_version">当前版本V</string>
+    <string name="mine_now_version">当前版本V %s</string>
 
 
     <string name="mine_free_book">免费求书</string>

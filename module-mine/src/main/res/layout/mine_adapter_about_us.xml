@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_mine.viewmodel.MineAboutViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.module_mine.bean.MineAboutUsBean" />
+    </data>
+
+    <com.rm.module_mine.widget.MineCommonMaterialView
+        android:id="@+id/mine_about_update_version"
+        bindMaterialName="@{item.title}"
+        userText="@{item.sub_title}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->viewModel.clickCooperation(context,item)}"
+        app:layout_constraintTop_toBottomOf="@id/mine_about_version" />
+</layout>

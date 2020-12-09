@@ -52,7 +52,7 @@ fun XBanner.bindData(bannerInfoList: List<BannerInfoBean>?) {
                                 mUri.getQueryParameter("param"),
                                 BannerJumpBean::class.java
                             )
-                            DLog.d("suolong", jumpBean.audio_id)
+                            DLog.d("suolong", jumpBean.ids)
                         }
                     }
                 }

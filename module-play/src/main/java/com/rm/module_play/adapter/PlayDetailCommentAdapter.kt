@@ -2,9 +2,10 @@ package com.rm.module_play.adapter
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.multi.BaseMultiVMAdapter
+import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.module_play.R
 import com.rm.module_play.model.Comments
-import com.rm.module_play.model.PlayDetailAdvertiseModel
+import com.rm.module_play.model.PlayAdResultModel
 import com.rm.module_play.viewmodel.PlayViewModel
 
 /**
@@ -23,7 +24,7 @@ class PlayDetailCommentAdapter(
     class PlayDetailCommentItemEntity(val data: Comments) : MultiItemEntity {
         override val itemType: Int = R.layout.play_item_comment
     }
-    class PlayDetailCommentAdvertiseItemEntity(val data: PlayDetailAdvertiseModel) : MultiItemEntity {
+    class PlayDetailCommentAdvertiseItemEntity(val data: BusinessAdModel) : MultiItemEntity {
         override val itemType: Int = R.layout.play_item_comment_adver
     }
 }

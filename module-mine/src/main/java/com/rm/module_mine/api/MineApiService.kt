@@ -2,6 +2,7 @@ package com.rm.module_mine.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.LoginUserBean
+import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.module_mine.bean.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -154,7 +155,7 @@ interface MineApiService {
      * 关于我们
      */
     @GET("others/about-us")
-    suspend fun mineAboutUs(): BaseResponse<MineAboutUsBean>
+    suspend fun mineAboutUs(): BaseResponse<MutableList<MineAboutUsBean>>
 
     /**
      *获取app最新版本接口
@@ -186,9 +187,8 @@ interface MineApiService {
      */
     @POST("personal/get-version-url")
     suspend fun mineGetLaseUrl(
-        @Field("version") version: String,
-        @Field("platform") platform: String
-    ): BaseResponse<MineVersionUrlBean>
+       @Body body: RequestBody
+    ): BaseResponse<BusinessVersionUrlBean>
 
     /**
      * 反馈意见

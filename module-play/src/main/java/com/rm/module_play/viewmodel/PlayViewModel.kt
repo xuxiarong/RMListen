@@ -26,6 +26,7 @@ import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.mine.MineService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.adapter.PlayDetailCommentAdapter
@@ -34,7 +35,6 @@ import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.model.AudioCommentsModel
-import com.rm.module_play.model.PlayDetailAdvertiseModel
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -250,6 +250,23 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
             finish()
         }
+    }
+
+    /**
+     * 关闭评论广告
+     */
+    fun clickDelCommentAd(bean: PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity) {
+        mCommentAdapter.remove(bean)
+    }
+
+    /**
+     * 评论广告跳转
+     */
+    fun clickJumpAd(
+        context: Context,
+        bean: PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity
+    ) {
+        BannerJumpUtils.onBannerClick(context, bean.data.jump_url)
     }
 
     /**
@@ -547,14 +564,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             }
             mCommentAdapter.setList(list)
             if (list.size > 4) {
-                mCommentAdapter.addData(
-                    3,
-                    mutableListOf(
-                        PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity(
-                            PlayDetailAdvertiseModel(mutableListOf())
-                        )
-                    )
-                )
+                getAdInfo()
             }
             commentRefreshModel.finishRefresh(true)
         } else {
@@ -571,6 +581,26 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             commentRefreshModel.setNoHasMore(true)
         } else {
             commentPage++
+        }
+    }
+
+    /**
+     * 获取广告信息
+     */
+    private fun getAdInfo() {
+        launchOnIO {
+            repository.getCommentAd().checkResult(onSuccess = {
+                it.ad_player_comment?.let { bean ->
+                    mCommentAdapter.addData(
+                        3,
+                        mutableListOf(
+                            PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity(bean[0])
+                        )
+                    )
+                }
+            }, onError = {
+                DLog.i("===>getAdInfo", "$it")
+            })
         }
     }
 
@@ -710,13 +740,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 主播头像点击事件
      */
     fun clickMemberFun(context: Context) {
-        if (isLogin.get()) {
-            PlayGlobalData.playAudioModel.get()?.let {
-                RouterHelper.createRouter(MineService::class.java)
-                    .toMineMember(context, it.anchor_id)
-            }
-        } else {
-            getActivity(context)?.let { quicklyLogin(it) }
+        PlayGlobalData.playAudioModel.get()?.let {
+            RouterHelper.createRouter(MineService::class.java)
+                .toMineMember(context, it.anchor_id)
         }
     }
 

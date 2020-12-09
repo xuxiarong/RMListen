@@ -46,10 +46,10 @@ class BaseWebActivity : BaseActivity() {
             override fun onProgressChanged(webView: WebView?, i: Int) {
                 super.onProgressChanged(webView, i)
                 if (i < 100) {
-                    baseWebPb.visibility = View.VISIBLE
-                    baseWebPb.progress = i
+                    business_version_upload_dialog_progress.visibility = View.VISIBLE
+                    business_version_upload_dialog_progress.progress = i
                 } else {
-                    baseWebPb.visibility = View.GONE
+                    business_version_upload_dialog_progress.visibility = View.GONE
                 }
             }
 

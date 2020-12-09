@@ -26,8 +26,8 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search_adapter_anchor_avatar"
             bindUrl="@{item.avatar_url}"
-            isCircle="@{true}"
             defaultIcon="@{@drawable/business_ic_default_user}"
+            isCircle="@{true}"
             android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_60"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,14 +50,14 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_anchor_level"
-            bindText="@{@string/search_anchor_level(item.level)}"
             android:layout_width="@dimen/dp_40"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_2"
+            android:text="@{@string/search_anchor_level(item.level)}"
             android:textColor="@color/business_color_ff5e5e"
             android:textSize="@dimen/business_text_size_10sp"
-            android:visibility="gone"
             android:textStyle="italic|bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_anchor_name"
             app:layout_constraintStart_toEndOf="@id/search_adapter_anchor_name"
             app:layout_constraintTop_toTopOf="@id/search_adapter_anchor_name"

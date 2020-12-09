@@ -32,7 +32,7 @@ val viewModelModule = module {
     viewModel { MineMemberFollowsViewModel(get()) }
     viewModel { MineMemberReleaseBooksViewModel(get()) }
     viewModel { MineVersionUpdateViewModel() }
-    viewModel { MineAboutViewModel() }
+    viewModel { MineAboutViewModel(get()) }
     viewModel { MineGetBookViewModel(get()) }
     viewModel { MineFeedbackViewModel(get()) }
 

@@ -68,6 +68,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="LV5"
+                android:visibility="invisible"
                 android:textColor="@color/business_color_ff5e5e"
                 android:textSize="@dimen/business_text_size_10sp"
                 android:textStyle="bold|italic" />

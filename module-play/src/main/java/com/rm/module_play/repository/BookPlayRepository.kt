@@ -1,13 +1,18 @@
 package com.rm.module_play.repository
 
+import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.AudioDetailBean
+import com.rm.business_lib.bean.BusinessAdRequestModel
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.model.AudioCommentsModel
+import com.rm.module_play.model.PlayAdResultModel
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  *
@@ -15,7 +20,7 @@ import com.rm.module_play.test.SearchResult
  * @data: 9/3/20 5:47 PM
  * @Version: 1.0.0
  */
-class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
+class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository() {
 
     /**
      * 发送忘记密码短信验证码
@@ -29,7 +34,6 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     suspend fun getPlayPath(params: Map<String, String>): BaseResult<SearchMusicData> {
         return apiCall { playApi.getPlayPath(params) }
     }
-
 
 
     /**
@@ -130,4 +134,19 @@ class BookPlayRepository(val playApi: PlayApiService) : BaseRepository() {
     suspend fun unSubscribe(audioId: String): BaseResult<Any> {
         return apiCall { playApi.homeCancelSubscription(audioId) }
     }
+
+
+    /**
+     *  获取章节列表
+     */
+    suspend fun getCommentAd(): BaseResult<PlayAdResultModel> {
+        return apiCall {
+            val requestBean = BusinessAdRequestModel(arrayOf("ad_player_comment"))
+            playApi.getCommentAd(
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
+            )
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.rm.baselisten.net.api
 
 import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.baselisten.util.DLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import java.io.IOException
@@ -16,7 +17,8 @@ open class BaseRepository {
         return try {
             return executeResponse(call())
         } catch (e: Exception) {
-            BaseResult.Error(e)
+            DLog.e("request error ", "${e.message}")
+            BaseResult.Error("")
         }
     }
 
@@ -27,7 +29,7 @@ open class BaseRepository {
         return coroutineScope {
             if (response.code != 0) {
                 errorBlock?.let { it() }
-                BaseResult.Error(IOException(response.msg))
+                BaseResult.Error(response.msg)
             } else {
                 successBlock?.let { it() }
                 BaseResult.Success(response.data)

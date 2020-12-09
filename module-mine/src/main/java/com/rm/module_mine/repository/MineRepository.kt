@@ -3,14 +3,14 @@ package com.rm.module_mine.repository
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.baselisten.net.util.GsonUtils
+import com.rm.business_lib.bean.BusinessUpdateVersionBean
 import com.rm.business_lib.bean.LoginUserBean
+import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.business_lib.utils.DeviceUtils
 import com.rm.module_mine.api.MineApiService
 import com.rm.module_mine.bean.*
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
@@ -138,15 +138,17 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
     /**
      * 关于我们
      */
-    suspend fun mineAboutUs(): BaseResult<MineAboutUsBean> {
+    suspend fun mineAboutUs(): BaseResult<MutableList<MineAboutUsBean>> {
         return apiCall { service.mineAboutUs() }
     }
 
     /**
-     * 关于我们
+     * 版本更新
      */
-    suspend fun mineGetLaseVersion(): BaseResult<MineGetLastVersionBean> {
-        return apiCall { service.mineGetLaseVersion("android") }
+    suspend fun mineGetLaseUrl(): BaseResult<BusinessVersionUrlBean> {
+        val json = GsonUtils.toJson(BusinessUpdateVersionBean())
+        val body = json.toRequestBody("application/json; charset=utf-8".toMediaType())
+        return apiCall { service.mineGetLaseUrl(body) }
     }
 
     /**

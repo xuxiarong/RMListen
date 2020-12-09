@@ -70,7 +70,7 @@
                 android:max="100"
                 bindDownChapter="@{itemBean}"
                 bindDownProgressChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
-                android:progressDrawable="@drawable/download_progress_bg" />
+                android:progressDrawable="@drawable/business_progress_bg" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_22"

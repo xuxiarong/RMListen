@@ -47,6 +47,8 @@ class MineAboutUsActivity : BaseVMActivity<MineActivityAboutBinding, MineAboutVi
     }
 
     override fun initData() {
+        mViewModel.getAboutUs()
+        mViewModel.getLaseVersion()
     }
 
 

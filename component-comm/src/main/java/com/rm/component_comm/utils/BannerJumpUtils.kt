@@ -41,7 +41,7 @@ object BannerJumpUtils {
                         } else if (uriParam == "param") {
                             param = uri.getQueryParameter("param")
                             val jumpBean = Gson().fromJson(param, BannerJumpBean::class.java)
-                            audioId = jumpBean.audio_id
+                            audioId = jumpBean.ids
                         }
                     }
                     if (!TextUtils.isEmpty(page)) {

@@ -108,8 +108,9 @@ class MineCommonMaterialView @JvmOverloads constructor(
         this.needLine = needLine
     }
 
+
     /**
-     * 设置右边的用户文本信息
+     * 设置右边用户的头像
      */
     fun setMaterialUserIcon(imgUrl: String?) {
         userIcon.visibility = View.VISIBLE
@@ -117,7 +118,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
     }
 
     /**
-     * 设置右边用户的头像
+     * 设置右边的用户文本信息
      */
     fun setMaterialUserText(text: String) {
         userText.visibility = View.VISIBLE
@@ -138,6 +139,13 @@ fun MineCommonMaterialView.userText(userText: String?, defaultText: String?) {
         setMaterialUserText(userText!!)
     } else {
         setMaterialUserText(defaultText ?: "")
+    }
+}
+
+@BindingAdapter("bindMaterialName")
+fun MineCommonMaterialView.bindMaterialName(bindMaterialName: String?) {
+    if (bindMaterialName != null) {
+        setMaterialName(bindMaterialName)
     }
 }
 

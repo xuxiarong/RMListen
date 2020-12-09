@@ -48,5 +48,8 @@
     <string name="business_delete_tip_content">确定要删除所选内容吗</string>
 
     <string name="business_book_unit">本</string>
+    <string name="business_not_upgrade">暂不升级</string>
+    <string name="business_upgrade">立即升级</string>
+    <string name="business_upload_tips">升级提示</string>
 
 </resources>

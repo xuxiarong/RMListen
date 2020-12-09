@@ -55,8 +55,8 @@
             android:id="@+id/mine_about_logo"
             android:layout_width="@dimen/dp_70"
             android:layout_height="@dimen/dp_84"
-            android:src="@drawable/business_icon_logo"
             android:layout_marginTop="@dimen/dp_35"
+            android:src="@drawable/business_icon_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mine_about_back" />
@@ -74,46 +74,17 @@
             app:layout_constraintTop_toBottomOf="@id/mine_about_logo"
             tools:text="当前版本V1.0.1" />
 
-        <com.rm.module_mine.widget.MineCommonMaterialView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mine_about_update_version"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            bindVerticalLayout="@{viewModel.mAdapter}"
+            app:layout_constraintBottom_toTopOf="@id/mine_about_company"
             app:layout_constraintTop_toBottomOf="@id/mine_about_version"
             app:material_name="@string/mine_update_version" />
 
-        <com.rm.module_mine.widget.MineCommonMaterialView
-            android:id="@+id/mine_about_business_cooperation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.clickCooperation(context)}"
-            app:layout_constraintTop_toBottomOf="@id/mine_about_update_version"
-            app:material_name="@string/mine_cooperation" />
-
-        <com.rm.module_mine.widget.MineCommonMaterialView
-            android:id="@+id/mine_about_web_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.clickCooperation(context)}"
-            app:layout_constraintTop_toBottomOf="@id/mine_about_business_cooperation"
-            app:material_name="@string/mine_web_address" />
-
-        <com.rm.module_mine.widget.MineCommonMaterialView
-            android:id="@+id/mine_about_user_pact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.clickCooperation(context)}"
-            app:layout_constraintTop_toBottomOf="@id/mine_about_web_address"
-            app:material_name="@string/mine_user_pact" />
-
-        <com.rm.module_mine.widget.MineCommonMaterialView
-            android:id="@+id/mine_about_private_pact"
-            android:layout_width="match_parent"
-            android:onClick="@{()->viewModel.clickCooperation(context)}"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/mine_about_user_pact"
-            app:material_name="@string/mine_private_pact" />
-
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mine_about_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_20"

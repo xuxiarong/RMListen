@@ -4,8 +4,10 @@ import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_play.model.AudioCommentsModel
+import com.rm.module_play.model.PlayAdResultModel
 import com.rm.module_play.test.SearchMusicData
 import com.rm.module_play.test.SearchResult
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 /**
@@ -142,5 +144,11 @@ interface PlayApiService {
     @DELETE("subscription/list")
     suspend fun homeCancelSubscription(@Query("audio_id") audio_id: String): BaseResponse<Any>
 
+    /**
+     * 获取评论广告
+     * @param requestBody 请求的body
+     */
+    @POST("adv/content/list")
+    suspend fun getCommentAd(@Body requestBody: RequestBody): BaseResponse<PlayAdResultModel>
 
 }

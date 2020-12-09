@@ -51,7 +51,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_anchor_level"
-            bindText="@{@string/search_anchor_level(item.level)}"
+            android:text="@{@string/search_anchor_level(item.level)}"
             android:layout_width="@dimen/dp_40"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_2"

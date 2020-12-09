@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.SheetListBean
 import com.rm.business_lib.bean.SheetMenuInfoBean
@@ -29,7 +30,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
 
-    val contentRvId=R.id.home_menu_recycler_view
+    val contentRvId = R.id.home_menu_recycler_view
 
     // 听单详情数据
     var menuList = MutableLiveData<MenuSheetBean>()
@@ -51,7 +52,6 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
      */
     fun refreshData() {
         mPage = 1
-        refreshStatusModel.setNoHasMore(false)
         getSheetList()
     }
 
@@ -97,6 +97,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
      * 处理成功的数据
      */
     private fun processSuccessData(bean: SheetListBean) {
+        val size: Int = bean.list?.size ?: 0
         showContentView()
         if (mPage == 1) {
             //刷新完成
@@ -114,8 +115,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
             }
             refreshStatusModel.finishLoadMore(true)
         }
-
-        if (menuAdapter.data.size >= bean.total || bean.list?.size ?: 0 < pageSize) {
+        if (size < pageSize) {
             //没用更多数据
             refreshStatusModel.setNoHasMore(true)
         } else {
