@@ -89,10 +89,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                     }
                 }
             }.showCommonDialog(
-                activity = activity as FragmentActivity,
-                layoutId = R.layout.home_dialog_home_ad,
-                viewModel = mViewModel,
-                viewModelBrId = BR.viewModel
+                    activity = activity as FragmentActivity,
+                    layoutId = R.layout.home_dialog_home_ad,
+                    viewModel = mViewModel,
+                    viewModelBrId = BR.viewModel
             )
         }
 
@@ -122,29 +122,46 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         })
 
         mViewModel.homeDialogAdModel.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val homeDialogAdModel = mViewModel.homeDialogAdModel.get()
-                if (homeDialogAdModel != null && !TextUtils.isEmpty(homeDialogAdModel.image_path)) {
+                if (homeDialogAdModel != null && !TextUtils.isEmpty(homeDialogAdModel.image_url)) {
                     showHomeAdDialog()
                 }
             }
         })
 
+        mViewModel.homeItemDataAdModel.addOnPropertyChangedCallback(object :
+                Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val homeItemAdModel = mViewModel.homeItemDataAdModel.get()
+                if (homeItemAdModel != null) {
+                    //如果里面广告数据都为空，则不做设置广告的操作
+                    if (homeItemAdModel.ad_index_banner == null
+                            && homeItemAdModel.ad_index_floor_streamer == null
+                            && homeItemAdModel.ad_index_voice == null) {
+                        return
+                    }
+                    mViewModel.setHomeItemDataAd(homeItemAdModel)
+                }
+            }
+        })
+
+
         mViewModel.errorMsg.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.errorMsg.get() != null) {
                     (activity as BaseActivity).tipView.showTipView(
-                        activity = activity as FragmentActivity,
-                        tipText = mViewModel.errorMsg.get()!!
+                            activity = activity as FragmentActivity,
+                            tipText = mViewModel.errorMsg.get()!!
                     )
                 }
             }
         })
 
         mViewModel.showNetError.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
 
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.showNetError.get()) {
@@ -154,12 +171,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
         })
 
         NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (NetworkChangeReceiver.isAvailable.get()) {
                     if (mViewModel.baseStatusModel.value != null) {
                         if (mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR
-                            || mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR
+                                || mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR
                         ) {
                             mViewModel.getHomeDataFromService()
                         }
@@ -211,11 +228,11 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
      */
     private fun onBlockClick(blockModel: HomeBlockModel) {
         HomeTopicListActivity.startActivity(
-            activity!!,
-            blockModel.page_id,
-            blockModel.block_id,
-            blockModel.topic_id,
-            blockModel.block_name
+                activity!!,
+                blockModel.page_id,
+                blockModel.block_id,
+                blockModel.topic_id,
+                blockModel.block_name
         )
     }
 

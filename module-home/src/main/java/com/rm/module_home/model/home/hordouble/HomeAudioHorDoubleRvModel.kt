@@ -2,6 +2,7 @@ package com.rm.module_home.model.home.hordouble
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.module_home.R
+import com.rm.module_home.model.home.HomeBlockModel
 
 /**
  * desc   :
@@ -9,14 +10,8 @@ import com.rm.module_home.R
  * version: 1.0
  */
 data class HomeAudioHorDoubleRvModel constructor(
-    var horDoubleList: ArrayList<MultiItemEntity>,
-    var block : HomeAudioDoubleBlockModel
-) : MultiItemEntity {
+        val block : HomeBlockModel,
+        var horDoubleList: ArrayList<MultiItemEntity>
+        ) : MultiItemEntity {
     override val itemType = R.layout.home_item_audio_hor_double_rv
 }
-data class HomeAudioDoubleBlockModel constructor(
-    var page_id:Int,
-    var block_id:Int,
-    var topic_id:Int,
-    var block_name:String
-)

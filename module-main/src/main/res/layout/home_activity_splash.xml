@@ -23,8 +23,8 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@mipmap/splash"
-            tools:src="@mipmap/splash"
+            android:src="@drawable/splash"
+            tools:src="@drawable/splash"
             />
 
         <com.flyco.roundview.RoundTextView

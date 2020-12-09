@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/splash"
+        android:src="@drawable/splash"
         />
     <com.flyco.roundview.RoundTextView
         android:id="@+id/main_guide_to_main"

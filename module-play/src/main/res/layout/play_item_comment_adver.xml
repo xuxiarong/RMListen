@@ -75,7 +75,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/play_item_comment_advertise_jump"
-            bindUrl="@{item.data.image_path}"
+            bindUrl="@{item.data.image_url}"
             corner="@{8f}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_166"

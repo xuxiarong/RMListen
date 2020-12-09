@@ -18,6 +18,19 @@
         <item name="android:paddingEnd">@dimen/dp_2</item>
     </style>
 
+    <style name="BusinessAdText" parent="@style/BusinessLabStyleBase">
+        <item name="android:layout_width">@dimen/dp_24</item>
+        <item name="android:layout_height">@dimen/dp_14</item>
+        <item name="android:text">@string/business_ad</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginEnd">@dimen/dp_4</item>
+        <item name="android:layout_marginBottom">@dimen/dp_4</item>
+        <item name="android:textSize">@dimen/business_text_size_8sp</item>
+        <item name="android:textColor">@color/business_text_color_ffffff</item>
+        <item name="android:paddingStart">@dimen/dp_2</item>
+        <item name="android:paddingEnd">@dimen/dp_2</item>
+    </style>
+
     <!-- 背景色：渐变#ffdf85 到 #ffba56,文本：10sp,白色-->
     <style name="BusinessLabStyleHalfRound_FFDF85_TO_FFBA56" parent="@style/BusinessLabStyleBase">
         <item name="android:background">@drawable/business_shape_half_round_ffdf85_to_ffba56</item>

@@ -19,12 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_18"
-        android:onClick="@{()->viewModel.onAudioClick(item.verModel)}">
+        android:onClick="@{()->viewModel.onAudioClick(context,item.verModel)}">
 
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_book_adapter_icon"
-            bindUrl="@{item.verModel.cover_url}"
+            bindUrl="@{item.verModel.imageUrl}"
             corner="@{4.0f}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"
@@ -32,7 +32,17 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.flyco.roundview.RoundTextView
+            style="@style/BusinessAdText"
+            app:rv_cornerRadius="@dimen/dp_4"
+            app:rv_backgroundColor="@color/business_color_4c333333"
+            isVisible="@{item.verModel.audioIsAd()}"
+            app:layout_constraintEnd_toEndOf="@+id/home_book_adapter_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/home_book_adapter_icon"
+            />
+
         <View
+            isVisible="@{!item.verModel.audioIsAd()}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_28"
             android:background="@drawable/business_shape_gradient_0000000_66000000"
@@ -42,6 +52,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             bindPlayCount="@{item.verModel.play_count}"
+            isVisible="@{!item.verModel.audioIsAd()}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_28"
             android:drawablePadding="@dimen/dp_2"
@@ -56,6 +67,7 @@
 
         <TextView
             android:id="@+id/home_book_adapter_tips"
+            isVisible="@{!item.verModel.audioIsAd()}"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
             bindText="@{item.verModel.audio_label}"
             app:layout_constraintRight_toRightOf="@id/home_book_adapter_icon"
@@ -68,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:singleLine="true"
-            android:text="@{item.verModel.audio_name}"
+            android:text="@{item.verModel.imageName}"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/home_book_adapter_icon"
             app:layout_constraintRight_toRightOf="parent"
@@ -81,6 +93,7 @@
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_8"
             android:maxLines="2"
+            isVisible="@{!item.verModel.audioIsAd()}"
             android:text="@{item.verModel.audio_intro}"
             app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
             app:layout_constraintRight_toRightOf="parent"
@@ -90,7 +103,7 @@
         <TextView
             android:id="@+id/home_book_adapter_author"
             style="@style/BusinessTextStyleThird_4"
-            android:text="@{item.verModel.anchor_name}"
+            android:text="@{item.verModel.imageAnchor}"
             app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_icon"
             app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
             tools:text="楼芸蓓" />
