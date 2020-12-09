@@ -76,7 +76,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/play_item_comment_advertise_subtitle"
-            bindDateString="@{item.data.created_at}"
+            bindTimeDateString="@{item.data.created_at}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"

@@ -22,7 +22,6 @@ import java.io.IOException
 import java.lang.Exception
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * desc   : 业务网络拦截器
@@ -55,109 +54,73 @@ class RefreshTokenInterceptor : Interceptor {
         )
     }
 
-
     override fun intercept(chain: Interceptor.Chain): Response {
-        try {
-            val request: Request = getRequestHeaderBuilder(chain.request().newBuilder()).build()
-            return responseIntercept(chain.proceed(request), chain)
-        } catch (e: Throwable) {
-            if (e is IOException) {
-                throw e
-            } else {
-                throw IOException(e)
-            }
-        }
-    }
 
-    /**
-     * 拦截返回数据，判断是否需要刷新token等操作
-     * @param response Response
-     * @return Response
-     */
-    private fun responseIntercept(response: Response, chain: Interceptor.Chain): Response {
-        val readString = getResponseString(response)
-        if (readString.isNullOrEmpty()) {
-            return response
+//        synchronized(this) {
+        val originRequest = chain.request()
+        val request = getRequestHeaderBuilder(originRequest.newBuilder()).build()
+        //获取请求结果
+        val originResponse = chain.proceed(request)
+        val body = originResponse.body
+        // 原请求地址
+        val originReqUrl = originRequest.url.toString()
+        //没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
+        DLog.i("=====>RefreshTokenInterceptor", "=====>>>>$originReqUrl")
+
+        if (TextUtils.isEmpty(getResponseString(originResponse))) {
+            DLog.i("=====>RefreshTokenInterceptor", "=====000000000   ${request.url}")
+            return originResponse.newBuilder().code(originResponse.code)
+                .body(body).build()
         }
-        val json = JSONObject(readString)
-        val code = json.get("code")
-        DLog.i(TAG, "code:$code")
+        val code = getResponseCode(originResponse)
+
         return if (code == CODE_REFRESH_TOKEN) {
-            refreshToken(response, chain)
-        } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN) {
-            loginOut()
-            chain.proceed(retryLoad(response))
-        } else {
-            response
-        }
-    }
 
-    @Volatile
-    var token: String? = "";
-
-    var going = AtomicBoolean(false)
-
-    private fun refreshRealToken(): String {
-        synchronized(this) {
-            if (TextUtils.isEmpty(token)) {
-                try {
-                    val result = apiService.refreshToken(REFRESH_TOKEN.getStringMMKV("")).execute().body()
-                    //如果刷新成功
-                    if (result?.code == 0) {
-                        // 刷新token成功，保存最新token
-                        DLog.i(TAG, "refreshToken:" + result.data.access)
-                        updateLocalToken(result.data.access, result.data.refresh)
-                        token = result.data.refresh
-
-                        return token!!;
-                    }
-                    throw  Exception("token refresh error")
-                }finally {
-                    going.set(false)
-                }
+            val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
+            val newToken = getToken(token)
+            if (!TextUtils.isEmpty(newToken)) {
+                val headers = request.headers.newBuilder()
+                headers["Authorization"] = "Bearer $newToken"
+                val newRequest = request.newBuilder().headers(headers.build()).build()
+                DLog.i("=====>RefreshTokenInterceptor", "=====111111  ${request.url}")
+                chain.proceed(newRequest)
             } else {
-                return token!!;
+                loginOut()
+                val headers = request.headers.newBuilder()
+                headers["Authorization"] = "Bearer "
+                val newRequest = request.newBuilder().headers(headers.build()).build()
+                DLog.i("=====>RefreshTokenInterceptor", "=====2222222  ${request.url}")
+                chain.proceed(newRequest)
             }
+        } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN || code == CODE_REFRESH_TOKEN_FAILED) {
+            loginOut()
+            val headers = request.headers.newBuilder()
+            headers["Authorization"] = "Bearer "
+            val newRequest = request.newBuilder().headers(headers.build()).build()
+            DLog.i("=====>RefreshTokenInterceptor", "=====333333 $code")
+            chain.proceed(newRequest)
+        } else {
+            DLog.i("=====>RefreshTokenInterceptor", "=====444444 ${request.url}")
+            originResponse.newBuilder().code(originResponse.code)
+                .body(body).build()
         }
-
+//        }
     }
 
-    private fun refreshToken(response: Response, chain: Interceptor.Chain): Response {
+    @Throws(IOException::class)
+    fun getToken(token: String): String {
+        val refreshToken = REFRESH_TOKEN.getStringMMKV("")
+        DLog.i("=====>RefreshTokenInterceptor", "=====getToken $refreshToken")
 
-        if (going.compareAndSet(false,true)){
-              token=null;
+        val result = apiService.refreshToken(token).execute().body()
+        return if (result?.code == 0) {
+            updateLocalToken(result.data.access, result.data.refresh)
+            result.data.access
+        } else {
+            ""
         }
-        val result = refreshRealToken()
-
-
-
-        //如果刷新成功
-
-        return response
     }
 
-
-    /**
-     * 重试
-     */
-    private fun retryLoad(response: Response): Request {
-        DLog.i(TAG, "retryLoad:")
-        val timestamp = System.currentTimeMillis() / 1000
-        // 随机生成的16位数字符
-        val nonce = generateNonce()
-        val signSource =
-            StringBuilder().append(timestamp).append(nonce).append(APP_KEY).toString()
-        return response.request.newBuilder()
-            .header(
-                "Authorization",
-                "Bearer ${ACCESS_TOKEN.getStringMMKV()}"
-            )
-            .header("APP-SIGN", encodeMD5(signSource))
-            .header("APP-NONCE", nonce)
-            .header("APP-TIMESTAMP", "$timestamp")
-            .method(response.request.method, response.request.body)
-            .build()
-    }
 
     private fun getResponseString(response: Response): String? {
         val body = response.body
@@ -167,7 +130,19 @@ class RefreshTokenInterceptor : Interceptor {
         val charset: Charset =
             contentType?.charset(StandardCharsets.UTF_8) ?: StandardCharsets.UTF_8
         return buffer?.clone()?.readString(charset)
+    }
 
+    private fun getResponseCode(response: Response): Int {
+        val readString = getResponseString(response)
+        if (readString.isNullOrEmpty()) {
+            return -1
+        }
+        return try {
+            val json = JSONObject(readString)
+            json.getInt("code")
+        } catch (e: Exception) {
+            -1
+        }
     }
 
     /**
@@ -203,6 +178,7 @@ class RefreshTokenInterceptor : Interceptor {
         requestBuilder.addHeader("APP-SIGN", encodeMD5(signSource))
         requestBuilder.addHeader("APP-VERSION", BuildConfig.VERSION_NAME)
         requestBuilder.addHeader("APP-CHANNEL", "0")
+        requestBuilder.addHeader("TOKEN", REFRESH_TOKEN.getStringMMKV())
         requestBuilder.addHeader("Authorization", "Bearer ${ACCESS_TOKEN.getStringMMKV()}")
         return requestBuilder
     }
