@@ -8,9 +8,7 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
-import com.rm.music_exoplayer_lib.constants.MUSIC_ALARM_MODEL_0
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
-import com.rm.music_exoplayer_lib.listener.MusicInitializeCallBack
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.service.MusicPlayerBinder
@@ -70,10 +68,6 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun startPlayMusic(chapterId: String) {
         mBinder?.startPlayMusic(chapterId)
-    }
-
-    override fun startPlayMusic(audios: List<*>?, chapterId: String) {
-        mBinder?.startPlayMusic(audios, chapterId)
     }
 
     override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, chapterId: String) {
@@ -240,6 +234,9 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun getCurrentPlayIndex(): Int = mBinder?.getCurrentPlayIndex() ?: -1
+    override fun setAdPath(adPathList: ArrayList<BaseAudioInfo>) {
+        mBinder?.setAdPath(adPathList)
+    }
 
 
 }

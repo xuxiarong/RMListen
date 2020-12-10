@@ -89,11 +89,6 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
         presenter.playOrPause()
     }
 
-    //播放或者暂停
-    fun startPlayMusic(audios: List<*>?, index: String) {
-        presenter.startPlayMusic(audios, index)
-    }
-
     //播放
     fun play() {
         presenter.play()
@@ -179,4 +174,6 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     fun resumePlayState(state:Boolean)=presenter.resumePlayState(state)
 
     fun getCurrentPlayIndex()  = presenter.getCurrentPlayIndex()
+
+    fun setAdPath(adPathList: ArrayList<BaseAudioInfo>) = presenter.setAdPath(adPathList)
 }

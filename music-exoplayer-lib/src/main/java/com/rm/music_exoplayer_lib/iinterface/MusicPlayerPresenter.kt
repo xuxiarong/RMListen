@@ -20,13 +20,6 @@ interface MusicPlayerPresenter {
     fun startPlayMusic(chapterId: String)
 
     /**
-     * 开始播放任务
-     * @param audios 待播放的数据集，对象需要继承BaseaudioInfo
-     * @param index 指定要播放的位置 0-data.size()
-     */
-    fun startPlayMusic(audios: List<*>?, chapterId: String)
-
-    /**
      * 开始、暂停
      */
     fun playOrPause()
@@ -267,6 +260,8 @@ interface MusicPlayerPresenter {
     fun resumePlayState(state:Boolean)
 
     fun getCurrentPlayIndex() : Int
+
+    fun setAdPath(adPathList : ArrayList<BaseAudioInfo>)
 
 
 }

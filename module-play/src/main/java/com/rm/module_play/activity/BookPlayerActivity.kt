@@ -215,7 +215,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         PlayGlobalData.playAudioId.set(playAudioId)
         PlayGlobalData.playChapterListSort.set(playSortType)
-        mViewModel.getChapterAd()
+        mViewModel.getChapterAd({})
         mViewModel.getAudioFloorAd()
         //书籍信息未传入，获取书籍详情信息,有则直接使用
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
