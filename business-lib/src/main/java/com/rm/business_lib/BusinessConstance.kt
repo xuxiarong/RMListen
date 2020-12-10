@@ -213,7 +213,7 @@ object PlayGlobalData {
      */
     var playAdIsPlaying = ObservableBoolean(false)
     var playVoiceImgAd = ObservableField<BusinessAdModel>()
-    var playVoiceAdClose = ObservableField(false)
+    var playVoiceAdClose = ObservableField(true)
 
 
     fun initPlayAudio(audio: DownloadAudio) {

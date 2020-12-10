@@ -25,4 +25,20 @@ data class Anchor(
     var status: Boolean = false
 ) : Serializable
 
+data class AudioRecommendList(
+    var list: MutableList<AudioRecommend>?
+
+)
+
+data class AudioRecommend(
+    var anchor_id: String = "",
+    var anchor_name: String = "",
+    var audio_cover: String = "",
+    var audio_id: String = "",
+    var audio_label: String = "",
+    var audio_name: String = "",
+    var cover_url: String = "",
+    var status_name: String = ""
+)
+
 

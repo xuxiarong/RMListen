@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.rm.module_play.viewmodel.PlayViewModel" />
+
+        <variable
+            name="item"
+            type="com.rm.business_lib.bean.AudioRecommend" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homeItemRecommendHorDoubleTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/dp_8"
+        android:onClick="@{()->viewModel.onAudioRecommendClick(context,item)}"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/homeItemRecommendHorDoubleTopIcon"
+            bindUrl="@{item.cover_url}"
+            corner="@{4.0f}"
+            android:layout_width="106dp"
+            android:layout_height="106dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:visibility="gone"
+            android:id="@+id/home_book_adapter_play_bg"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_28"
+            android:background="@drawable/business_shape_gradient_0000000_66000000"
+            app:layout_constraintBottom_toBottomOf="@id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintEnd_toEndOf="@id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintStart_toStartOf="@id/homeItemRecommendHorDoubleTopIcon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
+            bindPlayCount="@{0}"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_28"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:drawableStart="@drawable/business_icon_subs_play"
+            android:gravity="center_vertical"
+            android:textColor="@color/business_text_color_ffffff"
+            android:drawablePadding="@dimen/dp_2"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_play_bg"
+            app:layout_constraintEnd_toEndOf="@id/homeItemRecommendHorDoubleTopIcon"
+            tools:text="123" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemRecommendHorDoubleTopTag"
+            style="@style/BusinessLabStyleHalfRound_FF5E5E"
+            bindText="@{item.audio_label}"
+            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemRecommendHorDoubleTopName"
+            bindText="@{item.audio_name}"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/business_text_size_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintTop_toBottomOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            tools:text="Afamefuna" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/homeItemRecommendHorDoubleTopAuthor"
+            bindText="@{item.anchor_name}"
+            android:layout_width="106dp"
+            android:layout_height="@dimen/dp_17"
+            android:layout_marginTop="@dimen/dp_6"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/business_color_b1b1b1"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintStart_toStartOf="@+id/homeItemRecommendHorDoubleTopName"
+            app:layout_constraintTop_toBottomOf="@+id/homeItemRecommendHorDoubleTopName"
+            tools:text="小丸子小丸子小丸子小丸子小丸子小丸子" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

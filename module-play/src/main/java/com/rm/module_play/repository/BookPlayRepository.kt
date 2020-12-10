@@ -4,6 +4,7 @@ import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.business_lib.bean.AudioDetailBean
+import com.rm.business_lib.bean.AudioRecommendList
 import com.rm.business_lib.bean.BusinessAdRequestModel
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_play.api.PlayApiService
@@ -11,8 +12,6 @@ import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.PlayAdChapterModel
 import com.rm.module_play.model.PlayAdResultModel
 import com.rm.module_play.model.PlayFloorAdModel
-import com.rm.module_play.test.SearchMusicData
-import com.rm.module_play.test.SearchResult
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -24,25 +23,19 @@ import okhttp3.RequestBody.Companion.toRequestBody
  */
 class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository() {
 
-    /**
-     * 发送忘记密码短信验证码
-     * @param area_code String
-     * @param phone String
-     */
-    suspend fun getBookList(params: Map<String, String>): BaseResult<SearchResult> {
-        return apiCall { playApi.getBookList(params) }
-    }
-
-    suspend fun getPlayPath(params: Map<String, String>): BaseResult<SearchMusicData> {
-        return apiCall { playApi.getPlayPath(params) }
-    }
-
 
     /**
      * 获取书本详情
      */
     suspend fun getDetailInfo(id: String): BaseResult<AudioDetailBean> {
         return apiCall { playApi.homeDetail(id) }
+    }
+
+    suspend fun getAudioRecommend(
+        audio_id: Long,
+        page_size: Int = 5
+    ): BaseResult<AudioRecommendList> {
+        return apiCall { playApi.getAudioRecommend(audio_id, page_size) }
     }
 
     //评论
@@ -156,10 +149,11 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
      */
     suspend fun getChapterAd(): BaseResult<PlayAdChapterModel> {
         return apiCall {
-            val requestBean = BusinessAdRequestModel(arrayOf("ad_player_voice","ad_player_audio_cover"))
+            val requestBean =
+                BusinessAdRequestModel(arrayOf("ad_player_voice", "ad_player_audio_cover"))
             playApi.getChapterAd(
-                    requestBean.toJson().toString()
-                            .toRequestBody("application/json;charset=utf-8".toMediaType())
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
             )
         }
     }
@@ -171,8 +165,8 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
         return apiCall {
             val requestBean = BusinessAdRequestModel(arrayOf("ad_player_streamer"))
             playApi.getAudioFloorAd(
-                    requestBean.toJson().toString()
-                            .toRequestBody("application/json;charset=utf-8".toMediaType())
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
             )
         }
     }

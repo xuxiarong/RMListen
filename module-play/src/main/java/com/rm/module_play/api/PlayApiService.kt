@@ -2,13 +2,12 @@ package com.rm.module_play.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.AudioDetailBean
+import com.rm.business_lib.bean.AudioRecommendList
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.PlayAdChapterModel
 import com.rm.module_play.model.PlayAdResultModel
 import com.rm.module_play.model.PlayFloorAdModel
-import com.rm.module_play.test.SearchMusicData
-import com.rm.module_play.test.SearchResult
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -19,34 +18,6 @@ import retrofit2.http.*
  * @Version: 1.0.0
  */
 interface PlayApiService {
-    @Headers("BaseUrlName:baidu")//静态替换
-    @GET("/search/song")
-    suspend fun getBookList(@QueryMap map: Map<String, String>): BaseResponse<SearchResult>
-
-    @Headers(
-        "BaseUrlName:play",
-        "Cookie:kg_mid=8a18832e9fc0845106e1075df481c1c2;Hm_lvt_aedee6983d4cfc62f509129360d6bb3d=1557584633",
-        "User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0"
-    )//静态替换
-    @GET("/")
-    suspend fun getPlayPath(@QueryMap map: Map<String, String>): BaseResponse<SearchMusicData>
-
-    /**
-     * 用户评论列表
-     */
-    @GET("comment/member-comments")
-    suspend fun getMemberComments(
-        @Query("page") page: Int,
-        @Query("page_size") page_size: Int
-    ): BaseResponse<Any>
-
-    /**
-     * 评论点赞和取消点赞
-     */
-    @POST("comment/like")
-    suspend fun likeComment(
-        @Field("comment_id") comment_id: Int
-    ): BaseResponse<Any>
 
     /**
      * 用户评论列表
@@ -97,6 +68,13 @@ interface PlayApiService {
      */
     @GET("audio/detail")
     suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<AudioDetailBean>
+
+
+    /**
+     * 获取听书详情
+     */
+    @GET("audio/recommend")
+    suspend fun getAudioRecommend(@Query("audio_id") audio_id: Long,@Query("page_size") page_size: Int): BaseResponse<AudioRecommendList>
 
     /**
      * 评论点赞

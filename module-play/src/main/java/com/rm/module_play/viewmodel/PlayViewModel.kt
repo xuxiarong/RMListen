@@ -17,6 +17,7 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
+import com.rm.business_lib.bean.AudioRecommend
 import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.share.Share2
@@ -143,6 +144,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         )
     }
 
+    val audioRecommendAdapter by lazy {
+        CommonBindVMAdapter<AudioRecommend>(
+            this,
+            mutableListOf(),
+            R.layout.play_item_audio_recommend,
+            BR.viewModel,
+            BR.item
+        )
+    }
+
+
     /**
      * 评论 SmartRefreshLayout的状态变化
      */
@@ -150,6 +162,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
 
     var playFloorAd = ObservableField<BusinessAdModel>()
+
+
 
     /**
      * 设置播放路径
@@ -446,6 +460,19 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
+    fun getAudioRecommend(audio_id: String){
+        launchOnIO {
+            repository.getAudioRecommend(audio_id.toLong()).checkResult(
+                onSuccess = {
+                    audioRecommendAdapter.setList(it.list)
+                },
+                onError = {
+
+                }
+            )
+        }
+    }
+
     /**
      * 获取章节的广告
      */
@@ -733,6 +760,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
     /**
+     * 推荐点击
+     */
+    fun onAudioRecommendClick(context: Context ,model : AudioRecommend){
+        if(!TextUtils.isEmpty(model.audio_id)){
+            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context,model.audio_id)
+        }
+    }
+
+    /**
      * 评论头像点击事件
      */
     fun commentAvatarClick(context: Context, member_id: String) {
@@ -901,14 +937,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 关闭音频封面广告
      */
-    fun closeAudioImgAd(businessAdModel: BusinessAdModel) {
+    fun closeAudioImgAd(businessAdModel: BusinessAdModel?) {
         PlayGlobalData.playAudioImgAd.set(null)
     }
 
     /**
      * 关闭音频封面广告
      */
-    fun closeVoiceImgAd(businessAdModel: BusinessAdModel) {
+    fun closeVoiceImgAd(businessAdModel: BusinessAdModel?) {
         PlayGlobalData.playVoiceAdClose.set(true)
         PlayGlobalData.playVoiceImgAd.set(null)
     }
@@ -917,7 +953,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 关闭音频楼层广告
      */
-    fun closeAudioFloorAd(businessAdModel: BusinessAdModel) {
+    fun closeAudioFloorAd(businessAdModel: BusinessAdModel?) {
         playFloorAd.set(null)
     }
 
