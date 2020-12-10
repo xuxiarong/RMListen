@@ -1,13 +1,10 @@
 package com.rm.business_lib
 
 import android.content.Context
-import android.util.SparseArray
 import androidx.annotation.IntDef
 import androidx.databinding.*
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseConstance
-import com.rm.baselisten.ktx.addAll
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.business_lib.bean.BusinessAdModel
@@ -18,7 +15,6 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
-import com.rm.business_lib.play.PlayState
 import java.lang.Exception
 
 /**
@@ -207,10 +203,17 @@ object PlayGlobalData {
      */
     var playAudioImgAd = ObservableField<BusinessAdModel>()
 
+    fun isShowAudioImgAd() : Boolean{
+        return playAudioImgAd.get() != null
+    }
+
+
     /**
      * 是否正在播放广告
      */
     var playAdIsPlaying = ObservableBoolean(false)
+    var playVoiceImgAd = ObservableField<BusinessAdModel>()
+    var playVoiceAdClose = ObservableField(false)
 
 
     fun initPlayAudio(audio: DownloadAudio) {

@@ -14,6 +14,8 @@
         <import type="com.rm.baselisten.BaseConstance" />
 
         <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,18 +33,126 @@
             android:layout_height="280dp"
             android:layout_marginTop="@dimen/dp_15"
             android:scaleType="fitXY"
+            android:visibility="@{PlayGlobalData.INSTANCE.playVoiceAdClose?View.VISIBLE:View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="49dp" />
 
+        <View
+            android:visibility="@{PlayGlobalData.INSTANCE.playVoiceAdClose?View.VISIBLE:View.INVISIBLE}"
+            android:layout_width="280dp"
+            android:layout_height="28dp"
+            android:background="@drawable/business_shape_gradient_0000000_66000000"
+            app:layout_constraintBottom_toBottomOf="@id/iv_img_layout"
+            app:layout_constraintEnd_toEndOf="@id/iv_img_layout"
+            app:layout_constraintStart_toStartOf="@id/iv_img_layout" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            bindPlayCountString="@{PlayGlobalData.INSTANCE.playChapter.play_count}"
+            android:visibility="@{PlayGlobalData.INSTANCE.playVoiceAdClose?View.VISIBLE:View.INVISIBLE}"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:drawableStart="@drawable/ic_icon_play_ed"
+            android:drawablePadding="3dp"
+            android:textColor="@color/business_text_color_ffffff"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_img_layout"
+            app:layout_constraintEnd_toEndOf="@id/iv_img_layout"
+            tools:text="133" />
+
         <FrameLayout
+            isVisible="@{!PlayGlobalData.INSTANCE.playVoiceAdClose}"
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_65"
+            android:onClick="@{()->viewModel.audioAdClick(context,PlayGlobalData.INSTANCE.playVoiceImgAd)}"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                bindUrl="@{PlayGlobalData.INSTANCE.playVoiceImgAd.image_url}"
+                corner="@{8f}"
+                android:layout_width="match_parent"
+                android:layout_height="202dp"
+                android:scaleType="fitXY" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/business_shape_gradient_0000000_66000000" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="@dimen/dp_14"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="@dimen/dp_2"
+                android:lines="2"
+                android:text="@{PlayGlobalData.INSTANCE.playVoiceImgAd.ad_title}"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_14sp"
+                tools:text="有的时候听一下书是很好的最多两行" />
+
+            <com.flyco.roundview.RoundTextView
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_24"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="@dimen/dp_14"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:gravity="center"
+                android:text="@string/play_grasp_detail"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_12sp"
+                app:rv_backgroundColor="@color/base_ff5e5e"
+                app:rv_isRadiusHalfHeight="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginTop="250dp"
+                android:layout_marginEnd="@dimen/dp_14"
+                android:scaleType="fitXY"
+                android:src="@drawable/business_menu_red_bg" />
+
+            <com.flyco.roundview.RoundTextView
+                style="@style/BusinessAdText"
+                android:layout_gravity="end|bottom"
+                android:layout_marginTop="125dp"
+                android:layout_marginEnd="@dimen/dp_4"
+                app:rv_backgroundColor="@color/business_color_4c333333"
+                app:rv_cornerRadius="@dimen/dp_4" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/dp_6"
+                android:layout_marginEnd="@dimen/dp_6"
+                android:onClick="@{()->viewModel.closeVoiceImgAd(PlayGlobalData.INSTANCE.playVoiceImgAd)}"
+                android:src="@drawable/ic_play_img_ad_close" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            isVisible="@{!PlayGlobalData.INSTANCE.playAdIsPlaying &amp;&amp; BaseConstance.INSTANCE.basePlayStatusModel.pause &amp;&amp; PlayGlobalData.INSTANCE.playAudioImgAd!=null }"
             android:layout_width="280dp"
             android:layout_height="280dp"
             android:layout_marginTop="@dimen/dp_15"
-            android:scaleType="fitXY"
             android:onClick="@{()->viewModel.audioAdClick(context,PlayGlobalData.INSTANCE.playAudioImgAd)}"
-            isVisible="@{!(PlayGlobalData.INSTANCE.playAudioImgAd == null)}"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -58,93 +168,64 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_gravity="bottom"
-                android:background="@drawable/business_shape_gradient_0000000_66000000"
-                />
+                android:background="@drawable/business_shape_gradient_0000000_66000000" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="166dp"
                 android:layout_height="42dp"
                 android:layout_gravity="bottom"
-                android:lines="2"
                 android:layout_marginStart="@dimen/dp_14"
                 android:layout_marginBottom="@dimen/dp_10"
-                android:lineSpacingExtra="@dimen/dp_2"
-                android:textColor="@color/business_text_color_ffffff"
-                android:textSize="@dimen/business_text_size_14sp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:lineSpacingExtra="@dimen/dp_2"
+                android:lines="2"
                 android:text="@{PlayGlobalData.INSTANCE.playAudioImgAd.ad_title}"
-                tools:text="有的时候听一下书是很好的最多两行"
-                />
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_14sp"
+                tools:text="有的时候听一下书是很好的最多两行" />
 
             <com.flyco.roundview.RoundTextView
                 android:layout_width="@dimen/dp_70"
                 android:layout_height="@dimen/dp_24"
+                android:layout_gravity="end|bottom"
                 android:layout_marginEnd="@dimen/dp_14"
                 android:layout_marginBottom="@dimen/dp_20"
-                app:rv_isRadiusHalfHeight="true"
-                android:layout_gravity="end|bottom"
                 android:gravity="center"
-                app:rv_backgroundColor="@color/base_ff5e5e"
+                android:text="@string/play_grasp_detail"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="@dimen/business_text_size_12sp"
-                android:text="@string/play_grasp_detail"
-                />
+                app:rv_backgroundColor="@color/base_ff5e5e"
+                app:rv_isRadiusHalfHeight="true" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_70"
                 android:layout_height="wrap_content"
-                android:src="@drawable/business_menu_red_bg"
-                android:layout_marginEnd="@dimen/dp_14"
                 android:layout_gravity="bottom|end"
-                android:scaleType="fitXY"
                 android:layout_marginTop="250dp"
-                />
+                android:layout_marginEnd="@dimen/dp_14"
+                android:scaleType="fitXY"
+                android:src="@drawable/business_menu_red_bg" />
 
             <com.flyco.roundview.RoundTextView
                 style="@style/BusinessAdText"
-                app:rv_cornerRadius="@dimen/dp_4"
-                app:rv_backgroundColor="@color/business_color_4c333333"
                 android:layout_gravity="end|bottom"
-                android:layout_marginEnd="@dimen/dp_4"
                 android:layout_marginTop="125dp"
-                />
+                android:layout_marginEnd="@dimen/dp_4"
+                app:rv_backgroundColor="@color/business_color_4c333333"
+                app:rv_cornerRadius="@dimen/dp_4" />
 
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_22"
                 android:layout_height="@dimen/dp_22"
+                android:layout_gravity="end"
                 android:layout_marginTop="@dimen/dp_6"
                 android:layout_marginEnd="@dimen/dp_6"
-                android:layout_gravity="end"
                 android:onClick="@{()->viewModel.closeAudioImgAd(PlayGlobalData.INSTANCE.playAudioImgAd)}"
-                android:src="@drawable/ic_play_img_ad_close"
-                />
+                android:src="@drawable/ic_play_img_ad_close" />
         </FrameLayout>
 
-        <View
-            android:layout_width="280dp"
-            android:layout_height="28dp"
-            isVisible="@{(PlayGlobalData.INSTANCE.playAudioImgAd == null)}"
-            android:background="@drawable/business_shape_gradient_0000000_66000000"
-            app:layout_constraintBottom_toBottomOf="@id/iv_img_layout"
-            app:layout_constraintEnd_toEndOf="@id/iv_img_layout"
-            app:layout_constraintStart_toStartOf="@id/iv_img_layout" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            bindPlayCountString="@{PlayGlobalData.INSTANCE.playChapter.play_count}"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            isVisible="@{(PlayGlobalData.INSTANCE.playAudioImgAd == null)}"
-            android:layout_marginBottom="@dimen/dp_6"
-            android:drawableStart="@drawable/ic_icon_play_ed"
-            android:drawablePadding="3dp"
-            android:textColor="@color/business_text_color_ffffff"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_img_layout"
-            app:layout_constraintEnd_toEndOf="@id/iv_img_layout"
-            tools:text="133" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/playChapterName"
@@ -237,8 +318,8 @@
             android:layout_marginEnd="5dp"
             android:drawableStart="@drawable/music_play_ic_icon_playing_left_light"
             android:drawablePadding="3dp"
-            android:gravity="center"
             android:enabled="@{!PlayGlobalData.INSTANCE.playAdIsPlaying}"
+            android:gravity="center"
             android:onClick="@{()->viewModel.playManger.seekTo(viewModel.playManger.getCurDurtion() - 1000 * 15)}"
             android:text="@string/play_skip_15_second"
             android:textColor="@color/business_text_color_666666"
@@ -277,8 +358,8 @@
             android:layout_toEndOf="@+id/music_play_bubbleSeekBar"
             android:drawableEnd="@drawable/music_play_ic_icon_playing_right_light"
             android:drawablePadding="3dp"
-            android:gravity="center"
             android:enabled="@{!PlayGlobalData.INSTANCE.playAdIsPlaying}"
+            android:gravity="center"
             android:onClick="@{()->viewModel.playManger.seekTo(viewModel.playManger.getCurDurtion() + 1000 * 15)}"
             android:text="@string/play_skip_15_second"
             android:textColor="@color/business_text_color_666666"
@@ -355,12 +436,12 @@
 
         <com.rm.module_play.view.PlayControlView
             android:id="@+id/animation_view"
-            bindStartPlayClick="@{viewModel.playManger.play}"
             bindPausePlayClick="@{viewModel.playManger.pause}"
-            bindResetPlay="@{()->viewModel.playManger.seekTo(0L)}"
             bindPlayControl="@{BaseConstance.INSTANCE.basePlayStatusModel}"
-            bindPlayCountDownSize="@{PlayGlobalData.INSTANCE.playCountDownChapterSize}"
             bindPlayCountDownSecond="@{PlayGlobalData.INSTANCE.playCountDownSecond}"
+            bindPlayCountDownSize="@{PlayGlobalData.INSTANCE.playCountDownChapterSize}"
+            bindResetPlay="@{()->viewModel.playManger.seekTo(0L)}"
+            bindStartPlayClick="@{viewModel.playManger.play}"
             android:layout_width="@dimen/dp_56"
             android:layout_height="@dimen/dp_56"
             android:layout_gravity="center"
@@ -403,12 +484,12 @@
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            bindPlayCountDownSecondText="@{PlayGlobalData.INSTANCE.playCountDownSecond}"
+            bindPlayCountDownSizeText="@{PlayGlobalData.INSTANCE.playCountDownChapterSize}"
             android:layout_width="@dimen/dp_26"
             android:layout_height="@dimen/dp_14"
             android:gravity="center"
             android:onClick="@{()->viewModel.showPlaySettingDialog(context)}"
-            bindPlayCountDownSecondText="@{PlayGlobalData.INSTANCE.playCountDownSecond}"
-            bindPlayCountDownSizeText = "@{PlayGlobalData.INSTANCE.playCountDownChapterSize}"
             android:textColor="@color/business_text_color_b1b1b1"
             android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintEnd_toEndOf="@id/music_play_point"
@@ -478,7 +559,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_detail_anchor_cl"
             android:layout_width="match_parent"
@@ -494,8 +574,8 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_detail_anchor_url"
                 bindUrl="@{PlayGlobalData.INSTANCE.playAudioModel.anchor.anchor_avatar}"
-                isCircle="@{true}"
                 defaultIcon="@{@drawable/business_ic_default_user}"
+                isCircle="@{true}"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="@{()->viewModel.clickMemberFun(context)}"
@@ -576,41 +656,39 @@
 
         <FrameLayout
             android:id="@+id/play_floor_ad_fl"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_detail_anchor_cl"
+            isVisible="@{!(viewModel.playFloorAd == null)}"
             android:layout_width="match_parent"
             android:layout_height="128dp"
-            isVisible="@{!(viewModel.playFloorAd == null)}"
-            android:onClick="@{()->viewModel.audioAdClick(context,viewModel.playFloorAd)}"
-            android:layout_marginTop="@dimen/dp_16"
             android:layout_marginStart="@dimen/dp_16"
-            app:layout_goneMarginEnd="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_16">
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:onClick="@{()->viewModel.audioAdClick(context,viewModel.playFloorAd)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_detail_anchor_cl"
+            app:layout_goneMarginEnd="@dimen/dp_16">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="128dp"
-                android:scaleType="fitXY"
                 bindUrl="@{viewModel.playFloorAd.image_url}"
                 corner="@{8}"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:scaleType="fitXY" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_gravity="bottom"
-                android:lines="2"
                 android:layout_marginStart="@dimen/dp_14"
                 android:layout_marginEnd="@dimen/dp_14"
                 android:layout_marginBottom="@dimen/dp_10"
-                android:lineSpacingExtra="@dimen/dp_2"
-                android:textColor="@color/business_text_color_ffffff"
-                android:textSize="@dimen/business_text_size_14sp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:lineSpacingExtra="@dimen/dp_2"
+                android:lines="2"
                 android:text="@{viewModel.playFloorAd.ad_title}"
-                tools:text="有的时候听一下书是很好的最多两行"
-                />
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_14sp"
+                tools:text="有的时候听一下书是很好的最多两行" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_22"
@@ -619,15 +697,13 @@
                 android:layout_marginTop="@dimen/dp_6"
                 android:layout_marginEnd="@dimen/dp_6"
                 android:onClick="@{()->viewModel.closeAudioFloorAd(viewModel.playFloorAd)}"
-                android:src="@drawable/business_icon_swipe_delete"
-                />
+                android:src="@drawable/business_icon_swipe_delete" />
 
             <com.flyco.roundview.RoundTextView
                 style="@style/BusinessAdText"
-                app:rv_cornerRadius="@dimen/dp_4"
-                app:rv_backgroundColor="@color/business_color_4c333333"
                 android:layout_gravity="end|bottom"
-                />
+                app:rv_backgroundColor="@color/business_color_4c333333"
+                app:rv_cornerRadius="@dimen/dp_4" />
 
         </FrameLayout>
 
@@ -668,7 +744,6 @@
                 android:textSize="@dimen/business_text_size_14sp"
                 app:layout_constraintTop_toBottomOf="@id/detail_comment_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

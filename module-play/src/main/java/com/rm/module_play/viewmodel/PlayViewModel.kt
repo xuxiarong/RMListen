@@ -446,10 +446,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-    fun startPlayChapter(chapterId: String){
-
-    }
-
     /**
      * 获取章节的广告
      */
@@ -457,6 +453,20 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnIO {
             repository.getChapterAd().checkResult(
                 onSuccess = {
+                    val result = arrayListOf<BaseAudioInfo>()
+                    if (it.ad_player_voice != null && it.ad_player_voice.isNotEmpty()) {
+                        val position = Random.nextInt(it.ad_player_voice.size)
+                        result.add(BaseAudioInfo(audioPath = it.ad_player_voice[position].audio_url,isAd = true))
+                        PlayGlobalData.playAdIsPlaying.set(true)
+                        PlayGlobalData.playVoiceAdClose.set(false)
+                        PlayGlobalData.playVoiceImgAd.set(it.ad_player_voice[position])
+                    }else{
+                        PlayGlobalData.playAdIsPlaying.set(false)
+                        PlayGlobalData.playVoiceAdClose.set(true)
+                        PlayGlobalData.playVoiceImgAd.set(null)
+                    }
+                    musicPlayerManger.setAdPath(result)
+                    actionPlayAd()
                     it.ad_player_audio_cover?.let { audioImgAdList ->
                         if (audioImgAdList.isNotEmpty()) {
                             PlayGlobalData.playAudioImgAd.set(
@@ -466,10 +476,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                             )
                         }
                     }
-                    musicPlayerManger.setAdPath(it.toBaseAudioAdList())
-                    actionPlayAd()
                 },
                 onError = {
+                    PlayGlobalData.playAdIsPlaying.set(false)
+                    PlayGlobalData.playVoiceAdClose.set(true)
+                    PlayGlobalData.playVoiceImgAd.set(null)
                     musicPlayerManger.setAdPath(arrayListOf())
                     actionPlayAd()
                     DLog.d("suolong", "error = ${it ?: ""}")
@@ -893,6 +904,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun closeAudioImgAd(businessAdModel: BusinessAdModel) {
         PlayGlobalData.playAudioImgAd.set(null)
     }
+
+    /**
+     * 关闭音频封面广告
+     */
+    fun closeVoiceImgAd(businessAdModel: BusinessAdModel) {
+        PlayGlobalData.playVoiceAdClose.set(true)
+        PlayGlobalData.playVoiceImgAd.set(null)
+    }
+
 
     /**
      * 关闭音频楼层广告

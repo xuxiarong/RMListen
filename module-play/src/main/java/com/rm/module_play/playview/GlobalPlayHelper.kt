@@ -166,7 +166,8 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
 
     override fun onStopPlayAd() {
         PlayGlobalData.playAdIsPlaying.set(false)
-        PlayGlobalData.playAudioImgAd.set(null)
+        PlayGlobalData.playVoiceAdClose.set(true)
+        PlayGlobalData.playVoiceImgAd.set(null)
     }
 
     interface IPlayStatusListener{
