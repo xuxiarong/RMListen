@@ -61,7 +61,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
             }
             context.bindService(
                 intent, it,
-                Context.BIND_AUTO_CREATE
+                Context.BIND_NOT_FOREGROUND
             )
         }
 

@@ -1,5 +1,7 @@
 package com.rm.module_play.playview
 
+import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.BaseApplication.Companion.baseApplication
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.DLog
@@ -18,7 +20,7 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlay
  * @data: 8/28/20 10:48 AM
  * @Version: 1.0.0
  */
-class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
+class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseApplication.IOnAllActivityDestroy {
     companion object {
         val INSTANCE: GlobalPlayHelper by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             GlobalPlayHelper()
@@ -34,6 +36,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
         if(listener == null){
             listener = this
             musicPlayerManger.addOnPlayerEventListener(this)
+            baseApplication.registerAllActivityDestroy(this)
         }
     }
 
@@ -151,6 +154,12 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener {
 
     interface IPlayStatusListener{
         fun onMusicPlayerState(playerState: Int, message: String?)
+    }
+
+    override fun onAllActivityDestroy() {
+        if(musicPlayerManger.isPlaying()){
+            musicPlayerManger.pause()
+        }
     }
 
 }
