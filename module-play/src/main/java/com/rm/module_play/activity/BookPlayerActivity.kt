@@ -197,16 +197,19 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         currentPlayerMusic: BaseAudioInfo
     ) {
         musicPlayerManger.updateMusicPlayerData(audios = playPath, chapterId = chapterId)
-        musicPlayerManger.startPlayMusic(chapterId = chapterId)
-//        mViewModel.maxProcess.set(currentPlayerMusic.duration.toFloat())
+        if (playCurrentDuration > currentPlayerMusic.duration) {
+            playCurrentDuration = 0
+        }
         when {
             playCurrentDuration <= 0 -> {
                 PlayGlobalData.process.set(0F)
+                mViewModel.getChapterAd {
+                    musicPlayerManger.startPlayMusic(chapterId = chapterId)
+                }
             }
             else -> {
-                if (playCurrentDuration > currentPlayerMusic.duration) {
-                    playCurrentDuration = 0
-                }
+                musicPlayerManger.setAdPath(arrayListOf())
+                musicPlayerManger.startPlayMusic(chapterId = chapterId)
                 musicPlayerManger.seekTo(playCurrentDuration)
             }
         }
@@ -215,7 +218,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         PlayGlobalData.playAudioId.set(playAudioId)
         PlayGlobalData.playChapterListSort.set(playSortType)
-        mViewModel.getChapterAd({})
         mViewModel.getAudioFloorAd()
         //书籍信息未传入，获取书籍详情信息,有则直接使用
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {

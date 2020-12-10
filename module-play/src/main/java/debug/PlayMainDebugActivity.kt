@@ -68,4 +68,12 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
 
     }
+
+    override fun onStartPlayAd() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onStopPlayAd() {
+        TODO("Not yet implemented")
+    }
 }

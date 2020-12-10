@@ -446,6 +446,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
+    fun startPlayChapter(chapterId: String){
+
+    }
+
     /**
      * 获取章节的广告
      */

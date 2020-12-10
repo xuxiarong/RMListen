@@ -208,9 +208,9 @@ object PlayGlobalData {
     var playAudioImgAd = ObservableField<BusinessAdModel>()
 
     /**
-     * 音频流广告
+     * 是否正在播放广告
      */
-    var playChapterVoiceAd = ObservableField<BusinessAdModel>()
+    var playAdIsPlaying = ObservableBoolean(false)
 
 
     fun initPlayAudio(audio: DownloadAudio) {

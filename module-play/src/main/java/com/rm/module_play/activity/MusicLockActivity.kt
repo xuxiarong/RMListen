@@ -344,4 +344,12 @@ class MusicLockActivity : BaseActivity(),
     ) {
     }
 
+    override fun onStartPlayAd() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onStopPlayAd() {
+        TODO("Not yet implemented")
+    }
+
 }

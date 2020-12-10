@@ -119,6 +119,11 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
         )
         PlayGlobalData.updatePlayChapterProgress(currentDurtion, totalDurtion)
         PlayGlobalData.updateCountSecond()
+
+        DLog.d(
+            "suolong",
+            " totalDurtion = $totalDurtion --- status = $currentDurtion --- time = $currentDurtion"
+        )
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {
@@ -150,6 +155,18 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
             "suolong",
             " playWhenReady = $playWhenReady --- status = $playbackState --- time = ${System.currentTimeMillis()}"
         )
+    }
+
+    override fun onStartPlayAd() {
+        PlayGlobalData.process.set(0F)
+        PlayGlobalData.maxProcess.set(0F)
+        PlayGlobalData.updateThumbText.set("00:00/00:00")
+        PlayGlobalData.playAdIsPlaying.set(true)
+    }
+
+    override fun onStopPlayAd() {
+        PlayGlobalData.playAdIsPlaying.set(false)
+        PlayGlobalData.playAudioImgAd.set(null)
     }
 
     interface IPlayStatusListener{

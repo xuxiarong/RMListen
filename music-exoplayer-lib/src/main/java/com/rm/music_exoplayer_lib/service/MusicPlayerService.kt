@@ -256,6 +256,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
     private fun startPlayAd(adPath: String) {
+        mUpdateProgressHandler.removeMessages(0)
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
             isPlayAd = true
             val source = ProgressiveMediaSource.Factory(dataSourceFactory)
@@ -269,6 +270,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     override fun startPlayMusic(chapterId: String) {
         mCurrentPlayIndex = mAudios.indexOfFirst { it.chapterId == chapterId }
+        postViewHandlerCurrentPosition(mCurrentPlayIndex)
         if(mAdAudios.isNotEmpty()){
             startPlayAd(mAdAudios[Random.nextInt(mAdAudios.size)].audioPath)
         }else{
@@ -278,6 +280,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     private fun startPlayMusic(playIndex: Int) {
         mCurrentPlayIndex = playIndex
+        postViewHandlerCurrentPosition(mCurrentPlayIndex)
         if(mAdAudios.isNotEmpty()){
             startPlayAd(mAdAudios[Random.nextInt(mAdAudios.size)].audioPath)
         }else{
@@ -287,7 +290,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     private fun playChapter(){
         if (mCurrentPlayIndex != -1 && mCurrentPlayIndex < mAudios.size) {
-            postViewHandlerCurrentPosition(mCurrentPlayIndex)
             startPlay(mAudios[mCurrentPlayIndex])
         }
     }
@@ -721,6 +723,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 }
                 //播放结束
                 Player.STATE_ENDED -> {
+                    mOnPlayerEventListeners.forEach {
+                        it.onStopPlayAd()
+                    }
                     playChapter()
                 }
 
@@ -772,7 +777,12 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-
+            if (isPlaying) {
+                mOnPlayerEventListeners.forEach {
+                    it.onPrepared(getDurtion())
+                    it.onStartPlayAd()
+                }
+            }
         }
     }
 

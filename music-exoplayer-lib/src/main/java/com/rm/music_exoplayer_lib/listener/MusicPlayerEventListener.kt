@@ -81,4 +81,14 @@ interface MusicPlayerEventListener {
      */
     fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int)
 
+    /**
+     * 开始播放广告
+     */
+    fun onStartPlayAd()
+
+    /**
+     * 结束播放广告
+     */
+    fun onStopPlayAd()
+
 }
