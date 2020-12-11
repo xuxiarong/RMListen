@@ -10,6 +10,7 @@ import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
@@ -18,8 +19,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.AudioSortType
-import com.rm.business_lib.IS_FIRST_SUBSCRIBE
+import com.rm.business_lib.*
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.ChapterListModel
@@ -29,8 +29,6 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
-import com.rm.business_lib.isLogin
-import com.rm.business_lib.loginUser
 import com.rm.business_lib.share.Share2
 import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -356,16 +354,20 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         detailInfoData.get()?.let {
             when (playInfo?.playAudioId) {
                 audioId.get() -> {
-                    if (playStatus != null && playStatus.isStart()) {
-                        playService.pausePlay()
-                    } else {
-                        RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
-                            context = context,
-                            audioId = audioId.get() ?: "",
-                            chapterId = playInfo?.playChapterId ?: "",
-                            currentDuration = playProgress?.currentDuration ?: 0,
-                            sortType = mCurSort
-                        )
+                    if (chapterAdapter.data.isNotEmpty()) {
+                        if (playStatus != null && playStatus.isStart()) {
+                            playService.pausePlay()
+                        } else {
+                            RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
+                                context = context,
+                                audioId = audioId.get() ?: "",
+                                chapterId = playInfo?.playChapterId ?: "",
+                                currentDuration = playProgress?.currentDuration ?: 0,
+                                sortType = mCurSort
+                            )
+                        }
+                    }else{
+                        showTip(BaseApplication.CONTEXT.getString(R.string.business_no_content))
                     }
                 }
                 else -> {
@@ -684,6 +686,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 章节 item 点击事件
      */
     fun itemClick(context: Context, bean: DownloadChapter) {
+        PlayGlobalData.playNeedQueryChapterProgress.set(true)
         RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
             context,
             audioId = audioId.get()!!,

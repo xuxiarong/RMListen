@@ -3,11 +3,14 @@ package com.rm.module_play.playview
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseApplication.Companion.baseApplication
 import com.rm.baselisten.BaseConstance
+import com.rm.baselisten.ktx.toLongSafe
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getFloattMMKV
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
+import com.rm.business_lib.db.listen.ListenChapterEntity
+import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.constants.STATE_READY
@@ -57,17 +60,39 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     override fun onPrepared(totalDurtion: Long) {
-        SAVA_SPEED.getFloattMMKV(1f).let {
-            musicPlayerManger.setPlayerMultiple(it)
+        if(PlayGlobalData.playAdIsPlaying.get()){
+            musicPlayerManger.setPlayerMultiple(1f)
+            PlayGlobalData.playSpeed.set(1f)
+        }else{
+            SAVA_SPEED.getFloattMMKV(1f).let {
+                PlayGlobalData.playSpeed.set(it)
+                musicPlayerManger.setPlayerMultiple(it)
+            }
+            PlayGlobalData.maxProcess.set(totalDurtion.toFloat())
+            musicPlayerManger.getCurrentPlayerMusic()?.let {
+                it.duration = totalDurtion
+            }
+            PlayGlobalData.playChapter.get()?.let {
+                it.realDuration = totalDurtion
+            }
+            if(PlayGlobalData.playNeedQueryChapterProgress.get()){
+                PlayGlobalData.playNeedQueryChapterProgress.set(false)
+                PlayGlobalData.playAudioId.get()?.let {audioId ->
+                    PlayGlobalData.playChapterId.get()?.let { chapterId ->
+                        val listenChapter = ListenDaoUtils.queryChapterRecentUpdate(
+                            audioId.toLongSafe(),
+                            chapterId.toLongSafe()
+                        )
+                        listenChapter?.let {
+                            if(it.listen_duration!=0L){
+                                musicPlayerManger.seekTo(it.listen_duration)
+                            }
+                        }
+                    }
+                }
+            }
         }
-        PlayGlobalData.maxProcess.set(totalDurtion.toFloat())
-        musicPlayerManger.getCurrentPlayerMusic()?.let {
-            it.duration = totalDurtion
-        }
-        PlayGlobalData.playChapter.get()?.let {
-            it.realDuration = totalDurtion
-        }
-        musicPlayerManger.play()
+//        musicPlayerManger.play()
 
     }
 
@@ -129,10 +154,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         } else {
             BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playWhenReady, playbackState))
         }
-        DLog.d(
-            "suolong",
-            " playWhenReady = $playWhenReady --- status = $playbackState --- time = ${System.currentTimeMillis()}"
-        )
+        DLog.d("suolong", " playWhenReady = $playWhenReady --- status = $playbackState ")
     }
 
     override fun onStartPlayAd() {

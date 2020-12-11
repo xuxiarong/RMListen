@@ -165,6 +165,11 @@ object PlayGlobalData {
     var hasNextChapter = ObservableBoolean(false)
 
     /**
+     * 是否需要重新查询播放章节的进度
+     */
+    var playNeedQueryChapterProgress = ObservableBoolean(true)
+
+    /**
      * 剩余倒计时秒数
      */
     var playCountDownSecond = ObservableLong(-10000L)

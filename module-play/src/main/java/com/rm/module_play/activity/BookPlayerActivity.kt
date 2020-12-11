@@ -13,13 +13,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.PlayGlobalData.STATE_READY
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.share.Share2
@@ -192,6 +195,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 if (playPath != null && playPath.isNotEmpty()) {
                     startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
                     PlayGlobalData.setPlayHasNextAndPre(playPath, 0)
+                }else{
+                    musicPlayerManger.pause()
+                    BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(false,STATE_READY))
                 }
             }
         })
