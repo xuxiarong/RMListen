@@ -506,7 +506,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private fun postViewHandlerCurrentPosition(currentPlayIndex: Int) {
         //最后更新通知栏
         showNotification()
-        if (mAudios.size > currentPlayIndex && currentPlayIndex > 0) {
+        if (mAudios.size > currentPlayIndex && currentPlayIndex >= 0) {
             mOnPlayerEventListeners.forEach {
                 it.onPlayMusiconInfo(
                     mAudios[currentPlayIndex], currentPlayIndex

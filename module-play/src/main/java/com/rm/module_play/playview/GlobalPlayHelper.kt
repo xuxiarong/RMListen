@@ -20,7 +20,8 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlay
  * @data: 8/28/20 10:48 AM
  * @Version: 1.0.0
  */
-class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseApplication.IOnAllActivityDestroy {
+class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
+    BaseApplication.IOnAllActivityDestroy {
     companion object {
         val INSTANCE: GlobalPlayHelper by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             GlobalPlayHelper()
@@ -29,29 +30,29 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
 
     }
 
-    var playStatusListener : IPlayStatusListener? = null
+    var playStatusListener: IPlayStatusListener? = null
 
 
     fun addOnPlayerEventListener() {
-        if(listener == null){
+        if (listener == null) {
             listener = this
             musicPlayerManger.addOnPlayerEventListener(this)
             baseApplication.registerAllActivityDestroy(this)
         }
     }
 
-    fun registerPlayStatusListener(playStatusListener : IPlayStatusListener){
+    fun registerPlayStatusListener(playStatusListener: IPlayStatusListener) {
         this.playStatusListener = playStatusListener
     }
 
-    fun unRegisterPlayStatusListener(){
+    fun unRegisterPlayStatusListener() {
         this.playStatusListener = null
     }
 
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
-        DLog.d("suolong","播放出错 playerState = $playerState 出错信息 = ${message?:"为空"}")
-        playStatusListener?.onMusicPlayerState(playerState,message)
+        DLog.d("suolong", "播放出错 playerState = $playerState 出错信息 = ${message ?: "为空"}")
+        playStatusListener?.onMusicPlayerState(playerState, message)
         BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(false, STATE_READY))
     }
 
@@ -77,11 +78,8 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-        BaseConstance.updateBaseChapterId(chapterId = musicInfo.chapterId)
-        BaseConstance.updateBaseProgress(
-            currentDuration = 0L,
-            totalDuration = musicInfo.duration * 1000
-        )
+        BaseConstance.updateBaseChapterId(musicInfo.chapterId)
+        BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
         PlayGlobalData.savePlayChapter(position)
         PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
         PlayGlobalData.updateCountChapterSize()
@@ -96,10 +94,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
         alarmResidueDurtion: Long,
         bufferProgress: Int
     ) {
-        BaseConstance.updateBaseProgress(
-            currentDuration = currentDurtion,
-            totalDuration = totalDurtion
-        )
+        BaseConstance.updateBaseProgress(currentDurtion, totalDurtion)
         PlayGlobalData.updatePlayChapterProgress(currentDurtion, totalDurtion)
         PlayGlobalData.updateCountSecond()
 
@@ -143,7 +138,9 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
     override fun onStartPlayAd() {
         PlayGlobalData.process.set(0F)
         PlayGlobalData.maxProcess.set(0F)
-        PlayGlobalData.updateThumbText.set("00:00/00:00")
+        if("00:00/00:00"!=PlayGlobalData.updateThumbText.get()){
+            PlayGlobalData.updateThumbText.set("00:00/00:00")
+        }
         PlayGlobalData.playAdIsPlaying.set(true)
     }
 
@@ -153,12 +150,12 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
         PlayGlobalData.playVoiceImgAd.set(null)
     }
 
-    interface IPlayStatusListener{
+    interface IPlayStatusListener {
         fun onMusicPlayerState(playerState: Int, message: String?)
     }
 
     override fun onAllActivityDestroy() {
-        if(musicPlayerManger.isPlaying()){
+        if (musicPlayerManger.isPlaying()) {
             musicPlayerManger.pause()
         }
     }
