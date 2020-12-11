@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -21,6 +22,8 @@ import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.share.Share2
+import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -42,7 +45,7 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlay
  * 播放器主要界面
  */
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
-        GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
+    GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
     companion object {
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
         private var lastOpenTime: Long = 0L
@@ -237,10 +240,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
                 if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
                     PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
-                    if(musicPlayerManger.getCurDurtion()>=currentPlayerMusic.duration){
+                    if (musicPlayerManger.getCurDurtion() >= currentPlayerMusic.duration) {
                         PlayGlobalData.process.set(0F)
                         musicPlayerManger.seekTo(0L)
-                    }else{
+                    } else {
                         PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
                     }
                 }
@@ -250,6 +253,21 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
         playChapterId = ""
         mViewModel.getCommentList()
+
+    }
+
+    /**
+     * 分享
+     */
+    fun clickShare(view: View) {
+        //stg: http://10.1.20.201:8481  dev: http://10.1.9.197:8481   http://192.168.12.126:8482
+        val url = "http://10.1.20.201:8481/book-detail?id=${PlayGlobalData.playAudioId.get()}&chapterId=${PlayGlobalData.playChapterId.get()}"
+        Share2.Builder(this)
+            .setContentType(ShareContentType.TEXT)
+            .setTitle("分享测试")
+            .setTextContent(url)
+            .build()
+            .shareBySystem()
 
     }
 

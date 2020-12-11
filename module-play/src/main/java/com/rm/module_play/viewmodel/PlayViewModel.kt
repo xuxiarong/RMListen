@@ -289,21 +289,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
     /**
-     * 分享
-     */
-    fun clickShare(context: Context) {
-        getActivity(context)?.let {
-            Share2.Builder(it)
-                .setContentType(ShareContentType.TEXT)
-                .setTitle("分享测试")
-                .setTextContent("http://www.baidu.com")
-                .build()
-                .shareBySystem()
-
-        }
-    }
-
-    /**
      * 快捷登陆
      */
     private fun quicklyLogin(it: FragmentActivity) {
@@ -635,8 +620,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 PlayGlobalData.playAudioId.get()!!,
                 commentPage,
                 pageSize
-            )
-                .checkResult(onSuccess = {
+            ).checkResult(onSuccess = {
                     processCommentSuccessData(it)
                 }, onError = {
                     processCommentFailureData(it)
@@ -732,7 +716,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                             getCommentList()
                         }
                 }
-
             } else {
                 quicklyLogin(it)
             }

@@ -25,15 +25,20 @@ object AriaUploadVersionDownloadManager {
 
     private var downloadUrl: String? = ""
 
+    var mDownloadStart: () -> Unit = {}
     var mDownloadProgress: (Int) -> Unit = {}
     var mDownloadComplete: (String) -> Unit = {}
 
     fun startDownload(
         uploadUrl: String,
         version: String,
-        downloadProgress: ((Int) -> Unit)?,
-        downloadComplete: ((String) -> Unit)?
+        downloadStart: (() -> Unit)? = null,
+        downloadProgress: ((Int) -> Unit)? = null,
+        downloadComplete: ((String) -> Unit)? = null
     ) {
+        if (downloadStart != null) {
+            mDownloadStart = downloadStart
+        }
         if (downloadProgress != null) {
             mDownloadProgress = downloadProgress
         }
@@ -42,9 +47,9 @@ object AriaUploadVersionDownloadManager {
         }
         val file = File(
             DownLoadFileUtils.createFileWithAudio(
-                System.currentTimeMillis().toString()
+               "download/upload"
             ).absolutePath,
-            version
+            "V$version.apk"
         )
         Aria.download(this).register()
         downloadUrl = uploadUrl
@@ -54,13 +59,6 @@ object AriaUploadVersionDownloadManager {
             .create() //创建并启动下载
     }
 
-    fun pauseDownloadChapter(chapter: DownloadChapter) {
-        Aria.download(this).stopAllTask()
-    }
-
-    fun resumeDownloadChapter() {
-        Aria.download(this).resumeAllTask()
-    }
 
     //在这里处理任务执行中的状态，如进度进度条的刷新
     @Download.onTaskRunning
@@ -72,10 +70,7 @@ object AriaUploadVersionDownloadManager {
             val size = task.fileSize
 
             mDownloadProgress(percent)
-            DLog.i(
-                "====>taskRunning",
-                "percent:$percent     convertSpeed:$convertSpeed   speed:$speed   size:$size"
-            )
+
         }
     }
 
@@ -90,8 +85,7 @@ object AriaUploadVersionDownloadManager {
 
     @Download.onTaskStart
     fun taskStart(task: DownloadTask) {
-        DLog.i("====>onTaskStart", "----->")
-
+        mDownloadStart()
     }
 
 }

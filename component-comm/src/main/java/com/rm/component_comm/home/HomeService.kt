@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.component_comm.router.ApplicationProvider
 
 /**
@@ -45,4 +46,25 @@ interface HomeService : ApplicationProvider {
         commentSuccessBlock: () -> Unit
     )
 
+    /**
+     * 显示升级弹窗
+     * @param activity FragmentActivity
+     * @param versionInfo 升级信息
+     * @param installCode 为止来源授权码
+     * @param enforceUpdate 是否强制更新
+     */
+    fun showUploadDownDialog(
+        activity: FragmentActivity,
+        versionInfo: BusinessVersionUrlBean,
+        installCode: Int,
+        enforceUpdate: Boolean
+    )
+
+    /**
+     * 去到未知来源设置界面
+     * @param activity
+     * @param path 安装包目录地址
+     * @param installCode 为止来源授权码
+     */
+    fun gotoInstallPermissionSetting(activity: Activity, path: String, installCode: Int)
 }

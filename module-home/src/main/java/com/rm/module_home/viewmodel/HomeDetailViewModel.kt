@@ -180,9 +180,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     var isNoClick = ObservableField<Boolean>(false)
 
-    val commentContentRvId=R.id.home_detail_comment_recycle_view
+    val commentContentRvId = R.id.home_detail_comment_recycle_view
 
-    val chapterContentRvId=R.id.home_detail_chapter_rv
+    val chapterContentRvId = R.id.home_detail_chapter_rv
 
     /**
      * 头部dataBinding对象
@@ -268,6 +268,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 获取书籍详情信息
      */
     fun intDetailInfo(audioID: String) {
+        showLoading()
         launchOnIO {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
@@ -284,6 +285,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailTagsAdapter.setList(it.list.tags)
                     showStatus(it)
                 }, onError = {
+                    showContentView()
                     if (it?.contains("下架") == true || it?.contains("违规") == true) {
                         isNoClick.set(true)
                         viewModelScope.launch {
@@ -911,6 +913,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     fun clickShare(context: Context) {
         getActivity(context)?.let {
+            val url = "http://192.168.12.126:8482/book-detail?id=${audioId.get()}&chapterId=2034"
             Share2.Builder(it)
                 .setContentType(ShareContentType.TEXT)
                 .setTitle("分享测试")

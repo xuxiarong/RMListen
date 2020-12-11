@@ -3,15 +3,22 @@ package com.rm.module_home.viewmodel
 import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.bean.BusinessAdModel
+import com.rm.business_lib.bean.BusinessVersionUrlBean
+import com.rm.business_lib.utils.ApkInstallUtils
+import com.rm.business_lib.utils.NotifyManager
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -61,6 +68,10 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     //首页列表广告数据
     var homeItemDataAdModel = ObservableField<HomeSingleImgAdResultModel>()
 
+    //版本更新
+    val versionInfo = ObservableField<BusinessVersionUrlBean>()
+
+
     /**
      * 获取首页数据
      */
@@ -68,21 +79,21 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         refreshStatusModel.setNoHasMore(true)
         launchOnIO(block = {
             repository.getHomeData().checkResult(
-                    onSuccess = {
+                onSuccess = {
+                    showContentView()
+                    refreshStatusModel.finishRefresh(true)
+                    dealHomeData(it)
+                },
+                onError = {
+                    refreshStatusModel.finishRefresh(false)
+                    if (homeAllData.value != null) {
                         showContentView()
-                        refreshStatusModel.finishRefresh(true)
-                        dealHomeData(it)
-                    },
-                    onError = {
-                        refreshStatusModel.finishRefresh(false)
-                        if (homeAllData.value != null) {
-                            showContentView()
-                        } else {
-                            showServiceError()
-                        }
-                        errorMsg.set(it)
-                        DLog.d("suolong ", "error = $it")
+                    } else {
+                        showServiceError()
                     }
+                    errorMsg.set(it)
+                    DLog.d("suolong ", "error = $it")
+                }
             )
         }, netErrorBlock = {
             refreshStatusModel.finishRefresh(false)
@@ -103,15 +114,15 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     fun getHomeDialogAd() {
         launchOnIO {
             repository.getHomeDialogAd(arrayOf("ad_index_alert")).checkResult(
-                    onSuccess = {
-                        it.ad_index_alert?.let { dialogAdList ->
-                            val randomAdPosition = Random.nextInt(dialogAdList.size)
-                            homeDialogAdModel.set(dialogAdList[randomAdPosition])
-                        }
-                    },
-                    onError = {
-                        DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
+                onSuccess = {
+                    it.ad_index_alert?.let { dialogAdList ->
+                        val randomAdPosition = Random.nextInt(dialogAdList.size)
+                        homeDialogAdModel.set(dialogAdList[randomAdPosition])
                     }
+                },
+                onError = {
+                    DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
+                }
             )
         }
     }
@@ -123,19 +134,34 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         homeItemDataAdModel.set(HomeSingleImgAdResultModel(null, null, null))
         launchOnIO {
             repository.getHomeImgContentAd(
-                    arrayOf("ad_index_banner", "ad_index_floor_streamer", "ad_index_voice")
+                arrayOf("ad_index_banner", "ad_index_floor_streamer", "ad_index_voice")
             ).checkResult(
-                    onSuccess = {
-                        homeItemDataAdModel.set(it)
-                    },
-                    onError = {
-                        homeItemDataAdModel.set(HomeSingleImgAdResultModel(null, null, null))
-                        DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
-                    }
+                onSuccess = {
+                    homeItemDataAdModel.set(it)
+                },
+                onError = {
+                    homeItemDataAdModel.set(HomeSingleImgAdResultModel(null, null, null))
+                    DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
+                }
             )
         }
 
     }
+
+    /**
+     * 版本更新
+     */
+    private fun getLaseVersion() {
+        launchOnIO {
+            repository.homeGetLaseUrl().checkResult(
+                onSuccess = {
+                    versionInfo.set(it)
+                }, onError = {
+                    showTip("$it", R.color.business_color_ff5e5e)
+                })
+        }
+    }
+
 
     /**
      * 处理首页的数据
@@ -168,6 +194,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 homeAllData.value = allData
                 //板块数据不为空,每次都获取Item的广告数据
                 getHomeItemDataAd()
+                getLaseVersion()
             }
         }
     }
@@ -178,8 +205,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
      * @param block HomeBlockModel 板块
      */
     private fun setBlockData(
-            allData: ArrayList<MultiItemEntity>,
-            block: HomeBlockModel
+        allData: ArrayList<MultiItemEntity>,
+        block: HomeBlockModel
     ) {
         block.itemType = R.layout.home_item_block
 
@@ -218,7 +245,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     gridList.add(HomeGridAudioModel(it))
                 }
                 allData.add(block)
-                allData.add(HomeGridAudioRvModel(block,gridList))
+                allData.add(HomeGridAudioRvModel(block, gridList))
             }
             BLOCK_HOR_SINGLE -> {
                 val horSingList = ArrayList<MultiItemEntity>()
@@ -226,7 +253,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     horSingList.add(HomeAudioHorSingleModel(it))
                 }
                 allData.add(block)
-                allData.add(HomeAudioHorSingleRvModel(block,horSingList))
+                allData.add(HomeAudioHorSingleRvModel(block, horSingList))
             }
             BLOCK_HOR_VER -> {
                 val verSingList = ArrayList<MultiItemEntity>()
@@ -234,7 +261,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     verSingList.add(HomeAudioVerModel(it))
                 }
                 allData.add(block)
-                allData.add(HomeAudioVerRvModel(block,verSingList))
+                allData.add(HomeAudioVerRvModel(block, verSingList))
             }
             BLOCK_SINGLE_IMG -> {
                 if ("image" == block.relation_to) {
@@ -287,16 +314,15 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     /**
      * 获取banner的广告
      */
-    private fun getBannerAd(bannerRvModel: HomeBannerRvModel, adList: List<BusinessAdModel>?
-    ) {
+    private fun getBannerAd(bannerRvModel: HomeBannerRvModel, adList: List<BusinessAdModel>?) {
         bannerRvModel.bannerList?.let { bannerList ->
             val randomAd = getRandomAdFromList(adList)
             if (bannerList.isNotEmpty() && randomAd != null) {
                 val adBanner = BannerInfoBean(
-                        banner_img = randomAd.image_url,
-                        banner_jump = randomAd.jump_url,
-                        img_url = randomAd.image_url,
-                        isAd = true
+                    banner_img = randomAd.image_url,
+                    banner_jump = randomAd.jump_url,
+                    img_url = randomAd.image_url,
+                    isAd = true
                 )
                 bannerList.add(Random.nextInt(bannerList.size), adBanner)
             }
@@ -317,7 +343,9 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     /**
      * 获取横向单列的广告
      */
-    private fun getHorSingAd(horSingleRvModel: HomeAudioHorSingleRvModel, adList: List<BusinessAdModel>?
+    private fun getHorSingAd(
+        horSingleRvModel: HomeAudioHorSingleRvModel,
+        adList: List<BusinessAdModel>?
     ) {
         if (horSingleRvModel.data.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             adList.forEach {
@@ -334,7 +362,9 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     /**
      * 获取横向双列的广告
      */
-    private fun getHorDoubleAd(horDoubleRvModel: HomeAudioHorDoubleRvModel, adList: List<BusinessAdModel>?
+    private fun getHorDoubleAd(
+        horDoubleRvModel: HomeAudioHorDoubleRvModel,
+        adList: List<BusinessAdModel>?
     ) {
         if (horDoubleRvModel.horDoubleList.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             adList.forEach {
@@ -355,7 +385,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     /**
      * 获取六宫格的广告
      */
-    private fun getGridAd(gridRvModel: HomeGridAudioRvModel, adList: List<BusinessAdModel>?
+    private fun getGridAd(
+        gridRvModel: HomeGridAudioRvModel, adList: List<BusinessAdModel>?
     ) {
         if (gridRvModel.data.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             adList.forEach {
@@ -372,7 +403,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     /**
      * 获取竖直列表的广告
      */
-    private fun getVerAd(verRvModel: HomeAudioVerRvModel, adList: List<BusinessAdModel>?
+    private fun getVerAd(
+        verRvModel: HomeAudioVerRvModel, adList: List<BusinessAdModel>?
     ) {
         if (verRvModel.data.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             adList.forEach {
@@ -389,7 +421,10 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     /**
      * 获取单图的广告
      */
-    private fun getImgContentAd(horSingleRvModel: HomeSingleImgContentModel, adList: List<BusinessAdModel>?) {
+    private fun getImgContentAd(
+        horSingleRvModel: HomeSingleImgContentModel,
+        adList: List<BusinessAdModel>?
+    ) {
         if (horSingleRvModel.jump_url.isNotEmpty() && adList != null && adList.isNotEmpty()) {
             horSingleRvModel.img_ad_model = getRandomAdFromList(adList)
         }
@@ -420,9 +455,9 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         blockClick(block)
     }
 
-    fun homeSingleImgAdClick(context: Context,model: HomeSingleImgContentModel) {
+    fun homeSingleImgAdClick(context: Context, model: HomeSingleImgContentModel) {
         model.img_ad_model?.let {
-            BannerJumpUtils.onBannerClick(context,it.jump_url)
+            BannerJumpUtils.onBannerClick(context, it.jump_url)
         }
     }
 
@@ -431,6 +466,15 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         homeAdapter.notifyDataSetChanged()
     }
 
+    /**
+     * 升级dialog
+     */
+    fun showUploadDialog(activity: FragmentActivity, enforceUpdate: Boolean) {
+        versionInfo.get()?.let {
+            RouterHelper.createRouter(HomeService::class.java)
+                .showUploadDownDialog(activity, it, INSTALL_RESULT_CODE,enforceUpdate)
+        }
+    }
 
     companion object {
         const val BLOCK_HOR_SINGLE = 1
@@ -438,6 +482,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         const val BLOCK_HOR_DOUBLE = 3
         const val BLOCK_HOR_VER = 4
         const val BLOCK_SINGLE_IMG = 5
+
+        const val INSTALL_RESULT_CODE = 1003
     }
 
 }

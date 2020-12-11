@@ -14,27 +14,33 @@ import com.rm.module_main.TestFragment
 
 class MyViewPagerAdapter(fm: FragmentManager, private val size: Int) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
+    private val fragments = mutableListOf<Fragment>()
     override fun getItem(position: Int): Fragment {
-        when (position) {
+        val fragment = when (position) {
             0 -> {
-                return RouterHelper.createRouter(HomeService::class.java).getHomeFragment()
+                RouterHelper.createRouter(HomeService::class.java).getHomeFragment()
             }
             1 -> {
-                return RouterHelper.createRouter(SearchService::class.java).getSearchFragment()
+                RouterHelper.createRouter(SearchService::class.java).getSearchFragment()
             }
             2 -> {
-                return RouterHelper.createRouter(ListenService::class.java).getListenFragment()
+                RouterHelper.createRouter(ListenService::class.java).getListenFragment()
             }
             3 -> {
-                return RouterHelper.createRouter(MineService::class.java).getMineFragment()
+                RouterHelper.createRouter(MineService::class.java).getMineFragment()
             }
             else -> {
-                return TestFragment().apply {
+                TestFragment().apply {
                     arguments = Bundle().apply { putString("title", position.toString()) }
                 }
             }
         }
+        fragments.add(fragment)
+        return fragment
+    }
+
+    fun getFragments(): MutableList<Fragment> {
+        return fragments
     }
 
     override fun getCount(): Int {

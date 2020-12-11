@@ -23,7 +23,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/play_item_comment_advertise_icon"
-            bindUrl="@{item.data.jump_url}"
+            bindUrl="@{item.data.avatar_url}"
             defaultIcon="@{@drawable/business_ic_default_user}"
             isCircle="@{true}"
             android:layout_width="@dimen/dp_40"
@@ -40,7 +40,7 @@
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_10"
             android:singleLine="true"
-            android:text="@{item.data.ad_name}"
+            android:text="@{item.data.creator}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintEnd_toStartOf="@id/play_item_comment_advertise_del"
@@ -88,10 +88,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="@dimen/dp_166"
             android:layout_height="@dimen/dp_40"
-            android:layout_marginStart="@dimen/dp_14"
-            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
             android:maxLines="2"
-            android:text="有的时候听一下书是很好的最多两行"
+            android:text="@{item.data.ad_title}"
             android:textColor="@color/business_text_color_ffffff"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintBottom_toBottomOf="@id/play_item_comment_advertise_jump"
