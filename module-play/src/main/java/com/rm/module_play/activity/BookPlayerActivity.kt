@@ -42,7 +42,7 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlay
  * 播放器主要界面
  */
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
-        GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
+    GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
     companion object {
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
         private var lastOpenTime: Long = 0L
@@ -178,14 +178,17 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         val firstIndex = playPath.indexOfFirst(predicate)
                         if (firstIndex != -1) {
                             startPlayChapter(playPath, chapterId, playPath[firstIndex])
+                            PlayGlobalData.setPlayHasNextAndPre(playPath, firstIndex)
                         } else {
                             startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
+                            PlayGlobalData.setPlayHasNextAndPre(playPath, 0)
                         }
                     }
                 }
             } else {
                 if (playPath != null && playPath.isNotEmpty()) {
                     startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
+                    PlayGlobalData.setPlayHasNextAndPre(playPath, 0)
                 }
             }
         })
@@ -218,12 +221,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         PlayGlobalData.playAudioId.set(playAudioId)
         PlayGlobalData.playChapterListSort.set(playSortType)
-        mViewModel.getAudioFloorAd()
         //书籍信息未传入，获取书籍详情信息,有则直接使用
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
             mViewModel.getDetailInfo(playAudioId)
         } else {
             PlayGlobalData.initPlayAudio(playAudioModel)
+            mViewModel.getAudioFloorAd()
         }
         mViewModel.getAudioRecommend(playAudioId)
         //如果传入的章节id为空，说明不是通过章节列表跳转的，直接访问书籍章节列表的第一页数据即可
@@ -237,10 +240,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
                 if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
                     PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
-                    if(musicPlayerManger.getCurDurtion()>=currentPlayerMusic.duration){
+                    if (musicPlayerManger.getCurDurtion() >= currentPlayerMusic.duration) {
                         PlayGlobalData.process.set(0F)
                         musicPlayerManger.seekTo(0L)
-                    }else{
+                    } else {
                         PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
                     }
                 }

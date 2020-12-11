@@ -296,6 +296,26 @@ object PlayGlobalData {
         }
     }
 
+    fun setPlayHasNextAndPre(playList: List<*>?, position: Int) {
+        if (playList != null && playList.isNotEmpty()) {
+            val size = playList.size
+            if (position == 0) {
+                hasPreChapter.set(false)
+            } else {
+                hasPreChapter.set(true)
+            }
+            if (position == size - 1) {
+                hasNextChapter.set(false)
+            } else {
+                hasNextChapter.set(true)
+            }
+        } else {
+            hasNextChapter.set(false)
+            hasNextChapter.set(false)
+        }
+    }
+
+
     fun updateCountSecond() {
         if (playCountDownSecond.get() > 0L) {
             //因为播放器的回掉是500ms一次，所以一次也是减去500ms

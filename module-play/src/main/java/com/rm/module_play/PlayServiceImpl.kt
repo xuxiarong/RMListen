@@ -3,6 +3,7 @@ package com.rm.module_play
 import android.content.Context
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.rm.baselisten.BaseApplication
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
@@ -48,6 +49,10 @@ class PlayServiceImpl : PlayService {
 
     override fun pausePlay() {
         MusicPlayerManager.musicPlayerManger.pause()
+    }
+
+    override fun initPlayService(context: Context) {
+        MusicPlayerManager.musicPlayerManger.initialize(BaseApplication.CONTEXT)
     }
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {

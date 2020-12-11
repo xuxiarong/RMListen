@@ -83,24 +83,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,BaseAppl
             totalDuration = musicInfo.duration * 1000
         )
         PlayGlobalData.savePlayChapter(position)
-
-        val playList = musicPlayerManger.getCurrentPlayList()
-        if (playList != null && playList.isNotEmpty()) {
-            val size = playList.size
-            if (position == 0) {
-                PlayGlobalData.hasPreChapter.set(false)
-            } else {
-                PlayGlobalData.hasPreChapter.set(true)
-            }
-            if (position == size - 1) {
-                PlayGlobalData.hasNextChapter.set(false)
-            } else {
-                PlayGlobalData.hasNextChapter.set(true)
-            }
-        } else {
-            PlayGlobalData.hasNextChapter.set(false)
-            PlayGlobalData.hasNextChapter.set(false)
-        }
+        PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
         PlayGlobalData.updateCountChapterSize()
     }
 

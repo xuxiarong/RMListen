@@ -39,4 +39,7 @@ interface PlayService : ApplicationProvider {
      */
 
     fun pausePlay()
+
+
+    fun initPlayService(context: Context)
 }

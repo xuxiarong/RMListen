@@ -720,6 +720,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 //正在播放
                 Player.STATE_BUFFERING, Player.STATE_READY -> {
                     mMusicPlayerState = if (playWhenReady) MUSIC_PLAYER_PLAYING else MUSIC_PLAYER_PAUSE
+                    mOnPlayerEventListeners.forEach {
+                        it.onPlayerStateChanged(playWhenReady, playbackState)
+                    }
                 }
                 //播放结束
                 Player.STATE_ENDED -> {

@@ -452,6 +452,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isSubscribe.set(it.list.is_subscribe)
                     isAttention.set(it.list.anchor.status)
                     PlayGlobalData.initPlayAudio(it.list)
+                    getAudioFloorAd()
                 },
                 onError = {
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
@@ -963,7 +964,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     fun audioAdClick(context: Context, businessAdModel: BusinessAdModel?) {
         businessAdModel?.let {
-            BannerJumpUtils.onBannerClick(context, it.image_url)
+            BannerJumpUtils.onBannerClick(context, it.jump_url)
         }
     }
 

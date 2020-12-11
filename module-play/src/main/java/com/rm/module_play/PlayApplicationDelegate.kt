@@ -23,6 +23,10 @@ class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG, "Module Play onCreate()!!!")
         loadKoinModules(playModules)
+        initPlayService()
+    }
+
+    private fun initPlayService() {
         MusicPlayerManager.musicPlayerManger.initialize(CONTEXT)
         SAVA_SPEED.getFloattMMKV(1f).let {
             MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it)

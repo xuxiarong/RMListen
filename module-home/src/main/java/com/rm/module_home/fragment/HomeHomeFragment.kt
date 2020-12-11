@@ -83,6 +83,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                             mViewModel.homeDialogAdModel.get()?.let {
                                 if (context != null && !TextUtils.isEmpty(it.jump_url)) {
                                     BannerJumpUtils.onBannerClick(context!!, it.jump_url)
+                                    dismiss()
                                 }
                             }
                         }
