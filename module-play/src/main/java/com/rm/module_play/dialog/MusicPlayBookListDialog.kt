@@ -220,7 +220,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
      */
     @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     fun setPlayModel() {
-        var res = 0
+        var res = R.drawable.business_play_mode_order
         if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_SINGLE) {
             res = R.drawable.music_play_ic_icon_single_de
             play_iv_play_mode.text = "单集播放"

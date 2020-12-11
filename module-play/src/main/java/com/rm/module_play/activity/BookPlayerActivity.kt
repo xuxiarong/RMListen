@@ -181,14 +181,17 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         val firstIndex = playPath.indexOfFirst(predicate)
                         if (firstIndex != -1) {
                             startPlayChapter(playPath, chapterId, playPath[firstIndex])
+                            PlayGlobalData.setPlayHasNextAndPre(playPath, firstIndex)
                         } else {
                             startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
+                            PlayGlobalData.setPlayHasNextAndPre(playPath, 0)
                         }
                     }
                 }
             } else {
                 if (playPath != null && playPath.isNotEmpty()) {
                     startPlayChapter(playPath, playPath[0].chapterId, playPath[0])
+                    PlayGlobalData.setPlayHasNextAndPre(playPath, 0)
                 }
             }
         })
@@ -221,12 +224,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         PlayGlobalData.playAudioId.set(playAudioId)
         PlayGlobalData.playChapterListSort.set(playSortType)
-        mViewModel.getAudioFloorAd()
         //书籍信息未传入，获取书籍详情信息,有则直接使用
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
             mViewModel.getDetailInfo(playAudioId)
         } else {
             PlayGlobalData.initPlayAudio(playAudioModel)
+            mViewModel.getAudioFloorAd()
         }
         mViewModel.getAudioRecommend(playAudioId)
         //如果传入的章节id为空，说明不是通过章节列表跳转的，直接访问书籍章节列表的第一页数据即可

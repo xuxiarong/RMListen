@@ -13,6 +13,7 @@ import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.listener.MusicPlayerInfoListener
 import com.rm.music_exoplayer_lib.service.MusicPlayerBinder
 import com.rm.music_exoplayer_lib.service.MusicPlayerService
+import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 /**
  *
@@ -37,18 +38,28 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     internal class MusicPlayerServiceConnection : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            ExoplayerLogger.exoLog("2 链接播放服务成功")
+
             (service as? MusicPlayerBinder)?.let {
                 mBinder = service
                 mBinder?.setNotificationEnable(true)
+                ExoplayerLogger.exoLog("3 服务 MusicPlayerBinder 启动成功")
             }
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
+            ExoplayerLogger.exoLog("2 链接播放服务失败")
         }
 
     }
 
     fun initialize(context: Context) {
+        if(mBinder!=null){
+            return
+        }
+
+        ExoplayerLogger.exoLog("1 开始链接播放服务")
+
         mConnection = MusicPlayerServiceConnection()
         mConnection?.let {
             val intent = Intent(context, MusicPlayerService::class.java)
@@ -57,6 +68,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
             } else {
                 context.startService(intent)
             }
+            ExoplayerLogger.exoLog("1 开始bindService")
             context.bindService(
                 intent, it,
                 Context.BIND_NOT_FOREGROUND

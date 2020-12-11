@@ -6,6 +6,7 @@ import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
@@ -22,6 +23,9 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.coroutinepermissions.requestPermissionsForResult
+import com.rm.component_comm.play.PlayService
+import com.rm.component_comm.router.RouterHelper
+import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_main.BR
 import com.rm.module_main.R
 import com.rm.module_main.activity.MainMainActivity
@@ -65,6 +69,9 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     Glide.with(this@SplashActivity).load(adScreen.image_url)
                         .apply(options)
                         .into(splash_ad_img)
+                    splash_ad_img.setOnClickListener {
+                        BannerJumpUtils.onBannerClick(this@SplashActivity,adScreen.image_url)
+                    }
                 }
             }
         })
@@ -85,6 +92,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             mViewModel.startSkipTimerCount()
             mViewModel.getSplashAd()
         }
+        RouterHelper.createRouter(PlayService::class.java).initPlayService(BaseApplication.baseApplication)
+
     }
 
 
