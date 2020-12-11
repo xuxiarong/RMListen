@@ -234,4 +234,14 @@ interface HomeApiService {
      */
     @POST("adv/content/list")
     suspend fun getHomeImgContentAd(@Body requestBody: RequestBody): BaseResponse<HomeSingleImgAdResultModel>
+
+
+    /**
+     * 获取app包下载接口
+     */
+    @POST("personal/get-version-url")
+    suspend fun homeGetLaseUrl(
+        @Body body: RequestBody
+    ): BaseResponse<BusinessVersionUrlBean>
+
 }

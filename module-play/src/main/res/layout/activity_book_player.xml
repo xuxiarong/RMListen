@@ -81,7 +81,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/dp_16"
-                android:onClick="@{()->viewModel.clickShare(context)}"
+                android:onClick="clickShare"
                 android:background="@drawable/music_ic_icon_share_bc"
                 app:layout_constraintBottom_toBottomOf="@id/report_why_arrow"
                 app:layout_constraintEnd_toEndOf="parent"

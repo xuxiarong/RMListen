@@ -6,6 +6,7 @@ import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -137,15 +138,10 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
      * item点击事件
      */
     fun itemClick(context: Context, bean: ListenSheetBean) {
-        if (TextUtils.isEmpty(memberId)) {
+        if (memberId == loginUser.get()?.id) {
             getActivity(context)?.let {
                 clickBean.set(bean)
-                val hasMap = getHasMap()
-                hasMap[SHEET_ID] = bean.sheet_id.toString()
-                startActivityForResult(
-                    ListenMySheetDetailActivity::class.java, hasMap,
-                    ListenMySheetDetailActivity.LISTEN_SHEET_DETAIL_REQUEST_CODE
-                )
+                ListenMySheetDetailActivity.startActivity(it, bean.sheet_id.toString())
             }
         } else {
             getActivity(context)?.let {

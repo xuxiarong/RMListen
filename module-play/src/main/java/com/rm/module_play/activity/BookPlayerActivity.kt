@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -21,6 +22,8 @@ import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.share.Share2
+import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.module_play.BR
 import com.rm.module_play.R
@@ -253,6 +256,21 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
         playChapterId = ""
         mViewModel.getCommentList()
+
+    }
+
+    /**
+     * 分享
+     */
+    fun clickShare(view: View) {
+        //stg: http://10.1.20.201:8481  dev: http://10.1.9.197:8481   http://192.168.12.126:8482
+        val url = "http://10.1.20.201:8481/book-detail?id=${PlayGlobalData.playAudioId.get()}&chapterId=${PlayGlobalData.playChapterId.get()}"
+        Share2.Builder(this)
+            .setContentType(ShareContentType.TEXT)
+            .setTitle("分享测试")
+            .setTextContent(url)
+            .build()
+            .shareBySystem()
 
     }
 

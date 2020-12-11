@@ -3,6 +3,7 @@ package com.rm.module_home.repository
 import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.net.util.GsonUtils
 import com.rm.business_lib.bean.*
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.bean.CategoryTabListBean
@@ -241,5 +242,14 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
             val requestBean = BusinessAdRequestModel(ad_key = ad_key)
             homeService.getHomeImgContentAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
         }
+    }
+
+    /**
+     * 版本更新
+     */
+    suspend fun homeGetLaseUrl(): BaseResult<BusinessVersionUrlBean> {
+        val json = GsonUtils.toJson(BusinessUpdateVersionBean())
+        val body = json.toRequestBody("application/json; charset=utf-8".toMediaType())
+        return apiCall { homeService.homeGetLaseUrl(body) }
     }
 }

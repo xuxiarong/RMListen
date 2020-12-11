@@ -8,6 +8,7 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
+import com.rm.business_lib.loginUser
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.router.RouterHelper
@@ -186,8 +187,13 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
      */
     fun createSheetItemClick(context: Context, bean: SheetBean) {
         getActivity(context)?.let {
-            RouterHelper.createRouter(HomeService::class.java)
-                .startHomeSheetDetailActivity(it, bean.sheet_id)
+            if (loginUser.get()?.id == memberId) {
+                RouterHelper.createRouter(ListenService::class.java)
+                    .startMySheetDetail(it, bean.sheet_id)
+            } else {
+                RouterHelper.createRouter(HomeService::class.java)
+                    .startHomeSheetDetailActivity(it, bean.sheet_id)
+            }
         }
     }
 

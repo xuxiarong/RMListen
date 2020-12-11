@@ -28,6 +28,7 @@ class MainMainActivity :
 
     private lateinit var navigationController: NavigationController
     private var lastExitTime = 0L
+    private lateinit var mAdapter: MyViewPagerAdapter
 
     override fun getLayoutId() = R.layout.main_activity_main
 
@@ -113,8 +114,8 @@ class MainMainActivity :
             })
         }.build()
         navigationController.addPlaceholder(2)
-        view_pager.adapter =
-            MyViewPagerAdapter(supportFragmentManager, navigationController.itemCount)
+        mAdapter = MyViewPagerAdapter(supportFragmentManager, navigationController.itemCount)
+        view_pager.adapter = mAdapter
         view_pager.offscreenPageLimit = 4
         navigationController.setupWithViewPager(view_pager)
 
@@ -155,15 +156,24 @@ class MainMainActivity :
     }
 
     override fun onBackPressed() {
-        if(lastExitTime == 0L){
-            ToastUtil.show(this,"2秒内再次返回将退出雷曼听书App")
+        if (lastExitTime == 0L) {
+            ToastUtil.show(this, "2秒内再次返回将退出雷曼听书App")
             lastExitTime = System.currentTimeMillis()
-        }else{
-            if(System.currentTimeMillis() - lastExitTime <= 2000){
+        } else {
+            if (System.currentTimeMillis() - lastExitTime <= 2000) {
                 finish()
-            }else{
+            } else {
                 lastExitTime = System.currentTimeMillis()
-                ToastUtil.show(this,"2秒内再次返回将退出雷曼听书App")
+                ToastUtil.show(this, "2秒内再次返回将退出雷曼听书App")
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        mAdapter.getFragments().forEach {
+            if (!it.isDetached) {
+                it.onActivityResult(requestCode, resultCode, data)
             }
         }
     }

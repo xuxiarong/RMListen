@@ -224,7 +224,8 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                 },
                 onError = {
                     showContentView()
-                    showToast(CONTEXT.getString(R.string.listen_set_top_fail))
+//                    showTip(CONTEXT.getString(R.string.listen_set_top_fail))
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -235,7 +236,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      */
     private fun setTopSuccess() {
         showContentView()
-        showToast(CONTEXT.getString(R.string.listen_set_top_success))
+        showTip(CONTEXT.getString(R.string.listen_set_top_success))
         subscriptionData.get()?.let {
             mAdapter.remove(it)
             it.is_top = 1
@@ -258,7 +259,8 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                 },
                 onError = {
                     showContentView()
-                    showToast(CONTEXT.getString(R.string.listen_cancel_top_fail))
+//                    showToast(CONTEXT.getString(R.string.listen_cancel_top_fail))
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -269,7 +271,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      */
     private fun cancelTopSuccess() {
         showContentView()
-        showToast(CONTEXT.getString(R.string.listen_cancel_top_success))
+        showTip(CONTEXT.getString(R.string.listen_cancel_top_success))
         subscriptionData.get()?.let {
             mAdapter.remove(it)
             it.is_top = 0
