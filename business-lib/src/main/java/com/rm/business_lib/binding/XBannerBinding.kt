@@ -13,6 +13,8 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.R
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.bean.BannerJumpBean
+import com.rm.business_lib.wedgit.BusinessAdImageView
+import com.rm.business_lib.wedgit.bindAdId
 import com.rm.business_lib.xbanner.XBanner
 
 
@@ -77,7 +79,7 @@ fun XBanner.bindBanner(bannerInfoList: List<BannerInfoBean>?) {
     loadImage { _, _, view, position ->
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
-                view.findViewById(R.id.banner_img) as ImageView,
+            view.findViewById(R.id.banner_img) as ImageView,
             bannerInfoList[position].img_url
         )
     }
@@ -95,10 +97,12 @@ fun XBanner.paddingBindData(bannerInfoList: List<BannerInfoBean>?, isShadow: Boo
     }
     setBannerData(bannerInfoList)
     loadImage { _, _, view, position ->
+        val imageView = view.findViewById(R.id.banner_img) as BusinessAdImageView
+        val bannerInfoBean = bannerInfoList[position]
         com.rm.baselisten.thridlib.glide.loadRoundCornersImage(
             8f,
-            view.findViewById(R.id.banner_img) as ImageView,
-            bannerInfoList[position].img_url
+            imageView,
+            bannerInfoBean.img_url
         )
 //        Glide.with(view).asBitmap()
 //            .load(bannerInfoList[position].img_url)

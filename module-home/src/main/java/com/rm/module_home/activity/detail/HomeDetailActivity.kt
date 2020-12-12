@@ -2,6 +2,7 @@ package com.rm.module_home.activity.detail
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
 import com.rm.module_home.R
@@ -59,6 +62,11 @@ class HomeDetailActivity :
         }
 
         intent?.getStringExtra(AUDIO_ID)?.let {
+            BusinessInsertManager.doInsertKeyAndAudio(
+                BusinessInsertConstance.INSERT_TYPE_AUDIO_BROWSING,
+                it
+            )
+
             mViewModel.audioId.set(it)
             mViewModel.intDetailInfo(it)
 

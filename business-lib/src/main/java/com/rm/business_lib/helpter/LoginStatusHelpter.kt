@@ -8,6 +8,8 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.*
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.bean.TokenBean
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 
 /**
  * desc   : 登陆成功的帮助工具类
@@ -31,6 +33,9 @@ fun loginIn(access: String, refresh: String, userInfo: LoginUserBean) {
     // 改变当前是否用户登陆状态 和 登陆的用户信息
     isLogin.set(true)
     loginUser.set(userInfo)
+
+    BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ADD)
+
 }
 
 /**

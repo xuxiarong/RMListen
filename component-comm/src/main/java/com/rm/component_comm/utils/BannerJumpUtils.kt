@@ -9,6 +9,8 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.bean.BannerJumpBean
 import com.rm.business_lib.bean.BannerUrlBean
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.main.MainService
 import com.rm.component_comm.router.RouterHelper
@@ -20,8 +22,14 @@ import com.rm.component_comm.router.RouterHelper
  */
 
 object BannerJumpUtils {
-    fun onBannerClick(context: Context, url: String) {
-        if(TextUtils.isEmpty(url)){
+    fun onBannerClick(context: Context, url: String, adId: String? = null) {
+        if (adId != null && adId.isNotEmpty()) {
+            BusinessInsertManager.doInsertKeyAndAd(
+                BusinessInsertConstance.INSERT_TYPE_AD_CLICK,
+                adId
+            )
+        }
+        if (TextUtils.isEmpty(url)) {
             return
         }
         if (url.startsWith("http")) {
@@ -50,16 +58,16 @@ object BannerJumpUtils {
                     if (!TextUtils.isEmpty(page)) {
                         if (page == "home") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context,selectTab = 0)
+                            mainService.startMainActivity(context = context, selectTab = 0)
                         } else if (page == "search") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context,selectTab = 1)
+                            mainService.startMainActivity(context = context, selectTab = 1)
                         } else if (page == "listen") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context,selectTab = 2)
+                            mainService.startMainActivity(context = context, selectTab = 2)
                         } else if (page == "mine") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context,selectTab = 2)
+                            mainService.startMainActivity(context = context, selectTab = 2)
                         } else if (page == "audioDetail") {
                             val homeService = RouterHelper.createRouter(HomeService::class.java)
                             if (!TextUtils.isEmpty(audioId)) {

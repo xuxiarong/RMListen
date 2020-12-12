@@ -28,6 +28,9 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.rm.business_lib.R;
+import com.rm.business_lib.insertpoint.BusinessInsertConstance;
+import com.rm.business_lib.insertpoint.BusinessInsertManager;
+import com.rm.business_lib.wedgit.BusinessAdImageView;
 import com.rm.business_lib.xbanner.entity.BaseBannerInfo;
 import com.rm.business_lib.xbanner.transformers.BasePageTransformer;
 import com.rm.business_lib.xbanner.transformers.Transformer;
@@ -593,7 +596,8 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
             models = new ArrayList<>();
         }
         for (int i = 0; i < models.size(); i++) {
-            mViews.add(View.inflate(getContext(), layoutResId, null));
+            View view = createView(layoutResId, models.get(i).getAdId());
+            mViews.add(view);
         }
         if (mViews.isEmpty()) {
             mIsAutoPlay = false;
@@ -601,12 +605,23 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
         }
         if (mIsAutoPlay && mViews.size() < 3 || (mIsHandLoop && mViews.size() < 3)) {
             mLessViews = new ArrayList<>(mViews);
-            mLessViews.add(View.inflate(getContext(), layoutResId, null));
+            View childView = createView(layoutResId, "");
+            mLessViews.add(childView);
             if (mLessViews.size() == 2) {
-                mLessViews.add(View.inflate(getContext(), layoutResId, null));
+                View view = createView(layoutResId, "");
+                mLessViews.add(view);
+//                mLessViews.add(View.inflate(getContext(), layoutResId, null));
             }
         }
         setBannerData(mViews, models);
+    }
+
+    private View createView(int layoutResId, String adId) {
+        View childView = View.inflate(getContext(), layoutResId, null);
+        BusinessAdImageView imageView = childView.findViewById(R.id.banner_img);
+        imageView.setAdId(adId);
+        imageView.setAdIsShow(true);
+        return childView;
     }
 
     /**
@@ -836,17 +851,18 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
             if (container.equals(view.getParent())) {
                 container.removeView(view);
             }
-            if(realPosition<mDatas.size()){
-                if(mDatas.get(realPosition).isAdBanner()){
+            if (realPosition < mDatas.size()) {
+                if (mDatas.get(realPosition).isAdBanner()) {
                     view.findViewById(R.id.banner_ad_tv).setVisibility(View.VISIBLE);
                     view.findViewById(R.id.banner_ad_close).setVisibility(View.VISIBLE);
                     view.findViewById(R.id.banner_ad_close).setOnClickListener(new OnDoubleClickListener() {
                         @Override
                         public void onNoDoubleClick(View v) {
-                            try{
+                            try {
+                                BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE, mDatas.get(realPosition).getAdId());
                                 mDatas.remove(realPosition);
                                 setBannerData(mDatas);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -1270,7 +1286,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
         mOnItemClickListener = listener;
     }
 
-    public void setOnAdClickListener(View.OnClickListener listener){
+    public void setOnAdClickListener(View.OnClickListener listener) {
         this.mOnAdItemClickListener = listener;
     }
 

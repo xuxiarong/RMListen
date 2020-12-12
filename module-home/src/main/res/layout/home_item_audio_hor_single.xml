@@ -22,9 +22,10 @@
         android:onClick="@{()->viewModel.onAudioClick(context,item.singleModel)}">
 
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.BusinessAdImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
             bindUrl="@{item.singleModel.imageUrl}"
+            bindAdId="@{String.valueOf(item.singleModel.adModel.ad_id)}"
             corner="@{4.0f}"
             android:layout_width="140dp"
             android:layout_height="140dp"

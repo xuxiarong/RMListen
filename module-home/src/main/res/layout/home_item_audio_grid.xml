@@ -25,9 +25,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.BusinessAdImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
             bindUrl="@{item.gridRecommendRvModel.imageUrl}"
+            bindAdId="@{String.valueOf(item.gridRecommendRvModel.adModel.ad_id)}"
             corner="@{4.0f}"
             android:layout_width="106dp"
             android:layout_height="106dp"

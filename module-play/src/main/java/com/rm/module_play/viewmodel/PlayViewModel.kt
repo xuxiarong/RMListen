@@ -20,6 +20,8 @@ import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.AudioRecommend
 import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.share.Share2
 import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -276,6 +278,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun clickDelCommentAd(bean: PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity) {
         mCommentAdapter.remove(bean)
+        BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,bean.data.ad_id.toString())
     }
 
     /**
@@ -285,7 +288,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         context: Context,
         bean: PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity
     ) {
-        BannerJumpUtils.onBannerClick(context, bean.data.jump_url)
+        BannerJumpUtils.onBannerClick(context, bean.data.jump_url,bean.data.ad_id.toString())
     }
 
     /**
@@ -865,21 +868,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-//    /**
-//     * 评论列表点赞点击事件
-//     */
-//    fun playLikeBook(context: Context, bean: Comments) {
-//        if (isLogin.get()) {
-//            if (bean.is_liked) {
-//                unLikeComment(bean)
-//            } else {
-//                likeComment(bean)
-//            }
-//        } else {
-//            getActivity(context)?.let { quicklyLogin(it) }
-//        }
-//    }
-
     /**
      * 加入听单
      */
@@ -933,6 +921,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun closeAudioImgAd(businessAdModel: BusinessAdModel?) {
         PlayGlobalData.playAudioImgAd.set(null)
+        BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,businessAdModel?.ad_id.toString())
     }
 
     /**
@@ -941,6 +930,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun closeVoiceImgAd(businessAdModel: BusinessAdModel?) {
         PlayGlobalData.playVoiceAdClose.set(true)
         PlayGlobalData.playVoiceImgAd.set(null)
+        BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,businessAdModel?.ad_id.toString())
     }
 
 
@@ -949,6 +939,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun closeAudioFloorAd(businessAdModel: BusinessAdModel?) {
         playFloorAd.set(null)
+        BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,businessAdModel?.ad_id.toString())
     }
 
     /**
@@ -957,7 +948,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     fun audioAdClick(context: Context, businessAdModel: BusinessAdModel?) {
         businessAdModel?.let {
-            BannerJumpUtils.onBannerClick(context, it.jump_url)
+            BannerJumpUtils.onBannerClick(context, it.jump_url,it.ad_id.toString())
         }
     }
 

@@ -30,12 +30,13 @@
             bindJumpUrl="@{item.jump_url}"
             corner="@{8}"
             />
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.BusinessAdImageView
             android:layout_width="match_parent"
             android:layout_height="128dp"
             android:scaleType="fitXY"
             isVisible="@{!(item.img_ad_model == null)}"
             bindBusinessAdModel="@{item.img_ad_model}"
+            bindAdId="@{String.valueOf(item.img_ad_model.ad_id)}"
             android:onClick="@{()->viewModel.homeSingleImgAdClick(context,item)}"
             />
         <androidx.appcompat.widget.AppCompatImageView

@@ -28,9 +28,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.rm.business_lib.wedgit.BusinessAdImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
                 bindUrl="@{item.topRecommendModel.imageUrl}"
+                bindAdId="@{String.valueOf(item.topRecommendModel.adModel.ad_id)}"
                 corner="@{4.0f}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -98,9 +99,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleTop">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.rm.business_lib.wedgit.BusinessAdImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 bindUrl="@{item.bottomRecommendModel.imageUrl}"
+                bindAdId="@{String.valueOf(item.bottomRecommendModel.adModel.ad_id)}"
                 corner="@{4.0f}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"

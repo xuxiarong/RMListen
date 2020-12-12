@@ -30,4 +30,9 @@ public class LocalImageInfo extends SimpleBannerInfo {
     public Boolean isAdBanner() {
         return false;
     }
+
+    @Override
+    public String getAdId() {
+        return "";
+    }
 }

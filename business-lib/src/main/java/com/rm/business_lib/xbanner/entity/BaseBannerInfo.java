@@ -13,4 +13,6 @@ public interface BaseBannerInfo {
     String getXBannerTitle();
 
     Boolean isAdBanner();
+
+    String getAdId();
 }

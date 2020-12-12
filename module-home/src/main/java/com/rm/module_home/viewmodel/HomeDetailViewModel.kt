@@ -29,6 +29,8 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.share.Share2
 import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -310,6 +312,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     showContentView()
                     isSubscribed.set(true)
                     subscribeSuccess(context)
+
+                    BusinessInsertManager.doInsertKeyAndAudio(
+                        BusinessInsertConstance.INSERT_TYPE_AUDIO_SUBSCRIPTION,
+                        audioId
+                    )
                 },
                 onError = {
                     showContentView()
@@ -331,6 +338,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     showContentView()
                     isSubscribed.set(false)
                     showTip("取消订阅成功")
+
+                    BusinessInsertManager.doInsertKeyAndAudio(
+                        BusinessInsertConstance.INSERT_TYPE_AUDIO_UNSUBSCRIBED,
+                        audioId
+                    )
                 },
                 onError = {
                     showContentView()
@@ -366,7 +378,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                                 sortType = mCurSort
                             )
                         }
-                    }else{
+                    } else {
                         showTip(BaseApplication.CONTEXT.getString(R.string.business_no_content))
                     }
                 }
@@ -928,13 +940,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
 
 
     /**
-     * 收藏点击事件
+     * 添加听单点击事件
      */
     fun clickCollectionFun(context: Context) {
         getActivity(context)?.let {
             if (!isLogin.get()) {
                 quicklyLogin(it)
-
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
                     .showMySheetListDialog(it, audioId.get()!!) {

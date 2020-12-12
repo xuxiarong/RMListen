@@ -15,6 +15,8 @@ import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetDetailInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.share.Share2
@@ -222,6 +224,10 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     showContentView()
                     favoritesSuccess(view.context)
                     setFavorState(true)
+                    BusinessInsertManager.doInsertKeyAndSheet(
+                        BusinessInsertConstance.INSERT_TYPE_LISTEN_COLLECTION,
+                        sheetId
+                    )
                 },
                 onError = {
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -240,6 +246,10 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     showContentView()
                     showTip("取消收藏成功")
                     setFavorState(false)
+                    BusinessInsertManager.doInsertKeyAndSheet(
+                        BusinessInsertConstance.INSERT_TYPE_LISTEN_UN_FAVORITE,
+                        sheetId
+                    )
                 },
                 onError = {
                     showTip("$it", R.color.business_color_ff5e5e)

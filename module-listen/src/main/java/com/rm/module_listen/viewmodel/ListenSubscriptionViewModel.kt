@@ -7,6 +7,8 @@ import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.share.Share2
 import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -204,6 +206,10 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                     if (mAdapter.data.size <= 0) {
                         showDataEmpty()
                     }
+                    BusinessInsertManager.doInsertKeyAndAudio(
+                        BusinessInsertConstance.INSERT_TYPE_AUDIO_UNSUBSCRIBED,
+                        subscriptionData.get()!!.audio_id.toString()
+                    )
                 },
                 onError = {
                     showContentView()

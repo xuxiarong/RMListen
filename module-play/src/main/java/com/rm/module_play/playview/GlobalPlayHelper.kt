@@ -1,5 +1,6 @@
 package com.rm.module_play.playview
 
+import android.text.TextUtils
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseApplication.Companion.baseApplication
 import com.rm.baselisten.BaseConstance
@@ -11,6 +12,8 @@ import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.constants.STATE_READY
@@ -32,6 +35,8 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         var listener: MusicPlayerEventListener? = null
 
     }
+
+    private var oldAudio: String = ""
 
     var playStatusListener: IPlayStatusListener? = null
 
@@ -60,10 +65,10 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     override fun onPrepared(totalDurtion: Long) {
-        if(PlayGlobalData.playAdIsPlaying.get()){
+        if (PlayGlobalData.playAdIsPlaying.get()) {
             musicPlayerManger.setPlayerMultiple(1f)
             PlayGlobalData.playSpeed.set(1f)
-        }else{
+        } else {
             SAVA_SPEED.getFloattMMKV(1f).let {
                 PlayGlobalData.playSpeed.set(it)
                 musicPlayerManger.setPlayerMultiple(it)
@@ -75,16 +80,16 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             PlayGlobalData.playChapter.get()?.let {
                 it.realDuration = totalDurtion
             }
-            if(PlayGlobalData.playNeedQueryChapterProgress.get()){
+            if (PlayGlobalData.playNeedQueryChapterProgress.get()) {
                 PlayGlobalData.playNeedQueryChapterProgress.set(false)
-                PlayGlobalData.playAudioId.get()?.let {audioId ->
+                PlayGlobalData.playAudioId.get()?.let { audioId ->
                     PlayGlobalData.playChapterId.get()?.let { chapterId ->
                         val listenChapter = ListenDaoUtils.queryChapterRecentUpdate(
                             audioId.toLongSafe(),
                             chapterId.toLongSafe()
                         )
                         listenChapter?.let {
-                            if(it.listen_duration!=0L){
+                            if (it.listen_duration != 0L) {
                                 musicPlayerManger.seekTo(it.listen_duration)
                             }
                         }
@@ -103,6 +108,21 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
+
+        BusinessInsertManager.doInsertKeyAndChapter(
+            BusinessInsertConstance.INSERT_TYPE_CHAPTER_PLAY,
+            musicInfo.audioId,
+            musicInfo.chapterId
+        )
+
+        if (!TextUtils.equals(oldAudio, musicInfo.audioId)) {
+            oldAudio = musicInfo.audioId
+            BusinessInsertManager.doInsertKeyAndAudio(
+                BusinessInsertConstance.INSERT_TYPE_AUDIO_PLAY,
+                musicInfo.audioId
+            )
+        }
+
         BaseConstance.updateBaseChapterId(musicInfo.chapterId)
         BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
         PlayGlobalData.savePlayChapter(position)
@@ -160,7 +180,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     override fun onStartPlayAd() {
         PlayGlobalData.process.set(0F)
         PlayGlobalData.maxProcess.set(0F)
-        if("00:00/00:00"!=PlayGlobalData.updateThumbText.get()){
+        if ("00:00/00:00" != PlayGlobalData.updateThumbText.get()) {
             PlayGlobalData.updateThumbText.set("00:00/00:00")
         }
         PlayGlobalData.playAdIsPlaying.set(true)

@@ -7,6 +7,8 @@ import androidx.viewpager.widget.ViewPager
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.HomeGlobalData
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_main.BR
@@ -149,6 +151,11 @@ class MainMainActivity :
         if (view_pager.currentItem != currentTab) {
             view_pager.setCurrentItem(currentTab, false)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_START)
     }
 
     override fun initData() {

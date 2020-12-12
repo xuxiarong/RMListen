@@ -19,14 +19,15 @@
         android:orientation="vertical">
 
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.BusinessAdImageView
             android:id="@+id/home_ad_dialog_img"
+            bindAdId="@{String.valueOf(viewModel.homeDialogAdModel.ad_id)}"
+            bindUrl="@{viewModel.homeDialogAdModel.image_url}"
+            corner="@{16f}"
             android:layout_width="280dp"
             android:layout_height="386dp"
             android:layout_gravity="center_horizontal"
-            corner="@{16f}"
-            android:scaleType="fitXY"
-            bindUrl="@{viewModel.homeDialogAdModel.image_url}" />
+            android:scaleType="fitXY" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_dialog_ad_close"

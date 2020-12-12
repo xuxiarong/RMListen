@@ -2,7 +2,9 @@ package com.rm.business_lib.net.api
 
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.business_lib.bean.RefreshTokenBean
+import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -29,4 +31,7 @@ interface BusinessApiService {
     suspend fun refreshToken2(
         @Query("refresh_token") refreshToken: String
     ): BaseResponse<RefreshTokenBean>
+
+    @POST("report/analysis")
+    suspend fun insertPoint(@Body body: RequestBody): BaseResponse<Any>
 }

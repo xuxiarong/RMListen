@@ -14,6 +14,8 @@ import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.bean.BusinessVersionUrlBean
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.utils.ApkInstallUtils
 import com.rm.business_lib.utils.NotifyManager
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -322,7 +324,8 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     banner_img = randomAd.image_url,
                     banner_jump = randomAd.jump_url,
                     img_url = randomAd.image_url,
-                    isAd = true
+                    isAd = true,
+                    ad_id = randomAd.ad_id
                 )
                 bannerList.add(Random.nextInt(bannerList.size), adBanner)
             }
@@ -457,13 +460,14 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
 
     fun homeSingleImgAdClick(context: Context, model: HomeSingleImgContentModel) {
         model.img_ad_model?.let {
-            BannerJumpUtils.onBannerClick(context, it.jump_url)
+            BannerJumpUtils.onBannerClick(context, it.jump_url,it.ad_id.toString())
         }
     }
 
     fun homeSingleImgAdClose(model: HomeSingleImgContentModel) {
         model.img_ad_model = null
         homeAdapter.notifyDataSetChanged()
+        BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,model.img_ad_model?.ad_id.toString())
     }
 
     /**

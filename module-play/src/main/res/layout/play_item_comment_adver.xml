@@ -73,10 +73,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/play_item_comment_advertise_icon" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.BusinessAdImageView
             android:id="@+id/play_item_comment_advertise_jump"
             bindUrl="@{item.data.image_url}"
             corner="@{8f}"
+            bindAdId="@{String.valueOf(item.data.ad_id)}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_166"
             android:layout_marginTop="@dimen/dp_8"

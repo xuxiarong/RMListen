@@ -77,9 +77,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.rm.business_lib.wedgit.BusinessAdImageView
                 bindUrl="@{PlayGlobalData.INSTANCE.playVoiceImgAd.image_url}"
                 corner="@{8f}"
+                bindAdId="@{String.valueOf(PlayGlobalData.INSTANCE.playVoiceImgAd.ad_id)}"
                 android:layout_width="match_parent"
                 android:layout_height="202dp"
                 android:scaleType="fitXY" />
@@ -158,9 +159,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.rm.business_lib.wedgit.BusinessAdImageView
                 bindUrl="@{PlayGlobalData.INSTANCE.playAudioImgAd.image_url}"
                 corner="@{8f}"
+                bindAdId="@{String.valueOf(PlayGlobalData.INSTANCE.playAudioImgAd.ad_id)}"
                 android:layout_width="280dp"
                 android:layout_height="280dp"
                 android:scaleType="fitXY" />
@@ -670,9 +672,10 @@
             app:layout_constraintTop_toBottomOf="@+id/home_detail_anchor_cl"
             app:layout_goneMarginEnd="@dimen/dp_16">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.rm.business_lib.wedgit.BusinessAdImageView
                 bindUrl="@{viewModel.playFloorAd.image_url}"
                 corner="@{8}"
+                bindAdId="@{String.valueOf(viewModel.playFloorAd.ad_id)}"
                 android:layout_width="match_parent"
                 android:layout_height="128dp"
                 android:scaleType="fitXY" />

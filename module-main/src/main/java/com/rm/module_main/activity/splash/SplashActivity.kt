@@ -1,5 +1,6 @@
 package com.rm.module_main.activity.splash
 
+import android.os.Bundle
 import android.text.TextUtils
 import android.widget.TextView
 import androidx.databinding.Observable
@@ -21,8 +22,13 @@ import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.web.BaseWebActivity
+import com.rm.business_lib.FIRST_OPEN_APP
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.coroutinepermissions.requestPermissionsForResult
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
+import com.rm.business_lib.isLogin
+import com.rm.business_lib.wedgit.bindAdId
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.component_comm.utils.BannerJumpUtils
@@ -46,6 +52,14 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.home_activity_splash
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (isLogin.get()) {
+            BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVE)
+        } else {
+            BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_LOGIN)
+        }
+    }
 
     override fun startObserve() {
         mViewModel.isSkipAd.addOnPropertyChangedCallback(object :
@@ -69,9 +83,14 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     Glide.with(this@SplashActivity).load(adScreen.image_url)
                         .apply(options)
                         .into(splash_ad_img)
+                    splash_ad_img.bindAdId(adScreen.ad_id.toString())
                     splash_ad_img.setOnClickListener {
-                        adScreen.jump_url?.let {
-                            BannerJumpUtils.onBannerClick(this@SplashActivity,adScreen.jump_url)
+                        adScreen.jump_url.let {
+                            BannerJumpUtils.onBannerClick(
+                                this@SplashActivity,
+                                adScreen.jump_url,
+                                adScreen.ad_id.toString()
+                            )
                         }
                     }
                 }
@@ -86,6 +105,11 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     }
 
     override fun initData() {
+        if (FIRST_OPEN_APP.getBooleanMMKV(true)) {
+            FIRST_OPEN_APP.getBooleanMMKV(false)
+            BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVATION)
+        }
+
         if (!HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.getBooleanMMKV(false)) {
             showPrivateServiceDialog()
             mViewModel.isShowAd.set(false)
@@ -94,7 +118,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             mViewModel.startSkipTimerCount()
             mViewModel.getSplashAd()
         }
-        RouterHelper.createRouter(PlayService::class.java).initPlayService(BaseApplication.baseApplication)
+        RouterHelper.createRouter(PlayService::class.java)
+            .initPlayService(BaseApplication.baseApplication)
 
     }
 

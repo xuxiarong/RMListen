@@ -16,7 +16,7 @@
         android:background="@color/businessWhite"
         tools:context=".module.guide.SplashActivity">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.BusinessAdImageView
             android:id="@+id/splash_ad_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

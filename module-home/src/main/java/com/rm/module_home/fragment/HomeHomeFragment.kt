@@ -21,6 +21,8 @@ import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.HomeGlobalData.isHomeDouClick
 import com.rm.business_lib.UPLOAD_APP_TIME
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.utils.ApkInstallUtils
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -90,11 +92,21 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                 initDialog = {
                     mDataBind?.let {
                         val dialogBand = mDataBind as HomeDialogHomeAdBinding
-                        dialogBand.homeDialogAdClose.setOnClickListener { dismiss() }
+                        dialogBand.homeDialogAdClose.setOnClickListener {
+                            BusinessInsertManager.doInsertKeyAndAd(
+                                BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,
+                                mViewModel.homeDialogAdModel.get()?.ad_id.toString()
+                            )
+                            dismiss()
+                        }
                         dialogBand.homeAdDialogImg.setOnClickListener {
                             mViewModel.homeDialogAdModel.get()?.let {
                                 if (context != null && !TextUtils.isEmpty(it.jump_url)) {
-                                    BannerJumpUtils.onBannerClick(context!!, it.jump_url)
+                                    BannerJumpUtils.onBannerClick(
+                                        context!!,
+                                        it.jump_url,
+                                        it.ad_id.toString()
+                                    )
                                     dismiss()
                                 }
                             }

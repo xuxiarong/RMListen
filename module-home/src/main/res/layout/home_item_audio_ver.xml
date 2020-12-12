@@ -22,9 +22,10 @@
         android:onClick="@{()->viewModel.onAudioClick(context,item.verModel)}">
 
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.rm.business_lib.wedgit.BusinessAdImageView
             android:id="@+id/home_book_adapter_icon"
             bindUrl="@{item.verModel.imageUrl}"
+            bindAdId="@{String.valueOf(item.verModel.adModel.ad_id)}"
             corner="@{4.0f}"
             android:layout_width="@dimen/dp_106"
             android:layout_height="@dimen/dp_106"

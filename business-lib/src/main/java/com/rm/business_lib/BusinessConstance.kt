@@ -39,6 +39,9 @@ const val LOGIN_USER_INFO = "loginUserInfo"
 //记录提示更新时间
 const val UPLOAD_APP_TIME="upload_app_time"
 
+//记录用户第一次打开app
+const val FIRST_OPEN_APP="first_open_app"
+
 // 当前是否登陆
 var isLogin = ObservableBoolean(false)
 
