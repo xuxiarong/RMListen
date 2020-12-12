@@ -74,10 +74,11 @@ ext {
             easypermissions           : "3.0.0",
             lottieVersion             : "3.4.2",
             flexbox                   : "2.0.1",
-            lottieVersion             : "3.0.0",
+            lottie_version             : "3.0.0",
             palette                   : "1.0.0",
             bugly                     : "3.2.422",
-            bugly_native              : "3.7.5"
+            bugly_native              : "3.7.5",
+            flow_layout               : "1.3.2"
     ]
 
     dependencies = [
@@ -116,9 +117,10 @@ ext {
             // 下拉刷新控件
             "smartRefreshLayout"      : "com.scwang.smart:refresh-layout-kernel:2.0.1",
 
-            "lottie"                  : "com.airbnb.android:lottie:${version.lottieVersion}",
+            "lottie"                  : "com.airbnb.android:lottie:${version.lottie_version}",
             "bugly"                   : "com.tencent.bugly:crashreport:${version.bugly}",
-            "bugly_native"            : "com.tencent.bugly:nativecrashreport:${version.bugly_native}"
+            "bugly_native"            : "com.tencent.bugly:nativecrashreport:${version.bugly_native}",
+            "flow_layout"             : "com.nex3z:flow-layout:${version.flow_layout}"
 
 
     ]

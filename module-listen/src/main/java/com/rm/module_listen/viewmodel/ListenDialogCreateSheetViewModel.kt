@@ -99,7 +99,7 @@ class ListenDialogCreateSheetViewModel(
                     addSheetSuccess()
                 },
                 onError = {
-                    showErrorTip(CONTEXT.getString(R.string.listen_add_fail))
+                    showErrorTip("$it")
                 }
             )
         }

@@ -45,7 +45,7 @@
     <string name="listen_edit_fail">编辑失败</string>
     <string name="listen_edit_success_tip">修改成功,请到我的听单中查看</string>
     <string name="listen_input_char_tip">不能输入特殊字符</string>
-    <string name="listen_input_no_null_tip">名称不能为空</string>
+    <string name="listen_input_no_null_tip">听单名称不能为空</string>
     <string name="listen_input_length_tip">长度不能大于20</string>
     <string name="listen_add_success">添加成功</string>
     <string name="listen_edit_sheet">编辑听单</string>

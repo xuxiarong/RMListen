@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.rm.module_search.widget.TagLayout
+    <com.rm.business_lib.wedgit.TagLayout
         android:id="@+id/tagview"
         android:layout_marginStart="20dp"
         android:layout_width="match_parent"

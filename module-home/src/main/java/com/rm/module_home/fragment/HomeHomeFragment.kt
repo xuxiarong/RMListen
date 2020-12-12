@@ -15,9 +15,12 @@ import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.receiver.NetworkChangeReceiver
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.getLongMMKV
+import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.HomeGlobalData.isHomeDouClick
+import com.rm.business_lib.UPLOAD_APP_TIME
 import com.rm.business_lib.utils.ApkInstallUtils
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -209,8 +212,14 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                             if (TextUtils.equals(versionInfo.type, "2")) {
                                 mViewModel.showUploadDialog(it, true)
                             } else {
-                                //普通更新
-                                mViewModel.showUploadDialog(it, false)
+                                //一天内只显示一次
+                                val curTime = 24 * 60 * 60 * 1000
+                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
+                                    UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
+                                    //普通更新
+                                    mViewModel.showUploadDialog(it, false)
+                                }
+
                             }
                         }
                     } catch (e: Exception) {

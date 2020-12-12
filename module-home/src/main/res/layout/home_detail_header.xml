@@ -34,6 +34,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="#3f00" />
+
             <View
                 android:id="@+id/home_book_adapter_play_bg"
                 android:layout_width="0dp"
@@ -324,37 +325,16 @@
                 app:layout_constraintTop_toTopOf="@id/home_detail_anchor_url"
                 tools:text="@string/app_name" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_detail_anchor_tips"
-                android:layout_width="wrap_content"
+            <com.nex3z.flowlayout.FlowLayout
+                bindFlowData="@{viewModel.detailInfoData.list.tags}"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_8"
-                android:background="@drawable/business_shape_stroke_rect_ffba56"
-                android:paddingStart="@dimen/dp_4"
-                android:paddingTop="@dimen/dp_2"
-                android:paddingEnd="@dimen/dp_4"
-                android:paddingBottom="@dimen/dp_2"
-                android:text="@string/home_detail_hot_anchor"
-                android:textColor="@color/business_color_ffba56"
-                android:textSize="@dimen/business_text_size_8sp"
+                app:flMaxRows="1"
+                app:flChildSpacing="@dimen/dp_8"
+                app:flChildSpacingForLastRow="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/detail_anchor_attention"
                 app:layout_constraintStart_toStartOf="@id/home_detail_anchor_name" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_8"
-                android:background="@drawable/business_shape_stroke_rect_ffba56"
-                android:paddingStart="@dimen/dp_4"
-                android:paddingTop="@dimen/dp_2"
-                android:paddingEnd="@dimen/dp_4"
-                android:paddingBottom="@dimen/dp_2"
-                android:text="@string/home_top_10"
-                android:textColor="@color/business_color_ffba56"
-                android:textSize="@dimen/business_text_size_8sp"
-                app:layout_constraintBottom_toBottomOf="@id/home_detail_anchor_tips"
-                app:layout_constraintStart_toEndOf="@id/home_detail_anchor_tips"
-                app:layout_constraintTop_toTopOf="@id/home_detail_anchor_tips" />
 
 
             <androidx.appcompat.widget.AppCompatTextView

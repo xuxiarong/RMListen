@@ -1,4 +1,4 @@
-package com.rm.module_search.widget
+package com.rm.business_lib.wedgit
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.rm.module_search.R
+import com.rm.baselisten.util.DLog
+import com.rm.business_lib.R
+import com.rm.business_lib.bean.DetailTags
 
 /**
  *
@@ -20,14 +22,13 @@ class TagLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) :
-    ViewGroup(context, attrs, defStyleAttr) {
+) : ViewGroup(context, attrs, defStyleAttr) {
     private var lineHeights = mutableListOf<Int>()
     private var views = mutableListOf<MutableList<View>>()
-    private var maxLine = 2
-    private var itemClick: (View, String) -> Unit = { _, _ -> }
-    private var maxHeight = 0
 
+    private var maxLine = 2
+    private var itemClick: ((View, String) -> Unit)? = { _, _ -> }
+    private var maxHeight = 0
     override fun onLayout(
         changed: Boolean,
         l: Int,
@@ -68,7 +69,6 @@ class TagLayout @JvmOverloads constructor(
         //2.摆放
         val size = views.size
         for (i in 0 until size) {
-
             lineViews = views[i]
             lineHeight = lineHeights[i]
             for (j in lineViews.indices) {
@@ -89,6 +89,7 @@ class TagLayout @JvmOverloads constructor(
             left = 0
             top += lineHeight
         }
+
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -151,9 +152,10 @@ class TagLayout @JvmOverloads constructor(
     fun setData(list: MutableList<String>) {
         removeAllViews()
         list.forEach {
-            val childView = createView(it)
-            addView(childView)
+            val childView = createView(it, R.layout.business_tag_search_history)
+            this.addView(childView)
         }
+
     }
 
     fun setMaxLine(maxLine: Int) {
@@ -164,9 +166,9 @@ class TagLayout @JvmOverloads constructor(
         itemClick = clickBlock
     }
 
-    private fun createView(content: String): View {
+    private fun createView(content: String, resLayoutId: Int): View {
         val view = LayoutInflater.from(context).inflate(
-            R.layout.search_adapter_history,
+            resLayoutId,
             this,
             false
         ) as TextView
@@ -176,30 +178,37 @@ class TagLayout @JvmOverloads constructor(
             view.text = content
         }
         view.setOnClickListener {
-            itemClick(it, content)
+            if (itemClick != null) {
+                itemClick!!(it, content)
+            }
         }
         return view
     }
 }
 
-@BindingAdapter("bindTagMaxLine", "bindTagData", "bindTagClick", requireAll = false)
-fun TagLayout.bindData(
-    bindTagMaxLine: Int = 2,
-    bindTagData: MutableList<String>?,
-    blockClick: ((View, String) -> Unit)?
-) {
+@BindingAdapter("bindTagMaxLine")
+fun TagLayout.bindTagMaxLine(bindTagMaxLine: Int = 2) {
+    if (bindTagMaxLine >= 0) {
+        setMaxLine(bindTagMaxLine)
+    }
+}
+
+@BindingAdapter("bindTagData")
+fun TagLayout.bindTagData(bindTagData: MutableList<String>?) {
     if (bindTagData == null) {
         visibility = View.GONE
         return
     }
-
-    if (bindTagMaxLine >= 0) {
-        setMaxLine(bindTagMaxLine)
-    }
-
     setData(bindTagData)
+}
 
+@BindingAdapter("bindTagClick")
+fun TagLayout.bindTagClick(blockClick: ((View, String) -> Unit)?) {
     if (blockClick != null) {
         setItemClick { view, content -> blockClick(view, content) }
     }
 }
+
+
+
+

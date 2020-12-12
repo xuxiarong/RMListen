@@ -247,11 +247,9 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
      */
     private fun moveEnd() {
         val offsetY = upY - downY
-        DLog.i("------>moveEnd", "$mCurType    $translationY")
         when (mCurType) {
             TYPE_TOP -> {
                 if (offsetY >= 0) {
-                    DLog.i("------>moveEnd", "111111")
                     mCurType = TYPE_CENTER
                     startScrollAnim(translationY.toInt(), mCenterHeight)
                 }
@@ -259,18 +257,15 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
             TYPE_CENTER -> {
                 if (offsetY >= 0) {
                     mCurType = TYPE_BOTTOM
-                    DLog.i("------>moveEnd", "22222")
                     startScrollAnim(translationY.toInt(), height - mBottomHeight)
                 } else {
                     // 615.0
                     mCurType = TYPE_TOP
-                    DLog.i("------>moveEnd", "33333")
                     startScrollAnim(translationY.toInt(), mTopHeight)
                 }
             }
             TYPE_BOTTOM -> {
                 if (offsetY <= 0) {
-                    DLog.i("------>moveEnd", "44444")
                     mCurType = TYPE_CENTER
                     startScrollAnim(translationY.toInt(), mCenterHeight)
                 }
@@ -279,7 +274,6 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     }
 
     private fun startScrollAnim(start: Int, end: Int) {
-        DLog.i("------>startScrollAnim", "$start   $end    {Log.getStackTraceString(Throwable())}")
         val animator = ObjectAnimator.ofInt(start, end)
         animator.interpolator = AccelerateInterpolator()
         animator.duration = 100
