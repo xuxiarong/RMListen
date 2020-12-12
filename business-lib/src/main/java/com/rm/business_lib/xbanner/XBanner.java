@@ -65,6 +65,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
 
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private OnItemClickListener mOnItemClickListener;
+    private View.OnClickListener mOnAdItemClickListener;
 
     /**
      * 指示点位置
@@ -838,6 +839,18 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
             if(realPosition<mDatas.size()){
                 if(mDatas.get(realPosition).isAdBanner()){
                     view.findViewById(R.id.banner_ad_tv).setVisibility(View.VISIBLE);
+                    view.findViewById(R.id.banner_ad_close).setVisibility(View.VISIBLE);
+                    view.findViewById(R.id.banner_ad_close).setOnClickListener(new OnDoubleClickListener() {
+                        @Override
+                        public void onNoDoubleClick(View v) {
+                            try{
+                                mDatas.remove(realPosition);
+                                setBannerData(mDatas);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
             }
             if (mOnItemClickListener != null && mDatas.size() != 0) {
@@ -1255,6 +1268,10 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
+    }
+
+    public void setOnAdClickListener(View.OnClickListener listener){
+        this.mOnAdItemClickListener = listener;
     }
 
     public interface OnItemClickListener {

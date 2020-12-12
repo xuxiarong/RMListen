@@ -316,9 +316,13 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 通过音频ID直接获取下一页的章节列表，从第一页开始，这里成功后需要记录chapterId
      */
     fun getNextPageChapterList() {
+        val audioId = PlayGlobalData.playAudioId.get()
+        if (TextUtils.isEmpty(audioId)) {
+            return
+        }
         launchOnIO {
             repository.chapterList(
-                PlayGlobalData.playAudioId.get()!!,
+                audioId!!,
                 playNextPage,
                 playChapterPageSize,
                 PlayGlobalData.playChapterListSort.get()!!
@@ -338,7 +342,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 } else {
                     chapterRefreshModel.noMoreData.set(false)
                     chapterRefreshModel.finishLoadMore(false)
-                    setAudioPlayPath(mutableListOf())
+                    if(playPath.value == null){
+                        setAudioPlayPath(mutableListOf())
+                    }
                 }
             }, onError = {
                 it?.let {
@@ -727,6 +733,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     fun playPreClick() {
         if (PlayGlobalData.hasPreChapter.get()) {
+            PlayGlobalData.playNeedQueryChapterProgress.set(false)
             getChapterAd {
                 playManger.playLastMusic()
             }
@@ -735,6 +742,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     fun playNextClick() {
         if (PlayGlobalData.hasNextChapter.get()) {
+            PlayGlobalData.playNeedQueryChapterProgress.set(false)
             getChapterAd {
                 playManger.playNextMusic()
             }

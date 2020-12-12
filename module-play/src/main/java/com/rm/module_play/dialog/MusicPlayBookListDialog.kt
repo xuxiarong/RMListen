@@ -65,7 +65,10 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
                         viewModel.playManger.play()
                     }
                 } else {
-                    viewModel.playManger.startPlayMusic(data[position].chapter_id.toString())
+                    PlayGlobalData.playNeedQueryChapterProgress.set(true)
+                    viewModel.getChapterAd {
+                        viewModel.playManger.startPlayMusic(data[position].chapter_id.toString())
+                    }
                 }
             }
         }
@@ -129,17 +132,9 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         }
 
         if(viewModel.playNextPage <= 2){
-            smart_refresh_layout_play.setEnableRefresh(false)
+            viewModel.chapterRefreshModel.canRefresh.set(false)
         }else{
-            smart_refresh_layout_play.setEnableRefresh(true)
-        }
-        smart_refresh_layout_play.setOnRefreshListener {
-            viewModel.getPrePageChapterList()
-        }
-        smart_refresh_layout_play.setOnLoadMoreListener {
-            if(!TextUtils.isEmpty(PlayGlobalData.playAudioId.get())){
-                viewModel.getNextPageChapterList()
-            }
+            viewModel.chapterRefreshModel.canRefresh.set(true)
         }
         startObserve()
     }

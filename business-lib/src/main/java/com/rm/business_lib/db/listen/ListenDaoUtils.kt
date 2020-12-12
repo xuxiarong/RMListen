@@ -24,7 +24,7 @@ object ListenDaoUtils {
             val queryBuilder = listenAudioDao.queryBuilder()
             if (queryBuilder != null) {
                 val result =
-                        queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).list()
+                    queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).list()
                 return result
             }
         } catch (e: Exception) {
@@ -38,8 +38,8 @@ object ListenDaoUtils {
             val queryBuilder = listenAudioDao.queryBuilder()
             if (queryBuilder != null) {
                 val result =
-                        queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).limit(10)
-                                .list()
+                    queryBuilder.orderDesc(ListenAudioEntityDao.Properties.UpdateMillis).limit(10)
+                        .list()
                 return result
             }
         } catch (e: Exception) {
@@ -48,7 +48,7 @@ object ListenDaoUtils {
         return mutableListOf()
     }
 
-    fun deleteAudio(audio : ListenAudioEntity){
+    fun deleteAudio(audio: ListenAudioEntity) {
         listenAudioDao.delete(audio)
     }
 
@@ -57,7 +57,7 @@ object ListenDaoUtils {
             val queryBuilder = listenAudioDao.queryBuilder()
             if (queryBuilder != null) {
                 val result =
-                        queryBuilder.where(ListenAudioEntityDao.Properties.Audio_id.eq(audioId)).list()
+                    queryBuilder.where(ListenAudioEntityDao.Properties.Audio_id.eq(audioId)).list()
                 return if (null != result && result.isNotEmpty()) {
                     result[0]
                 } else {
@@ -84,25 +84,20 @@ object ListenDaoUtils {
             val queryBuilder = listenChapterDao.queryBuilder()
             if (queryBuilder != null) {
                 val result = queryBuilder
-                        .where(ListenChapterEntityDao.Properties.Audio_id.eq(audioId))
-                        .where(ListenChapterEntityDao.Properties.Chapter_id.eq(chapterID))
-                        .orderDesc(ListenChapterEntityDao.Properties.UpdateMillis).list()
+                    .where(ListenChapterEntityDao.Properties.Audio_id.eq(audioId))
+                    .where(ListenChapterEntityDao.Properties.Chapter_id.eq(chapterID))
+                    .orderDesc(ListenChapterEntityDao.Properties.UpdateMillis).list()
                 return if (null != result && result.isNotEmpty()) {
                     result[0]
                 } else {
                     null
                 }
             }
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
 
     }
-
-    fun queryAllChapterByUpdateTimeDesc() {
-
-    }
-
 
 }

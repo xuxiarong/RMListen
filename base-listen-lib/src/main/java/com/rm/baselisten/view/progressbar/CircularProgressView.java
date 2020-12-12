@@ -224,12 +224,12 @@ public class CircularProgressView extends View {
         if(countDownTimer!=null){
             countDownTimer.cancel();
         }else {
-            countDownTimer =  new CountDownTimer(500,16) {
+            countDownTimer =  new CountDownTimer(5000,16) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     mProgress+=16;
-                    if(mProgress>=95){
-                        mProgress = 95;
+                    if(mProgress>=100){
+                        mProgress = 0;
                     }
                     setProgress(mProgress);
                 }

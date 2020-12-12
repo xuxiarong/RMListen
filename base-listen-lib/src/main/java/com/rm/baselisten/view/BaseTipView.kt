@@ -31,6 +31,7 @@ class BaseTipView @JvmOverloads constructor(
     }
 
     var isAdd = false
+    var isShowing = false
     private val showAnim by lazy {
         ObjectAnimator.ofFloat(this, "translationY", 0f, dip(96).toFloat()).apply {
             duration = 200
@@ -60,7 +61,7 @@ class BaseTipView @JvmOverloads constructor(
         tipProgress: Boolean = false,
         netError: Boolean = false
     ) {
-        if (TextUtils.isEmpty(tipText)) {
+        if (TextUtils.isEmpty(tipText) || isShowing) {
             return
         }
         try {
@@ -83,6 +84,7 @@ class BaseTipView @JvmOverloads constructor(
             }
             clearAnimation()
             showAnim.start()
+            isShowing = true
             handler?.removeCallbacksAndMessages(null)
             handler?.postDelayed({
                 hideTipView(activity)
@@ -101,6 +103,7 @@ class BaseTipView @JvmOverloads constructor(
         rootViewAddView(activity)
         clearAnimation()
         hideAnim.start()
+        isShowing = false
     }
 
 

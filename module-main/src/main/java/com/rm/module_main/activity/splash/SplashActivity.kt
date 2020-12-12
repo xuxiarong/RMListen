@@ -70,7 +70,9 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                         .apply(options)
                         .into(splash_ad_img)
                     splash_ad_img.setOnClickListener {
-                        BannerJumpUtils.onBannerClick(this@SplashActivity,adScreen.image_url)
+                        adScreen.jump_url?.let {
+                            BannerJumpUtils.onBannerClick(this@SplashActivity,adScreen.jump_url)
+                        }
                     }
                 }
             }
