@@ -88,8 +88,9 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_LOGIN)
         }
         splash_ad_img.setOnClickNotDoubleListener {
-            mViewModel.mainAdScreen.get()?.jump_url?.let {
-                MainMainActivity.startMainActivity(this@SplashActivity, splashUrl = it,  mViewModel.mainAdScreen.get()!!.ad_id.toString())
+            mViewModel.mainAdScreen.get()?.let {
+                MainMainActivity.startMainActivity(this@SplashActivity, splashUrl = it.jump_url)
+                BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLICK,it.ad_id.toString())
                 finish()
             }
         }
