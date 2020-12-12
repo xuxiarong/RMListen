@@ -22,7 +22,7 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
     var isShowAd = ObservableBoolean(false)
 
     fun startSkipTimerCount() {
-        launchOnUI {
+        launchOnIO {
             for (i in 0 until 3) {
                 delay(1000)
                 skipSecond.set(skipSecond.get() - 1)

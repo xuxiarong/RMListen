@@ -2,6 +2,8 @@ package com.rm.module_main.activity
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.text.TextUtils
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.rm.baselisten.util.DLog
@@ -32,84 +34,100 @@ class MainMainActivity :
 
     override fun getLayoutId() = R.layout.main_activity_main
 
-    override fun initView() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(!TextUtils.isEmpty(jumpUrl)){
+            BannerJumpUtils.onBannerClick(this,jumpUrl)
+        }
+    }
 
+    override fun initView() {
+        if(TextUtils.isEmpty(jumpUrl)){
+            initPager()
+        }else{
+            view_pager.postDelayed({
+                initPager()
+            },800)
+        }
+    }
+
+    private fun initPager() {
         navigationController = mainTab.custom().run {
 
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
-                    R.drawable.main_ic_home_tab_listen_bar,
-                    R.drawable.main_ic_home_tab_listen_bar_selected,
-                    getString(R.string.main_tab_listen_bar)
+                        R.drawable.main_ic_home_tab_listen_bar,
+                        R.drawable.main_ic_home_tab_listen_bar_selected,
+                        getString(R.string.main_tab_listen_bar)
                 )
                 setTextCheckedColor(
-                    ContextCompat.getColor(
-                        this@MainMainActivity,
-                        R.color.main_color_accent
-                    )
+                        ContextCompat.getColor(
+                                this@MainMainActivity,
+                                R.color.main_color_accent
+                        )
                 )
                 setTextDefaultColor(
-                    ContextCompat.getColor(
-                        this@MainMainActivity,
-                        R.color.main_color_disable
-                    )
+                        ContextCompat.getColor(
+                                this@MainMainActivity,
+                                R.color.main_color_disable
+                        )
                 )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
-                    R.drawable.main_ic_home_tab_search,
-                    R.drawable.main_ic_home_tab_search_selected,
-                    getString(R.string.main_tab_search)
+                        R.drawable.main_ic_home_tab_search,
+                        R.drawable.main_ic_home_tab_search_selected,
+                        getString(R.string.main_tab_search)
                 )
                 setTextCheckedColor(
-                    ContextCompat.getColor(
-                        this@MainMainActivity,
-                        R.color.main_color_accent
-                    )
+                        ContextCompat.getColor(
+                                this@MainMainActivity,
+                                R.color.main_color_accent
+                        )
                 )
                 setTextDefaultColor(
-                    ContextCompat.getColor(
-                        this@MainMainActivity,
-                        R.color.main_color_disable
-                    )
+                        ContextCompat.getColor(
+                                this@MainMainActivity,
+                                R.color.main_color_disable
+                        )
                 )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
-                    R.drawable.main_ic_home_tab_my_listen,
-                    R.drawable.main_ic_home_tab_my_listen_selected,
-                    getString(R.string.main_tab_my_listen)
+                        R.drawable.main_ic_home_tab_my_listen,
+                        R.drawable.main_ic_home_tab_my_listen_selected,
+                        getString(R.string.main_tab_my_listen)
                 )
                 setTextCheckedColor(
-                    ContextCompat.getColor(
-                        this@MainMainActivity,
-                        R.color.main_color_accent
-                    )
+                        ContextCompat.getColor(
+                                this@MainMainActivity,
+                                R.color.main_color_accent
+                        )
                 )
                 setTextDefaultColor(
-                    ContextCompat.getColor(
-                        this@MainMainActivity,
-                        R.color.main_color_disable
-                    )
+                        ContextCompat.getColor(
+                                this@MainMainActivity,
+                                R.color.main_color_disable
+                        )
                 )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
-                    R.drawable.main_ic_home_tab_user,
-                    R.drawable.main_ic_home_tab_user_selected,
-                    getString(R.string.main_tab_user)
+                        R.drawable.main_ic_home_tab_user,
+                        R.drawable.main_ic_home_tab_user_selected,
+                        getString(R.string.main_tab_user)
                 )
                 setTextCheckedColor(
-                    ContextCompat.getColor(
-                        this@MainMainActivity,
-                        R.color.main_color_accent
-                    )
+                        ContextCompat.getColor(
+                                this@MainMainActivity,
+                                R.color.main_color_accent
+                        )
                 )
                 setTextDefaultColor(
-                    ContextCompat.getColor(
-                        this@MainMainActivity,
-                        R.color.main_color_disable
-                    )
+                        ContextCompat.getColor(
+                                this@MainMainActivity,
+                                R.color.main_color_disable
+                        )
                 )
             })
         }.build()
@@ -125,9 +143,9 @@ class MainMainActivity :
             }
 
             override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
             ) {
 
             }
@@ -181,13 +199,14 @@ class MainMainActivity :
     companion object {
 
         var currentTab = 0
-
-        fun startMainActivity(context: Context, selectTab: Int = 0) {
+        var jumpUrl = ""
+        fun startMainActivity(context: Context, selectTab: Int = 0,splashUrl : String = "") {
             //如果context 已经是MainMainActivity，而且想跳转tab等于当前tab则不需要跳转了
             if (context is MainMainActivity && selectTab == currentTab) {
                 return
             }
             currentTab = selectTab
+            jumpUrl = splashUrl
             context.startActivity(Intent(context, MainMainActivity::class.java))
         }
     }
