@@ -10,11 +10,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.util.*
 import com.rm.baselisten.util.constant.PermissionConstants
-import com.rm.baselisten.util.getBooleanMMKV
-import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
@@ -52,18 +49,10 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.home_activity_splash
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (isLogin.get()) {
-            BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVE)
-        } else {
-            BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_LOGIN)
-        }
-    }
 
     override fun startObserve() {
         mViewModel.isSkipAd.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.isSkipAd.get()) {
                     MainMainActivity.startMainActivity(this@SplashActivity)
@@ -72,27 +61,17 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             }
         })
         mViewModel.mainAdScreen.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+                Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val adScreen = mViewModel.mainAdScreen.get()
                 if (null != adScreen && !TextUtils.isEmpty(adScreen.image_url)) {
                     val options: RequestOptions = RequestOptions() //图片加载出来前，显示的图片
-                        .placeholder(R.drawable.splash) //url为空的时候,显示的图片
-                        .fallback(R.drawable.splash) //图片加载失败后，显示的图片
-                        .error(R.drawable.splash)
+                            .placeholder(R.drawable.splash) //url为空的时候,显示的图片
+                            .fallback(R.drawable.splash) //图片加载失败后，显示的图片
+                            .error(R.drawable.splash)
                     Glide.with(this@SplashActivity).load(adScreen.image_url)
-                        .apply(options)
-                        .into(splash_ad_img)
-                    splash_ad_img.bindAdId(adScreen.ad_id.toString())
-                    splash_ad_img.setOnClickListener {
-                        adScreen.jump_url.let {
-                            BannerJumpUtils.onBannerClick(
-                                this@SplashActivity,
-                                adScreen.jump_url,
-                                adScreen.ad_id.toString()
-                            )
-                        }
-                    }
+                            .apply(options)
+                            .into(splash_ad_img)
                 }
             }
         })
@@ -102,6 +81,18 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     override fun initView() {
         super.initView()
         setTransparentStatusBar()
+
+        if (isLogin.get()) {
+            BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVE)
+        } else {
+            BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_LOGIN)
+        }
+        splash_ad_img.setOnClickNotDoubleListener {
+            mViewModel.mainAdScreen.get()?.jump_url?.let {
+                MainMainActivity.startMainActivity(this@SplashActivity, splashUrl = it,  mViewModel.mainAdScreen.get()!!.ad_id.toString())
+                finish()
+            }
+        }
     }
 
     override fun initData() {
@@ -115,8 +106,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             mViewModel.isShowAd.set(false)
         } else {
             mViewModel.isShowAd.set(true)
-            mViewModel.startSkipTimerCount()
             mViewModel.getSplashAd()
+            mViewModel.startSkipTimerCount()
         }
         RouterHelper.createRouter(PlayService::class.java)
             .initPlayService(BaseApplication.baseApplication)
@@ -126,9 +117,9 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     suspend fun requestPermissions() {
         val result = requestPermissionsForResult(
-            permissions = *arrayOf(PermissionConstants.STORAGE),
-            title = "权限请求",
-            rationale = "类漫听书需要存储权限"
+                permissions = *arrayOf(PermissionConstants.STORAGE),
+                title = "权限请求",
+                rationale = "类漫听书需要存储权限"
         )
         DLog.d("suolong", "result = $result")
         if (result && mViewModel.isSkipAd.get()) {
@@ -149,8 +140,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 mDataBind?.let {
                     val dialogBand = mDataBind as HomeDialogPrivateServiceBinding
                     setSpannableText(
-                        activity as FragmentActivity,
-                        dialogBand.homeDialogPrivateServiceContent
+                            activity as FragmentActivity,
+                            dialogBand.homeDialogPrivateServiceContent
                     )
                     dialogBand.homeDialogAgreeProtocol.setOnClickListener {
                         HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.putMMKV(true)
@@ -160,18 +151,18 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     }
                     dialogBand.homeDialogNotAgreeProtocol.setOnClickListener {
                         ToastUtil.show(
-                            this@SplashActivity,
-                            getString(R.string.main_please_agree_private_service)
+                                this@SplashActivity,
+                                getString(R.string.main_please_agree_private_service)
                         )
                     }
                 }
             }
 
         }.showCommonDialog(
-            activity = this,
-            layoutId = R.layout.home_dialog_private_service,
-            viewModel = mViewModel,
-            viewModelBrId = BR.viewModel
+                activity = this,
+                layoutId = R.layout.home_dialog_private_service,
+                viewModel = mViewModel,
+                viewModelBrId = BR.viewModel
         )
     }
 
@@ -182,36 +173,36 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
      */
     private fun setSpannableText(fragmentActivity: FragmentActivity, textView: TextView) {
         SpannableHelper.with(
-            textView,
-            fragmentActivity.resources.getString(R.string.home_private_service_content)
+                textView,
+                fragmentActivity.resources.getString(R.string.home_private_service_content)
         )
-            .addChangeItem(
-                ChangeItem(
-                    fragmentActivity.String(R.string.home_private_protocol),
-                    ChangeItem.Type.COLOR,
-                    fragmentActivity.Color(R.color.business_color_789dcb),
-                    object : TextClickListener {
-                        override fun onTextClick(clickContent: String) {
-                            BaseWebActivity.startBaseWebActivity(
-                                this@SplashActivity,
-                                "www.baidu.com"
-                            )
-                        }
-                    })
-            )
-            .addChangeItem(
-                ChangeItem(
-                    fragmentActivity.String(R.string.home_service_protocol),
-                    ChangeItem.Type.COLOR,
-                    fragmentActivity.Color(R.color.business_color_789dcb),
-                    object : TextClickListener {
-                        override fun onTextClick(clickContent: String) {
-                            BaseWebActivity.startBaseWebActivity(
-                                this@SplashActivity,
-                                "www.baidu.com"
-                            )
-                        }
-                    })
-            ).build()
+                .addChangeItem(
+                        ChangeItem(
+                                fragmentActivity.String(R.string.home_private_protocol),
+                                ChangeItem.Type.COLOR,
+                                fragmentActivity.Color(R.color.business_color_789dcb),
+                                object : TextClickListener {
+                                    override fun onTextClick(clickContent: String) {
+                                        BaseWebActivity.startBaseWebActivity(
+                                                this@SplashActivity,
+                                                "www.baidu.com"
+                                        )
+                                    }
+                                })
+                )
+                .addChangeItem(
+                        ChangeItem(
+                                fragmentActivity.String(R.string.home_service_protocol),
+                                ChangeItem.Type.COLOR,
+                                fragmentActivity.Color(R.color.business_color_789dcb),
+                                object : TextClickListener {
+                                    override fun onTextClick(clickContent: String) {
+                                        BaseWebActivity.startBaseWebActivity(
+                                                this@SplashActivity,
+                                                "www.baidu.com"
+                                        )
+                                    }
+                                })
+                ).build()
     }
 }

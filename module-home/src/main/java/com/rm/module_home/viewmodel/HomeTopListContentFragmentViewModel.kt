@@ -100,7 +100,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
      */
     fun itemClickFun(view: View, bean: HomeTopListDataBean) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bean.audio_id)
+            .startDetailActivity(view.context, bean.audio_id)
     }
 
     /**

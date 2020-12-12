@@ -13,6 +13,7 @@ import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_home.activity.detail.HomeDetailActivity
 import com.rm.module_home.activity.menu.HomeMenuActivity
 import com.rm.module_home.activity.menu.HomeMenuDetailActivity
+import com.rm.module_home.activity.topic.HomeTopicListActivity
 import com.rm.module_home.fragment.HomeHomeFragment
 import com.rm.module_home.util.HomeCommentDialogHelper
 import com.rm.module_home.util.HomeUploadDownload
@@ -35,6 +36,10 @@ class HomeServiceImpl : HomeService {
         return HomeHomeFragment()
     }
 
+    override fun startTopicActivity(context: Context,topicId: Int, blockName: String) {
+        HomeTopicListActivity.startTopicActivity(context, topicId, blockName)
+    }
+
     /**
      * 跳转到home听单详情
      */
@@ -42,7 +47,7 @@ class HomeServiceImpl : HomeService {
         HomeMenuDetailActivity.startActivity(context, sheetId)
     }
 
-    override fun toDetailActivity(context: Context, audioID: String) {
+    override fun startDetailActivity(context: Context, audioID: String) {
         HomeDetailActivity.startActivity(context, audioID)
     }
 
@@ -51,20 +56,20 @@ class HomeServiceImpl : HomeService {
     }
 
     override fun showCommentDialog(
-        mActivity: FragmentActivity,
-        audio: String,
-        commentSuccessBlock: () -> Unit
+            mActivity: FragmentActivity,
+            audio: String,
+            commentSuccessBlock: () -> Unit
     ) {
         HomeCommentDialogHelper(mActivity, audio, commentSuccessBlock).showDialog()
     }
 
     override fun showUploadDownDialog(
-        activity: FragmentActivity,
-        versionInfo: BusinessVersionUrlBean,
-        installCode: Int,
-        enforceUpdate: Boolean
+            activity: FragmentActivity,
+            versionInfo: BusinessVersionUrlBean,
+            installCode: Int,
+            enforceUpdate: Boolean
     ) {
-        HomeUploadDownload(versionInfo, activity, installCode,enforceUpdate).showUploadDialog()
+        HomeUploadDownload(versionInfo, activity, installCode, enforceUpdate).showUploadDialog()
     }
 
     override fun gotoInstallPermissionSetting(activity: Activity, path: String, installCode: Int) {

@@ -53,7 +53,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      */
     fun itemClickFun(view: View, bookBeanListen: ListenSubscriptionListBean) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bookBeanListen.audio_id.toString())
+            .startDetailActivity(view.context, bookBeanListen.audio_id.toString())
     }
 
     /**

@@ -6,12 +6,12 @@ import android.widget.ImageView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.FIRST_LOAD_OLD_DATA
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -39,7 +39,6 @@ import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.model.AudioCommentsModel
-import com.rm.module_play.model.PlayAdChapterModel
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -54,11 +53,6 @@ import kotlin.random.Random
  * @Version: 1.0.0
  */
 open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMViewModel() {
-
-    /**
-     * 当前播放的列表
-     */
-    val playPath = MutableLiveData<List<BaseAudioInfo>>()
 
     /**
      * 加载下一页的当前页码
@@ -170,24 +164,13 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 设置播放路径
      */
-    private fun setAudioPlayPath(chapterList: MutableList<DownloadChapter>) {
-        val tempList = mutableListOf<BaseAudioInfo>()
-        chapterList.forEach {
-            tempList.add(
-                BaseAudioInfo(
-                    audioPath = it.path_url,
-                    audioName = it.chapter_name,
-                    filename = it.chapter_name,
-                    audioId = it.audio_id.toString(),
-                    chapterId = it.chapter_id.toString(),
-                    duration = it.realDuration,
-                    playCount = it.play_count.toString()
-                )
-            )
+    private fun addAudioPlayPath(chapterList: MutableList<DownloadChapter>) {
+        if(playNextPage == PlayGlobalData.PLAY_FIRST_PAGE){
+            PlayGlobalData.playChapterList.postValue(chapterList)
+        }else{
+            PlayGlobalData.playChapterList.addAll(chapterList)
+            chapterListAdapter.setList(PlayGlobalData.playChapterList.value)
         }
-        PlayGlobalData.playChapterList.addAll(chapterList)
-        chapterListAdapter.setList(PlayGlobalData.playChapterList.value)
-        playPath.postValue(tempList)
     }
 
     private fun insertPlayPath(chapterList: MutableList<DownloadChapter>) {
@@ -207,17 +190,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 )
             )
         }
-        val currentPathList = playPath.value
-        if (currentPathList != null && currentPathList.isNotEmpty()) {
-            tempPathList.addAll(currentPathList)
-        }
         val currentChapterList = PlayGlobalData.playChapterList.value
         if (currentChapterList != null && currentChapterList.isNotEmpty()) {
             tempChapterList.addAll(currentChapterList)
         }
         PlayGlobalData.playChapterList.postValue(tempChapterList)
         chapterListAdapter.setList(tempChapterList)
-        playPath.postValue(tempPathList)
     }
 
     private fun initPlayChapter(chapter: DownloadChapter) {
@@ -268,7 +246,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun audioNameClick(context: Context) {
         val audioId = PlayGlobalData.playAudioId.get()
         if (audioId != null) {
-            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
+            RouterHelper.createRouter(HomeService::class.java).startDetailActivity(context, audioId)
             finish()
         }
     }
@@ -323,6 +301,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (TextUtils.isEmpty(audioId)) {
             return
         }
+        if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
+            PlayGlobalData.playChapterList.value = mutableListOf()
+        }
+
         launchOnIO {
             repository.chapterList(
                 audioId!!,
@@ -335,19 +317,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.noMoreData.set(chapterList.size < playChapterPageSize)
                     chapterRefreshModel.finishLoadMore(true)
                     //是第一页，那么取第一条作为播放
+                    addAudioPlayPath(chapterList)
                     if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
                         initPlayChapter(chapterList[0])
                         chapterRefreshModel.canRefresh.set(false)
-                        PlayGlobalData.playChapterList.value?.clear()
                     }
                     playNextPage++
-                    setAudioPlayPath(chapterList)
                 } else {
                     chapterRefreshModel.noMoreData.set(false)
                     chapterRefreshModel.finishLoadMore(false)
-                    if(playPath.value == null){
-                        setAudioPlayPath(mutableListOf())
-                    }
                 }
             }, onError = {
                 it?.let {
@@ -412,19 +390,19 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 playNextPage = it.page
                 playPrePage = it.page
                 showContentView()
-                if (chapterList != null && chapterList.size > 0) {
+                if (chapterList != null) {
                     chapterRefreshModel.noMoreData.set(chapterList.size < playChapterPageSize)
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == PlayGlobalData.playChapterId.get()) {
                             PlayGlobalData.playChapterList.value = mutableListOf()
                             initPlayChapter(chapter)
-                            setAudioPlayPath(chapterList)
+                            addAudioPlayPath(chapterList)
                             return@forEach
                         }
                     }
                     playNextPage++
                 } else {
-                    setAudioPlayPath(mutableListOf())
+                    addAudioPlayPath(mutableListOf())
                 }
             }, onError = {
                 chapterRefreshModel.finishLoadMore(false)
@@ -523,6 +501,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     it.ad_player_streamer?.let { audioImgAdList ->
                         if (audioImgAdList.isNotEmpty()) {
                             playFloorAd.set(audioImgAdList[Random.nextInt(audioImgAdList.size)])
+                        }
+                    }
+                    it.ad_player_audio_cover?.let { audioImgAdList ->
+                        if (audioImgAdList.isNotEmpty()) {
+                            PlayGlobalData.playAudioImgAd.set(
+                                    audioImgAdList[Random.nextInt(
+                                            audioImgAdList.size
+                                    )]
+                            )
                         }
                     }
                 },
@@ -761,7 +748,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun onAudioRecommendClick(context: Context ,model : AudioRecommend){
         if(!TextUtils.isEmpty(model.audio_id)){
-            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context,model.audio_id)
+            RouterHelper.createRouter(HomeService::class.java).startDetailActivity(context,model.audio_id)
         }
     }
 

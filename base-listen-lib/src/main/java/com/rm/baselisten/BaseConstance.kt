@@ -1,5 +1,6 @@
 package com.rm.baselisten
 
+import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.model.BasePlayInfoModel
 import com.rm.baselisten.model.BasePlayProgressModel
@@ -116,6 +117,18 @@ object BaseConstance {
         }else{
             basePlayProgressModel.set(BasePlayProgressModel(currentDuration = 1000L,totalDuration = 1000L))
         }
+    }
+
+    fun getBaseInfoModelWithCache() : ObservableField<BasePlayInfoModel> {
+        val infoModel = basePlayInfoModel.get()
+        if(infoModel == null){
+            basePlayInfoModel.set(getLastListenInfo())
+            basePlayProgressModel.set(getLastListenProgress())
+        }else if(TextUtils.isEmpty(infoModel.playUrl)){
+            basePlayInfoModel.set(getLastListenInfo())
+            basePlayProgressModel.set(getLastListenProgress())
+        }
+        return basePlayInfoModel
     }
 
     init {

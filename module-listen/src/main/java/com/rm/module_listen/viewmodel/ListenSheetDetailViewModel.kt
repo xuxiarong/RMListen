@@ -264,7 +264,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
      */
     fun itemClickFun(view: View, bean: DownloadAudio) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bean.audio_id.toString())
+            .startDetailActivity(view.context, bean.audio_id.toString())
     }
 
     /**

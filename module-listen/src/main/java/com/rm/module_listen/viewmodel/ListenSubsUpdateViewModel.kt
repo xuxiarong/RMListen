@@ -432,7 +432,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     fun onAudioClick(context: Context, model: ListenAudioInfo) {
         val homeService = RouterHelper.createRouter(HomeService::class.java)
-        homeService.toDetailActivity(context = context, audioID = model.audio_id)
+        homeService.startDetailActivity(context = context, audioID = model.audio_id)
     }
 
 }

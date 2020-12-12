@@ -1,6 +1,8 @@
 package com.rm.module_home.activity.topic
 
 import android.content.Context
+import android.text.TextUtils
+import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -18,11 +20,10 @@ import com.rm.module_home.repository.HomeRepository
  * version: 1.0
  */
 class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel() {
-    var pageId = -1
-    var blockId = -1
     var topicId = -1
     var page = 1
     val pageSize = 12
+    var blockName = ObservableField("")
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -45,10 +46,12 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
             showLoading()
         }
         launchOnIO {
-            repository.getTopicList(pageId, blockId, topicId, page, pageSize).checkResult(
+            repository.getTopicList(topicId, page, pageSize).checkResult(
                 onSuccess = {
                     processSuccess(it)
-
+                    if(TextUtils.isEmpty(blockName.get())){
+                        blockName.set(it.block_name)
+                    }
                 },
                 onError = {
                     if (page == 1) {

@@ -163,7 +163,7 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
      */
     suspend fun getAudioFloorAd(): BaseResult<PlayFloorAdModel> {
         return apiCall {
-            val requestBean = BusinessAdRequestModel(arrayOf("ad_player_streamer"))
+            val requestBean = BusinessAdRequestModel(arrayOf("ad_player_streamer","ad_player_audio_cover"))
             playApi.getAudioFloorAd(
                 requestBean.toJson().toString()
                     .toRequestBody("application/json;charset=utf-8".toMediaType())
