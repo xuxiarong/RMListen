@@ -235,8 +235,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             mViewModel.getDetailInfo(playAudioId)
         } else {
             PlayGlobalData.initPlayAudio(playAudioModel)
-            mViewModel.getAudioFloorAd()
         }
+        //首次进入获取一次广告数据
+        mViewModel.getAudioFloorAd()
         mViewModel.getAudioRecommend(playAudioId)
         //如果传入的章节id为空，说明不是通过章节列表跳转的，直接访问书籍章节列表的第一页数据即可
 

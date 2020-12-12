@@ -9,7 +9,6 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.isLogin
-import com.rm.business_lib.loginUser
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.mine.MineService
@@ -92,7 +91,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
      */
     fun clickBookFun(view: View, bean: DownloadAudio) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bean.audio_id.toString())
+            .startDetailActivity(view.context, bean.audio_id.toString())
     }
 
     /**

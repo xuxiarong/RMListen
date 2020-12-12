@@ -12,13 +12,14 @@ import kotlin.random.Random
  *
  */
 class PlayAdResultModel(
-    var ad_player_comment: List<BusinessAdModel>?
+        var ad_player_comment: List<BusinessAdModel>?
 )
 
 class PlayAdChapterModel(
-    val ad_player_voice: ArrayList<BusinessAdModel>?,
-    var ad_player_audio_cover: MutableList<BusinessAdModel>?
+        val ad_player_voice: ArrayList<BusinessAdModel>?,
+        var ad_player_audio_cover: MutableList<BusinessAdModel>?
 )
 
-class PlayFloorAdModel(var ad_player_streamer: MutableList<BusinessAdModel>?)
+class PlayFloorAdModel(var ad_player_streamer: MutableList<BusinessAdModel>?,
+                       var ad_player_audio_cover: MutableList<BusinessAdModel>?)
 

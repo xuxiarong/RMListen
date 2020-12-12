@@ -26,13 +26,19 @@ interface HomeService : ApplicationProvider {
      */
     fun startHomeSheetDetailActivity(context: Activity, sheetId: String)
 
-    // 获取主页Fragment
+    /**
+     * 获取主页Fragment
+     */
     fun getHomeFragment(): Fragment
 
     /**
+     * 跳转到板块
+     */
+    fun startTopicActivity(context: Context, topicId: Int, blockName: String)
+    /**
      * 跳转详情页
      */
-    fun toDetailActivity(context: Context, audioID: String)
+    fun startDetailActivity(context: Context, audioID: String)
 
     /**
      * 弹出评论dialog
@@ -41,9 +47,9 @@ interface HomeService : ApplicationProvider {
      * @param commentSuccessBlock 评论成功回调
      */
     fun showCommentDialog(
-        mActivity: FragmentActivity,
-        audio: String,
-        commentSuccessBlock: () -> Unit
+            mActivity: FragmentActivity,
+            audio: String,
+            commentSuccessBlock: () -> Unit
     )
 
     /**
@@ -54,10 +60,10 @@ interface HomeService : ApplicationProvider {
      * @param enforceUpdate 是否强制更新
      */
     fun showUploadDownDialog(
-        activity: FragmentActivity,
-        versionInfo: BusinessVersionUrlBean,
-        installCode: Int,
-        enforceUpdate: Boolean
+            activity: FragmentActivity,
+            versionInfo: BusinessVersionUrlBean,
+            installCode: Int,
+            enforceUpdate: Boolean
     )
 
     /**

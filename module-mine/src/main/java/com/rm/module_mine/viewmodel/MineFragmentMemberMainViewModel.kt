@@ -177,7 +177,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
      */
     fun releaseItemClickFun(context: Context, bean: MinePublishDetailBean) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(context, bean.audio_id)
+            .startDetailActivity(context, bean.audio_id)
     }
 
     /**

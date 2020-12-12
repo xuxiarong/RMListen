@@ -195,7 +195,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
     fun itemChildClickFun(view: View, bean: DownloadAudio) {
         getActivity(view.context)?.let {
             RouterHelper.createRouter(HomeService::class.java)
-                .toDetailActivity(it, bean.audio_id.toString())
+                .startDetailActivity(it, bean.audio_id.toString())
         }
     }
 

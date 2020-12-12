@@ -119,7 +119,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
      * item点击事件
      */
     fun clickItemFun(context: Context, bean: MinePublishDetailBean) {
-        RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, bean.audio_id)
+        RouterHelper.createRouter(HomeService::class.java).startDetailActivity(context, bean.audio_id)
     }
 
 }

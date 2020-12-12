@@ -35,10 +35,8 @@ fun LeftAutoScrollRecyclerView.bindLeftScroll(model: HomeAudioHorDoubleRvModel) 
                         return
                     }
                     lastOpenTime =  openTime
-                    HomeTopicListActivity.startActivity(
+                    HomeTopicListActivity.startTopicActivity(
                         context!!,
-                        model.block.page_id,
-                        model.block.block_id,
                         model.block.topic_id,
                         model.block.block_name
                     )

@@ -32,6 +32,7 @@
             android:layout_marginEnd="@dimen/dp_16"
             android:gravity="center"
             android:singleLine="true"
+            bindText="@{viewModel.blockName}"
             android:textColor="@color/business_color_0f0f0f"
             android:textSize="@dimen/business_text_size_18sp"
             android:textStyle="bold"

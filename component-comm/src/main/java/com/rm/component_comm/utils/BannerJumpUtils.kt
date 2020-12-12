@@ -1,10 +1,12 @@
 package com.rm.component_comm.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.text.TextUtils
 import com.google.gson.Gson
+import com.rm.baselisten.ktx.toIntSafe
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.bean.BannerJumpBean
@@ -12,6 +14,7 @@ import com.rm.business_lib.bean.BannerUrlBean
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.main.MainService
 import com.rm.component_comm.router.RouterHelper
+import com.tencent.bugly.proguard.t
 
 /**
  * desc   :
@@ -21,7 +24,7 @@ import com.rm.component_comm.router.RouterHelper
 
 object BannerJumpUtils {
     fun onBannerClick(context: Context, url: String) {
-        if(TextUtils.isEmpty(url)){
+        if (TextUtils.isEmpty(url)) {
             return
         }
         if (url.startsWith("http")) {
@@ -32,7 +35,8 @@ object BannerJumpUtils {
         val authority = uri.authority
         var page: String? = null
         var param: String?
-        var audioId = ""
+        var ids = ""
+
 
         val params = uri.queryParameterNames
         if (!TextUtils.isEmpty(authority)) {
@@ -44,26 +48,43 @@ object BannerJumpUtils {
                         } else if (uriParam == "param") {
                             param = uri.getQueryParameter("param")
                             val jumpBean = Gson().fromJson(param, BannerJumpBean::class.java)
-                            audioId = jumpBean.ids
+                            ids = jumpBean.ids
                         }
                     }
                     if (!TextUtils.isEmpty(page)) {
                         if (page == "home") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context,selectTab = 0)
+                            mainService.startMainActivity(context = context, selectTab = 0)
                         } else if (page == "search") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context,selectTab = 1)
+                            mainService.startMainActivity(context = context, selectTab = 1)
                         } else if (page == "listen") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context,selectTab = 2)
+                            mainService.startMainActivity(context = context, selectTab = 2)
                         } else if (page == "mine") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context,selectTab = 2)
+                            mainService.startMainActivity(context = context, selectTab = 2)
                         } else if (page == "audioDetail") {
                             val homeService = RouterHelper.createRouter(HomeService::class.java)
-                            if (!TextUtils.isEmpty(audioId)) {
-                                homeService.toDetailActivity(context = context, audioID = audioId)
+                            if (!TextUtils.isEmpty(ids)) {
+                                homeService.startDetailActivity(context = context, audioID = ids)
+                            }
+                        } else if (page == "sheetInfo") {
+                            val homeService = RouterHelper.createRouter(HomeService::class.java)
+                            if (!TextUtils.isEmpty(ids)) {
+                                if (context is Activity) {
+                                    homeService.startHomeSheetDetailActivity(context = context, sheetId = ids)
+                                }
+                            }
+                        } else if (page == "topic") {
+                            val homeService = RouterHelper.createRouter(HomeService::class.java)
+                            if (!TextUtils.isEmpty(ids)) {
+                                homeService.startTopicActivity(context = context, topicId = ids.toIntSafe(),blockName = "")
+                            }
+                        } else if (page == "listenList") {
+                            val homeService = RouterHelper.createRouter(HomeService::class.java)
+                            if (!TextUtils.isEmpty(ids)) {
+                                homeService.startHomeMenuActivity(context = context)
                             }
                         }
                     }

@@ -45,7 +45,8 @@ abstract class ComponentShowPlayActivity<V : ViewDataBinding, VM : BaseVMViewMod
         super.onResume()
         //其他的页面不需要显示全局播放入口时,但是从播放页面返回时，需要重新判断一下之前不显示的逻辑
         if (TextUtils.isEmpty(playUrl) && !isShowPlayWhenEmptyUrl()) {
-            val playInfo = BaseConstance.basePlayInfoModel.get()
+            //因为后台播放太久，每次都重新去检测一遍app内存中是否还存在播放的对象，不存在则去重新获取
+            val playInfo = BaseConstance.getBaseInfoModelWithCache().get()
             if (playInfo != null && !TextUtils.isEmpty(playInfo.playUrl)) {
                 playUrl = playInfo.playUrl
                 mViewModel.basePlayControlModel.set(

@@ -113,8 +113,6 @@ interface HomeApiService {
      */
     @GET("content/topic/audio-list")
     suspend fun homeTopicList(
-        @Query("page_id") page_id: Int,
-        @Query("block_id") block_id: Int,
         @Query("topic_id") topic_id: Int,
         @Query("page") page: Int,
         @Query("page_size") page_size: Int = 10

@@ -20,8 +20,6 @@ import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.business_lib.bean.AudioRecommend
 import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.share.Share2
-import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.listen.ListenService
@@ -37,7 +35,6 @@ import com.rm.module_play.dialog.showMusicPlaySpeedDialog
 import com.rm.module_play.dialog.showMusicPlayTimeSettingDialog
 import com.rm.module_play.dialog.showPlayBookListDialog
 import com.rm.module_play.model.AudioCommentsModel
-import com.rm.module_play.model.PlayAdChapterModel
 import com.rm.module_play.repository.BookPlayRepository
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
@@ -56,7 +53,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 当前播放的列表
      */
-    val playPath = MutableLiveData<List<BaseAudioInfo>>()
+    val playPath = MutableLiveData<MutableList<BaseAudioInfo>>()
 
     /**
      * 加载下一页的当前页码
@@ -185,7 +182,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
         PlayGlobalData.playChapterList.addAll(chapterList)
         chapterListAdapter.setList(PlayGlobalData.playChapterList.value)
-        playPath.postValue(tempList)
+        playPath.addAll(tempList)
     }
 
     private fun insertPlayPath(chapterList: MutableList<DownloadChapter>) {
@@ -266,7 +263,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun audioNameClick(context: Context) {
         val audioId = PlayGlobalData.playAudioId.get()
         if (audioId != null) {
-            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
+            RouterHelper.createRouter(HomeService::class.java).startDetailActivity(context, audioId)
             finish()
         }
     }
@@ -320,6 +317,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (TextUtils.isEmpty(audioId)) {
             return
         }
+        if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
+            PlayGlobalData.playChapterList.value = mutableListOf()
+        }
+
         launchOnIO {
             repository.chapterList(
                 audioId!!,
@@ -335,7 +336,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
                         initPlayChapter(chapterList[0])
                         chapterRefreshModel.canRefresh.set(false)
-                        PlayGlobalData.playChapterList.value?.clear()
                     }
                     playNextPage++
                     setAudioPlayPath(chapterList)
@@ -518,6 +518,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     it.ad_player_streamer?.let { audioImgAdList ->
                         if (audioImgAdList.isNotEmpty()) {
                             playFloorAd.set(audioImgAdList[Random.nextInt(audioImgAdList.size)])
+                        }
+                    }
+                    it.ad_player_audio_cover?.let { audioImgAdList ->
+                        if (audioImgAdList.isNotEmpty()) {
+                            PlayGlobalData.playAudioImgAd.set(
+                                    audioImgAdList[Random.nextInt(
+                                            audioImgAdList.size
+                                    )]
+                            )
                         }
                     }
                 },
@@ -756,7 +765,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun onAudioRecommendClick(context: Context ,model : AudioRecommend){
         if(!TextUtils.isEmpty(model.audio_id)){
-            RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context,model.audio_id)
+            RouterHelper.createRouter(HomeService::class.java).startDetailActivity(context,model.audio_id)
         }
     }
 

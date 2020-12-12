@@ -145,6 +145,6 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
     }
 
     fun commentBookItemClick(context: Context, audioId: String) {
-        RouterHelper.createRouter(HomeService::class.java).toDetailActivity(context, audioId)
+        RouterHelper.createRouter(HomeService::class.java).startDetailActivity(context, audioId)
     }
 }

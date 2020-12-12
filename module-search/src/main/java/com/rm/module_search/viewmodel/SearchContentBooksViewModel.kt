@@ -120,6 +120,6 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
      */
     fun itemClickFun(view: View, bean: DownloadAudio) {
         RouterHelper.createRouter(HomeService::class.java)
-            .toDetailActivity(view.context, bean.audio_id.toString())
+            .startDetailActivity(view.context, bean.audio_id.toString())
     }
 }
