@@ -438,6 +438,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isAttention.set(it.list.anchor.status)
                     PlayGlobalData.initPlayAudio(it.list)
                     getAudioFloorAd()
+
+                    //TODO
                 },
                 onError = {
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }

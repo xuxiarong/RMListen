@@ -36,6 +36,9 @@ const val ACCESS_TOKEN_INVALID_TIMESTAMP = "accessTokenInvalidTimestamp"
 // 当前登陆用户信息
 const val LOGIN_USER_INFO = "loginUserInfo"
 
+//记录提示更新时间
+const val UPLOAD_APP_TIME="upload_app_time"
+
 // 当前是否登陆
 var isLogin = ObservableBoolean(false)
 
@@ -132,6 +135,8 @@ object PlayGlobalData {
      * 章节列表倒叙逆序
      */
     var playChapterListSort = ObservableField<String>(AudioSortType.SORT_ASC)
+
+    val tags=ObservableField<MutableList<String>>()
 
     /**
      * 播放的进度

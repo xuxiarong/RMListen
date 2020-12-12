@@ -78,6 +78,7 @@ class RefreshTokenInterceptor : Interceptor {
 
             val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
             val newToken = getToken(token)
+            //token刷新成功
             if (!TextUtils.isEmpty(newToken)) {
                 val headers = request.headers.newBuilder()
                 headers["Authorization"] = "Bearer $newToken"
@@ -85,6 +86,7 @@ class RefreshTokenInterceptor : Interceptor {
                 DLog.i("=====>RefreshTokenInterceptor", "=====111111  ${request.url}")
                 chain.proceed(newRequest)
             } else {
+                //token 刷新失败
                 loginOut()
                 val headers = request.headers.newBuilder()
                 headers["Authorization"] = "Bearer "
@@ -92,13 +94,16 @@ class RefreshTokenInterceptor : Interceptor {
                 DLog.i("=====>RefreshTokenInterceptor", "=====2222222  ${request.url}")
                 chain.proceed(newRequest)
             }
-        } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN || code == CODE_REFRESH_TOKEN_FAILED) {
+        } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN /*|| code == CODE_REFRESH_TOKEN_FAILED*/) {
+            //被挤下线了/用户未登陆/
             loginOut()
-            val headers = request.headers.newBuilder()
-            headers["Authorization"] = "Bearer "
-            val newRequest = request.newBuilder().headers(headers.build()).build()
-            DLog.i("=====>RefreshTokenInterceptor", "=====333333 $code")
-            chain.proceed(newRequest)
+//            val headers = request.headers.newBuilder()
+//            headers["Authorization"] = "Bearer "
+//            val newRequest = request.newBuilder().headers(headers.build()).build()
+//            DLog.i("=====>RefreshTokenInterceptor", "=====333333 $code")
+//            chain.proceed(newRequest)
+            originResponse.newBuilder().code(originResponse.code)
+                .body(body).build()
         } else {
             DLog.i("=====>RefreshTokenInterceptor", "=====444444 ${request.url}")
             originResponse.newBuilder().code(originResponse.code)

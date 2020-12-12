@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dp_14"
+    android:gravity="center"
+    android:paddingStart="@dimen/dp_4"
+    android:paddingEnd="@dimen/dp_4"
+    android:background="@drawable/business_shape_stroke_rect_ffba56"
+    android:textColor="@color/business_color_ffba56"
+    android:textSize="@dimen/business_text_size_8sp" />

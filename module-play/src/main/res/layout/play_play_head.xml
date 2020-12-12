@@ -16,6 +16,7 @@
         <import type="android.text.TextUtils" />
 
         <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,17 +41,16 @@
             tools:layout_editor_absoluteX="49dp" />
 
         <View
-            android:visibility="@{PlayGlobalData.INSTANCE.playVoiceAdClose?View.VISIBLE:View.INVISIBLE}"
             android:layout_width="280dp"
             android:layout_height="28dp"
             android:background="@drawable/business_shape_gradient_0000000_66000000"
+            android:visibility="@{PlayGlobalData.INSTANCE.playVoiceAdClose?View.VISIBLE:View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/iv_img_layout"
             app:layout_constraintEnd_toEndOf="@id/iv_img_layout"
             app:layout_constraintStart_toStartOf="@id/iv_img_layout" />
 
         <androidx.appcompat.widget.AppCompatTextView
             bindPlayCountString="@{PlayGlobalData.INSTANCE.playChapter.play_count}"
-            android:visibility="@{PlayGlobalData.INSTANCE.playVoiceAdClose?View.VISIBLE:View.INVISIBLE}"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
@@ -59,6 +59,7 @@
             android:drawablePadding="3dp"
             android:textColor="@color/business_text_color_ffffff"
             android:textSize="12sp"
+            android:visibility="@{PlayGlobalData.INSTANCE.playVoiceAdClose?View.VISIBLE:View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/iv_img_layout"
             app:layout_constraintEnd_toEndOf="@id/iv_img_layout"
             tools:text="133" />
@@ -68,8 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="202dp"
             android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_65"
+            android:layout_marginEnd="@dimen/dp_8"
             android:onClick="@{()->viewModel.audioAdClick(context,PlayGlobalData.INSTANCE.playVoiceImgAd)}"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
@@ -560,26 +561,26 @@
 
         <TextView
             android:id="@+id/play_good_recommend"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/play_main_header_subscriber_layout"
-            android:layout_marginTop="@dimen/dp_26"
             android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_22"
             android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_26"
+            android:text="@string/play_good_recommend"
+            android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_16sp"
             android:textStyle="bold"
-            android:textColor="@color/business_text_color_333333"
-            android:text="@string/play_good_recommend"
-            android:layout_height="@dimen/dp_22"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/play_main_header_subscriber_layout" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="@dimen/dp_13"
             android:id="@+id/play_audio_recommend_rv"
-            android:layout_marginStart="@dimen/dp_16"
-            android:paddingEnd="@dimen/dp_8"
+            bindHorizontalLayout="@{viewModel.audioRecommendAdapter}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            bindHorizontalLayout="@{viewModel.audioRecommendAdapter}"
-            app:layout_constraintTop_toBottomOf="@id/play_good_recommend"/>
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_13"
+            android:paddingEnd="@dimen/dp_8"
+            app:layout_constraintTop_toBottomOf="@id/play_good_recommend" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -590,7 +591,6 @@
             android:layout_marginTop="@dimen/dp_26"
             android:layout_marginEnd="@dimen/dp_16"
             android:background="@drawable/shape_radius_f7f7f7"
-            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@id/play_audio_recommend_rv">
 
             <!-- 主播 -->
@@ -623,38 +623,17 @@
                 app:layout_constraintTop_toTopOf="@id/home_detail_anchor_url"
                 tools:text="@string/app_name" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_detail_anchor_tips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_8"
-                android:background="@drawable/business_shape_stroke_rect_ffba56"
-                android:paddingStart="@dimen/dp_4"
-                android:paddingTop="@dimen/dp_2"
-                android:paddingEnd="@dimen/dp_4"
-                android:paddingBottom="@dimen/dp_2"
-                android:textColor="@color/business_color_ffba56"
-                android:textSize="@dimen/business_text_size_8sp"
+
+            <com.nex3z.flowlayout.FlowLayout
+                bindFlowData="@{PlayGlobalData.INSTANCE.playAudioModel.tags}"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_14"
+                app:flChildSpacing="@dimen/dp_8"
+                app:flChildSpacingForLastRow="0dp"
+                app:flMaxRows="1"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/home_detail_anchor_name"
-                tools:text="1243" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_8"
-                android:background="@drawable/business_shape_stroke_rect_ffba56"
-                android:paddingStart="@dimen/dp_4"
-                android:paddingTop="@dimen/dp_2"
-                android:paddingEnd="@dimen/dp_4"
-                android:paddingBottom="@dimen/dp_2"
-                android:textColor="@color/business_color_ffba56"
-                android:textSize="@dimen/business_text_size_8sp"
-                app:layout_constraintBottom_toBottomOf="@id/home_detail_anchor_tips"
-                app:layout_constraintStart_toEndOf="@id/home_detail_anchor_tips"
-                app:layout_constraintTop_toTopOf="@id/home_detail_anchor_tips"
-                tools:text="1244" />
-
+                app:layout_constraintEnd_toStartOf="@id/detail_anchor_attention"
+                app:layout_constraintStart_toStartOf="@id/home_detail_anchor_name" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/detail_anchor_attention"
@@ -676,7 +655,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+        <!--广告-->
         <FrameLayout
             android:id="@+id/play_floor_ad_fl"
             isVisible="@{!(viewModel.playFloorAd == null)}"
@@ -729,7 +708,7 @@
                 app:rv_cornerRadius="@dimen/dp_4" />
 
         </FrameLayout>
-
+        <!--评论-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_detail_drag_layout"
             android:layout_width="match_parent"
