@@ -1011,7 +1011,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     ImageView(activity).apply { setImageResource(R.mipmap.business_img_dycg) }
             }.show(activity)
         } else {
-//            showToast(context.getString(R.string.home_subscribe_success_tip))
             showTip(context.getString(R.string.business_subscribe_success_tip))
         }
         IS_FIRST_SUBSCRIBE.putMMKV(false)

@@ -17,6 +17,7 @@
         android:id="@+id/mine_about_update_version"
         bindMaterialName="@{item.title}"
         userText="@{item.sub_title}"
+        bindMaterialShowRed="@{item.showRed}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{()->viewModel.clickCooperation(context,item)}"

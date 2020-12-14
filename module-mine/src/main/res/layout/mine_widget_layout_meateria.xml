@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -16,8 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:paddingStart="@dimen/dp_16"
-        android:src="@drawable/business_icon_arrow_right" />
+        android:src="@drawable/business_icon_arrow_db" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/mine_widget_common_material_user_icon"
@@ -28,6 +28,17 @@
         android:layout_toStartOf="@id/mine_widget_common_material_icon"
         android:visibility="invisible" />
 
+    <com.rm.business_lib.wedgit.iamge.RoundImageView
+        android:id="@+id/mine_widget_common_material_red_point"
+        android:layout_width="@dimen/dp_6"
+        android:layout_height="@dimen/dp_6"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dp_6"
+        android:layout_toStartOf="@id/mine_widget_common_material_icon"
+        android:visibility="invisible"
+        app:rv_backgroundColor="@color/business_color_ff5e5e"
+        app:rv_cornerRadius="@dimen/dp_6" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/mine_widget_common_material_user_text"
         style="@style/BusinessTextStyleThird_3"
@@ -35,8 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_toStartOf="@id/mine_widget_common_material_icon"
+        android:layout_marginEnd="@dimen/dp_6"
+        android:layout_toStartOf="@id/mine_widget_common_material_red_point"
         android:layout_toEndOf="@id/mine_widget_common_material_name"
         android:gravity="end"
         android:singleLine="true"

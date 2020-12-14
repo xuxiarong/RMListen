@@ -2,16 +2,22 @@ package com.rm.module_mine.viewmodel
 
 import android.content.Context
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
+import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.baselisten.web.BaseWebActivity
+import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
+import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
+import com.rm.module_mine.BuildConfig
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.*
 import com.rm.module_mine.adapter.MineHomeAdapter
 import com.rm.module_mine.bean.MineHomeBean
 import com.rm.module_mine.bean.MineHomeDetailBean
+import com.rm.module_mine.repository.MineRepository
 
 /**
  *
@@ -20,7 +26,7 @@ import com.rm.module_mine.bean.MineHomeDetailBean
  * @description
  *
  */
-class MineHomeViewModel : BaseVMViewModel() {
+class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewModel() {
     companion object {
         const val TYPE_MY_DATE = 1
         const val TYPE_FEEDBACK = 2
@@ -72,52 +78,15 @@ class MineHomeViewModel : BaseVMViewModel() {
                 TYPE_READING
             )
         )
-        /*list.add(
-            MineHomeDetailBean(
-                R.drawable.mine_icon_mywallet,
-                CONTEXT.getString(R.string.mine_my_wallet),
-                1
-            )
-        )
-        list.add(
-            MineHomeDetailBean(
-                R.drawable.mine_icon_mygrade,
-                CONTEXT.getString(R.string.mine_my_grade),
-                1
-            )
-        )
-        list.add(
-            MineHomeDetailBean(
-                R.drawable.mine_icon_recommend,
-                CONTEXT.getString(R.string.mine_recommend_gift),
-                1
-            )
-        )
-        list.add(
-            MineHomeDetailBean(
-                R.drawable.mine_icon_service,
-                CONTEXT.getString(R.string.mine_contact_service),
-                1
-            )
-        )
-        return list*/
     }
 
     private fun getToolList(): MutableList<MineHomeDetailBean> {
-//        list.add(
-//            MineHomeDetailBean(
-//                R.drawable.mine_icon_timing,
-//                CONTEXT.getString(R.string.mine_timing_play),
-//                1
-//            )
-//        )
-
         return mutableListOf(
-            MineHomeDetailBean(
-                R.drawable.business_icon_praise,
-                "好评支持",
-                TYPE_PRAISE
-            ),
+            /* MineHomeDetailBean(
+                 R.drawable.business_icon_praise,
+                 "好评支持",
+                 TYPE_PRAISE
+             ),*/
             MineHomeDetailBean(
                 R.drawable.business_icon_cooperation,
                 "业务合作",
@@ -135,6 +104,40 @@ class MineHomeViewModel : BaseVMViewModel() {
             )
 
         )
+    }
+
+    private fun getLaseVersion(context: Context) {
+        showLoading()
+        launchOnIO {
+            repository.mineGetLaseUrl().checkResult(onSuccess = {
+                showContentView()
+                showUploadDialog(context, it)
+            }, onError = {
+                showContentView()
+                showTip("$it", R.color.business_color_ff5e5e)
+            })
+        }
+    }
+
+    private fun showUploadDialog(context: Context, bean: BusinessVersionUrlBean) {
+        getActivity(context)?.let { activity ->
+            try {
+                val lastVersion = bean.version?.replace(".", "") ?: "0"
+                val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
+                if (lastVersion.toInt() - localVersion.toInt() > 0) {
+                    RouterHelper.createRouter(HomeService::class.java)
+                        .showUploadDownDialog(
+                            activity, bean,
+                            MineAboutViewModel.INSTALL_RESULT_CODE, false
+                        )
+                } else {
+                    showTip("当前已经是最新版本了")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                showTip("当前已经是最新版本了")
+            }
+        }
     }
 
     /**
@@ -185,44 +188,36 @@ class MineHomeViewModel : BaseVMViewModel() {
                 if (isLogin.get()) {
                     startActivity(MinePersonalInfoActivity::class.java)
                 } else {
-                    quicklyLogin(context)
+                    RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
                 }
             }
             //问题反馈
             TYPE_FEEDBACK -> {
-                if (isLogin.get()) {
-                    MimeFeedbackActivity.startActivity(context)
-                } else {
-                    quicklyLogin(context)
-                }
+                MimeFeedbackActivity.startActivity(context)
             }
             //播放设置
             TYPE_PLAY_ST -> {
-
+                startActivity(MineSettingPlayActivity::class.java)
             }
             //免费求书
             TYPE_READING -> {
-                if (isLogin.get()) {
-                    MimeGetBookActivity.startActivity(context)
-                } else {
-                    quicklyLogin(context)
-                }
+                MimeGetBookActivity.startActivity(context)
             }
             //好评支持
             TYPE_PRAISE -> {
-
+                BaseWebActivity.startBaseWebActivity(context, "http://www.baidu.com")
             }
             //业务合作
             TYPE_COOPERATION -> {
-
+                BaseWebActivity.startBaseWebActivity(context, "http://www.baidu.com")
             }
             //特色功能
             TYPE_MY_GRADE -> {
-
+                BaseWebActivity.startBaseWebActivity(context, "http://www.baidu.com")
             }
             //检查更新
             TYPE_UP_DOWN -> {
-
+                getLaseVersion(context)
             }
         }
     }

@@ -17,7 +17,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     // 所有的ViewModel都需要在这里注入声明
     viewModel { LoginViewModel(get()) }
-    viewModel { MineHomeViewModel() }
+    viewModel { MineHomeViewModel(get()) }
     viewModel { MineSettingViewModel() }
     viewModel { MinePersonalInfoViewModel(get()) }
     viewModel { MinePlaySettingViewModel() }

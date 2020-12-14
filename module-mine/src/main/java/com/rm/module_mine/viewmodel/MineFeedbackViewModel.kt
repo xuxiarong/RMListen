@@ -1,18 +1,15 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.databinding.ObservableField
-import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.net.util.GsonUtils
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineImageActivity
 import com.rm.module_mine.bean.MineFeedbackImgBean
-import com.rm.module_mine.bean.MineUploadPic
 import com.rm.module_mine.repository.MineRepository
 import com.rm.module_mine.util.CommonTakePhotoHelp
 import kotlinx.coroutines.delay
@@ -31,6 +28,8 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
 
     private var inputContact = ""
 
+    val tipText = ObservableField<String>("图片(0/5)")
+
     /**
      * 问题描述
      */
@@ -40,7 +39,7 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
     private val failureList = mutableListOf<String>()
     private var uploadIndex = -1
 
-    var checkedId = -1
+    private var checkedId = -1
     val radioCheckedChange: (Int) -> Unit = {
         checkedId = it
     }
@@ -133,22 +132,30 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
      * 提交
      */
     fun requestBook() {
-        if (inputText.get()!!.trim().trimEnd().isEmpty()) {
-            showTip("反馈的内容不能为空", R.color.business_color_ff5e5e)
-            return
-        } else if (inputText.get()!!.length > 500) {
-            showTip("字数最多不能超过500个", R.color.business_color_ff5e5e)
-            return
+        when {
+            inputText.get()!!.trim().trimEnd().isEmpty() -> {
+                showTip("反馈的内容不能为空", R.color.business_color_ff5e5e)
+                return
+            }
+            inputText.get()!!.length > 500 -> {
+                showTip("字数最多不能超过500个", R.color.business_color_ff5e5e)
+                return
+            }
+            inputContact.length > 50 -> {
+                showTip("联系方式字数不能50个", R.color.business_color_ff5e5e)
+                return
+            }
+            mAdapter.data.size > 0 && !mAdapter.data[0].path.isNullOrEmpty() -> {
+                showLoading()
+                uploadIndex = 0
+                uploadPic(mAdapter.data[0])
+            }
+            else -> {
+                showLoading()
+                feedback()
+            }
         }
 
-        if (mAdapter.data.size > 0 && !mAdapter.data[0].path.isNullOrEmpty()) {
-            showLoading()
-            uploadIndex = 0
-            uploadPic(mAdapter.data[0])
-        } else {
-            showLoading()
-            feedback()
-        }
     }
 
     /**
@@ -180,10 +187,10 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
      */
     fun clickDeleteImg(bean: MineFeedbackImgBean) {
         mAdapter.remove(bean)
-
         if (mAdapter.data.indexOf(MineFeedbackImgBean("")) == -1) {
             mAdapter.addData(MineFeedbackImgBean(""))
         }
+        changeText()
     }
 
     private fun addImageView(imgPath: String) {
@@ -196,5 +203,20 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
             mAdapter.remove(MineFeedbackImgBean(""))
         }
 
+        changeText()
+    }
+
+    private fun changeText() {
+        var index = -1
+        mAdapter.data.forEachIndexed { i, bean ->
+            if (TextUtils.equals("", bean.path)) {
+                index = i
+            }
+        }
+        if (index == -1) {
+            tipText.set("图片(${mAdapter.data.size}/5)")
+        } else {
+            tipText.set("图片(${mAdapter.data.size - 1}/5)")
+        }
     }
 }

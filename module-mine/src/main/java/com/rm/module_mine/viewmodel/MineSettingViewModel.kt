@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -12,6 +13,7 @@ import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.*
+import com.rm.module_mine.util.DataCacheUtils
 
 /**
  *
@@ -24,6 +26,7 @@ class MineSettingViewModel : BaseVMViewModel() {
 
     val userInfo = loginUser
     val mIsLogin = isLogin
+    val cacheSize = ObservableField<String>()
 
     /**
      * 登出
@@ -72,6 +75,19 @@ class MineSettingViewModel : BaseVMViewModel() {
     }
 
     /**
+     * 清除缓存
+     */
+    fun clickClearCache(context: Context) {
+        val clearAllCache = DataCacheUtils.clearAllCache(context)
+        if (clearAllCache) {
+            showTip("缓存清除成功")
+            cacheSize.set("0.00KB")
+        }else{
+            showTip("缓存清除失败")
+        }
+    }
+
+    /**
      * 账号安全设置
      */
     fun clickAccountSecurity(context: Context) {
@@ -84,10 +100,10 @@ class MineSettingViewModel : BaseVMViewModel() {
 
 
     /**
-     * 版本更新信息
+     * 免费求书
      */
-    fun clickVersionUpdate(context: Context) {
-        startActivity(MineVersionUpdateActivity::class.java)
+    fun clickGetBook(context: Context) {
+        MimeGetBookActivity.startActivity(context)
     }
 
     /**
