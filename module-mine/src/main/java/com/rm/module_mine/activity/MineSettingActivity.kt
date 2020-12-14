@@ -7,6 +7,7 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivitySettingBinding
+import com.rm.module_mine.util.DataCacheUtils
 import com.rm.module_mine.viewmodel.MineSettingViewModel
 
 /**
@@ -32,6 +33,7 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
      * 初始化数据
      */
     override fun initData() {
+        mViewModel.cacheSize.set(DataCacheUtils.getTotalCacheSize(this))
     }
 
     override fun initView() {

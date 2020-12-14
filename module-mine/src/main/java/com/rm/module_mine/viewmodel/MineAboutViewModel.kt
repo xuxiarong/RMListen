@@ -31,6 +31,7 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
         const val INSTALL_RESULT_CODE = 10001
     }
 
+
     val mAdapter by lazy {
         CommonBindVMAdapter(
             this,
@@ -43,16 +44,9 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
 
     fun clickCooperation(context: Context, bean: MineAboutUsBean) {
         if (TextUtils.equals("版本更新", bean.title)) {
-            val lastVersion = versionInfo?.version?.replace(".", "") ?: "0"
-            val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
-            try {
-                if (lastVersion.toInt() - localVersion.toInt() > 0) {
-            showUploadDialog(context)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            if (bean.showRed) {
+                showUploadDialog(context)
             }
-
         } else {
             bean.jump_url?.let {
                 BaseWebActivity.startBaseWebActivity(context, it)
@@ -75,6 +69,16 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
             repository.mineGetLaseUrl().checkResult(onSuccess = {
                 versionInfo = it
                 mAdapter.data[0].sub_title = "${it.version}"
+                try {
+                    val lastVersion = versionInfo?.version?.replace(".", "") ?: "0"
+                    val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
+
+                    if (lastVersion.toInt() - localVersion.toInt() > 0) {
+                        mAdapter.data[0].showRed = true
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
                 mAdapter.notifyItemChanged(0)
             }, onError = {
                 showTip("$it", R.color.business_color_ff5e5e)

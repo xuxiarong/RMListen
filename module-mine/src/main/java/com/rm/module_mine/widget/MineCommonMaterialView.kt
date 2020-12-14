@@ -18,6 +18,7 @@ import com.rm.baselisten.binding.isVisible
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.Drawable
 import com.rm.baselisten.utilExt.dimen
+import com.rm.business_lib.wedgit.iamge.RoundImageView
 import com.rm.module_mine.R
 
 /**
@@ -31,12 +32,12 @@ class MineCommonMaterialView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) :
-    RelativeLayout(context, attrs, defStyleAttr) {
+) : RelativeLayout(context, attrs, defStyleAttr) {
     private lateinit var materialName: AppCompatTextView
     private lateinit var materialIcon: AppCompatImageView
     private lateinit var userIcon: AppCompatImageView
     private lateinit var userText: AppCompatTextView
+    private lateinit var redPoint: RoundImageView
 
     private var userTextStr: String? = ""
     private var materialNameStr: String? = ""
@@ -56,7 +57,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
         userTextStr = ta.getString(R.styleable.MineCommonMaterialView_user_text)
         materialIconRes = ta.getResourceId(
             R.styleable.MineCommonMaterialView_material_icon,
-            R.drawable.business_icon_arrow_right
+            R.drawable.business_icon_arrow_db
         )
         needLine = ta.getBoolean(R.styleable.MineCommonMaterialView_need_line, false)
         ta.recycle()
@@ -69,6 +70,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
         materialIcon = findViewById(R.id.mine_widget_common_material_icon)
         userIcon = findViewById(R.id.mine_widget_common_material_user_icon)
         userText = findViewById(R.id.mine_widget_common_material_user_text)
+        redPoint = findViewById(R.id.mine_widget_common_material_red_point)
 
         materialName.text = materialNameStr
         userText.text = userTextStr
@@ -125,6 +127,17 @@ class MineCommonMaterialView @JvmOverloads constructor(
         userText.text = text
     }
 
+    /**
+     * 是否显示红点
+     */
+    fun setShowRed(showRed: Boolean) {
+        redPoint.visibility = if (showRed) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
+    }
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (needLine) {
@@ -153,3 +166,11 @@ fun MineCommonMaterialView.bindMaterialName(bindMaterialName: String?) {
 fun MineCommonMaterialView.userIcon(userIconUrl: String?) {
     setMaterialUserIcon(userIconUrl)
 }
+
+@BindingAdapter("bindMaterialShowRed")
+fun MineCommonMaterialView.bindMaterialShowRed(shoRed: Boolean?) {
+    if (shoRed != null) {
+        setShowRed(shoRed)
+    }
+}
+

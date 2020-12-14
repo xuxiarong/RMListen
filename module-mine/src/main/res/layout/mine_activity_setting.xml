@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="com.rm.module_mine.viewmodel.MineSettingViewModel" />
+
+        <import type="com.rm.module_mine.util.DataCacheUtils" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -82,8 +84,10 @@
                 app:material_name="@string/mine_download_setting" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
+                userText="@{viewModel.cacheSize}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.clickClearCache(context)}"
                 app:material_name="@string/mine_clear_cache" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
@@ -111,6 +115,7 @@
                 android:id="@+id/mine_setting_free_book"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.clickGetBook(context)}"
                 app:material_name="@string/mine_free_book" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
@@ -120,13 +125,6 @@
                 android:visibility="gone"
                 app:material_name="@string/mine_favorable_comment" />
 
-            <com.rm.module_mine.widget.MineCommonMaterialView
-                android:id="@+id/mine_setting_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:onClick="@{()->viewModel.clickVersionUpdate(context)}"
-                app:material_name="@string/mine_app_version" />
 
             <com.rm.module_mine.widget.MineCommonMaterialView
                 android:layout_width="match_parent"
