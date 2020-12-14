@@ -27,7 +27,6 @@ import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.wedgit.LivingView
 import com.rm.business_lib.wedgit.download.DownloadStatusView
-import com.rm.business_lib.wedgit.smartrefresh.binding.*
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
@@ -54,7 +53,7 @@ fun FragmentActivity.showPlayBookListDialog(
 
 class MusicPlayBookListDialog : BottomDialogFragment() {
     lateinit var viewModel: PlayViewModel
-    lateinit var mDataBind: ViewDataBinding
+    private lateinit var mDataBind: ViewDataBinding
     private val chapterAdapter by lazy {
         TimeSAdapter(viewModel).apply {
             setOnItemClickListener { _, _, position ->
