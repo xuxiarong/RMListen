@@ -11,7 +11,6 @@ import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.FIRST_LOAD_OLD_DATA
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -22,8 +21,6 @@ import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
-import com.rm.business_lib.share.Share2
-import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.listen.ListenService
@@ -164,38 +161,22 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 设置播放路径
      */
-    private fun addAudioPlayPath(chapterList: MutableList<DownloadChapter>) {
+    private fun setNextPagePlayData(chapterList: MutableList<DownloadChapter>) {
         if(playNextPage == PlayGlobalData.PLAY_FIRST_PAGE){
             PlayGlobalData.playChapterList.postValue(chapterList)
         }else{
             PlayGlobalData.playChapterList.addAll(chapterList)
-            chapterListAdapter.setList(PlayGlobalData.playChapterList.value)
         }
     }
 
-    private fun insertPlayPath(chapterList: MutableList<DownloadChapter>) {
+    private fun setPrePagePlayData(chapterList: MutableList<DownloadChapter>) {
         val tempChapterList = mutableListOf<DownloadChapter>()
-        val tempPathList = mutableListOf<BaseAudioInfo>()
         tempChapterList.addAll(chapterList)
-        chapterList.forEach {
-            tempPathList.add(
-                BaseAudioInfo(
-                    audioPath = it.path_url,
-                    audioName = it.chapter_name,
-                    filename = it.chapter_name,
-                    audioId = it.audio_id.toString(),
-                    chapterId = it.chapter_id.toString(),
-                    duration = it.realDuration,
-                    playCount = it.play_count.toString()
-                )
-            )
-        }
         val currentChapterList = PlayGlobalData.playChapterList.value
         if (currentChapterList != null && currentChapterList.isNotEmpty()) {
             tempChapterList.addAll(currentChapterList)
         }
         PlayGlobalData.playChapterList.postValue(tempChapterList)
-        chapterListAdapter.setList(tempChapterList)
     }
 
     private fun initPlayChapter(chapter: DownloadChapter) {
@@ -310,14 +291,19 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 audioId!!,
                 playNextPage,
                 playChapterPageSize,
-                PlayGlobalData.playChapterListSort.get()!!
+                AudioSortType.SORT_ASC
             ).checkResult(onSuccess = {
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
                     chapterRefreshModel.noMoreData.set(chapterList.size < playChapterPageSize)
                     chapterRefreshModel.finishLoadMore(true)
                     //是第一页，那么取第一条作为播放
-                    addAudioPlayPath(chapterList)
+                    if(PlayGlobalData.isSortAsc()){
+                        setNextPagePlayData(chapterList)
+                    }else{
+                        chapterList.reverse()
+                        setPrePagePlayData(chapterList)
+                    }
                     if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
                         initPlayChapter(chapterList[0])
                         chapterRefreshModel.canRefresh.set(false)
@@ -354,11 +340,16 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 audioId!!,
                 playPrePage,
                 playChapterPageSize,
-                PlayGlobalData.playChapterListSort.get()!!
+                AudioSortType.SORT_ASC
             ).checkResult(onSuccess = {
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
-                    insertPlayPath(chapterList)
+                    if(PlayGlobalData.isSortAsc()){
+                        setPrePagePlayData(chapterList)
+                    }else{
+                        chapterList.reverse()
+                        setNextPagePlayData(chapterList)
+                    }
                     chapterRefreshModel.canRefresh.set(playPrePage > 1)
                 }
                 chapterRefreshModel.finishRefresh(true)
@@ -384,7 +375,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 audioId = audioId,
                 chapterId = chapterId,
                 page_size = playChapterPageSize,
-                sort = PlayGlobalData.playChapterListSort.get()!!
+                sort = AudioSortType.SORT_ASC
             ).checkResult(onSuccess = {
                 val chapterList = it.list
                 playNextPage = it.page
@@ -396,13 +387,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         if (chapter.chapter_id.toString() == PlayGlobalData.playChapterId.get()) {
                             PlayGlobalData.playChapterList.value = mutableListOf()
                             initPlayChapter(chapter)
-                            addAudioPlayPath(chapterList)
+                            if(!PlayGlobalData.isSortAsc()){
+                                chapterList.reverse()
+                            }
+                            setNextPagePlayData(chapterList)
                             return@forEach
                         }
                     }
+                    chapterRefreshModel.canRefresh.set(playNextPage > PlayGlobalData.PLAY_FIRST_PAGE)
                     playNextPage++
                 } else {
-                    addAudioPlayPath(mutableListOf())
+                    setNextPagePlayData(mutableListOf())
                 }
             }, onError = {
                 chapterRefreshModel.finishLoadMore(false)

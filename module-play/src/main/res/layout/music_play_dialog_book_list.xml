@@ -10,6 +10,8 @@
         <variable
             name="item"
             type="com.rm.business_lib.db.download.DownloadChapter" />
+        <import type="com.rm.business_lib.PlayGlobalData"/>
+        <import type="com.rm.business_lib.AudioSortType"/>
         <import type="com.rm.baselisten.util.TimeUtils"/>
         <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
 
@@ -82,12 +84,13 @@
                 android:id="@+id/smart_refresh_layout_play"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                bindCanRefresh="@{viewModel.chapterRefreshModel.canRefresh}"
-                bindIsRefreshSuccess="@{viewModel.chapterRefreshModel.isRefreshSuccess()}"
-                bindNoMoreData="@{viewModel.chapterRefreshModel.noMoreData}"
-                bindIsLoadMoreSuccess="@{viewModel.chapterRefreshModel.isLoadMoreSuccess()}"
-                bindOnRefreshListener="@{viewModel.getPrePageChapterList}"
-                bindOnLoadMoreListener="@{viewModel.getNextPageChapterList}"
+                bindCanRefresh="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?viewModel.chapterRefreshModel.canRefresh:!viewModel.chapterRefreshModel.noMoreData}"
+                bindIsRefreshSuccess="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?viewModel.chapterRefreshModel.isRefreshSuccess:viewModel.chapterRefreshModel.isLoadMoreSuccess}"
+                bindOnRefreshListener="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?viewModel.getPrePageChapterList:viewModel.getNextPageChapterList}"
+                bindIsLoadMoreSuccess="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?viewModel.chapterRefreshModel.isLoadMoreSuccess:viewModel.chapterRefreshModel.isRefreshSuccess}"
+                bindNoMoreData="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?viewModel.chapterRefreshModel.noMoreData:!viewModel.chapterRefreshModel.canRefresh}"
+                bindOnLoadMoreListener="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?viewModel.getNextPageChapterList:viewModel.getPrePageChapterList}"
+                bindResetNoMoreData="@{viewModel.chapterRefreshModel.resetNoMoreData}"
                 android:layout_marginTop="@dimen/dp_86">
 
                 <androidx.recyclerview.widget.RecyclerView

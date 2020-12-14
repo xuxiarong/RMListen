@@ -364,6 +364,10 @@ object PlayGlobalData {
         }
     }
 
+    fun isSortAsc() : Boolean{
+        return playChapterListSort.get() == AudioSortType.SORT_ASC
+    }
+
 }
 
 object AudioSortType {

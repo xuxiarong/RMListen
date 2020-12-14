@@ -2,7 +2,6 @@ package com.rm.module_play.dialog
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.BaseConstance
+import com.rm.baselisten.ktx.reverse
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
@@ -53,10 +53,10 @@ fun FragmentActivity.showPlayBookListDialog(
 
 class MusicPlayBookListDialog : BottomDialogFragment() {
     lateinit var viewModel: PlayViewModel
-    lateinit var mDataBind: ViewDataBinding
+    private lateinit var mDataBind: ViewDataBinding
     private val chapterAdapter by lazy {
         TimeSAdapter(viewModel).apply {
-            setOnItemClickListener { adapter, view, position ->
+            setOnItemClickListener { _, _, position ->
                 val chapterId = data[position].chapter_id
                 if (chapterId == viewModel.playManger.getCurrentPlayerID()) {
                     if(viewModel.playManger.isPlaying()){
@@ -96,6 +96,21 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         rv_music_play_book_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_music_play_book_list.adapter = chapterAdapter
+        //设置拖拽关闭的回调
+        play_drag_chapter_list.seDragCloseListener {
+            dismiss()
+        }
+        //设置下载按钮的点击事件
+        play_iv_download.setOnClickListener {
+            activity?.let { activity ->
+                PlayGlobalData.playAudioModel.get()?.let { audio ->
+                    RouterHelper.createRouter(DownloadService::class.java)
+                        .startDownloadChapterSelectionActivity(activity, audio)
+                }
+            }
+
+        }
+        //设置播放模式
         setPlayModel()
         play_iv_play_mode.setOnClickListener {
             if (musicPlayerManger.getPlayerModel() == MUSIC_MODEL_SINGLE) {
@@ -105,37 +120,26 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
             }
             setPlayModel()
         }
-
-        play_drag_chapter_list.seDragCloseListener {
-            dismiss()
-        }
-        play_iv_download.setOnClickListener {
-            RouterHelper.createRouter(DownloadService::class.java)
-                .startDownloadChapterSelectionActivity(activity!!, PlayGlobalData.playAudioModel.get()!!)
-        }
-
-        if(AudioSortType.SORT_ASC == PlayGlobalData.playChapterListSort.get()){
+        if(PlayGlobalData.isSortAsc()){
             play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_ort_ce)
         }else{
             play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_inverted_ce)
         }
         play_cb_chapter_sort.setOnClickListener {
-            if(AudioSortType.SORT_ASC == PlayGlobalData.playChapterListSort.get()){
+            if(PlayGlobalData.isSortAsc()){
                 PlayGlobalData.playChapterListSort.set(AudioSortType.SORT_DESC)
+                viewModel.chapterRefreshModel.setResetNoMoreData(viewModel.chapterRefreshModel.canRefresh.get()?:false)
+                PlayGlobalData.playChapterList.reverse()
                 play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_inverted_ce)
+
             }else{
                 PlayGlobalData.playChapterListSort.set(AudioSortType.SORT_ASC)
+                viewModel.chapterRefreshModel.setResetNoMoreData(viewModel.chapterRefreshModel.noMoreData.get()?:false)
+                PlayGlobalData.playChapterList.reverse()
                 play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_ort_ce)
             }
-            chapterAdapter.data.reverse()
-            chapterAdapter.notifyDataSetChanged()
         }
-
-        if(viewModel.playNextPage <= 2){
-            viewModel.chapterRefreshModel.canRefresh.set(false)
-        }else{
-            viewModel.chapterRefreshModel.canRefresh.set(true)
-        }
+        //开启数据变化的监听
         startObserve()
     }
 
@@ -158,26 +162,8 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
                 }
             }
         })
-//        viewModel.chapterRefreshModel.isHasMore.addOnPropertyChangedCallback(object :
-//            Observable.OnPropertyChangedCallback() {
-//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-//                // 没有更多数据了
-//                if (viewModel.chapterRefreshModel.isHasMore.get()!!) {
-//                    smart_refresh_layout_play.finishLoadMoreWithNoMoreData()
-//                }
-//            }
-//        })
-//        viewModel.chapterRefreshModel.re.addOnPropertyChangedCallback(object :
-//            Observable.OnPropertyChangedCallback() {
-//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-//                // 没有更多数据了
-//                if (viewModel.chapterRefreshModel.isHasMore.get()!!) {
-//                    smart_refresh_layout_play.finishLoadMoreWithNoMoreData()
-//                }
-//            }
-//        })
-    }
 
+    }
     internal class TimeSAdapter(val viewModel: PlayViewModel) :
         BaseQuickAdapter<DownloadChapter, BaseViewHolder>(
             R.layout.music_play_item_book_list,
