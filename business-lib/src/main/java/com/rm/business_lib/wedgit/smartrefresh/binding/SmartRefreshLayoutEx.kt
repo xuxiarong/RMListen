@@ -74,7 +74,9 @@ fun SmartRefreshLayout.bindNoMoreData(noMoreData: Boolean?, contentRvId: Int? = 
         if (contentRvId != null && refreshFooter is BaseLoadMoreFooter) {
             val rv = findViewById<RecyclerView>(contentRvId)
             val footer = refreshFooter as BaseLoadMoreFooter
-            footer.bindRecyclerView(rv)
+                if(contentRvId>0){
+                    footer.bindRecyclerView(rv)
+                }
         }
         finishLoadMoreWithNoMoreData()
     }

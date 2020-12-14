@@ -51,3 +51,11 @@ fun <E : Any> MutableLiveData<MutableList<E>>.removeAll(elementList: List<E>) {
         this.value = tempList
     }
 }
+
+fun <E : Any> MutableLiveData<MutableList<E>>.reverse() {
+    if (null != this.value) {
+        val tempList = this.value!!
+        tempList.reverse()
+        this.value = tempList
+    }
+}
