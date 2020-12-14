@@ -7,6 +7,7 @@
         <variable
             name="viewModel"
             type="com.rm.module_download.viewmodel.DownloadMainViewModel" />
+        <import type="com.rm.business_lib.download.DownloadMemoryCache"/>
     </data>
 
     <FrameLayout
@@ -20,18 +21,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="@{@string/download_downloaded_number(DownloadMemoryCache.INSTANCE.downloadingAudioList.size)}"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textSize="@dimen/business_text_size_16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    bindDownFinishAudioSize="@{DownloadMemoryCache.INSTANCE.downloadingAudioList}"
+                    android:textColor="@color/business_text_color_666666"
+                    android:textSize="@dimen/business_text_size_12sp" />
+            </FrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 bindVerticalLayout="@{viewModel.downloadFinishAdapter}"
+                android:layout_marginTop="@dimen/dp_6"
+                android:layout_marginBottom="@dimen/dp_6"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <FrameLayout
                 isVisible="@{viewModel.downloadFinishEdit}"
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
-                android:background="@color/businessWhite"
-                android:layout_gravity="bottom">
+                android:layout_gravity="bottom"
+                android:background="@color/businessWhite">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/dp_22"
@@ -44,9 +73,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="22dp"
-                    android:paddingStart="@dimen/dp_6"
                     android:layout_marginTop="@dimen/dp_14"
                     android:onClick="@{()->viewModel.changeDownloadFinishAll()}"
+                    android:paddingStart="@dimen/dp_6"
                     android:text="@string/download_check_all"
                     android:textColor="@color/business_text_color_666666"
                     android:textSize="@dimen/business_text_size_14sp" />
@@ -63,20 +92,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="94dp"
-                    android:paddingStart="@dimen/dp_6"
                     android:layout_marginTop="@dimen/dp_14"
                     android:onClick="@{()->viewModel.changeSelectListenFinish()}"
+                    android:paddingStart="@dimen/dp_6"
                     android:text="@string/download_delete_listen_finish"
                     android:textColor="@color/business_text_color_666666"
                     android:textSize="@dimen/business_text_size_14sp" />
 
                 <com.flyco.roundview.RoundTextView
+                    bindDownDeleteNum="@{viewModel.downloadFinishSelectNum}"
                     android:layout_width="65dp"
                     android:layout_height="30dp"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/dp_9"
                     android:gravity="center"
-                    bindDownDeleteNum="@{viewModel.downloadFinishSelectNum}"
                     android:onClick="@{()->viewModel.deleteAudio(context)}"
                     android:textColor="@color/business_text_color_ffffff"
                     android:textSize="@dimen/business_text_size_14sp"
@@ -84,13 +113,14 @@
                     app:rv_isRadiusHalfHeight="true" />
             </FrameLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/downFinishEmpty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="100dp"
@@ -101,8 +131,8 @@
                 android:id="@+id/tv_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/base_fine_no_data"
                 android:layout_marginTop="5dp"
+                android:text="@string/base_fine_no_data"
                 android:textColor="@color/base_b1b1b1"
                 android:textSize="14sp" />
 
