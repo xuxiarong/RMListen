@@ -15,14 +15,16 @@
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd="@dimen/dp_16">
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/downFinishContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <androidx.recyclerview.widget.RecyclerView
                 bindVerticalLayout="@{viewModel.downloadFinishAdapter}"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
             <FrameLayout
                 isVisible="@{viewModel.downloadFinishEdit}"
@@ -81,7 +83,7 @@
                     app:rv_backgroundColor="@color/business_color_ff5e5e"
                     app:rv_isRadiusHalfHeight="true" />
             </FrameLayout>
-        </FrameLayout>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/downFinishEmpty"
             android:layout_width="match_parent"

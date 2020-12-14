@@ -29,6 +29,7 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
                 it.reverse()
                 mViewModel.downloadFinishAdapter.setList(it)
             }else{
+                mViewModel.downloadFinishAdapter.data.clear()
                 showEmpty()
             }
         })
@@ -37,9 +38,8 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
     override fun initLayoutId(): Int = R.layout.download_fragment_download_completed
 
     override fun initData() {
-
-
         if (DownloadMemoryCache.downloadingAudioList.value == null) {
+            mViewModel.downloadFinishAdapter.data.clear()
             showEmpty()
         }
         mViewModel.getDownloadFromDao()

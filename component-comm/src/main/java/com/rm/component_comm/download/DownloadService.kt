@@ -14,7 +14,7 @@ interface DownloadService : ApplicationProvider {
      * 打开下载主页面
      * @param context Context
      */
-    fun startDownloadMainActivity(context: Context)
+    fun startDownloadMainActivity(context: Context,startTab : Int = 0)
 
     /**
      * @param context Context
