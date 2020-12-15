@@ -2,19 +2,15 @@ package com.rm.module_home.activity.detail
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.databinding.Observable
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.DetailAudioSortDao
+import com.rm.business_lib.db.audiosort.DetailAudioSort
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -68,6 +64,16 @@ class HomeDetailActivity :
             )
 
             mViewModel.audioId.set(it)
+            val sortBean = DaoUtil(
+                DetailAudioSort::class.java,
+                ""
+            ).queryBuilder()?.where(DetailAudioSortDao.Properties.Audio_id.eq(it))?.list()
+            sortBean?.let { beanList ->
+                if (beanList.size > 0) {
+                    mViewModel.mCurSort = beanList[0].sort
+                }
+            }
+
             mViewModel.intDetailInfo(it)
 
             mViewModel.chapterRefreshStatus.setCanRefresh(false)
@@ -76,7 +82,7 @@ class HomeDetailActivity :
 
             mViewModel.commentRefreshStateMode.setNoHasMore(false)
             mViewModel.queryAudioListenRecord()
-            mViewModel.getChapterList(1, HomeDetailViewModel.CHAPTER_REFRESH_PAGE) //初始化章节列表
+            mViewModel.getChapterList(1) //初始化章节列表
             mViewModel.getCommentList(it)
         }
 

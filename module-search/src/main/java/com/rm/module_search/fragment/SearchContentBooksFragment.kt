@@ -29,14 +29,9 @@ class SearchContentBooksFragment :
 
     override fun startObserve() {
         searchResultData.observe(this) {
-            val list = it.audio_list
-            if (list.isNullOrEmpty()) {
-                mViewModel.showSearchDataEmpty()
-            } else {
-                mViewModel.mPage = 1
-                mViewModel.showContentView()
-                mViewModel.bookAdapter.setList(list)
-            }
+            mViewModel.mPage = 1
+            mViewModel.refreshStateMode.setResetNoMoreData(true)
+            mViewModel.successData(it)
         }
 
     }

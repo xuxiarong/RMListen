@@ -28,14 +28,9 @@ class SearchContentAnchorFragment :
 
     override fun startObserve() {
         searchResultData.observe(this) {
-            val list = it.member_list
-            if (list.isNullOrEmpty()) {
-                mViewModel.showSearchDataEmpty()
-            } else {
-                mViewModel.mPage = 1
-                mViewModel.showContentView()
-                mViewModel.anchorAdapter.setList(list)
-            }
+            mViewModel.mPage = 1
+            mViewModel.refreshStateMode.setResetNoMoreData(true)
+            mViewModel.successData(it)
         }
     }
 

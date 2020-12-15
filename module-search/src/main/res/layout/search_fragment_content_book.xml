@@ -16,6 +16,7 @@
         bindIsLoadMoreSuccess="@{viewModel.refreshStateMode.isLoadMoreSuccess()}"
         bindIsRefreshSuccess="@{viewModel.refreshStateMode.isRefreshSuccess()}"
         bindOnLoadMoreListener="@{viewModel.loadData}"
+        bindResetNoMoreData="@{viewModel.refreshStateMode.resetNoMoreData}"
         bindOnRefreshListener="@{viewModel.refreshData}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -1,7 +1,6 @@
 package com.rm.module_main.activity.splash
 
 import android.Manifest
-import android.os.Bundle
 import android.text.TextUtils
 import android.widget.TextView
 import androidx.databinding.Observable
@@ -12,7 +11,6 @@ import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.*
-import com.rm.baselisten.util.constant.PermissionConstants
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
@@ -22,14 +20,11 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.FIRST_OPEN_APP
 import com.rm.business_lib.HomeGlobalData
-import com.rm.business_lib.coroutinepermissions.requestPermissionsForResult
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.isLogin
-import com.rm.business_lib.wedgit.bindAdId
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
-import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_main.BR
 import com.rm.module_main.R
 import com.rm.module_main.activity.MainMainActivity
@@ -45,8 +40,6 @@ import kotlinx.android.synthetic.main.home_activity_splash.*
  * version: 1.0
  */
 class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewModel>() {
-
-    var result = false
 
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.home_activity_splash
@@ -84,10 +77,10 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
         setTransparentStatusBar()
 
         if (isLogin.get()) {
-            BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVE)
-        } else {
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_LOGIN)
         }
+        BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVE)
+
         splash_ad_img.setOnClickNotDoubleListener {
             mViewModel.mainAdScreen.get()?.let {
                 MainMainActivity.startMainActivity(this@SplashActivity, splashUrl = it.jump_url)
@@ -132,17 +125,10 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             },
             actionPermanentlyDenied = {
                 finish()
-            }
-        )
+            })
     }
 
-//    fun requestStorageGranted() {
-//
-//    }
-//
-//    fun requestStorageDenied() {
-//        initSplashData()
-//    }
+
 
     /**
      * 显示隐私政策弹窗

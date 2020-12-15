@@ -8,11 +8,13 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
+import com.rm.business_lib.db.audiosort.DetailAudioSort;
 import com.rm.business_lib.db.download.DownloadAudio;
 import com.rm.business_lib.db.download.DownloadChapter;
 import com.rm.business_lib.db.listen.ListenAudioEntity;
 import com.rm.business_lib.db.listen.ListenChapterEntity;
 
+import com.rm.business_lib.db.DetailAudioSortDao;
 import com.rm.business_lib.db.DownloadAudioDao;
 import com.rm.business_lib.db.DownloadChapterDao;
 import com.rm.business_lib.db.ListenAudioEntityDao;
@@ -27,11 +29,13 @@ import com.rm.business_lib.db.ListenChapterEntityDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig detailAudioSortDaoConfig;
     private final DaoConfig downloadAudioDaoConfig;
     private final DaoConfig downloadChapterDaoConfig;
     private final DaoConfig listenAudioEntityDaoConfig;
     private final DaoConfig listenChapterEntityDaoConfig;
 
+    private final DetailAudioSortDao detailAudioSortDao;
     private final DownloadAudioDao downloadAudioDao;
     private final DownloadChapterDao downloadChapterDao;
     private final ListenAudioEntityDao listenAudioEntityDao;
@@ -40,6 +44,9 @@ public class DaoSession extends AbstractDaoSession {
     public DaoSession(Database db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
+
+        detailAudioSortDaoConfig = daoConfigMap.get(DetailAudioSortDao.class).clone();
+        detailAudioSortDaoConfig.initIdentityScope(type);
 
         downloadAudioDaoConfig = daoConfigMap.get(DownloadAudioDao.class).clone();
         downloadAudioDaoConfig.initIdentityScope(type);
@@ -53,11 +60,13 @@ public class DaoSession extends AbstractDaoSession {
         listenChapterEntityDaoConfig = daoConfigMap.get(ListenChapterEntityDao.class).clone();
         listenChapterEntityDaoConfig.initIdentityScope(type);
 
+        detailAudioSortDao = new DetailAudioSortDao(detailAudioSortDaoConfig, this);
         downloadAudioDao = new DownloadAudioDao(downloadAudioDaoConfig, this);
         downloadChapterDao = new DownloadChapterDao(downloadChapterDaoConfig, this);
         listenAudioEntityDao = new ListenAudioEntityDao(listenAudioEntityDaoConfig, this);
         listenChapterEntityDao = new ListenChapterEntityDao(listenChapterEntityDaoConfig, this);
 
+        registerDao(DetailAudioSort.class, detailAudioSortDao);
         registerDao(DownloadAudio.class, downloadAudioDao);
         registerDao(DownloadChapter.class, downloadChapterDao);
         registerDao(ListenAudioEntity.class, listenAudioEntityDao);
@@ -65,10 +74,15 @@ public class DaoSession extends AbstractDaoSession {
     }
     
     public void clear() {
+        detailAudioSortDaoConfig.clearIdentityScope();
         downloadAudioDaoConfig.clearIdentityScope();
         downloadChapterDaoConfig.clearIdentityScope();
         listenAudioEntityDaoConfig.clearIdentityScope();
         listenChapterEntityDaoConfig.clearIdentityScope();
+    }
+
+    public DetailAudioSortDao getDetailAudioSortDao() {
+        return detailAudioSortDao;
     }
 
     public DownloadAudioDao getDownloadAudioDao() {
