@@ -664,12 +664,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnIO {
             repository.getCommentAd().checkResult(onSuccess = {
                 it.ad_player_comment?.let { bean ->
-                    mCommentAdapter.addData(
-                        3,
-                        mutableListOf(
-                            PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity(bean[0])
+                    if(bean.isNotEmpty()){
+                        mCommentAdapter.addData(
+                            3,
+                            mutableListOf(
+                                PlayDetailCommentAdapter.PlayDetailCommentAdvertiseItemEntity(bean[0])
+                            )
                         )
-                    )
+                    }
                 }
             }, onError = {
                 DLog.i("===>getAdInfo", "$it")
@@ -912,6 +914,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun closeVoiceImgAd(businessAdModel: BusinessAdModel?) {
         PlayGlobalData.playVoiceAdClose.set(true)
         PlayGlobalData.playVoiceImgAd.set(null)
+        PlayGlobalData.playChapterId.get()?.let {
+            musicPlayerManger.setAdPath(arrayListOf())
+            musicPlayerManger.startPlayMusic(it)
+        }
         BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,businessAdModel?.ad_id.toString())
     }
 

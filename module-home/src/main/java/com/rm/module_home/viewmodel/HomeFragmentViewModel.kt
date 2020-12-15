@@ -118,8 +118,10 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
             repository.getHomeDialogAd(arrayOf("ad_index_alert")).checkResult(
                 onSuccess = {
                     it.ad_index_alert?.let { dialogAdList ->
-                        val randomAdPosition = Random.nextInt(dialogAdList.size)
-                        homeDialogAdModel.set(dialogAdList[randomAdPosition])
+                        if(dialogAdList.isNotEmpty()){
+                            val randomAdPosition = Random.nextInt(dialogAdList.size)
+                            homeDialogAdModel.set(dialogAdList[randomAdPosition])
+                        }
                     }
                 },
                 onError = {

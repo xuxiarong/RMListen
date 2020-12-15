@@ -1,5 +1,6 @@
 package com.rm.business_lib.aria
 
+import androidx.databinding.ObservableBoolean
 import com.arialyy.annotations.Download
 import com.arialyy.aria.core.Aria
 import com.arialyy.aria.core.task.DownloadTask
@@ -20,7 +21,8 @@ object AriaDownloadManager {
 
     lateinit var currentChapter: DownloadChapter
     const val TAG = "suolong_AriaDownloadManager"   
-    
+    var isDownloading = ObservableBoolean(false)
+
     init {
         BaseApplication.CONTEXT
     }
@@ -69,9 +71,27 @@ object AriaDownloadManager {
         }
     }
 
+    @Download.onTaskCancel
+    fun onTaskCancel(task: DownloadTask) {
+        isDownloading.set(false)
+        DLog.d(TAG, "onTaskCancel")
+    }
+
+    @Download.onTaskStop
+    fun onTaskStop(task: DownloadTask) {
+        isDownloading.set(false)
+        DLog.d(TAG, "onTaskStop")
+    }
+
     @Download.onTaskStart
     fun taskStart(task: DownloadTask) {
+        isDownloading.set(true)
         DLog.d(TAG, "taskStart")
     }
 
+    @Download.onTaskFail
+    fun onTaskFail(task: DownloadTask) {
+        isDownloading.set(false)
+        DLog.d(TAG, "onTaskFail")
+    }
 }

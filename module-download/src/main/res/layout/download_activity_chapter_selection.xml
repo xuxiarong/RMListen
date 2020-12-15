@@ -10,6 +10,8 @@
 
         <import type="com.rm.baselisten.util.ConvertUtils" />
 
+        <import type="com.rm.business_lib.aria.AriaDownloadManager"/>
+
         <variable
             name="viewModel"
             type="com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel" />
@@ -45,12 +47,25 @@
                 android:textSize="@dimen/business_text_size_18sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/download_ic_download"
+                android:id="@+id/download_ic_download_iv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                isVisible="@{!AriaDownloadManager.INSTANCE.isDownloading()}"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/download_ic_download" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/download_ic_download_lv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end|center_vertical"
+                isVisible="@{AriaDownloadManager.INSTANCE.isDownloading()}"
+                android:layout_marginEnd="8dp"
+                app:lottie_fileName="business_download.json"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true" />
+
 
             <com.flyco.roundview.RoundTextView
                 android:id="@+id/download_chapter_num"

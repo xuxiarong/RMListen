@@ -3,14 +3,13 @@ package com.rm.module_download.activity
 import android.content.Context
 import android.content.Intent
 import androidx.databinding.Observable
-import androidx.lifecycle.observe
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadActivityChapterSelectionBinding
-import com.rm.module_download.dialog.DownloadSelectChaptersDialog
 import com.rm.module_download.viewmodel.DownloadChapterSelectionViewModel
 import kotlinx.android.synthetic.main.download_activity_chapter_selection.*
 
@@ -66,7 +65,8 @@ class DownloadChapterSelectionActivity :
         mViewModel.baseTitleModel.value = baseTitleModel
 
         download_ic_finish.setOnClickListener { finish() }
-        download_ic_download.setOnClickListener { DownloadMainActivity.startActivity(this) }
+        download_ic_download_iv.setOnClickListener { DownloadMainActivity.startActivity(this) }
+        download_ic_download_lv.setOnClickListener { DownloadMainActivity.startActivity(this) }
         download_chapter_num.setOnClickListener { DownloadMainActivity.startActivity(this) }
 
     }

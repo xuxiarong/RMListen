@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -56,7 +55,7 @@
                 android:layout_marginTop="15dp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="文字超过最大限制文字超过最大限制文字超过最大限制文字超过最大限制"
+                tools:text="文字超过最大限制文字超过最大限制文字超过最大限制文字超过最大限制"
                 android:textColor="@color/base_ff5e5e"
                 android:textSize="16sp" />
         </LinearLayout>

@@ -54,7 +54,6 @@ dependencies {
 //    api rootProject.ext.dependencies["cardview"]
     api rootProject.ext.androidx["fragment_ktx"]
 //    api rootProject.ext.androidx["xBanner"]
-    implementation rootProject.ext.dependencies["easypermissions"]
     // 下拉刷新控件
     api rootProject.ext.dependencies["smartRefreshLayout"]
     api  'com.scwang.smart:refresh-header-classics:2.0.1' // 暂时测试用的下拉刷新样式，之后会自定义header 并删除此处的引用

@@ -211,12 +211,12 @@ object DownloadMemoryCache {
                             if(downList[i].chapter_id == downloadChapter.chapter_id){
                                 if(i == downList.size -1){
                                     DLog.d("suolong下载 自动下载下一章","开始下载downList[0] + name = ${downList[0].chapter_name}")
-                                    downloadService.startDownloadWithCache(downList[0])
-//                                    AriaDownloadManager.startDownload(downList[0])
+//                                    downloadService.startDownloadWithCache(downList[0])
+                                    AriaDownloadManager.startDownload(downList[0])
                                 }else{
                                     DLog.d("suolong下载 自动下载下一章","开始下载downList[i+1] + name = ${downList[i+1].chapter_name}")
-                                    downloadService.startDownloadWithCache(downList[i+1])
-//                                    AriaDownloadManager.startDownload(downList[1])
+//                                    downloadService.startDownloadWithCache(downList[i+1])
+                                    AriaDownloadManager.startDownload(downList[1])
                                 }
                                 return
                             }
