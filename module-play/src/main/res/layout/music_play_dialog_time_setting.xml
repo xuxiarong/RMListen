@@ -25,20 +25,25 @@
             android:paddingStart="@dimen/dp_20"
             android:paddingEnd="@dimen/dp_20">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_22"
-                android:text="@string/play_close_timer"
-                android:textColor="@color/business_text_color_333333"
-                android:textSize="14sp" />
+            <FrameLayout
+                android:id="@+id/play_dialog_close_timer_fl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_39">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="@dimen/dp_22"
+                    android:text="@string/play_close_timer"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textSize="14sp" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/checkbox_music_play_time_setting_check"
-                android:layout_width="@dimen/dp_22"
-                android:layout_height="@dimen/dp_22"
-                android:layout_gravity="end"
-                android:src="@drawable/play_timer_item_position_unselect"
-                 />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/checkbox_music_play_time_setting_check"
+                    android:layout_width="@dimen/dp_22"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_height="@dimen/dp_22"
+                    android:src="@drawable/play_timer_item_position_unselect" />
+            </FrameLayout>
 
             <View
                 android:layout_width="match_parent"

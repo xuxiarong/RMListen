@@ -21,9 +21,11 @@ class DownloadMainActivity :
 
 
     companion object {
-        fun startActivity(context: Context) {
+        fun startActivity(context: Context,startTab : Int = 0) {
             context.startActivity(Intent(context, DownloadMainActivity::class.java))
+            this.startTab = startTab
         }
+        var startTab = 0
     }
 
     private lateinit var mPagerAdapter: DownloadDetailPagerAdapter
@@ -78,12 +80,15 @@ class DownloadMainActivity :
         download_iv_back.setOnClickListener {
             finish()
         }
-        download_detail_view_pager.setCurrentItem(0,false)
+        download_detail_view_pager.setCurrentItem(startTab,false)
+        mViewModel.downloadingSelected.set(startTab == 0)
         mViewModel.downloadingEdit.set(false)
-        mViewModel.downloadFinishEdit.set(false)
-        mViewModel.downloadingSelected.set(true)
-        mViewModel.downloadFinishSelected.set(false)
+        mViewModel.downloadingSelectAll.set(false)
         mViewModel.downloadingSelectNum.set(0)
+
+        mViewModel.downloadFinishSelected.set(startTab == 1)
+        mViewModel.downloadFinishEdit.set(false)
+        mViewModel.downloadFinishSelectAll.set(false)
         mViewModel.downloadFinishSelectNum.set(0)
 
         DownloadMemoryCache.initData()

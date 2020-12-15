@@ -147,7 +147,7 @@ class ListenMyListenFragment :
         }
         listenDownloadCl.setOnClickListener {
             val createRouter = RouterHelper.createRouter(DownloadService::class.java)
-            createRouter.startDownloadMainActivity(it.context)
+            createRouter.startDownloadMainActivity(context = it.context,startTab = 1)
         }
     }
 

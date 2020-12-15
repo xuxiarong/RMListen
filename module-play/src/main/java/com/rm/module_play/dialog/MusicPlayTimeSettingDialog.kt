@@ -70,6 +70,10 @@ class MusicPlayTimeSettingDialog : SuperBottomSheetDialogFragment() {
             dismissAllowingStateLoss()
             PlayGlobalData.setCountDownTimer(position)
         }
+        play_dialog_close_timer_fl.setOnClickListener {
+            dismissAllowingStateLoss()
+            PlayGlobalData.clearCountDownTimer()
+        }
     }
 
 

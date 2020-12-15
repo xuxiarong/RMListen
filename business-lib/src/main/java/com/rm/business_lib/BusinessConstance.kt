@@ -363,6 +363,12 @@ object PlayGlobalData {
             playCountDownSecond.set(playCountTimerList[position] * 1000L)
         }
     }
+    fun clearCountDownTimer() {
+        playCountSelectPosition.set(-1)
+        playCountDownChapterSize.set(-5)
+        playCountDownSecond.set(-10000L)
+    }
+
 
     fun isSortAsc() : Boolean{
         return playChapterListSort.get() == AudioSortType.SORT_ASC

@@ -27,6 +27,7 @@ class DownloadInProgressFragment :
                 showData()
                 mViewModel.downloadingAdapter.setList(it)
             } else {
+                mViewModel.downloadingAdapter.data.clear()
                 showEmpty()
             }
         })
@@ -44,6 +45,7 @@ class DownloadInProgressFragment :
                     showData()
                     mViewModel.downloadingAdapter.setList(it)
                 } else {
+                    mViewModel.downloadingAdapter.data.clear()
                     showEmpty()
                 }
             }

@@ -14,6 +14,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.SDCardUtils
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.file.DownLoadFileUtils
@@ -312,4 +313,30 @@ fun TextView.bindDownSelectChapterSize(size: Long) {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+@BindingAdapter("bindDownFinishAudioSize")
+fun TextView.bindDownFinishAudioSize(list : List<DownloadAudio>?) {
+    if(list!=null && list.isNotEmpty()){
+        try {
+            var totalSize = 0L
+            list.forEach { audio ->
+                audio.chapterList?.forEach { chapter ->
+                    if(chapter.isDownloadFinish){
+                        totalSize+=chapter.size
+                    }
+                }
+            }
+            text = String.format(context.getString(R.string.download_finish_audio_size),
+                ConvertUtils.byte2FitMemorySize(totalSize, 1),
+                ConvertUtils.byte2FitMemorySize(SDCardUtils.getExternalAvailableSize(), 1))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            text = ""
+        }
+    }else{
+        text = ""
+    }
+
+
 }

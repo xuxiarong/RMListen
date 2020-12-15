@@ -18,8 +18,8 @@ import com.rm.module_download.activity.DownloadMainActivity
 class DownloadServiceImpl : DownloadService {
 
 
-    override fun startDownloadMainActivity(context: Context) {
-        DownloadMainActivity.startActivity(context)
+    override fun startDownloadMainActivity(context: Context, startTab : Int) {
+        DownloadMainActivity.startActivity(context,startTab)
     }
 
     override fun startDownloadChapterSelectionActivity(context: Context, downloadAudio: DownloadAudio) {

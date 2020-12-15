@@ -24,21 +24,21 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
 
     val downloadingAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
-                this,
-                mutableListOf(),
-                R.layout.download_item_in_progress,
-                BR.viewModel,
-                BR.itemBean
+            this,
+            mutableListOf(),
+            R.layout.download_item_in_progress,
+            BR.viewModel,
+            BR.itemBean
         )
     }
 
     val downloadFinishAdapter by lazy {
         CommonBindVMAdapter<DownloadAudio>(
-                this,
-                mutableListOf(),
-                R.layout.download_item_download_completed,
-                BR.viewModel,
-                BR.itemBean
+            this,
+            mutableListOf(),
+            R.layout.download_item_download_completed,
+            BR.viewModel,
+            BR.itemBean
         )
     }
 
@@ -77,9 +77,16 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         if (downloadingAdapter.data.isEmpty()) {
             return
         }
+
         if (downloadingEdit.get()) {
             DownloadMemoryCache.resumeDownloadingChapter()
         } else {
+            downloadingSelectNum.set(0)
+            downloadingSelectAll.set(false)
+            downloadingAdapter.data.forEach {
+                it.down_edit_select = false
+            }
+            downloadingAdapter.notifyDataSetChanged()
             DownloadMemoryCache.pauseDownloadingChapter()
         }
         downloadingEdit.set(downloadingEdit.get().not())
@@ -107,25 +114,32 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     fun changeDownloadingAll() {
         val selectAll = downloadingSelectAll.get().not()
         downloadingSelectAll.set(selectAll)
+        var selectNum = 0
         downloadingAdapter.data.forEach {
-            if (selectAll && !it.down_edit_select) {
-                downloadingSelectNum.set(downloadingSelectNum.get() + 1)
-                it.down_edit_select = selectAll
-            } else if (!selectAll && it.down_edit_select) {
-                downloadingSelectNum.set(downloadingSelectNum.get() - 1)
-                it.down_edit_select = selectAll
+            if (selectAll) {
+                selectNum += 1
+                it.down_edit_select = true
+            } else {
+                it.down_edit_select = false
             }
         }
+        downloadingSelectNum.set(selectNum)
         downloadingAdapter.notifyDataSetChanged()
     }
 
-    fun changeDownloadChapterSelect(chapter: DownloadChapter) {
-        if (!chapter.down_edit_select) {
-            downloadingSelectNum.set(downloadingSelectNum.get() + 1)
-        } else {
-            downloadingSelectNum.set(downloadingSelectNum.get() - 1)
-        }
+    //下载中的章节列表点击事件
+    private fun changeDownloadChapterSelect(chapter: DownloadChapter) {
         chapter.down_edit_select = chapter.down_edit_select.not()
+        val selectNum = downloadingSelectNum.get()
+        if (chapter.down_edit_select) {
+            downloadingSelectNum.set(selectNum + 1)
+            if ((selectNum + 1) >= downloadingAdapter.data.size) {
+                downloadingSelectAll.set(true)
+            }
+        } else {
+            downloadingSelectAll.set(false)
+            downloadingSelectNum.set(selectNum - 1)
+        }
     }
 
     fun chapterClick(context: Context, chapter: DownloadChapter) {
@@ -137,20 +151,35 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         }
     }
 
-    fun deleteSelectChapter() {
+    fun deleteSelectChapter(context: Context) {
         if (downloadingSelectNum.get() <= 0) {
             return
         }
-        val iterator = downloadingAdapter.data.iterator()
-        val tempList = mutableListOf<DownloadChapter>()
-        while (iterator.hasNext()) {
-            val next = iterator.next()
-            if (next.down_edit_select) {
-                tempList.add(next)
+        TipsFragmentDialog().apply {
+            titleText = context.getString(R.string.business_delete_tip_title)
+            contentText = context.getString(R.string.business_delete_tip_content)
+            leftBtnText = context.getString(R.string.business_cancel)
+            rightBtnText = context.getString(R.string.business_sure)
+            leftBtnTextColor = R.color.business_text_color_333333
+            rightBtnTextColor = R.color.business_color_ff5e5e
+            leftBtnClick = {
+                dismiss()
             }
-        }
-        DownloadMemoryCache.deleteDownloadingChapter(tempList)
-        downloadingSelectNum.set(downloadingSelectNum.get() - tempList.size)
+            rightBtnClick = {
+                val iterator = downloadingAdapter.data.iterator()
+                val tempList = mutableListOf<DownloadChapter>()
+                while (iterator.hasNext()) {
+                    val next = iterator.next()
+                    if (next.down_edit_select) {
+                        tempList.add(next)
+                        iterator.remove()
+                    }
+                }
+                dismiss()
+                downloadingEdit.set(false)
+                DownloadMemoryCache.deleteDownloadingChapter(tempList)
+            }
+        }.show(context as FragmentActivity)
     }
 
 
@@ -172,35 +201,37 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         downloadFinishAdapter.notifyDataSetChanged()
     }
 
-    fun changeDownloadFinishSelect(audio: DownloadAudio) {
+    private fun changeDownloadFinishSelect(audio: DownloadAudio) {
         audio.edit_select = audio.edit_select.not()
         //该次Item是选中事件
         if (audio.edit_select) {
             //先设置选中数量+1
             downloadFinishSelectNum.set(downloadFinishSelectNum.get() + 1)
             //如果选中数量等于了列表的长度，则说明全选了
-            if(downloadFinishSelectNum.get() == downloadFinishAdapter.data.size){
+            if (downloadFinishSelectNum.get() == downloadFinishAdapter.data.size) {
                 downloadFinishSelectAll.set(true)
                 downloadFinishDeleteListenFinish.set(false)
                 return
             }
             //检测是否所有选中的都是已听完
-            if(audio.listen_finish && !downloadFinishDeleteListenFinish.get()){
+            if (audio.listen_finish && !downloadFinishDeleteListenFinish.get()) {
                 downloadFinishAdapter.data.forEach {
                     //只要有一个已听完的书籍没被选择，则跳出for循环，说明该次选中至少有一个已听完的没被选择
-                    if(it.listen_finish && !it.edit_select){
+                    if (it.listen_finish && !it.edit_select) {
                         return
-                    }else if(!it.listen_finish && it.edit_select){
+                    } else if (!it.listen_finish && it.edit_select) {
                         return
                     }
                 }
+                downloadFinishDeleteListenFinish.set(true)
+            }else{
+                downloadFinishDeleteListenFinish.set(false)
             }
-            downloadFinishDeleteListenFinish.set(true)
         } else {
-            if(downloadFinishSelectAll.get()){
+            if (downloadFinishSelectAll.get()) {
                 downloadFinishSelectAll.set(false)
             }
-            if(downloadFinishDeleteListenFinish.get() && audio.listen_finish){
+            if (downloadFinishDeleteListenFinish.get() && audio.listen_finish) {
                 downloadFinishDeleteListenFinish.set(false)
             }
             downloadFinishSelectNum.set(downloadFinishSelectNum.get() - 1)
@@ -215,7 +246,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         downloadFinishAdapter.data.forEach {
             if (selectListenFinish && it.listen_finish) {
                 it.edit_select = true
-                selectNum+=1
+                selectNum += 1
             } else {
                 it.edit_select = false
             }
@@ -268,6 +299,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                     val next = iterator.next()
                     if (next.edit_select) {
                         tempList.add(next)
+                        iterator.remove()
                     }
                 }
                 DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)

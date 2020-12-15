@@ -139,8 +139,8 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                                     refreshModel.finishLoadMore(true)
                                     it.list?.let { list ->
                                         refreshModel.noMoreData.set(list.size < pageSize)
+                                        val chapterStatusList = getChapterStatus(list)
                                         if (isSelectAll.get()) {
-                                            val chapterStatusList = getChapterStatus(list)
                                             for (i in 0 until chapterStatusList.size) {
                                                 if (page == 2 && i == 0) {
                                                     chapterStartSequence = chapterStatusList[0].sequence.toString()
