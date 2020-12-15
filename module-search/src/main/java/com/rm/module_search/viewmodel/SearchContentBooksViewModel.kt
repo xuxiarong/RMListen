@@ -50,7 +50,6 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
      */
     fun refreshData() {
         mPage = 1
-        refreshStateMode.setNoHasMore(false)
         requestData()
     }
 
@@ -81,8 +80,8 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
     /**
      * 成功数据
      */
-    private fun successData(bean: SearchResultBean) {
-
+    fun successData(bean: SearchResultBean) {
+        showContentView()
         if (mPage == 1) {
             refreshStateMode.finishRefresh(true)
         } else {
@@ -98,9 +97,11 @@ class SearchContentBooksViewModel(private val repository: SearchRepository) : Ba
         } else {
             bean.audio_list.let { bookAdapter.addData(it) }
         }
-        ++mPage
-        refreshStateMode.setNoHasMore(bean.audio_list.size < mPageSize || bookAdapter.data.size >= bean.audio)
-
+        if (bookAdapter.data.size >= bean.audio) {
+            refreshStateMode.setNoHasMore(true)
+        } else {
+            ++mPage
+        }
     }
 
     /**

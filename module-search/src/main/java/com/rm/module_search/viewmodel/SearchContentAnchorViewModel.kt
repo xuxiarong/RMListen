@@ -85,7 +85,8 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
     /**
      * 成功数据
      */
-    private fun successData(bean: SearchResultBean) {
+    fun successData(bean: SearchResultBean) {
+        showContentView()
         if (mPage == 1) {
             refreshStateMode.finishRefresh(true)
         } else {
@@ -100,9 +101,11 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
         } else {
             bean.member_list.let { anchorAdapter.addData(it) }
         }
-        ++mPage
-        refreshStateMode.setNoHasMore(bean.member_list.size < mPageSize || anchorAdapter.data.size >= bean.member)
-
+        if (anchorAdapter.data.size >= bean.member) {
+            refreshStateMode.setNoHasMore(true)
+        } else {
+            ++mPage
+        }
     }
 
     /**

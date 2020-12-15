@@ -90,7 +90,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        mBottomHeight = headerLayout.height+dip(20)
+        mBottomHeight = headerLayout.height + dip(20)
         //根据实际情况计算
         mCenterHeight = resources.getDimensionPixelSize(R.dimen.dp_160)
 
@@ -237,7 +237,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
      * 动态改变其位置（随手指）
      */
     private fun changeParams(offsetY: Int) {
-        if (translationY + offsetY > mTopHeight && translationY + offsetY < screenHeight - mBottomHeight) {
+        if (translationY + offsetY > mTopHeight && translationY + offsetY < height - mBottomHeight) {
             translationY += offsetY
         }
     }

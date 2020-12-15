@@ -34,7 +34,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
     }
 
     val refreshStateMode = SmartRefreshLayoutStatusModel()
-    val contentRvId=R.id.search_adapter_content_rv
+    val contentRvId = R.id.search_adapter_content_rv
 
     //页码
     var mPage = 1
@@ -69,7 +69,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
                     onSuccess = {
                         successData(it)
                     },
-                    onError = {msg ->
+                    onError = { msg ->
                         failData(msg)
                     }
                 )
@@ -79,8 +79,8 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
     /**
      * 成功数据
      */
-    private fun successData(bean: SearchResultBean) {
-
+    fun successData(bean: SearchResultBean) {
+        showContentView()
         if (mPage == 1) {
             refreshStateMode.finishRefresh(true)
         } else {
@@ -96,8 +96,11 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
         } else {
             bean.sheet_list.let { sheetAdapter.addData(it) }
         }
-        ++mPage
-        refreshStateMode.setNoHasMore(bean.sheet_list.size < mPageSize || sheetAdapter.data.size >= bean.sheet)
+        if (sheetAdapter.data.size >= bean.sheet) {
+            refreshStateMode.setNoHasMore(true)
+        } else {
+            ++mPage
+        }
     }
 
     /**
@@ -110,7 +113,8 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
             refreshStateMode.finishLoadMore(false)
         }
 
-        showTip("$msg",R.color.business_color_ff5e5e)    }
+        showTip("$msg", R.color.business_color_ff5e5e)
+    }
 
     /**
      * item点击事件
