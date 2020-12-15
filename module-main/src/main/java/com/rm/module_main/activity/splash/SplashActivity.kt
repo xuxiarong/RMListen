@@ -1,5 +1,6 @@
 package com.rm.module_main.activity.splash
 
+import android.Manifest
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.TextView
@@ -52,7 +53,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     override fun startObserve() {
         mViewModel.isSkipAd.addOnPropertyChangedCallback(object :
-                Observable.OnPropertyChangedCallback() {
+            Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.isSkipAd.get()) {
                     MainMainActivity.startMainActivity(this@SplashActivity)
@@ -61,17 +62,17 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             }
         })
         mViewModel.mainAdScreen.addOnPropertyChangedCallback(object :
-                Observable.OnPropertyChangedCallback() {
+            Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val adScreen = mViewModel.mainAdScreen.get()
                 if (null != adScreen && !TextUtils.isEmpty(adScreen.image_url)) {
                     val options: RequestOptions = RequestOptions() //图片加载出来前，显示的图片
-                            .placeholder(R.drawable.splash) //url为空的时候,显示的图片
-                            .fallback(R.drawable.splash) //图片加载失败后，显示的图片
-                            .error(R.drawable.splash)
+                        .placeholder(R.drawable.splash) //url为空的时候,显示的图片
+                        .fallback(R.drawable.splash) //图片加载失败后，显示的图片
+                        .error(R.drawable.splash)
                     Glide.with(this@SplashActivity).load(adScreen.image_url)
-                            .apply(options)
-                            .into(splash_ad_img)
+                        .apply(options)
+                        .into(splash_ad_img)
                 }
             }
         })
@@ -90,13 +91,20 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
         splash_ad_img.setOnClickNotDoubleListener {
             mViewModel.mainAdScreen.get()?.let {
                 MainMainActivity.startMainActivity(this@SplashActivity, splashUrl = it.jump_url)
-                BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLICK,it.ad_id.toString())
+                BusinessInsertManager.doInsertKeyAndAd(
+                    BusinessInsertConstance.INSERT_TYPE_AD_CLICK,
+                    it.ad_id.toString()
+                )
                 finish()
             }
         }
     }
 
     override fun initData() {
+        requestPermissions()
+    }
+
+    private fun initSplashData() {
         if (FIRST_OPEN_APP.getBooleanMMKV(true)) {
             FIRST_OPEN_APP.getBooleanMMKV(false)
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVATION)
@@ -112,22 +120,29 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
         }
         RouterHelper.createRouter(PlayService::class.java)
             .initPlayService(BaseApplication.baseApplication)
-
     }
 
-
-    suspend fun requestPermissions() {
-        val result = requestPermissionsForResult(
-                permissions = *arrayOf(PermissionConstants.STORAGE),
-                title = "权限请求",
-                rationale = "类漫听书需要存储权限"
+    private fun requestPermissions() {
+        requestPermissionForResult(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            actionDenied = {
+                initSplashData()
+            },
+            actionGranted = {
+                initSplashData()
+            },
+            actionPermanentlyDenied = {
+                finish()
+            }
         )
-        DLog.d("suolong", "result = $result")
-        if (result && mViewModel.isSkipAd.get()) {
-            MainMainActivity.startMainActivity(this@SplashActivity)
-            finish()
-        }
     }
+
+//    fun requestStorageGranted() {
+//
+//    }
+//
+//    fun requestStorageDenied() {
+//        initSplashData()
+//    }
 
     /**
      * 显示隐私政策弹窗
@@ -141,8 +156,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 mDataBind?.let {
                     val dialogBand = mDataBind as HomeDialogPrivateServiceBinding
                     setSpannableText(
-                            activity as FragmentActivity,
-                            dialogBand.homeDialogPrivateServiceContent
+                        activity as FragmentActivity,
+                        dialogBand.homeDialogPrivateServiceContent
                     )
                     dialogBand.homeDialogAgreeProtocol.setOnClickListener {
                         HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.putMMKV(true)
@@ -152,18 +167,18 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     }
                     dialogBand.homeDialogNotAgreeProtocol.setOnClickListener {
                         ToastUtil.show(
-                                this@SplashActivity,
-                                getString(R.string.main_please_agree_private_service)
+                            this@SplashActivity,
+                            getString(R.string.main_please_agree_private_service)
                         )
                     }
                 }
             }
 
         }.showCommonDialog(
-                activity = this,
-                layoutId = R.layout.home_dialog_private_service,
-                viewModel = mViewModel,
-                viewModelBrId = BR.viewModel
+            activity = this,
+            layoutId = R.layout.home_dialog_private_service,
+            viewModel = mViewModel,
+            viewModelBrId = BR.viewModel
         )
     }
 
@@ -174,36 +189,36 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
      */
     private fun setSpannableText(fragmentActivity: FragmentActivity, textView: TextView) {
         SpannableHelper.with(
-                textView,
-                fragmentActivity.resources.getString(R.string.home_private_service_content)
+            textView,
+            fragmentActivity.resources.getString(R.string.home_private_service_content)
         )
-                .addChangeItem(
-                        ChangeItem(
-                                fragmentActivity.String(R.string.home_private_protocol),
-                                ChangeItem.Type.COLOR,
-                                fragmentActivity.Color(R.color.business_color_789dcb),
-                                object : TextClickListener {
-                                    override fun onTextClick(clickContent: String) {
-                                        BaseWebActivity.startBaseWebActivity(
-                                                this@SplashActivity,
-                                                "www.baidu.com"
-                                        )
-                                    }
-                                })
-                )
-                .addChangeItem(
-                        ChangeItem(
-                                fragmentActivity.String(R.string.home_service_protocol),
-                                ChangeItem.Type.COLOR,
-                                fragmentActivity.Color(R.color.business_color_789dcb),
-                                object : TextClickListener {
-                                    override fun onTextClick(clickContent: String) {
-                                        BaseWebActivity.startBaseWebActivity(
-                                                this@SplashActivity,
-                                                "www.baidu.com"
-                                        )
-                                    }
-                                })
-                ).build()
+            .addChangeItem(
+                ChangeItem(
+                    fragmentActivity.String(R.string.home_private_protocol),
+                    ChangeItem.Type.COLOR,
+                    fragmentActivity.Color(R.color.business_color_789dcb),
+                    object : TextClickListener {
+                        override fun onTextClick(clickContent: String) {
+                            BaseWebActivity.startBaseWebActivity(
+                                this@SplashActivity,
+                                "www.baidu.com"
+                            )
+                        }
+                    })
+            )
+            .addChangeItem(
+                ChangeItem(
+                    fragmentActivity.String(R.string.home_service_protocol),
+                    ChangeItem.Type.COLOR,
+                    fragmentActivity.Color(R.color.business_color_789dcb),
+                    object : TextClickListener {
+                        override fun onTextClick(clickContent: String) {
+                            BaseWebActivity.startBaseWebActivity(
+                                this@SplashActivity,
+                                "www.baidu.com"
+                            )
+                        }
+                    })
+            ).build()
     }
 }

@@ -702,8 +702,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-            if (isPlaying) {
-                mOnPlayerEventListeners.forEach {
+            mOnPlayerEventListeners.forEach {
+                it.onStopPlayAd()
+                if (isPlaying) {
                     it.onPrepared(getDurtion())
                 }
             }

@@ -1,32 +1,46 @@
 package com.rm.baselisten.mvvm
 
+import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.view.contains
 import androidx.fragment.app.FragmentActivity
 import com.gyf.barlibrary.ImmersionBar
 import com.rm.baselisten.R
+import com.rm.baselisten.fragment.IPermissionFragment
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.view.BaseTipView
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
+
 
 /**
  * desc   : 基类的MvvmActivity
  * date   : 2020/08/05
  * version: 1.0
  */
-abstract class BaseActivity : FragmentActivity() {
+abstract class BaseActivity : FragmentActivity(), EasyPermissions.PermissionCallbacks {
 
     private val immersionBarHelper: ImmersionBarHelper by lazy {
         ImmersionBarHelper.create(this)
     }
 
-    val tipView : BaseTipView by lazy {
+    val tipView: BaseTipView by lazy {
         BaseTipView(this)
     }
+
+    var requestPermission = ""
+    var requestPermissionCode = 1001
+    var requestPermissionGranted: () -> Unit = {}
+    var requestPermissionDenied: () -> Unit = {}
+    var requestPermanentlyDenied: () -> Unit = {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //不是dataBind的模式，则setContentView
@@ -70,8 +84,9 @@ abstract class BaseActivity : FragmentActivity() {
     ) {
         immersionBarHelper.init(colorId, darkText)
     }
+
     //获取状态蓝高度
-     fun navigationBarHeight() : Int = ImmersionBar.getNavigationBarHeight(this)
+    fun navigationBarHeight(): Int = ImmersionBar.getNavigationBarHeight(this)
 
     /**
      * 设置透明沉浸式
@@ -103,4 +118,81 @@ abstract class BaseActivity : FragmentActivity() {
         }
     }
 
+    protected fun requestPermissionForResult(
+        permission: String,
+        actionDenied: () -> Unit,
+        actionGranted: () -> Unit,
+        actionPermanentlyDenied: () -> Unit
+    ) {
+        this.requestPermission = permission
+        this.requestPermissionDenied = actionDenied
+        this.requestPermissionGranted = actionGranted
+        this.requestPermanentlyDenied = actionPermanentlyDenied
+        if (EasyPermissions.hasPermissions(this, permission)) {
+            actionGranted()
+        } else {
+            EasyPermissions.requestPermissions(this, "听书需要存储权限",  requestPermissionCode, permission)
+        }
+    }
+
+
+    override fun onPermissionsDenied(
+        requestCode: Int, perms: List<String?>
+    ) {
+        if (requestCode == requestPermissionCode) {
+            perms.forEach {
+                it?.let {
+                    if (it == requestPermission) {
+                        if (EasyPermissions.somePermissionPermanentlyDenied(this, arrayListOf(requestPermission))) {
+                            AppSettingsDialog.Builder(this)
+                                .setTitle("权限已被永久拒绝")
+                                .setRationale("听书需要存储权限，请前往设置页面打开该权限")
+                                .setPositiveButton(R.string.base_to_set)
+                                .setNegativeButton(R.string.base_cancel)
+                                .setRequestCode(AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE)
+                                .build().show()
+                        }else{
+                            requestPermissionDenied()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onPermissionsGranted(
+        requestCode: Int, perms: List<String?>
+    ) {
+        if (requestCode == requestPermissionCode) {
+            perms.forEach {
+                it?.let {
+                    if (it == requestPermission) {
+                        requestPermissionGranted()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+            //从设置页面返回，判断权限是否申请。
+            if (EasyPermissions.hasPermissions(this, requestPermission)) {
+                requestPermissionGranted()
+                Toast.makeText(this, "权限申请成功!", Toast.LENGTH_SHORT).show()
+            } else {
+                requestPermanentlyDenied()
+                Toast.makeText(this, "权限申请失败!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }

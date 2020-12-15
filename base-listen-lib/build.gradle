@@ -93,4 +93,6 @@ dependencies {
     api rootProject.ext.androidx["flexbox"]
     api rootProject.ext.dependencies["bugly"]
     api rootProject.ext.dependencies["bugly_native"]
+    api rootProject.ext.dependencies["easypermissions"]
+
 }
