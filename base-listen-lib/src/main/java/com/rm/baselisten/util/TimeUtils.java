@@ -669,7 +669,9 @@ public final class TimeUtils {
         long span = now - millis;
         if (span < 0)
             // U can read http://www.apihome.cn/api/java/Formatter.html to understand it.
-            return String.format("%tc", millis);
+            //如果小于0 则现实为刚刚
+//            return String.format("%tc", millis);
+            return "刚刚";
         if (span < 10000) {
             return "刚刚";
         } else if (span < TimeConstants.MIN) {
