@@ -12,5 +12,6 @@ data class ListenSheetBean(
     var num_audio: Int,//书籍数量
     var num_favor: Int,//被收藏数
     var created_from: Int,//听单创建来源；2:默认听单，不允许删除
-    var created_at: String//创建时间
+    var created_at: String,//创建时间
+    var pre_deleted_from: String//预删除来源；0:不打算删除；1:后管删除；2:创建者删除
 ) : Parcelable

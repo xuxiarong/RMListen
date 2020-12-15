@@ -38,8 +38,9 @@ class ListenSheetMyListFragment :
         mViewModel.showLoading()
         arguments?.getString(MEMBER_ID)?.let {
             mViewModel.memberId = it
+            mViewModel.getData(it)
         }
-        mViewModel.getData(mViewModel.memberId)
+
     }
 
     override fun startObserve() {

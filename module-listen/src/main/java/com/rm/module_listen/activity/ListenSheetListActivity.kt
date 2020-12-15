@@ -29,13 +29,8 @@ ListenSheetListActivity :
     companion object {
         const val SHEET_LIST_TYPE = "sheetListType"
         const val MEMBER_ID = "memberId"
-        fun startActivity(context: Activity, @ListenSheetListType sheetListType: Int) {
-            context.startActivityForResult(
-                Intent(context, ListenSheetListActivity::class.java)
-                    .putExtra(SHEET_LIST_TYPE, sheetListType), 300
-            )
-        }
 
+        //member_id 传参表示请求他人数据，不传读取登陆态用户id。如果是当前用户就不需要传参数
         fun startActivity(
             context: Activity,
             @ListenSheetListType sheetListType: Int,
@@ -68,16 +63,16 @@ ListenSheetListActivity :
     override fun initView() {
         super.initView()
         sheetType = intent.getIntExtra(SHEET_LIST_TYPE, LISTEN_SHEET_LIST_MY_LIST)
-        memberId = intent.getStringExtra(MEMBER_ID)
+        memberId = intent.getStringExtra(MEMBER_ID) ?: ""
         listen_sheet_list_back.setOnClickListener { finish() }
-        createFragment()
+        memberId?.let {
+            createFragment()
+        }
+
     }
 
     private fun createFragment() {
-        if (memberId == null || TextUtils.isEmpty(memberId)) {
-            memberId = ""
-        }
-        if (TextUtils.isEmpty(memberId) || memberId == loginUser.get()?.id) {
+        if (memberId!!.isEmpty()) {
             mListTabText[0] = CONTEXT.getString(R.string.listen_my_sheet)
         } else {
             mListTabText[0] = CONTEXT.getString(R.string.listen_create_sheet)

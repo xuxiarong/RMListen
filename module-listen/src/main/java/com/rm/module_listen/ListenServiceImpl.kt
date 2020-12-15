@@ -41,10 +41,6 @@ class ListenServiceImpl : ListenService {
         ListenDialogSheetHelper(activity, audioId, successBlock).showDialog()
     }
 
-    override fun startListenSheetList(context: Activity, sheetListType: Int) {
-        ListenSheetListActivity.startActivity(context, sheetListType)
-    }
-
     override fun startListenSheetList(context: Activity, sheetListType: Int, memberId: String) {
         ListenSheetListActivity.startActivity(context, sheetListType, memberId)
     }

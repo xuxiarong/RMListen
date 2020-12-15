@@ -31,13 +31,6 @@ interface ListenService : ApplicationProvider {
      * 跳转到 听单界面
      * @param context 上下文
      * @param sheetListType 指定对应的fragment
-     */
-    fun startListenSheetList(context: Activity, @ListenSheetListType sheetListType: Int)
-
-    /**
-     * 跳转到 听单界面
-     * @param context 上下文
-     * @param sheetListType 指定对应的fragment
      * @param memberId 主播id
      */
     fun startListenSheetList(

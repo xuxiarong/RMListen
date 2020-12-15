@@ -187,13 +187,8 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
      */
     fun createSheetItemClick(context: Context, bean: SheetBean) {
         getActivity(context)?.let {
-            if (loginUser.get()?.id == memberId) {
-                RouterHelper.createRouter(ListenService::class.java)
-                    .startMySheetDetail(it, bean.sheet_id)
-            } else {
-                RouterHelper.createRouter(HomeService::class.java)
-                    .startHomeSheetDetailActivity(it, bean.sheet_id)
-            }
+            RouterHelper.createRouter(HomeService::class.java)
+                .startHomeSheetDetailActivity(it, bean.sheet_id)
         }
     }
 

@@ -11,6 +11,7 @@ import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.login.LoginService
@@ -60,7 +61,11 @@ class ListenMyListenFragment :
 
         mDataShowView = listenMyListenVp
         //用懒加载的方式切换fragment的时候会报错
-        mViewPagerAdapter = ListenMyListenPagerAdapter(fm = activity!!.supportFragmentManager,tabList = tabList, fragmentList = mMyListenFragmentList)
+        mViewPagerAdapter = ListenMyListenPagerAdapter(
+            fm = activity!!.supportFragmentManager,
+            tabList = tabList,
+            fragmentList = mMyListenFragmentList
+        )
         listenMyListenVp.offscreenPageLimit = 2
         listenMyListenVp.adapter = mViewPagerAdapter
         setClick()
@@ -68,18 +73,19 @@ class ListenMyListenFragment :
     }
 
     override fun startObserve() {
-        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(isLogin.get()){
+                if (isLogin.get()) {
                     mViewModel.getSubsTotalNumberFromService()
                 }
             }
         })
-        HomeGlobalData.isShowSubsRedPoint.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+        HomeGlobalData.isShowSubsRedPoint.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(HomeGlobalData.isShowSubsRedPoint.get()){
+                if (HomeGlobalData.isShowSubsRedPoint.get()) {
                     listenMyListenRtl?.getTabAt(1)?.tabView?.setRedPointVisible(true)
-                }else{
+                } else {
                     listenMyListenRtl?.getTabAt(1)?.tabView?.setRedPointVisible(false)
                 }
             }
@@ -89,8 +95,9 @@ class ListenMyListenFragment :
 
 
     override fun initData() {
-        if(mMyListenFragmentList[1] is ListenSubscriptionUpdateFragment){
-            mViewModel.subsRefreshFun = { (mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment).refreshSubsData() }
+        if (mMyListenFragmentList[1] is ListenSubscriptionUpdateFragment) {
+            mViewModel.subsRefreshFun =
+                { (mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment).refreshSubsData() }
         }
     }
 
@@ -98,7 +105,7 @@ class ListenMyListenFragment :
     private fun configTab() {
         listenMyListenRtl.setupWithViewPager(listenMyListenVp)
         listenMyListenVp.setCurrentItem(0, false)
-        listenMyListenRtl.addOnTabSelectedListener(object : BendTabLayout.OnTabSelectedListener{
+        listenMyListenRtl.addOnTabSelectedListener(object : BendTabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: BendTabLayout.BendTab?) {
             }
 
@@ -141,13 +148,14 @@ class ListenMyListenFragment :
             } else {
                 ListenSheetListActivity.startActivity(
                     activity!!,
-                    LISTEN_SHEET_LIST_MY_LIST
+                    LISTEN_SHEET_LIST_MY_LIST,
+                    ""
                 )
             }
         }
         listenDownloadCl.setOnClickListener {
             val createRouter = RouterHelper.createRouter(DownloadService::class.java)
-            createRouter.startDownloadMainActivity(context = it.context,startTab = 1)
+            createRouter.startDownloadMainActivity(context = it.context, startTab = 1)
         }
     }
 

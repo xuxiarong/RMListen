@@ -14,23 +14,23 @@ data class BusinessInsertBean(
     val ext_data: Any? = null
 )
 
+open class BusinessInsertExtDataBean {
+    val memberId: String? = loginUser.get()?.id ?: ""
+}
+
 data class BusinessInsertAudioDataBean(
-    val audio_id: String,
-    val memberId: String = loginUser.get()?.id ?: ""
-)
+    val audio_id: String
+) : BusinessInsertExtDataBean()
 
 data class BusinessInsertChapterDataBean(
     val audio_id: String,
-    val chapter_id:String,
-    val memberId: String = loginUser.get()?.id ?: ""
-)
+    val chapter_id: String
+) : BusinessInsertExtDataBean()
 
 data class BusinessInsertAdDataBean(
-    val ad_id: String,
-    val memberId: String = loginUser.get()?.id ?: ""
-)
+    val ad_id: String
+) : BusinessInsertExtDataBean()
 
 data class BusinessInsertSheetDataBean(
-    val sheet_id: String,
-    val memberId: String = loginUser.get()?.id ?: ""
-)
+    val sheet_id: String
+) : BusinessInsertExtDataBean()
