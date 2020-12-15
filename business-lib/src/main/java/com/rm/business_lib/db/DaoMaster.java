@@ -21,6 +21,7 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
+        DetailAudioSortDao.createTable(db, ifNotExists);
         DownloadAudioDao.createTable(db, ifNotExists);
         DownloadChapterDao.createTable(db, ifNotExists);
         ListenAudioEntityDao.createTable(db, ifNotExists);
@@ -29,6 +30,7 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
+        DetailAudioSortDao.dropTable(db, ifExists);
         DownloadAudioDao.dropTable(db, ifExists);
         DownloadChapterDao.dropTable(db, ifExists);
         ListenAudioEntityDao.dropTable(db, ifExists);
@@ -51,6 +53,7 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
+        registerDaoClass(DetailAudioSortDao.class);
         registerDaoClass(DownloadAudioDao.class);
         registerDaoClass(DownloadChapterDao.class);
         registerDaoClass(ListenAudioEntityDao.class);

@@ -20,9 +20,6 @@ class BusinessAdImageView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attrs, defStyleAttr) {
-    init {
-        DLog.i("------->", "BusinessAdImageView init")
-    }
 
     var adId: String = ""
     var adIsShow = true

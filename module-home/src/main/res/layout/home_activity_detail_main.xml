@@ -180,9 +180,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:button="@null"
-                    android:checked="@={!viewModel.hideOr}"
                     android:drawableEnd="@drawable/home_detail_fold"
                     android:paddingStart="@dimen/dp_10"
+                    android:onClick="@{()->viewModel.clickShowAnthology()}"
                     android:paddingEnd="@dimen/dp_16"
                     android:text="@{@string/home_detail_chapter_total(viewModel.chapterTotal)}"
                     android:textColor="@color/business_text_color_666666"
@@ -265,6 +265,7 @@
                     bindVerticalLayout="@{viewModel.chapterAdapter}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:background="@color/businessWhite" />
 
 

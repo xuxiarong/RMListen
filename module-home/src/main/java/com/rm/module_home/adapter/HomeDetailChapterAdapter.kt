@@ -26,16 +26,6 @@ class HomeDetailChapterAdapter(mViewModel: HomeDetailViewModel) :
     ) {
     private var mSort = AudioSortType.SORT_ASC
 
-    fun setSort(sort: String) {
-        mSort = sort
-        setList(data.reversed())
-    }
-
-    fun setSortList(sort: String, list: Collection<DownloadChapter>?) {
-        mSort = sort
-        setList(list)
-    }
-
     override fun convert(holder: BaseViewHolder, item: DownloadChapter) {
         super.convert(holder, item)
         if (mSort == AudioSortType.SORT_ASC) {

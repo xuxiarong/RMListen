@@ -25,6 +25,8 @@ import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.business_lib.bean.DataStr
 import com.rm.business_lib.bean.DetailTags
+import com.rm.business_lib.db.DaoUtil
+import com.rm.business_lib.db.audiosort.DetailAudioSort
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
@@ -52,41 +54,37 @@ import com.rm.module_home.util.HomeCommentDialogHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
+import kotlin.math.max
 
 
 class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
-
-    companion object {
-        //章节加载上一页
-        const val CHAPTER_PREVIOUS_PAGE = "chapter_previous_page"
-
-        //章节加载下一页
-        const val CHAPTER_NEXT_PAGE = "chapter_next_page"
-
-        //刷新章节
-        const val CHAPTER_REFRESH_PAGE = "chapter_refresh_page"
-    }
-
-
-    /**
-     * 下一页章节的页码
-     */
-    var nextChapterPage = 1
-
-    /**
-     * 上一页章节页码
-     */
-    var previousChapterPage = 1
-
-    /**
-     * 章节的最大页码
-     */
-    private var chapterMaxPage = -1
 
     /**
      * 章节分页加载的数量
      */
     private val chapterPageSize = 20
+
+    /**
+     * 下章节页码
+     */
+    private var nextChapterPage = 1
+
+    /**
+     * 上章节页码
+     */
+    private var upChapterPage = 1
+
+    private var maxChapterPage = -1
+
+    /**
+     * 章节列表
+     */
+    private val chapterList = mutableListOf<DownloadChapter>()
+
+    /**
+     * 章节上一次加载的页码
+     */
+    private var oldChapterPage = -1
 
     /**
      * 评论当前的页码
@@ -154,10 +152,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     var chapterTotal = ObservableField(0)
 
-    /**
-     * 记录上一次章节列表的总数
-     */
-    private var oldChapterTotal = 0
 
     /**
      * 书籍状态
@@ -173,7 +167,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 评论数量
      */
     var commentTotal = ObservableField(0)
-
 
     /**
      * 整个页面是否可以点击
@@ -428,14 +421,14 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * audio_id:音频id
      * sort：排序(asc,desc)
      */
-    fun getChapterList(page: Int, chapterType: String) {
+    fun getChapterList(page: Int) {
         launchOnIO {
-            repository.chapterList(audioId.get()!!, page, chapterPageSize, AudioSortType.SORT_ASC)
+            repository.chapterList(audioId.get()!!, page, chapterPageSize, mCurSort)
                 .checkResult(
                     onSuccess = {
-                        processChapterData(it, page, chapterType)
+                        processChapterData(it, page)
                     }, onError = {
-                        processChapterFailure(it, chapterType)
+                        processChapterFailure(it)
                     })
         }
     }
@@ -443,155 +436,72 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 处理章节加载失败
      */
-    private fun processChapterFailure(msg: String?, chapterType: String) {
-        when (chapterType) {
-            CHAPTER_NEXT_PAGE -> {
-                chapterRefreshStatus.finishLoadMore(false)
-                nextChapterPage--
+    private fun processChapterFailure(msg: String?) {
+        showTip("$msg", R.color.business_color_ff5e5e)
+        when (mCurSort) {
+            AudioSortType.SORT_ASC -> {
+                if (nextChapterPage == 1) {
+                    chapterRefreshStatus.finishRefresh(false)
+                } else {
+                    chapterRefreshStatus.finishLoadMore(false)
+                }
             }
-            CHAPTER_PREVIOUS_PAGE -> {
-                chapterRefreshStatus.finishRefresh(false)
-            }
-            CHAPTER_REFRESH_PAGE -> {
-                chapterRefreshStatus.finishRefresh(false)
+            AudioSortType.SORT_DESC -> {
+                if (upChapterPage == 1) {
+                    chapterRefreshStatus.finishRefresh(false)
+                } else {
+                    chapterRefreshStatus.finishLoadMore(false)
+                }
             }
         }
-        showTip("$msg", R.color.business_color_ff5e5e)
     }
-
 
     /**
      * 处理章节数据
      */
-    private fun processChapterData(bean: ChapterListModel, page: Int, chapterType: String) {
+    private fun processChapterData(bean: ChapterListModel, page: Int) {
         chapterTotal.set(bean.total)
-        configChapterPageList()
-        chapterMaxPage = ceil(bean.total / chapterPageSize.toDouble()).toInt()
-
-        when (chapterType) {
-            CHAPTER_NEXT_PAGE -> {
-                nextLoadData(bean)
-            }
-            CHAPTER_PREVIOUS_PAGE -> {
-                previousLoadData(bean)
-            }
-            CHAPTER_REFRESH_PAGE -> {
-                refreshLoadData(page, bean)
-            }
+        if (chapterAnthologyAdapter.data.size == 0) {
+            configChapterPageList()
         }
-    }
+        maxChapterPage = ceil(chapterTotal.get()!! / chapterPageSize.toFloat()).toInt()
+        DLog.i(
+            "------------>",
+            "$mCurSort     $nextChapterPage      $upChapterPage       $oldChapterPage     $page    "
+        )
 
-    /**
-     * 处理加载下一页章节数据
-     */
-    private fun nextLoadData(bean: ChapterListModel) {
-        if (mCurSort == AudioSortType.SORT_ASC) {
-            chapterRefreshStatus.finishLoadMore(true)
-            bean.list?.let {
-                chapterAdapter.addData(it)
-            }
-            chapterRefreshStatus.setNoHasMore(bean.total == chapterAdapter.data.size || nextChapterPage == chapterMaxPage)
+        if (oldChapterPage > page) {
+            bean.list?.let { chapterList.addAll(0, it) }
+            chapterRefreshStatus.finishRefresh(true)
         } else {
             chapterRefreshStatus.finishLoadMore(true)
-            bean.list?.let {
-                chapterAdapter.addData(it.reversed())
-                chapterAdapter.notifyDataSetChanged()
-            }
-            chapterRefreshStatus.setNoHasMore(previousChapterPage == 1)
+            bean.list?.let { chapterList.addAll(it) }
         }
+
+        chapterRefreshStatus.setNoHasMore(page == maxChapterPage)
+        chapterRefreshStatus.setCanRefresh(upChapterPage != 1)
+        chapterAdapter.setList(chapterList)
+        oldChapterPage = page
     }
 
-    /**
-     * 处理加载上一页章节数据
-     */
-    private fun previousLoadData(bean: ChapterListModel) {
-        if (mCurSort == AudioSortType.SORT_ASC) {
-            chapterRefreshStatus.finishRefresh(true)
-            bean.list?.let {
-                chapterAdapter.addData(0, it)
-                chapterAdapter.notifyDataSetChanged()
-            }
-            chapterRefreshStatus.setCanRefresh(previousChapterPage != 1)
-        } else {
-            chapterRefreshStatus.finishRefresh(true)
-            bean.list?.let {
-                chapterAdapter.addData(0, it.reversed())
-            }
-            chapterRefreshStatus.setCanRefresh(previousChapterPage != chapterMaxPage)
-        }
-    }
-
-    /**
-     * 处理加载新数据
-     */
-    private fun refreshLoadData(page: Int, bean: ChapterListModel) {
-        chapterRefreshStatus.finishRefresh(true)
-        chapterAdapter.setSort(mCurSort)
-        when (mCurSort) {
-            AudioSortType.SORT_ASC -> {
-                if (chapterAdapter.data.size >= bean.total) {
-                    chapterRefreshStatus.setNoHasMore(true)
-                }
-                chapterRefreshStatus.setCanRefresh(page != 1)
-                chapterAdapter.setSortList(mCurSort, bean.list)
-            }
-            AudioSortType.SORT_DESC -> {
-                if (nextChapterPage == 1) {
-                    chapterRefreshStatus.setNoHasMore(true)
-                }
-                chapterAdapter.setSortList(mCurSort, bean.list?.reversed())
-                chapterRefreshStatus.setCanRefresh(chapterAdapter.data.size < bean.total)
-            }
-        }
-    }
 
     /**
      * 章节加载上一页
      */
     fun chapterRefreshData() {
-
-        when (mCurSort) {
-            AudioSortType.SORT_ASC -> {
-                if (previousChapterPage > 1) {
-                    previousChapterPage--
-                    getChapterList(previousChapterPage, CHAPTER_PREVIOUS_PAGE)
-                } else {
-                    chapterRefreshStatus.setCanRefresh(false)
-                }
-            }
-            AudioSortType.SORT_DESC -> {
-                if (previousChapterPage < chapterMaxPage) {
-                    previousChapterPage++
-                    getChapterList(previousChapterPage, CHAPTER_PREVIOUS_PAGE)
-                } else {
-                    chapterRefreshStatus.setCanRefresh(false)
-                }
-            }
+        if (upChapterPage > 1) {
+            upChapterPage--
+            getChapterList(upChapterPage)
         }
-
     }
 
     /**
      * 章节加载更多
      */
     fun chapterLoadData() {
-        when (mCurSort) {
-            AudioSortType.SORT_ASC -> {
-                if (nextChapterPage < chapterMaxPage) {
-                    nextChapterPage++
-                    getChapterList(nextChapterPage, CHAPTER_NEXT_PAGE)
-                } else {
-                    chapterRefreshStatus.setNoHasMore(true)
-                }
-            }
-            AudioSortType.SORT_DESC -> {
-                if (nextChapterPage > 1) {
-                    nextChapterPage--
-                    getChapterList(nextChapterPage, CHAPTER_NEXT_PAGE)
-                } else {
-                    chapterRefreshStatus.setNoHasMore(true)
-                }
-            }
+        if (nextChapterPage < maxChapterPage) {
+            nextChapterPage++
+            getChapterList(nextChapterPage)
         }
     }
 
@@ -599,37 +509,30 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 排序点击事件
      */
     fun clickSort() {
-
         when (mCurSort) {
             AudioSortType.SORT_ASC -> {
-                if (previousChapterPage == 1) {
-                    chapterRefreshStatus.setNoHasMore(true)
-                } else {
-                    chapterRefreshStatus.setNoHasMore(false)
-                    chapterRefreshStatus.setResetNoMoreData(true)
-                }
-                chapterRefreshStatus.setCanRefresh(previousChapterPage < chapterMaxPage)
                 mCurSort = AudioSortType.SORT_DESC
             }
             AudioSortType.SORT_DESC -> {
-                if (previousChapterPage == 1) {
-                    chapterRefreshStatus.setNoHasMore(true)
-                } else {
-                    chapterRefreshStatus.setNoHasMore(false)
-                    chapterRefreshStatus.setResetNoMoreData(true)
-                }
-                chapterRefreshStatus.setCanRefresh(nextChapterPage != 1)
                 mCurSort = AudioSortType.SORT_ASC
             }
         }
-
-        val next = nextChapterPage
-        nextChapterPage = previousChapterPage
-        previousChapterPage = next
-
-        chapterAdapter.setSort(mCurSort)
         configChapterPageList()
+        nextChapterPage = 1
+        upChapterPage = 1
+        chapterList.clear()
+        chapterRefreshStatus.setCanRefresh(true)
+        chapterRefreshStatus.setResetNoMoreData(true)
+        getChapterList(1)
+        val daoUtil = DaoUtil(DetailAudioSort::class.java, "")
+        daoUtil.saveOrUpdate(DetailAudioSort(audioId.get()!!.toLong(), mCurSort))
+    }
 
+    /**
+     * 选集
+     */
+    fun clickShowAnthology() {
+        hideOr.set(!hideOr.get())
     }
 
 
@@ -638,10 +541,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     fun itemClickSelectChapter(page: Int) {
         nextChapterPage = page
-        previousChapterPage = page
+        upChapterPage = page
+        chapterList.clear()
         hideOr.set(!hideOr.get())
+        chapterRefreshStatus.setCanRefresh(true)
         chapterRefreshStatus.setResetNoMoreData(true)
-        getChapterList(page, CHAPTER_REFRESH_PAGE)
+        getChapterList(page)
     }
 
     /**
@@ -788,13 +693,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 获取章节分页信息
      */
     private fun configChapterPageList() {
-        if (chapterTotal.get()!! <= 0 || chapterTotal.get() == oldChapterTotal) {
-            return
-        }
-        oldChapterTotal
-        val totalCount = chapterTotal.get()!!
-        oldChapterTotal = totalCount
-
+        val totalCount = chapterTotal.get() ?: 0
         val list = mutableListOf<DataStr>()
         val i1 = totalCount / chapterPageSize
         val i2 = totalCount % chapterPageSize

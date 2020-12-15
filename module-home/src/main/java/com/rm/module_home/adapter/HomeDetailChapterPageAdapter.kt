@@ -47,6 +47,11 @@ class HomeDetailChapterPageAdapter(
         }
     }
 
+    override fun setList(list: Collection<DataStr>?) {
+        super.setList(list)
+        oldTextView = null
+    }
+
     private fun setSelect(select: Boolean, textView: AppCompatTextView?) {
         if (select) {
             textView?.apply {
