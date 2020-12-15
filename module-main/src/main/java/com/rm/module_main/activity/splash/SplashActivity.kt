@@ -137,6 +137,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
         CommonMvFragmentDialog().apply {
             dialogHasBackground = true
             dialogCanceledOnTouchOutside = false
+            dialogCancel = false
             dialogWidth = this@SplashActivity.dip(320f)
             initDialog = {
                 mDataBind?.let {

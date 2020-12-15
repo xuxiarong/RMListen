@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.rm.baselisten.R
 import com.rm.baselisten.helper.GlobalCloseInputHelper
-import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.screenWidth
 
 /**
@@ -141,7 +140,6 @@ abstract class BaseFragmentDialog : DialogFragment() {
             dialog!!.window!!.setLayout(layoutWidth, layoutHeight)
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
