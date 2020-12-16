@@ -81,7 +81,6 @@ object AriaDownloadManager {
     @Download.onTaskComplete
     fun taskComplete(task: DownloadTask) {
         DLog.d(TAG, "taskComplete")
-        Aria.download(this).unRegister()
         if (task.key == (currentChapter.path_url)) {
             DownloadMemoryCache.setDownloadFinishChapter(task.key)
         }

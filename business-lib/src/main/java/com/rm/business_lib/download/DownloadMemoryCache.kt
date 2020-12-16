@@ -363,6 +363,7 @@ object DownloadMemoryCache {
         if (finishChapter != null) {
             downloadFinishChapterList.add(finishChapter)
             finishChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
+            finishChapter.current_offset = finishChapter.size
             finishChapter.file_path = filePath
             downloadingChapter.set(finishChapter)
             downloadingChapter.notifyChange()
