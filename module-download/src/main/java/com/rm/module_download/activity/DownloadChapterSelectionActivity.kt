@@ -52,8 +52,8 @@ class DownloadChapterSelectionActivity :
         })
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         mViewModel.mAdapter.notifyDataSetChanged()
     }
 

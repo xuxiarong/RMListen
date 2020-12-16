@@ -20,26 +20,24 @@ object DownLoadFileUtils {
 
     fun checkChapterIsDownload(chapter: DownloadChapter): DownloadChapter {
 
-        val file = File(
-            createFileWithAudio(chapter.audio_id.toString()).absolutePath,
-            chapter.chapter_name
-        )
+        val file = File(createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
+        val qb = DaoUtil(DownloadChapter::class.java, "").queryBuilder()
+        qb?.where(DownloadChapterDao.Properties.Chapter_id.eq(chapter.chapter_id))
+        qb?.where(DownloadChapterDao.Properties.Audio_id.eq(chapter.audio_id))
+        val list = qb?.list()
         if (file.exists() && file.isFile) {
-            val start = System.currentTimeMillis()
-            val qb = DaoUtil(DownloadChapter::class.java, "").queryBuilder()
-            qb?.where(DownloadChapterDao.Properties.Chapter_id.eq(chapter.chapter_id))
-            qb?.where(DownloadChapterDao.Properties.Audio_id.eq(chapter.audio_id))
-            val list = qb?.list()
-            val end = System.currentTimeMillis()
             if(list!=null && list.size>0){
                 chapter.down_status = list[0].down_status
             }else{
                 chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
             }
         }else{
-            if(chapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
-                ||chapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE){
+            if(chapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH){
                 chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
+            }else{
+                if(list!=null && list.size>0){
+                    chapter.down_status = list[0].down_status
+                }
             }
         }
         return chapter

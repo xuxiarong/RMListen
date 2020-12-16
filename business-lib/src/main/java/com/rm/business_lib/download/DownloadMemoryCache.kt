@@ -112,14 +112,11 @@ object DownloadMemoryCache {
         }
         val iterator = chapterList.iterator()
         while (iterator.hasNext()) {
-            val ne = iterator.next()
-            if (downloadingChapterList.value != null) {
-                downloadingChapterList.value!!.forEach {
-                    if (it.path_url == ne.path_url) {
-                        iterator.remove()
-                    } else {
-                        DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(it)
-                    }
+            val nextChapter = iterator.next()
+            nextChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+            downloadingChapterList.value?.forEach {
+                if (it.path_url == nextChapter.path_url) {
+                    iterator.remove()
                 }
             }
         }
@@ -129,6 +126,7 @@ object DownloadMemoryCache {
             isDownAll.set(true)
             ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
             downloadingChapterList.addAll(chapterList)
+            DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(chapterList)
             AriaDownloadManager.startDownload(chapterList[0])
         }
     }

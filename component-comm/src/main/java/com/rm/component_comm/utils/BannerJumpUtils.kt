@@ -71,7 +71,7 @@ object BannerJumpUtils {
                             mainService.startMainActivity(context = context, selectTab = 2)
                         } else if (page == "mine") {
                             val mainService = RouterHelper.createRouter(MainService::class.java)
-                            mainService.startMainActivity(context = context, selectTab = 2)
+                            mainService.startMainActivity(context = context, selectTab = 3)
                         } else if (page == "audioDetail") {
                             val homeService = RouterHelper.createRouter(HomeService::class.java)
                             if (!TextUtils.isEmpty(ids)) {

@@ -96,6 +96,7 @@ fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
 fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter, isSelectAll: Boolean) {
     DownLoadFileUtils.checkChapterIsDownload(chapter)
     if (chapter.down_status != DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
+        chapter.chapter_edit_select = false
         setImageResource(R.drawable.download_ic_item_disable)
         return
     }
