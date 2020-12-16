@@ -3,6 +3,8 @@ package com.rm.business_lib.net
 import android.os.Build
 import android.text.TextUtils
 import com.rm.baselisten.BuildConfig
+import com.rm.baselisten.net.bean.BaseResponse
+import com.rm.baselisten.net.util.GsonUtils
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
@@ -111,14 +113,11 @@ class RefreshTokenInterceptor : Interceptor {
                     .body(body).build()
             }
         } catch (e: Exception) {
-            val str="{\n" +
-                    "    \"code\":1009,\n" +
-                    "    \"msg\":\"请求报错\",\n" +
-                    "    \"data\":{}}"
+            val json = GsonUtils.toJson(BaseResponse(10086, "网络异常", Any()))
             return Response.Builder()
                 .request(chain.request())
                 .code(200)
-                .body(str.toResponseBody())
+                .body(json.toResponseBody())
                 .message("请求出错")
                 .protocol(Protocol.HTTP_2).build()
 
