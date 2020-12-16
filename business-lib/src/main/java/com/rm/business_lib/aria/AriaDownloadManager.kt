@@ -5,6 +5,7 @@ import com.arialyy.annotations.Download
 import com.arialyy.aria.core.Aria
 import com.arialyy.aria.core.task.DownloadTask
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.DLog
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -20,7 +21,7 @@ import java.io.File
 object AriaDownloadManager {
 
     lateinit var currentChapter: DownloadChapter
-    const val TAG = "suolong_AriaDownloadManager"   
+    const val TAG = "suolong_AriaDownloadManager"
     var isDownloading = ObservableBoolean(false)
 
     init {
@@ -28,25 +29,38 @@ object AriaDownloadManager {
     }
 
     fun startDownload(chapter: DownloadChapter) {
-        val file = File(
-            DownLoadFileUtils.createFileWithAudio(chapter.audio_id.toString()).absolutePath,
-            chapter.chapter_name
-        )
-        Aria.download(this).register()
-        DLog.d(TAG, "register filepath = ${file.absolutePath}")
-        val taskId: Long = Aria.download(this)
-            .load(chapter.path_url) //读取下载地址
-            .setFilePath(file.absolutePath) //设置文件保存的完整路径
-            .create() //创建并启动下载
-        currentChapter = chapter
-        DownloadMemoryCache.downloadingChapter.set(chapter)
+        if (chapter.path_url == DownloadMemoryCache.downloadingChapter.get()?.path_url) {
+            Aria.download(this).resumeAllTask()
+        } else {
+            currentChapter = chapter
+            DownloadMemoryCache.downloadingChapter.set(chapter)
+            Aria.download(this).stopAllTask()
+            val file = File(DownLoadFileUtils.createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
+            Aria.download(this).register()
+            DLog.d(TAG, "register filepath = ${file.absolutePath}")
+            Aria.download(this).load(chapter.path_url) //读取下载地址
+                    .setFilePath(file.absolutePath) //设置文件保存的完整路径
+                    .create() //创建并启动下载
+        }
     }
 
     fun pauseDownloadChapter(chapter: DownloadChapter) {
         Aria.download(this).stopAllTask()
     }
 
-    fun resumeDownloadChapter(){
+    fun stopAll() {
+        Aria.download(this).stopAllTask()
+    }
+
+    fun deleteDownload(chapter: DownloadChapter) {
+        Aria.download(this).removeAllTask(true)
+    }
+
+    fun deleteAllDownload() {
+        Aria.download(this).removeAllTask(true)
+    }
+
+    fun resumeDownloadChapter() {
         Aria.download(this).resumeAllTask()
     }
 
@@ -57,8 +71,9 @@ object AriaDownloadManager {
         if (task.key == (currentChapter.path_url)) {
             val percent = task.percent    //任务进度百分比
             val convertSpeed = task.convertSpeed    //转换单位后的下载速度，单位转换需要在配置文件中打开
-            val speed = task.speed //原始byte长度速度
+            val speed = ConvertUtils.byte2FitMemorySize(task.speed, 1) //原始byte长度速度
             val size = task.fileSize
+            DownloadMemoryCache.updateDownloadingSpeed(url = task.key, speed = speed, currentOffset = size * percent / 100)
             DLog.d(TAG, "taskRunning  percent = $percent convertSpeed = $convertSpeed speed = $speed")
         }
     }
@@ -66,6 +81,7 @@ object AriaDownloadManager {
     @Download.onTaskComplete
     fun taskComplete(task: DownloadTask) {
         DLog.d(TAG, "taskComplete")
+        Aria.download(this).unRegister()
         if (task.key == (currentChapter.path_url)) {
             DownloadMemoryCache.setDownloadFinishChapter(task.key)
         }

@@ -2,14 +2,17 @@ package com.rm.module_listen.fragment
 
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
 import com.rm.component_comm.download.DownloadService
@@ -84,7 +87,10 @@ class ListenMyListenFragment :
                 }
             }
         })
-
+        DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
+            download_chapter_num.isVisible = it.isNotEmpty()
+            download_chapter_num.text = it.size.toString()
+        })
     }
 
 

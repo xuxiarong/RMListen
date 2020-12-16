@@ -17,13 +17,13 @@ import com.rm.business_lib.wedgit.download.DownloadStatusView
  * version: 1.0
  */
 
-@BindingAdapter("bindDownloadAudio","bindDownloadStatusChapter", "bindCurrentDownChapter",requireAll = true)
+@BindingAdapter("bindDownloadAudio", "bindDownloadStatusChapter", "bindCurrentDownChapter", requireAll = true)
 fun DownloadStatusView.bindChapterList(
-    downloadAudio: DownloadAudio?,
-    chapter: DownloadChapter,
-    downloadChapter: DownloadChapter?
+        downloadAudio: DownloadAudio?,
+        chapter: DownloadChapter,
+        downloadChapter: DownloadChapter?
 ) {
-    if(downloadAudio !=null){
+    if (downloadAudio != null) {
         this.audio = downloadAudio
     }
     val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
@@ -35,38 +35,37 @@ fun DownloadStatusView.bindChapterList(
 }
 
 @BindingAdapter("bindDownloadNum")
-fun RoundTextView.bindDownloadNum(num : Int?){
+fun RoundTextView.bindDownloadNum(list: List<Any>?) {
 
-    if(num == null){
+    if (list == null) {
         visibility = View.GONE
         return
     }
 
-    if(num <= 0){
-        DownloadMemoryCache.downloadingNum.set(0)
+    if (list.isEmpty()) {
         visibility = View.GONE
         return
     }
     visibility = View.VISIBLE
 
-    if(num>99){
+    if (list.size > 99) {
         text = "99+"
-    }else{
-        text = num.toString()
+    } else {
+        text = list.size.toString()
     }
 
 }
 
 @BindingAdapter("bindDownDeleteNum")
-fun TextView.bind(num : Int?){
-    if(num == null){
+fun TextView.bind(num: Int?) {
+    if (num == null) {
         visibility = View.GONE
         return
     }
-    if(num == 0){
+    if (num == 0) {
         visibility = View.GONE
         return
     }
     visibility = View.VISIBLE
-    text = String.format(context.getString(R.string.download_delete_number),num)
+    text = String.format(context.getString(R.string.download_delete_number), num)
 }

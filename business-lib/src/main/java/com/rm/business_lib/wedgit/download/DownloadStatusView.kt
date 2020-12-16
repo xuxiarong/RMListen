@@ -1,15 +1,18 @@
 package com.rm.business_lib.wedgit.download
 
+import android.Manifest
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.R
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.DownloadMemoryCache
 import kotlinx.android.synthetic.main.layout_download_status_view.view.*
+import pub.devrel.easypermissions.EasyPermissions
 
 /**
  * desc   :
@@ -17,13 +20,13 @@ import kotlinx.android.synthetic.main.layout_download_status_view.view.*
  * version: 1.0
  */
 class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    FrameLayout(context, attrs, defStyleAttr) {
+        FrameLayout(context, attrs, defStyleAttr) {
 
     init {
         View.inflate(context, R.layout.layout_download_status_view, this)
     }
 
-    var audio: DownloadAudio? =null
+    var audio: DownloadAudio? = null
 
 
     fun setDownloadStatus(chapter: DownloadChapter) {
@@ -35,10 +38,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    if(audio!=null){
-                        DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
-                    }
-                    DownloadMemoryCache.addDownloadingChapter(chapter)
+                    requestPermissions { startDownloadChapter(chapter) }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
@@ -47,7 +47,8 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.VISIBLE
                 businessDownWaitLv.playAnimation()
                 setOnClickListener {
-                    DownloadMemoryCache.addDownloadingChapter(chapter)
+//                    if (EasyPermissions.hasPermissions(context, ))
+//                        DownloadMemoryCache.addDownloadingChapter(chapter)
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
@@ -58,7 +59,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    DownloadMemoryCache.pauseCurrentAndDownNextChapter()
+//                    DownloadMemoryCache.pauseCurrentAndDownNextChapter()
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
@@ -86,5 +87,29 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
             }
         }
     }
+
+    private fun startDownloadChapter(chapter: DownloadChapter) {
+        if (audio != null) {
+            DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
+        }
+        DownloadMemoryCache.addDownloadingChapter(chapter)
+    }
+
+    private fun requestPermissions(actionGranted: () -> Unit) {
+        if (context is BaseActivity) {
+            val baseActivity = context as BaseActivity
+            baseActivity.requestPermissionForResult(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    actionDenied = {
+                        baseActivity.tipView.showTipView(baseActivity, baseActivity.getString(R.string.business_listen_storage_permission_refuse))
+                    },
+                    actionGranted = {
+                        actionGranted()
+                    },
+                    actionPermanentlyDenied = {
+                        baseActivity.tipView.showTipView(baseActivity, baseActivity.getString(R.string.business_listen_to_set_storage_permission))
+                    })
+        }
+    }
+
 
 }

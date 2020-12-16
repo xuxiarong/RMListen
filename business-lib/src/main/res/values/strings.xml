@@ -52,5 +52,8 @@
     <string name="business_not_upgrade">暂不升级</string>
     <string name="business_upgrade">立即升级</string>
     <string name="business_upload_tips">升级提示</string>
+    <string name="business_listen_storage_permission">听书需要存储权限</string>
+    <string name="business_listen_storage_permission_refuse">听书需要存储权限,已经被禁止</string>
+    <string name="business_listen_to_set_storage_permission">听书需要存储权限，请前往设置页面打开该权限</string>
 
 </resources>
