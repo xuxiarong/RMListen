@@ -69,7 +69,6 @@
 
             <com.flyco.roundview.RoundTextView
                 android:id="@+id/download_chapter_num"
-                bindDownloadNum="@{DownloadMemoryCache.INSTANCE.downloadingNum}"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="end"

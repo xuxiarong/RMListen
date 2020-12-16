@@ -6,7 +6,7 @@
         <service
             android:name="com.rm.music_exoplayer_lib.service.MusicPlayerService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <receiver android:name=".receiver.AlarmBroadcastReceiver"/>
 
 

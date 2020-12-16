@@ -21,6 +21,7 @@ import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterUIStatus
+import com.tencent.bugly.proguard.t
 
 @BindingAdapter("bindDownloadCheckSrc")
 fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
@@ -32,12 +33,12 @@ fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
 }
 
 @BindingAdapter("bindDownAll")
-fun TextView.bindDownAll(chapter: DownloadChapter?) {
-    if (chapter == null) {
+fun TextView.bindDownAll(isDownAll: Boolean?) {
+    if (isDownAll == null) {
         text = context.getText(R.string.download_continue_down)
         return
     }
-    text = if (chapter.isDownloading) {
+    text = if (isDownAll) {
         context.getText(R.string.download_pause_all)
     } else {
         context.getText(R.string.download_continue_down)
@@ -45,12 +46,12 @@ fun TextView.bindDownAll(chapter: DownloadChapter?) {
 }
 
 @BindingAdapter("bindDownAll")
-fun ImageView.bindDownAll(chapter: DownloadChapter?) {
-    if (chapter == null) {
+fun ImageView.bindDownAll(isDownAll: Boolean?) {
+    if (isDownAll == null) {
         setImageResource(R.drawable.download_ic_start_download)
         return
     }
-    if (chapter.isDownloading) {
+    if (isDownAll) {
         setImageResource(R.drawable.download_ic_pause_download)
     } else {
         setImageResource(R.drawable.download_ic_start_download)
@@ -95,6 +96,7 @@ fun ImageView.bindDownloadStatusSrc(chapter: DownloadChapter) {
 fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter, isSelectAll: Boolean) {
     DownLoadFileUtils.checkChapterIsDownload(chapter)
     if (chapter.down_status != DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
+        chapter.chapter_edit_select = false
         setImageResource(R.drawable.download_ic_item_disable)
         return
     }
@@ -107,22 +109,28 @@ fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter, isSelectAll: B
     }
 }
 
-@BindingAdapter("bindItemChapter", "bindDownChapter")
+@BindingAdapter("bindItemChapter", "bindDownChapter","bindDownloadAll",requireAll = true)
 fun ImageView.bindDownOrPause(
         chapter: DownloadChapter,
-        downloadChapter: DownloadChapter?
+        downloadChapter: DownloadChapter?,
+        isDownAll: Boolean?
 ) {
     if (downloadChapter == null) {
         return
     }
+    if(isDownAll!=null && !isDownAll){
+        setImageResource(R.drawable.download_ic_start_download)
+        return
+    }
+
     if (chapter.chapter_id == downloadChapter.chapter_id) {
         chapter.down_status = downloadChapter.down_status
     }
     when (chapter.down_status) {
-        DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
+        DownloadConstant.CHAPTER_STATUS_DOWNLOADING, DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
             setImageResource(R.drawable.download_ic_pause_download)
         }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE, DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
+        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
             setImageResource(R.drawable.download_ic_start_download)
         }
     }
@@ -137,16 +145,15 @@ fun ProgressBar.bindDownProgressChapter(
     if (downloadChapter == null) {
         return
     }
-    if (chapter.chapter_id == downloadChapter.chapter_id) {
-        chapter.down_status = downloadChapter.down_status
-        chapter.down_speed = downloadChapter.down_speed
-        chapter.current_offset = downloadChapter.current_offset
-    }
-
-    when (chapter.down_status) {
-        DownloadConstant.CHAPTER_STATUS_DOWNLOADING, DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
-            progress = (chapter.current_offset / (chapter.size / 100)).toInt()
+    try {
+        if (chapter.chapter_id == downloadChapter.chapter_id) {
+            chapter.down_status = downloadChapter.down_status
+            chapter.down_speed = downloadChapter.down_speed
+            chapter.current_offset = downloadChapter.current_offset
         }
+        progress = (chapter.current_offset / (chapter.size / 100)).toInt()
+    }catch (e : Exception){
+        progress = 0
     }
 }
 
@@ -158,52 +165,23 @@ fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: 
         chapter.down_speed = downloadChapter.down_speed
         chapter.current_offset = downloadChapter.current_offset
     }
-    visibility = View.GONE
 
-    when (chapter.down_status) {
-        DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD -> {
-            text = ""
-        }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
-            text = context.getString(R.string.business_download_wait)
-        }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
-            if (downloadChapter != null) {
-                visibility = View.VISIBLE
-                chapter.current_offset = chapter.current_offset
-                val currentSize = ConvertUtils.byte2FitMemorySize(chapter.current_offset, 1)
-                val totalSize = ConvertUtils.byte2FitMemorySize(chapter.size, 1)
-                text = String.format(
-                        context.getString(R.string.business_down_and_total_size),
-                        currentSize,
-                        totalSize
-                )
-            }
-        }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
-            text = context.getString(R.string.business_download_pause)
-            visibility = View.VISIBLE
-            val currentSize = ConvertUtils.byte2FitMemorySize(chapter.current_offset, 1)
-            val totalSize = ConvertUtils.byte2FitMemorySize(chapter.size, 1)
-            text = String.format(
-                    context.getString(R.string.business_down_and_total_size),
-                    currentSize,
-                    totalSize
-            )
-        }
-        DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {
-            text = ""
-        }
-    }
+    chapter.current_offset = chapter.current_offset
+    val currentSize = ConvertUtils.byte2FitMemorySize(chapter.current_offset, 1)
+    val totalSize = ConvertUtils.byte2FitMemorySize(chapter.size, 1)
+    text = String.format(context.getString(R.string.business_down_and_total_size), currentSize, totalSize)
 }
 
-@BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter")
-fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?) {
+@BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter","bindDownloadAll",requireAll = true)
+fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?,isDownAll: Boolean?) {
+    if(isDownAll!=null && !isDownAll){
+        text = context.getString(R.string.business_download_pause)
+        return
+    }
     if (downloadChapter != null && chapter.chapter_id == downloadChapter.chapter_id) {
         chapter.down_status = downloadChapter.down_status
         chapter.down_speed = downloadChapter.down_speed
     }
-
     when (chapter.down_status) {
         DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD -> {
             text = ""
@@ -316,25 +294,25 @@ fun TextView.bindDownSelectChapterSize(size: Long) {
 }
 
 @BindingAdapter("bindDownFinishAudioSize")
-fun TextView.bindDownFinishAudioSize(list : List<DownloadAudio>?) {
-    if(list!=null && list.isNotEmpty()){
+fun TextView.bindDownFinishAudioSize(list: List<DownloadAudio>?) {
+    if (list != null && list.isNotEmpty()) {
         try {
             var totalSize = 0L
             list.forEach { audio ->
                 audio.chapterList?.forEach { chapter ->
-                    if(chapter.isDownloadFinish){
-                        totalSize+=chapter.size
+                    if (chapter.isDownloadFinish) {
+                        totalSize += chapter.size
                     }
                 }
             }
             text = String.format(context.getString(R.string.download_finish_audio_size),
-                ConvertUtils.byte2FitMemorySize(totalSize, 1),
-                ConvertUtils.byte2FitMemorySize(SDCardUtils.getExternalAvailableSize(), 1))
+                    ConvertUtils.byte2FitMemorySize(totalSize, 1),
+                    ConvertUtils.byte2FitMemorySize(SDCardUtils.getExternalAvailableSize(), 1))
         } catch (e: Exception) {
             e.printStackTrace()
             text = ""
         }
-    }else{
+    } else {
         text = ""
     }
 

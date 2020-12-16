@@ -12,7 +12,6 @@
         android:name="debug.PlayApplication"
         android:icon="@mipmap/play_ic_launcher"
         android:label="@string/play_app_name"
-        android:allowBackup="true"
         android:supportsRtl="true"
         android:theme="@style/BusinessAppTheme"
         android:usesCleartextTraffic="true">

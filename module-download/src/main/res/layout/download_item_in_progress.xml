@@ -80,6 +80,7 @@
                 isVisible="@{!viewModel.downloadingEdit}"
                 bindItemChapter="@{itemBean}"
                 bindDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
+                bindDownloadAll="@{DownloadMemoryCache.INSTANCE.isDownAll}"
                 tools:src="@drawable/download_ic_pause_download" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -87,7 +88,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="@dimen/dp_11"
-                isVisible="@{itemBean.isDownloading()}"
                 bindDownloadItem="@{itemBean}"
                 bindDownloadChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
                 tools:text="144m/200m"
@@ -101,6 +101,7 @@
                 android:layout_marginBottom="@dimen/dp_11"
                 bindDownloadText="@{itemBean}"
                 bindDownloadSpeedChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
+                bindDownloadAll="@{DownloadMemoryCache.INSTANCE.isDownAll}"
                 tools:text="144kb/s"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />

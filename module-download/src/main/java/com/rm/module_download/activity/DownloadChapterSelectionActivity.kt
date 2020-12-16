@@ -2,11 +2,14 @@ package com.rm.module_download.activity
 
 import android.content.Context
 import android.content.Intent
+import androidx.core.view.isVisible
 import androidx.databinding.Observable
+import androidx.lifecycle.Observer
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadActivityChapterSelectionBinding
@@ -43,10 +46,14 @@ class DownloadChapterSelectionActivity :
                 mViewModel.getDialogSelectChapterList()
             }
         })
+        DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
+            download_chapter_num.isVisible = it.isNotEmpty()
+            download_chapter_num.text = it.size.toString()
+        })
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         mViewModel.mAdapter.notifyDataSetChanged()
     }
 

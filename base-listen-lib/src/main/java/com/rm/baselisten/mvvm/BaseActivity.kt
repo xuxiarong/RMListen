@@ -1,18 +1,15 @@
 package com.rm.baselisten.mvvm
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.view.contains
 import androidx.fragment.app.FragmentActivity
 import com.gyf.barlibrary.ImmersionBar
 import com.rm.baselisten.R
-import com.rm.baselisten.fragment.IPermissionFragment
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.view.BaseTipView
@@ -35,8 +32,8 @@ abstract class BaseActivity : FragmentActivity(), EasyPermissions.PermissionCall
         BaseTipView(this)
     }
 
-    var requestPermission = ""
-    var requestPermissionCode = 1001
+    private var requestPermission = ""
+    private var requestPermissionCode = 1001
     var requestPermissionGranted: () -> Unit = {}
     var requestPermissionDenied: () -> Unit = {}
     var requestPermanentlyDenied: () -> Unit = {}
@@ -118,7 +115,7 @@ abstract class BaseActivity : FragmentActivity(), EasyPermissions.PermissionCall
         }
     }
 
-    protected fun requestPermissionForResult(
+    fun requestPermissionForResult(
         permission: String,
         actionDenied: () -> Unit,
         actionGranted: () -> Unit,
@@ -188,10 +185,8 @@ abstract class BaseActivity : FragmentActivity(), EasyPermissions.PermissionCall
             //从设置页面返回，判断权限是否申请。
             if (EasyPermissions.hasPermissions(this, requestPermission)) {
                 requestPermissionGranted()
-                Toast.makeText(this, "权限申请成功!", Toast.LENGTH_SHORT).show()
             } else {
                 requestPermanentlyDenied()
-                Toast.makeText(this, "权限申请失败!", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -241,6 +241,10 @@ public class DownloadChapter implements Serializable {
         return down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT;
     }
 
+    public boolean isNotDown() {
+        return down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD;
+    }
+
     public long getUpdateMillis() {
         return this.updateMillis;
     }
