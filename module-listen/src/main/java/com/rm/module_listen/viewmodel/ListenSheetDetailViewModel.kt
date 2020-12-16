@@ -1,6 +1,7 @@
 package com.rm.module_listen.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.View
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
@@ -19,6 +20,7 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenMySheetDetailActivity
+import com.rm.module_listen.bean.ListenSubscriptionListBean
 import com.rm.module_listen.repository.ListenRepository
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 
@@ -39,7 +41,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
     private val mDialog by lazy { CommBottomDialog() }
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
-    val contentRvId=R.id.listen_sheet_detail_recycler_view
+    val contentRvId = R.id.listen_sheet_detail_recycler_view
 
     //数据源
     val data = ObservableField<SheetInfoBean>()
@@ -78,7 +80,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
     }
 
     /**
-     * 获取听单列表
+     * 获取列表
      */
     fun getSheetInfo() {
         showLoading()
@@ -181,6 +183,24 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
         }
     }
 
+    private fun showTipDialog(context: Context, bean: DownloadAudio) {
+        getActivity(context)?.let {
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = "该内容已下架，是否移出听单？"
+                rightBtnText = "移出听单"
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    removeAudioFun(bean)
+                }
+            }.show(it)
+        }
+    }
+
     /**
      * 删除成功
      */
@@ -263,8 +283,13 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
      * item点击事件
      */
     fun itemClickFun(view: View, bean: DownloadAudio) {
-        RouterHelper.createRouter(HomeService::class.java)
-            .startDetailActivity(view.context, bean.audio_id.toString())
+        if (TextUtils.equals(bean.status, "0")) {
+            showTipDialog(view.context, bean)
+        } else {
+            RouterHelper.createRouter(HomeService::class.java)
+                .startDetailActivity(view.context, bean.audio_id.toString())
+        }
+
     }
 
     /**

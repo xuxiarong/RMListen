@@ -1,6 +1,7 @@
 package com.rm.business_lib.insertpoint
 
 import com.rm.baselisten.net.util.GsonUtils
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.net.api.BusinessApiService
 import kotlinx.coroutines.Dispatchers
@@ -28,13 +29,15 @@ class BusinessInsertManager {
         private fun doInsert(bean: BusinessInsertBean) {
             val toJson = GsonUtils.toJson(bean)
             GlobalScope.launch(Dispatchers.IO) {
-                apiService.insertPoint(toJson.toRequestBody("application/json;charset=utf-8".toMediaType()))
+                val result =
+                    apiService.insertPoint(toJson.toRequestBody("application/json;charset=utf-8".toMediaType()))
+                DLog.i("doInsert===>", "$toJson      code:${result.code}   msg: ${result.msg}")
             }
         }
 
         @JvmStatic
         fun doInsertKey(key: String) {
-            doInsert(BusinessInsertBean(key))
+            doInsert(BusinessInsertBean(key, BusinessInsertExtDataBean()))
         }
 
         @JvmStatic
@@ -45,8 +48,8 @@ class BusinessInsertManager {
         }
 
         @JvmStatic
-        fun doInsertKeyAndChapter(key: String, audioId: String,chapterId:String) {
-            val audioBean = BusinessInsertChapterDataBean(audioId,chapterId)
+        fun doInsertKeyAndChapter(key: String, audioId: String, chapterId: String) {
+            val audioBean = BusinessInsertChapterDataBean(audioId, chapterId)
             val bean = BusinessInsertBean(key, audioBean)
             doInsert(bean)
         }

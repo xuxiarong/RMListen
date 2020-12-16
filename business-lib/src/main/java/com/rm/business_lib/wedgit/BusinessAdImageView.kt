@@ -1,10 +1,10 @@
 package com.rm.business_lib.wedgit
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.util.DLog
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 
@@ -38,7 +38,7 @@ class BusinessAdImageView @JvmOverloads constructor(
 
 @BindingAdapter("bindAdId")
 fun BusinessAdImageView.bindAdId(bindAdId: String?) {
-    if (bindAdId != null) {
+    if (bindAdId != null && !TextUtils.equals(bindAdId, "0")) {
         adId = bindAdId
         adIsShow = true
     }

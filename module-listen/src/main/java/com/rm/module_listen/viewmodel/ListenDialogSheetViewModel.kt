@@ -15,6 +15,7 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_ADD_SHEET
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
@@ -181,10 +182,11 @@ class ListenDialogSheetViewModel(
                     dismiss()
                 }
                 rightBtnClick = {
-                    RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
-                        mActivity,
-                        LISTEN_SHEET_LIST_MY_LIST
-                    )
+                        RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
+                            mActivity,
+                            LISTEN_SHEET_LIST_MY_LIST,
+                            ""
+                        )
                     dismiss()
                 }
                 customView =

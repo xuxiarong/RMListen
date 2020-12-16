@@ -76,7 +76,7 @@
                 style="@style/BusinessTextStyleFirst_2"
                 android:layout_width="match_parent"
                 android:gravity="center"
-                android:onClick="@{()->viewModel.dialogUnsubscribeFun()}"
+                android:onClick="@{()->viewModel.dialogUnsubscribeFun(viewModel.subscriptionData)}"
                 android:paddingTop="@dimen/dp_16"
                 android:paddingBottom="@dimen/dp_16"
                 android:text="@string/listen_unsubscribe"

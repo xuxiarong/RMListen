@@ -6,7 +6,9 @@ import androidx.databinding.ObservableField
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.share.Share2
@@ -40,7 +42,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     val data = ObservableField<MutableList<ListenSubscriptionListBean>>()
 
     //记录当前点击的实体对象
-    private val subscriptionData = ObservableField<ListenSubscriptionListBean>()
+    val subscriptionData = ObservableField<ListenSubscriptionListBean>()
 
     //当前请求的页码
     private var mPage = 1
@@ -52,8 +54,30 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * item点击事件
      */
     fun itemClickFun(view: View, bookBeanListen: ListenSubscriptionListBean) {
-        RouterHelper.createRouter(HomeService::class.java)
-            .startDetailActivity(view.context, bookBeanListen.audio_id.toString())
+        if (bookBeanListen.audio_status == 0) {
+            showTipDialog(view.context, bookBeanListen)
+        } else {
+            RouterHelper.createRouter(HomeService::class.java)
+                .startDetailActivity(view.context, bookBeanListen.audio_id.toString())
+        }
+    }
+
+    private fun showTipDialog(context: Context, bean: ListenSubscriptionListBean) {
+        getActivity(context)?.let {
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = "该内容已下架，是否移除？"
+                rightBtnText = "移除"
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    dialogUnsubscribeFun(bean)
+                }
+            }.show(it)
+        }
     }
 
     /**
@@ -192,29 +216,31 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
     /**
      * dialog 取消订阅
      */
-    fun dialogUnsubscribeFun() {
-        showLoading()
-        launchOnIO {
-            repository.unsubscribe(subscriptionData.get()!!.audio_id.toString()).checkResult(
-                onSuccess = {
-                    showContentView()
-                    mDialog.dismiss()
-                    if (subscriptionData.get()!!.is_top == 1) {
-                        mAdapter.setTopSize(--topSize)
+    fun dialogUnsubscribeFun(bean: ListenSubscriptionListBean?) {
+        bean?.let {
+            showLoading()
+            launchOnIO {
+                repository.unsubscribe(bean.audio_id.toString()).checkResult(
+                    onSuccess = {
+                        showContentView()
+                        mDialog.dismiss()
+                        if (subscriptionData.get()!!.is_top == 1) {
+                            mAdapter.setTopSize(--topSize)
+                        }
+                        mAdapter.remove(subscriptionData.get()!!)
+                        if (mAdapter.data.size <= 0) {
+                            showDataEmpty()
+                        }
+                        BusinessInsertManager.doInsertKeyAndAudio(
+                            BusinessInsertConstance.INSERT_TYPE_AUDIO_UNSUBSCRIBED,
+                            subscriptionData.get()!!.audio_id.toString()
+                        )
+                    },
+                    onError = {
+                        showContentView()
                     }
-                    mAdapter.remove(subscriptionData.get()!!)
-                    if (mAdapter.data.size <= 0) {
-                        showDataEmpty()
-                    }
-                    BusinessInsertManager.doInsertKeyAndAudio(
-                        BusinessInsertConstance.INSERT_TYPE_AUDIO_UNSUBSCRIBED,
-                        subscriptionData.get()!!.audio_id.toString()
-                    )
-                },
-                onError = {
-                    showContentView()
-                }
-            )
+                )
+            }
         }
     }
 

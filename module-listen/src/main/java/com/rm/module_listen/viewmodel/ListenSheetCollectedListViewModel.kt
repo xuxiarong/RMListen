@@ -193,9 +193,13 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      * 子view item点击事件
      */
     fun itemChildClickFun(view: View, bean: DownloadAudio) {
-        getActivity(view.context)?.let {
-            RouterHelper.createRouter(HomeService::class.java)
-                .startDetailActivity(it, bean.audio_id.toString())
+        if (TextUtils.equals(bean.status, "0")) {
+            showTip("该内容已下架", R.color.business_color_ff5e5e)
+        } else {
+            getActivity(view.context)?.let {
+                RouterHelper.createRouter(HomeService::class.java)
+                    .startDetailActivity(it, bean.audio_id.toString())
+            }
         }
     }
 

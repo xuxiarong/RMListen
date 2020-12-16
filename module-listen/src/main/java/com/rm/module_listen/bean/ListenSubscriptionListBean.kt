@@ -12,7 +12,8 @@ data class ListenSubscriptionListBean(
     var unread: Int,//未阅读的章节数
     var sequence: Int,//当前最新章节的集数
     var cover_url: String,//封面url
-    var last_unread: Int//上一次请求未读数
+    var last_unread: Int,//上一次请求未读数
+    var audio_status: Int
 ) {
     fun getProgressStr(): String {
         return when (progress) {

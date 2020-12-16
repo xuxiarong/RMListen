@@ -37,8 +37,6 @@ class ListenSubscriptionAdapter(
             view.width = view.resources.getDimensionPixelSize(R.dimen.dp_18)
         }
 
-        DLog.i("======","$topSize   $itemCount     ${holder.adapterPosition}")
-
         if (topSize > 0 && topSize != itemCount-headerLayoutCount-footerLayoutCount && topSize-1  == holder.adapterPosition) {
             holder.getView<View>(R.id.listen_subscription_adapter_view1).visibility = View.VISIBLE
             holder.getView<View>(R.id.listen_subscription_adapter_view2).visibility = View.VISIBLE

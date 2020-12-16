@@ -5,7 +5,9 @@ import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
@@ -18,8 +20,7 @@ import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.repository.ListenRepository
 
-class ListenSheetMyListViewModel(private val repository: ListenRepository) :
-    BaseVMViewModel() {
+class ListenSheetMyListViewModel(private val repository: ListenRepository) : BaseVMViewModel() {
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
     val contentRvId = R.id.listen_sheet_my_list_recycler_view
@@ -63,7 +64,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
                     successData(it)
                 },
                 onError = {
-                    failData()
+                    failData("$it")
                 }
             )
         }
@@ -76,7 +77,25 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
                     successData(it)
                 },
                 onError = {
-                    failData()
+                    failData("$it")
+                }
+            )
+        }
+    }
+
+    /**
+     * 删除听单
+     */
+    private fun deleteSheet(sheetId: String) {
+        showLoading()
+        launchOnIO {
+            repository.deleteSheet(sheetId).checkResult(
+                onSuccess = {
+                    showContentView()
+                    remove(sheetId)
+                },
+                onError = {
+                    showContentView()
                 }
             )
         }
@@ -109,13 +128,13 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
     /**
      * 数据请求失败
      */
-    private fun failData() {
+    private fun failData(msg: String) {
         if (page == 1) {
-            showServiceError()
             refreshStateModel.finishRefresh(false)
         } else {
             refreshStateModel.finishLoadMore(false)
         }
+        showTip(msg, R.color.business_color_ff5e5e)
     }
 
     /**
@@ -138,16 +157,45 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) :
      * item点击事件
      */
     fun itemClick(context: Context, bean: ListenSheetBean) {
-        if (memberId == loginUser.get()?.id) {
-            getActivity(context)?.let {
-                clickBean.set(bean)
-                ListenMySheetDetailActivity.startActivity(it, bean.sheet_id.toString())
+
+        when (bean.pre_deleted_from) {
+            "1" -> {
+                showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否删除", bean.sheet_id.toString())
             }
-        } else {
-            getActivity(context)?.let {
-                RouterHelper.createRouter(HomeService::class.java)
-                    .startHomeSheetDetailActivity(it, bean.sheet_id.toString())
+            "2" -> {
+                showTipDialog(context, "该听单已被作者删除，是否删除？", bean.sheet_id.toString())
             }
+            else -> {
+                if (memberId.isEmpty()) {
+                    getActivity(context)?.let {
+                        clickBean.set(bean)
+                        ListenMySheetDetailActivity.startActivity(it, bean.sheet_id.toString())
+                    }
+                } else {
+                    getActivity(context)?.let {
+                        RouterHelper.createRouter(HomeService::class.java)
+                            .startHomeSheetDetailActivity(it, bean.sheet_id.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showTipDialog(context: Context, content: String, sheetId: String) {
+        getActivity(context)?.let {
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = content
+                rightBtnText = context.String(R.string.business_sure)
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    deleteSheet(sheetId)
+                }
+            }.show(it)
         }
     }
 

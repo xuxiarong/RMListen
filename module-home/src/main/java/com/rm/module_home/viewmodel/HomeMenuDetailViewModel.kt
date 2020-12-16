@@ -1,6 +1,7 @@
 package com.rm.module_home.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.ObservableField
@@ -50,7 +51,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     val showNoData = ObservableField<Boolean>(false)
 
     //刷新控件内的recyclerview
-    val contentRvId=R.id.home_menu_detail_recycler_view
+    val contentRvId = R.id.home_menu_detail_recycler_view
 
     val userInfo = loginUser
 
@@ -75,7 +76,11 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
      * item 点击事件
      */
     fun itemClickFun(context: Context, bookBean: DownloadAudio) {
-        HomeDetailActivity.startActivity(context, bookBean.audio_id.toString())
+        if (TextUtils.equals("0", bookBean.status)) {
+            showTip("该内容已下架", R.color.base_ff5e5e)
+        } else {
+            HomeDetailActivity.startActivity(context, bookBean.audio_id.toString())
+        }
     }
 
     /**
@@ -130,7 +135,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     fun refreshData() {
         mPage = 1
         refreshStatusModel.setResetNoMoreData(true)
-       getAudioList()
+        getAudioList()
     }
 
     /**
@@ -179,9 +184,9 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                         processAudioList(it)
                     },
                     onError = {
-                        if (mPage==1){
+                        if (mPage == 1) {
                             refreshStatusModel.finishRefresh(false)
-                        }else{
+                        } else {
                             refreshStatusModel.finishLoadMore(false)
                         }
                     }
@@ -278,7 +283,8 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                 rightBtnClick = {
                     RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
                         activity,
-                        LISTEN_SHEET_LIST_COLLECTED_LIST
+                        LISTEN_SHEET_LIST_COLLECTED_LIST,
+                        ""
                     )
                     dismiss()
                 }
