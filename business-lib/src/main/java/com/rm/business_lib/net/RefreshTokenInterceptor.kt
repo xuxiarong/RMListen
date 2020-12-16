@@ -15,8 +15,10 @@ import com.rm.business_lib.helpter.parseToken
 import com.rm.business_lib.net.api.BusinessApiService
 import com.rm.business_lib.utils.DeviceUtils
 import okhttp3.Interceptor
+import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
@@ -55,61 +57,72 @@ class RefreshTokenInterceptor : Interceptor {
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        try {
+            val originRequest = chain.request()
+            val request = getRequestHeaderBuilder(originRequest.newBuilder()).build()
+            //获取请求结果
+            val originResponse = chain.proceed(request)
+            val body = originResponse.body
+            // 原请求地址
+            val originReqUrl = originRequest.url.toString()
+            //没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
+            DLog.i("=====>RefreshTokenInterceptor", "=====>>>>$originReqUrl")
 
-//        synchronized(this) {
-        val originRequest = chain.request()
-        val request = getRequestHeaderBuilder(originRequest.newBuilder()).build()
-        //获取请求结果
-        val originResponse = chain.proceed(request)
-        val body = originResponse.body
-        // 原请求地址
-        val originReqUrl = originRequest.url.toString()
-        //没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
-        DLog.i("=====>RefreshTokenInterceptor", "=====>>>>$originReqUrl")
-
-        if (TextUtils.isEmpty(getResponseString(originResponse))) {
-            DLog.i("=====>RefreshTokenInterceptor", "=====000000000   ${request.url}")
-            return originResponse.newBuilder().code(originResponse.code)
-                .body(body).build()
-        }
-        val code = getResponseCode(originResponse)
-
-        return if (code == CODE_REFRESH_TOKEN) {
-
-            val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
-            val newToken = getToken(token)
-            //token刷新成功
-            if (!TextUtils.isEmpty(newToken)) {
-                val headers = request.headers.newBuilder()
-                headers["Authorization"] = "Bearer $newToken"
-                val newRequest = request.newBuilder().headers(headers.build()).build()
-                DLog.i("=====>RefreshTokenInterceptor", "=====111111  ${request.url}")
-                chain.proceed(newRequest)
-            } else {
-                //token 刷新失败
-                loginOut()
-                val headers = request.headers.newBuilder()
-                headers["Authorization"] = "Bearer "
-                val newRequest = request.newBuilder().headers(headers.build()).build()
-                DLog.i("=====>RefreshTokenInterceptor", "=====2222222  ${request.url}")
-                chain.proceed(newRequest)
+            if (TextUtils.isEmpty(getResponseString(originResponse))) {
+                DLog.i("=====>RefreshTokenInterceptor", "=====000000000   ${request.url}")
+                return originResponse.newBuilder().code(originResponse.code)
+                    .body(body).build()
             }
-        } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN /*|| code == CODE_REFRESH_TOKEN_FAILED*/) {
-            //被挤下线了/用户未登陆/
-            loginOut()
+            val code = getResponseCode(originResponse)
+
+            return if (code == CODE_REFRESH_TOKEN) {
+
+                val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
+                val newToken = getToken(token)
+                //token刷新成功
+                if (!TextUtils.isEmpty(newToken)) {
+                    val headers = request.headers.newBuilder()
+                    headers["Authorization"] = "Bearer $newToken"
+                    val newRequest = request.newBuilder().headers(headers.build()).build()
+                    DLog.i("=====>RefreshTokenInterceptor", "=====111111  ${request.url}")
+                    chain.proceed(newRequest)
+                } else {
+                    //token 刷新失败
+                    loginOut()
+                    val headers = request.headers.newBuilder()
+                    headers["Authorization"] = "Bearer "
+                    val newRequest = request.newBuilder().headers(headers.build()).build()
+                    DLog.i("=====>RefreshTokenInterceptor", "=====2222222  ${request.url}")
+                    chain.proceed(newRequest)
+                }
+            } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN /*|| code == CODE_REFRESH_TOKEN_FAILED*/) {
+                //被挤下线了/用户未登陆/
+                loginOut()
 //            val headers = request.headers.newBuilder()
 //            headers["Authorization"] = "Bearer "
 //            val newRequest = request.newBuilder().headers(headers.build()).build()
 //            DLog.i("=====>RefreshTokenInterceptor", "=====333333 $code")
 //            chain.proceed(newRequest)
-            originResponse.newBuilder().code(originResponse.code)
-                .body(body).build()
-        } else {
-            DLog.i("=====>RefreshTokenInterceptor", "=====444444 ${request.url}")
-            originResponse.newBuilder().code(originResponse.code)
-                .body(body).build()
+                originResponse.newBuilder().code(originResponse.code)
+                    .body(body).build()
+            } else {
+                DLog.i("=====>RefreshTokenInterceptor", "=====444444 ${request.url}")
+                originResponse.newBuilder().code(originResponse.code)
+                    .body(body).build()
+            }
+        } catch (e: Exception) {
+            val str="{\n" +
+                    "    \"code\":1009,\n" +
+                    "    \"msg\":\"请求报错\",\n" +
+                    "    \"data\":{}}"
+            return Response.Builder()
+                .request(chain.request())
+                .code(200)
+                .body(str.toResponseBody())
+                .message("请求出错")
+                .protocol(Protocol.HTTP_2).build()
+
         }
-//        }
     }
 
     @Throws(IOException::class)

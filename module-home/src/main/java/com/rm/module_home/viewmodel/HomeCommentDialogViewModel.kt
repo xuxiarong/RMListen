@@ -127,9 +127,9 @@ class HomeCommentDialogViewModel(
             )
             visibility = View.VISIBLE
             showAnim?.start()
-            handler.removeCallbacksAndMessages(null)
+            handler?.removeCallbacksAndMessages(null)
             if (isDelayGone) {
-                handler.postDelayed({
+                handler?.postDelayed({
                     hideTipView()
                 }, 3000)
             }
