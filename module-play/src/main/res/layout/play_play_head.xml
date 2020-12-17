@@ -490,7 +490,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             bindPlayCountDownSecondText="@{PlayGlobalData.INSTANCE.playCountDownSecond}"
             bindPlayCountDownSizeText="@{PlayGlobalData.INSTANCE.playCountDownChapterSize}"
-            android:layout_width="@dimen/dp_26"
+            android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_14"
             android:gravity="center"
             android:onClick="@{()->viewModel.showPlaySettingDialog(context)}"
