@@ -127,8 +127,16 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
                 if (lastVersion.toInt() - localVersion.toInt() > 0) {
                     RouterHelper.createRouter(HomeService::class.java)
                         .showUploadDownDialog(
-                            activity, bean,
-                            MineAboutViewModel.INSTALL_RESULT_CODE, false
+                            activity,
+                            bean,
+                            MineAboutViewModel.INSTALL_RESULT_CODE,
+                            false,
+                            downloadComplete={},
+                            sureIsDismiss = true,
+                            cancelBlock = {
+
+                            },
+                            sureBlock = {}
                         )
                 } else {
                     showTip("当前已经是最新版本了")

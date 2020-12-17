@@ -36,7 +36,7 @@ class HomeServiceImpl : HomeService {
         return HomeHomeFragment()
     }
 
-    override fun startTopicActivity(context: Context,topicId: Int, blockName: String) {
+    override fun startTopicActivity(context: Context, topicId: Int, blockName: String) {
         HomeTopicListActivity.startTopicActivity(context, topicId, blockName)
     }
 
@@ -56,20 +56,33 @@ class HomeServiceImpl : HomeService {
     }
 
     override fun showCommentDialog(
-            mActivity: FragmentActivity,
-            audio: String,
-            commentSuccessBlock: () -> Unit
+        mActivity: FragmentActivity,
+        audio: String,
+        commentSuccessBlock: () -> Unit
     ) {
         HomeCommentDialogHelper(mActivity, audio, commentSuccessBlock).showDialog()
     }
 
     override fun showUploadDownDialog(
-            activity: FragmentActivity,
-            versionInfo: BusinessVersionUrlBean,
-            installCode: Int,
-            enforceUpdate: Boolean
+        activity: FragmentActivity,
+        versionInfo: BusinessVersionUrlBean,
+        installCode: Int,
+        enforceUpdate: Boolean,
+         downloadComplete:(String)->Unit,
+        sureIsDismiss: Boolean? ,
+        sureBlock: () -> Unit?,
+        cancelBlock: () -> Unit?
     ) {
-        HomeUploadDownload(versionInfo, activity, installCode, enforceUpdate).showUploadDialog()
+        HomeUploadDownload(
+            versionInfo,
+            activity,
+            installCode,
+            enforceUpdate,
+            downloadComplete,
+            sureIsDismiss,
+            sureBlock,
+            cancelBlock
+        ).showUploadDialog()
     }
 
     override fun gotoInstallPermissionSetting(activity: Activity, path: String, installCode: Int) {

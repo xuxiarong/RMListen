@@ -13,6 +13,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.http.Field
 import java.io.File
 
 /**
@@ -125,13 +126,9 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         contact: String
     ): BaseResult<Any> {
         return apiCall {
-            service.mineRequestBook(
-                book_name,
-                author,
-                anchor_name,
-                contact,
-                DeviceUtils.uniqueDeviceId
-            )
+            val bean = MineGetBookBean(book_name, author, anchor_name, contact)
+            val json = GsonUtils.toJson(bean)
+            service.mineRequestBook(json.toRequestBody("application/json; charset=utf-8".toMediaType()))
         }
     }
 
@@ -160,14 +157,24 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         img_list: Array<String>?,
         contact: String?
     ): BaseResult<Any> {
-        val bean = MineUploadFeedbackBean(
-            feedback_type,
-            content,
-            img_list,
-            contact,
-            DeviceUtils.uniqueDeviceId
-        )
-        val json = GsonUtils.toJson(bean)
+        val json = if (feedback_type in 0..4) {
+            val bean = MineUploadFeedbackBean(
+                feedback_type,
+                content,
+                img_list,
+                contact,
+                DeviceUtils.uniqueDeviceId
+            )
+            GsonUtils.toJson(bean)
+        } else {
+            val bean = MineUploadFeedbackBean1(
+                content,
+                img_list,
+                contact,
+                DeviceUtils.uniqueDeviceId
+            )
+            GsonUtils.toJson(bean)
+        }
         val requestBody = json.toRequestBody("application/json; charset=utf-8".toMediaType())
         return apiCall {
             service.mineFeedback(requestBody)

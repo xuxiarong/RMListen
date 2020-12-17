@@ -118,13 +118,14 @@
     <string name="mine_suffix">)</string>
 
     <string name="mine_author_name">作者名</string>
-    <string name="mine_hint_book_info_tips">填写你想要的书籍名称</string>
+    <string name="mine_hint_book_info_tips">填写你想寻找的书籍名称</string>
     <string name="mine_book_info">书籍信息</string>
-    <string name="mine_hint_optional_tips">(选填)</string>
+    <string name="mine_hint_book_author_tips">作者名（选填）</string>
+    <string name="mine_hint_book_member_tips">主播名（选填）</string>
+    <string name="mine_hint_book_contact_tips">您的邮箱/微信/手机号（选填）</string>
     <string name="mine_member_name">主播名</string>
     <string name="mine_contact">联系方式</string>
     <string name="mine_submit">提交</string>
-    <string name="mine_hint_contact_tips">您的手机号/邮箱/微信 (选填)</string>
 
     <string name="mine_feedback">意见反馈</string>
     <string name="mine_feedback_type">意见反馈类型</string>
@@ -134,13 +135,14 @@
     <string name="mine_feedback_contact">添加联系方式</string>
     <string name="mine_question_depict">问题描述</string>
     <string name="mine_feedback_content_num">/500</string>
-    <string name="mine_feedback_hint_content_tips">请尽量详细，方便我们快速定位解决</string>
-    <string name="mine_feedback_hint_contact_tips">请输入您的手机号/邮箱/微信</string>
+    <string name="mine_feedback_hint_content_tips">问题描述（请尽量详细，方便我们快速定位解决）</string>
+    <string name="mine_feedback_hint_contact_tips">请输入你的联系方式（手机号/微信/邮箱）</string>
     <string name="mine_update_version">版本更新</string>
     <string name="mine_cooperation">业务合作</string>
     <string name="mine_web_address">官网地址</string>
     <string name="mine_user_pact">《用户协议》</string>
     <string name="mine_private_pact">《个人信息保护及隐私政策协议》</string>
     <string name="mine_lm_name">深圳雷漫网络科技</string>
+    <string name="mine_customer">客服电话：123213</string>
 
 </resources>

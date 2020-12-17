@@ -35,6 +35,7 @@ interface HomeService : ApplicationProvider {
      * 跳转到板块
      */
     fun startTopicActivity(context: Context, topicId: Int, blockName: String)
+
     /**
      * 跳转详情页
      */
@@ -47,9 +48,9 @@ interface HomeService : ApplicationProvider {
      * @param commentSuccessBlock 评论成功回调
      */
     fun showCommentDialog(
-            mActivity: FragmentActivity,
-            audio: String,
-            commentSuccessBlock: () -> Unit
+        mActivity: FragmentActivity,
+        audio: String,
+        commentSuccessBlock: () -> Unit
     )
 
     /**
@@ -60,10 +61,14 @@ interface HomeService : ApplicationProvider {
      * @param enforceUpdate 是否强制更新
      */
     fun showUploadDownDialog(
-            activity: FragmentActivity,
-            versionInfo: BusinessVersionUrlBean,
-            installCode: Int,
-            enforceUpdate: Boolean
+        activity: FragmentActivity,
+        versionInfo: BusinessVersionUrlBean,
+        installCode: Int,
+        enforceUpdate: Boolean,
+        downloadComplete:(String)->Unit,
+        sureIsDismiss: Boolean? ,
+        sureBlock: () -> Unit?,
+        cancelBlock: () -> Unit?
     )
 
     /**

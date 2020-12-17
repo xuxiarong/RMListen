@@ -70,9 +70,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     //首页列表广告数据
     var homeItemDataAdModel = ObservableField<HomeSingleImgAdResultModel>()
 
-    //版本更新
-    val versionInfo = ObservableField<BusinessVersionUrlBean>()
-
 
     /**
      * 获取首页数据
@@ -152,20 +149,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
 
     }
 
-    /**
-     * 版本更新
-     */
-    private fun getLaseVersion() {
-        launchOnIO {
-            repository.homeGetLaseUrl().checkResult(
-                onSuccess = {
-                    versionInfo.set(it)
-                }, onError = {
-                    showTip("$it", R.color.business_color_ff5e5e)
-                })
-        }
-    }
-
 
     /**
      * 处理首页的数据
@@ -198,7 +181,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 homeAllData.value = allData
                 //板块数据不为空,每次都获取Item的广告数据
                 getHomeItemDataAd()
-                getLaseVersion()
             }
         }
     }
@@ -472,15 +454,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,model.img_ad_model?.ad_id.toString())
     }
 
-    /**
-     * 升级dialog
-     */
-    fun showUploadDialog(activity: FragmentActivity, enforceUpdate: Boolean) {
-        versionInfo.get()?.let {
-            RouterHelper.createRouter(HomeService::class.java)
-                .showUploadDownDialog(activity, it, INSTALL_RESULT_CODE,enforceUpdate)
-        }
-    }
 
     companion object {
         const val BLOCK_HOR_SINGLE = 1
@@ -488,8 +461,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
         const val BLOCK_HOR_DOUBLE = 3
         const val BLOCK_HOR_VER = 4
         const val BLOCK_SINGLE_IMG = 5
-
-        const val INSTALL_RESULT_CODE = 1003
     }
 
 }

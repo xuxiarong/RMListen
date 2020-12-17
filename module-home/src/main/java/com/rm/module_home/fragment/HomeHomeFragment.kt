@@ -1,8 +1,5 @@
 package com.rm.module_home.fragment
 
-import android.content.Intent
-import android.os.Build
-import android.os.Handler
 import android.text.TextUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
@@ -14,21 +11,13 @@ import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.receiver.NetworkChangeReceiver
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.getLongMMKV
-import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.HomeGlobalData.isHomeDouClick
-import com.rm.business_lib.UPLOAD_APP_TIME
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
-import com.rm.business_lib.utils.ApkInstallUtils
-import com.rm.component_comm.home.HomeService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_home.BR
-import com.rm.module_home.BuildConfig
 import com.rm.module_home.R
 import com.rm.module_home.activity.HomeTopListActivity
 import com.rm.module_home.activity.boutique.BoutiqueActivity
@@ -41,7 +30,6 @@ import com.rm.module_home.model.home.HomeAudioModel
 import com.rm.module_home.model.home.HomeBlockModel
 import com.rm.module_home.model.home.HomeMenuModel
 import com.rm.module_home.viewmodel.HomeFragmentViewModel
-import com.rm.module_home.viewmodel.HomeFragmentViewModel.Companion.INSTALL_RESULT_CODE
 import kotlinx.android.synthetic.main.home_home_fragment.*
 
 /**
@@ -211,73 +199,8 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             }
         })
 
-        mViewModel.versionInfo.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                activity?.let {
-                    val versionInfo = mViewModel.versionInfo.get()!!
-                    val lastVersion = versionInfo.version?.replace(".", "") ?: "0"
-                    val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
-                    try {
-                        if (lastVersion.toInt() - localVersion.toInt() > 0) {
-                            //强制更新
-                            if (TextUtils.equals(versionInfo.type, "2")) {
-                                mViewModel.showUploadDialog(it, true)
-                            } else {
-                                //一天内只显示一次
-                                val curTime = 24 * 60 * 60 * 1000
-                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
-                                    UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
-                                    //普通更新
-                                    mViewModel.showUploadDialog(it, false)
-                                }
-
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-
-                }
-            }
-        })
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        DLog.i("requestCode", "requestCode:$requestCode   resultCode$resultCode")
-        if (activity == null) {
-            return
-        }
-        if (requestCode == INSTALL_RESULT_CODE) {
-            val path = data?.getStringExtra("apkPath")
-            if (requestCode == FragmentActivity.RESULT_OK) {
-                ApkInstallUtils.install(activity, path)
-            } else {
-                //200毫秒后再次查询
-                Handler().postDelayed({
-                    path?.let {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val hasInstallPermission =
-                                activity!!.packageManager.canRequestPackageInstalls()
-                            if (!hasInstallPermission) {
-                                RouterHelper.createRouter(HomeService::class.java)
-                                    .gotoInstallPermissionSetting(
-                                        activity!!,
-                                        it,
-                                        INSTALL_RESULT_CODE
-                                    )
-
-                            } else {
-                                ApkInstallUtils.install(activity!!, it)
-                            }
-                        }
-                    }
-                }, 200)
-            }
-        }
-    }
 
     /**
      * 跳转精品

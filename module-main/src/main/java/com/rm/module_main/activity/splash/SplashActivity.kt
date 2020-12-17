@@ -1,6 +1,9 @@
 package com.rm.module_main.activity.splash
 
 import android.Manifest
+import android.content.Intent
+import android.os.Build
+import android.os.Handler
 import android.text.TextUtils
 import android.widget.TextView
 import androidx.databinding.Observable
@@ -20,18 +23,24 @@ import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.FIRST_OPEN_APP
 import com.rm.business_lib.HomeGlobalData
+import com.rm.business_lib.UPLOAD_APP_TIME
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.utils.ApkInstallUtils
+import com.rm.business_lib.utils.ApkInstallUtils.REQUEST_CODE_INSTALL_APP
+import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_main.BR
+import com.rm.module_main.BuildConfig
 import com.rm.module_main.R
 import com.rm.module_main.activity.MainMainActivity
 import com.rm.module_main.activity.guide.MainGuideActivity
 import com.rm.module_main.databinding.HomeActivitySplashBinding
 import com.rm.module_main.databinding.HomeDialogPrivateServiceBinding
 import com.rm.module_main.viewmodel.HomeSplashViewModel
+import com.rm.module_main.viewmodel.HomeSplashViewModel.Companion.INSTALL_RESULT_CODE
 import kotlinx.android.synthetic.main.home_activity_splash.*
 
 /**
@@ -70,6 +79,91 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             }
         })
 
+        mViewModel.versionInfo.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val versionInfo = mViewModel.versionInfo.get()
+                if (versionInfo != null) {
+                    val lastVersion = versionInfo.version?.replace(".", "") ?: "0"
+//                    val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
+                    val localVersion = BuildConfig.VERSION_CODE
+                    DLog.i("=====>versionInfo", "$localVersion   $lastVersion")
+                    try {
+                        if (lastVersion.toInt() - localVersion.toInt() > 0) {
+//                            //强制更新
+                            if (TextUtils.equals(versionInfo.type, "2")) {
+                                mViewModel.showUploadDialog(this@SplashActivity,
+                                    true,
+                                    sureIsDismiss = true,
+                                    sureBlock = {
+
+                                    },
+                                    cancelBlock = {
+                                    })
+                            } else {
+                                //一天内只显示一次
+                                val curTime = 24 * 60 * 60 * 1000
+                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
+                                    UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
+                                    //普通更新
+                                    mViewModel.showUploadDialog(this@SplashActivity,
+                                        false,
+                                        sureIsDismiss = true,
+                                        sureBlock = {
+
+                                        },
+                                        cancelBlock = {
+                                            loadAd()
+                                        })
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        loadAd()
+                    }
+                } else {
+                    loadAd()
+                }
+            }
+        })
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        DLog.i("requestCode", "requestCode:$requestCode   resultCode$resultCode")
+        if (requestCode == INSTALL_RESULT_CODE) {
+            val path = data?.getStringExtra("apkPath")
+            if (requestCode == RESULT_OK) {
+                ApkInstallUtils.install(this, path)
+            } else {
+                //200毫秒后再次查询
+                Handler().postDelayed({
+                    DLog.i("requestCode", "=====$mViewModel.downPath")
+                    if (mViewModel.downPath.isNotEmpty()) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            val hasInstallPermission =
+                                packageManager.canRequestPackageInstalls()
+                            DLog.i("requestCode", "=====$hasInstallPermission")
+                            if (!hasInstallPermission) {
+                                RouterHelper.createRouter(HomeService::class.java)
+                                    .gotoInstallPermissionSetting(
+                                        this,
+                                        mViewModel.downPath,
+                                        INSTALL_RESULT_CODE
+                                    )
+
+                            } else {
+                                ApkInstallUtils.install(this, mViewModel.downPath)
+                            }
+                        }
+                    }
+                }, 200)
+            }
+        } else if (requestCode == REQUEST_CODE_INSTALL_APP) {
+            loadAd()
+        }
     }
 
     override fun initView() {
@@ -102,7 +196,12 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             FIRST_OPEN_APP.getBooleanMMKV(false)
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVATION)
         }
+//        mViewModel.getLaseVersion()
+        loadAd()
 
+    }
+
+    private fun loadAd() {
         if (!HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.getBooleanMMKV(false)) {
             showPrivateServiceDialog()
             mViewModel.isShowAd.set(false)
@@ -127,7 +226,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 finish()
             })
     }
-
 
 
     /**

@@ -8,26 +8,57 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application>
-        <activity android:name=".activity.MineVersionUpdateActivity"/>
+        <activity android:name=".activity.MineVersionUpdateActivity" />
         <activity
             android:name=".login.LoginActivity"
-            android:launchMode="singleTop" />
-        <activity android:name=".MineActivity" />
-        <activity android:name=".activity.MineSettingActivity" />
-        <activity android:name=".activity.MinePersonalInfoActivity" />
-        <activity android:name=".activity.MineSettingPlayActivity" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MinePersonalInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingPlayActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.MineSettingDownloadActivity" />
-        <activity android:name=".activity.MineSettingAccountSecurityActivity" />
-        <activity android:name=".activity.MineSettingPersonalSignatureActivity" />
-        <activity android:name=".activity.MineSettingNicknameActivity" /> <!-- 主播详情 -->
-        <activity android:name=".activity.MineMemberActivity" />
-        <activity android:name=".activity.MineMemberFollowAndFansActivity" />
-        <activity android:name=".activity.MineMemberReleaseBooksActivity" />
-        <activity android:name=".activity.MineCropActivity" />
-        <activity android:name=".activity.MineImageActivity" />
-        <activity android:name=".activity.MineAboutUsActivity" />
-        <activity android:name=".activity.MimeGetBookActivity" />
-        <activity android:name=".activity.MimeFeedbackActivity" />
+        <activity
+            android:name=".activity.MineSettingAccountSecurityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingPersonalSignatureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingNicknameActivity"
+            android:screenOrientation="portrait" /> <!-- 主播详情 -->
+        <activity
+            android:name=".activity.MineMemberActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineMemberFollowAndFansActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineMemberReleaseBooksActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineCropActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineAboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MimeGetBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MimeFeedbackActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
