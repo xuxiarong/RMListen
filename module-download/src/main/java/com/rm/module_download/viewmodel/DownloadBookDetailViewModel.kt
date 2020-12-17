@@ -12,7 +12,7 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
 import com.rm.module_download.R
 
-class DownloadBookDetailViewModel:BaseVMViewModel() {
+class DownloadBookDetailViewModel : BaseVMViewModel() {
 
     var downloadAudio = ObservableField<DownloadAudio>()
 
@@ -29,12 +29,18 @@ class DownloadBookDetailViewModel:BaseVMViewModel() {
         )
     }
 
-    fun initAudioList(audio: DownloadAudio){
+    fun initAudioList(audio: DownloadAudio) {
         downloadAudio.set(audio)
     }
 
-    fun downloadChapterClick(context : Context,chapter: DownloadChapter){
-        playService.startPlayActivity(context,audioId = chapter.audio_id.toString(),chapterId = chapter.chapter_id.toString())
+    fun downloadChapterClick(context: Context, chapter: DownloadChapter) {
+        playService.startPlayActivity(
+            context,
+            audioId = chapter.audio_id.toString(),
+            chapterId = chapter.chapter_id.toString(),
+            chapterList = downloadingAdapter.data,
+            currentDuration = chapter.listen_duration
+        )
     }
 
 }

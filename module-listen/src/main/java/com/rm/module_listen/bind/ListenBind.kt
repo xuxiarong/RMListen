@@ -68,23 +68,27 @@ fun TextView.listenBindChapterStatus(
     try {
         val lastChapter = historyModel.chapter
         if (progressModel != null && playAudioModel != null) {
-            var result = if (lastChapter.chapter_id.toString() == playAudioModel.playChapterId) {
+            val result = if (lastChapter.chapter_id.toString() == playAudioModel.playChapterId) {
                 progressModel.currentDuration
             } else {
                 lastChapter.listen_duration
             }
             if (result <= 0) {
-                result = 0
+                return
             }
             if (result >= lastChapter.realDuration) {
-                text = context.getString(R.string.listen_finish)
+                text = context.getString(R.string.business_listen_finish)
                 setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
             } else {
+                var percent = (result * 100 / lastChapter.realDuration)
+                if (percent < 1) {
+                    percent = 1
+                }
                 setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
                 text = "${String.format(
-                    context.getString(R.string.listen_progress),
-                    (result * 100 / lastChapter.duration)
-                )}%"
+                    context.getString(R.string.business_listen_progress), percent
+                )
+                }%"
             }
         }
     } catch (e: Exception) {

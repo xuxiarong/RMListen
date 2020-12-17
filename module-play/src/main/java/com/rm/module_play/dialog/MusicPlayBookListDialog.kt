@@ -93,9 +93,16 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rv_music_play_book_list.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        rv_music_play_book_list.adapter = chapterAdapter
+
+        if(viewModel.isLocalChapterList.get()){
+            rv_music_play_book_local_list.adapter = chapterAdapter
+            rv_music_play_book_local_list.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }else{
+            rv_music_play_book_list.adapter = chapterAdapter
+            rv_music_play_book_list.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }
         //设置拖拽关闭的回调
         play_drag_chapter_list.seDragCloseListener {
             dismiss()

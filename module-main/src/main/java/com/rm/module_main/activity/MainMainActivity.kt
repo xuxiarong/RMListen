@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.HomeGlobalData
+import com.rm.business_lib.PlaySettingData
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -177,7 +178,9 @@ class MainMainActivity :
     }
 
     override fun initData() {
-
+        if(PlaySettingData.getContinueLastPlay()){
+            startPlayActivity()
+        }
     }
 
     override fun onBackPressed() {

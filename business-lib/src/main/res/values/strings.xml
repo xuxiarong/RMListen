@@ -55,5 +55,6 @@
     <string name="business_listen_storage_permission">听书需要存储权限</string>
     <string name="business_listen_storage_permission_refuse">听书需要存储权限,已经被禁止</string>
     <string name="business_listen_to_set_storage_permission">听书需要存储权限，请前往设置页面打开该权限</string>
-
+    <string name="business_listen_finish">已听完</string>
+    <string name="business_listen_progress">已听%d</string>
 </resources>

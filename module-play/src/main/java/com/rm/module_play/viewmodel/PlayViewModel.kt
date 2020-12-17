@@ -54,7 +54,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 加载下一页的当前页码
      */
-    var playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
+    private var playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
 
     /**
      * 加载上一页的当前页码
@@ -65,6 +65,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 章节每页数量
      */
     private var playChapterPageSize = PlayGlobalData.PLAY_PAGE_SIZE
+
+    /**
+     * 是否本地下载传过来的数据
+     */
+    var isLocalChapterList = ObservableBoolean(false)
 
     /**
      * 播放器实例对象
@@ -420,8 +425,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isAttention.set(it.list.anchor.status)
                     PlayGlobalData.initPlayAudio(it.list)
                     getAudioFloorAd()
-
-                    //TODO
                 },
                 onError = {
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }

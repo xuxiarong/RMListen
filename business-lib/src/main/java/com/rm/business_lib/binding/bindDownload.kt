@@ -28,7 +28,6 @@ fun DownloadStatusView.bindChapterList(
     }
     val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
     if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
-        chapter.down_status = downloadChapter.down_status
         chapter.current_offset = downloadChapter.current_offset
     }
     setDownloadStatus(checkChapter)
