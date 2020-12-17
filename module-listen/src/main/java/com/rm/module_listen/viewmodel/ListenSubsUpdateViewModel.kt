@@ -60,7 +60,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     var subsDataEmpty = ObservableBoolean(false)
 
     private var currentPage = 1
-    private val pageSize = 12
+    private val pageSize = 1000
 
     fun init() {
         initSubsRvScrollListen()

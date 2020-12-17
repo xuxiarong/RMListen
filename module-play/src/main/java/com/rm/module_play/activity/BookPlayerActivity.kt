@@ -260,8 +260,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         //如果传入的章节id为空，说明不是通过章节列表跳转的，直接访问书籍章节列表的第一页数据即可
 
         if (playChapterList.isNotEmpty()) {
-            PlayGlobalData.playChapterList.value = playChapterList
+            mViewModel.isLocalChapterList.set(true)
+            PlayGlobalData.playChapterId.set(playChapterId)
+            PlayGlobalData.playChapterList.postValue(playChapterList)
         } else {
+            mViewModel.isLocalChapterList.set(false)
             if (TextUtils.isEmpty(playChapterId)) {
                 mViewModel.getNextPageChapterList()
             } else {

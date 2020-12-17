@@ -1,6 +1,4 @@
-### 											新技术或开源库封装模板
-
-#### 新技术或开源库介绍(Mvvm+Databind+LiveData)：
+#### 听书框架介绍(Mvvm+Databind+LiveData)：
 
 ​	**Mvvm**：
 
@@ -18,7 +16,7 @@
 
 
 
-#### 新技术或开源库的优缺点： 
+#### 框架的优缺点： 
 
 - Mvvm
 
@@ -53,7 +51,7 @@
 
 
 
-#### 新技术封装流程：
+#### 框架封装流程：
 
 - 技术引入前配置依赖
 
@@ -191,8 +189,10 @@
 
   - 地址：http://192.168.11.214:8087/listen_book/android/tree/develop_v1.0
 - 下载项目后，分支切到develop_1.0,按照下图操作即可运行demo
+  
   - <img src="./z_images/run_demo.png" style="zoom:67%;" />
 - Demo页面
+  
   - <img src="./z_images/demo_phone.png" style="zoom:50%;" />
 
 ​		

@@ -15,6 +15,7 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import java.lang.Exception
 
 /**
@@ -207,6 +208,11 @@ object PlayGlobalData {
     private val playAudioDao = DaoUtil(ListenAudioEntity::class.java, "")
 
     /**
+     * 下载书籍的数据库对象
+     */
+    private val playDownloadDao = DaoUtil(DownloadChapter::class.java,"")
+
+    /**
      * 章节播放的数据库对象
      */
     private val playChapterDao = DaoUtil(ListenChapterEntity::class.java, "")
@@ -215,10 +221,6 @@ object PlayGlobalData {
      * 音频封面广告
      */
     var playAudioImgAd = ObservableField<BusinessAdModel>()
-
-    fun isShowAudioImgAd() : Boolean{
-        return playAudioImgAd.get() != null
-    }
 
 
     /**
@@ -277,6 +279,9 @@ object PlayGlobalData {
                 chapter.updateMillis = System.currentTimeMillis()
                 chapter.duration = totalDuration
                 playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
+                if(DownLoadFileUtils.checkChapterDownFinish(chapter)){
+                    playDownloadDao.saveOrUpdate(chapter)
+                }
                 val audio = playAudioModel.get()
                 if (audio != null) {
                     audio.updateMillis = System.currentTimeMillis()

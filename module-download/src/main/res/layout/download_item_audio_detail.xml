@@ -8,6 +8,9 @@
         <import type="com.rm.module_download.bean.DownloadChapterUIStatus" />
 
         <import type="com.rm.baselisten.util.TimeUtils" />
+
+        <import type="com.rm.baselisten.BaseConstance" />
+
         <variable
             name="itemBean"
             type="com.rm.business_lib.db.download.DownloadChapter" />
@@ -88,7 +91,9 @@
                 android:layout_marginStart="@dimen/dp_12"
                 android:textSize="@dimen/business_text_size_12sp"
                 tools:text="已听完"
-                bindDownloadListen="@{itemBean}"
+                downloadBindChapterStatus="@{itemBean}"
+                downloadBindPlayAudio="@{BaseConstance.INSTANCE.basePlayInfoModel}"
+                downloadBindPlayProgress="@{BaseConstance.INSTANCE.basePlayProgressModel}"
                 />
 
         </LinearLayout>

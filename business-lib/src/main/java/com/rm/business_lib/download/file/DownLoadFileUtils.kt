@@ -21,17 +21,14 @@ object DownLoadFileUtils {
     fun checkChapterIsDownload(chapter: DownloadChapter): DownloadChapter {
 
         val file = File(createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
-        val qb = DaoUtil(DownloadChapter::class.java, "").queryBuilder()
-        qb?.where(DownloadChapterDao.Properties.Chapter_id.eq(chapter.chapter_id))
-        qb?.where(DownloadChapterDao.Properties.Audio_id.eq(chapter.audio_id))
-        val list = qb?.list()
+
         if (file.exists() && file.isFile) {
-            if(list!=null && list.size>0){
-                chapter.down_status = list[0].down_status
-            }else{
-                chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
-            }
+            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
         }else{
+            val qb = DaoUtil(DownloadChapter::class.java, "").queryBuilder()
+            qb?.where(DownloadChapterDao.Properties.Chapter_id.eq(chapter.chapter_id))
+            qb?.where(DownloadChapterDao.Properties.Audio_id.eq(chapter.audio_id))
+            val list = qb?.list()
             if(chapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH){
                 chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
             }else{
@@ -90,5 +87,13 @@ object DownLoadFileUtils {
     fun getParentFile(@NonNull context: Context): File? {
         val externalSaveDir = context.externalCacheDir
         return externalSaveDir ?: context.cacheDir
+    }
+
+    fun checkChapterDownFinish(chapter: DownloadChapter) : Boolean{
+        val file = File(createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
+        if (file.exists() && file.isFile) {
+           return file.length() >= chapter.size
+        }
+        return false
     }
 }

@@ -20,20 +20,22 @@ import java.io.File
  */
 object AriaDownloadManager {
 
-    lateinit var currentChapter: DownloadChapter
     const val TAG = "suolong_AriaDownloadManager"
+    //是否在下载状态
     var isDownloading = ObservableBoolean(false)
+    //是否是处于单个任务下载
+    var isSingleDown = ObservableBoolean(false)
 
     init {
         BaseApplication.CONTEXT
     }
 
-    fun startDownload(chapter: DownloadChapter) {
+    fun startDownload(chapter: DownloadChapter,isSingleDownload : Boolean = false) {
+
+        this.isSingleDown.set(isSingleDownload)
         if (chapter.path_url == DownloadMemoryCache.downloadingChapter.get()?.path_url) {
             Aria.download(this).resumeAllTask()
         } else {
-            currentChapter = chapter
-            DownloadMemoryCache.downloadingChapter.set(chapter)
             Aria.download(this).stopAllTask()
             val file = File(DownLoadFileUtils.createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
             Aria.download(this).register()
@@ -41,6 +43,8 @@ object AriaDownloadManager {
             Aria.download(this).load(chapter.path_url) //读取下载地址
                     .setFilePath(file.absolutePath) //设置文件保存的完整路径
                     .create() //创建并启动下载
+            DownloadMemoryCache.downloadingChapter.set(chapter)
+            DownloadMemoryCache.downloadingChapter.notifyChange()
         }
     }
 
@@ -68,7 +72,7 @@ object AriaDownloadManager {
     @Download.onTaskRunning
     fun taskRunning(task: DownloadTask) {
         DLog.d(TAG, "taskRunning")
-        if (task.key == (currentChapter.path_url)) {
+        if (task.key == (DownloadMemoryCache.downloadingChapter.get()?.path_url)) {
             val percent = task.percent    //任务进度百分比
             val convertSpeed = task.convertSpeed    //转换单位后的下载速度，单位转换需要在配置文件中打开
             val speed = ConvertUtils.byte2FitMemorySize(task.speed, 1) //原始byte长度速度
@@ -81,7 +85,7 @@ object AriaDownloadManager {
     @Download.onTaskComplete
     fun taskComplete(task: DownloadTask) {
         DLog.d(TAG, "taskComplete")
-        if (task.key == (currentChapter.path_url)) {
+        if (task.key == (DownloadMemoryCache.downloadingChapter.get()?.path_url)) {
             DownloadMemoryCache.setDownloadFinishChapter(task.key)
         }
     }
