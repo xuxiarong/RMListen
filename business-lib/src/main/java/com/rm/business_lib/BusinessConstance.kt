@@ -59,6 +59,7 @@ object HomeGlobalData {
     var isHomeDouClick = MutableLiveData(false)
     var homeGlobalSelectTab = ObservableInt(HOME_SELECT)
     var isShowSubsRedPoint = ObservableBoolean(false)
+    var isListenAppBarInTop = ObservableBoolean(false)
 
     var LISTEN_SELECT_MY_LISTEN = 0
     var LISTEN_SELECT_SUBS_UPDATE = 1

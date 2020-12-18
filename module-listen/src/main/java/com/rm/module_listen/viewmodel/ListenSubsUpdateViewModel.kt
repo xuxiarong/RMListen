@@ -87,16 +87,16 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                 member_id = loginUser.get()?.id ?: ""
             ).checkResult(onSuccess = {
                 HomeGlobalData.isShowSubsRedPoint.set(false)
-                DLog.d("suolong","订阅更新上报成功")
-            },onError = {
+                DLog.d("suolong", "订阅更新上报成功")
+            }, onError = {
                 HomeGlobalData.isShowSubsRedPoint.set(false)
-                DLog.d("suolong","订阅更新上报失败 ${it?:"原因为空"}")
+                DLog.d("suolong", "订阅更新上报失败 ${it ?: "原因为空"}")
             })
         }
     }
 
     fun getSubsDataFromService() {
-        if(currentPage == 1){
+        if (currentPage == 1) {
             showLoading()
         }
         launchOnIO {
@@ -107,12 +107,12 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                     refreshStatusModel.finishLoadMore(true)
                     if (it.list.size < pageSize) {
                         isShowFooter = !(pageSize == 1 && (it.list.size in 1..4))
-                        if(currentPage == 1 && it.list.isEmpty()){
+                        if (currentPage == 1 && it.list.isEmpty()) {
                             subsDataEmpty.set(true)
-                        }else{
+                        } else {
                             subsDataEmpty.set(false)
                         }
-                    }else{
+                    } else {
                         isShowFooter = false
                     }
                     currentPage++
@@ -136,16 +136,16 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                     if (it.list.size > 0) {
                         isShowFooter = if (it.list.size < pageSize) {
                             !(pageSize == 1 && (it.list.size in 1..4))
-                        }else{
+                        } else {
                             false
                         }
                         currentPage++
                         subsDateAdapter.data.clear()
                         subsAudioAdapter.data.clear()
                         dealData(it.list)
-                        if(HomeGlobalData.myListenSelectTab.get() == HomeGlobalData.LISTEN_SELECT_MY_LISTEN){
-                            HomeGlobalData.isShowSubsRedPoint.set(it.total_unread>it.last_unread)
-                        }else{
+                        if (HomeGlobalData.myListenSelectTab.get() == HomeGlobalData.LISTEN_SELECT_MY_LISTEN) {
+                            HomeGlobalData.isShowSubsRedPoint.set(it.total_unread > it.last_unread)
+                        } else {
                             HomeGlobalData.isShowSubsRedPoint.set(false)
                         }
                         subsDataEmpty.set(false)
@@ -266,8 +266,8 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             }
             subsAudioAdapter.addData(audio)
         }
-        if (isShowFooter && subsAudioAdapter.data.size>0) {
-            if(subsAudioAdapter.data.last() !is ListenSubsFooterModel){
+        if (isShowFooter && subsAudioAdapter.data.size > 0) {
+            if (subsAudioAdapter.data.last() !is ListenSubsFooterModel) {
                 subsAudioAdapter.addData(ListenSubsFooterModel())
             }
         }
@@ -306,11 +306,20 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     fun getAudioAdapter(audio: ListenAudio): CommonMultiVMAdapter {
         val rvList = ArrayList<MultiItemEntity>()
         rvList.add(audio.info)
+        if (audio.chapter.isNotEmpty()) {
+            audio.chapter.sortWith(Comparator { o1, o2 ->
+                return@Comparator if (o1.sequence < o2.sequence) {
+                    1
+                } else {
+                    -1
+                }
+            })
+        }
+
         for (i in 0 until audio.chapter.size) {
             audio.chapter[i].position = i + 1
             rvList.add(audio.chapter[i])
         }
-
 
         return CommonMultiVMAdapter(
             this,
@@ -329,6 +338,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         if (clickPosition == currentDatePosition) {
             return
         }
+        subsRvScrollToSelectDate(clickPosition,model)
         isClickScroll = true
         val lastModel = subsDateAdapter.data[currentDatePosition]
         lastModel.isSelected = false
@@ -337,7 +347,6 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         currentDatePosition = clickPosition
         subsDateAdapter.notifyItemChanged(clickPosition)
         subsDateAdapter.recyclerView.scrollToPosition(clickPosition)
-        subsRvScrollToSelectDate(model)
 
     }
 
@@ -345,11 +354,16 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
      * 滑动到日期点击的那个Item
      * @param model ListenSubsDateModel
      */
-    private fun subsRvScrollToSelectDate(model: ListenSubsDateModel) {
+    private fun subsRvScrollToSelectDate(clickPosition : Int,model: ListenSubsDateModel) {
         try {
-            val indexOf = subsAudioAdapter.data.indexOf(
-                ListenSubsDateModel(date = model.date)
-            )
+            val indexOf = subsAudioAdapter.data.indexOf(ListenSubsDateModel(date = model.date))
+            //向下滑动，需要多滑动到日期下面的书籍信息处，index需要+1
+            if(currentDatePosition<clickPosition){
+                if (subsAudioAdapter.data.size - indexOf > 2) {
+                    subsAudioAdapter.recyclerView.scrollToPosition(indexOf+1)
+                    return
+                }
+            }
             subsAudioAdapter.recyclerView.scrollToPosition(indexOf)
         } catch (e: Exception) {
             e.printStackTrace()

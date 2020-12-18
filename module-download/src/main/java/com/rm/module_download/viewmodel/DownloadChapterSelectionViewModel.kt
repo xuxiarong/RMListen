@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
+import com.rm.baselisten.ktx.toIntSafe
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
@@ -281,14 +282,16 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             var startIndex = 1
             var endIndex = 1
             try {
-                startIndex = startSequence.get()?.toInt() ?: 1
-                endIndex = endSequence.get()?.toInt() ?: 1
-                startIndex = startIndex.coerceAtMost(endIndex)
-                endIndex = startIndex.coerceAtLeast(endIndex)
+                startIndex = startSequence.get()?.toIntSafe() ?: 1
+                endIndex = endSequence.get()?.toIntSafe() ?: 1
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            getDialogStartToEndIndexChapterList(startIndex, endIndex)
+            if (startIndex <= endIndex) {
+                getDialogStartToEndIndexChapterList(startIndex, endIndex)
+            }else{
+                getDialogStartToEndIndexChapterList(endIndex, startIndex)
+            }
         }
     }
 

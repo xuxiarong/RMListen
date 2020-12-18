@@ -7,7 +7,7 @@ import com.rm.component_comm.base.ApplicationManager
 
 
 /**
- * desc   :
+ * desc   : 模块通信的Application入口，所有模块与模块通信的接口定义都应该在此声明
  * date   : 2020/08/14
  * version: 1.0
  */

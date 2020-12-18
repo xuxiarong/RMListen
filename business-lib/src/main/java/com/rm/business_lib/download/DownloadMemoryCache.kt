@@ -116,12 +116,17 @@ object DownloadMemoryCache {
         val iterator = chapterList.iterator()
         while (iterator.hasNext()) {
             val nextChapter = iterator.next()
-            nextChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
-            downloadingChapterList.value?.forEach {
-                if (it.path_url == nextChapter.path_url) {
-                    iterator.remove()
+            if(nextChapter.isNotDown){
+                nextChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+                downloadingChapterList.value?.forEach {
+                    if (it.path_url == nextChapter.path_url) {
+                        iterator.remove()
+                    }
                 }
+            }else{
+                iterator.remove()
             }
+
         }
         if (chapterList.size == 0) {
             ToastUtil.show(
