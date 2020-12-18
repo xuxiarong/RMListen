@@ -36,6 +36,9 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
      * 问题描述
      */
     val inputAction: (String) -> Unit = {
+        if (it.length>50){
+            showTip("文字超出最大限制",R.color.business_color_ff5e5e)
+        }
         inputText.set(it)
         contactVisibility.set(false)
     }

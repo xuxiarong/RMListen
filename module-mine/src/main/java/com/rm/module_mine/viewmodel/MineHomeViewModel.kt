@@ -64,7 +64,7 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
             ),
             MineHomeDetailBean(
                 R.drawable.business_icon_feedback,
-                "问题反馈",
+                "意见反馈",
                 TYPE_FEEDBACK
             ),
             MineHomeDetailBean(
@@ -99,7 +99,7 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
             ),
             MineHomeDetailBean(
                 R.drawable.business_icon_updown,
-                "检查更新",
+                "版本更新",
                 TYPE_UP_DOWN
             )
 

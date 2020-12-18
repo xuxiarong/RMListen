@@ -34,6 +34,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/mine_get_book_ed_book"
                 afterTextChanged="@{viewModel.bookInfo}"
+                android:inputType="text"
                 bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_44"
