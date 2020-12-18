@@ -1,6 +1,7 @@
 package com.rm.module_home.util
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -25,7 +26,11 @@ class HomeUploadDownload(
     private val versionInfo: BusinessVersionUrlBean,
     private val mActivity: FragmentActivity,
     private val installCode: Int,
-    private val enforceUpdate: Boolean
+    private val enforceUpdate: Boolean,
+    private val downloadComplete:(String)->Unit,
+    private val sureIsDismiss: Boolean? = true,
+    private var sureBlock: () -> Unit? = {},
+    private var cancelBlock: () -> Unit? = {}
 ) {
     companion object {
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -49,14 +54,18 @@ class HomeUploadDownload(
             dialogCancel = !enforceUpdate
             rightBtnTextColor = R.color.business_color_ff5e5e
             leftBtnClick = {
-                if (enforceUpdate){
+                if (enforceUpdate) {
                     mActivity.finish()
                 }
                 dismiss()
+                cancelBlock()
             }
             rightBtnClick = {
                 downApk()
-                dismiss()
+                if (sureIsDismiss == true) {
+                    dismiss()
+                }
+                sureBlock()
             }
         }.show(mActivity)
     }
@@ -74,6 +83,7 @@ class HomeUploadDownload(
                 notifyManager.updateProgress(progress)
             },
             downloadComplete = { path ->
+                downloadComplete(path)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (!mActivity.packageManager.canRequestPackageInstalls()) {
                         startInstallSettingPermission(mActivity, path, installCode)

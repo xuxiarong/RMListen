@@ -2,12 +2,14 @@ package com.rm.module_mine.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivityGetBookBinding
 import com.rm.module_mine.viewmodel.MineGetBookViewModel
+import kotlinx.android.synthetic.main.mine_activity_get_book.*
 
 /**
  *
@@ -16,7 +18,8 @@ import com.rm.module_mine.viewmodel.MineGetBookViewModel
  * @description
  *
  */
-class MimeGetBookActivity : BaseVMActivity<MineActivityGetBookBinding, MineGetBookViewModel>() {
+class MimeGetBookActivity : BaseVMActivity<MineActivityGetBookBinding, MineGetBookViewModel>(),
+    View.OnFocusChangeListener {
     companion object {
         fun startActivity(context: Context) {
             context.startActivity(Intent(context, MimeGetBookActivity::class.java))
@@ -33,6 +36,10 @@ class MimeGetBookActivity : BaseVMActivity<MineActivityGetBookBinding, MineGetBo
             .setLeftIconClick { finish() }
 
         mViewModel.baseTitleModel.value = titleModel
+        mine_get_book_ed_book.onFocusChangeListener = this
+        mine_get_book_ed_author.onFocusChangeListener = this
+        mine_get_book_ed_member.onFocusChangeListener = this
+        mine_get_book_ed_contact.onFocusChangeListener = this
     }
 
     override fun startObserve() {
@@ -40,5 +47,55 @@ class MimeGetBookActivity : BaseVMActivity<MineActivityGetBookBinding, MineGetBo
 
     override fun initData() {
     }
+
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        when (v?.id) {
+            R.id.mine_get_book_ed_book -> {
+                mViewModel.contactIconIsVisibility.set(false)
+                mViewModel.memberIconIsVisibility.set(false)
+                mViewModel.authorIconIsVisibility.set(false)
+
+                mViewModel.bookIconIsVisibility.set(
+                    mViewModel.keyboardIsVisibility.get() == true &&
+                            mViewModel.bookName.get()!!.isNotEmpty() &&
+                            hasFocus
+                )
+            }
+            R.id.mine_get_book_ed_author -> {
+                mViewModel.contactIconIsVisibility.set(false)
+                mViewModel.memberIconIsVisibility.set(false)
+                mViewModel.bookIconIsVisibility.set(false)
+
+                mViewModel.authorIconIsVisibility.set(
+                    mViewModel.keyboardIsVisibility.get() == true &&
+                            mViewModel.author.get()!!.isNotEmpty() &&
+                            hasFocus
+                )
+            }
+            R.id.mine_get_book_ed_member -> {
+                mViewModel.contactIconIsVisibility.set(false)
+                mViewModel.bookIconIsVisibility.set(false)
+                mViewModel.authorIconIsVisibility.set(false)
+
+                mViewModel.memberIconIsVisibility.set(
+                    mViewModel.keyboardIsVisibility.get() == true &&
+                            mViewModel.member.get()!!.isNotEmpty() &&
+                            hasFocus
+                )
+            }
+            R.id.mine_get_book_ed_contact -> {
+                mViewModel.bookIconIsVisibility.set(false)
+                mViewModel.memberIconIsVisibility.set(false)
+                mViewModel.authorIconIsVisibility.set(false)
+
+                mViewModel.contactIconIsVisibility.set(
+                    mViewModel.keyboardIsVisibility.get() == true &&
+                            mViewModel.contact.get()!!.isNotEmpty() &&
+                            hasFocus
+                )
+            }
+        }
+    }
+
 
 }

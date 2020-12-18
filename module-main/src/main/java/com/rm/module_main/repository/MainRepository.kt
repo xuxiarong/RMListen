@@ -3,8 +3,11 @@ package com.rm.module_main.repository
 import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.net.util.GsonUtils
 import com.rm.module_main.api.MainApiService
 import com.rm.business_lib.bean.BusinessAdRequestModel
+import com.rm.business_lib.bean.BusinessUpdateVersionBean
+import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.module_main.model.MainAdResultModel
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -26,6 +29,13 @@ class MainRepository( val apiService: MainApiService) : BaseRepository() {
         }
     }
 
-
+    /**
+     * 版本更新
+     */
+    suspend fun homeGetLaseUrl(): BaseResult<BusinessVersionUrlBean> {
+        val json = GsonUtils.toJson(BusinessUpdateVersionBean())
+        val body = json.toRequestBody("application/json; charset=utf-8".toMediaType())
+        return apiCall { apiService.homeGetLaseUrl(body) }
+    }
 
 }

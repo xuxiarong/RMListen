@@ -5,6 +5,7 @@ import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.EmojiUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
@@ -24,30 +25,53 @@ import kotlinx.coroutines.launch
  */
 class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMViewModel() {
 
-    var inputText = ObservableField("")
+    val inputText = ObservableField("")
 
-    private var inputContact = ""
+    val inputContact = ObservableField("")
+    val contactVisibility = ObservableField(false)
 
     val tipText = ObservableField<String>("图片(0/5)")
 
     /**
      * 问题描述
      */
-    val inputAction: (String) -> Unit = { inputText.set(it) }
+    val inputAction: (String) -> Unit = {
+        inputText.set(it)
+        contactVisibility.set(false)
+    }
 
     private val successList = mutableListOf<String>()
     private val failureList = mutableListOf<String>()
     private var uploadIndex = -1
+    var checkedId = -1
 
-    private var checkedId = -1
-    val radioCheckedChange: (Int) -> Unit = {
-        checkedId = it
+
+    /**
+     * 输入法是否显示
+     */
+    val keyboardIsVisibility = ObservableField<Boolean>(false)
+
+    /**
+     * 输入法显示/隐藏监听
+     */
+    var keyboardVisibility: (Boolean, Int) -> Unit = { it, _ -> keyboardVisibilityListener(it) }
+
+    /**
+     * 键盘的显示隐藏监听
+     */
+    private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
+        keyboardIsVisibility.set(keyboardVisibility)
+        contactVisibility.set(false)
     }
 
     /**
      * 联系方式
      */
-    val inputContactAction: (String) -> Unit = { inputContact = it }
+    val inputContactAction: (String) -> Unit = {
+        inputContact.set(it)
+        contactVisibility.set(it.isNotEmpty() && keyboardIsVisibility.get() == true)
+    }
+
 
     val mAdapter by lazy {
         CommonBindVMAdapter(
@@ -88,7 +112,12 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
         showContentView()
         val toTypedArray: Array<String> = successList.toTypedArray()
         launchOnIO {
-            repository.mineFeedback(getUploadType(), inputText.get()!!, toTypedArray, inputContact)
+            repository.mineFeedback(
+                getUploadType(),
+                inputText.get()!!,
+                toTypedArray,
+                inputContact.get()!!
+            )
                 .checkResult(
                     onSuccess = {
                         showContentView()
@@ -135,15 +164,15 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
         when {
             inputText.get()!!.trim().trimEnd().isEmpty() -> {
                 showTip("反馈的内容不能为空", R.color.business_color_ff5e5e)
-                return
             }
             inputText.get()!!.length > 500 -> {
                 showTip("字数最多不能超过500个", R.color.business_color_ff5e5e)
-                return
             }
-            inputContact.length > 50 -> {
+            inputContact.get()!!.length > 50 -> {
                 showTip("联系方式字数不能50个", R.color.business_color_ff5e5e)
-                return
+            }
+            EmojiUtils.containsEmoji(inputContact.get()!!) -> {
+                showTip("联系方式不能包含表情符号", R.color.business_color_ff5e5e)
             }
             mAdapter.data.size > 0 && !mAdapter.data[0].path.isNullOrEmpty() -> {
                 showLoading()
@@ -191,6 +220,10 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
             mAdapter.addData(MineFeedbackImgBean(""))
         }
         changeText()
+    }
+
+    fun clickContact() {
+        inputContact.set("")
     }
 
     private fun addImageView(imgPath: String) {

@@ -73,9 +73,9 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
                     val lastVersion = versionInfo?.version?.replace(".", "") ?: "0"
                     val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
 
-                    if (lastVersion.toInt() - localVersion.toInt() > 0) {
-                        mAdapter.data[0].showRed = true
-                    }
+//                    if (lastVersion.toInt() - localVersion.toInt() > 0) {
+                    mAdapter.data[0].showRed = true
+//                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -90,7 +90,18 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
         getActivity(context)?.let { activity ->
             versionInfo?.let {
                 RouterHelper.createRouter(HomeService::class.java)
-                    .showUploadDownDialog(activity, it, INSTALL_RESULT_CODE, false)
+                    .showUploadDownDialog(
+                        activity,
+                        it,
+                        INSTALL_RESULT_CODE,
+                        false,
+                        downloadComplete={},
+                        sureIsDismiss = true,
+                        cancelBlock = {
+
+                        }, sureBlock = {
+
+                        })
             }
         }
     }

@@ -173,11 +173,7 @@ interface MineApiService {
      */
     @POST("personal/request-book")
     suspend fun mineRequestBook(
-        @Field("book_name") book_name: String,
-        @Field("author") author: String,
-        @Field("anchor_name") anchor_name: String,
-        @Field("contact") contact: String,
-        @Field("device_id") device_id: String
+        body: RequestBody
     ): BaseResponse<Any>
 
     /**

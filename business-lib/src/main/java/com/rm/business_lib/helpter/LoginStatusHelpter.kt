@@ -33,9 +33,6 @@ fun loginIn(access: String, refresh: String, userInfo: LoginUserBean) {
     // 改变当前是否用户登陆状态 和 登陆的用户信息
     isLogin.set(true)
     loginUser.set(userInfo)
-
-    BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ADD)
-
 }
 
 /**

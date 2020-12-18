@@ -35,69 +35,64 @@
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_14sp" />
 
-            <RadioGroup
-                bindCheckedChange="@{viewModel.radioCheckedChange}"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mine_feedback_one"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_36"
                     android:layout_weight="1"
-                    android:background="@drawable/mine_feedback_check_bg"
-                    android:button="@null"
+                    android:background="@drawable/mine_feedback_check_un_select"
                     android:gravity="center"
                     android:text="@string/mine_poor_experience"
-                    android:textColor="@drawable/mine_feedback_check_text_color"
+                    android:textColor="@color/business_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_14sp"
                     tools:checked="false" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mine_feedback_two"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_36"
                     android:layout_marginStart="@dimen/dp_8"
                     android:layout_weight="1"
-                    android:background="@drawable/mine_feedback_check_bg"
-                    android:button="@null"
+                    android:background="@drawable/mine_feedback_check_un_select"
                     android:gravity="center"
                     android:text="@string/mine_malfunction"
-                    android:textColor="@drawable/mine_feedback_check_text_color"
+                    android:textColor="@color/business_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_14sp"
                     tools:checked="true" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mine_feedback_three"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_36"
                     android:layout_marginStart="@dimen/dp_8"
                     android:layout_weight="1"
-                    android:background="@drawable/mine_feedback_check_bg"
-                    android:button="@null"
+                    android:background="@drawable/mine_feedback_check_un_select"
                     android:gravity="center"
                     android:text="@string/mine_product_suggestion"
-                    android:textColor="@drawable/mine_feedback_check_text_color"
+                    android:textColor="@color/business_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_14sp"
                     tools:checked="true" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mine_feedback_four"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_36"
                     android:layout_marginStart="@dimen/dp_8"
                     android:layout_weight="1"
-                    android:background="@drawable/mine_feedback_check_bg"
-                    android:button="@null"
+                    android:background="@drawable/mine_feedback_check_un_select"
                     android:gravity="center"
                     android:text="@string/mine_other"
-                    android:textColor="@drawable/mine_feedback_check_text_color"
+                    android:textColor="@color/business_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_14sp"
                     tools:checked="true" />
 
-            </RadioGroup>
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -174,27 +169,48 @@
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/business_text_size_14sp" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                afterTextChanged="@{viewModel.inputContactAction}"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_44"
                 android:layout_marginTop="@dimen/dp_12"
                 android:background="@drawable/business_shape_f7f7f7_8dp"
-                android:gravity="center_vertical"
-                android:hint="@string/mine_feedback_hint_contact_tips"
-                android:paddingStart="@dimen/dp_10"
-                android:paddingEnd="@dimen/dp_10"
-                android:singleLine="true"
-                android:textColor="@color/business_text_color_333333"
-                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
-                android:textSize="@dimen/business_text_size_14sp" />
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/mine_feedback_ed_contact"
+                    afterTextChanged="@{viewModel.inputContactAction}"
+                    bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/business_shape_f7f7f7_8dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/mine_feedback_hint_contact_tips"
+                    android:paddingStart="@dimen/dp_10"
+                    android:paddingEnd="@dimen/dp_10"
+                    android:singleLine="true"
+                    android:text="@{viewModel.inputContact}"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
+                    android:textSize="@dimen/business_text_size_14sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    isVisible="@{viewModel.contactVisibility}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:onClick="@{()->viewModel.clickContact()}"
+                    android:src="@drawable/business_icon_cancel" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_52"
                 android:layout_marginTop="@dimen/dp_34"
-                android:background="@{viewModel.inputText.length()>0?@drawable/business_shape_round_ff5e5e_32dp:@drawable/business_shape_round_e8e8e8_37dp}"
-                android:enabled="@{viewModel.inputText.length()>0}"
+                android:background="@{viewModel.inputText.trim().length()>0?@drawable/business_shape_round_ff5e5e_32dp:@drawable/business_shape_round_e8e8e8_37dp}"
+                android:enabled="@{viewModel.inputText.trim().length()>0}"
                 android:gravity="center"
                 android:onClick="@{()->viewModel.requestBook()}"
                 android:text="@string/mine_submit"
@@ -202,16 +218,25 @@
                 android:textSize="@dimen/business_text_size_16sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                isVisible="@{viewModel.inputText.length()>0}"
+                isVisible="@{viewModel.inputText.trim().length()>0}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
                 android:src="@drawable/business_menu_red_bg" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_80"
+                android:gravity="center"
+                android:text="@string/mine_customer"
+                android:textColor="@color/business_color_b1b1b1"
+                android:textSize="@dimen/business_text_size_12sp" />
+
             <View
                 android:id="@+id/mine_feedback_view"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="140dp"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.R
 import com.rm.baselisten.model.*
 import com.rm.baselisten.mvvm.BaseViewModel
@@ -72,7 +73,9 @@ open class BaseVMViewModel : BaseViewModel() {
         if (NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
             viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
         } else {
-            showNetError()
+//            showNetError()
+            showTip(CONTEXT.getString(R.string.base_empty_tips_netword),R.color.base_ff5e5e)
+
         }
     }
 
@@ -80,7 +83,8 @@ open class BaseVMViewModel : BaseViewModel() {
         if (NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
             viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
         } else {
-            showNetError()
+//            showNetError()
+            showTip(CONTEXT.getString(R.string.base_empty_tips_netword),R.color.base_ff5e5e)
         }
     }
 

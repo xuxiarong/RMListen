@@ -242,12 +242,4 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
         }
     }
 
-    /**
-     * 版本更新
-     */
-    suspend fun homeGetLaseUrl(): BaseResult<BusinessVersionUrlBean> {
-        val json = GsonUtils.toJson(BusinessUpdateVersionBean())
-        val body = json.toRequestBody("application/json; charset=utf-8".toMediaType())
-        return apiCall { homeService.homeGetLaseUrl(body) }
-    }
 }
