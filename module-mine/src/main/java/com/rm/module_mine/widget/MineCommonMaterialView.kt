@@ -83,7 +83,7 @@ class MineCommonMaterialView @JvmOverloads constructor(
             dimen(R.dimen.dp_16),
             0
         )
-        setBackgroundColor(Color.WHITE)
+        background = Drawable(R.drawable.mine_material_bg)
     }
 
     /**

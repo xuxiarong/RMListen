@@ -29,16 +29,27 @@
             tools:text="我是标题" />
     </FrameLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/business_tips_dialog_content"
-        style="@style/BusinessTextStyleFirst_2"
-        android:padding="@dimen/dp_8"
-        android:gravity="center"
+    <ScrollView
+        android:id="@+id/business_tips_dialog_content_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/business_tips_dialog_title_lay"
-        tools:ignore="MissingConstraints,UnusedAttribute"
-        tools:text="副标题文案样式就是这样显示的" />
+        app:layout_constraintTop_toBottomOf="@+id/business_tips_dialog_title_lay">
+        
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/business_tips_dialog_content"
+            style="@style/BusinessTextStyleFirst_2"
+            android:gravity="center"
+            android:padding="@dimen/dp_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/business_tips_dialog_title_lay"
+            tools:ignore="MissingConstraints,UnusedAttribute"
+            tools:text="副标题文案样式就是这样显示的" />
+    </ScrollView>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/business_tips_dialog_left_btn"
@@ -61,7 +72,7 @@
         android:layout_marginBottom="@dimen/dp_58"
         android:background="@color/stroke_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/business_tips_dialog_content"
+        app:layout_constraintTop_toBottomOf="@+id/business_tips_dialog_content_layout"
         tools:ignore="MissingConstraints" />
 
     <View

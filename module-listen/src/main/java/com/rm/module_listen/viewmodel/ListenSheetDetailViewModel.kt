@@ -191,7 +191,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)
                 contentText = "该内容已下架，是否移出听单？"
-                rightBtnText = "移出听单"
+                rightBtnText = "移除听单"
                 leftBtnText = context.String(R.string.business_cancel)
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {

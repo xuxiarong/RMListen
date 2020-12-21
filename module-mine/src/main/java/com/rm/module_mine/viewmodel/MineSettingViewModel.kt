@@ -113,6 +113,12 @@ class MineSettingViewModel : BaseVMViewModel() {
         MineAboutUsActivity.startActivity(context)
     }
 
+    fun clickNotify(context: Context) {
+
+    }
+
+
+
     private fun quicklyLogin(context: Context) {
         getActivity(context)?.let {
             RouterHelper.createRouter(LoginService::class.java)

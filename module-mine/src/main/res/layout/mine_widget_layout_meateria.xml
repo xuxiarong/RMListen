@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -24,7 +26,6 @@
         android:layout_width="@dimen/dp_52"
         android:layout_height="@dimen/dp_52"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_8"
         android:layout_toStartOf="@id/mine_widget_common_material_icon"
         android:visibility="invisible" />
 
@@ -33,7 +34,6 @@
         android:layout_width="@dimen/dp_6"
         android:layout_height="@dimen/dp_6"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_6"
         android:layout_toStartOf="@id/mine_widget_common_material_icon"
         android:visibility="invisible"
         app:rv_backgroundColor="@color/business_color_ff5e5e"
@@ -54,4 +54,4 @@
         android:visibility="gone"
         tools:text="123"
         tools:visibility="visible" />
-</merge>
+</RelativeLayout>
