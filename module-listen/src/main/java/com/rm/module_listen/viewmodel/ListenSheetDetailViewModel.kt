@@ -14,6 +14,9 @@ import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.share.Share2
+import com.rm.business_lib.share.ShareContentType
+import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -188,7 +191,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)
                 contentText = "该内容已下架，是否移出听单？"
-                rightBtnText = "移出听单"
+                rightBtnText = "移除听单"
                 leftBtnText = context.String(R.string.business_cancel)
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
@@ -209,6 +212,18 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
         hasMap[ListenMySheetDetailActivity.SHEET_ID] = sheetId
         hasMap[ListenMySheetDetailActivity.SHEET_AUDIO_NUM] = audioNum.get()!!
         setResultAndFinish(ListenMySheetDetailActivity.LISTEN_SHEET_DETAIL_DELETE, hasMap)
+    }
+
+    /**
+     * 分享
+     */
+    fun dialogSheetDetailShareSheetFun(context: Context) {
+        getActivity(context)?.let { activity ->
+            data.get()?.let {
+                ShareManage.shareSheet(activity, it.sheet_id, it.sheet_name)
+            }
+        }
+
     }
 
     /**

@@ -13,6 +13,7 @@ import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.share.Share2
 import com.rm.business_lib.share.ShareContentType
+import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -194,16 +195,12 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * dialog 分享
      */
     fun dialogShareFun(context: Context) {
-        getActivity(context)?.let {
-            Share2.Builder(it)
-                .setContentType(ShareContentType.TEXT)
-                .setTitle("分享测试")
-                .setTextContent("http://www.baidu.com")
-                .build()
-                .shareBySystem()
-
+        getActivity(context)?.let { activity ->
+            subscriptionData.get()?.let {
+                ShareManage.shareAudio(activity, it.audio_id.toString(), it.audio_name.toString())
+            }
+            mDialog.dismiss()
         }
-        mDialog.dismiss()
     }
 
     /**

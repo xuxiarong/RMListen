@@ -25,6 +25,21 @@
             app:layout_constraintBottom_toTopOf="@id/listen_dialog_bottom_sheet_detail_cancel">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/listen_dialog_bottom_sheet_detail_share_sheet"
+                style="@style/BusinessTextStyleFirst_6"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:onClick="@{()->viewModel.dialogSheetDetailShareSheetFun(context)}"
+                android:paddingTop="@dimen/dp_16"
+                android:paddingBottom="@dimen/dp_16"
+                android:text="@string/listen_share" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5pt"
+                android:background="@color/business_color_e8e8e8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/listen_dialog_bottom_sheet_detail_edit_sheet"
                 style="@style/BusinessTextStyleFirst_6"
                 android:layout_width="match_parent"

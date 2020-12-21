@@ -35,6 +35,7 @@ import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.share.Share2
 import com.rm.business_lib.share.ShareContentType
+import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.listen.ListenService
@@ -826,14 +827,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 分享
      */
     fun clickShare(context: Context) {
-        getActivity(context)?.let {
-            val url = "http://192.168.12.126:8482/book-detail?id=${audioId.get()}&chapterId=2034"
-            Share2.Builder(it)
-                .setContentType(ShareContentType.TEXT)
-                .setTitle("分享测试")
-                .setTextContent("http://www.baidu.com")
-                .build()
-                .shareBySystem()
+        getActivity(context)?.let { activity ->
+            detailInfoData.get()?.list?.let {
+                ShareManage.shareAudio(activity, it.audio_id.toString(), it.audio_name)
+            }
         }
     }
 

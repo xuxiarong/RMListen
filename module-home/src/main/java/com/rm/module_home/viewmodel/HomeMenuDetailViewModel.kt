@@ -22,6 +22,7 @@ import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.share.Share2
 import com.rm.business_lib.share.ShareContentType
+import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.login.LoginService
@@ -118,14 +119,10 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
      * 分享点击事件
      */
     fun clickShare(context: Context) {
-        getActivity(context)?.let {
-            Share2.Builder(it)
-                .setContentType(ShareContentType.TEXT)
-                .setTitle("分享测试")
-                .setTextContent("http://www.baidu.com")
-                .build()
-                .shareBySystem()
-
+        getActivity(context)?.let { activity ->
+            data.get()?.let {
+                ShareManage.shareSheet(activity, it.sheet_id, it.sheet_name)
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
@@ -165,8 +166,13 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
      */
     fun clickCreateFun(context: Context) {
         getActivity(context)?.let {
+            val id = if (TextUtils.equals(memberId, loginUser.get()?.id)) {
+                ""
+            } else {
+                memberId
+            }
             RouterHelper.createRouter(ListenService::class.java)
-                .startListenSheetList(it, LISTEN_SHEET_LIST_MY_LIST, memberId)
+                .startListenSheetList(it, LISTEN_SHEET_LIST_MY_LIST, id)
         }
     }
 
@@ -187,8 +193,14 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
      */
     fun createSheetItemClick(context: Context, bean: SheetBean) {
         getActivity(context)?.let {
-            RouterHelper.createRouter(HomeService::class.java)
-                .startHomeSheetDetailActivity(it, bean.sheet_id)
+            if (TextUtils.equals(memberId, loginUser.get()?.id)) {
+                RouterHelper.createRouter(ListenService::class.java)
+                    .startMySheetDetail(it, bean.sheet_id)
+            } else {
+                RouterHelper.createRouter(HomeService::class.java)
+                    .startHomeSheetDetailActivity(it, bean.sheet_id)
+            }
+
         }
     }
 

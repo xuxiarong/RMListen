@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
  */
 class MineGetBookViewModel(private val repository: MineRepository) : BaseVMViewModel() {
 
-
     /**
      * 书籍信息
      */
