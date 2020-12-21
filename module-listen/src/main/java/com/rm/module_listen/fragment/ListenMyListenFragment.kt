@@ -7,10 +7,14 @@ import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.appbar.AppBarLayout
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.DisplayUtils
+import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.HomeGlobalData
+import com.rm.business_lib.HomeGlobalData.isListenAppBarInTop
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.isLogin
@@ -35,7 +39,7 @@ import kotlinx.android.synthetic.main.listen_fragment_my_listen.*
  * version: 1.0
  */
 class ListenMyListenFragment :
-    BaseVMFragment<ListenFragmentMyListenBinding, ListenMyListenViewModel>() {
+    BaseVMFragment<ListenFragmentMyListenBinding, ListenMyListenViewModel>(),AppBarLayout.OnOffsetChangedListener {
 
     private lateinit var mViewPagerAdapter: ListenMyListenPagerAdapter
 
@@ -80,6 +84,9 @@ class ListenMyListenFragment :
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (isLogin.get()) {
                     mViewModel.getSubsTotalNumberFromService()
+                } else{
+                    mViewModel.subsNumber.set(0)
+                    HomeGlobalData.isShowSubsRedPoint.set(false)
                 }
             }
         })
@@ -104,6 +111,9 @@ class ListenMyListenFragment :
         if (mMyListenFragmentList[1] is ListenSubscriptionUpdateFragment) {
             mViewModel.subsRefreshFun =
                 { (mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment).refreshSubsData() }
+        }
+        if (isLogin.get()) {
+            mViewModel.getSubsTotalNumberFromService()
         }
     }
 
@@ -162,6 +172,25 @@ class ListenMyListenFragment :
         listenDownloadCl.setOnClickListener {
             val createRouter = RouterHelper.createRouter(DownloadService::class.java)
             createRouter.startDownloadMainActivity(context = it.context, startTab = 1)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        listen_appbar_layout.addOnOffsetChangedListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        listen_appbar_layout.removeOnOffsetChangedListener(this)
+
+    }
+
+    override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+        if(verticalOffset <= dip(45 - 210)){
+            isListenAppBarInTop.set(true)
+        }else{
+            isListenAppBarInTop.set(false)
         }
     }
 

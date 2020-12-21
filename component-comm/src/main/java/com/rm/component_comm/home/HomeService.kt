@@ -33,11 +33,16 @@ interface HomeService : ApplicationProvider {
 
     /**
      * 跳转到板块
+     * @param context 上下文
+     * @param topicId 板块Id
+     * @param blockName 板块名字
      */
     fun startTopicActivity(context: Context, topicId: Int, blockName: String)
 
     /**
      * 跳转详情页
+     * @param context 上下文
+     * @param audioID 音频Id
      */
     fun startDetailActivity(context: Context, audioID: String)
 

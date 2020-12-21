@@ -72,6 +72,21 @@ fun RecyclerView.bindHorizontalLayoutNoScroll(adapter: RecyclerView.Adapter<*>?)
     overScrollMode = View.OVER_SCROLL_NEVER
 }
 
+@BindingAdapter("bindVerticallyLayoutNoScroll")
+fun RecyclerView.bindVerticallyLayoutNoScroll(adapter: RecyclerView.Adapter<*>?) {
+    if (adapter == null) return
+    val layoutManager: LinearLayoutManager = object :
+        LinearLayoutManager(context, HORIZONTAL, false) {
+        override fun canScrollVertically(): Boolean {
+            return false
+        }
+    }
+    setLayoutManager(layoutManager)
+    itemAnimator = DefaultItemAnimator()
+    this.adapter = adapter
+    overScrollMode = View.OVER_SCROLL_NEVER
+}
+
 @BindingAdapter("bindRecyclerViewLargeCache")
 fun RecyclerView.bindRecyclerViewLargeCache(cacheSize : Int){
     val pool = RecyclerView.RecycledViewPool()

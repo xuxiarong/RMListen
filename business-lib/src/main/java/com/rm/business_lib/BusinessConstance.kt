@@ -1,10 +1,14 @@
 package com.rm.business_lib
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Message
 import androidx.annotation.IntDef
 import androidx.databinding.*
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseConstance
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.business_lib.bean.BusinessAdModel
@@ -38,10 +42,10 @@ const val ACCESS_TOKEN_INVALID_TIMESTAMP = "accessTokenInvalidTimestamp"
 const val LOGIN_USER_INFO = "loginUserInfo"
 
 //记录提示更新时间
-const val UPLOAD_APP_TIME="upload_app_time"
+const val UPLOAD_APP_TIME = "upload_app_time"
 
 //记录用户第一次打开app
-const val FIRST_OPEN_APP="first_open_app"
+const val FIRST_OPEN_APP = "first_open_app"
 
 // 当前是否登陆
 var isLogin = ObservableBoolean(false)
@@ -59,6 +63,7 @@ object HomeGlobalData {
     var isHomeDouClick = MutableLiveData(false)
     var homeGlobalSelectTab = ObservableInt(HOME_SELECT)
     var isShowSubsRedPoint = ObservableBoolean(false)
+    var isListenAppBarInTop = ObservableBoolean(false)
 
     var LISTEN_SELECT_MY_LISTEN = 0
     var LISTEN_SELECT_SUBS_UPDATE = 1
@@ -109,6 +114,21 @@ object PlayGlobalData {
     //章节每页加载数量
     const val PLAY_PAGE_SIZE = 20
 
+    //进度条消息
+    @SuppressLint("HandlerLeak")
+    private val playTimerHandler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            DLog.d("suolong", "playTimerHandler")
+            val currentTimerSecond = playCountDownSecond.get()
+            if(currentTimerSecond>0){
+                playCountDownSecond.set(currentTimerSecond-1000L)
+                sendEmptyMessageDelayed(0, 1000L)
+            }else{
+                playCountDownSecond.set(-1000L)
+                removeMessages(0)
+            }
+        }
+    }
 
     /**
      * 当前音频id
@@ -140,7 +160,7 @@ object PlayGlobalData {
      */
     var playChapterListSort = ObservableField<String>(AudioSortType.SORT_ASC)
 
-    val tags=ObservableField<MutableList<String>>()
+    val tags = ObservableField<MutableList<String>>()
 
     /**
      * 播放的进度
@@ -156,9 +176,6 @@ object PlayGlobalData {
      * 播放进度条上的文字
      */
     val updateThumbText = ObservableField<String>("00:00/00:00")
-
-    //全局播放器定时时间
-    var playTimerDuration = ObservableLong(0L)
 
     //全局播放器播放速度
     var playSpeed = ObservableFloat(1.0f)
@@ -210,7 +227,7 @@ object PlayGlobalData {
     /**
      * 下载书籍的数据库对象
      */
-    private val playDownloadDao = DaoUtil(DownloadChapter::class.java,"")
+    private val playDownloadDao = DaoUtil(DownloadChapter::class.java, "")
 
     /**
      * 章节播放的数据库对象
@@ -269,17 +286,25 @@ object PlayGlobalData {
                     chapter.listen_duration = currentDuration
                 }
                 process.set(chapter.listen_duration.toFloat())
-                updateThumbText.set(
-                    "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
-                    TimeUtils.getPlayDuration(chapter.realDuration)
-                    }"
-                )
+                if (chapter.listen_duration > chapter.realDuration) {
+                    updateThumbText.set(
+                        "${TimeUtils.getPlayDuration(chapter.realDuration)}/${
+                        TimeUtils.getPlayDuration(chapter.realDuration)
+                        }"
+                    )
+                } else {
+                    updateThumbText.set(
+                        "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
+                        TimeUtils.getPlayDuration(chapter.realDuration)
+                        }"
+                    )
+                }
                 playChapter.set(chapter)
                 playChapterId.set(chapter.chapter_id.toString())
                 chapter.updateMillis = System.currentTimeMillis()
                 chapter.duration = totalDuration
                 playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
-                if(DownLoadFileUtils.checkChapterDownFinish(chapter)){
+                if (DownLoadFileUtils.checkChapterDownFinish(chapter)) {
                     playDownloadDao.saveOrUpdate(chapter)
                 }
                 val audio = playAudioModel.get()
@@ -333,29 +358,9 @@ object PlayGlobalData {
         }
     }
 
-
-    fun updateCountSecond() {
-        if (playCountDownSecond.get() > 0L) {
-            //因为播放器的回掉是500ms一次，所以一次也是减去500ms
-            if (playCountDownSecond.get() < 1500) {
-                playCountSelectPosition.set(-1)
-            }
-            playCountDownSecond.set(playCountDownSecond.get() - 500L)
-        } else if (playCountDownSecond.get() <= 0 && playCountSelectPosition.get() >= 0) {
-            playCountDownSecond.set(-500L)
-            playCountSelectPosition.set(-1)
-        }
-    }
-
-    fun updateCountChapterSize() {
-        if (playCountDownChapterSize.get() > 0) {
-            playCountDownChapterSize.set(playCountDownChapterSize.get() - 1)
-        }
-    }
-
     fun checkCountChapterPlayEnd(allPlayEnd: Boolean) {
-        if (allPlayEnd || playCountDownChapterSize.get() == 1) {
-            playCountDownChapterSize.set(-1)
+        if (allPlayEnd || playCountDownChapterSize.get() > 0) {
+            playCountDownChapterSize.set(playCountDownChapterSize.get() - 1)
             playCountSelectPosition.set(-1)
         }
     }
@@ -364,18 +369,22 @@ object PlayGlobalData {
         playCountSelectPosition.set(position)
         if (playCountTimerList[position] in 1..5) {
             playCountDownChapterSize.set(playCountTimerList[position])
+            playCountDownSecond.set(-1000L)
         } else {
+            playCountDownChapterSize.set(-1)
             playCountDownSecond.set(playCountTimerList[position] * 1000L)
+            playTimerHandler.sendEmptyMessageDelayed(0, 1000)
         }
     }
+
     fun clearCountDownTimer() {
         playCountSelectPosition.set(-1)
         playCountDownChapterSize.set(-5)
-        playCountDownSecond.set(-10000L)
+        playCountDownSecond.set(-1000L)
     }
 
 
-    fun isSortAsc() : Boolean{
+    fun isSortAsc(): Boolean {
         return playChapterListSort.get() == AudioSortType.SORT_ASC
     }
 

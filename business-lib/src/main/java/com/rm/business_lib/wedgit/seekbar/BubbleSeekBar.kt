@@ -26,6 +26,7 @@ import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  *
@@ -453,8 +454,8 @@ class BubbleSeekBar @JvmOverloads constructor(
             mThumb?.setBounds(
                 0,
                 0,
-                Math.round(mThumbWidth.toFloat()),
-                Math.round(mThumbHeight.toFloat())
+                mThumbWidth.toFloat().roundToInt(),
+                mThumbHeight.toFloat().roundToInt()
             )
             mThumb?.draw(canvas)
             /**

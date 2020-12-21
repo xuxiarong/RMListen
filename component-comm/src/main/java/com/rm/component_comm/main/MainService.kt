@@ -11,6 +11,8 @@ import com.rm.component_comm.router.ApplicationProvider
 interface MainService : ApplicationProvider {
     /**
      *  跳转到首页
+     *  @param context 上下文
+     *  @param selectTab 选择跳转到首页的哪个tab (0 -> 首页  1 -> 搜索 2 -> 我听 3 -> 我的)
      */
     fun startMainActivity(context: Context,selectTab : Int = 0)
 }
