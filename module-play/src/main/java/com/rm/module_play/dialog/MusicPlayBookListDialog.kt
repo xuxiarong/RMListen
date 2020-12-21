@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.ktx.reverse
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
@@ -35,6 +36,7 @@ import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.tencent.bugly.proguard.ac
 import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
 
 /**
@@ -55,7 +57,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     lateinit var viewModel: PlayViewModel
     private lateinit var mDataBind: ViewDataBinding
     private val chapterAdapter by lazy {
-        TimeSAdapter(viewModel).apply {
+        TimeSAdapter(activity!! ,viewModel).apply {
             setOnItemClickListener { _, _, position ->
                 val chapterId = data[position].chapter_id
                 if (chapterId == viewModel.playManger.getCurrentPlayerID()) {
@@ -171,7 +173,7 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         })
 
     }
-    internal class TimeSAdapter(val viewModel: PlayViewModel) :
+    internal class TimeSAdapter(val activity: FragmentActivity?,val viewModel: PlayViewModel) :
         BaseQuickAdapter<DownloadChapter, BaseViewHolder>(
             R.layout.music_play_item_book_list,
                 PlayGlobalData.playChapterList.value

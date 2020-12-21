@@ -3,6 +3,7 @@ package com.rm.business_lib.wedgit.download
 import android.Manifest
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.FrameLayout
 import com.rm.baselisten.mvvm.BaseActivity
@@ -12,7 +13,6 @@ import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.DownloadMemoryCache
 import kotlinx.android.synthetic.main.layout_download_status_view.view.*
-import pub.devrel.easypermissions.EasyPermissions
 
 /**
  * desc   :
@@ -38,7 +38,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    requestPermissions { startDownloadChapter(chapter) }
+                    checkContext { startDownloadChapter(chapter) }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
@@ -95,19 +95,43 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
         DownloadMemoryCache.addDownloadingChapter(chapter)
     }
 
-    private fun requestPermissions(actionGranted: () -> Unit) {
-        if (context is BaseActivity) {
-            val baseActivity = context as BaseActivity
+    private fun checkContext(actionGranted: () -> Unit) {
+        if(context is BaseActivity){
+            requestPermission(context as BaseActivity,actionGranted)
+
+        }else{
+            //在Dialog中获取到的context居然是ContextThemeWrapper？
+            if(context is ContextThemeWrapper){
+                if((context as ContextThemeWrapper).baseContext is BaseActivity){
+                    requestPermission((context as ContextThemeWrapper).baseContext as BaseActivity,actionGranted)
+                }
+            }
+            else if(context is androidx.appcompat.view.ContextThemeWrapper){
+                if((context as androidx.appcompat.view.ContextThemeWrapper).baseContext is BaseActivity){
+                    requestPermission((context as androidx.appcompat.view.ContextThemeWrapper).baseContext as BaseActivity,actionGranted)
+                }
+            }
+        }
+    }
+
+    private fun requestPermission(baseActivity : BaseActivity?, actionGranted: () -> Unit) {
+        baseActivity?.let {
             baseActivity.requestPermissionForResult(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    actionDenied = {
-                        baseActivity.tipView.showTipView(baseActivity, baseActivity.getString(R.string.business_listen_storage_permission_refuse))
-                    },
-                    actionGranted = {
-                        actionGranted()
-                    },
-                    actionPermanentlyDenied = {
-                        baseActivity.tipView.showTipView(baseActivity, baseActivity.getString(R.string.business_listen_to_set_storage_permission))
-                    })
+                actionDenied = {
+                    baseActivity.tipView.showTipView(
+                        baseActivity,
+                        baseActivity.getString(R.string.business_listen_storage_permission_refuse)
+                    )
+                },
+                actionGranted = {
+                    actionGranted()
+                },
+                actionPermanentlyDenied = {
+                    baseActivity.tipView.showTipView(
+                        baseActivity,
+                        baseActivity.getString(R.string.business_listen_to_set_storage_permission)
+                    )
+                })
         }
     }
 

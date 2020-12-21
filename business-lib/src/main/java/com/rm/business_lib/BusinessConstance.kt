@@ -122,9 +122,13 @@ object PlayGlobalData {
             val currentTimerSecond = playCountDownSecond.get()
             if(currentTimerSecond>0){
                 playCountDownSecond.set(currentTimerSecond-1000L)
+                if(currentTimerSecond-1000L == 0L){
+                    playCountSelectPosition.set(-1)
+                }
                 sendEmptyMessageDelayed(0, 1000L)
             }else{
                 playCountDownSecond.set(-1000L)
+                playCountSelectPosition.set(-1)
                 removeMessages(0)
             }
         }
