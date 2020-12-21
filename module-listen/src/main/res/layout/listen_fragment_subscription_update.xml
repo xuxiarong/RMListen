@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="105dp"
-                    android:text="@string/base_fine_no_data"
+                    android:text="@string/listen_no_listen_data"
                     android:textColor="@color/base_b1b1b1"
                     android:textSize="14sp" />
             </FrameLayout>

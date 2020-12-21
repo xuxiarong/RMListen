@@ -85,6 +85,7 @@ class ListenMyListenFragment :
                 if (isLogin.get()) {
                     mViewModel.getSubsTotalNumberFromService()
                 } else{
+                    mViewModel.subsNumber.set(0)
                     HomeGlobalData.isShowSubsRedPoint.set(false)
                 }
             }

@@ -118,7 +118,9 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                     currentPage++
                     dealData(it.list)
                 }, onError = {
-                    showServiceError()
+                    it?.let {
+                        showTip(it)
+                    }
                     refreshStatusModel.finishLoadMore(false)
                     DLog.d("suolong", "on error")
                 }
@@ -154,7 +156,9 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                         HomeGlobalData.isShowSubsRedPoint.set(false)
                     }
                 }, onError = {
-                    showServiceError()
+                    it?.let {
+                        showTip(it)
+                    }
                     refreshStatusModel.finishLoadMore(false)
                     DLog.d("suolong", "on error")
                 }

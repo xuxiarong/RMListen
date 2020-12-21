@@ -245,7 +245,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
     private fun onBlockClick(blockModel: HomeBlockModel) {
         HomeTopicListActivity.startTopicActivity(
             activity!!,
-            blockModel.topic_id,
+            blockModel.block_id,
             blockModel.block_name
         )
     }

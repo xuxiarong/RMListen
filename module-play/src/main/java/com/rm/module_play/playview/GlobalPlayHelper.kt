@@ -127,7 +127,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
         PlayGlobalData.savePlayChapter(position)
         PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
-        PlayGlobalData.updateCountChapterSize()
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
