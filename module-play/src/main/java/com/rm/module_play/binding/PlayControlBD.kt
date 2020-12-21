@@ -95,7 +95,7 @@ fun PlayControlView.bindResetPlay(resetPlay: (() -> Unit)?) {
 
 @BindingAdapter("bindPlayCountDownSecond")
 fun PlayControlView.bindPlayCountDownSecond(second: Long) {
-    if (second <= 0 && second >= -1000L) {
+    if (second == 0L) {
         pausePlayVar?.let {
             pauseAnim()
             it()
@@ -141,7 +141,7 @@ fun TextView.bindPlayCountDownSecondText(second: Long) {
 @BindingAdapter("bindPlayCountDownSizeText","bindPlayCountDownSecondText","bindPlayCountPosition","bindItemPosition",requireAll = false)
 fun TextView.bindPlayCountDownSizeText(chapterSize: Int,second: Long,playPosition: Int = 0,itemPosition : Int = 0) {
     if(playPosition == itemPosition){
-        if (second > 1000L) {
+        if (second > 0L) {
             text = TimeUtils.getPlayDuration(second)
             visibility = View.VISIBLE
         }else if (chapterSize > 0) {

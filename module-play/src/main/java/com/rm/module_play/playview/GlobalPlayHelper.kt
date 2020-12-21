@@ -140,8 +140,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     ) {
         BaseConstance.updateBaseProgress(currentDurtion, totalDurtion)
         PlayGlobalData.updatePlayChapterProgress(currentDurtion, totalDurtion)
-        PlayGlobalData.updateCountSecond()
-
         DLog.d(
             "suolong",
             " totalDurtion = $totalDurtion --- status = $currentDurtion --- time = $currentDurtion"

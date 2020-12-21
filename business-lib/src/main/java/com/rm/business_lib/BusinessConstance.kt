@@ -119,7 +119,14 @@ object PlayGlobalData {
     private val playTimerHandler = object : Handler() {
         override fun handleMessage(msg: Message) {
             DLog.d("suolong", "playTimerHandler")
-            sendEmptyMessageDelayed(0, 1000)
+            val currentTimerSecond = playCountDownSecond.get()
+            if(currentTimerSecond>0){
+                playCountDownSecond.set(currentTimerSecond-1000L)
+                sendEmptyMessageDelayed(0, 1000L)
+            }else{
+                playCountDownSecond.set(-1000L)
+                removeMessages(0)
+            }
         }
     }
 
@@ -169,9 +176,6 @@ object PlayGlobalData {
      * 播放进度条上的文字
      */
     val updateThumbText = ObservableField<String>("00:00/00:00")
-
-    //全局播放器定时时间
-    var playTimerDuration = ObservableLong(0L)
 
     //全局播放器播放速度
     var playSpeed = ObservableFloat(1.0f)
@@ -354,20 +358,6 @@ object PlayGlobalData {
         }
     }
 
-
-    fun updateCountSecond() {
-        if (playCountDownSecond.get() > 0L) {
-            //因为播放器的回掉是500ms一次，所以一次也是减去500ms
-            if (playCountDownSecond.get() < 1500) {
-                playCountSelectPosition.set(-1)
-            }
-            playCountDownSecond.set(playCountDownSecond.get() - 500L)
-        } else if (playCountDownSecond.get() <= 0 && playCountSelectPosition.get() >= 0) {
-            playCountDownSecond.set(-500L)
-            playCountSelectPosition.set(-1)
-        }
-    }
-
     fun checkCountChapterPlayEnd(allPlayEnd: Boolean) {
         if (allPlayEnd || playCountDownChapterSize.get() > 0) {
             playCountDownChapterSize.set(playCountDownChapterSize.get() - 1)
@@ -379,7 +369,7 @@ object PlayGlobalData {
         playCountSelectPosition.set(position)
         if (playCountTimerList[position] in 1..5) {
             playCountDownChapterSize.set(playCountTimerList[position])
-            playCountDownSecond.set(-10000L)
+            playCountDownSecond.set(-1000L)
         } else {
             playCountDownChapterSize.set(-1)
             playCountDownSecond.set(playCountTimerList[position] * 1000L)
@@ -390,7 +380,7 @@ object PlayGlobalData {
     fun clearCountDownTimer() {
         playCountSelectPosition.set(-1)
         playCountDownChapterSize.set(-5)
-        playCountDownSecond.set(-10000L)
+        playCountDownSecond.set(-1000L)
     }
 
 
