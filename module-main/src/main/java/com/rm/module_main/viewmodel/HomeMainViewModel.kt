@@ -1,6 +1,7 @@
 package com.rm.module_main.viewmodel
 
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.HomeGlobalData
@@ -26,6 +27,7 @@ class HomeMainViewModel(private val repository: MainRepository) : BaseVMViewMode
         PlayGlobalData.playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
         PlayGlobalData.playChapterId.set(chapterId)
         PlayGlobalData.playAudioId.set(audioId)
+        DLog.d("music-exoplayer-lib","首页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
         launchOnIO {
             repository.chapterPageList(
                 audioId = audioId,
@@ -33,6 +35,7 @@ class HomeMainViewModel(private val repository: MainRepository) : BaseVMViewMode
                 page_size = PlayGlobalData.playChapterPageSize,
                 sort = AudioSortType.SORT_ASC
             ).checkResult(onSuccess = {
+                DLog.d("music-exoplayer-lib","首页获取章节列表成功  onSuccess ")
                 val chapterList = it.list
                 PlayGlobalData.playNextPage = it.page
                 PlayGlobalData.playPrePage = it.page
@@ -46,6 +49,7 @@ class HomeMainViewModel(private val repository: MainRepository) : BaseVMViewMode
                             if (!PlayGlobalData.isSortAsc()) {
                                 chapterList.reverse()
                             }
+                            DLog.d("music-exoplayer-lib","首页获取章节列表成功  ${chapterList.size} ")
                             PlayGlobalData.setNextPagePlayData(chapterList)
                             RouterHelper.createRouter(PlayService::class.java).continueLastPlay(chapter,chapterList)
                             return@forEach
@@ -59,6 +63,7 @@ class HomeMainViewModel(private val repository: MainRepository) : BaseVMViewMode
             }, onError = {
                 PlayGlobalData.chapterRefreshModel.finishLoadMore(false)
                 showContentView()
+                DLog.d("music-exoplayer-lib","首页获取章节列表失败   $it ")
             })
         }
     }

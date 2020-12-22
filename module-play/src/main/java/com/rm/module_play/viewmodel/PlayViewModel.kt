@@ -339,6 +339,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     ) {
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
+        DLog.d("music-exoplayer-lib","首页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
         launchOnIO {
             repository.chapterPageList(
                 audioId = audioId,

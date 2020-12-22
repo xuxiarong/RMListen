@@ -144,26 +144,27 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
         PlayGlobalData.playIsError.set(false)
+        BaseConstance.updateBaseChapterId(musicInfo.chapterId)
+        PlayGlobalData.savePlayChapter(position)
+        PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
         if(lastPlayProcess>0){
             return
         }
         BusinessInsertManager.doInsertKeyAndChapter(
-            BusinessInsertConstance.INSERT_TYPE_CHAPTER_PLAY,
-            musicInfo.audioId,
-            musicInfo.chapterId
+                BusinessInsertConstance.INSERT_TYPE_CHAPTER_PLAY,
+                musicInfo.audioId,
+                musicInfo.chapterId
         )
 
         DLog.i("======>>", "oldAudio:$oldAudio    audioId: ${musicInfo.audioId}")
         if (!TextUtils.equals(oldAudio, musicInfo.audioId)) {
             oldAudio = musicInfo.audioId
             BusinessInsertManager.doInsertKeyAndAudio(
-                BusinessInsertConstance.INSERT_TYPE_AUDIO_PLAY,
-                musicInfo.audioId
+                    BusinessInsertConstance.INSERT_TYPE_AUDIO_PLAY,
+                    musicInfo.audioId
             )
         }
         BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
-        PlayGlobalData.savePlayChapter(position)
-        PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
