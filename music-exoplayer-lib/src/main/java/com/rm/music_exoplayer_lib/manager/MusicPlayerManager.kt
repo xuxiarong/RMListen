@@ -42,6 +42,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
             (service as? MusicPlayerBinder)?.let {
                 mBinder = service
+                mBinder?.resumePlayState(true)
                 mBinder?.setNotificationEnable(true)
                 ExoplayerLogger.exoLog("3 服务 MusicPlayerBinder 启动成功")
             }
@@ -80,6 +81,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun startPlayMusic(chapterId: String) {
         mBinder?.startPlayMusic(chapterId)
+        ExoplayerLogger.exoLog("startPlayMusic mBinder = null? --- ${mBinder == null}")
     }
 
     override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, chapterId: String) {
@@ -103,7 +105,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun onStop() {
-        TODO("Not yet implemented")
+
     }
 
     override fun playLastMusic() {

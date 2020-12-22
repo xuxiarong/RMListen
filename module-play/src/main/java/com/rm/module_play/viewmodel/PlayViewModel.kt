@@ -15,6 +15,7 @@ import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
+import com.rm.business_lib.PlayGlobalData.chapterRefreshModel
 import com.rm.business_lib.PlayGlobalData.playNextPage
 import com.rm.business_lib.PlayGlobalData.playPrePage
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
@@ -139,36 +140,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         )
     }
 
-
-    /**
-     * 评论 SmartRefreshLayout的状态变化
-     */
-    val chapterRefreshModel = SmartRefreshLayoutStatusModel()
-
-
     var playFloorAd = ObservableField<BusinessAdModel>()
 
-
-    /**
-     * 设置播放路径
-     */
-    private fun setNextPagePlayData(chapterList: MutableList<DownloadChapter>) {
-        if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
-            PlayGlobalData.playChapterList.postValue(chapterList)
-        } else {
-            PlayGlobalData.playChapterList.addAll(chapterList)
-        }
-    }
-
-    private fun setPrePagePlayData(chapterList: MutableList<DownloadChapter>) {
-        val tempChapterList = mutableListOf<DownloadChapter>()
-        tempChapterList.addAll(chapterList)
-        val currentChapterList = PlayGlobalData.playChapterList.value
-        if (currentChapterList != null && currentChapterList.isNotEmpty()) {
-            tempChapterList.addAll(currentChapterList)
-        }
-        PlayGlobalData.playChapterList.postValue(tempChapterList)
-    }
 
     private fun initPlayChapter(chapter: DownloadChapter) {
         PlayGlobalData.initPlayChapter(chapter)
@@ -293,10 +266,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.finishLoadMore(true)
                     //是第一页，那么取第一条作为播放
                     if (PlayGlobalData.isSortAsc()) {
-                        setNextPagePlayData(chapterList)
+                        PlayGlobalData.setNextPagePlayData(chapterList)
                     } else {
                         chapterList.reverse()
-                        setPrePagePlayData(chapterList)
+                        PlayGlobalData.setPrePagePlayData(chapterList)
                     }
                     if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
                         initPlayChapter(chapterList[0])
@@ -339,10 +312,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
                     if (PlayGlobalData.isSortAsc()) {
-                        setPrePagePlayData(chapterList)
+                        PlayGlobalData.setPrePagePlayData(chapterList)
                     } else {
                         chapterList.reverse()
-                        setNextPagePlayData(chapterList)
+                        PlayGlobalData.setNextPagePlayData(chapterList)
                     }
                     chapterRefreshModel.canRefresh.set(playPrePage > 1)
                 }
@@ -386,14 +359,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                             if (!PlayGlobalData.isSortAsc()) {
                                 chapterList.reverse()
                             }
-                            setNextPagePlayData(chapterList)
+                            PlayGlobalData.setNextPagePlayData(chapterList)
                             return@forEach
                         }
                     }
                     chapterRefreshModel.canRefresh.set(playNextPage > PlayGlobalData.PLAY_FIRST_PAGE)
                     playNextPage++
                 } else {
-                    setNextPagePlayData(mutableListOf())
+                    PlayGlobalData.setNextPagePlayData(mutableListOf())
                 }
             }, onError = {
                 chapterRefreshModel.finishLoadMore(false)

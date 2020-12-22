@@ -24,7 +24,7 @@ val viewModelModule = module {
     viewModel { DemoMultiClickViewModel(get()) }
     viewModel { DemoSwipeViewModel() }
     viewModel { HomeSplashViewModel(get()) }
-    single { HomeMainViewModel() }
+    single { HomeMainViewModel(get()) }
 }
 
 val repositoryModule = module {

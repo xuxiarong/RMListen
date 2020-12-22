@@ -42,9 +42,9 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
      * 评论列表
      */
     suspend fun getCommentInfo(
-            audio_id: String,
-            page: Int,
-            page_size: Int
+        audio_id: String,
+        page: Int,
+        page_size: Int
     ): BaseResult<HomeCommentBean> {
         return apiCall { homeService.homeDetailComment(audio_id, page, page_size) }
     }
@@ -54,10 +54,10 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
      * 章节列表
      */
     suspend fun chapterList(
-            id: String,
-            page: Int,
-            page_size: Int,
-            sort: String
+        id: String,
+        page: Int,
+        page_size: Int,
+        sort: String
     ): BaseResult<ChapterListModel> {
         return apiCall { homeService.chapterList(id, page, page_size, sort) }
     }
@@ -81,9 +81,9 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
     }
 
     suspend fun getBoutiqueRecommendInfoList(
-            classId: Int,
-            page: Int,
-            pageSize: Int = 10
+        classId: Int,
+        page: Int,
+        pageSize: Int = 10
     ): BaseResult<AudioListBean> {
         return apiCall { homeService.getCategoryList(classId, page, pageSize) }
     }
@@ -124,10 +124,10 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
      * 榜单
      */
     suspend fun getTopList(
-            rankType: String,
-            rankSeg: String,
-            page: Int,
-            pageSize: Int
+        rankType: String,
+        rankSeg: String,
+        page: Int,
+        pageSize: Int
     ): BaseResult<HomeTopListBean> {
         return apiCall { homeService.homeTopList(rankType, rankSeg, page, pageSize) }
     }
@@ -143,9 +143,9 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
      * 听单音频列表
      */
     suspend fun getAudioList(
-            sheetId: String,
-            page: Int,
-            page_size: Int
+        sheetId: String,
+        page: Int,
+        page_size: Int
     ): BaseResult<AudioListBean> {
         return apiCall { homeService.homeAudioList(sheetId, page, page_size) }
     }
@@ -189,9 +189,9 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
      * @param anchor_id 音频主播ID
      */
     suspend fun homeSendComment(
-            content: String,
-            audio_id: String,
-            anchor_id: String
+        content: String,
+        audio_id: String,
+        anchor_id: String
     ): BaseResult<Any> {
         return apiCall { homeService.homeSendComment(content, audio_id, anchor_id) }
     }
@@ -218,7 +218,10 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
     suspend fun getHomeDialogAd(ad_key: Array<String>): BaseResult<HomeDialogAdResultModel> {
         return apiCall {
             val requestBean = BusinessAdRequestModel(ad_key = ad_key)
-            homeService.getHomeDialogAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
+            homeService.getHomeDialogAd(
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
+            )
         }
     }
 
@@ -228,7 +231,10 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
     suspend fun getHomeBannerAd(ad_key: Array<String>): BaseResult<HomeBannerAdResultModel> {
         return apiCall {
             val requestBean = BusinessAdRequestModel(ad_key = ad_key)
-            homeService.getHomeBannerAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
+            homeService.getHomeBannerAd(
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
+            )
         }
     }
 
@@ -238,7 +244,10 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
     suspend fun getHomeImgContentAd(ad_key: Array<String>): BaseResult<HomeSingleImgAdResultModel> {
         return apiCall {
             val requestBean = BusinessAdRequestModel(ad_key = ad_key)
-            homeService.getHomeImgContentAd(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
+            homeService.getHomeImgContentAd(
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
+            )
         }
     }
 

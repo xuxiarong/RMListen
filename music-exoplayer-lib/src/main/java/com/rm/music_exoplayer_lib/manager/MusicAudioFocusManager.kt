@@ -36,6 +36,7 @@ class MusicAudioFocusManager constructor(val context: Context) {
      * 请求音频焦点
      */
     fun requestAudioFocus(): Int {
+        exoLog("请求音频焦点")
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (mFocusRequest==null){
                 mFocusRequest = onAudioFocusChangeListener?.let {
@@ -97,6 +98,7 @@ class MusicAudioFocusManager constructor(val context: Context) {
                     }
                     //恢复播放
                     mFocusListener?.onFocusGet()
+                    exoLog("恢复获得焦点")
                 }
                 AudioManager.AUDIOFOCUS_LOSS -> {
                     exoLog("被其他播放器抢占")

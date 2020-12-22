@@ -40,6 +40,11 @@ interface PlayService : ApplicationProvider {
 
     fun pausePlay()
 
+    fun requestAudioFocus()
 
     fun initPlayService(context: Context)
+
+    fun continueLastPlay(playChapter : DownloadChapter,playList : MutableList<DownloadChapter>)
+
+
 }

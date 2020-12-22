@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.HomeGlobalData
@@ -13,6 +14,8 @@ import com.rm.business_lib.PlaySettingData
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.component_comm.activity.ComponentShowPlayActivity
+import com.rm.component_comm.play.PlayService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.component_comm.utils.BannerJumpUtils
 import com.rm.module_main.BR
 import com.rm.module_main.R
@@ -179,7 +182,12 @@ class MainMainActivity :
 
     override fun initData() {
         if(PlaySettingData.getContinueLastPlay()){
-            startPlayActivity()
+            RouterHelper.createRouter(PlayService::class.java).requestAudioFocus()
+            view_pager.postDelayed({
+                BaseConstance.basePlayInfoModel.get()?.let {
+                    mViewModel.getChapterListWithId(it.playAudioId,it.playChapterId)
+                }
+            },1500)
         }
     }
 

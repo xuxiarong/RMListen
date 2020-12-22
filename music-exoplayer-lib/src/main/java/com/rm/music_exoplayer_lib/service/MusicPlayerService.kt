@@ -33,7 +33,6 @@ import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
 import com.rm.music_exoplayer_lib.utils.CacheUtils
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 
@@ -162,7 +161,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     //音频焦点
-    var requestAudioFocus = -1
+    var requestAudioFocus = AUDIOFOCUS_REQUEST_GRANTED
 
     //Service委托代理人
     private var mPlayerBinder: MusicPlayerBinder? = null

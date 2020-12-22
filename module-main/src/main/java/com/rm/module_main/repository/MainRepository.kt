@@ -8,6 +8,7 @@ import com.rm.module_main.api.MainApiService
 import com.rm.business_lib.bean.BusinessAdRequestModel
 import com.rm.business_lib.bean.BusinessUpdateVersionBean
 import com.rm.business_lib.bean.BusinessVersionUrlBean
+import com.rm.business_lib.bean.ChapterListModel
 import com.rm.module_main.model.MainAdResultModel
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -38,4 +39,22 @@ class MainRepository( val apiService: MainApiService) : BaseRepository() {
         return apiCall { apiService.homeGetLaseUrl(body) }
     }
 
+    /**
+     * 返回
+     */
+    suspend fun chapterPageList(
+        audioId: String,
+        page_size: Int,
+        chapterId: String,
+        sort: String
+    ): BaseResult<ChapterListModel> {
+        return apiCall {
+            apiService.chapterPage(
+                audioId = audioId,
+                chapterId = chapterId,
+                page_size = page_size,
+                sort = sort
+            )
+        }
+    }
 }

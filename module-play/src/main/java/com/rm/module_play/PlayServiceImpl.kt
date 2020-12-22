@@ -51,8 +51,16 @@ class PlayServiceImpl : PlayService {
         MusicPlayerManager.musicPlayerManger.pause()
     }
 
+    override fun requestAudioFocus() {
+        MusicPlayerManager.musicPlayerManger.resumePlayState(true)
+    }
+
     override fun initPlayService(context: Context) {
         MusicPlayerManager.musicPlayerManger.initialize(BaseApplication.CONTEXT)
+    }
+
+    override fun continueLastPlay(playChapter: DownloadChapter, playList: MutableList<DownloadChapter>) {
+        GlobalPlayHelper.INSTANCE.continueLastPlay(playChapter,playList)
     }
 
     override fun getApplicationDelegateClass(): Class<out IApplicationDelegate?> {

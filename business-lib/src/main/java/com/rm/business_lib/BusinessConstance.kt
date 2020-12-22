@@ -8,6 +8,7 @@ import androidx.annotation.IntDef
 import androidx.databinding.*
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseConstance
+import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getBooleanMMKV
@@ -20,6 +21,7 @@ import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.download.file.DownLoadFileUtils
+import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import java.lang.Exception
 
 /**
@@ -160,6 +162,11 @@ object PlayGlobalData {
     val playChapterList = MutableLiveData<MutableList<DownloadChapter>>()
 
     /**
+     * 评论 SmartRefreshLayout的状态变化
+     */
+    val chapterRefreshModel = SmartRefreshLayoutStatusModel()
+
+    /**
      * 章节列表倒叙逆序
      */
     var playChapterListSort = ObservableField<String>(AudioSortType.SORT_ASC)
@@ -284,6 +291,28 @@ object PlayGlobalData {
             audio.listenChapterId = it
         }
         playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
+    }
+
+
+    /**
+     * 设置播放路径
+     */
+     fun setNextPagePlayData(chapterList: MutableList<DownloadChapter>) {
+        if (playNextPage == PLAY_FIRST_PAGE) {
+            playChapterList.postValue(chapterList)
+        } else {
+            playChapterList.addAll(chapterList)
+        }
+    }
+
+    fun setPrePagePlayData(chapterList: MutableList<DownloadChapter>) {
+        val tempChapterList = mutableListOf<DownloadChapter>()
+        tempChapterList.addAll(chapterList)
+        val currentChapterList = playChapterList.value
+        if (currentChapterList != null && currentChapterList.isNotEmpty()) {
+            tempChapterList.addAll(currentChapterList)
+        }
+       playChapterList.postValue(tempChapterList)
     }
 
     fun initPlayChapter(chapter: DownloadChapter) {

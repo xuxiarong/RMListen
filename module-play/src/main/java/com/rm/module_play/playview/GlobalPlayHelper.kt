@@ -5,15 +5,18 @@ import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseApplication.Companion.baseApplication
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.ktx.toLongSafe
+import com.rm.baselisten.model.BasePlayProgressModel
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getFloattMMKV
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
+import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.constants.STATE_READY
@@ -37,6 +40,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     private var oldAudio: String = ""
+    private var lastPlayProcess = -1L
 
     var playStatusListener: IPlayStatusListener? = null
 
@@ -57,6 +61,30 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         this.playStatusListener = null
     }
 
+    fun continueLastPlay(playChapter: DownloadChapter,playChapterList : MutableList<DownloadChapter>){
+        if(playChapterList.isNotEmpty()){
+            addOnPlayerEventListener()
+            val baseAudioList = mutableListOf<BaseAudioInfo>()
+            playChapterList.forEach {
+                baseAudioList.add(
+                        BaseAudioInfo(
+                                audioPath = it.path_url,
+                                audioName = it.chapter_name,
+                                filename = it.chapter_name,
+                                audioId = it.audio_id.toString(),
+                                chapterId = it.chapter_id.toString(),
+                                duration = it.realDuration,
+                                playCount = it.play_count.toString()
+                        )
+                )
+            }
+            DLog.d("music-exoplayer-lib","continueLastPlay")
+            lastPlayProcess = BaseConstance.basePlayProgressModel.get()?.currentDuration?:-1L
+            musicPlayerManger.updateMusicPlayerData(audios = baseAudioList, chapterId = playChapter.chapter_id.toString())
+            musicPlayerManger.startPlayMusic(chapterId = playChapter.chapter_id.toString())
+        }
+    }
+
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         DLog.d("suolong", "播放出错 playerState = $playerState 出错信息 = ${message ?: "为空"}")
@@ -67,6 +95,11 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
 
     override fun onPrepared(totalDurtion: Long) {
         PlayGlobalData.playIsError.set(false)
+        if(lastPlayProcess>0){
+            musicPlayerManger.seekTo(lastPlayProcess)
+            lastPlayProcess = -1L
+            return
+        }
         if (PlayGlobalData.playAdIsPlaying.get()) {
             musicPlayerManger.setPlayerMultiple(1f)
             PlayGlobalData.playSpeed.set(1f)
@@ -111,6 +144,9 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
         PlayGlobalData.playIsError.set(false)
+        if(lastPlayProcess>0){
+            return
+        }
         BusinessInsertManager.doInsertKeyAndChapter(
             BusinessInsertConstance.INSERT_TYPE_CHAPTER_PLAY,
             musicInfo.audioId,
@@ -125,8 +161,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 musicInfo.audioId
             )
         }
-
-        BaseConstance.updateBaseChapterId(musicInfo.chapterId)
         BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
         PlayGlobalData.savePlayChapter(position)
         PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
