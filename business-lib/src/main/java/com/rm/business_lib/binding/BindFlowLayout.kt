@@ -28,6 +28,20 @@ fun FlowLayout.bindFlowData(list: MutableList<DetailTags>?) {
     }
 }
 
+@BindingAdapter("bindFlowData")
+fun FlowLayout.bindFlowData(str: String?) {
+    if (str == null || str.isEmpty()) {
+        return
+    }
+    str.split(" ").forEach {
+        val view =
+            LayoutInflater.from(context)
+                .inflate(R.layout.business_tag_book_detail, this, false) as TextView
+        view.text = it
+        this.addView(view)
+    }
+}
+
 @BindingAdapter("bindSearchFlowData")
 fun FlowLayout.bindSearchFlowData(list: MutableList<String>?) {
     if (list == null) {

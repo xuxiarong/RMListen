@@ -33,10 +33,6 @@ public class FaceBehavior extends CoordinatorLayout.Behavior<View> {
      */
     private float downEndY;
     /**
-     * 图片往上位移值
-     */
-    private float faceTransY;
-    /**
      * 蒙层的背景
      */
     private GradientDrawable drawable;
@@ -52,10 +48,9 @@ public class FaceBehavior extends CoordinatorLayout.Behavior<View> {
         //引入尺寸值
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
-        topBarHeight = (int) context.getResources().getDimension(R.dimen.dp_48) + statusBarHeight;
+        topBarHeight = (int) context.getResources().getDimension(R.dimen.dp_44) + statusBarHeight;
         contentTransY = (int) context.getResources().getDimension(R.dimen.dp_160);
-        downEndY = (int) context.getResources().getDimension(R.dimen.dp_315);
-        //faceTransY = context.getResources().getDimension(R.dimen.dp_1);
+        downEndY = (int) context.getResources().getDimension(R.dimen.dp_307);
 
         //抽取图片资源的亮色或者暗色作为蒙层的背景渐变色
         Palette palette = Palette.from(BitmapFactory.decodeResource(context.getResources(), R.mipmap.img_my_bac))
@@ -79,7 +74,7 @@ public class FaceBehavior extends CoordinatorLayout.Behavior<View> {
     @Override
     public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
         //依赖Content View
-        return dependency.getId() == R.id.ll_content;
+        return dependency.getId() == R.id.mine_member_detail_content_layout;
     }
 
     @Override
@@ -93,18 +88,10 @@ public class FaceBehavior extends CoordinatorLayout.Behavior<View> {
     public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
         //计算Content的上滑百分比、下滑百分比
         float upPro = (contentTransY - MathUtils.clamp(dependency.getTranslationY(), topBarHeight, contentTransY)) / (contentTransY - topBarHeight);
-        float downPro = (downEndY - MathUtils.clamp(dependency.getTranslationY(), contentTransY, downEndY)) / (downEndY - contentTransY);
 
         ImageView imageView = child.findViewById(R.id.img_mine_background);
         View maskView = child.findViewById(R.id.v_mask);
 
-        if (dependency.getTranslationY() >= contentTransY) {
-            //根据Content上滑百分比位移图片TransitionY
-            imageView.setTranslationY(downPro * faceTransY);
-        } else {
-            //根据Content下滑百分比位移图片TransitionY
-            imageView.setTranslationY(faceTransY + 4 * upPro * faceTransY);
-        }
         //根据Content上滑百分比设置图片和蒙层的透明度
         imageView.setAlpha(1 - upPro);
         maskView.setAlpha(upPro);

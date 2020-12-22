@@ -16,10 +16,6 @@ import retrofit2.http.*
  */
 interface MineApiService {
 
-    companion object {
-        const val BASE_URL = "https://www.wanandroid.com"
-    }
-
     @FormUrlEncoded
     @POST("/lg/user_article/add/json")
     suspend fun shareArticle(
@@ -165,15 +161,11 @@ interface MineApiService {
 
     /**
      * 免费求书
-     * @param book_name 书名
-     * @param author 作者名
-     * @param anchor_name 播音员名称
-     * @param contact 联系方式
-     * @param device_id 设备id
+     *
      */
     @POST("personal/request-book")
     suspend fun mineRequestBook(
-        body: RequestBody
+       @Body body: RequestBody
     ): BaseResponse<Any>
 
     /**

@@ -9,6 +9,8 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.bean.BusinessVersionUrlBean
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_main.R
@@ -51,6 +53,12 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
 
     fun skipSplash() {
         isSkipAd.set(true)
+        mainAdScreen.get()?.ad_id?.let {
+            BusinessInsertManager.doInsertKeyAndAd(
+                BusinessInsertConstance.INSERT_TYPE_AD_CLOSE,
+                it.toString()
+            )
+        }
     }
 
     fun getSplashAd() {

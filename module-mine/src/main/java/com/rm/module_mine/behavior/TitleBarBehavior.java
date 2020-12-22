@@ -10,6 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
 
+import com.rm.baselisten.util.DLog;
 import com.rm.module_mine.R;
 
 import java.util.List;
@@ -39,13 +40,13 @@ public class TitleBarBehavior extends CoordinatorLayout.Behavior<View> {
         contentTransY = (int) context.getResources().getDimension(R.dimen.dp_160);
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
-        topBarHeight = (int) context.getResources().getDimension(R.dimen.dp_48) + statusBarHeight;
+        topBarHeight = (int) context.getResources().getDimension(R.dimen.dp_44) + statusBarHeight;
     }
 
     @Override
     public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
         //依赖content
-        return dependency.getId() == R.id.ll_content;
+        return dependency.getId() == R.id.mine_member_detail_content_layout;
     }
 
     @Override
@@ -55,7 +56,9 @@ public class TitleBarBehavior extends CoordinatorLayout.Behavior<View> {
         //这里只计算Content上滑范围一半的百分比
         float start = (contentTransY + topBarHeight) / 2;
         float upPro = (contentTransY - MathUtils.clamp(dependency.getTranslationY(), start, contentTransY)) / (contentTransY - start);
-        child.setAlpha(1 - upPro);
+        float alpha = 1 - upPro;
+        child.setAlpha(alpha);
+        child.setVisibility(alpha == 0 ? View.INVISIBLE : View.VISIBLE);
         return true;
     }
 
@@ -65,7 +68,7 @@ public class TitleBarBehavior extends CoordinatorLayout.Behavior<View> {
         List<View> dependencies = parent.getDependencies(child);
         View dependency = null;
         for (View view : dependencies) {
-            if (view.getId() == R.id.ll_content) {
+            if (view.getId() == R.id.mine_member_detail_content_layout) {
                 dependency = view;
                 break;
             }

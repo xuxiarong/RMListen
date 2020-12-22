@@ -628,10 +628,9 @@
 
 
             <com.nex3z.flowlayout.FlowLayout
-                bindFlowData="@{PlayGlobalData.INSTANCE.playAudioModel.tags}"
+                bindFlowData="@{PlayGlobalData.INSTANCE.playAudioModel.anchor.member_tags}"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_14"
-                app:flChildSpacing="@dimen/dp_8"
                 app:flChildSpacingForLastRow="0dp"
                 app:flMaxRows="1"
                 app:layout_constraintBottom_toBottomOf="parent"

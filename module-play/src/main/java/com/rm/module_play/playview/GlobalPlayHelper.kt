@@ -115,6 +115,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             musicInfo.chapterId
         )
 
+        DLog.i("======>>", "oldAudio:$oldAudio    audioId: ${musicInfo.audioId}")
         if (!TextUtils.equals(oldAudio, musicInfo.audioId)) {
             oldAudio = musicInfo.audioId
             BusinessInsertManager.doInsertKeyAndAudio(

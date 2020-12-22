@@ -14,22 +14,4 @@ data class ListenSubscriptionListBean(
     var cover_url: String,//封面url
     var last_unread: Int,//上一次请求未读数
     var audio_status: Int
-) {
-    fun getProgressStr(): String {
-        return when (progress) {
-            1 -> {
-                "【未开播】"
-            }
-            2 -> {
-                "【连载中】"
-            }
-            3 -> {
-                "【已完结】"
-            }
-            else -> {
-                ""
-            }
-        }
-    }
-
-}
+)

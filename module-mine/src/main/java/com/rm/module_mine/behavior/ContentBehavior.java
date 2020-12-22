@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.OverScroller;
+
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.rm.module_mine.R;
+
 import java.lang.reflect.Field;
 
 /**
@@ -55,9 +58,9 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
         super(context, attrs);
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
-        topBarHeight = (int) context.getResources().getDimension(R.dimen.dp_48) + statusBarHeight;
-        contentTransY = (int) context.getResources().getDimension(R.dimen.dp_315);
-        downEndY = (int) context.getResources().getDimension(R.dimen.dp_315);
+        topBarHeight = (int) context.getResources().getDimension(R.dimen.dp_44) + statusBarHeight;
+        contentTransY = (int) context.getResources().getDimension(R.dimen.dp_307);
+        downEndY = (int) context.getResources().getDimension(R.dimen.dp_307);
 
         restoreAnimator = new ValueAnimator();
         restoreAnimator.addUpdateListener(animation -> translation(mLlContent, (float) animation.getAnimatedValue()));
@@ -133,7 +136,7 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child,
                                        @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
         //只接受内容View的垂直滑动
-        return directTargetChild.getId() == R.id.ll_content
+        return directTargetChild.getId() == R.id.mine_member_detail_content_layout
                 && axes == ViewCompat.SCROLL_AXIS_VERTICAL;
     }
 
@@ -148,9 +151,12 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
     @Override
     public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int type) {
         //如果是从初始状态转换到展开状态过程触发收起动画
-        Log.i("onStopNestedScroll: ", child.getTranslationY() + "     " + contentTransY);
-        if (child.getTranslationY() > contentTransY) {
-            restore();
+        Log.i("onStopNestedScroll: ", child.getTranslationY() + "     " + contentTransY + "   " + topBarHeight);
+
+        if (child.getTranslationY() > contentTransY - topBarHeight) {
+            scrollTo(contentTransY);
+        } else {
+            scrollTo(topBarHeight);
         }
     }
 
@@ -162,9 +168,9 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
         //处理上滑
         if (dy > 0) {
             if (transY >= topBarHeight) {
-                translationByConsume(child, transY, consumed, dy);
+                translationByConsume(child, transY);
             } else {
-                translationByConsume(child, topBarHeight, consumed, (child.getTranslationY() - topBarHeight));
+                translationByConsume(child, topBarHeight);
             }
         }
 
@@ -172,16 +178,16 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
             //下滑时处理Fling,折叠时下滑Recycler(或NestedScrollView) Fling滚动到contentTransY停止Fling
             if (type == ViewCompat.TYPE_NON_TOUCH && transY >= contentTransY && flingFromCollaps) {
                 flingFromCollaps = false;
-                translationByConsume(child, contentTransY, consumed, dy);
+                translationByConsume(child, contentTransY);
                 stopViewScroll(target);
                 return;
             }
 
             //处理下滑
             if (transY >= topBarHeight && transY <= downEndY) {
-                translationByConsume(child, transY, consumed, dy);
+                translationByConsume(child, transY);
             } else {
-                translationByConsume(child, downEndY, consumed, (downEndY - child.getTranslationY()));
+                translationByConsume(child, downEndY);
                 stopViewScroll(target);
             }
         }
@@ -206,8 +212,7 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
         }
     }
 
-    private void translationByConsume(View view, float translationY, int[] consumed, float consumedDy) {
-        consumed[1] = (int) consumedDy;
+    private void translationByConsume(View view, float translationY) {
         view.setTranslationY(translationY);
     }
 
@@ -215,12 +220,12 @@ public class ContentBehavior extends CoordinatorLayout.Behavior<View> {
         view.setTranslationY(translationY);
     }
 
-    private void restore() {
+    private void scrollTo(float y) {
         if (restoreAnimator.isStarted()) {
             restoreAnimator.cancel();
             restoreAnimator.removeAllListeners();
         }
-        restoreAnimator.setFloatValues(mLlContent.getTranslationY(), contentTransY);
+        restoreAnimator.setFloatValues(mLlContent.getTranslationY(), y);
         restoreAnimator.setDuration(ANIM_DURATION_FRACTION);
         restoreAnimator.start();
     }

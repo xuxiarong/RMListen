@@ -2,6 +2,7 @@ package com.rm.module_main.activity.splash
 
 import android.Manifest
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Handler
 import android.text.TextUtils
@@ -13,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.receiver.PackageReceiver
 import com.rm.baselisten.util.*
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
@@ -52,7 +54,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.home_activity_splash
-
+    private var receiver: PackageReceiver? = null
     override fun startObserve() {
         mViewModel.isSkipAd.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
@@ -87,9 +89,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     val lastVersion = versionInfo.version?.replace(".", "") ?: "0"
 //                    val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
                     val localVersion = BuildConfig.VERSION_CODE
-                    DLog.i("=====>versionInfo", "$localVersion   $lastVersion")
                     try {
-                        if (lastVersion.toInt() - localVersion.toInt() > 0) {
+                        if (lastVersion.toInt() - localVersion > 0) {
 //                            //强制更新
                             if (TextUtils.equals(versionInfo.type, "2")) {
                                 mViewModel.showUploadDialog(this@SplashActivity,
@@ -115,10 +116,15 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                                         cancelBlock = {
                                             loadAd()
                                         })
+                                } else {
+                                    loadAd()
                                 }
                             }
+                        } else {
+                            loadAd()
                         }
                     } catch (e: Exception) {
+                        DLog.i("=====>versionInfo", "Exception:${e.message}")
                         e.printStackTrace()
                         loadAd()
                     }
@@ -140,7 +146,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             } else {
                 //200毫秒后再次查询
                 Handler().postDelayed({
-                    DLog.i("requestCode", "=====$mViewModel.downPath")
+                    DLog.i("requestCode", "=====${mViewModel.downPath}")
                     if (mViewModel.downPath.isNotEmpty()) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             val hasInstallPermission =
@@ -158,11 +164,19 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                                 ApkInstallUtils.install(this, mViewModel.downPath)
                             }
                         }
+                    } else {
+                        loadAd()
                     }
                 }, 200)
             }
         } else if (requestCode == REQUEST_CODE_INSTALL_APP) {
-            loadAd()
+            if (requestCode != RESULT_OK) {
+                mViewModel.versionInfo.get()?.let {
+                    if (!TextUtils.equals(it.type, "2")) {
+                        loadAd()
+                    }
+                }
+            }
         }
     }
 
@@ -196,6 +210,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             FIRST_OPEN_APP.getBooleanMMKV(false)
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVATION)
         }
+
 //        mViewModel.getLaseVersion()
         loadAd()
 
@@ -204,6 +219,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     private fun loadAd() {
         if (!HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.getBooleanMMKV(false)) {
             showPrivateServiceDialog()
+
             mViewModel.isShowAd.set(false)
         } else {
             mViewModel.isShowAd.set(true)
@@ -220,6 +236,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 initSplashData()
             },
             actionGranted = {
+                // todo
                 initSplashData()
             },
             actionPermanentlyDenied = {
@@ -227,6 +244,22 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             })
     }
 
+    override fun onStart() {
+        super.onStart()
+        receiver = PackageReceiver()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("android.intent.action.PACKAGE_ADDED")
+        intentFilter.addAction("android.intent.action.PACKAGE_REPLACED")
+        intentFilter.addDataScheme("package")
+        registerReceiver(receiver, intentFilter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        receiver?.let {
+            unregisterReceiver(it)
+        }
+    }
 
     /**
      * 显示隐私政策弹窗

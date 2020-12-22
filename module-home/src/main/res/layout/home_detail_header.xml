@@ -326,12 +326,11 @@
                 tools:text="@string/app_name" />
 
             <com.nex3z.flowlayout.FlowLayout
-                bindFlowData="@{viewModel.detailInfoData.list.tags}"
+                bindFlowData="@{viewModel.detailInfoData.list.anchor.member_tags}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:flMaxRows="1"
-                app:flChildSpacing="@dimen/dp_8"
                 app:flChildSpacingForLastRow="0dp"
+                app:flMaxRows="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/detail_anchor_attention"
                 app:layout_constraintStart_toStartOf="@id/home_detail_anchor_name" />

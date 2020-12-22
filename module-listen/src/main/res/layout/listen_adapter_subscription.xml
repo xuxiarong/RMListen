@@ -97,7 +97,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_subscription_adapter_content"
             style="@style/BusinessTextStyleSecond_4"
-            bindText="@{@string/listen_subscription_depict(item.chapter_name,item.getProgressStr())}"
+            android:text="@{item.chapter_name}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_12"

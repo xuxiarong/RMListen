@@ -22,12 +22,12 @@ data class Anchor(
     val anchor_name: String = "",
     val anchor_avatar: String = "",
     val anchor_follows: String = "",
+    val member_tags: String = "",
     var status: Boolean = false
 ) : Serializable
 
 data class AudioRecommendList(
     var list: MutableList<AudioRecommend>?
-
 )
 
 data class AudioRecommend(
