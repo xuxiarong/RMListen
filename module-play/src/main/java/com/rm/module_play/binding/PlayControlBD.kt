@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.view.progressbar.CircularProgressView
@@ -97,8 +98,12 @@ fun PlayControlView.bindResetPlay(resetPlay: (() -> Unit)?) {
 fun PlayControlView.bindPlayCountDownSecond(second: Long) {
     if (second == 0L) {
         pausePlayVar?.let {
-            pauseAnim()
-            it()
+            BaseConstance.basePlayStatusModel.get()?.let{
+                if(it.isStart()){
+                    pauseAnim()
+                    it()
+                }
+            }
         }
     }
 }

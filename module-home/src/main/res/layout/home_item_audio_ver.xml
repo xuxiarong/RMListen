@@ -43,7 +43,7 @@
             />
 
         <View
-            isVisible="@{!item.verModel.audioIsAd()}"
+            isVisible="@{!item.verModel.audioIsAd}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_28"
             android:background="@drawable/business_shape_gradient_0000000_66000000"
@@ -53,7 +53,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             bindPlayCount="@{item.verModel.play_count}"
-            isVisible="@{!item.verModel.audioIsAd()}"
+            isVisible="@{!item.verModel.audioIsAd}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_28"
             android:drawablePadding="@dimen/dp_2"
@@ -68,9 +68,9 @@
 
         <TextView
             android:id="@+id/home_book_adapter_tips"
-            isVisible="@{!item.verModel.audioIsAd()}"
+            isVisible="@{!item.verModel.audioIsAd}"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
-            bindText="@{item.verModel.audio_label}"
+            android:text="@{item.verModel.audio_label}"
             app:layout_constraintRight_toRightOf="@id/home_book_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/home_book_adapter_icon"
             tools:text="文案" />
@@ -94,7 +94,7 @@
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dp_8"
             android:maxLines="2"
-            isVisible="@{!item.verModel.audioIsAd()}"
+            isVisible="@{!item.verModel.audioIsAd}"
             android:text="@{item.verModel.audio_intro}"
             app:layout_constraintLeft_toLeftOf="@id/home_book_adapter_name"
             app:layout_constraintRight_toRightOf="parent"

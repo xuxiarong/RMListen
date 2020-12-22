@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.databinding.ViewDataBinding
@@ -181,17 +182,19 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         override fun convert(holder: BaseViewHolder, item: DownloadChapter) {
             val playChapter =
                 item.chapter_id == musicPlayerManger.getCurrentPlayerMusic()?.chapterId?.toLong()
-            holder.setVisible(R.id.music_play_book_list_position, !playChapter)
+            val playIcon = holder.getView<AppCompatImageView>(R.id.living_img)
             if (playChapter) {
-                if (BaseConstance.basePlayStatusModel.get()!!.isStart()) {
-                    holder.getView<LivingView>(R.id.living_img).startAnim()
-                } else {
-                    holder.getView<LivingView>(R.id.living_img).pauseAnim()
+                BaseConstance.basePlayStatusModel.get()?.let {
+                    playIcon.visibility = View.VISIBLE
+                    if (it.isStart()) {
+                        playIcon.setImageResource(R.drawable.business_ic_playing)
+                    } else {
+                        playIcon.setImageResource(R.drawable.business_ic_play_pause)
+                    }
                 }
             } else {
-                holder.getView<LivingView>(R.id.living_img).visibility = View.GONE
+                playIcon.visibility = View.GONE
             }
-            holder.setText(R.id.music_play_book_list_position, "${holder.layoutPosition + 1}")
             holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
             holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCountString(item.play_count)
             holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.realDuration)
@@ -222,6 +225,13 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         resDrawable.setBounds(0, 0, resDrawable.minimumWidth, resDrawable.minimumHeight)
         play_iv_play_mode.setCompoundDrawables(resDrawable, null, null, null)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mDataBind.apply {
+            lifecycleOwner = this@MusicPlayBookListDialog
+        }
     }
 
 }
