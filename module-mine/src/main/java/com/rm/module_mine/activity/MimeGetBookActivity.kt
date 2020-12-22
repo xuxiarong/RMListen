@@ -1,10 +1,13 @@
 package com.rm.module_mine.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import com.rm.baselisten.binding.bindKeyboardVisibilityListener
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.utilExt.dip
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivityGetBookBinding
@@ -21,8 +24,10 @@ import kotlinx.android.synthetic.main.mine_activity_get_book.*
 class MimeGetBookActivity : BaseVMActivity<MineActivityGetBookBinding, MineGetBookViewModel>(),
     View.OnFocusChangeListener {
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, MimeGetBookActivity::class.java))
+        const val GET_BOOK_REQUEST_CODE = 1003
+        const val GET_BOOK_RESULT_CODE = 1004
+        fun startActivity(activity: Activity) {
+            activity.startActivityForResult(Intent(activity, MimeGetBookActivity::class.java),GET_BOOK_REQUEST_CODE)
         }
     }
 
@@ -40,6 +45,18 @@ class MimeGetBookActivity : BaseVMActivity<MineActivityGetBookBinding, MineGetBo
         mine_get_book_ed_author.onFocusChangeListener = this
         mine_get_book_ed_member.onFocusChangeListener = this
         mine_get_book_ed_contact.onFocusChangeListener = this
+
+
+        mDataBind.mineGetBookEdBook.bindKeyboardVisibilityListener { it, keyboardHeight ->
+            if (it) {
+                mDataBind.mineGetBookView.apply {
+                    layoutParams.height = keyboardHeight
+                    visibility = View.VISIBLE
+                }
+            } else {
+                mDataBind.mineGetBookView.visibility = View.GONE
+            }
+        }
     }
 
     override fun startObserve() {

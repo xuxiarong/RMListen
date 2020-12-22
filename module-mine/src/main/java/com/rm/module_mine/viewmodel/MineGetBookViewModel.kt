@@ -8,6 +8,7 @@ import com.rm.baselisten.util.getListString
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.utils.DeviceUtils
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MimeGetBookActivity.Companion.GET_BOOK_RESULT_CODE
 import com.rm.module_mine.repository.MineRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -127,11 +128,7 @@ class MineGetBookViewModel(private val repository: MineRepository) : BaseVMViewM
                         contact.get()!!
                     ).checkResult(
                         onSuccess = {
-                            showTip("提交成功")
-                            viewModelScope.launch {
-                                delay(1500)
-                                finish()
-                            }
+                          setResultAndFinish(GET_BOOK_RESULT_CODE)
                         },
                         onError = {
                             showTip("$it", R.color.business_color_ff5e5e)

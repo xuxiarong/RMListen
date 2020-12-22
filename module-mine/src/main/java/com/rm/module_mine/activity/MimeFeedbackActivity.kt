@@ -1,5 +1,6 @@
 package com.rm.module_mine.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -26,8 +27,13 @@ import kotlinx.android.synthetic.main.mine_activity_feedback.*
 class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFeedbackViewModel>(),
     View.OnFocusChangeListener {
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, MimeFeedbackActivity::class.java))
+        const val FEEDBACK_REQUEST_CODE = 1001
+        const val FEEDBACK_RESULT_CODE = 1002
+        fun startActivity(activity: Activity) {
+            activity.startActivityForResult(
+                Intent(activity, MimeFeedbackActivity::class.java),
+                FEEDBACK_REQUEST_CODE
+            )
         }
     }
 

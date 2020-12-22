@@ -127,11 +127,11 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
                 if (lastVersion.toInt() - localVersion.toInt() > 0) {
                     RouterHelper.createRouter(HomeService::class.java)
                         .showUploadDownDialog(
-                            activity,
-                            bean,
-                            MineAboutViewModel.INSTALL_RESULT_CODE,
-                            false,
-                            downloadComplete={},
+                            activity = activity,
+                            versionInfo = bean,
+                            installCode = MineAboutViewModel.INSTALL_RESULT_CODE,
+                            dialogCancel = true,
+                            downloadComplete = {},
                             sureIsDismiss = true,
                             cancelBlock = {
 
@@ -196,12 +196,14 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
                 if (isLogin.get()) {
                     startActivity(MinePersonalInfoActivity::class.java)
                 } else {
-                    RouterHelper.createRouter(LoginService::class.java).startLoginActivity(context)
+                    quicklyLogin(context)
                 }
             }
             //问题反馈
             TYPE_FEEDBACK -> {
-                MimeFeedbackActivity.startActivity(context)
+                getActivity(context)?.let {
+                    MimeFeedbackActivity.startActivity(it)
+                }
             }
             //播放设置
             TYPE_PLAY_ST -> {
@@ -209,7 +211,9 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
             }
             //免费求书
             TYPE_READING -> {
-                MimeGetBookActivity.startActivity(context)
+                getActivity(context)?.let {
+                    MimeGetBookActivity.startActivity(it)
+                }
             }
             //好评支持
             TYPE_PRAISE -> {

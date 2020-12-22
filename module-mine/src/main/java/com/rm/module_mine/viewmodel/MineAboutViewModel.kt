@@ -46,6 +46,8 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
         if (TextUtils.equals("版本更新", bean.title)) {
             if (bean.showRed) {
                 showUploadDialog(context)
+            } else {
+                showTip("当前已经是最新版本了")
             }
         } else {
             bean.jump_url?.let {
@@ -68,14 +70,15 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
         launchOnIO {
             repository.mineGetLaseUrl().checkResult(onSuccess = {
                 versionInfo = it
-                mAdapter.data[0].sub_title = "${it.version}"
+                val version = it.version ?: BuildConfig.VERSION_NAME
+                mAdapter.data[0].sub_title = version
                 try {
                     val lastVersion = versionInfo?.version?.replace(".", "") ?: "0"
                     val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
 
-//                    if (lastVersion.toInt() - localVersion.toInt() > 0) {
-                    mAdapter.data[0].showRed = true
-//                    }
+                    if (lastVersion.toInt() - localVersion.toInt() > 0) {
+                        mAdapter.data[0].showRed = true
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -91,11 +94,11 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
             versionInfo?.let {
                 RouterHelper.createRouter(HomeService::class.java)
                     .showUploadDownDialog(
-                        activity,
-                        it,
-                        INSTALL_RESULT_CODE,
-                        false,
-                        downloadComplete={},
+                        activity = activity,
+                        versionInfo = it,
+                        installCode = INSTALL_RESULT_CODE,
+                        dialogCancel = true,
+                        downloadComplete = {},
                         sureIsDismiss = true,
                         cancelBlock = {
 

@@ -101,7 +101,6 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
      */
     fun showUploadDialog(
         activity: FragmentActivity,
-        enforceUpdate: Boolean,
         sureIsDismiss: Boolean,
         sureBlock: () -> Unit?,
         cancelBlock: () -> Unit? = {}
@@ -109,10 +108,10 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
         versionInfo.get()?.let {
             RouterHelper.createRouter(HomeService::class.java)
                 .showUploadDownDialog(
-                    activity,
-                    it,
-                    INSTALL_RESULT_CODE,
-                    enforceUpdate,
+                    activity = activity,
+                    versionInfo = it,
+                    installCode = INSTALL_RESULT_CODE,
+                    dialogCancel = false,
                     downloadComplete = { path -> downPath = path },
                     sureIsDismiss = sureIsDismiss,
                     sureBlock = sureBlock,

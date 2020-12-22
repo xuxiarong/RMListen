@@ -103,7 +103,9 @@ class MineSettingViewModel : BaseVMViewModel() {
      * 免费求书
      */
     fun clickGetBook(context: Context) {
-        MimeGetBookActivity.startActivity(context)
+        getActivity(context)?.let {
+            MimeGetBookActivity.startActivity(it)
+        }
     }
 
     /**

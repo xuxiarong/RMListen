@@ -79,12 +79,15 @@
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.userInfoClick(context)}"
             android:textStyle="bold"
+            android:singleLine="true"
+            android:maxWidth="@dimen/dp_200"
             app:layout_constraintBottom_toTopOf="@id/mine_top_split_line"
-            app:layout_constraintLeft_toLeftOf="@id/mine_top_split_line"
-            tools:text="元芳" />
+            app:layout_constraintStart_toStartOf="@id/mine_top_split_line"
+            tools:text="元芳元芳" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            isVisible="@{viewModel.currentIsLogin}"
+            android:id="@+id/mine_home_user_lv"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/mine_home_user_name"
@@ -98,7 +101,7 @@
             android:textSize="@dimen/business_text_size_10sp"
             android:textStyle="italic|bold"
             app:layout_constraintBottom_toBottomOf="@id/mine_home_user_name"
-            app:layout_constraintLeft_toRightOf="@id/mine_home_user_name"
+            app:layout_constraintStart_toEndOf="@id/mine_home_user_name"
             tools:text="LV5" />
 
         <androidx.appcompat.widget.AppCompatTextView

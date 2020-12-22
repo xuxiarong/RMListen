@@ -67,9 +67,9 @@ class HomeServiceImpl : HomeService {
         activity: FragmentActivity,
         versionInfo: BusinessVersionUrlBean,
         installCode: Int,
-        enforceUpdate: Boolean,
-         downloadComplete:(String)->Unit,
-        sureIsDismiss: Boolean? ,
+        dialogCancel: Boolean,
+        downloadComplete: (String) -> Unit,
+        sureIsDismiss: Boolean?,
         sureBlock: () -> Unit?,
         cancelBlock: () -> Unit?
     ) {
@@ -77,7 +77,7 @@ class HomeServiceImpl : HomeService {
             versionInfo,
             activity,
             installCode,
-            enforceUpdate,
+            dialogCancel,
             downloadComplete,
             sureIsDismiss,
             sureBlock,

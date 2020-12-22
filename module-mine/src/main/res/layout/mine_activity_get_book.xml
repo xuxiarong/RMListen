@@ -9,209 +9,220 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            android:text="@string/mine_book_info"
-            android:textColor="@color/business_text_color_333333"
-            android:textSize="@dimen/business_text_size_14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_44"
-            android:layout_marginTop="@dimen/dp_12"
-            android:background="@drawable/business_shape_f7f7f7_8dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/mine_get_book_ed_book"
-                afterTextChanged="@{viewModel.bookInfo}"
-                android:inputType="text"
-                bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
-                android:layout_width="0dp"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                android:text="@string/mine_book_info"
+                android:textColor="@color/business_text_color_333333"
+                android:textSize="@dimen/business_text_size_14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_44"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="@string/mine_hint_book_info_tips"
-                android:paddingStart="@dimen/dp_10"
-                android:paddingEnd="@dimen/dp_10"
-                android:singleLine="true"
-                android:text="@{viewModel.bookName}"
-                android:textColor="@color/business_text_color_333333"
-                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
-                android:textSize="@dimen/business_text_size_14sp" />
+                android:layout_marginTop="@dimen/dp_12"
+                android:background="@drawable/business_shape_f7f7f7_8dp"
+                android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                isVisible="@{viewModel.bookIconIsVisibility}"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/mine_get_book_ed_book"
+                    afterTextChanged="@{viewModel.bookInfo}"
+                    bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_44"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/mine_hint_book_info_tips"
+                    android:inputType="text"
+                    android:paddingStart="@dimen/dp_10"
+                    android:paddingEnd="@dimen/dp_10"
+                    android:singleLine="true"
+                    android:text="@{viewModel.bookName}"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
+                    android:textSize="@dimen/business_text_size_14sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    isVisible="@{viewModel.bookIconIsVisibility}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:onClick="@{()->viewModel.clickBookName()}"
+                    android:src="@drawable/business_icon_cancel" />
+            </LinearLayout>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_4"
-                android:layout_marginEnd="@dimen/dp_4"
-                android:onClick="@{()->viewModel.clickBookName()}"
-                android:src="@drawable/business_icon_cancel" />
-        </LinearLayout>
+                android:layout_marginTop="@dimen/dp_14"
+                android:text="@string/mine_author_name"
+                android:textColor="@color/business_text_color_333333"
+                android:textSize="@dimen/business_text_size_14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_44"
+                android:layout_marginTop="@dimen/dp_12"
+                android:background="@drawable/business_shape_f7f7f7_8dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/mine_get_book_ed_author"
+                    afterTextChanged="@{viewModel.authorInfo}"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/mine_hint_book_author_tips"
+                    android:paddingStart="@dimen/dp_10"
+                    android:paddingEnd="@dimen/dp_10"
+                    android:singleLine="true"
+                    android:text="@{viewModel.author}"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
+                    android:textSize="@dimen/business_text_size_14sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    isVisible="@{viewModel.authorIconIsVisibility}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:onClick="@{()->viewModel.clickAuthor()}"
+                    android:src="@drawable/business_icon_cancel" />
+            </LinearLayout>
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            android:text="@string/mine_author_name"
-            android:textColor="@color/business_text_color_333333"
-            android:textSize="@dimen/business_text_size_14sp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                android:text="@string/mine_member_name"
+                android:textColor="@color/business_text_color_333333"
+                android:textSize="@dimen/business_text_size_14sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_44"
-            android:layout_marginTop="@dimen/dp_12"
-            android:background="@drawable/business_shape_f7f7f7_8dp"
-            android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/mine_get_book_ed_author"
-                afterTextChanged="@{viewModel.authorInfo}"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_44"
+                android:layout_marginTop="@dimen/dp_12"
+                android:background="@drawable/business_shape_f7f7f7_8dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/mine_get_book_ed_member"
+                    afterTextChanged="@{viewModel.memberInfo}"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/mine_hint_book_member_tips"
+                    android:paddingStart="@dimen/dp_10"
+                    android:paddingEnd="@dimen/dp_10"
+                    android:singleLine="true"
+                    android:text="@{viewModel.member}"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
+                    android:textSize="@dimen/business_text_size_14sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    isVisible="@{viewModel.memberIconIsVisibility}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:onClick="@{()->viewModel.clickMember()}"
+                    android:src="@drawable/business_icon_cancel" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                android:text="@string/mine_contact"
+                android:textColor="@color/business_text_color_333333"
+                android:textSize="@dimen/business_text_size_14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_44"
+                android:layout_marginTop="@dimen/dp_12"
+                android:background="@drawable/business_shape_f7f7f7_8dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/mine_get_book_ed_contact"
+                    afterTextChanged="@{viewModel.contactInfo}"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/mine_hint_book_contact_tips"
+                    android:paddingStart="@dimen/dp_10"
+                    android:paddingEnd="@dimen/dp_10"
+                    android:singleLine="true"
+                    android:text="@{viewModel.contact}"
+                    android:textColor="@color/business_text_color_333333"
+                    android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
+                    android:textSize="@dimen/business_text_size_14sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    isVisible="@{viewModel.contactIconIsVisibility}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:onClick="@{()->viewModel.clickContact()}"
+                    android:src="@drawable/business_icon_cancel" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_52"
+                android:layout_marginTop="@dimen/dp_34"
+                android:background="@{viewModel.bookName.trim().length()>0?@drawable/business_shape_round_ff5e5e_32dp:@drawable/business_shape_round_e8e8e8_37dp}"
+                android:enabled="@{viewModel.bookName.trim().length()>0}"
+                android:gravity="center"
+                android:onClick="@{()->viewModel.requestBook()}"
+                android:text="@string/mine_submit"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_16sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                isVisible="@{viewModel.bookName.trim().length()>0}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/business_menu_red_bg" />
+
+            <View
+                android:id="@+id/mine_get_book_view"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="@string/mine_hint_book_author_tips"
-                android:paddingStart="@dimen/dp_10"
-                android:paddingEnd="@dimen/dp_10"
-                android:singleLine="true"
-                android:text="@{viewModel.author}"
-                android:textColor="@color/business_text_color_333333"
-                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
-                android:textSize="@dimen/business_text_size_14sp" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                isVisible="@{viewModel.authorIconIsVisibility}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_4"
-                android:layout_marginEnd="@dimen/dp_4"
-                android:onClick="@{()->viewModel.clickAuthor()}"
-                android:src="@drawable/business_icon_cancel" />
+                android:layout_height="140dp"
+                android:visibility="gone" />
         </LinearLayout>
 
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            android:text="@string/mine_member_name"
-            android:textColor="@color/business_text_color_333333"
-            android:textSize="@dimen/business_text_size_14sp" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_44"
-            android:layout_marginTop="@dimen/dp_12"
-            android:background="@drawable/business_shape_f7f7f7_8dp"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/mine_get_book_ed_member"
-                afterTextChanged="@{viewModel.memberInfo}"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="@string/mine_hint_book_member_tips"
-                android:paddingStart="@dimen/dp_10"
-                android:paddingEnd="@dimen/dp_10"
-                android:singleLine="true"
-                android:text="@{viewModel.member}"
-                android:textColor="@color/business_text_color_333333"
-                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
-                android:textSize="@dimen/business_text_size_14sp" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                isVisible="@{viewModel.memberIconIsVisibility}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_4"
-                android:layout_marginEnd="@dimen/dp_4"
-                android:onClick="@{()->viewModel.clickMember()}"
-                android:src="@drawable/business_icon_cancel" />
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14"
-            android:text="@string/mine_contact"
-            android:textColor="@color/business_text_color_333333"
-            android:textSize="@dimen/business_text_size_14sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_44"
-            android:layout_marginTop="@dimen/dp_12"
-            android:background="@drawable/business_shape_f7f7f7_8dp"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/mine_get_book_ed_contact"
-                afterTextChanged="@{viewModel.contactInfo}"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="@string/mine_hint_book_contact_tips"
-                android:paddingStart="@dimen/dp_10"
-                android:paddingEnd="@dimen/dp_10"
-                android:singleLine="true"
-                android:text="@{viewModel.contact}"
-                android:textColor="@color/business_text_color_333333"
-                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
-                android:textSize="@dimen/business_text_size_14sp" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                isVisible="@{viewModel.contactIconIsVisibility}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_4"
-                android:layout_marginEnd="@dimen/dp_4"
-                android:onClick="@{()->viewModel.clickContact()}"
-                android:src="@drawable/business_icon_cancel" />
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_52"
-            android:layout_marginTop="@dimen/dp_34"
-            android:background="@{viewModel.bookName.trim().length()>0?@drawable/business_shape_round_ff5e5e_32dp:@drawable/business_shape_round_e8e8e8_37dp}"
-            android:enabled="@{viewModel.bookName.trim().length()>0}"
-            android:gravity="center"
-            android:onClick="@{()->viewModel.requestBook()}"
-            android:text="@string/mine_submit"
-            android:textColor="@color/business_text_color_ffffff"
-            android:textSize="@dimen/business_text_size_16sp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            isVisible="@{viewModel.bookName.trim().length()>0}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/business_menu_red_bg" />
-
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

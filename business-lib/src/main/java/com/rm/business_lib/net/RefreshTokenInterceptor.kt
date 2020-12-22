@@ -16,6 +16,9 @@ import com.rm.business_lib.helpter.loginOut
 import com.rm.business_lib.helpter.parseToken
 import com.rm.business_lib.net.api.BusinessApiService
 import com.rm.business_lib.utils.DeviceUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request
@@ -76,7 +79,7 @@ class RefreshTokenInterceptor : Interceptor {
                     .body(body).build()
             }
             val code = getResponseCode(originResponse)
-
+            DLog.i("=====>RefreshTokenInterceptor", "=====code:>>>>$code")
             return if (code == CODE_REFRESH_TOKEN) {
 
                 val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
@@ -90,7 +93,9 @@ class RefreshTokenInterceptor : Interceptor {
                     chain.proceed(newRequest)
                 } else {
                     //token 刷新失败
-                    loginOut()
+                    GlobalScope.launch(Dispatchers.Main) {
+                        loginOut()
+                    }
                     val headers = request.headers.newBuilder()
                     headers["Authorization"] = "Bearer "
                     val newRequest = request.newBuilder().headers(headers.build()).build()
@@ -98,8 +103,10 @@ class RefreshTokenInterceptor : Interceptor {
                     chain.proceed(newRequest)
                 }
             } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN /*|| code == CODE_REFRESH_TOKEN_FAILED*/) {
-                //被挤下线了/用户未登陆/
-                loginOut()
+                //被挤下线了/用户未登陆  需要放在主线程去更新，不然会出现异常
+                GlobalScope.launch(Dispatchers.Main) {
+                    loginOut()
+                }
 //            val headers = request.headers.newBuilder()
 //            headers["Authorization"] = "Bearer "
 //            val newRequest = request.newBuilder().headers(headers.build()).build()
@@ -113,6 +120,7 @@ class RefreshTokenInterceptor : Interceptor {
                     .body(body).build()
             }
         } catch (e: Exception) {
+            DLog.i("=====>RefreshTokenInterceptor", "Exception:${e.message}")
             val json = GsonUtils.toJson(BaseResponse(10086, "网络异常", Any()))
             return Response.Builder()
                 .request(chain.request())

@@ -3,12 +3,17 @@ package com.rm.business_lib.base.dialog
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.rm.baselisten.binding.bindText
 import com.rm.baselisten.dialog.BaseFragmentDialog
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
+import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.R
 
 /**
@@ -54,6 +59,8 @@ class TipsFragmentDialog : BaseFragmentDialog() {
         super.initView()
         // 设置dialog有自己的背景
         dialogHasBackground = true
+
+
         // 设置标题显示
         rootView?.findViewById<TextView>(R.id.business_tips_dialog_title)?.bindText(titleText)
         // 设置内容显示
@@ -93,6 +100,23 @@ class TipsFragmentDialog : BaseFragmentDialog() {
             }
         }?.setOnClickListener {
             rightBtnClick(it)
+        }
+
+        dialog?.setOnShowListener {
+
+            val contentLayout =
+                rootView?.findViewById<View>(R.id.business_tips_dialog_content_layout)
+            contentLayout?.let {
+                val height = it.measuredHeight
+                val screenHeight = it.context.screenHeight
+                if (height > screenHeight / 2) {
+                    val params = contentLayout.layoutParams as ViewGroup.MarginLayoutParams
+                    params.height = it.context.dip(400)
+                    contentLayout.layoutParams = params
+                }
+                DLog.i("=========>", "=====setOnShowListener$height   $screenHeight")
+
+            }
         }
     }
 

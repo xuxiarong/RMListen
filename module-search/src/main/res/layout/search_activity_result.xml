@@ -98,9 +98,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_15"
             android:gravity="center"
+            android:minHeight="@dimen/dp_28"
             android:text="@string/search_history"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -110,15 +111,36 @@
             android:id="@+id/search_result_del_history"
             isVisible="@{viewModel.historyVisible}"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_15"
+            android:minHeight="@dimen/dp_28"
             android:onClick="@{()->viewModel.clickClearHistory()}"
-            android:src="@drawable/business_icon_delete"
-            app:layout_constraintBottom_toBottomOf="@id/search_result_history_text"
+            android:src="@{viewModel.clearVisible?@drawable/business_icon_delclose:@drawable/business_icon_delete}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_result_back"
-            app:layout_constraintTop_toTopOf="@id/search_result_history_text" />
+            app:layout_constraintTop_toBottomOf="@id/search_result_back" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search_result_clear_history"
+            isVisible="@{viewModel.clearVisible }"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:background="@drawable/business_shape_round_ff5e5e_14dp"
+            android:gravity="center"
+            android:onClick="@{()->viewModel.clickDeleteHistory()}"
+            android:paddingStart="@dimen/dp_17"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_17"
+            android:layout_marginTop="@dimen/dp_15"
+            android:paddingBottom="@dimen/dp_4"
+            android:text="@string/search_clearn_all"
+            android:textColor="@color/business_text_color_ffffff"
+            android:textSize="@dimen/business_text_size_14sp"
+            app:layout_constraintEnd_toStartOf="@id/search_result_del_history"
+            app:layout_constraintTop_toBottomOf="@id/search_result_back" />
+
 
         <com.rm.business_lib.wedgit.TagLayout
             bindTagClick="@{viewModel.historyItemClickFun}"

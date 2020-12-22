@@ -239,7 +239,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         launchOnIO {
             repository.searchHintBanner().checkResult(
                 onSuccess = {
-                    hintBannerList.set(it.keywords.split(","))
+                    hintBannerList.set(it.keywords?.split(","))
                 },
                 onError = {
                     DLog.i("-------->", "searchHintBanner:$it")
@@ -255,7 +255,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         launchOnIO {
             repository.searchRecommend().checkResult(
                 onSuccess = {
-                    val split = it.keywords.split(",")
+                    val split = it.keywords?.split(",")
                     recommendData.set(it.keywords)
                     recommendVisible.set(true)
                     adapter.setList(split)
@@ -276,7 +276,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
             repository.searchSuggest(keyword).checkResult(
                 onSuccess = {
                     resultIsEnd = true
-                    if (it.keywords.isNotEmpty()) {
+                    if (it.keywords != null && it.keywords.isNotEmpty()) {
                         val list = it.keywords.split(",")
                         inputAdapter.setList(list)
                     } else {

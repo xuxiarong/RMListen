@@ -11,7 +11,6 @@ import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.adapter.MineMemberPageAdapter
-import com.rm.module_mine.databinding.MineActivityMemberDetail1Binding
 import com.rm.module_mine.databinding.MineActivityMemberDetailBinding
 import com.rm.module_mine.fragment.MineMemberCommentFragment
 import com.rm.module_mine.fragment.MineMemberMainFragment

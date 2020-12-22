@@ -36,7 +36,7 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
      * 问题描述
      */
     val inputAction: (String) -> Unit = {
-        if (it.length>50){
+        if (it.length>500){
             showTip("文字超出最大限制",R.color.business_color_ff5e5e)
         }
         inputText.set(it)
@@ -124,11 +124,7 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
                 .checkResult(
                     onSuccess = {
                         showContentView()
-                        showTip("反馈成功")
-                        launch {
-                            delay(1000)
-                            finish()
-                        }
+                        setResultAndFinish(1002)
                     },
                     onError = { msg ->
                         showContentView()

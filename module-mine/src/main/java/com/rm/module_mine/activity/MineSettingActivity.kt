@@ -52,4 +52,13 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when {
+            requestCode == MimeGetBookActivity.GET_BOOK_REQUEST_CODE && resultCode == MimeGetBookActivity.GET_BOOK_RESULT_CODE -> {
+                mViewModel.showTip("提交成功")
+            }
+
+        }
+    }
 }

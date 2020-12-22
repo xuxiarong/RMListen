@@ -26,8 +26,8 @@ class HomeUploadDownload(
     private val versionInfo: BusinessVersionUrlBean,
     private val mActivity: FragmentActivity,
     private val installCode: Int,
-    private val enforceUpdate: Boolean,
-    private val downloadComplete:(String)->Unit,
+    private val mDialogCancel: Boolean,
+    private val downloadComplete: (String) -> Unit,
     private val sureIsDismiss: Boolean? = true,
     private var sureBlock: () -> Unit? = {},
     private var cancelBlock: () -> Unit? = {}
@@ -51,14 +51,14 @@ class HomeUploadDownload(
             contentText = "${versionInfo.description}"
             leftBtnText = mActivity.getString(R.string.business_not_upgrade)
             rightBtnText = mActivity.getString(R.string.business_upgrade)
-            dialogCancel = !enforceUpdate
+            dialogCancel = mDialogCancel
             rightBtnTextColor = R.color.business_color_ff5e5e
             leftBtnClick = {
-                if (enforceUpdate) {
-                    mActivity.finish()
-                }
                 dismiss()
                 cancelBlock()
+                if (dialogCancel) {
+                    mActivity.finish()
+                }
             }
             rightBtnClick = {
                 downApk()

@@ -17,8 +17,6 @@ import com.rm.module_search.databinding.SearchFragmentMainBinding
 import com.rm.module_search.viewmodel.SearchMainViewModel
 import kotlinx.android.synthetic.main.search_fragment_main.*
 import java.lang.ref.WeakReference
-import kotlin.math.abs
-import kotlin.random.Random
 
 
 /**
@@ -35,6 +33,8 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
     //输入法高度
     private var keyboardHeight = 0
 
+    //当前输入框轮播index
+    private var curIndex = 0
     override fun initModelBrId() = BR.viewModel
 
     override fun initLayoutId() = R.layout.search_fragment_main
@@ -123,6 +123,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         mViewModel.hintBannerList.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                curIndex = 0
                 val list = mViewModel.hintBannerList.get()!!
                 mDataBind.searchMainEditText.hint = list[0]
                 startHintBanner()
@@ -206,8 +207,12 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         override fun run() {
             weakReference.get()?.let {
                 it.mViewModel.hintBannerList.get()?.let { list ->
-                    val random = Random.nextInt(list.size)
-                    val str = list[random]
+                    if (it.curIndex < list.size - 1) {
+                        it.curIndex++
+                    } else {
+                        it.curIndex = 0
+                    }
+                    val str = list[it.curIndex]
                     it.mViewModel.hintKeyword = str
                     it.mDataBind.searchMainEditText.hint = str
                     it.startHintBanner()
