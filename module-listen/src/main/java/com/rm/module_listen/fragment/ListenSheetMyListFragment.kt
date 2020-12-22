@@ -35,7 +35,6 @@ class ListenSheetMyListFragment :
     override fun initLayoutId() = R.layout.listen_fragment_sheet_my_list
 
     override fun initData() {
-        mViewModel.showLoading()
         arguments?.getString(MEMBER_ID)?.let {
             mViewModel.memberId = it
             mViewModel.getData(it)

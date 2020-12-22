@@ -185,7 +185,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/business_shape_f7f7f7_8dp"
                     android:gravity="center_vertical"
-                    android:hint="@string/mine_feedback_hint_contact_tips"
+                    android:hint="@string/mine_hint_book_contact_tips"
                     android:paddingStart="@dimen/dp_10"
                     android:paddingEnd="@dimen/dp_10"
                     android:singleLine="true"

@@ -155,7 +155,7 @@
                             android:textSize="@dimen/business_text_size_14sp"
                             app:layout_constraintEnd_toStartOf="@id/search_main_del_history"
                             app:layout_constraintTop_toTopOf="parent" />
-                        <!--                        bindTagClick="@{viewModel.historyItemClickFun}"-->
+
                         <com.rm.business_lib.wedgit.TagLayout
                             android:id="@+id/search_main_history_tags"
                             bindTagClick="@{viewModel.historyItemClickFun}"

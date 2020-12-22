@@ -14,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.receiver.PackageReceiver
 import com.rm.baselisten.util.*
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
@@ -54,7 +53,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.home_activity_splash
-    private var receiver: PackageReceiver? = null
     override fun startObserve() {
         mViewModel.isSkipAd.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
@@ -94,7 +92,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 //                            //强制更新
                             if (TextUtils.equals(versionInfo.type, "2")) {
                                 mViewModel.showUploadDialog(this@SplashActivity,
-                                    true,
                                     sureIsDismiss = true,
                                     sureBlock = {
 
@@ -104,11 +101,10 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                             } else {
                                 //一天内只显示一次
                                 val curTime = 24 * 60 * 60 * 1000
-                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
+//                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
                                     UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
                                     //普通更新
                                     mViewModel.showUploadDialog(this@SplashActivity,
-                                        false,
                                         sureIsDismiss = true,
                                         sureBlock = {
 
@@ -116,9 +112,9 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                                         cancelBlock = {
                                             loadAd()
                                         })
-                                } else {
-                                    loadAd()
-                                }
+//                                } else {
+//                                    loadAd()
+//                                }
                             }
                         } else {
                             loadAd()
@@ -211,8 +207,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVATION)
         }
 
-//        mViewModel.getLaseVersion()
-        loadAd()
+        mViewModel.getLaseVersion()
+//        loadAd()
 
     }
 
@@ -244,22 +240,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             })
     }
 
-    override fun onStart() {
-        super.onStart()
-        receiver = PackageReceiver()
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("android.intent.action.PACKAGE_ADDED")
-        intentFilter.addAction("android.intent.action.PACKAGE_REPLACED")
-        intentFilter.addDataScheme("package")
-        registerReceiver(receiver, intentFilter)
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        receiver?.let {
-            unregisterReceiver(it)
-        }
-    }
 
     /**
      * 显示隐私政策弹窗

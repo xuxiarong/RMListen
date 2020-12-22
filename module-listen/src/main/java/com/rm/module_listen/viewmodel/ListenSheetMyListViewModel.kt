@@ -58,12 +58,15 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
     }
 
     private fun getMySheetList(memberId: String) {
+        showLoading()
         launchOnIO {
             repository.getMyList(page, pageSize, memberId).checkResult(
                 onSuccess = {
+                    showContentView()
                     successData(it)
                 },
                 onError = {
+                    showContentView()
                     failData("$it")
                 }
             )
@@ -71,12 +74,15 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
     }
 
     private fun getMySheetList() {
+       showLoading()
         launchOnIO {
             repository.getMyList(page, pageSize).checkResult(
                 onSuccess = {
+                    showContentView()
                     successData(it)
                 },
                 onError = {
+                    showContentView()
                     failData("$it")
                 }
             )
@@ -207,6 +213,10 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
             if (it.sheet_id.toString() == sheetId) {
                 mAdapter.remove(it)
                 showTip("删除成功")
+            }
+
+            if (mAdapter.data.size<=0){
+                showDataEmpty()
             }
         }
     }

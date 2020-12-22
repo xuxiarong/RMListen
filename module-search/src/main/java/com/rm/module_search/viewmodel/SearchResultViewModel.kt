@@ -31,7 +31,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     var keyWord = searchKeyword
 
     //输入法显示/隐藏监听
-    var keyboardVisibility: (Boolean,Int) -> Unit = {it,_-> keyboardVisibilityListener(it) }
+    var keyboardVisibility: (Boolean, Int) -> Unit = { it, _ -> keyboardVisibilityListener(it) }
 
     //输入法是否显示
     val keyboardIsVisibility = ObservableField<Boolean>(false)
@@ -50,6 +50,9 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
 
     //输入框内容监听
     var inputKeyWord: (String) -> Unit = { inputKeyWordChange(it) }
+
+    //清除按钮是否显示
+    val clearVisible = ObservableField<Boolean>(false)
 
     //上一次搜索的文本
     private var oldKeyword = ""
@@ -149,6 +152,15 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
      * 清除搜索历史
      */
     fun clickClearHistory() {
+        clearVisible.set(!clearVisible.get()!!)
+    }
+
+    /**
+     * 删除历史点击事件
+     */
+    fun clickDeleteHistory() {
+        keyWord.set("")
+        clearVisible.set(false)
         HISTORY_KEY.putMMKV(mutableListOf())
         historyList.set(null)
         historyVisible.set(false)
@@ -220,7 +232,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
             repository.searchSuggest(keyword).checkResult(
                 onSuccess = {
                     resultIsEnd = true
-                    val list = it.keywords.split(",")
+                    val list = it.keywords?.split(",")
                     inputAdapter.setList(list)
                 },
                 onError = {
@@ -251,6 +263,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
         }
         list.add(0, keyword)
         HISTORY_KEY.putMMKV(list)
+        historyList.set(list)
     }
 
 }

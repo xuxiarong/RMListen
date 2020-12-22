@@ -63,13 +63,12 @@ interface HomeService : ApplicationProvider {
      * @param activity FragmentActivity
      * @param versionInfo 升级信息
      * @param installCode 为止来源授权码
-     * @param enforceUpdate 是否强制更新
      */
     fun showUploadDownDialog(
         activity: FragmentActivity,
         versionInfo: BusinessVersionUrlBean,
         installCode: Int,
-        enforceUpdate: Boolean,
+        dialogCancel:Boolean,
         downloadComplete:(String)->Unit,
         sureIsDismiss: Boolean? ,
         sureBlock: () -> Unit?,
