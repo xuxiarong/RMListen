@@ -20,7 +20,7 @@ import com.rm.module_home.repository.HomeRepository
  * version: 1.0
  */
 class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel() {
-    var blockId = -1
+    var topicId = -1
     var page = 1
     val pageSize = 12
     var blockName = ObservableField("")
@@ -46,7 +46,7 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
             showLoading()
         }
         launchOnIO {
-            repository.getTopicList(blockId, page, pageSize).checkResult(
+            repository.getTopicList(topicId, page, pageSize).checkResult(
                 onSuccess = {
                     processSuccess(it)
                     if(TextUtils.isEmpty(blockName.get())){

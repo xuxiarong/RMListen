@@ -19,7 +19,7 @@ class HomeTopicListActivity :
     companion object {
         fun startTopicActivity(
                 context: Context,
-                blockId: Int,
+                topicId: Int,
                 block_name: String
         ) {
             context.startActivity(
@@ -27,7 +27,7 @@ class HomeTopicListActivity :
                     context,
                     HomeTopicListActivity::class.java
                 ).apply {
-                    putExtra("blockId", blockId)
+                    putExtra("topicId", topicId)
                     putExtra("block_name", block_name)
                 })
         }
@@ -47,7 +47,7 @@ class HomeTopicListActivity :
     }
 
     override fun initData() {
-        mViewModel.blockId = intent.getIntExtra("blockId", -1)
+        mViewModel.topicId = intent.getIntExtra("topicId", -1)
         mViewModel.blockName.set(intent.getStringExtra("block_name")?:"")
         mViewModel.getTopicList()
     }

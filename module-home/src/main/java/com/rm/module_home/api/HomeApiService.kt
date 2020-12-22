@@ -113,7 +113,7 @@ interface HomeApiService {
      */
     @GET("content/topic/audio-list")
     suspend fun homeTopicList(
-        @Query("block_id") block_id: Int,
+        @Query("topic_id") topic_id: Int,
         @Query("page") page: Int,
         @Query("page_size") page_size: Int = 10
     ): BaseResponse<AudioListBean>

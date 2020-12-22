@@ -164,7 +164,20 @@ object PlayGlobalData {
      */
     var playChapterListSort = ObservableField<String>(AudioSortType.SORT_ASC)
 
-    val tags = ObservableField<MutableList<String>>()
+    /**
+     * 加载下一页的当前页码
+     */
+    var playNextPage = PLAY_FIRST_PAGE
+
+    /**
+     * 加载上一页的当前页码
+     */
+    var playPrePage = PLAY_FIRST_PAGE
+
+    /**
+     * 章节每页数量
+     */
+    var playChapterPageSize = PLAY_PAGE_SIZE
 
     /**
      * 播放的进度
@@ -183,6 +196,11 @@ object PlayGlobalData {
 
     //全局播放器播放速度
     var playSpeed = ObservableFloat(1.0f)
+
+    /**
+     * 播放是否出错了
+     */
+    var playIsError = ObservableBoolean(false)
 
     /**
      * 是否有上一章

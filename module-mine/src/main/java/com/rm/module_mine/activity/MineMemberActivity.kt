@@ -6,12 +6,10 @@ import android.os.Handler
 import android.view.ViewGroup
 import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.adapter.MineMemberPageAdapter
-import com.rm.module_mine.databinding.MineActivityMemberDetail1Binding
 import com.rm.module_mine.databinding.MineActivityMemberDetailBinding
 import com.rm.module_mine.fragment.MineMemberCommentFragment
 import com.rm.module_mine.fragment.MineMemberMainFragment

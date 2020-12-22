@@ -21,6 +21,7 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
     var resetPlayVar: (() -> Unit)? = {}
     var initFinish = false
     var isStart = false
+    var isError = false
 
     fun processPlayStatus(playState: BasePlayStatusModel) {
         if(playState.isBuffering()){
@@ -91,4 +92,12 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
         }
         playAnimation()
     }
+
+    fun showError(isError : Boolean){
+        this.isError = isError
+        if (isError){
+            pauseAnim()
+        }
+    }
+
 }

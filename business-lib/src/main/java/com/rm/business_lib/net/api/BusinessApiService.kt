@@ -33,5 +33,5 @@ interface BusinessApiService {
     ): BaseResponse<RefreshTokenBean>
 
     @POST("report/analysis")
-    suspend fun insertPoint(@Body body: RequestBody): BaseResponse<Any>
+    suspend fun insertPoint(@Body body: RequestBody)
 }

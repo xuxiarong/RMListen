@@ -88,6 +88,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                         if (homeAllData.value != null) {
                             showContentView()
                         } else {
+                            DLog.d("suolong","onError  homeAllData.value == null")
                             showServiceError()
                         }
                         errorMsg.set(it)
@@ -101,6 +102,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
             if (homeAllData.value != null) {
                 showContentView()
             } else {
+                DLog.d("suolong","netErrorBlock")
                 showServiceError()
             }
             refreshStatusModel.finishRefresh(false)
@@ -303,26 +305,27 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     private fun getBannerAd(bannerRvModel: HomeBannerRvModel, adList: MutableList<BusinessAdModel>?) {
         bannerRvModel.bannerList?.let { bannerList ->
             adList?.let {
-                if (adList.isNotEmpty()) {
-                    adList.sortedWith(Comparator { o1, o2 ->
-                        return@Comparator if (o1.sort > o2.sort) {
-                            1
-                        } else {
-                            -1
-                        }
-                    })
 
-                    adList.forEach {
-                        if (it.sort <= bannerList.size) {
-                            val adBanner = BannerInfoBean(
-                                    banner_img = it.image_url,
-                                    banner_jump = it.jump_url,
-                                    img_url = it.image_url,
-                                    isAd = true,
-                                    ad_id = it.ad_id
-                            )
-                            bannerList.add(it.sort - 1, adBanner)
-                        }
+                adList.sortedWith(Comparator { o1, o2 ->
+                    return@Comparator if (o1.sort > o2.sort) {
+                        1
+                    } else {
+                        -1
+                    }
+                })
+
+                adList.forEach {
+                    val adBanner = BannerInfoBean(
+                        banner_img = it.image_url,
+                        banner_jump = it.jump_url,
+                        img_url = it.image_url,
+                        isAd = true,
+                        ad_id = it.ad_id
+                    )
+                    if (it.sort <= bannerList.size) {
+                        bannerList.add(it.sort - 1, adBanner)
+                    }else{
+                        bannerList.add(adBanner)
                     }
                 }
             }

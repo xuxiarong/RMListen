@@ -37,7 +37,7 @@ fun LeftAutoScrollRecyclerView.bindLeftScroll(model: HomeAudioHorDoubleRvModel) 
                     lastOpenTime =  openTime
                     HomeTopicListActivity.startTopicActivity(
                         context!!,
-                        model.block.block_id,
+                        model.block.topic_id,
                         model.block.block_name
                     )
                     smoothScrollToPosition(itemCount - 3)

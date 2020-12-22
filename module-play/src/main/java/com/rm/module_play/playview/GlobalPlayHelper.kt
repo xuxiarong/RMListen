@@ -62,9 +62,11 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         DLog.d("suolong", "播放出错 playerState = $playerState 出错信息 = ${message ?: "为空"}")
         playStatusListener?.onMusicPlayerState(playerState, message)
         BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(false, STATE_READY))
+        PlayGlobalData.playIsError.set(true)
     }
 
     override fun onPrepared(totalDurtion: Long) {
+        PlayGlobalData.playIsError.set(false)
         if (PlayGlobalData.playAdIsPlaying.get()) {
             musicPlayerManger.setPlayerMultiple(1f)
             PlayGlobalData.playSpeed.set(1f)
@@ -108,7 +110,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-
+        PlayGlobalData.playIsError.set(false)
         BusinessInsertManager.doInsertKeyAndChapter(
             BusinessInsertConstance.INSERT_TYPE_CHAPTER_PLAY,
             musicInfo.audioId,
@@ -141,10 +143,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     ) {
         BaseConstance.updateBaseProgress(currentDurtion, totalDurtion)
         PlayGlobalData.updatePlayChapterProgress(currentDurtion, totalDurtion)
-        DLog.d(
-            "suolong",
-            " totalDurtion = $totalDurtion --- status = $currentDurtion --- time = $currentDurtion"
-        )
     }
 
     override fun onPlayerConfig(playModel: Int, alarmModel: Int, isToast: Boolean) {

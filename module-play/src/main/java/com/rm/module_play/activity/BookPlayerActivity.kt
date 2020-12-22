@@ -182,7 +182,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                             { chapterId == it.chapter_id.toString() }
                         val firstIndex = playPath.indexOfFirst(predicate)
                         if (firstIndex != -1) {
-                            startPlayChapter(chapterId, playPath[firstIndex].duration)
+                            startPlayChapter(chapterId, playPath[firstIndex].realDuration)
                             PlayGlobalData.setPlayHasNextAndPre(playPath, firstIndex)
                         } else {
                             startPlayChapter(
@@ -241,7 +241,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         when {
             playCurrentDuration <= 0 -> {
                 PlayGlobalData.process.set(0F)
-                mViewModel.getChapterAd { musicPlayerManger.startPlayMusic(chapterId = chapterId) }
+                //如果播放的是
+                if(chapterId == BaseConstance.basePlayInfoModel.get()?.playChapterId){
+                    musicPlayerManger.startPlayMusic(chapterId = chapterId)
+                }else{
+                    mViewModel.getChapterAd { musicPlayerManger.startPlayMusic(chapterId = chapterId) }
+                }
             }
             else -> {
                 musicPlayerManger.setAdPath(arrayListOf())
@@ -274,6 +279,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             if (TextUtils.isEmpty(playChapterId)) {
                 mViewModel.getNextPageChapterList()
             } else {
+                PlayGlobalData.playChapterId.set(playChapterId)
                 val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
                 if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
                     PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
@@ -283,9 +289,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     } else {
                         PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
                     }
+                }else{
+                    mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
                 }
-                PlayGlobalData.playChapterId.set(playChapterId)
-                mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
             }
         }
         playChapterId = ""
