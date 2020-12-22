@@ -113,11 +113,11 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
      * @return BaseResult<AudioListBean>
      */
     suspend fun getTopicList(
-            blockId: Int,
-            page: Int,
-            page_size: Int
+        topic_id: Int,
+        page: Int,
+        page_size: Int
     ): BaseResult<AudioListBean> {
-        return apiCall { homeService.homeTopicList(blockId, page, page_size) }
+        return apiCall { homeService.homeTopicList(topic_id, page, page_size) }
     }
 
     /**

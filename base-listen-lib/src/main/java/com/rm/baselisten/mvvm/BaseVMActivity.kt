@@ -88,6 +88,11 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         //添加通用的提示框
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mDataBind.unbind()
+    }
+
     /**
      * 获取InputMethodManager，隐藏软键盘
      * @param token

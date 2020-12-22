@@ -445,6 +445,7 @@
             bindPlayCountDownSize="@{PlayGlobalData.INSTANCE.playCountDownChapterSize}"
             bindResetPlay="@{()->viewModel.playManger.seekTo(0L)}"
             bindStartPlayClick="@{viewModel.playManger.play}"
+            bindPlayError="@{PlayGlobalData.INSTANCE.playIsError}"
             android:layout_width="@dimen/dp_56"
             android:layout_height="@dimen/dp_56"
             android:layout_gravity="center"

@@ -79,6 +79,13 @@ fun PlayControlView.bindPlayControl(playState: BasePlayStatusModel?) {
     }
 }
 
+@BindingAdapter("bindPlayError")
+fun PlayControlView.bindPlayError(isError: Boolean?) {
+    isError?.let {
+        showError(it)
+    }
+}
+
 @BindingAdapter("bindStartPlayClick")
 fun PlayControlView.bindStartPlayClick(startPlay: (() -> Unit)?) {
     startPlayVar = startPlay
