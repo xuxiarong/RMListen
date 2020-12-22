@@ -2,6 +2,7 @@ package com.rm.module_home.binding
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.model.BasePlayInfoModel
@@ -55,17 +56,26 @@ fun TextView.bindPlayChapterText(statusModel: BasePlayStatusModel?, playAudioMod
     }
 }
 
-@BindingAdapter("bindPlayStatusModel", "bindPlayAudioModel", "bindDetailChapter", requireAll = true)
-fun LivingView.bindPlayChapter(statusModel: BasePlayStatusModel?, playAudioModel: BasePlayInfoModel?, chapter: DownloadChapter){
+@BindingAdapter("bindPlayStatusModel", "bindPlayAudioModel", "bindDetailChapter","bindDetailListen", requireAll = true)
+fun ImageView.bindPlayChapter(statusModel: BasePlayStatusModel?, playAudioModel: BasePlayInfoModel?, chapter: DownloadChapter,listenModel: ListenAudioEntity?){
     if(statusModel != null && playAudioModel != null && playAudioModel.playChapterId == chapter.chapter_id.toString()){
-       if(statusModel.isStart()){
-           startAnim()
+        visibility = View.VISIBLE
+        if(statusModel.isStart()){
+           setImageResource(R.drawable.business_ic_playing)
        }else{
-           pauseAnim()
+           setImageResource(R.drawable.business_ic_play_pause)
        }
     }else{
-        stopAnimAndGone()
-        visibility = View.GONE
+        if(listenModel!=null){
+            if(listenModel.listenChapterId == chapter.chapter_id.toString()){
+                visibility = View.VISIBLE
+                setImageResource(R.drawable.business_ic_played)
+            }else{
+                visibility = View.GONE
+            }
+        }else{
+            visibility = View.GONE
+        }
     }
 }
 

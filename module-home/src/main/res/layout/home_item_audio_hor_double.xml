@@ -52,7 +52,7 @@
                 isVisible="@{!item.topRecommendModel.audioIsAd()}"
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopTag"
                 style="@style/BusinessLabStyleHalfRound_FF5E5E"
-                bindText="@{item.topRecommendModel.audio_label}"
+                android:text="@{item.topRecommendModel.audio_label}"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon" />
 
@@ -123,7 +123,7 @@
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomTag"
                 style="@style/BusinessLabStyleHalfRound_FF5E5E"
                 isVisible="@{!item.bottomRecommendModel.audioIsAd()}"
-                bindText="@{item.bottomRecommendModel.audio_label}"
+                android:text="@{item.bottomRecommendModel.audio_label}"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon" />
 

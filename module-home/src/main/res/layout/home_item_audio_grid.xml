@@ -77,7 +77,7 @@
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
             isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
-            bindText="@{item.gridRecommendRvModel.audio_label}"
+            android:text="@{item.gridRecommendRvModel.audio_label}"
             app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
 

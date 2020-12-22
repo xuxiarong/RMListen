@@ -54,6 +54,12 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
         return mDataBind?.root
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mDataBind = null
+        mDataBind?.unbind()
+    }
+
     fun setClicks(viewId : Int,viewClickAction : ()->Unit){
         clickMap[viewId] = viewClickAction
     }

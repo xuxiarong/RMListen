@@ -45,7 +45,7 @@
             isVisible="@{!item.singleModel.audioIsAd()}"
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
-            bindText="@{item.singleModel.audio_label}"
+            android:text="@{item.singleModel.audio_label}"
             android:layout_gravity="end" />
 
         <RelativeLayout

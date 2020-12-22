@@ -33,8 +33,6 @@ import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
-import com.rm.business_lib.share.Share2
-import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.download.DownloadService
@@ -45,7 +43,6 @@ import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
-import com.rm.module_home.adapter.HomeDetailChapterAdapter
 import com.rm.module_home.adapter.HomeDetailChapterPageAdapter
 import com.rm.module_home.databinding.HomeDetailHeaderBinding
 import com.rm.module_home.model.home.detail.CommentList
@@ -55,7 +52,6 @@ import com.rm.module_home.util.HomeCommentDialogHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
-import kotlin.math.max
 
 
 class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewModel() {
@@ -232,7 +228,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 章节的适配器
      */
-    val chapterAdapter by lazy { HomeDetailChapterAdapter(this) }
+    val chapterAdapter by lazy {     CommonBindVMAdapter<DownloadChapter>(
+            this,
+            mutableListOf(),
+            R.layout.home_item_detail_chapter,
+            BR.chapterclick,
+            BR.DetailChapterViewModel
+    ) }
 
     /**
      * 评论加载更多
