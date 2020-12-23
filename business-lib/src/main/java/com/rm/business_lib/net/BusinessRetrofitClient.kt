@@ -4,8 +4,10 @@ import androidx.annotation.Nullable
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.rm.baselisten.jsondeserializer.JsonObjectAdapter
+import com.rm.baselisten.jsondeserializer.ListAdapter
 import com.rm.baselisten.jsondeserializer.StringAdapter
 import com.rm.baselisten.net.api.BaseRetrofitClient
+import com.rm.baselisten.net.api.BusinessGsonConverterFactory
 import okhttp3.Call
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -108,7 +110,8 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
                     return null
                 }
             })
-            .addConverterFactory(GsonConverterFactory.create(gson))
+//            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(BusinessGsonConverterFactory.create(gson))
             .baseUrl(getBaseUrl())
             .build().create(serviceClass)
     }
