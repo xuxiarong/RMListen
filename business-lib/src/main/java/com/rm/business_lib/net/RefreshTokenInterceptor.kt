@@ -81,7 +81,7 @@ class RefreshTokenInterceptor : Interceptor {
             val code = getResponseCode(originResponse)
             DLog.i("=====>RefreshTokenInterceptor", "=====code:>>>>$code")
             return if (code == CODE_REFRESH_TOKEN) {
-
+                DLog.i("=====>RefreshTokenInterceptor", "token 过期$code")
                 val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
                 val newToken = getToken(token)
                 //token刷新成功
@@ -103,6 +103,8 @@ class RefreshTokenInterceptor : Interceptor {
                     chain.proceed(newRequest)
                 }
             } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN /*|| code == CODE_REFRESH_TOKEN_FAILED*/) {
+                DLog.i("=====>RefreshTokenInterceptor", "登陆失效，有可能是token失效 --- code = $code")
+
                 //被挤下线了/用户未登陆  需要放在主线程去更新，不然会出现异常
                 GlobalScope.launch(Dispatchers.Main) {
                     loginOut()
