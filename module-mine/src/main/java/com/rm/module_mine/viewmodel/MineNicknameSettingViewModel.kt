@@ -30,7 +30,7 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
      * 监听输入框内容变化
      */
     private fun inputChange(content: String) {
-        inputText.set(content.trim().trimEnd())
+        inputText.set(content)
         val titleModel = baseTitleModel.value
         if (inputText.get()?.length ?: 0 > 0) {
             titleModel?.setRightEnabled(true)
@@ -46,40 +46,26 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
      * 修改用户信息
      */
     fun updateUserInfo() {
-        when {
-            inputText.get()!!.length > 16 -> {
-                showTip("字数最多不能超过16个", R.color.business_color_ff5e5e)
-            }
-            check(inputText.get()!!) -> {
-                showTip("不能包含特殊字符", R.color.business_color_ff5e5e)
-            }
-            EmojiUtils.containsEmoji(inputText.get()!!) -> {
-                showTip("不能包含表情", R.color.business_color_ff5e5e)
-            }
-            else -> {
-                loginUser.get()?.let {
-                    val updateUserInfo = UpdateUserInfoBean(
-                        inputText.get()!!,
-                        it.gender!!,
-                        it.birthday!!,
-                        it.address!!,
-                        it.signature!!
-                    )
-
-                    launchOnIO {
-                        repository.updateUserInfo(updateUserInfo).checkResult(
-                            onSuccess = { userBean ->
-                                LOGIN_USER_INFO.putMMKV(userBean)
-                                loginUser.set(userBean)
-                                setResultAndFinish(RESULT_CODE_NICK)
-                            },
-                            onError = {msg,_->
-                                showTip("$msg", R.color.business_color_ff5e5e)
-                                DLog.i("------>", "$msg")
-                            }
-                        )
+        loginUser.get()?.let {
+            val updateUserInfo = UpdateUserInfoBean(
+                inputText.get()!!,
+                it.gender!!,
+                it.birthday!!,
+                it.address!!,
+                it.signature!!
+            )
+            launchOnIO {
+                repository.updateUserInfo(updateUserInfo).checkResult(
+                    onSuccess = { userBean ->
+                        LOGIN_USER_INFO.putMMKV(userBean)
+                        loginUser.set(userBean)
+                        setResultAndFinish(RESULT_CODE_NICK)
+                    },
+                    onError = { msg, _ ->
+                        showTip("$msg", R.color.business_color_ff5e5e)
+                        DLog.i("------>", "$msg")
                     }
-                }
+                )
             }
         }
     }
