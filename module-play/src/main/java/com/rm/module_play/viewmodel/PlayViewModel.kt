@@ -249,10 +249,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (TextUtils.isEmpty(audioId)) {
             return
         }
-        if (playNextPage == PlayGlobalData.PLAY_FIRST_PAGE) {
-            PlayGlobalData.playChapterList.value = mutableListOf()
-        }
-
         launchOnIO {
             repository.chapterList(
                 audioId!!,
@@ -348,14 +344,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 sort = AudioSortType.SORT_ASC
             ).checkResult(onSuccess = {
                 val chapterList = it.list
+                DLog.d("music-exoplayer-lib","首页获取章节列表成功  onSuccess ")
                 playNextPage = it.page
                 playPrePage = it.page
                 showContentView()
                 if (chapterList != null) {
+                    DLog.d("music-exoplayer-lib","首页获取章节列表成功  ${chapterList.size} ")
                     chapterRefreshModel.noMoreData.set(chapterList.size < PlayGlobalData.playChapterPageSize)
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == PlayGlobalData.playChapterId.get()) {
-                            PlayGlobalData.playChapterList.value = mutableListOf()
                             initPlayChapter(chapter)
                             if (!PlayGlobalData.isSortAsc()) {
                                 chapterList.reverse()
@@ -372,6 +369,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             }, onError = {
                 chapterRefreshModel.finishLoadMore(false)
                 showContentView()
+                DLog.d("music-exoplayer-lib","首页获取章节列表失败   $it ")
                 it?.let {
                     showTip(it)
                 }

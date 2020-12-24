@@ -44,7 +44,6 @@ class HomeMainViewModel(private val repository: MainRepository) : BaseVMViewMode
                     PlayGlobalData.chapterRefreshModel.noMoreData.set(chapterList.size < PlayGlobalData.playChapterPageSize)
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == chapterId) {
-                            PlayGlobalData.playChapterList.value = mutableListOf()
                             PlayGlobalData.initPlayChapter(chapter)
                             if (!PlayGlobalData.isSortAsc()) {
                                 chapterList.reverse()

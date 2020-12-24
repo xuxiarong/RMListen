@@ -9,6 +9,7 @@ import androidx.databinding.*
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.ktx.addAll
+import com.rm.baselisten.ktx.toLongSafe
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.util.getBooleanMMKV
@@ -20,6 +21,7 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
+import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import java.lang.Exception
@@ -122,13 +124,13 @@ object PlayGlobalData {
         override fun handleMessage(msg: Message) {
             DLog.d("suolong", "playTimerHandler")
             val currentTimerSecond = playCountDownSecond.get()
-            if(currentTimerSecond>0){
-                playCountDownSecond.set(currentTimerSecond-1000L)
-                if(currentTimerSecond-1000L == 0L){
+            if (currentTimerSecond > 0) {
+                playCountDownSecond.set(currentTimerSecond - 1000L)
+                if (currentTimerSecond - 1000L == 0L) {
                     playCountSelectPosition.set(-1)
                 }
                 sendEmptyMessageDelayed(0, 1000L)
-            }else{
+            } else {
                 playCountDownSecond.set(-1000L)
                 playCountSelectPosition.set(-1)
                 removeMessages(0)
@@ -197,6 +199,16 @@ object PlayGlobalData {
     val maxProcess = ObservableFloat(0f)
 
     /**
+     * 是否需要重新查询播放章节的进度
+     */
+    var playNeedQueryChapterProgress = ObservableBoolean(true)
+
+    /**
+     * 上一次的播放记录
+     */
+    var playLastPlayProcess = ObservableLong(-1L)
+
+    /**
      * 播放进度条上的文字
      */
     val updateThumbText = ObservableField<String>("00:00/00:00")
@@ -218,11 +230,6 @@ object PlayGlobalData {
      * 是否有下一章
      */
     var hasNextChapter = ObservableBoolean(false)
-
-    /**
-     * 是否需要重新查询播放章节的进度
-     */
-    var playNeedQueryChapterProgress = ObservableBoolean(true)
 
     /**
      * 剩余倒计时秒数
@@ -280,8 +287,8 @@ object PlayGlobalData {
     fun initPlayAudio(audio: DownloadAudio) {
         playAudioModel.set(audio)
         BaseConstance.updateBaseAudioId(
-            audioId = audio.audio_id.toString(),
-            playUrl = audio.audio_cover_url
+                audioId = audio.audio_id.toString(),
+                playUrl = audio.audio_cover_url
         )
         audio.updateMillis = System.currentTimeMillis()
         playChapterListSort.get()?.let {
@@ -297,9 +304,9 @@ object PlayGlobalData {
     /**
      * 设置播放路径
      */
-     fun setNextPagePlayData(chapterList: MutableList<DownloadChapter>) {
+    fun setNextPagePlayData(chapterList: MutableList<DownloadChapter>) {
         if (playNextPage == PLAY_FIRST_PAGE) {
-            playChapterList.postValue(chapterList)
+            playChapterList.value = chapterList
         } else {
             playChapterList.addAll(chapterList)
         }
@@ -312,7 +319,7 @@ object PlayGlobalData {
         if (currentChapterList != null && currentChapterList.isNotEmpty()) {
             tempChapterList.addAll(currentChapterList)
         }
-       playChapterList.postValue(tempChapterList)
+        playChapterList.value = tempChapterList
     }
 
     fun initPlayChapter(chapter: DownloadChapter) {
@@ -323,9 +330,9 @@ object PlayGlobalData {
     }
 
     fun updatePlayChapterProgress(
-        currentDuration: Long = 0L,
-        totalDuration: Long = 0L,
-        isPlayFinish: Boolean = false
+            currentDuration: Long = 0L,
+            totalDuration: Long = 0L,
+            isPlayFinish: Boolean = false
     ) {
         try {
             val chapter = playChapter.get()
@@ -339,15 +346,15 @@ object PlayGlobalData {
                 process.set(chapter.listen_duration.toFloat())
                 if (chapter.listen_duration > chapter.realDuration) {
                     updateThumbText.set(
-                        "${TimeUtils.getPlayDuration(chapter.realDuration)}/${
-                        TimeUtils.getPlayDuration(chapter.realDuration)
-                        }"
+                            "${TimeUtils.getPlayDuration(chapter.realDuration)}/${
+                            TimeUtils.getPlayDuration(chapter.realDuration)
+                            }"
                     )
                 } else {
                     updateThumbText.set(
-                        "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
-                        TimeUtils.getPlayDuration(chapter.realDuration)
-                        }"
+                            "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
+                            TimeUtils.getPlayDuration(chapter.realDuration)
+                            }"
                     )
                 }
                 playChapter.set(chapter)
@@ -377,6 +384,22 @@ object PlayGlobalData {
                 val startChapter = playChapterList[position]
                 playChapter.set(startChapter)
                 playChapterId.set(startChapter.chapter_id.toString())
+                if (playNeedQueryChapterProgress.get()) {
+                    playAudioId.get()?.let { audioId ->
+                        playChapterId.get()?.let { chapterId ->
+                            val listenChapter = ListenDaoUtils.queryChapterRecentUpdate(
+                                    audioId.toLongSafe(),
+                                    chapterId.toLongSafe()
+                            )
+                            if(listenChapter!=null){
+                                startChapter.listen_duration = listenChapter.listen_duration
+                                playLastPlayProcess.set(listenChapter.listen_duration)
+                            }
+                        }
+                    }
+                }else{
+                    playLastPlayProcess.set(-1L)
+                }
                 process.set(startChapter.listen_duration.toFloat())
                 startChapter.updateMillis = System.currentTimeMillis()
                 playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(startChapter))

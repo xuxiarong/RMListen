@@ -18,6 +18,7 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.AudioSortType
@@ -42,14 +43,14 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlay
 
 @SuppressLint("InflateParams")
 @Suppress(
-    "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING",
-    "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+        "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING",
+        "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
 )
 /**
  * 播放器主要界面
  */
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
-    GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
+        GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
     companion object {
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
         private var lastOpenTime: Long = 0L
@@ -61,13 +62,13 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playSortType: String = AudioSortType.SORT_ASC
 
         fun startPlayActivity(
-            context: Context,
-            audioId: String = "",
-            audioModel: DownloadAudio = DownloadAudio(),
-            chapterId: String = "",
-            chapterList: MutableList<DownloadChapter> = mutableListOf(),
-            currentDuration: Long = 0L,
-            sortType: String = AudioSortType.SORT_ASC
+                context: Context,
+                audioId: String = "",
+                audioModel: DownloadAudio = DownloadAudio(),
+                chapterId: String = "",
+                chapterList: MutableList<DownloadChapter> = mutableListOf(),
+                currentDuration: Long = 0L,
+                sortType: String = AudioSortType.SORT_ASC
         ) {
             try {
                 //防止连续打开多次
@@ -138,10 +139,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     private fun createHead(rv: RecyclerView) {
         DataBindingUtil.inflate<PlayPlayHeadBinding>(
-            LayoutInflater.from(rv.context),
-            R.layout.play_play_head,
-            rv,
-            false
+                LayoutInflater.from(rv.context),
+                R.layout.play_play_head,
+                rv,
+                false
         ).apply {
             mViewModel.mCommentAdapter.addHeaderView(this.root)
             setVariable(BR.viewModel, mViewModel)
@@ -155,13 +156,16 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         (mDataBind.reportWhyArrow.layoutParams as ViewGroup.MarginLayoutParams).apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin
             topMargin =
-                getStateHeight(this@BookPlayerActivity) + resources.getDimensionPixelOffset(R.dimen.dp_10)
+                    getStateHeight(this@BookPlayerActivity) + resources.getDimensionPixelOffset(R.dimen.dp_10)
         }
     }
 
     override fun startObserve() {
 
         PlayGlobalData.playChapterList.observe(this, Observer { playPath ->
+
+            DLog.d("music-exoplayer-lib","playPath = ${playPath.size}")
+
             val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
             val chapterId = PlayGlobalData.playChapterId.get()
             if (chapterId != null && !TextUtils.isEmpty(chapterId)) {
@@ -172,22 +176,22 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         startPlayChapter(chapterId, currentPlayerMusic.duration)
                     } else {
                         GlobalPlayHelper.INSTANCE.onPlayMusiconInfo(
-                            currentPlayerMusic,
-                            musicPlayerManger.getCurrentPlayIndex()
+                                currentPlayerMusic,
+                                musicPlayerManger.getCurrentPlayIndex()
                         )
                     }
                 } else {
                     if (playPath != null && playPath.isNotEmpty()) {
                         val predicate: (DownloadChapter) -> Boolean =
-                            { chapterId == it.chapter_id.toString() }
+                                { chapterId == it.chapter_id.toString() }
                         val firstIndex = playPath.indexOfFirst(predicate)
                         if (firstIndex != -1) {
                             startPlayChapter(chapterId, playPath[firstIndex].realDuration)
                             PlayGlobalData.setPlayHasNextAndPre(playPath, firstIndex)
                         } else {
                             startPlayChapter(
-                                playPath[0].chapter_id.toString(),
-                                playPath[0].duration
+                                    playPath[0].chapter_id.toString(),
+                                    playPath[0].duration
                             )
                             PlayGlobalData.setPlayHasNextAndPre(playPath, 0)
                         }
@@ -214,15 +218,15 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         val baseAudioList = mutableListOf<BaseAudioInfo>()
         playPath.forEach {
             baseAudioList.add(
-                BaseAudioInfo(
-                    audioPath = it.path_url,
-                    audioName = it.chapter_name,
-                    filename = it.chapter_name,
-                    audioId = it.audio_id.toString(),
-                    chapterId = it.chapter_id.toString(),
-                    duration = it.realDuration,
-                    playCount = it.play_count.toString()
-                )
+                    BaseAudioInfo(
+                            audioPath = it.path_url,
+                            audioName = it.chapter_name,
+                            filename = it.chapter_name,
+                            audioId = it.audio_id.toString(),
+                            chapterId = it.chapter_id.toString(),
+                            duration = it.realDuration,
+                            playCount = it.play_count.toString()
+                    )
             )
         }
         musicPlayerManger.updateMusicPlayerData(audios = baseAudioList, chapterId = chapterId)
@@ -232,8 +236,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
      * 判断
      */
     private fun startPlayChapter(
-        chapterId: String,
-        chapterDuration: Long
+            chapterId: String,
+            chapterDuration: Long
     ) {
         if (playCurrentDuration > chapterDuration) {
             playCurrentDuration = 0
@@ -242,9 +246,9 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             playCurrentDuration <= 0 -> {
                 PlayGlobalData.process.set(0F)
                 //如果播放的是
-                if(chapterId == BaseConstance.basePlayInfoModel.get()?.playChapterId){
+                if (chapterId == BaseConstance.basePlayInfoModel.get()?.playChapterId) {
                     musicPlayerManger.startPlayMusic(chapterId = chapterId)
-                }else{
+                } else {
                     mViewModel.getChapterAd { musicPlayerManger.startPlayMusic(chapterId = chapterId) }
                 }
             }
@@ -273,7 +277,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         if (playChapterList.isNotEmpty()) {
             mViewModel.isLocalChapterList.set(true)
             PlayGlobalData.playChapterId.set(playChapterId)
-            PlayGlobalData.playChapterList.postValue(playChapterList)
+            PlayGlobalData.playChapterList.value = playChapterList
         } else {
             mViewModel.isLocalChapterList.set(false)
             if (TextUtils.isEmpty(playChapterId)) {
@@ -289,7 +293,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     } else {
                         PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
                     }
-                }else{
+                } else {
+                    DLog.d("music-exoplayer-lib","initData  playAudioId = ${playAudioId} -- playChapterId = $playChapterId")
                     mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
                 }
             }
@@ -304,10 +309,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
      */
     fun clickShare(view: View) {
         ShareManage.shareChapter(
-            this,
-            PlayGlobalData.playAudioId.get() ?: "",
-            PlayGlobalData.playChapterId.get() ?: "",
-            PlayGlobalData.playChapter.get()?.chapter_name ?: ""
+                this,
+                PlayGlobalData.playAudioId.get() ?: "",
+                PlayGlobalData.playChapterId.get() ?: "",
+                PlayGlobalData.playChapter.get()?.chapter_name ?: ""
         )
 
     }
@@ -329,7 +334,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
      */
     private fun recycleScrollListener() {
         mDataBind.playCommentRv.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
+                RecyclerView.OnScrollListener() {
             private var totalDy = 0
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

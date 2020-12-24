@@ -39,4 +39,5 @@
     <string name="login_format_verification_count_down_tips" formatted="false">%s后重新获取</string>
 
     <string name="login_search_hint">搜索</string>
+    <string name="login_country_plus">+%s</string>
 </resources>

@@ -3,8 +3,7 @@ package com.rm.business_lib.net
 import androidx.annotation.Nullable
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
-import com.rm.baselisten.jsondeserializer.JsonObjectAdapter
-import com.rm.baselisten.jsondeserializer.StringAdapter
+import com.rm.baselisten.jsondeserializer.*
 import com.rm.baselisten.net.api.BaseRetrofitClient
 import okhttp3.Call
 import okhttp3.HttpUrl
@@ -13,6 +12,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.math.BigDecimal
+import java.math.BigInteger
 
 
 /**
@@ -39,7 +40,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         private const val TYPE_DEVELOP = 3
         private const val TYPE_STG = 4
 
-        private var currentType = TYPE_TEST
+        private var currentType = TYPE_RELEASE
 
         fun getBaseUrl(): String {
             when (currentType) {
@@ -68,7 +69,6 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
 
     override fun handleBuilder(builder: OkHttpClient.Builder) {
         super.handleBuilder(builder)
-//        builder.addInterceptor(CustomInterceptor())
         builder.addInterceptor(RefreshTokenInterceptor())
     }
 
@@ -76,19 +76,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
 
         val gson = GsonBuilder()
             .serializeNulls()
-//            .registerTypeHierarchyAdapter(BigDecimal::class.java, BigDecimalAdapter())
-//            .registerTypeHierarchyAdapter(BigInteger::class.java, BigIntegerAdapter())
-//            .registerTypeHierarchyAdapter(Boolean::class.java, BooleanAdapter())
-//            .registerTypeHierarchyAdapter(Byte::class.java, ByteAdapter())
-//            .registerTypeHierarchyAdapter(Character::class.java, CharacterAdapter())
-//            .registerTypeHierarchyAdapter(Double::class.java, DoubleAdapter())
-//            .registerTypeHierarchyAdapter(Float::class.java, FloatAdapter())
-//            .registerTypeHierarchyAdapter(JsonObject::class.java, JsonObjectAdapter())
-//            .registerTypeHierarchyAdapter(List::class.java, ListAdapter())
-//            .registerTypeHierarchyAdapter(Long::class.java, LongAdapter())
-//            .registerTypeHierarchyAdapter(Short::class.java, ShortAdapter())
-            .registerTypeHierarchyAdapter(String::class.java, StringAdapter())
-//            .registerTypeHierarchyAdapter(Integer::class.java, IntegerAdapter())
+            .registerTypeHierarchyAdapter(JsonObject::class.java, JsonObjectAdapter())
             .create()
 
         return Retrofit.Builder()

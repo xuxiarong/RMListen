@@ -603,6 +603,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
 
 
     /**
+     *
      * 章节 item 点击事件
      */
     fun itemClick(context: Context, bean: DownloadChapter) {

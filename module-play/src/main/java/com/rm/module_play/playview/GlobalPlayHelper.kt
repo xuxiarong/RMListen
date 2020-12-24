@@ -18,6 +18,8 @@ import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
+import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
+import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
 import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.constants.STATE_READY
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
@@ -40,7 +42,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     private var oldAudio: String = ""
-    private var lastPlayProcess = -1L
 
     var playStatusListener: IPlayStatusListener? = null
 
@@ -79,7 +80,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 )
             }
             DLog.d("music-exoplayer-lib","continueLastPlay")
-            lastPlayProcess = BaseConstance.basePlayProgressModel.get()?.currentDuration?:-1L
+            PlayGlobalData.playLastPlayProcess.set(BaseConstance.basePlayProgressModel.get()?.currentDuration?:-1L)
             musicPlayerManger.updateMusicPlayerData(audios = baseAudioList, chapterId = playChapter.chapter_id.toString())
             musicPlayerManger.startPlayMusic(chapterId = playChapter.chapter_id.toString())
         }
@@ -95,11 +96,8 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
 
     override fun onPrepared(totalDurtion: Long) {
         PlayGlobalData.playIsError.set(false)
-        if(lastPlayProcess>0){
-            musicPlayerManger.seekTo(lastPlayProcess)
-            lastPlayProcess = -1L
-            return
-        }
+        PlayGlobalData.updateThumbText.set("00:00/00:00")
+        //播放广告的时候，播放速度不生效，正常播放生效
         if (PlayGlobalData.playAdIsPlaying.get()) {
             musicPlayerManger.setPlayerMultiple(1f)
             PlayGlobalData.playSpeed.set(1f)
@@ -115,25 +113,12 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             PlayGlobalData.playChapter.get()?.let {
                 it.realDuration = totalDurtion
             }
-            if (PlayGlobalData.playNeedQueryChapterProgress.get()) {
-                PlayGlobalData.playNeedQueryChapterProgress.set(false)
-                PlayGlobalData.playAudioId.get()?.let { audioId ->
-                    PlayGlobalData.playChapterId.get()?.let { chapterId ->
-                        val listenChapter = ListenDaoUtils.queryChapterRecentUpdate(
-                            audioId.toLongSafe(),
-                            chapterId.toLongSafe()
-                        )
-                        listenChapter?.let {
-                            if (it.listen_duration != 0L) {
-                                musicPlayerManger.seekTo(it.listen_duration)
-                            }
-                        }
-                    }
-                }
-            }
         }
-//        musicPlayerManger.play()
-
+        //如果需要接着上一次的播放记录，直接跳转到该进度
+        if(PlayGlobalData.playLastPlayProcess.get()>0){
+            musicPlayerManger.seekTo(PlayGlobalData.playLastPlayProcess.get())
+            PlayGlobalData.playLastPlayProcess.set(-1L)
+        }
     }
 
     override fun onBufferingUpdate(percent: Int) {
@@ -144,12 +129,10 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
 
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
         PlayGlobalData.playIsError.set(false)
-        BaseConstance.updateBaseChapterId(musicInfo.chapterId)
+        BaseConstance.updateBaseChapterId(musicInfo.audioId,musicInfo.chapterId)
         PlayGlobalData.savePlayChapter(position)
         PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
-        if(lastPlayProcess>0){
-            return
-        }
+
         BusinessInsertManager.doInsertKeyAndChapter(
                 BusinessInsertConstance.INSERT_TYPE_CHAPTER_PLAY,
                 musicInfo.audioId,
@@ -189,18 +172,31 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             BaseConstance.updatePlayFinish()
             PlayGlobalData.updatePlayChapterProgress(isPlayFinish = true)
             PlayGlobalData.checkCountChapterPlayEnd(playWhenReady)
+            if(PlayGlobalData.playCountDownChapterSize.get() == 0){
+                musicPlayerManger.pause()
+            }else{
+                when (musicPlayerManger.getPlayerModel()) {
+                    //顺序播放
+                    MUSIC_MODEL_ORDER -> {
+                        if(PlayGlobalData.hasNextChapter.get()){
+                            musicPlayerManger.playNextMusic()
+                        }
+                    }
+                    //单曲播放
+                    MUSIC_MODEL_SINGLE -> {
+                        PlayGlobalData.playChapterId.get()?.let {
+                            musicPlayerManger.startPlayMusic(it)
+                        }
+                    }
+                }
+            }
         }
         val currentStatus = BaseConstance.basePlayStatusModel.get()
         if (currentStatus != null) {
             if (currentStatus.playReady == playWhenReady && currentStatus.playStatus == playbackState) {
                 return
             } else {
-                BaseConstance.basePlayStatusModel.set(
-                    BasePlayStatusModel(
-                        playWhenReady,
-                        playbackState
-                    )
-                )
+                BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playWhenReady, playbackState))
             }
         } else {
             BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playWhenReady, playbackState))

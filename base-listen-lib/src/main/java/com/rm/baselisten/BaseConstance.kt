@@ -88,10 +88,11 @@ object BaseConstance {
     /**
      * 更新正在播放的章节信息
      */
-    fun updateBaseChapterId(chapterId: String) {
+    fun updateBaseChapterId(audioId: String,chapterId: String) {
         val baseAudio = basePlayInfoModel.get()
         if (baseAudio != null) {
             baseAudio.playChapterId = chapterId
+            baseAudio.playAudioId = audioId
             basePlayInfoModel.set(baseAudio)
             PlAY_LAST_LISTEN_INFO.putMMKV(baseAudio)
         } else {
