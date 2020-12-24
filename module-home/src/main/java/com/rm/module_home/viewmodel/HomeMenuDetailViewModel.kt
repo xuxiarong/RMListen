@@ -41,6 +41,11 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     //数据源
     val data = ObservableField<SheetDetailInfoBean>()
 
+    /**
+     * 收藏是否显示
+     */
+    val collectedVisibility = ObservableField<Boolean>(false)
+
     //是否收藏
     val isFavor = ObservableField<Boolean>()
 
@@ -53,8 +58,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
 
     //刷新控件内的recyclerview
     val contentRvId = R.id.home_menu_detail_recycler_view
-
-    val userInfo = loginUser
 
     //当前加载的页码
     private var mPage = 1
@@ -161,8 +164,18 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                         showContentView()
                         setFavorState(it.favor == 1)
                         data.set(it)
+                        if (it.created_from == 1 || it.created_from == 3) {
+                            collectedVisibility.set(false)
+                        } else {
+                            collectedVisibility.set(
+                                !TextUtils.equals(
+                                    it.member_id,
+                                    loginUser.get()?.id
+                                )
+                            )
+                        }
                     },
-                    onError = {it,_->
+                    onError = { it, _ ->
                         showServiceError()
                         showTip("$it", R.color.business_color_ff5e5e)
                     }
@@ -180,7 +193,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     onSuccess = {
                         processAudioList(it)
                     },
-                    onError = {it,_->
+                    onError = { it, _ ->
                         if (mPage == 1) {
                             refreshStatusModel.finishRefresh(false)
                         } else {
@@ -231,7 +244,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                         sheetId
                     )
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
@@ -253,7 +266,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                         sheetId
                     )
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )

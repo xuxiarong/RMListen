@@ -153,6 +153,7 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
                             versionInfo = bean,
                             installCode = MineAboutViewModel.INSTALL_RESULT_CODE,
                             dialogCancel = true,
+                            cancelIsFinish = false,
                             downloadComplete = {},
                             sureIsDismiss = true,
                             cancelBlock = {

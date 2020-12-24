@@ -69,6 +69,7 @@ interface HomeService : ApplicationProvider {
         versionInfo: BusinessVersionUrlBean,
         installCode: Int,
         dialogCancel:Boolean,
+        cancelIsFinish: Boolean,
         downloadComplete:(String)->Unit,
         sureIsDismiss: Boolean? ,
         sureBlock: () -> Unit?,

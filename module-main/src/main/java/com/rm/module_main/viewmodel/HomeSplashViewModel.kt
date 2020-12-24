@@ -102,6 +102,7 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
     fun showUploadDialog(
         activity: FragmentActivity,
         sureIsDismiss: Boolean,
+        cancelIsFinish: Boolean,
         sureBlock: () -> Unit?,
         cancelBlock: () -> Unit? = {}
     ) {
@@ -112,6 +113,7 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
                     versionInfo = it,
                     installCode = INSTALL_RESULT_CODE,
                     dialogCancel = false,
+                    cancelIsFinish = cancelIsFinish,
                     downloadComplete = { path -> downPath = path },
                     sureIsDismiss = sureIsDismiss,
                     sureBlock = sureBlock,

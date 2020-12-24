@@ -93,6 +93,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                             if (TextUtils.equals(versionInfo.type, "2")) {
                                 mViewModel.showUploadDialog(this@SplashActivity,
                                     sureIsDismiss = true,
+                                    cancelIsFinish = true,
                                     sureBlock = {
 
                                     },
@@ -102,16 +103,17 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                                 //一天内只显示一次
                                 val curTime = 24 * 60 * 60 * 1000
 //                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
-                                    UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
-                                    //普通更新
-                                    mViewModel.showUploadDialog(this@SplashActivity,
-                                        sureIsDismiss = true,
-                                        sureBlock = {
+                                UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
+                                //普通更新
+                                mViewModel.showUploadDialog(this@SplashActivity,
+                                    sureIsDismiss = true,
+                                    cancelIsFinish = false,
+                                    sureBlock = {
 
-                                        },
-                                        cancelBlock = {
-                                            loadAd()
-                                        })
+                                    },
+                                    cancelBlock = {
+                                        loadAd()
+                                    })
 //                                } else {
 //                                    loadAd()
 //                                }
@@ -239,7 +241,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 finish()
             })
     }
-
 
 
     /**

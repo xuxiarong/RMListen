@@ -2,6 +2,7 @@ package com.rm.module_mine.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
+import android.view.View
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -42,16 +43,18 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
         )
     }
 
-    fun clickCooperation(context: Context, bean: MineAboutUsBean) {
+    fun clickCooperation(view: View, bean: MineAboutUsBean) {
         if (TextUtils.equals("版本更新", bean.title)) {
-            if (bean.showRed) {
-                showUploadDialog(context)
-            } else {
-                showTip("当前已经是最新版本了")
-            }
+            view.postDelayed({
+                if (bean.showRed) {
+                    showUploadDialog(view.context)
+                } else {
+                    showTip("当前已经是最新版本了")
+                }
+            }, 100)
         } else {
             bean.jump_url?.let {
-                BaseWebActivity.startBaseWebActivity(context, it)
+                BaseWebActivity.startBaseWebActivity(view.context, it)
             }
         }
     }
@@ -60,7 +63,7 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
         launchOnIO {
             repository.mineAboutUs().checkResult(onSuccess = {
                 mAdapter.addData(it)
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 showTip("$it", R.color.business_color_ff5e5e)
             })
         }
@@ -83,7 +86,7 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
                     e.printStackTrace()
                 }
                 mAdapter.notifyItemChanged(0)
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 showTip("$it", R.color.business_color_ff5e5e)
             })
         }
@@ -98,6 +101,7 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
                         versionInfo = it,
                         installCode = INSTALL_RESULT_CODE,
                         dialogCancel = true,
+                        cancelIsFinish = false,
                         downloadComplete = {},
                         sureIsDismiss = true,
                         cancelBlock = {
