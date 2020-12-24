@@ -2,6 +2,7 @@ package com.rm.module_login.viewmodel
 
 import android.content.Context
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -23,7 +24,6 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
 
     // 用户协议和隐私协议是否选择
     var isCheck = ObservableField<Boolean>(false)
-
     // 错误提示信息
     var errorTips = ObservableField<String>("")
 
@@ -71,7 +71,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
                         )
                     )
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     errorTips.set(it)
                 }

@@ -1,7 +1,9 @@
 package com.rm.module_login.repository
 
+import android.util.Log
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getStringMMKV
 import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.utils.aes.AESUtil
@@ -47,6 +49,7 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      * @param phone String
      */
     suspend fun sendMessage(type: String, area_code: String, phone: String): BaseResult<Any> {
+        DLog.i("========>sendMessage", "$type    ${Log.getStackTraceString(Throwable())}")
         return apiCall { apiService.sendMessage(type, subPlusChar(area_code), phone) }
     }
 

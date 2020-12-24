@@ -153,7 +153,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
                     anchorAdapter.notifyItemChanged(indexOf)
                     showTip("关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     showTip("$it",R.color.business_color_ff5e5e)
                 })
@@ -174,7 +174,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
                     anchorAdapter.notifyItemChanged(indexOf)
                     showTip("取消关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     showTip("$it",R.color.business_color_ff5e5e)
                 })

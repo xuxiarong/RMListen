@@ -27,6 +27,7 @@ class HomeUploadDownload(
     private val mActivity: FragmentActivity,
     private val installCode: Int,
     private val mDialogCancel: Boolean,
+    private val cancelIsFinish: Boolean,
     private val downloadComplete: (String) -> Unit,
     private val sureIsDismiss: Boolean? = true,
     private var sureBlock: () -> Unit? = {},
@@ -56,7 +57,7 @@ class HomeUploadDownload(
             leftBtnClick = {
                 dismiss()
                 cancelBlock()
-                if (dialogCancel) {
+                if (cancelIsFinish) {
                     mActivity.finish()
                 }
             }

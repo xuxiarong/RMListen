@@ -20,6 +20,6 @@
         bindMaterialShowRed="@{item.showRed}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{()->viewModel.clickCooperation(context,item)}"
+        android:onClick="@{(view)->viewModel.clickCooperation(view,item)}"
         app:layout_constraintTop_toBottomOf="@id/mine_about_version" />
 </layout>

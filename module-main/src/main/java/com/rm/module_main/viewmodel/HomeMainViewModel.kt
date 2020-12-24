@@ -60,7 +60,7 @@ class HomeMainViewModel(private val repository: MainRepository) : BaseVMViewMode
                 } else {
                     PlayGlobalData.setNextPagePlayData(mutableListOf())
                 }
-            }, onError = {
+            }, onError = {it,_->
                 PlayGlobalData.chapterRefreshModel.finishLoadMore(false)
                 showContentView()
                 DLog.d("music-exoplayer-lib","首页获取章节列表失败   $it ")

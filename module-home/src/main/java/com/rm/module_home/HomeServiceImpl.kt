@@ -68,20 +68,22 @@ class HomeServiceImpl : HomeService {
         versionInfo: BusinessVersionUrlBean,
         installCode: Int,
         dialogCancel: Boolean,
+        cancelIsFinish: Boolean,
         downloadComplete: (String) -> Unit,
         sureIsDismiss: Boolean?,
         sureBlock: () -> Unit?,
         cancelBlock: () -> Unit?
     ) {
         HomeUploadDownload(
-            versionInfo,
-            activity,
-            installCode,
-            dialogCancel,
-            downloadComplete,
-            sureIsDismiss,
-            sureBlock,
-            cancelBlock
+            versionInfo = versionInfo,
+            mActivity = activity,
+            installCode = installCode,
+            mDialogCancel = dialogCancel,
+            cancelIsFinish = cancelIsFinish,
+            downloadComplete = downloadComplete,
+            sureIsDismiss = sureIsDismiss,
+            sureBlock = sureBlock,
+            cancelBlock = cancelBlock
         ).showUploadDialog()
     }
 

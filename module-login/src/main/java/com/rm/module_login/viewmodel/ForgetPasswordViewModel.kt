@@ -55,8 +55,9 @@ class ForgetPasswordViewModel(private val repository: LoginRepository) : BaseVMV
                             TYPE_FORGET_PWD
                         )
                     )
+                    finish()
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     it?.let { showTip(it, R.color.business_color_ff5e5e) }
                 }

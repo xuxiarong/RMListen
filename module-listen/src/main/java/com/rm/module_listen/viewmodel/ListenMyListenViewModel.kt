@@ -19,44 +19,48 @@ class ListenMyListenViewModel(val repository: ListenRepository) : BaseVMViewMode
     var downloadNumber = ObservableInt(0)
     val refreshStateModel = SmartRefreshLayoutStatusModel()
     var subsRefreshFun: () -> Unit = {}
+    var lastTime = 0L
 
     fun getSubsTotalNumberFromService() {
-        launchOnIO {
-            repository.getSubsNumber().checkResult(
+        if (isLogin.get() && System.currentTimeMillis() - lastTime > 3000)
+            launchOnIO {
+                repository.getSubsNumber().checkResult(
                     onSuccess = {
                         subsNumber.set(it.subscription_total)
+                        lastTime = System.currentTimeMillis()
                     },
-                    onError = {
+                    onError = {it,_->
                         DLog.d("suolong", "$it")
+                        showTip("$it")
                     }
-            )
-        }
+                )
+            }
     }
 
     fun refresh() {
-        if(isLogin.get()){
+        if (isLogin.get()) {
             launchOnIO {
                 repository.getSubsNumber().checkResult(
-                        onSuccess = {
-                            subsNumber.set(it.subscription_total)
-                            refreshStateModel.finishRefresh(true)
-                        },
-                        onError = {
-                            it?.let {
-                                showTip(it)
-                            }
-                            refreshStateModel.finishRefresh(false)
+                    onSuccess = {
+                        subsNumber.set(it.subscription_total)
+                        refreshStateModel.finishRefresh(true)
+                    },
+                    onError = {it,_->
+                        it?.let {
+                            showTip(it)
                         }
+                        refreshStateModel.finishRefresh(false)
+                    }
                 )
             }
             subsRefreshFun()
-        }else{
+        } else {
             refreshStateModel.finishRefresh(false)
         }
     }
 
-    fun loadMore(){
-        DLog.d("suolong","loadMore")
+    fun loadMore() {
+        DLog.d("suolong", "loadMore")
     }
 
 

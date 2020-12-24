@@ -64,7 +64,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {
+                onError = {it,_->
                     processFailureData(it)
                 }
             )
@@ -83,7 +83,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                     changeState(bean, 1)
                     showTip("关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -104,7 +104,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                     changeState(bean, 0)
                     showTip("取消关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)

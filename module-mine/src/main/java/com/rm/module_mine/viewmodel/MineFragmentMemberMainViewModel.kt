@@ -88,7 +88,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
                 onSuccess = {
                     showContentView()
                     processData(it)
-                }, onError = {
+                }, onError = {it,_->
                     showContentView()
                     DLog.i("----->", "$it")
                     showServiceError()

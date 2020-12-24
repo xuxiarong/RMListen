@@ -1,8 +1,10 @@
 package com.rm.module_mine.repository
 
+import android.util.Log
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.baselisten.net.util.GsonUtils
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.bean.BusinessUpdateVersionBean
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.bean.BusinessVersionUrlBean
@@ -28,6 +30,13 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
      */
     suspend fun updateUserInfo(bean: UpdateUserInfoBean): BaseResult<LoginUserBean> {
         return apiCall { service.updateInfo(bean) }
+    }
+
+    /**
+     * 获取用户信息
+     */
+    suspend fun getUserInfo(): BaseResult<LoginUserBean> {
+        return apiCall { service.getUserInfo() }
     }
 
     // 主播/个人信息
@@ -213,4 +222,25 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         return apiCall { service.uploadCommon(request.parts[0]) }
     }
 
+
+    /**
+     * 发送登陆短信验证码
+     * @param area_code String
+     * @param phone String
+     */
+    suspend fun sendMessage(type: String, area_code: String, phone: String): BaseResult<Any> {
+        DLog.i("========>sendMessage", "$type    ${Log.getStackTraceString(Throwable())}")
+        return apiCall { service.sendMessage(type, subPlusChar(area_code), phone) }
+    }
+
+    /**
+     * 去掉 "+"
+     * @param area_code String
+     */
+    private fun subPlusChar(area_code: String): String {
+        if (!area_code.startsWith("+")) {
+            return area_code
+        }
+        return area_code.substring(1, area_code.length)
+    }
 }

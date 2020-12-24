@@ -85,7 +85,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                         refreshStatusModel.finishRefresh(true)
                         dealHomeData(it)
                     },
-                    onError = {
+                    onError = {it,_->
                         refreshStatusModel.finishRefresh(false)
                         if (homeAllData.value != null) {
                             showContentView()
@@ -125,7 +125,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                             }
                         }
                     },
-                    onError = {
+                    onError = {it,_->
                         DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
                     }
             )
@@ -144,7 +144,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     onSuccess = {
                         homeItemDataAdModel.set(it)
                     },
-                    onError = {
+                    onError = {it,_->
                         homeItemDataAdModel.set(HomeSingleImgAdResultModel(null, null, null))
                         DLog.d("suolong_home", "getHomeDialogAd error = ${it ?: "错误信息为空"}")
                     }

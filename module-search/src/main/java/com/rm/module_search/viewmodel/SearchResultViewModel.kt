@@ -204,7 +204,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
                     suggestIsVisible.set(false)
                     contentIsVisible.set(true)
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     searchResultData.postValue(
                         SearchResultBean(
@@ -235,7 +235,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
                     val list = it.keywords?.split(",")
                     inputAdapter.setList(list)
                 },
-                onError = {
+                onError = {it,_->
                     resultIsEnd = true
                 }
             )

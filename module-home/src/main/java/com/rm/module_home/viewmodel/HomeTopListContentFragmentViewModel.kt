@@ -48,7 +48,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {
+                onError = {it,_->
                     processFailData()
                 }
             )

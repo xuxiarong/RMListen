@@ -104,7 +104,7 @@ class ListenDialogSheetViewModel(
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = { msg ->
+                onError = {msg,_->
                     processFailData(msg)
                 }
             )
@@ -120,7 +120,7 @@ class ListenDialogSheetViewModel(
                 onSuccess = {
                     addSheetSuccess()
                 },
-                onError = {
+                onError = {it,_->
                     showTip(
                         msg = "$it",
                         color = R.color.business_color_ff5e5e

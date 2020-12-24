@@ -72,7 +72,7 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
                         DLog.d("suolong", "it.ad_name = ${it.ad_name}")
                     }
                 },
-                onError = {
+                onError = {it,_->
                     DLog.d("suolong", "error = ${it ?: ""}")
                 }
             )
@@ -88,7 +88,7 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
             repository.homeGetLaseUrl().checkResult(
                 onSuccess = {
                     versionInfo.set(it)
-                }, onError = {
+                }, onError = {it,_->
                     showTip("$it", R.color.business_color_ff5e5e)
                     versionInfo.set(null)
                 })
@@ -102,6 +102,7 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
     fun showUploadDialog(
         activity: FragmentActivity,
         sureIsDismiss: Boolean,
+        cancelIsFinish: Boolean,
         sureBlock: () -> Unit?,
         cancelBlock: () -> Unit? = {}
     ) {
@@ -112,6 +113,7 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
                     versionInfo = it,
                     installCode = INSTALL_RESULT_CODE,
                     dialogCancel = false,
+                    cancelIsFinish = cancelIsFinish,
                     downloadComplete = { path -> downPath = path },
                     sureIsDismiss = sureIsDismiss,
                     sureBlock = sureBlock,

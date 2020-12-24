@@ -72,7 +72,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
                     menuList.value = it
                     mPageId = it.page_id
                 },
-                onError = {
+                onError = {it,_->
                     showServiceError()
                 }
             )
@@ -87,7 +87,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
             repository.getSheetList(mPage, pageSize)
                 .checkResult(onSuccess = {
                     processSuccessData(it)
-                }, onError = {
+                }, onError = {it,_->
                     processFailData()
                 })
         }

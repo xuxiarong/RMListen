@@ -46,7 +46,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     attentionVisibility.set(it.id != loginUser.get()?.id)
                     isAttention.set(it.is_followed)
 
-                }, onError = {
+                }, onError = {it,_->
                     showContentView()
                 }
             )
@@ -68,7 +68,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     }
                     showTip("关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -92,7 +92,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     }
                     showTip("取消关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("--->", "$it")
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)

@@ -50,7 +50,7 @@ class LoginViewModel(private val repository: LoginRepository) : BaseVMViewModel(
                     Log.i("llj","登陆成功！！")
                     _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
                 },
-                onError = {
+                onError = {it,_->
                     Log.e("llj","登陆失败！！--->>>$it")
                     _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
                 })
@@ -66,7 +66,7 @@ class LoginViewModel(private val repository: LoginRepository) : BaseVMViewModel(
                     Log.i("llj","注册成功！！")
                     _uiState.value = LoginUiState(isSuccess = it, enableLoginButton = true)
                 },
-                onError = {
+                onError = {it,_->
                     Log.e("llj","注册失败！！----->$it")
                     _uiState.value = LoginUiState(isError = it, enableLoginButton = true)
                 })

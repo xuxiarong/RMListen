@@ -241,7 +241,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnIO {
             repository.playerReport(audioID, chapterId).checkResult(onSuccess = {
                 ExoplayerLogger.exoLog(it)
-            }, onError = {
+            }, onError = {it,_->
                 ExoplayerLogger.exoLog(it ?: "")
             })
         }
@@ -284,7 +284,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.noMoreData.set(false)
                     chapterRefreshModel.finishLoadMore(false)
                 }
-            }, onError = {
+            }, onError = {it,_->
                 it?.let {
                     chapterRefreshModel.finishLoadMore(false)
                     showTip(it)
@@ -326,7 +326,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.canRefresh.set(playPrePage > 1)
                 }
                 chapterRefreshModel.finishRefresh(true)
-            }, onError = {
+            }, onError = {it,_->
                 playPrePage++
                 chapterRefreshModel.finishRefresh(false)
                 it?.let {
@@ -380,7 +380,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     DLog.d("music-exoplayer-lib","播放页设置公共数据 单数服务器返回数据为空 getChapterListWithId")
                     PlayGlobalData.setNextPagePlayData(mutableListOf())
                 }
-            }, onError = {
+            }, onError = {it,_->
                 chapterRefreshModel.finishLoadMore(false)
                 showContentView()
                 DLog.d("music-exoplayer-lib","首页获取章节列表失败   $it ")
@@ -404,7 +404,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     PlayGlobalData.initPlayAudio(it.list)
                     getAudioFloorAd()
                 },
-                onError = {
+                onError = {it,_->
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
                 }
             )
@@ -417,7 +417,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 onSuccess = {
                     audioRecommendAdapter.setList(it.list)
                 },
-                onError = {
+                onError = {it,_->
 
                 }
             )
@@ -460,7 +460,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     }
                 },
-                onError = {
+                onError = {it,_->
                     PlayGlobalData.playAdIsPlaying.set(false)
                     PlayGlobalData.playVoiceAdClose.set(true)
                     PlayGlobalData.playVoiceImgAd.set(null)
@@ -494,7 +494,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     }
                 },
-                onError = {
+                onError = {it,_->
                     DLog.d("suolong", "error = ${it ?: ""}")
                 })
         }
@@ -516,7 +516,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     }
 
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("----->", "评论点赞:$it")
                 }
             )
@@ -539,7 +539,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                     }
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("----->", "评论点赞:$it")
                 })
         }
@@ -563,7 +563,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     }
                     subscribeSuccess(context)
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("------->", "订阅失败  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -588,7 +588,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isSubscribe.set(false)
                     showTip("取消订阅成功")
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("------->", "取消订阅  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -608,7 +608,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 pageSize
             ).checkResult(onSuccess = {
                 processCommentSuccessData(it)
-            }, onError = {
+            }, onError = {it,_->
                 processCommentFailureData(it)
             })
         }
@@ -665,7 +665,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         )
                     }
                 }
-            }, onError = {
+            }, onError = {it,_->
                 DLog.i("===>getAdInfo", "$it")
             })
         }
@@ -786,7 +786,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isAttention.set(true)
                     showTip("关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
@@ -811,7 +811,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isAttention.set(false)
                     showTip("取消关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })

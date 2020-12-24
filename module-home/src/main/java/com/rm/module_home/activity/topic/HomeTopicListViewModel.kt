@@ -53,7 +53,7 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
                         blockName.set(it.block_name)
                     }
                 },
-                onError = {
+                onError = {it,_->
                     if (page == 1) {
                         // 获取第一页数据就失败
                         // 显示错误视图

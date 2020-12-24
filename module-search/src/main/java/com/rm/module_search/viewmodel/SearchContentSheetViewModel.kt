@@ -69,7 +69,7 @@ class SearchContentSheetViewModel(private val repository: SearchRepository) : Ba
                     onSuccess = {
                         successData(it)
                     },
-                    onError = { msg ->
+                    onError = {msg,_->
                         failData(msg)
                     }
                 )

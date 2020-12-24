@@ -130,7 +130,7 @@ class MineGetBookViewModel(private val repository: MineRepository) : BaseVMViewM
                         onSuccess = {
                           setResultAndFinish(GET_BOOK_RESULT_CODE)
                         },
-                        onError = {
+                        onError = {it,_->
                             showTip("$it", R.color.business_color_ff5e5e)
                         }
                     )

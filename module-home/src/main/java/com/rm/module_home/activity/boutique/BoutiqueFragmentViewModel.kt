@@ -48,7 +48,7 @@ class BoutiqueFragmentViewModel(private val repository: HomeRepository) : BaseVM
                     onSuccess = {
                         processSuccess(it)
                     },
-                    onError = {
+                    onError = {it,_->
                         if (page == 1) {
                             showServiceError()
                             refreshStatusModel.finishRefresh(false)

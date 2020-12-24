@@ -207,7 +207,7 @@ class HomeCommentDialogViewModel(
                     mDialog.dismiss()
                     hideTipView()
                 },
-                onError = {
+                onError = {it,_->
                     showTip(
                         msg = "$it",
                         color = R.color.business_color_ff5e5e,

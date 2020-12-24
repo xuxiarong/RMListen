@@ -43,7 +43,7 @@ class BoutiqueViewModel(private val repository: HomeRepository) :
                         showDataEmpty()
                     }
                 },
-                onError = {
+                onError = {it,_->
                     showServiceError()
                 }
             )

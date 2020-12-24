@@ -22,7 +22,7 @@ val viewModelModule = module {
     viewModel { MinePersonalInfoViewModel(get()) }
     viewModel { MinePlaySettingViewModel() }
     viewModel { MineDownloadSettingViewModel() }
-    viewModel { MineAccountSecuritySettingViewModel() }
+    viewModel { MineAccountSecuritySettingViewModel(get()) }
     viewModel { MineNicknameSettingViewModel(get()) }
     viewModel { MinePersonalSignatureSettingViewModel(get()) }
     viewModel { MineMemberViewModel(get()) }
