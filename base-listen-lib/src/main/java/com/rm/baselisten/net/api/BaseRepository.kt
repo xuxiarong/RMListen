@@ -18,7 +18,7 @@ open class BaseRepository {
             return executeResponse(call())
         } catch (e: Exception) {
             DLog.e("request error ", "${e.message}")
-            BaseResult.Error("")
+            BaseResult.Error("",-1)
         }
     }
 
@@ -29,7 +29,7 @@ open class BaseRepository {
         return coroutineScope {
             if (response.code != 0) {
                 errorBlock?.let { it() }
-                BaseResult.Error(response.msg)
+                BaseResult.Error(response.msg,response.code)
             } else {
                 successBlock?.let { it() }
                 BaseResult.Success(response.data)

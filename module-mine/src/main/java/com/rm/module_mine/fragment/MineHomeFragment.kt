@@ -75,6 +75,7 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
                 )
             )
         }
+        mViewModel.getUserInfo()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

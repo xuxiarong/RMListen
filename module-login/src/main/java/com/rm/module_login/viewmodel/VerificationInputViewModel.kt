@@ -1,10 +1,12 @@
 package com.rm.module_login.viewmodel
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
@@ -94,10 +96,9 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     finish()
 
                 },
-                onError = {
+                onError = {it,_->
                     inputClear.set(true)
                     showContentView()
-//                    it?.let { showToast(it) }
                     errorTips.set(it)
                 })
         }
@@ -119,11 +120,10 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                         )
                         finish()
                     },
-                    onError = {
+                    onError = {it,_->
                         inputClear.set(true)
                         showContentView()
                         errorTips.set(it)
-//                        it?.let { showToast(it) }
                     }
                 )
         }
@@ -141,8 +141,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     delay(1000)
                     loginOut()
                 }
-            }, onError = {
-//                showToast("$it")
+            }, onError = {it,_->
                 inputClear.set(true)
                 showContentView()
                 errorTips.set(it)
@@ -171,7 +170,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
      */
     fun reGetVerifyCode() {
         showLoading()
-        when (codeType.get()!!) {
+        when (codeType.get()) {
             TYPE_LOGIN -> {
                 sendCodeMessage(CODE_TYPE_LOGIN)
             }
@@ -200,9 +199,9 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     startCountDown()
                     showContentView()
                 },
-                onError = {
+                onError = {it,_->
                     showTip(
-                        CONTEXT.getString(R.string.login_send_failed),
+                      "$it",
                         R.color.business_color_ff5e5e
                     )
                     showContentView()

@@ -60,7 +60,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                 onSuccess = {
                     successData(it)
                 },
-                onError = {
+                onError = {it,_->
                     failData()
                 }
             )
@@ -73,7 +73,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                 onSuccess = {
                     successData(it)
                 },
-                onError = {
+                onError = {it,_->
                     failData()
                 }
             )
@@ -90,7 +90,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                     removeIndex(sheetId)
                     dialog?.dismiss()
                 },
-                onError = {
+                onError = {it,_->
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )

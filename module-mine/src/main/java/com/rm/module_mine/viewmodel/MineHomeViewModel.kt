@@ -39,9 +39,10 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
     }
 
     val mAdapter by lazy { MineHomeAdapter(this) }
-
     var currentLoginUser = loginUser
     var currentIsLogin = isLogin
+
+    var updateUserInfoTime = 0L
 
 
     fun getData() {
@@ -106,13 +107,34 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
         )
     }
 
+    /**
+     * 获取用户信息
+     */
+    fun getUserInfo() {
+        if (System.currentTimeMillis() - updateUserInfoTime > 3000 && isLogin.get()) {
+            launchOnIO {
+                repository.getUserInfo().checkResult(
+                    onSuccess = {
+                        loginUser.set(it)
+                        updateUserInfoTime = System.currentTimeMillis()
+                    },
+                    onError = {it,_->
+                        showTip("$it")
+                    })
+            }
+        }
+    }
+
+    /**
+     * 获取版本信息
+     */
     private fun getLaseVersion(context: Context) {
         showLoading()
         launchOnIO {
             repository.mineGetLaseUrl().checkResult(onSuccess = {
                 showContentView()
                 showUploadDialog(context, it)
-            }, onError = {
+            }, onError = {it,_->
                 showContentView()
                 showTip("$it", R.color.business_color_ff5e5e)
             })

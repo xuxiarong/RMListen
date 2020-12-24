@@ -1,6 +1,7 @@
 package com.rm.module_login.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -35,40 +36,49 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
      */
     fun login() {
         // 登陆
-        if (!isCheck.get()!!) {
-            // 未选中check box
-            showToast(R.string.login_agree_deal_tips)
-            return
-        }
+        val countryCode = phoneInputViewModel.countryCode.get()!!
+        val phone = phoneInputViewModel.phone.get()!!
+        val password = passwordInputViewModel.password.get()!!
+        when {
+            (!isCheck.get()!!) -> {
+                // 未选中check box
+                showToast(R.string.login_agree_deal_tips)
+                return
+            }
+            TextUtils.equals(countryCode, "+86")
+                    && (phone.length < 11 || !phone.startsWith("1")) -> {
+                errorTips.set("手机格式不对")
+            }
+            else -> {
+                showLoading()
+                launchOnIO {
+                    repository.loginByPassword(
+                        countryCode,
+                        phone,
+                        password
+                    ).checkResult(
+                        onSuccess = {
+                            // 设置登陆成功数据
+                            loginIn(it.access, it.refresh, it.member)
 
-        showLoading()
-        launchOnIO {
-            repository.loginByPassword(
-                phoneInputViewModel.countryCode.get()!!,
-                phoneInputViewModel.phone.get()!!,
-                passwordInputViewModel.password.get()!!
-            ).checkResult(
-                onSuccess = {
-                    // 设置登陆成功数据
-                    loginIn(it.access,it.refresh,it.member)
-
-                    showContentView()
-                    showToast(R.string.login_success)
-                    finish()
-                },
-                onError = {
-                    showContentView()
-                    errorTips.set(it)
+                            showContentView()
+                            showToast(R.string.login_success)
+                            finish()
+                        },
+                        onError = {it,_->
+                            showContentView()
+                            errorTips.set(it)
+                        }
+                    )
                 }
-            )
+            }
         }
-
     }
 
     /**
      * 忘记密码
      */
-    fun forgetPassword(context:Context) {
+    fun forgetPassword(context: Context) {
         ForgetPasswordActivity.startActivity(context, phoneInputViewModel.phone.get()!!)
 //        startActivity(ForgetPasswordActivity::class.java)
     }

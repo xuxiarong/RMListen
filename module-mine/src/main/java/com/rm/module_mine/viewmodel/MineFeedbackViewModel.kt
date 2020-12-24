@@ -100,7 +100,7 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
                                 feedback()
                             }
                         },
-                        onError = { msg ->
+                        onError = {msg,_->
                             showContentView()
                             failureList.add(bean.path ?: "")
                             showTip("$msg", R.color.business_color_ff5e5e)
@@ -126,7 +126,7 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
                         showContentView()
                         setResultAndFinish(1002)
                     },
-                    onError = { msg ->
+                    onError = {msg,_->
                         showContentView()
                         showTip("$msg", R.color.business_color_ff5e5e)
                     }

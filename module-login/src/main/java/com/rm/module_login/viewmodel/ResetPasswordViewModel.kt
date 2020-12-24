@@ -41,7 +41,7 @@ class ResetPasswordViewModel(private val repository: LoginRepository) : BaseVMVi
                     showContentView()
                     finish()
                 },
-                onError = {
+                onError = {it,_->
                     it?.let { showToast(it) }
                     showContentView()
                 }

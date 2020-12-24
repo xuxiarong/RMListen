@@ -225,7 +225,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                     mTabDataList.set(tabList)
                     hotRecommend.set(list)
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("-------->", "searchHotRecommend:$it")
                 }
             )
@@ -241,7 +241,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                 onSuccess = {
                     hintBannerList.set(it.keywords?.split(","))
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("-------->", "searchHintBanner:$it")
                 }
             )
@@ -260,7 +260,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                     recommendVisible.set(true)
                     adapter.setList(split)
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("-------->", "searchRecommend:$it")
                 })
         }
@@ -283,7 +283,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                         inputAdapter.setList(null)
                     }
                 },
-                onError = {
+                onError = {it,_->
                     resultIsEnd = true
                 }
             )

@@ -60,7 +60,7 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
         launchOnIO {
             repository.mineAboutUs().checkResult(onSuccess = {
                 mAdapter.addData(it)
-            }, onError = {
+            }, onError = {it,_->
                 showTip("$it", R.color.business_color_ff5e5e)
             })
         }
@@ -83,7 +83,7 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
                     e.printStackTrace()
                 }
                 mAdapter.notifyItemChanged(0)
-            }, onError = {
+            }, onError = {it,_->
                 showTip("$it", R.color.business_color_ff5e5e)
             })
         }

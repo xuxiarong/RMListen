@@ -67,7 +67,7 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {
+                onError = {it,_->
                     processFailureData(it)
                 }
             )
@@ -84,7 +84,7 @@ class MineFragmentMemberCommentViewMode(private val repository: MineRepository) 
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {
+                onError = {it,_->
                     processFailureData(it)
                 }
             )

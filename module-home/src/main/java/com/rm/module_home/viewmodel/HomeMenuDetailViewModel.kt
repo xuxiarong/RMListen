@@ -162,7 +162,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                         setFavorState(it.favor == 1)
                         data.set(it)
                     },
-                    onError = {
+                    onError = {it,_->
                         showServiceError()
                         showTip("$it", R.color.business_color_ff5e5e)
                     }
@@ -180,7 +180,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     onSuccess = {
                         processAudioList(it)
                     },
-                    onError = {
+                    onError = {it,_->
                         if (mPage == 1) {
                             refreshStatusModel.finishRefresh(false)
                         } else {
@@ -231,7 +231,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                         sheetId
                     )
                 },
-                onError = {
+                onError = {it,_->
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
@@ -253,7 +253,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                         sheetId
                     )
                 },
-                onError = {
+                onError = {it,_->
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )

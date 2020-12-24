@@ -114,7 +114,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {
+                onError = {it,_->
                     showServiceError()
                     processFailData()
                 }
@@ -233,7 +233,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                             subscriptionData.get()!!.audio_id.toString()
                         )
                     },
-                    onError = {
+                    onError = {it,_->
                         showContentView()
                     }
                 )
@@ -251,7 +251,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                 onSuccess = {
                     setTopSuccess()
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
 //                    showTip(CONTEXT.getString(R.string.listen_set_top_fail))
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -286,7 +286,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                 onSuccess = {
                     cancelTopSuccess()
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
 //                    showToast(CONTEXT.getString(R.string.listen_cancel_top_fail))
                     showTip("$it", R.color.business_color_ff5e5e)

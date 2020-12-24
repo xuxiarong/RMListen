@@ -73,7 +73,7 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
                                 loginUser.set(userBean)
                                 setResultAndFinish(RESULT_CODE_NICK)
                             },
-                            onError = {msg ->
+                            onError = {msg,_->
                                 showTip("$msg", R.color.business_color_ff5e5e)
                                 DLog.i("------>", "$msg")
                             }

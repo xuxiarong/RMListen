@@ -161,7 +161,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                                         }
                                     }
                                 },
-                                onError = {
+                                onError = {it,_->
                                     refreshModel.finishLoadMore(false)
                                     showTip("$it", R.color.business_color_ff5e5e)
                                     DLog.e("download", "$it")
@@ -265,7 +265,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                                         checkDialogSelectChapterLegal(list)
                                     }
                                 },
-                                onError = {
+                                onError = {it,_->
                                     DLog.i("download", "$it")
                                     showTip("$it", R.color.business_color_ff5e5e)
                                 }

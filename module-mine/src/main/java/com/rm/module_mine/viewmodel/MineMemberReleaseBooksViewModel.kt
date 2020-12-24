@@ -56,7 +56,7 @@ class MineMemberReleaseBooksViewModel(private val repository: MineRepository) : 
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {
+                onError = {it,_->
                     processFailureData(it)
                 }
             )

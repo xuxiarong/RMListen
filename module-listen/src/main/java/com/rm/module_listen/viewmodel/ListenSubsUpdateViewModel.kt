@@ -88,7 +88,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             ).checkResult(onSuccess = {
                 HomeGlobalData.isShowSubsRedPoint.set(false)
                 DLog.d("suolong", "订阅更新上报成功")
-            }, onError = {
+            }, onError = {it,_->
                 HomeGlobalData.isShowSubsRedPoint.set(false)
                 DLog.d("suolong", "订阅更新上报失败 ${it ?: "原因为空"}")
             })
@@ -117,7 +117,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                     }
                     currentPage++
                     dealData(it.list)
-                }, onError = {
+                }, onError = {it,_->
                     it?.let {
                         showTip(it)
                     }
@@ -155,7 +155,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                         subsDataEmpty.set(true)
                         HomeGlobalData.isShowSubsRedPoint.set(false)
                     }
-                }, onError = {
+                }, onError = {it,_->
                     it?.let {
                         showTip(it)
                     }

@@ -39,7 +39,8 @@ import kotlinx.android.synthetic.main.listen_fragment_my_listen.*
  * version: 1.0
  */
 class ListenMyListenFragment :
-    BaseVMFragment<ListenFragmentMyListenBinding, ListenMyListenViewModel>(),AppBarLayout.OnOffsetChangedListener {
+    BaseVMFragment<ListenFragmentMyListenBinding, ListenMyListenViewModel>(),
+    AppBarLayout.OnOffsetChangedListener {
 
     private lateinit var mViewPagerAdapter: ListenMyListenPagerAdapter
 
@@ -84,7 +85,7 @@ class ListenMyListenFragment :
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (isLogin.get()) {
                     mViewModel.getSubsTotalNumberFromService()
-                } else{
+                } else {
                     mViewModel.subsNumber.set(0)
                     HomeGlobalData.isShowSubsRedPoint.set(false)
                 }
@@ -112,9 +113,7 @@ class ListenMyListenFragment :
             mViewModel.subsRefreshFun =
                 { (mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment).refreshSubsData() }
         }
-        if (isLogin.get()) {
-            mViewModel.getSubsTotalNumberFromService()
-        }
+        mViewModel.getSubsTotalNumberFromService()
     }
 
 
@@ -178,6 +177,7 @@ class ListenMyListenFragment :
     override fun onResume() {
         super.onResume()
         listen_appbar_layout.addOnOffsetChangedListener(this)
+        mViewModel.getSubsTotalNumberFromService()
     }
 
     override fun onPause() {
@@ -187,9 +187,9 @@ class ListenMyListenFragment :
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-        if(verticalOffset <= dip(45 - 210)){
+        if (verticalOffset <= dip(45 - 210)) {
             isListenAppBarInTop.set(true)
-        }else{
+        } else {
             isListenAppBarInTop.set(false)
         }
     }

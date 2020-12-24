@@ -55,7 +55,7 @@ class MinePersonalSignatureSettingViewModel(private val repository: MineReposito
                         loginUser.set(userBean)
                         setResultAndFinish(RESULT_CODE_SIGNATURE)
                     },
-                    onError = {
+                    onError = {it,_->
                         showTip("$it", R.color.business_color_ff5e5e)
                         DLog.i("------>", "$it")
                     }

@@ -62,7 +62,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {
+                onError = {it,_->
                     processFailureData(it)
                 }
             )
@@ -81,7 +81,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                     changeState(bean, 1)
                     showTip("关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -101,7 +101,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                     changeState(bean, 0)
                     showTip("取消关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("--->", "$it")
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)

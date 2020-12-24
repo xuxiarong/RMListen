@@ -83,7 +83,7 @@ class ListenDialogCreateSheetViewModel(
                         addSheet(it.sheet_id)
                     }
                 },
-                onError = {
+                onError = {it,_->
                     showErrorTip(it)
                 }
             )
@@ -99,7 +99,7 @@ class ListenDialogCreateSheetViewModel(
                 onSuccess = {
                     addSheetSuccess()
                 },
-                onError = {
+                onError = {it,_->
                     showErrorTip("$it")
                 }
             )
@@ -167,7 +167,7 @@ class ListenDialogCreateSheetViewModel(
                     )
                     mDialog?.dismiss()
                 },
-                onError = {
+                onError = {it,_->
 //                    showErrorTip(msg = CONTEXT.getString(R.string.listen_edit_fail))
                     showErrorTip(msg = "$it")
                 }

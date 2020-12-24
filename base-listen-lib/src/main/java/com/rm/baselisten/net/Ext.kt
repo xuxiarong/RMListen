@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
  */
 suspend inline fun <T : Any> BaseResult<T>.checkResult(
     crossinline onSuccess: (T) -> Unit,
-    crossinline onError: (String?) -> Unit
+    crossinline onError: (String?,Int?) -> Unit
 ) {
     if (this is BaseResult.Success) {
         withContext(Dispatchers.Main) {
@@ -19,7 +19,7 @@ suspend inline fun <T : Any> BaseResult<T>.checkResult(
         }
     } else if (this is BaseResult.Error) {
         withContext(Dispatchers.Main) {
-            onError(msg)
+            onError(msg,errorCode)
         }
     }
 }

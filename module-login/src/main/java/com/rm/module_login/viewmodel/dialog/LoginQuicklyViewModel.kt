@@ -96,7 +96,7 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
                     isShowPhoneInputLay.set(false)
                     startCountDown()
                 },
-                onError = {
+                onError = {it,_->
                     mViewModel.showContentView()
                     inputClear.set(true)
                     errorTips.set(it)
@@ -145,7 +145,7 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
                     isLoginSuccess.value = true
 
                 },
-                onError = {
+                onError = {it,_->
                     mViewModel.showContentView()
                     it?.let { mViewModel.showToast(it) }
                 })
@@ -171,7 +171,7 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
                         startCountDown()
                         mViewModel.showContentView()
                     },
-                    onError = {
+                    onError = {it,_->
                         mViewModel.showToast(R.string.login_send_failed)
                         mViewModel.showContentView()
                     }

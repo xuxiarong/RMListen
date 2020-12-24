@@ -74,7 +74,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
                     onSuccess = {
                         successData(it)
                     },
-                    onError = { msg ->
+                    onError = {msg,_->
                         failData(msg)
                     }
                 )
@@ -134,7 +134,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
                     anchorAdapter.notifyItemChanged(indexOf)
                     showTip("关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
@@ -155,7 +155,7 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
                     anchorAdapter.notifyItemChanged(indexOf)
                     showTip("取消关注成功")
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })

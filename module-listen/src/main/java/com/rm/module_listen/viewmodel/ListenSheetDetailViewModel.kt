@@ -95,7 +95,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     data.set(it)
                 },
 
-                onError = {
+                onError = {it,_->
                     showContentView()
                     refreshStateModel.finishRefresh(false)
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -113,7 +113,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                 onSuccess = {
                     processAudioList(it)
                 },
-                onError = {
+                onError = {it,_->
                     if (mPage == 1) {
                         refreshStateModel.finishRefresh(false)
                     } else {
@@ -157,7 +157,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     deleteSuccess()
                     mDialog.dismiss()
                 },
-                onError = {
+                onError = {it,_->
                     showContentView()
                 }
             )
@@ -287,7 +287,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     }
                     setResult(data.get()?.sheet_name ?: "")
                 },
-                onError = {
+                onError = {it,_->
                     DLog.i("-------->", "移除失败  $it")
                 }
             )

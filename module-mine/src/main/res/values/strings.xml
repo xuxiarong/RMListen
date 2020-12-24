@@ -122,7 +122,7 @@
     <string name="mine_book_info">书籍信息</string>
     <string name="mine_hint_book_author_tips">作者名（选填）</string>
     <string name="mine_hint_book_member_tips">主播名（选填）</string>
-    <string name="mine_hint_book_contact_tips">您的邮箱/微信/手机号（选填）</string>
+    <string name="mine_hint_book_contact_tips">您的邮箱/微信/手机号</string>
     <string name="mine_member_name">主播名</string>
     <string name="mine_contact">联系方式</string>
     <string name="mine_submit">提交</string>
@@ -135,7 +135,7 @@
     <string name="mine_feedback_contact">添加联系方式</string>
     <string name="mine_question_depict">问题描述</string>
     <string name="mine_feedback_content_num">/500</string>
-    <string name="mine_feedback_hint_content_tips">问题描述（请尽量详细，方便我们快速定位解决）</string>
+    <string name="mine_feedback_hint_content_tips">请尽量详细，方便我们快速定位解决</string>
     <string name="mine_update_version">版本更新</string>
     <string name="mine_cooperation">业务合作</string>
     <string name="mine_web_address">官网地址</string>

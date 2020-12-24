@@ -3,22 +3,25 @@ package com.rm.module_listen.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import androidx.databinding.ObservableField
+import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.base.dialog.TipsFragmentDialog
-import com.rm.business_lib.loginUser
+import com.rm.business_lib.net.RefreshTokenInterceptor.Companion.CODE_LOGIN_OUT
+import com.rm.business_lib.net.RefreshTokenInterceptor.Companion.CODE_NOT_LOGIN
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenMySheetDetailActivity
-import com.rm.module_listen.activity.ListenMySheetDetailActivity.Companion.SHEET_ID
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.repository.ListenRepository
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ListenSheetMyListViewModel(private val repository: ListenRepository) : BaseVMViewModel() {
 
@@ -65,25 +68,25 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                     showContentView()
                     successData(it)
                 },
-                onError = {
+                onError = { it, code ->
                     showContentView()
-                    failData("$it")
+                    failData("$it", code)
                 }
             )
         }
     }
 
     private fun getMySheetList() {
-       showLoading()
+        showLoading()
         launchOnIO {
             repository.getMyList(page, pageSize).checkResult(
                 onSuccess = {
                     showContentView()
                     successData(it)
                 },
-                onError = {
+                onError = { it, code ->
                     showContentView()
-                    failData("$it")
+                    failData("$it", code)
                 }
             )
         }
@@ -100,7 +103,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                     showContentView()
                     remove(sheetId)
                 },
-                onError = {
+                onError = { it, _ ->
                     showContentView()
                 }
             )
@@ -134,13 +137,20 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
     /**
      * 数据请求失败
      */
-    private fun failData(msg: String) {
+    private fun failData(msg: String, code: Int?) {
         if (page == 1) {
             refreshStateModel.finishRefresh(false)
         } else {
             refreshStateModel.finishLoadMore(false)
         }
         showTip(msg, R.color.business_color_ff5e5e)
+//        if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN) {
+//            viewModelScope.launch {
+//                delay(1000)
+//                finish()
+//            }
+//
+//        }
     }
 
     /**
@@ -215,7 +225,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                 showTip("删除成功")
             }
 
-            if (mAdapter.data.size<=0){
+            if (mAdapter.data.size <= 0) {
                 showDataEmpty()
             }
         }

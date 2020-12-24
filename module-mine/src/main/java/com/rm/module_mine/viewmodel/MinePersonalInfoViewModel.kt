@@ -63,7 +63,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                         sex.set(getSexStr(userBean))
                         showTip("修改成功")
                     },
-                    onError = {
+                    onError = {it,_->
                         showTip("$it", R.color.business_color_ff5e5e)
                     }
                 )
@@ -83,7 +83,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                     }
                     userIconUrl.set(it.url)
                 },
-                onError = {
+                onError = {it,_->
 //                    showToast("")
                     showTip("$it", R.color.business_color_ff5e5e)
 

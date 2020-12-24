@@ -1,17 +1,15 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
-import com.rm.baselisten.util.DLog
+import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.base.dialog.TipsFragmentDialog
-import com.rm.business_lib.bean.Country
-import com.rm.business_lib.helpter.loginOut
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.R
+import com.rm.module_mine.repository.MineRepository
 
 /**
  *
@@ -20,14 +18,45 @@ import com.rm.module_mine.R
  * @description
  *
  */
-class MineAccountSecuritySettingViewModel : BaseVMViewModel() {
+class MineAccountSecuritySettingViewModel(private val repository: MineRepository) :
+    BaseVMViewModel() {
     /**
      * 修改密码
      */
     fun clickChangePsdFun(context: Context) {
         loginUser.get()?.let {
-            RouterHelper.createRouter(LoginService::class.java)
-                .startVerificationInput(context, it.area_code!!, it.account!!, 1)
+            sendMessage(context, "change_pwd", it.area_code!!, it.account!!, 1)
+        }
+    }
+
+    private fun sendMessage(
+        context: Context,
+        codeType: String,
+        countryCode: String,
+        phone: String,
+        type: Int
+    ) {
+        showLoading()
+        // 获取短信验证码
+        launchOnIO {
+            repository.sendMessage(
+                codeType,
+                countryCode,
+                phone
+            ).checkResult(
+                onSuccess = {
+                    showContentView()
+                    RouterHelper.createRouter(LoginService::class.java)
+                        .startVerificationInput(context, countryCode, phone, type)
+                    if (type == 2) {
+                        finish()
+                    }
+                },
+                onError = {it,_->
+                    showContentView()
+                    it?.let { showTip(it, R.color.business_color_ff5e5e) }
+                }
+            )
         }
     }
 
@@ -42,7 +71,6 @@ class MineAccountSecuritySettingViewModel : BaseVMViewModel() {
      * 注销账号
      */
     fun clickLogoutFun(context: Context) {
-
         getActivity(context)?.let { activity ->
             if (loginUser.get()?.member_type == 2) {
                 TipsFragmentDialog().apply {
@@ -65,9 +93,8 @@ class MineAccountSecuritySettingViewModel : BaseVMViewModel() {
                     }
                     rightBtnClick = {
                         loginUser.get()?.let {
-                            RouterHelper.createRouter(LoginService::class.java)
-                                .startVerificationInput(context, it.area_code!!, it.account!!, 2)
-                            finish()
+                            sendMessage(context, "close_account", it.area_code!!, it.account!!, 2)
+                            dismiss()
                         }
                     }
                 }.show(activity)
