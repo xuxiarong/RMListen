@@ -67,6 +67,9 @@ class ListenDialogSheetViewModel(
             ).showCreateSheetDialog(audioId)
             dismiss()
         }
+        dateBinding.listenDialogSheetRootLayout.setOnClickListener {
+            dismiss()
+        }
         getData()
         dismiss = { dismiss() }
     }

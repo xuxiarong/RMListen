@@ -17,6 +17,17 @@
         tools:visibility="visible">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/login_code_back"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_48"
+            android:onClick="@{()->viewModel.finish()}"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            android:src="@drawable/business_icon_return_bc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"

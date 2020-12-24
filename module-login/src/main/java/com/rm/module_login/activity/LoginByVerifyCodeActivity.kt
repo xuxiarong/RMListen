@@ -2,12 +2,14 @@ package com.rm.module_login.activity
 
 import android.content.Context
 import android.content.Intent
+import android.view.ViewGroup
 import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
+import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.isLogin
 import com.rm.module_login.BR
 import com.rm.module_login.R
@@ -54,6 +56,13 @@ class LoginByVerifyCodeActivity :
     override fun initView() {
         super.initView()
         setTransparentStatusBar()
+        mDataBind.loginCodeBack.apply {
+            (layoutParams as ViewGroup.MarginLayoutParams).apply {
+                //动态获取状态栏的高度,并设置标题栏的topMargin
+                topMargin = getStateHeight(this@LoginByVerifyCodeActivity)
+            }
+        }
+
         login_include_phone_input_country_code.setOnClickListener {
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
         }

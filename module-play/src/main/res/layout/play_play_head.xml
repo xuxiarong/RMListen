@@ -528,7 +528,7 @@
                 tools:text="123" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                bindPlayCountString="@{PlayGlobalData.INSTANCE.playAudioModel.subscription_count}"
+                bindPlayCountString="@{viewModel.subscriptionCount}"
                 bindPlayCountUnit="@{@string/play_subscriber_num}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

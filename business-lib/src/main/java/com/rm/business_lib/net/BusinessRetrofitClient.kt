@@ -3,17 +3,16 @@ package com.rm.business_lib.net
 import androidx.annotation.Nullable
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
-import com.rm.baselisten.jsondeserializer.*
+import com.rm.baselisten.jsondeserializer.JsonObjectAdapter
 import com.rm.baselisten.net.api.BaseRetrofitClient
+import com.rm.baselisten.net.api.BusinessGsonConverterFactory
 import okhttp3.Call
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.math.BigDecimal
-import java.math.BigInteger
+
 
 
 /**
@@ -96,7 +95,8 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
                     return null
                 }
             })
-            .addConverterFactory(GsonConverterFactory.create(gson))
+//            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(BusinessGsonConverterFactory.create(gson))
             .baseUrl(getBaseUrl())
             .build().create(serviceClass)
     }

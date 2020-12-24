@@ -105,6 +105,12 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     var isSubscribe = ObservableBoolean(false)
 
     /**
+     * 订阅数量
+     */
+    val subscriptionCount = ObservableField<String>()
+
+
+    /**
      * 评论 SmartRefreshLayout的状态变化
      */
     val commentRefreshModel = SmartRefreshLayoutStatusModel()
@@ -385,6 +391,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
                     isSubscribe.set(it.list.is_subscribe)
+                    subscriptionCount.set(it.list.subscription_count)
                     isAttention.set(it.list.anchor.status)
                     PlayGlobalData.initPlayAudio(it.list)
                     getAudioFloorAd()
@@ -541,6 +548,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isSubscribe.set(true)
                     PlayGlobalData.playAudioModel.get()?.let {
                         it.is_subscribe = true
+                        val count = "${it.subscription_count.toInt() + 1}"
+                        it.subscription_count = count
+                        subscriptionCount.set(count)
                         PlayGlobalData.initPlayAudio(it)
                     }
                     subscribeSuccess(context)
@@ -562,6 +572,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 onSuccess = {
                     PlayGlobalData.playAudioModel.get()?.let {
                         it.is_subscribe = false
+                        val count = "${it.subscription_count.toInt() - 1}"
+                        it.subscription_count = count
+                        subscriptionCount.set(count)
                         PlayGlobalData.initPlayAudio(it)
                     }
                     isSubscribe.set(false)

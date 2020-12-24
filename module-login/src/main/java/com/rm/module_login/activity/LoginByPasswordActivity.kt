@@ -4,12 +4,14 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.view.ViewGroup
 import com.rm.baselisten.binding.bindKeyboardVisibilityListener
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
+import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByPassowrdBinding
@@ -48,6 +50,14 @@ class LoginByPasswordActivity :
     override fun initView() {
         super.initView()
         setTransparentStatusBar()
+
+        mDataBind.loginPasswordBack.apply {
+            (layoutParams as ViewGroup.MarginLayoutParams).apply {
+                //动态获取状态栏的高度,并设置标题栏的topMargin
+                topMargin = getStateHeight(this@LoginByPasswordActivity)
+            }
+        }
+
         login_include_phone_input_country_code.setOnClickListener {
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
         }
@@ -55,7 +65,7 @@ class LoginByPasswordActivity :
         login_include_phone_input_arrow_view.setOnClickListener {
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
         }
-        login_by_verify_code_input.bindKeyboardVisibilityListener {it,_->
+        login_by_verify_code_input.bindKeyboardVisibilityListener { it, _ ->
             if (it) {
                 startScaleAnim(layout_top_logo, 0.5f)
                 val translation = -resources.getDimension(R.dimen.dp_30)
