@@ -81,7 +81,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
     override fun startPlayMusic(chapterId: String) {
         mBinder?.startPlayMusic(chapterId)
-        ExoplayerLogger.exoLog("startPlayMusic mBinder = null? --- ${mBinder == null}")
+        ExoplayerLogger.exoLog("startPlayMusic chapterId = $chapterId")
     }
 
     override fun updateMusicPlayerData(audios: List<BaseAudioInfo>, chapterId: String) {

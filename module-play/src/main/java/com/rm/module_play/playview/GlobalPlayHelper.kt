@@ -95,8 +95,8 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     override fun onPrepared(totalDurtion: Long) {
+        DLog.d("suolong_GlobalPlayHelper","onPrepared")
         PlayGlobalData.playIsError.set(false)
-        PlayGlobalData.updateThumbText.set("00:00/00:00")
         //播放广告的时候，播放速度不生效，正常播放生效
         if (PlayGlobalData.playAdIsPlaying.get()) {
             musicPlayerManger.setPlayerMultiple(1f)
@@ -113,11 +113,11 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             PlayGlobalData.playChapter.get()?.let {
                 it.realDuration = totalDurtion
             }
-        }
-        //如果需要接着上一次的播放记录，直接跳转到该进度
-        if(PlayGlobalData.playLastPlayProcess.get()>0){
-            musicPlayerManger.seekTo(PlayGlobalData.playLastPlayProcess.get())
-            PlayGlobalData.playLastPlayProcess.set(-1L)
+            //如果需要接着上一次的播放记录，直接跳转到该进度
+            if(PlayGlobalData.playLastPlayProcess.get()>0 ){
+                musicPlayerManger.seekTo(PlayGlobalData.playLastPlayProcess.get())
+                PlayGlobalData.playLastPlayProcess.set(-1L)
+            }
         }
     }
 
@@ -130,24 +130,26 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
         PlayGlobalData.playIsError.set(false)
         BaseConstance.updateBaseChapterId(musicInfo.audioId,musicInfo.chapterId)
-        PlayGlobalData.savePlayChapter(position)
         PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
-
-        BusinessInsertManager.doInsertKeyAndChapter(
+        if(PlayGlobalData.playAdIsPlaying.get()){
+            BusinessInsertManager.doInsertKeyAndChapter(
                 BusinessInsertConstance.INSERT_TYPE_CHAPTER_PLAY,
                 musicInfo.audioId,
                 musicInfo.chapterId
-        )
-
-        DLog.i("======>>", "oldAudio:$oldAudio    audioId: ${musicInfo.audioId}")
-        if (!TextUtils.equals(oldAudio, musicInfo.audioId)) {
-            oldAudio = musicInfo.audioId
-            BusinessInsertManager.doInsertKeyAndAudio(
+            )
+            DLog.d("suolong_GlobalPlayHelper","onPlayMusiconInfo")
+            if (!TextUtils.equals(oldAudio, musicInfo.audioId)) {
+                oldAudio = musicInfo.audioId
+                BusinessInsertManager.doInsertKeyAndAudio(
                     BusinessInsertConstance.INSERT_TYPE_AUDIO_PLAY,
                     musicInfo.audioId
-            )
+                )
+            }
+        }else{
+            BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
         }
-        BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
+        PlayGlobalData.savePlayChapter(position)
+
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -171,6 +173,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         if (playbackState == STATE_ENDED) {
             BaseConstance.updatePlayFinish()
             PlayGlobalData.updatePlayChapterProgress(isPlayFinish = true)
+            PlayGlobalData.playNeedQueryChapterProgress.set(false)
             PlayGlobalData.checkCountChapterPlayEnd(playWhenReady)
             if(PlayGlobalData.playCountDownChapterSize.get() == 0){
                 musicPlayerManger.pause()
@@ -185,7 +188,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                     //单曲播放
                     MUSIC_MODEL_SINGLE -> {
                         PlayGlobalData.playChapterId.get()?.let {
-                            musicPlayerManger.startPlayMusic(it)
+                            musicPlayerManger.seekTo(0)
                         }
                     }
                 }

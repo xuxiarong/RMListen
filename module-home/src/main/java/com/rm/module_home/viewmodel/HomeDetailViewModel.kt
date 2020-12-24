@@ -228,13 +228,15 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 章节的适配器
      */
-    val chapterAdapter by lazy {     CommonBindVMAdapter<DownloadChapter>(
+    val chapterAdapter by lazy {
+        CommonBindVMAdapter<DownloadChapter>(
             this,
             mutableListOf(),
             R.layout.home_item_detail_chapter,
             BR.chapterclick,
             BR.DetailChapterViewModel
-    ) }
+        )
+    }
 
     /**
      * 评论加载更多
@@ -393,11 +395,14 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                             sortType = mCurSort
                         )
                     } else {
-                        RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
-                            context = context,
-                            audioId = audioId.get() ?: "",
-                            sortType = mCurSort
-                        )
+                        if (chapterList.isNotEmpty()) {
+                            RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
+                                context = context,
+                                audioId = audioId.get() ?: "",
+                                chapterId = chapterList[0].chapter_id.toString(),
+                                sortType = mCurSort
+                            )
+                        }
                     }
                 }
             }
