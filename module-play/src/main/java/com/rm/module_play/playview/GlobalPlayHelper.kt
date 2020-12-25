@@ -1,22 +1,29 @@
 package com.rm.module_play.playview
 
 import android.text.TextUtils
+import com.mei.orc.util.json.toJson
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseApplication.Companion.baseApplication
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.ktx.toLongSafe
 import com.rm.baselisten.model.BasePlayProgressModel
 import com.rm.baselisten.model.BasePlayStatusModel
+import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getFloattMMKV
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
+import com.rm.business_lib.bean.BusinessAdRequestModel
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
+import com.rm.business_lib.net.BusinessRetrofitClient
+import com.rm.business_lib.net.api.BusinessApiService
 import com.rm.module_play.activity.BookPlayerActivity
+import com.rm.module_play.api.PlayApiService
+import com.rm.module_play.repositoryModule
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
@@ -24,6 +31,13 @@ import com.rm.music_exoplayer_lib.constants.STATE_ENDED
 import com.rm.music_exoplayer_lib.constants.STATE_READY
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.koin.androidx.viewmodel.dsl.viewModel
+import kotlin.random.Random
 
 /**
  *
@@ -38,6 +52,12 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             GlobalPlayHelper()
         }
         var listener: MusicPlayerEventListener? = null
+
+        private val playApiService by lazy {
+            BusinessRetrofitClient().getService(
+                PlayApiService::class.java
+            )
+        }
 
     }
 
@@ -181,14 +201,20 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 when (musicPlayerManger.getPlayerModel()) {
                     //顺序播放
                     MUSIC_MODEL_ORDER -> {
-                        if(PlayGlobalData.hasNextChapter.get()){
-                            musicPlayerManger.playNextMusic()
+                        if (PlayGlobalData.hasNextChapter.get()) {
+                            PlayGlobalData.playNeedQueryChapterProgress.set(false)
+                            getChapterAd {
+                                musicPlayerManger.playNextMusic()
+                            }
                         }
                     }
                     //单曲播放
                     MUSIC_MODEL_SINGLE -> {
                         PlayGlobalData.playChapterId.get()?.let {
-                            musicPlayerManger.seekTo(0)
+                            PlayGlobalData.playNeedQueryChapterProgress.set(false)
+                            getChapterAd {
+                                musicPlayerManger.startPlayMusic(it)
+                            }
                         }
                     }
                 }
@@ -206,6 +232,58 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         }
         DLog.d("suolong", " playWhenReady = $playWhenReady --- status = $playbackState ")
     }
+
+    fun getChapterAd(actionPlayAd: () -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val requestBean =
+                BusinessAdRequestModel(arrayOf("ad_player_voice", "ad_player_audio_cover"))
+            val chapterAd = playApiService.getChapterAd(
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
+            )
+            if(chapterAd.code!=0){
+                PlayGlobalData.playAdIsPlaying.set(false)
+                PlayGlobalData.playVoiceAdClose.set(true)
+                PlayGlobalData.playVoiceImgAd.set(null)
+                musicPlayerManger.setAdPath(arrayListOf())
+                actionPlayAd()
+                DLog.d("suolong", "error = ${chapterAd.msg}")
+            }else{
+                chapterAd.data.let {
+                    val result = arrayListOf<BaseAudioInfo>()
+                    if (it.ad_player_voice != null && it.ad_player_voice.isNotEmpty()) {
+                        val position = Random.nextInt(it.ad_player_voice.size)
+                        result.add(
+                            BaseAudioInfo(
+                                audioPath = it.ad_player_voice[position].audio_url,
+                                isAd = true
+                            )
+                        )
+                        PlayGlobalData.playAdIsPlaying.set(true)
+                        PlayGlobalData.playVoiceAdClose.set(false)
+                        PlayGlobalData.playVoiceImgAd.set(it.ad_player_voice[position])
+                    } else {
+                        PlayGlobalData.playAdIsPlaying.set(false)
+                        PlayGlobalData.playVoiceAdClose.set(true)
+                        PlayGlobalData.playVoiceImgAd.set(null)
+                    }
+                    musicPlayerManger.setAdPath(result)
+                    actionPlayAd()
+                    it.ad_player_audio_cover?.let { audioImgAdList ->
+                        if (audioImgAdList.isNotEmpty()) {
+                            PlayGlobalData.playAudioImgAd.set(
+                                audioImgAdList[Random.nextInt(
+                                    audioImgAdList.size
+                                )]
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 
     override fun onStartPlayAd() {
         PlayGlobalData.process.set(0F)

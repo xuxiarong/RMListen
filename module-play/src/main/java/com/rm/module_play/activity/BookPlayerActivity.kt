@@ -209,10 +209,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     updateMusicPlayerData(playPath, playPath[0].chapter_id.toString())
                     startPlayChapter(playPath[0].chapter_id.toString(), playPath[0].duration)
                     PlayGlobalData.setPlayHasNextAndPre(playPath, 0)
-                } else {
-                    updateMusicPlayerData(mutableListOf(), "")
-                    musicPlayerManger.pause()
-                    BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(false, STATE_READY))
                 }
             }
         })
