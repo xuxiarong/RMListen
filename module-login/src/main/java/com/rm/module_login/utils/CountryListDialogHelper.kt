@@ -77,6 +77,10 @@ object CountryListDialogHelper {
                 adapter.setLetter()
                 adapter.notifyDataSetChanged()
             }
+        }else{
+            adapter.setList(CountryDataManager.pinyinCountryList)
+            adapter.setLetter()
+            adapter.notifyDataSetChanged()
         }
         adapter
     }

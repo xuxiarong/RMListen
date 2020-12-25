@@ -1,5 +1,6 @@
 package com.rm.module_login.viewmodel.dialog
 
+import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.net.checkResult
@@ -51,6 +52,7 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
 
     //是否清空输入
     var inputClear = ObservableField(false)
+    val inputNeedAnim = ObservableField(true)
 
 
     // 监听绑定输入框内容变化
@@ -96,8 +98,9 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
                     isShowPhoneInputLay.set(false)
                     startCountDown()
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     mViewModel.showContentView()
+                    inputNeedAnim.set(true)
                     inputClear.set(true)
                     errorTips.set(it)
                 }
@@ -107,8 +110,15 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
 
     fun back() {
         // 切换回获取验证码界面
-        isShowPhoneInputLay.set(true)
         countDownTime.set(0)
+        countDownTime.notifyChange()
+
+        inputNeedAnim.set(false)
+        inputNeedAnim.notifyChange()
+
+        inputClear.set(true)
+        inputClear.notifyChange()
+        isShowPhoneInputLay.set(true)
     }
 
 
@@ -145,7 +155,9 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
                     isLoginSuccess.value = true
 
                 },
-                onError = {it,_->
+                onError = { it, _ ->
+                    inputNeedAnim.set(true)
+                    inputClear.set(true)
                     mViewModel.showContentView()
                     it?.let { mViewModel.showToast(it) }
                 })
@@ -171,7 +183,7 @@ class LoginQuicklyViewModel(val mViewModel: BaseVMViewModel) : BaseVMViewModel()
                         startCountDown()
                         mViewModel.showContentView()
                     },
-                    onError = {it,_->
+                    onError = { it, _ ->
                         mViewModel.showToast(R.string.login_send_failed)
                         mViewModel.showContentView()
                     }

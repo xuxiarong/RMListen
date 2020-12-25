@@ -125,7 +125,7 @@
 
                 <com.rm.business_lib.wedgit.arrow.ArrowView
                     android:id="@+id/login_quickly_back_btn"
-                    bindClick="@{viewModel.back}"
+                    android:onClick="@{()->viewModel.back()}"
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_28"
                     android:layout_marginEnd="@dimen/dp_12"
@@ -164,6 +164,7 @@
                     android:id="@+id/login_quickly_verify_code_input_et"
                     inputTextChange="@{viewModel.completeInput}"
                     inputTextClear="@{viewModel.inputClear}"
+                    inputNeedAnim="@{viewModel.inputNeedAnim}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_34"

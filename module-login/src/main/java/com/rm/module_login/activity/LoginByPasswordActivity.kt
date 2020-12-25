@@ -1,6 +1,7 @@
 package com.rm.module_login.activity
 
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -30,12 +31,15 @@ class LoginByPasswordActivity :
     BaseVMActivity<LoginActivityLoginByPassowrdBinding, LoginByPasswordViewModel>() {
 
     companion object {
-        fun startActivity(context: Context, inputPhone: String) {
-            context.startActivity(
-                Intent(
-                    context,
-                    LoginByPasswordActivity::class.java
-                ).apply { putExtra("phone", inputPhone) })
+        fun startActivity(context: Activity, inputPhone: String, countryCode: String) {
+            val intent = Intent(
+                context,
+                LoginByPasswordActivity::class.java
+            ).apply {
+                putExtra("phone", inputPhone)
+                putExtra("countryCode", countryCode)
+            }
+            context.startActivityForResult(intent, 100)
         }
     }
 
@@ -98,6 +102,7 @@ class LoginByPasswordActivity :
     override fun initData() {
 
         mViewModel.phoneInputViewModel.phone.set(intent.getStringExtra("phone"))
+        mViewModel.phoneInputViewModel.countryCode.set(intent.getStringExtra("countryCode"))
 
         // 设置checkbox选择协议相关文本
         SpannableHelper.with(
@@ -126,6 +131,17 @@ class LoginByPasswordActivity :
                         }
                     })
             ).build()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
+    override fun finish() {
+        intent.putExtra("inputPhone", mViewModel.phoneInputViewModel.phone.get()!!)
+        intent.putExtra("inputCountryCode", mViewModel.phoneInputViewModel.countryCode.get()!!)
+        setResult(0x01,intent)
+        super.finish()
     }
 
 }

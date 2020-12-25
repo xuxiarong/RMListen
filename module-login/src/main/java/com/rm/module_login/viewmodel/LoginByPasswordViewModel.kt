@@ -65,7 +65,7 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
                             showToast(R.string.login_success)
                             finish()
                         },
-                        onError = {it,_->
+                        onError = { it, _ ->
                             showContentView()
                             errorTips.set(it)
                         }
