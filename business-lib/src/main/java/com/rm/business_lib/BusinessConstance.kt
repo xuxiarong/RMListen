@@ -287,8 +287,8 @@ object PlayGlobalData {
     fun initPlayAudio(audio: DownloadAudio) {
         playAudioModel.set(audio)
         BaseConstance.updateBaseAudioId(
-                audioId = audio.audio_id.toString(),
-                playUrl = audio.audio_cover_url
+            audioId = audio.audio_id.toString(),
+            playUrl = audio.audio_cover_url
         )
         audio.updateMillis = System.currentTimeMillis()
         playChapterListSort.get()?.let {
@@ -305,6 +305,7 @@ object PlayGlobalData {
      * 设置播放路径
      */
     fun setNextPagePlayData(chapterList: MutableList<DownloadChapter>) {
+        DLog.d("music-exoplayer-lib", "设置公共数据 setNextPagePlayData")
         if (playNextPage == PLAY_FIRST_PAGE) {
             playChapterList.value = chapterList
         } else {
@@ -313,6 +314,7 @@ object PlayGlobalData {
     }
 
     fun setPrePagePlayData(chapterList: MutableList<DownloadChapter>) {
+        DLog.d("music-exoplayer-lib", "设置公共数据 setPrePagePlayData")
         val tempChapterList = mutableListOf<DownloadChapter>()
         tempChapterList.addAll(chapterList)
         val currentChapterList = playChapterList.value
@@ -326,13 +328,12 @@ object PlayGlobalData {
         playChapter.set(chapter)
         process.set(chapter.listen_duration.toFloat())
         playChapterId.set(chapter.chapter_id.toString())
-        playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
     }
 
     fun updatePlayChapterProgress(
-            currentDuration: Long = 0L,
-            totalDuration: Long = 0L,
-            isPlayFinish: Boolean = false
+        currentDuration: Long = 0L,
+        totalDuration: Long = 0L,
+        isPlayFinish: Boolean = false
     ) {
         try {
             val chapter = playChapter.get()
@@ -346,15 +347,15 @@ object PlayGlobalData {
                 process.set(chapter.listen_duration.toFloat())
                 if (chapter.listen_duration > chapter.realDuration) {
                     updateThumbText.set(
-                            "${TimeUtils.getPlayDuration(chapter.realDuration)}/${
-                            TimeUtils.getPlayDuration(chapter.realDuration)
-                            }"
+                        "${TimeUtils.getPlayDuration(chapter.realDuration)}/${
+                        TimeUtils.getPlayDuration(chapter.realDuration)
+                        }"
                     )
                 } else {
                     updateThumbText.set(
-                            "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
-                            TimeUtils.getPlayDuration(chapter.realDuration)
-                            }"
+                        "${TimeUtils.getPlayDuration(chapter.listen_duration)}/${
+                        TimeUtils.getPlayDuration(chapter.realDuration)
+                        }"
                     )
                 }
                 playChapter.set(chapter)
@@ -384,20 +385,38 @@ object PlayGlobalData {
                 val startChapter = playChapterList[position]
                 playChapter.set(startChapter)
                 playChapterId.set(startChapter.chapter_id.toString())
-                if (playNeedQueryChapterProgress.get()) {
+                if(playAdIsPlaying.get()){
+                    return
+                }
+                if (playNeedQueryChapterProgress.get() ) {
+                    DLog.d("suolong_PlayGlobalData", "需要重新查询进度 name = ${startChapter.chapter_name}")
                     playAudioId.get()?.let { audioId ->
                         playChapterId.get()?.let { chapterId ->
                             val listenChapter = ListenDaoUtils.queryChapterRecentUpdate(
-                                    audioId.toLongSafe(),
-                                    chapterId.toLongSafe()
+                                audioId.toLongSafe(),
+                                chapterId.toLongSafe()
                             )
-                            if(listenChapter!=null){
-                                startChapter.listen_duration = listenChapter.listen_duration
+                            if (listenChapter != null) {
+                                DLog.d(
+                                    "suolong_PlayGlobalData",
+                                    "已经查到进度对象 name = ${startChapter.chapter_name} 进度 = ${listenChapter.listen_duration}"
+                                )
+                                if (listenChapter.listen_duration < startChapter.realDuration - 500L) {
+                                    startChapter.listen_duration = listenChapter.listen_duration
+                                }else{
+                                    startChapter.listen_duration = 0L
+                                }
                                 playLastPlayProcess.set(listenChapter.listen_duration)
+                            } else {
+                                DLog.d(
+                                    "suolong_PlayGlobalData",
+                                    "没有查到进度对象 name = ${startChapter.chapter_name}"
+                                )
                             }
                         }
                     }
-                }else{
+                } else {
+                    DLog.d("PlayGlobalData", "不需要重新查询进度 name = ${startChapter.chapter_name}")
                     playLastPlayProcess.set(-1L)
                 }
                 process.set(startChapter.listen_duration.toFloat())

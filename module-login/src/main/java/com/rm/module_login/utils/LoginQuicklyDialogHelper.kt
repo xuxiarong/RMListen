@@ -15,6 +15,7 @@ import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.LoginPhoneReminder
 import com.rm.module_login.BR
 import com.rm.module_login.R
@@ -168,7 +169,10 @@ class LoginQuicklyDialogHelper constructor(
                     fragmentActivity.Color(R.color.login_high_color),
                     object : TextClickListener {
                         override fun onTextClick(clickContent: String) {
-                            ToastUtil.show(fragmentActivity, "用户协议")
+                            BaseWebActivity.startBaseWebActivity(
+                               textView.context,
+                                "www.baidu.com"
+                            )
                         }
                     })
             )
@@ -179,7 +183,10 @@ class LoginQuicklyDialogHelper constructor(
                     fragmentActivity.Color(R.color.login_high_color),
                     object : TextClickListener {
                         override fun onTextClick(clickContent: String) {
-                            ToastUtil.show(fragmentActivity, "隐私保护协议")
+                            BaseWebActivity.startBaseWebActivity(
+                                textView.context,
+                                "www.baidu.com"
+                            )
                         }
                     })
             ).build()

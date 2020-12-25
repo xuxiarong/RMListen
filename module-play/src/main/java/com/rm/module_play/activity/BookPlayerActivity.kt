@@ -85,10 +85,17 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 playSortType = sortType
 
                 //音频ID不能为空
-                if (playAudioId.isEmpty()) {
+                if (playAudioId.isEmpty() || playChapterId.isEmpty()) {
                     val baseActivity = context as BaseActivity
-                    baseActivity.tipView.showTipView(baseActivity, "书籍ID不能为空")
+                    baseActivity.tipView.showTipView(baseActivity, "书籍或者章节的ID不能为空")
                     return
+                }else{
+                    BaseConstance.basePlayInfoModel.get()?.let {
+                        //如果播放的书籍或者章节不一致，则先把播放器的数据清除掉
+                        if(playAudioId!=it.playAudioId || playChapterId!=it.playChapterId){
+                            PlayGlobalData.playChapterList.value = mutableListOf()
+                        }
+                    }
                 }
                 val intent = Intent(context, BookPlayerActivity::class.java)
                 context.startActivity(intent)
@@ -168,7 +175,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
             val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
             val chapterId = PlayGlobalData.playChapterId.get()
-            if (chapterId != null && !TextUtils.isEmpty(chapterId)) {
+            if (chapterId != null && !TextUtils.isEmpty(chapterId) && playPath.isNotEmpty()) {
                 updateMusicPlayerData(playPath, chapterId)
                 if (currentPlayerMusic != null) {
                     //传入的章节id与正在播放的章节id进行对比，如果不一致，则播放传入的章节，一致则不用处理，继续播放该章节即可
@@ -202,10 +209,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     updateMusicPlayerData(playPath, playPath[0].chapter_id.toString())
                     startPlayChapter(playPath[0].chapter_id.toString(), playPath[0].duration)
                     PlayGlobalData.setPlayHasNextAndPre(playPath, 0)
-                } else {
-                    updateMusicPlayerData(mutableListOf(), "")
-                    musicPlayerManger.pause()
-                    BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(false, STATE_READY))
                 }
             }
         })

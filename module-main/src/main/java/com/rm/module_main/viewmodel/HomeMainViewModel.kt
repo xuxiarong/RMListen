@@ -49,6 +49,7 @@ class HomeMainViewModel(private val repository: MainRepository) : BaseVMViewMode
                                 chapterList.reverse()
                             }
                             DLog.d("music-exoplayer-lib","首页获取章节列表成功  ${chapterList.size} ")
+                            DLog.d("music-exoplayer-lib","首页设置公共数据 setPrePagePlayData")
                             PlayGlobalData.setNextPagePlayData(chapterList)
                             RouterHelper.createRouter(PlayService::class.java).continueLastPlay(chapter,chapterList)
                             return@forEach
