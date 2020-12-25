@@ -50,7 +50,9 @@ class HomeUploadDownload(
         TipsFragmentDialog().apply {
             titleText = mActivity.getString(R.string.business_upload_tips)
             contentText = "${versionInfo.description}"
-            leftBtnText = mActivity.getString(R.string.business_not_upgrade)
+            if (!cancelIsFinish) {
+                leftBtnText = mActivity.getString(R.string.business_not_upgrade)
+            }
             rightBtnText = mActivity.getString(R.string.business_upgrade)
             dialogCancel = mDialogCancel
             rightBtnTextColor = R.color.business_color_ff5e5e
