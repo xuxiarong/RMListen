@@ -229,6 +229,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     override fun onAllActivityDestroy() {
         if (musicPlayerManger.isPlaying()) {
             musicPlayerManger.pause()
+            PlayGlobalData.clearCountDownTimer()
         }
     }
 
