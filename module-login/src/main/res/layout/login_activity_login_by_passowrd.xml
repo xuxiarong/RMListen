@@ -20,7 +20,7 @@
             android:id="@+id/login_password_back"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_48"
-            android:onClick="@{()->viewModel.finish()}"
+            android:onClick="@{()->viewModel.loginByVerifyCode()}"
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
             android:src="@drawable/business_icon_return_bc"

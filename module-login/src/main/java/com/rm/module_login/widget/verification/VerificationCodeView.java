@@ -446,23 +446,20 @@ public class VerificationCodeView extends LinearLayout implements TextWatcher, V
     /**
      * 清空验证码输入框
      */
-    public void setEmpty() {
+    public void setEmpty(boolean needAnim) {
         EditText editText;
         for (int i = mEtNumber - 1; i >= 0; i--) {
             editText = (EditText) getChildAt(i);
             editText.setText("");
             if (i == 0) {
-                if (cursorVisible) {
-                    editText.setCursorVisible(true);
-                } else {
-                    editText.setCursorVisible(false);
-                }
+                editText.setCursorVisible(cursorVisible);
                 editText.requestFocus();
             }
         }
-
-        startAnim();
-        startVibrator();
+        if (needAnim) {
+            startAnim();
+            startVibrator();
+        }
     }
 
     /**

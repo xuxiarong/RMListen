@@ -26,9 +26,10 @@ fun VerificationCodeView.inputTextChange(action: ((String) -> Unit)?) {
     }
 }
 
-@BindingAdapter(value = ["inputTextClear"])
-fun VerificationCodeView.inputTextClear(isClear: Boolean?) {
+@BindingAdapter("inputTextClear", "inputNeedAnim", requireAll = false)
+fun VerificationCodeView.inputTextClear(isClear: Boolean?, needAnim: Boolean? = true) {
     if (isClear == true) {
-        setEmpty()
+        val b = needAnim == true
+        setEmpty(b)
     }
 }

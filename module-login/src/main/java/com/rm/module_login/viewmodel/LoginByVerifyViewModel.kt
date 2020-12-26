@@ -24,6 +24,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
 
     // 用户协议和隐私协议是否选择
     var isCheck = ObservableField<Boolean>(false)
+
     // 错误提示信息
     var errorTips = ObservableField<String>("")
 
@@ -42,11 +43,17 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
         // 网络通过手机获取验证码
         if (!isCheck.get()!!) {
             // 未选中check box
-            showTip(CONTEXT.getString(R.string.login_agree_deal_tips),R.color.business_color_ff5e5e)
+            showTip(
+                CONTEXT.getString(R.string.login_agree_deal_tips),
+                R.color.business_color_ff5e5e
+            )
             return
         }
         if (phoneInputViewModel.phone.get()!!.length < 7) {
-            showTip(CONTEXT.getString(R.string.login_input_right_number_tips),R.color.business_color_ff5e5e)
+            showTip(
+                CONTEXT.getString(R.string.login_input_right_number_tips),
+                R.color.business_color_ff5e5e
+            )
             return
         }
 
@@ -71,7 +78,7 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
                         )
                     )
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     errorTips.set(it)
                 }
@@ -84,7 +91,14 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
      */
     fun loginByPassword(context: Context) {
         // 密码登陆
-        LoginByPasswordActivity.startActivity(context,phoneInputViewModel.phone.get()!!)
+        getActivity(context)?.let {
+            LoginByPasswordActivity.startActivity(
+                it,
+                phoneInputViewModel.phone.get()!!,
+                phoneInputViewModel.countryCode.get()!!
+            )
+        }
+
     }
 
 }

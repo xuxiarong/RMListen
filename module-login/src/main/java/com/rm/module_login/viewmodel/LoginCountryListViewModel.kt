@@ -18,8 +18,6 @@ import kotlinx.coroutines.launch
  *
  */
 class LoginCountryListViewModel : BaseVMViewModel() {
-    val inputText = ObservableField<String>("")
-
     var phoneInputViewModel: PhoneInputViewModel? = null
 
     /**
@@ -37,6 +35,10 @@ class LoginCountryListViewModel : BaseVMViewModel() {
                 adapter.setLetter()
                 adapter.notifyDataSetChanged()
             }
+        }else{
+            adapter.setList(CountryDataManager.pinyinCountryList)
+            adapter.setLetter()
+            adapter.notifyDataSetChanged()
         }
         adapter
     }

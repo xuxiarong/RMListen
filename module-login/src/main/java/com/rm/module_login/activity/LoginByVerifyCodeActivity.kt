@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.ViewGroup
 import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
@@ -38,14 +39,11 @@ class LoginByVerifyCodeActivity :
     override fun initModelBrId() = BR.viewModel
 
     override fun startObserve() {
-//        mViewModel.testDialogData.observe(this, Observer {
-////            dialogAdapter.setList(mViewModel.testDialogData.value!!)
-//        })
 
         // 监听登陆状态
-        isLogin.addOnPropertyChangedCallback(object :Observable.OnPropertyChangedCallback(){
+        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(isLogin.get()){
+                if (isLogin.get()) {
                     // 登陆成功，关闭当前界面
                     finish()
                 }
@@ -73,33 +71,21 @@ class LoginByVerifyCodeActivity :
     }
 
 
-//    private lateinit var commonDialog: CommonFragmentDialog
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == 0x01) {
+            val extras = data?.extras
+            val phone = extras?.getString("inputPhone")
+            val countryCode = extras?.getString("inputCountryCode")
+            phone?.let {
+                mViewModel.phoneInputViewModel.phone.set(it)
+            }
+            countryCode?.let {
+                mViewModel.phoneInputViewModel.countryCode.set(it)
+            }
+        }
+    }
 
-//    override fun onResume() {
-//        super.onResume()
-//        /**
-//         *  mViewModel ：与Dialog相关的ViewModel，建议使用该dialog依赖的Activity的ViewModel
-//         *  R.layout.login_dialong_login_status ： dialog的布局文件
-//         *  BR.viewModel ： 布局文件中使用的viewModel变量的名字
-//         */
-//        loginDialog = CommonMvFragmentDialog().apply {
-//            this.dialogBackgroundColor = R.color.businessColorPrimary
-//            this.gravity = Gravity.BOTTOM
-//            this.dialogHasBackground = true
-//            this.dialogWidthIsMatchParent = true
-//            this.initDialog = {initDialogView()}
-//        }
-//
-//
-//        loginDialog.showCommonDialog(this,R.layout.login_dialong_login_status,mViewModel,BR.viewModel)
-//
-//    }
-//
-//    fun initDialogView() {
-//        val bind = loginDialog.mDataBind as LoginDialongLoginStatusBinding?
-//        bind?.loginDialogRv?.bindVerticalLayout(dialogAdapter)
-//        mViewModel.getDialogData()
-//    }
 
     override fun initData() {
         // 设置checkbox选择协议相关文本
