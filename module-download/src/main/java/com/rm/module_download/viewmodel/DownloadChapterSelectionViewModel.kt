@@ -76,8 +76,8 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             return
         }
 
-        //将音频信息存储
-        downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
+//        //将音频信息存储
+//        downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
         //存储已选择的下载章节
         DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
         //调用下载服务开始下载

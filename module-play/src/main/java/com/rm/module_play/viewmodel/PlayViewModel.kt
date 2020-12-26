@@ -281,8 +281,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     }
                     playNextPage++
                 } else {
-                    chapterRefreshModel.noMoreData.set(false)
-                    chapterRefreshModel.finishLoadMore(false)
+                    chapterRefreshModel.noMoreData.set(true)
+                    chapterRefreshModel.finishLoadMore(true)
                 }
             }, onError = {it,_->
                 it?.let {

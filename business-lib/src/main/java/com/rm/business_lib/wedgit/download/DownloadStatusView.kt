@@ -78,20 +78,26 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownProgress.visibility = View.GONE
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
+                setOnClickListener {
+
+                }
             }
             else -> {
                 businessDownIv.visibility = View.GONE
                 businessDownProgress.visibility = View.GONE
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
+                setOnClickListener {
+
+                }
             }
         }
     }
 
     private fun startDownloadChapter(chapter: DownloadChapter) {
-        if (audio != null) {
-            DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
-        }
+//        if (audio != null) {
+//            DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
+//        }
         DownloadMemoryCache.addDownloadingChapter(chapter)
     }
 

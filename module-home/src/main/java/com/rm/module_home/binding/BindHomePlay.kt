@@ -68,8 +68,12 @@ fun ImageView.bindPlayChapter(statusModel: BasePlayStatusModel?, playAudioModel:
     }else{
         if(listenModel!=null){
             if(listenModel.listenChapterId == chapter.chapter_id.toString()){
-                visibility = View.VISIBLE
-                setImageResource(R.drawable.business_ic_played)
+                if(chapter.audio_id.toString() != playAudioModel?.playAudioId){
+                    visibility = View.VISIBLE
+                    setImageResource(R.drawable.business_ic_played)
+                }else{
+                    visibility = View.GONE
+                }
             }else{
                 visibility = View.GONE
             }
