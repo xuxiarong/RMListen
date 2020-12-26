@@ -3,6 +3,7 @@ package com.rm.module_home.repository
 import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.baselisten.net.util.GsonUtils
 import com.rm.business_lib.bean.*
 import com.rm.module_home.api.HomeApiService
@@ -16,6 +17,8 @@ import com.rm.module_home.model.home.HomeModel
 import com.rm.module_home.model.home.detail.HomeCommentBean
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * desc   :
@@ -61,6 +64,26 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
     ): BaseResult<ChapterListModel> {
         return apiCall { homeService.chapterList(id, page, page_size, sort) }
     }
+
+    /**
+     * 根据章节id获取章节列表和对应的page
+     */
+    suspend fun getChapterListWithId(
+        audioId: String,
+        page_size: Int,
+        chapterId: String,
+        sort: String
+    ): BaseResult<ChapterListModel> {
+        return apiCall {
+            homeService.getChapterListWithId(
+                audioId = audioId,
+                chapterId = chapterId,
+                page_size = page_size,
+                sort = sort
+            )
+        }
+    }
+
 
     /**
      * 订阅

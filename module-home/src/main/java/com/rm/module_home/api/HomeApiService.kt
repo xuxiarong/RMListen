@@ -58,6 +58,18 @@ interface HomeApiService {
     ): BaseResponse<ChapterListModel>
 
     /**
+     * 章节列表获取到章节
+     */
+    @GET("audio/chapter/list")
+    suspend fun getChapterListWithId(
+        @Query("audio_id") audioId: String,
+        @Query("chapter_id") chapterId:String,
+        @Query("page_size") page_size:Int,
+        @Query("sort") sort: String
+    ): BaseResponse<ChapterListModel>
+
+
+    /**
      * 首页-听单
      */
     @GET("content/page/sheet")

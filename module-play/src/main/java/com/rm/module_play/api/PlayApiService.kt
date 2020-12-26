@@ -56,7 +56,7 @@ interface PlayApiService {
      * 章节列表获取到章节
      */
     @GET("audio/chapter/list")
-    suspend fun chapterPage(
+    suspend fun getChapterListWithId(
         @Query("audio_id") audioId: String,
         @Query("chapter_id") chapterId:String,
         @Query("page_size") page_size:Int,

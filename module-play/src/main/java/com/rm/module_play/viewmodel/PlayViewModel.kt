@@ -8,7 +8,6 @@ import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
@@ -354,7 +353,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
         DLog.d("music-exoplayer-lib","播放页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
         launchOnIO {
-            repository.chapterPageList(
+            repository.getChapterListWithId(
                 audioId = audioId,
                 chapterId = chapterId,
                 page_size = PlayGlobalData.playChapterPageSize,

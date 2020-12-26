@@ -255,8 +255,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     listenAudio.set(audioRecord)
                     isAttention.set(audioRecord?.anchor?.status ?: false)
                     isSubscribed.set(audioRecord?.is_subscribe)
+                    if(audioRecord == null){
+                        listenAudio.notifyChange()
+                    }
                 } catch (e: Exception) {
                     listenAudio.set(null)
+                    listenAudio.notifyChange()
                 }
             }
         }
@@ -282,7 +286,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     anchorId.set(it.list.anchor_id)
                     homeDetailTagsAdapter.setList(it.list.tags)
                     showStatus(it)
-                }, onError = {it,_->
+                }, onError = { it, _ ->
                     showContentView()
                     if (it?.contains("下架") == true || it?.contains("违规") == true) {
                         isNoClick.set(true)
@@ -316,7 +320,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                         audioId
                     )
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("------->", "订阅失败  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -342,7 +346,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                         audioId
                     )
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("------->", "取消订阅  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -435,11 +439,36 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 .checkResult(
                     onSuccess = {
                         processChapterData(it, page)
-                    }, onError = {it,_->
+                    }, onError = { it, _ ->
                         processChapterFailure(it)
                     })
         }
     }
+
+    fun getChapterListWithId(chapterId: String) {
+        launchOnIO {
+            repository.getChapterListWithId(audioId.get()!!, chapterPageSize, chapterId, mCurSort)
+                .checkResult(
+                    onSuccess = { chapterListModel ->
+                        upChapterPage = chapterListModel.page
+                        nextChapterPage = chapterListModel.page
+                        processChapterData(chapterListModel, chapterListModel.page)
+                        val predicate: (DownloadChapter) -> Boolean = { it.chapter_id.toString() == chapterId }
+                        val position = chapterListModel.list?.indexOfFirst(predicate)
+
+                        position?.let {
+                            if(position>0){
+                                chapterAdapter.recyclerView.postDelayed({
+                                    chapterAdapter.recyclerView.smoothScrollToPosition(it)
+                                },200)
+                            }
+                        }
+                    }, onError = { it, _ ->
+                        processChapterFailure(it)
+                    })
+        }
+    }
+
 
     /**
      * 处理章节加载失败
@@ -573,7 +602,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -597,7 +626,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -632,7 +661,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     commentTotal.set(it.total)
                     processCommentData(it)
 
-                }, onError = {it,_->
+                }, onError = { it, _ ->
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
@@ -652,7 +681,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     isAttention.set(true)
                     showTip("关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
@@ -671,7 +700,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     isAttention.set(false)
                     showTip("取消关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
