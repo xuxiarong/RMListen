@@ -180,6 +180,7 @@
                     android:id="@+id/mine_feedback_ed_contact"
                     afterTextChanged="@{viewModel.inputContactAction}"
                     bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
+                    bindCanInputEmoji="@{false}"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

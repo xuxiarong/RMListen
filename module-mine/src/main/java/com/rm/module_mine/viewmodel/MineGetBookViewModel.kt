@@ -1,17 +1,11 @@
 package com.rm.module_mine.viewmodel
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.EmojiUtils
-import com.rm.baselisten.util.getListString
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.utils.DeviceUtils
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MimeGetBookActivity.Companion.GET_BOOK_RESULT_CODE
 import com.rm.module_mine.repository.MineRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  *
@@ -103,9 +97,6 @@ class MineGetBookViewModel(private val repository: MineRepository) : BaseVMViewM
         when {
             (bookName.get()!!.isEmpty()) -> {
                 showTip("书籍信息不能为空", R.color.business_color_ff5e5e)
-            }
-            EmojiUtils.containsEmoji(bookName.get()!!) -> {
-                showTip("书籍信息不能包含表情符号", R.color.business_color_ff5e5e)
             }
             bookName.get()!!.length > 50 -> {
                 showTip("作者名字数不能超过50", R.color.business_color_ff5e5e)

@@ -177,9 +177,6 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
             inputContact.get()!!.length > 50 -> {
                 showTip("联系方式字数不能50个", R.color.business_color_ff5e5e)
             }
-            EmojiUtils.containsEmoji(inputContact.get()!!) -> {
-                showTip("联系方式不能包含表情符号", R.color.business_color_ff5e5e)
-            }
             mAdapter.data.size > 0 && !mAdapter.data[0].path.isNullOrEmpty() -> {
                 showLoading()
                 uploadIndex = 0

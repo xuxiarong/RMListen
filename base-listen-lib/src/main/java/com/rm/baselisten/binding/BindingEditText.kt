@@ -2,13 +2,18 @@ package com.rm.baselisten.binding
 
 import android.content.Context
 import android.text.Editable
+import android.text.InputFilter
+import android.text.Spanned
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.helper.KeyboardStatusDetector
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 /**
  * desc   :
@@ -49,7 +54,7 @@ fun EditText.afterTextChanged(action: ((Context, String) -> Unit)?) {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            action(context,s.toString())
+            action(context, s.toString())
         }
     })
 }
@@ -82,7 +87,7 @@ fun EditText.afterTextChangedNoSpace(action: ((String) -> Unit)?) {
                 setText(str1)
                 setSelection(start)
                 action(str1.toString())
-            }else{
+            } else {
                 action(s.toString())
             }
 
@@ -105,15 +110,15 @@ fun EditText.bindBlock(block: ((View) -> Unit)?, action: Int) {
 }
 
 @BindingAdapter("bindKeyboardVisibility")
-fun EditText.bindKeyboardVisibilityListener(block: ((Boolean,Int) -> Unit)?) {
+fun EditText.bindKeyboardVisibilityListener(block: ((Boolean, Int) -> Unit)?) {
     if (block == null) {
         return
     }
     KeyboardStatusDetector()
         .registerVisibilityListener(this)
         .setVisibilityListener(object : KeyboardStatusDetector.KeyboardVisibilityListener {
-            override fun onVisibilityChanged(keyboardVisible: Boolean,  keyboardHeight:Int) {
-                block(keyboardVisible,keyboardHeight)
+            override fun onVisibilityChanged(keyboardVisible: Boolean, keyboardHeight: Int) {
+                block(keyboardVisible, keyboardHeight)
             }
         })
 }
@@ -127,5 +132,72 @@ fun EditText.isShowPasswordText(isShow: Boolean) {
         // 隐藏密码
         PasswordTransformationMethod.getInstance()
     }
+}
+
+
+/**
+ * 是否能够输入表情（非表情以外其他都能输入）
+ */
+@BindingAdapter("bindCanInputEmoji")
+fun EditText.bindCanInputEmoji(bindCanInputEmoji: Boolean? = true) {
+    if (bindCanInputEmoji == true) {
+        return
+    }
+    val inputFilter: InputFilter = object : InputFilter {
+        var pattern: Pattern =
+            Pattern.compile("[^a-zA-Z0-9\\u4E00-\\u9FA5_\\{\\}\\[\\]\\|,.\"!@#$%^&*()_+=-「」（）！？¥:;'。，；/【】、｜…<《》>]")
+
+        override fun filter(
+            charSequence: CharSequence,
+            i: Int,
+            i1: Int,
+            spanned: Spanned,
+            i2: Int,
+            i3: Int
+        ): CharSequence {
+            val matcher: Matcher = pattern.matcher(charSequence)
+            return if (!matcher.find()) {
+                charSequence
+            } else {
+                ""
+            }
+        }
+    }
+    val filter = arrayOf(inputFilter)
+    filters = filter
+}
+
+
+/**
+ * 是否能够输入表情和符号（只能输入数字，汉字，字母）
+ */
+@BindingAdapter("bindCanInputEmojiAndSymbol")
+fun EditText.bindCanInputEmojiAndSymbol(bindCanInputEmojiAndSymbol: Boolean? = true) {
+    if (bindCanInputEmojiAndSymbol == true) {
+        return
+    }
+
+    val inputFilter: InputFilter = object : InputFilter {
+        var pattern: Pattern =
+            Pattern.compile("[^a-zA-Z0-9\\u4E00-\\u9FA5_]")
+
+        override fun filter(
+            charSequence: CharSequence,
+            i: Int,
+            i1: Int,
+            spanned: Spanned,
+            i2: Int,
+            i3: Int
+        ): CharSequence {
+            val matcher: Matcher = pattern.matcher(charSequence)
+            return if (!matcher.find()) {
+                charSequence
+            } else {
+                ""
+            }
+        }
+    }
+    val filter = arrayOf(inputFilter)
+    filters = filter
 }
 
