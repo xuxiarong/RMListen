@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/business_text_color_333333"
+            android:textColor="@{PlayGlobalData.INSTANCE.playCountSelectPosition == item.position?@color/business_color_ff5e5e:@color/business_text_color_333333}"
             android:textSize="14sp"
             tools:text="10分钟" />
 

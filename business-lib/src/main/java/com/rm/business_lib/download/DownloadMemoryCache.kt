@@ -54,7 +54,7 @@ object DownloadMemoryCache {
     }
 
 
-    fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
+    fun updateAudioToDownloadMemoryCache(audio: DownloadAudio) {
         val cacheAudio = getAudioFromCache(audio)
         if (cacheAudio == null) {
             audio.download_num = 0
@@ -83,6 +83,7 @@ object DownloadMemoryCache {
                 if (it.audio_id == chapter.audio_id) {
                     it.download_num += 1
                     it.down_size += chapter.size
+                    it.updateMillis = System.currentTimeMillis()
                     DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(it)
                     downloadingAudioList.postValue(audioList)
                     DLog.d(

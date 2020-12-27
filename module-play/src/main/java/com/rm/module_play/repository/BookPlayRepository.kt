@@ -65,16 +65,16 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
     }
 
     /**
-     * 返回
+     * 根据章节id获取章节列表和对应的page
      */
-    suspend fun chapterPageList(
+    suspend fun getChapterListWithId(
         audioId: String,
         page_size: Int,
         chapterId: String,
         sort: String
     ): BaseResult<ChapterListModel> {
         return apiCall {
-            playApi.chapterPage(
+            playApi.getChapterListWithId(
                 audioId = audioId,
                 chapterId = chapterId,
                 page_size = page_size,

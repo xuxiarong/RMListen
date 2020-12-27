@@ -1,4 +1,4 @@
-package com.rm.module_play.view
+package com.rm.music_exoplayer_lib.view
 
 import android.content.Context
 import android.util.AttributeSet

@@ -51,6 +51,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         val INSTANCE: GlobalPlayHelper by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             GlobalPlayHelper()
         }
+
         var listener: MusicPlayerEventListener? = null
 
         private val playApiService by lazy {
@@ -298,6 +299,12 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         PlayGlobalData.playAdIsPlaying.set(false)
         PlayGlobalData.playVoiceAdClose.set(true)
         PlayGlobalData.playVoiceImgAd.set(null)
+    }
+
+    fun showNotification() {
+//        getCurrentPlayerMusic()?.let {
+//            notificationManger?.showNotification(this, it, "")
+//        }
     }
 
     interface IPlayStatusListener {

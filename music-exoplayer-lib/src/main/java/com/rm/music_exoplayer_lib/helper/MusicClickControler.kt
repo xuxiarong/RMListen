@@ -1,4 +1,4 @@
-package com.rm.module_play.helper
+package com.rm.music_exoplayer_lib.helper
 
 /**
  *

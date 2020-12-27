@@ -24,7 +24,7 @@
             android:value="812" />
         <!--锁屏-->
         <activity
-            android:name=".activity.MusicLockActivity"
+            android:name="com.rm.music_exoplayer_lib.activity.MusicLockActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:noHistory="true"

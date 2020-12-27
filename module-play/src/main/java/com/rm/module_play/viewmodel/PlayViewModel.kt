@@ -86,6 +86,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     private val pageSize = 12
 
     /**
+     * 是否还有更多章节数据
+     */
+    private var noMoreChapter = false
+
+    /**
      * 评论数量
      */
     var commentTotal = ObservableField(0)
@@ -257,7 +262,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun getNextPageChapterList() {
         val audioId = PlayGlobalData.playAudioId.get()
-        if (TextUtils.isEmpty(audioId)) {
+        if (TextUtils.isEmpty(audioId) || noMoreChapter) {
             return
         }
         launchOnIO {
@@ -270,13 +275,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
                     chapterRefreshModel.noMoreData.set(chapterList.size < PlayGlobalData.playChapterPageSize)
+                    noMoreChapter = chapterList.size < PlayGlobalData.playChapterPageSize
                     chapterRefreshModel.finishLoadMore(true)
                     //是第一页，那么取第一条作为播放
                     if (PlayGlobalData.isSortAsc()) {
-                        DLog.d("music-exoplayer-lib", "播放页设置公共数据 getNextPageChapterList")
+                        DLog.d("music-exoplayer-lib","播放页设置公共数据 getNextPageChapterList")
                         PlayGlobalData.setNextPagePlayData(chapterList)
                     } else {
-                        DLog.d("music-exoplayer-lib", "播放页设置公共数据 getNextPageChapterList")
+                        DLog.d("music-exoplayer-lib","播放页设置公共数据 getNextPageChapterList")
                         chapterList.reverse()
                         PlayGlobalData.setPrePagePlayData(chapterList)
                     }
@@ -286,8 +292,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     }
                     playNextPage++
                 } else {
-                    chapterRefreshModel.noMoreData.set(false)
-                    chapterRefreshModel.finishLoadMore(false)
+                    noMoreChapter = true
+                    chapterRefreshModel.noMoreData.set(true)
+                    chapterRefreshModel.finishLoadMore(true)
                 }
             }, onError = { it, _ ->
                 it?.let {
@@ -321,17 +328,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
                     if (PlayGlobalData.isSortAsc()) {
-                        DLog.d("music-exoplayer-lib", "播放页设置公共数据 getPrePageChapterList")
+                        DLog.d("music-exoplayer-lib","播放页设置公共数据 getPrePageChapterList")
                         PlayGlobalData.setPrePagePlayData(chapterList)
                     } else {
                         chapterList.reverse()
-                        DLog.d("music-exoplayer-lib", "播放页设置公共数据 getPrePageChapterList")
+                        DLog.d("music-exoplayer-lib","播放页设置公共数据 getPrePageChapterList")
                         PlayGlobalData.setNextPagePlayData(chapterList)
                     }
                     chapterRefreshModel.canRefresh.set(playPrePage > 1)
                 }
                 chapterRefreshModel.finishRefresh(true)
-            }, onError = { it, _ ->
+            }, onError = {it,_->
                 playPrePage++
                 chapterRefreshModel.finishRefresh(false)
                 it?.let {
@@ -350,36 +357,31 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     ) {
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
-        DLog.d("music-exoplayer-lib", "播放页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
+        DLog.d("music-exoplayer-lib","播放页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
         launchOnIO {
-            repository.chapterPageList(
+            repository.getChapterListWithId(
                 audioId = audioId,
                 chapterId = chapterId,
                 page_size = PlayGlobalData.playChapterPageSize,
                 sort = AudioSortType.SORT_ASC
             ).checkResult(onSuccess = {
                 val chapterList = it.list
-                DLog.d("music-exoplayer-lib", "播放页getChapterListWithId成功")
+                DLog.d("music-exoplayer-lib","播放页getChapterListWithId成功")
                 playNextPage = it.page
                 playPrePage = it.page
                 showContentView()
                 if (chapterList != null) {
                     chapterRefreshModel.noMoreData.set(chapterList.size < PlayGlobalData.playChapterPageSize)
-                    DLog.d(
-                        "music-exoplayer-lib",
-                        "播放页寻找章节 name = ${PlayGlobalData.playChapter.get()?.chapter_name} ,id = ${PlayGlobalData.playChapter.get()?.chapter_id}"
-                    )
+                    noMoreChapter = chapterList.size < PlayGlobalData.playChapterPageSize
+                    DLog.d("music-exoplayer-lib","播放页寻找章节 name = ${PlayGlobalData.playChapter.get()?.chapter_name} ,id = ${PlayGlobalData.playChapter.get()?.chapter_id}")
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == PlayGlobalData.playChapterId.get()) {
                             initPlayChapter(chapter)
                             if (!PlayGlobalData.isSortAsc()) {
                                 chapterList.reverse()
                             }
-                            DLog.d(
-                                "music-exoplayer-lib",
-                                "播放页找到对应章节 id = ${chapter.chapter_id}  name = ${chapter.chapter_name}"
-                            )
-                            DLog.d("music-exoplayer-lib", "播放页设置公共数据 getChapterListWithId")
+                            DLog.d("music-exoplayer-lib","播放页找到对应章节 id = ${chapter.chapter_id}  name = ${chapter.chapter_name}")
+                            DLog.d("music-exoplayer-lib","播放页设置公共数据 getChapterListWithId")
                             PlayGlobalData.setNextPagePlayData(chapterList)
                             return@forEach
                         }
@@ -387,14 +389,16 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.canRefresh.set(playNextPage > PlayGlobalData.PLAY_FIRST_PAGE)
                     playNextPage++
                 } else {
-                    DLog.d("music-exoplayer-lib", "播放页寻找章节 单数服务器返回数据为空")
-                    DLog.d("music-exoplayer-lib", "播放页设置公共数据 单数服务器返回数据为空 getChapterListWithId")
+                    noMoreChapter = true
+                    DLog.d("music-exoplayer-lib","播放页寻找章节 单数服务器返回数据为空")
+                    DLog.d("music-exoplayer-lib","播放页设置公共数据 单数服务器返回数据为空 getChapterListWithId")
                     PlayGlobalData.setNextPagePlayData(mutableListOf())
                 }
             }, onError = { it, _ ->
+                noMoreChapter = true
                 chapterRefreshModel.finishLoadMore(false)
                 showContentView()
-                DLog.d("music-exoplayer-lib", "首页获取章节列表失败   $it ")
+                DLog.d("music-exoplayer-lib","首页获取章节列表失败   $it ")
                 it?.let {
                     showTip(it)
                 }

@@ -3,17 +3,14 @@ package com.rm.music_exoplayer_lib.notification
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.request.target.NotificationTarget
+import com.rm.baselisten.BaseConstance
 import com.rm.music_exoplayer_lib.R
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
-import com.rm.music_exoplayer_lib.constants.CHANNEL_ID
 import com.rm.music_exoplayer_lib.constants.MUSIC_INTENT_ACTION_ROOT_VIEW
 import com.rm.music_exoplayer_lib.constants.MUSIC_KEY_MEDIA_ID
 import com.rm.music_exoplayer_lib.utils.MusicRomUtil
@@ -81,6 +78,8 @@ class NotificationManger constructor(
      * @return 通知对象
      */
     fun buildNotifyInstance(musicInfo: BaseAudioInfo,bookImgUrl:String) {
+        val CHANNEL_ID = "CHANNEL_ID"
+        val CHANNEL_NAME = "听书"
         //8.0及以上系统需创建通知通道
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: String = context.getResources().getString(R.string.music_text_notice_name)
@@ -100,50 +99,42 @@ class NotificationManger constructor(
         )
         val appName: String = context.getString(R.string.music_text_now_play)
         //构造通知栏
-        val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "001")
-        Glide.with(context)
-            .asBitmap()
-            .load(bookImgUrl)
-            .placeholder(R.drawable.ic_music_default_cover)
-            .error(R.drawable.ic_music_default_cover)
-            .into(object : SimpleTarget<Bitmap?>(120, 120) {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap?>?
-                ) {
+        val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "CHANNEL_ID")
+        val remoteView = notificationView.getDefaultCustomRemoteView(
+                playState,
+                musicInfo
+        )
+        builder.setContentIntent(pendClickIntent)
+                .setTicker(musicInfo.audioName)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setCustomContentView(remoteView)
+                .setWhen(System.currentTimeMillis())
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setChannelId(CHANNEL_ID).priority = Notification.PRIORITY_HIGH
+        if (MusicRomUtil.instance?.isMiui == true) {
+            builder.setFullScreenIntent(pendClickIntent, false) //禁用悬挂
+        } else {
+            builder.setFullScreenIntent(null, false) //禁用悬挂
+        }
 
-                    resource.let {
-                        builder.setCustomContentView(
-                            notificationView.getDefaultCoustomRemoteView(
-                                it,
-                                playState,
-                                musicInfo
-                            )
-                        ).setCustomBigContentView(
-                            notificationView.getBigCoustomRemoteView(
-                                it,
-                                playState,
-                                musicInfo
-                            )
-                        )
-                        builder.setContentIntent(pendClickIntent)
-                            .setTicker(appName)
-                            .setSmallIcon(R.drawable.ic_music_mini_close)
-                            .setWhen(System.currentTimeMillis())
-                            .setOngoing(true)
-                            .setOnlyAlertOnce(true)
-                            .setChannelId(CHANNEL_ID).priority = Notification.PRIORITY_HIGH
-                        if (MusicRomUtil.instance?.isMiui == true) {
-                            builder.setFullScreenIntent(pendClickIntent, false) //禁用悬挂
-                        } else {
-                            builder.setFullScreenIntent(null, false) //禁用悬挂
-                        }
-                        showNotificationForeground(builder.build())
-                    }
+        val notifyTarget = NotificationTarget(
+                context,
+                R.id.music_notice_def_cover,
+                remoteView,
+                builder.build(),
+                NOTIFICATION_ID)
+        BaseConstance.basePlayInfoModel.get()?.let {
+            val notification = builder.build()
+            Glide.with(context)
+                    .asBitmap()
+                    .load(it.playUrl)
+                    .placeholder(R.drawable.ic_music_default_cover)
+                    .error(R.drawable.ic_music_default_cover)
+                    .into(notifyTarget)
 
-                }
-            })
-
+            showNotificationForeground(notification)
+        }
 
     }
 

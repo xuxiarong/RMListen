@@ -13,6 +13,7 @@ import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.getStateHeight
+import com.rm.baselisten.web.BaseWebActivity
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByPassowrdBinding
@@ -116,7 +117,10 @@ class LoginByPasswordActivity :
                     resources.getColor(R.color.login_high_color),
                     object : TextClickListener {
                         override fun onTextClick(clickContent: String) {
-                            ToastUtil.show(this@LoginByPasswordActivity, "用户协议")
+                            BaseWebActivity.startBaseWebActivity(
+                                this@LoginByPasswordActivity,
+                                "www.baidu.com"
+                            )
                         }
                     })
             )
@@ -127,7 +131,10 @@ class LoginByPasswordActivity :
                     resources.getColor(R.color.login_high_color),
                     object : TextClickListener {
                         override fun onTextClick(clickContent: String) {
-                            ToastUtil.show(this@LoginByPasswordActivity, "隐私保护协议")
+                            BaseWebActivity.startBaseWebActivity(
+                                this@LoginByPasswordActivity,
+                                "www.baidu.com"
+                            )
                         }
                     })
             ).build()

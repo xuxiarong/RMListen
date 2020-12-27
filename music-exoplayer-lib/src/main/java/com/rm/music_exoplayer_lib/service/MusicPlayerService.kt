@@ -30,10 +30,9 @@ import com.rm.music_exoplayer_lib.manager.MusicAudioFocusManager
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 import com.rm.music_exoplayer_lib.notification.NOTIFICATION_ID
 import com.rm.music_exoplayer_lib.notification.NotificationManger
-import com.rm.music_exoplayer_lib.receiver.AlarmBroadcastReceiver
+import com.rm.music_exoplayer_lib.receiver.PlayReceiver
 import com.rm.music_exoplayer_lib.utils.CacheUtils
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger.exoLog
-import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 
@@ -64,7 +63,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
 
     //监听系统事件的广播
-    private var mHeadsetBroadcastReceiver: AlarmBroadcastReceiver? = null
+    private var mHeadsetBroadcastReceiver: PlayReceiver? = null
 
     //用户设定的内部播放器播放模式，默认顺序
     private var mPlayModel = MUSIC_MODEL_ORDER
@@ -132,11 +131,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             )
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
-            notificationChannel.setShowBadge(true)
             notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-            val manager =
-                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(notificationChannel)
+            manager.cancelAll()
         }
 
         val notifyIntent = Intent(
@@ -159,6 +157,19 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
         return START_STICKY
     }
+
+//    private fun getNotification(): Notification? {
+//        val builder  = Notification.Builder(this)
+//                .setSmallIcon(R.mipmap.ic_launcher)
+//                .setContentTitle("测试服务")
+//                .setContentText("我正在运行")
+//        //设置Notification的ChannelID,否则不能正常显示
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            builder.setChannelId(notificationId)
+//        }
+//        return builder.build()
+//    }
+
 
     //音频焦点
     var requestAudioFocus = AUDIOFOCUS_REQUEST_GRANTED
@@ -217,7 +228,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_PAUSE)
         intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_CLOSE)
         intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_COLLECT)
-        mHeadsetBroadcastReceiver = AlarmBroadcastReceiver()
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF)
+        mHeadsetBroadcastReceiver = PlayReceiver()
         registerReceiver(mHeadsetBroadcastReceiver, intentFilter)
     }
 

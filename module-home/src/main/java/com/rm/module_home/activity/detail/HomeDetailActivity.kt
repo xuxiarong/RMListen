@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.utilExt.getStateHeight
@@ -82,7 +83,7 @@ class HomeDetailActivity :
 
             mViewModel.commentRefreshStateMode.setNoHasMore(false)
             mViewModel.queryAudioListenRecord()
-            mViewModel.getChapterList(1) //初始化章节列表
+//            mViewModel.getChapterList(1) //初始化章节列表
             mViewModel.getCommentList(it)
         }
 
@@ -151,20 +152,18 @@ class HomeDetailActivity :
 
 
     override fun startObserve() {
-
+        mViewModel.listenAudio.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val listenAudio = mViewModel.listenAudio.get()
+                if(listenAudio!=null){
+                    mViewModel.getChapterListWithId(listenAudio.listenChapterId)
+                }else{
+                    mViewModel.getChapterList(1)
+                }
+            }
+        })
     }
 
     override fun initData() {
     }
-
-    override fun onStart() {
-        super.onStart()
-        mViewModel.chapterAdapter.notifyDataSetChanged()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mViewModel.queryAudioListenRecord()
-    }
-
 }

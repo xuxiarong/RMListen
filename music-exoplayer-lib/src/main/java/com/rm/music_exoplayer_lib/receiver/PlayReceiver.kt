@@ -6,6 +6,7 @@ import android.content.Intent
 import android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY
 import android.view.KeyEvent
 import android.widget.Toast
+import com.rm.music_exoplayer_lib.activity.MusicLockActivity
 import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
@@ -18,7 +19,7 @@ import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
  * @Version: 1.0.0
  */
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
-class AlarmBroadcastReceiver : BroadcastReceiver() {
+class PlayReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         var action = intent?.action
         //定时通知
@@ -49,6 +50,11 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
             //前台进程关闭进程
             MUSIC_INTENT_ACTION_CLICK_CLOSE -> {
 
+            }
+            Intent.ACTION_SCREEN_OFF ->{
+                    val screenIntent = Intent(context, MusicLockActivity::class.java)
+                    screenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context?.startActivity(screenIntent)
             }
             else -> {
             }

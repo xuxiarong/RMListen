@@ -39,7 +39,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         private const val TYPE_DEVELOP = 3
         private const val TYPE_STG = 4
 
-        private var currentType = TYPE_TEST
+        private var currentType = TYPE_RELEASE
 
         fun getBaseUrl(): String {
             when (currentType) {

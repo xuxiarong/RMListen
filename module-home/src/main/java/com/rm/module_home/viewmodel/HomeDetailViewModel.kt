@@ -262,8 +262,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     listenAudio.set(audioRecord)
                     isAttention.set(audioRecord?.anchor?.status ?: false)
                     isSubscribed.set(audioRecord?.is_subscribe)
+                    if(audioRecord == null){
+                        listenAudio.notifyChange()
+                    }
                 } catch (e: Exception) {
                     listenAudio.set(null)
+                    listenAudio.notifyChange()
                 }
             }
         }
@@ -447,6 +451,31 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     })
         }
     }
+
+    fun getChapterListWithId(chapterId: String) {
+        launchOnIO {
+            repository.getChapterListWithId(audioId.get()!!, chapterPageSize, chapterId, mCurSort)
+                .checkResult(
+                    onSuccess = { chapterListModel ->
+                        upChapterPage = chapterListModel.page
+                        nextChapterPage = chapterListModel.page
+                        processChapterData(chapterListModel, chapterListModel.page)
+                        val predicate: (DownloadChapter) -> Boolean = { it.chapter_id.toString() == chapterId }
+                        val position = chapterListModel.list?.indexOfFirst(predicate)
+
+                        position?.let {
+                            if(position>0){
+                                chapterAdapter.recyclerView.postDelayed({
+                                    chapterAdapter.recyclerView.smoothScrollToPosition(it)
+                                },200)
+                            }
+                        }
+                    }, onError = { it, _ ->
+                        processChapterFailure(it)
+                    })
+        }
+    }
+
 
     /**
      * 处理章节加载失败
