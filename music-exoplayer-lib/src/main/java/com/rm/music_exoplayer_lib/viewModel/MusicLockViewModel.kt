@@ -1,6 +1,7 @@
 package com.rm.music_exoplayer_lib.viewModel
 
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.PlayGlobalData
 
 /**
  * desc   :
@@ -8,5 +9,5 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  * version: 1.0
  */
 class MusicLockViewModel : BaseVMViewModel(){
-
+    var playChapter = PlayGlobalData.playChapter
 }

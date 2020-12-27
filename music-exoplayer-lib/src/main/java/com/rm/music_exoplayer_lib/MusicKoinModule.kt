@@ -16,4 +16,4 @@ val viewModelModule = module {
 }
 
 
-val playModules = listOf(viewModelModule)
+val musicModules = listOf(viewModelModule)

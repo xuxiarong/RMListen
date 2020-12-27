@@ -14,17 +14,23 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.view.updateLayoutParams
 import com.rm.baselisten.mvvm.BaseActivity
+import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.screenWidth
+import com.rm.music_exoplayer_lib.BR
 
 import com.rm.music_exoplayer_lib.R
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.*
+import com.rm.music_exoplayer_lib.databinding.MusicActivityLockBinding
 import com.rm.music_exoplayer_lib.helper.MusicClickControler
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.musicModules
 import com.rm.music_exoplayer_lib.view.MusicSildingLayout
+import com.rm.music_exoplayer_lib.viewModel.MusicLockViewModel
 import kotlinx.android.synthetic.main.music_activity_lock.*
+import org.koin.core.context.loadKoinModules
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,13 +40,18 @@ import java.util.*
  * @data: 9/2/20 11:20 AM
  * @Version: 1.0.0
  */
-class MusicLockActivity : BaseActivity(),
+class MusicLockActivity : BaseVMActivity<MusicActivityLockBinding,MusicLockViewModel>(),
     MusicPlayerEventListener {
     private var mDiscObjectAnimator: ObjectAnimator? = null
     override fun getLayoutId(): Int = R.layout.music_activity_lock
     private var mHandler: Handler? = null
     private var discIsPlaying = false
     private var mClickControler: MusicClickControler? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        loadKoinModules(musicModules)
+        super.onCreate(savedInstanceState)
+    }
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -148,7 +159,6 @@ class MusicLockActivity : BaseActivity(),
 
         updateMusicData(audioInfo)
         musicPlayerManger.addOnPlayerEventListener(this)
-        mDiscObjectAnimator = getDiscObjectAnimator(music_lock_cover)
         mClickControler = MusicClickControler()
         mClickControler?.init(1, 300)
     }
@@ -291,7 +301,7 @@ class MusicLockActivity : BaseActivity(),
             discIsPlaying = false
             mDiscObjectAnimator?.cancel()
             mDiscObjectAnimator = null
-            music_lock_cover.rotation = 0f
+//            music_lock_cover.rotation = 0f
         }
         musicPlayerManger.removePlayerListener(this)
     }
@@ -380,6 +390,12 @@ class MusicLockActivity : BaseActivity(),
     }
 
     override fun onStopPlayAd() {
+
+    }
+
+    override fun initModelBrId() = BR.viewModel
+
+    override fun startObserve() {
 
     }
 
