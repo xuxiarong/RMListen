@@ -28,14 +28,6 @@
             android:name="design_height_in_dp"
             android:value="812" />
 
-        <activity
-            android:name=".activity.MusicLockActivity"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.rm.module_play"
-            android:theme="@style/MusicLockScreenTheme" />
     </application>
 
 </manifest>

@@ -48,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/music_play_ic_icon_playing_left_light"
                 android:scaleType="center"
                 android:padding="10dp"/>
             <ImageView
@@ -57,7 +56,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/ic_music_mini_play_noimal"
                 android:scaleType="center"
                 android:padding="10dp"/>
             <ImageView
@@ -66,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/music_play_ic_icon_playing_right_light"
                 android:scaleType="center"
                 android:padding="10dp"/>
         </LinearLayout>

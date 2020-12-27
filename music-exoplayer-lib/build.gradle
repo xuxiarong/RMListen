@@ -20,6 +20,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -28,4 +37,5 @@ dependencies {
     implementation rootProject.ext.androidx["kotlin_stdlib"]
     implementation "com.google.android.exoplayer:exoplayer-core:2.11.4"
     implementation rootProject.ext.dependencies["glide"]
+    implementation project(path: ':component-comm')
 }

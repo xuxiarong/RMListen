@@ -5,6 +5,8 @@
         <variable
             name="viewModel"
             type="com.rm.module_play.viewmodel.PlayViewModel" />
+        <import type="com.rm.business_lib.PlayGlobalData" />
+
     </data>
 
     <FrameLayout
@@ -34,7 +36,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_height="@dimen/dp_22"
                     android:text="@string/play_close_timer"
-                    android:textColor="@color/business_text_color_333333"
+                    android:textColor="@{PlayGlobalData.INSTANCE.playCountSelectPosition &lt; 0?@color/business_color_ff5e5e:@color/business_text_color_333333}"
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -42,7 +44,7 @@
                     android:layout_width="@dimen/dp_22"
                     android:layout_gravity="center_vertical|end"
                     android:layout_height="@dimen/dp_22"
-                    android:src="@drawable/play_timer_item_position_unselect" />
+                    android:src="@{PlayGlobalData.INSTANCE.playCountSelectPosition &lt; 0?@drawable/play_timer_item_position_select:@drawable/play_timer_item_position_unselect}" />
             </FrameLayout>
 
             <View

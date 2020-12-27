@@ -1,11 +1,11 @@
-package com.rm.module_play.view
+package com.rm.music_exoplayer_lib.view
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import com.rm.module_play.R
+import com.rm.music_exoplayer_lib.R
 
 /**
  *

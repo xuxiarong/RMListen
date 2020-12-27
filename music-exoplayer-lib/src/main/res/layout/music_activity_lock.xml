@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.rm.music_exoplayer_lib.view.MusicSildingLayout
+        android:id="@+id/music_silding_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/music_default_music_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/music_lock_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-thin"
+            android:text="00:00"
+            android:textColor="#FFFFFF"
+            android:textSize="72dp"
+            android:textStyle="normal" />
+        <!--sans-serif-light-->
+        <TextView
+            android:id="@+id/music_lock_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/music_lock_time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-5dp"
+            android:text="1月1日 星期一"
+            android:textColor="#FFFFFF"
+            android:textSize="14dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <com.rm.music_exoplayer_lib.view.MusicMarqueeTextView
+                android:id="@+id/music_lock_audio_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/music_lock_cover"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:ellipsize="marquee"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <com.rm.music_exoplayer_lib.view.MusicMarqueeTextView
+                android:id="@+id/music_lock_chapter_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/music_lock_cover"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:ellipsize="marquee"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_img_layout"
+                bindUrl="@{PlayGlobalData.INSTANCE.playAudioModel.audio_cover_url}"
+                corner="@{8f}"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_marginTop="@dimen/dp_15"
+                android:scaleType="fitXY" />
+
+
+<!--            <View-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="55dp"-->
+<!--                android:layout_below="@+id/music_lock_anchor"-->
+<!--                android:layout_centerHorizontal="true" />-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lock_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/lock_tip"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/music_lock_model"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="center"
+                android:src="@drawable/ic_music_model_loop_noimal" />
+
+            <ImageView
+                android:id="@+id/music_lock_last"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="center"
+                android:src="@drawable/music_player_last_selector" />
+
+            <ImageView
+                android:id="@+id/music_lock_pause"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="center"
+                android:src="@drawable/music_player_play_selector" />
+
+            <ImageView
+                android:id="@+id/music_lock_next"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="center"
+                android:src="@drawable/music_player_next_selector" />
+
+            <ImageView
+                android:id="@+id/music_lock_collect"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="center" />
+        </LinearLayout>
+
+        <com.rm.music_exoplayer_lib.view.MusicCustomTextView
+            android:id="@+id/lock_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:text=">> 滑动解锁"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp" />
+    </com.rm.music_exoplayer_lib.view.MusicSildingLayout>
+</FrameLayout>

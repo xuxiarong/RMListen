@@ -7,9 +7,17 @@
             android:name="com.rm.music_exoplayer_lib.service.MusicPlayerService"
             android:enabled="true"
             android:exported="false" />
-        <receiver android:name=".receiver.AlarmBroadcastReceiver"/>
+        <receiver android:name=".receiver.PlayReceiver"/>
 
-
+        <activity
+            android:name="com.rm.music_exoplayer_lib.activity.MusicLockActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.rm.module_play"
+            android:excludeFromRecents="true"
+            android:theme="@style/MusicLockScreenTheme" />
 
     </application>
 

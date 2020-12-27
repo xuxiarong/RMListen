@@ -1,68 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/music_notice_def_notify_root"
     android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:orientation="horizontal"
-    android:id="@+id/music_notice_def_notify_root">
+    android:layout_height="80dp"
+    android:orientation="horizontal">
+
     <ImageView
         android:id="@+id/music_notice_def_cover"
-        android:layout_width="66dp"
-        android:layout_height="64dp"
-        android:scaleType="centerCrop" />
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:scaleType="fitXY"
+        tools:ignore="ContentDescription" />
+
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
         android:layout_weight="1"
-        android:orientation="vertical"
         android:gravity="center_vertical"
-        android:layout_marginLeft="10dp">
-        <TextView
-            android:id="@+id/music_notice_def_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:text="--"/>
-        <TextView
-            android:id="@+id/music_notice_def_subtitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:text="--"
-            android:layout_marginTop="5dp"/>
-        <!--android:textColor="#6A6A6A"-->
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="0"
-        android:gravity="center_vertical">
-        <ImageView
-            android:id="@+id/music_notice_def_btn_last"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/music_play_ic_icon_bf"
-            android:scaleType="center"
-            android:padding="8dp"/>
-        <ImageView
-            android:id="@+id/music_notice_def_btn_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_music_mini_play_noimal"
-            android:scaleType="center"
-            android:padding="8dp"/>
-        <ImageView
-            android:id="@+id/music_notice_def_btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/music_play_ic_icon_bc"
-            android:scaleType="center"
-            android:padding="8dp"/>
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/play_notify_audio_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:maxWidth="120dp"
+                tools:text="三国演义" />
+
+            <TextView
+                android:id="@+id/play_notify_chapter_name"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                tools:text="第一章 东汉末年" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/music_pre_15s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/music_ic_pre_15s"
+                android:drawablePadding="1dp"
+                android:gravity="center"
+                android:text="@string/music_skip_15_second"
+                android:textColor="#666"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/music_notice_def_btn_last"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/music_ic_has_pre" />
+
+            <ImageView
+                android:id="@+id/music_notice_def_btn_pause"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:src="@drawable/music_ic_playing"
+                />
+
+            <ImageView
+                android:id="@+id/music_notice_def_btn_next"
+                android:layout_width="22dp"
+                android:layout_weight="1"
+                android:layout_height="22dp"
+                android:layout_gravity="end|center_vertical"
+                android:src="@drawable/music_ic_has_next" />
+
+            <TextView
+                android:id="@+id/music_next_15s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/music_ic_next_15s"
+                android:drawablePadding="1dp"
+                android:gravity="center"
+                android:text="@string/music_skip_15_second"
+                android:textColor="#666"
+                android:textSize="12sp" />
+
+        </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/play_notify_close"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="end"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/ic_music_mini_close"
+        tools:ignore="ContentDescription" />
+
 </LinearLayout>

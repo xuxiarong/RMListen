@@ -2,4 +2,5 @@
 <resources>
     <string name="music_text_notice_name">rm Notification bar music playback</string>
     <string name="music_text_now_play">Playing</string>
+    <string name="music_skip_15_second">15s</string>
 </resources>
