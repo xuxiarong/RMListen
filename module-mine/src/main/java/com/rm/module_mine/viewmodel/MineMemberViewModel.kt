@@ -8,7 +8,7 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.component_comm.login.LoginService
@@ -46,7 +46,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     attentionVisibility.set(it.id != loginUser.get()?.id)
                     isAttention.set(it.is_followed)
 
-                }, onError = {it,_->
+                }, onError = { it, _ ->
                     showContentView()
                 }
             )
@@ -68,7 +68,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     }
                     showTip("关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -92,7 +92,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     }
                     showTip("取消关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("--->", "$it")
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -105,7 +105,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
      * 头像点击事件
      */
     fun clickIconFun(context: Context, imageUrl: String) {
-        MineImageActivity.startActivity(context, imageUrl)
+        MineImageActivity.startActivity(context, imageUrl, R.drawable.business_ic_default_user)
     }
 
     /**
@@ -125,7 +125,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
         }
     }
 
-    private fun showDialog(context: Context,followId: String){
+    private fun showDialog(context: Context, followId: String) {
         getActivity(context)?.let { activity ->
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)

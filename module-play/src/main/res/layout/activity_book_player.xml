@@ -40,6 +40,7 @@
                 bindContentRvId="@{viewModel.commentContentRvId}"
                 bindIsLoadMoreSuccess="@{viewModel.commentRefreshModel.isLoadMoreSuccess()}"
                 bindNoMoreData="@{viewModel.commentRefreshModel.noMoreData}"
+                bindCanLoadMore="@{viewModel.commentRefreshModel.canCanLoadMore}"
                 bindOnLoadMoreListener="@{viewModel.commentLoadData}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

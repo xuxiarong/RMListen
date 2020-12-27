@@ -5,7 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.helpter.loginOut
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser

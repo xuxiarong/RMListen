@@ -18,9 +18,11 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.business_lib.bean.DataStr
@@ -170,6 +172,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     var isNoClick = ObservableField<Boolean>(false)
 
+    /**
+     * 评论缺省
+     */
+    var commentEmptyVisible = ObservableField<Boolean>(false)
+
     val commentContentRvId = R.id.home_detail_comment_recycle_view
 
     val chapterContentRvId = R.id.home_detail_chapter_rv
@@ -282,7 +289,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     anchorId.set(it.list.anchor_id)
                     homeDetailTagsAdapter.setList(it.list.tags)
                     showStatus(it)
-                }, onError = {it,_->
+                }, onError = { it, _ ->
                     showContentView()
                     if (it?.contains("下架") == true || it?.contains("违规") == true) {
                         isNoClick.set(true)
@@ -316,7 +323,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                         audioId
                     )
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("------->", "订阅失败  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -342,7 +349,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                         audioId
                     )
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("------->", "取消订阅  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -435,7 +442,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 .checkResult(
                     onSuccess = {
                         processChapterData(it, page)
-                    }, onError = {it,_->
+                    }, onError = { it, _ ->
                         processChapterFailure(it)
                     })
         }
@@ -573,7 +580,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -597,7 +604,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -632,7 +639,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     commentTotal.set(it.total)
                     processCommentData(it)
 
-                }, onError = {it,_->
+                }, onError = { it, _ ->
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
@@ -652,10 +659,32 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     isAttention.set(true)
                     showTip("关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
+        }
+    }
+
+    /**
+     * 取消关注二次确认弹窗
+     */
+    private fun showUnAttentionDialog(context: Context, followId: String) {
+        getActivity(context)?.let { activity ->
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = context.String(R.string.business_sure_cancel_attention)
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnText = context.String(R.string.business_sure)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    unAttentionAnchor(followId)
+                    dismiss()
+                }
+            }.show(activity)
         }
     }
 
@@ -671,7 +700,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     isAttention.set(false)
                     showTip("取消关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
@@ -685,14 +714,29 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     private fun processCommentData(bean: HomeCommentBean) {
         commentRefreshStateMode.finishLoadMore(true)
         if (commentPage == 1) {
-            homeDetailCommentAdapter.setList(bean.list_comment)
+            if (bean.list_comment?.size ?: 0 > 0) {
+                commentEmptyVisible.set(false)
+                homeDetailCommentAdapter.setList(bean.list_comment)
+            } else {
+                commentEmptyVisible.set(true)
+            }
+
         } else {
-            homeDetailCommentAdapter.addData(bean.list_comment)
+            bean.list_comment?.let {
+                homeDetailCommentAdapter.addData(it)
+            }
         }
 
-        if (homeDetailCommentAdapter.data.size >= bean.total || bean.list_comment.size < mPageSize) {
-            commentRefreshStateMode.setNoHasMore(true)
+        if (homeDetailCommentAdapter.data.size >= bean.total || bean.list_comment?.size ?: 0 < mPageSize) {
+            if (homeDetailCommentAdapter.data.size > 0) {
+                commentRefreshStateMode.setNoHasMore(true)
+            } else {
+                commentRefreshStateMode.canCanLoadMore.set(false)
+            }
         } else {
+            if (commentRefreshStateMode.canCanLoadMore.get() == false) {
+                commentRefreshStateMode.canCanLoadMore.set(true)
+            }
             ++commentPage
         }
 
@@ -781,7 +825,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             } else
                 if (!TextUtils.isEmpty(followId)) {
                     if (isAttention.get()) {
-                        unAttentionAnchor(followId!!)
+                        showUnAttentionDialog(context, followId!!)
                     } else {
                         attentionAnchor(followId!!)
                     }
@@ -898,7 +942,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         if (IS_FIRST_SUBSCRIBE.getBooleanMMKV(true) && activity != null) {
             CustomTipsFragmentDialog().apply {
                 titleText = context.getString(R.string.business_favorites_success)
-                contentText = context.getString(R.string.business_favorites_success_content)
+                contentText = context.getString(R.string.business_subscribe_success_content)
                 leftBtnText = context.getString(R.string.business_know)
                 rightBtnText = context.getString(R.string.business_goto_look)
                 leftBtnTextColor = R.color.business_text_color_333333

@@ -7,7 +7,7 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
@@ -16,7 +16,6 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineMemberActivity
-import com.rm.module_mine.bean.MineMemberFansDetailBean
 import com.rm.module_mine.bean.MineMemberFollowBean
 import com.rm.module_mine.bean.MineMemberFollowDetailBean
 import com.rm.module_mine.repository.MineRepository

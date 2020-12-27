@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="com.rm.business_lib.db.download.DownloadAudio" />
@@ -11,6 +12,7 @@
         <variable
             name="viewModel"
             type="com.rm.module_listen.viewmodel.ListenSheetDetailViewModel" />
+
     </data>
 
     <com.rm.business_lib.swipe.SwipeLayout
@@ -20,14 +22,14 @@
 
         <com.rm.business_lib.wedgit.swipe.SwipeDeleteLayout
             android:id="@+id/swipe_delete"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"
             bindSwipeDelete="@{()->viewModel.removeAudioFun(item)}"
-            />
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:alpha="@{(Integer.valueOf(item.status)==0)?0.7f:1f}"
             android:onClick="@{(view)->viewModel.itemClickFun(view,item)}">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -55,9 +57,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_28"
                 android:layout_marginEnd="@dimen/dp_8"
+                android:drawableStart="@drawable/business_icon_subs_play"
                 android:drawablePadding="@dimen/dp_2"
                 android:gravity="center_vertical"
-                android:drawableStart="@drawable/business_icon_subs_play"
                 android:textColor="@color/business_text_color_ffffff"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_play_bg"

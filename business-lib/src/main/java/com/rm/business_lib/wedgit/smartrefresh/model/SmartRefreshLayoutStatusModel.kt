@@ -23,6 +23,9 @@ class SmartRefreshLayoutStatusModel {
     //是否能够刷新
     var canRefresh = ObservableField<Boolean>(true)
 
+    //是否能够加载更多
+    var canCanLoadMore = ObservableField<Boolean>(true)
+
     //是否重置加载更多状态
     var resetNoMoreData = ObservableField<Boolean>(true)
 

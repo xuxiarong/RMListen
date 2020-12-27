@@ -3,14 +3,11 @@ package com.rm.module_listen.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import androidx.databinding.ObservableField
-import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
-import com.rm.business_lib.net.RefreshTokenInterceptor.Companion.CODE_LOGIN_OUT
-import com.rm.business_lib.net.RefreshTokenInterceptor.Companion.CODE_NOT_LOGIN
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -20,8 +17,6 @@ import com.rm.module_listen.activity.ListenMySheetDetailActivity
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
 import com.rm.module_listen.repository.ListenRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class ListenSheetMyListViewModel(private val repository: ListenRepository) : BaseVMViewModel() {
 

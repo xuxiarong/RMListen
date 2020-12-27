@@ -71,10 +71,11 @@ ext {
             cardview                  : "28.0.0",
             autosize                  : "1.2.1",
             //scrolllayout              :"1.0.2"
-            easypermissions           : "3.0.0",
+//            easypermissions           : "3.0.0",
+            xxpermissions             : "9.6",
             lottieVersion             : "3.4.2",
             flexbox                   : "2.0.1",
-            lottie_version             : "3.0.0",
+            lottie_version            : "3.0.0",
             palette                   : "1.0.0",
             bugly                     : "3.2.422",
             bugly_native              : "3.7.5",
@@ -111,7 +112,8 @@ ext {
             // 今日头条优化后的适配方案
             autosize                  : "me.jessyan:autosize:${version.autosize}",
             //权限适配
-            easypermissions           : "pub.devrel:easypermissions:${version.easypermissions}",
+//            easypermissions           : "pub.devrel:easypermissions:${version.easypermissions}",
+            xxpermissions             : "com.hjq:xxpermissions:${version.xxpermissions}",
             //tinypinyin
             "tinypinyin"              : "com.github.promeg:tinypinyin:2.0.3",
             // 下拉刷新控件

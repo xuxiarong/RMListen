@@ -81,7 +81,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
      */
     fun itemClickFun(context: Context, bookBean: DownloadAudio) {
         if (TextUtils.equals("0", bookBean.status)) {
-            showTip("该内容已下架", R.color.base_ff5e5e)
+            showTip("该书籍已下架", R.color.base_ff5e5e)
         } else {
             HomeDetailActivity.startActivity(context, bookBean.audio_id.toString())
         }

@@ -99,6 +99,7 @@
             bindNoMoreData="@{viewModel.commentRefreshStateMode.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.commentLoadMoreData}"
             bindResetNoMoreData="@{viewModel.commentRefreshStateMode.resetNoMoreData}"
+            bindCanLoadMore="@{viewModel.commentRefreshStateMode.canCanLoadMore}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/home_detail_title_cl"

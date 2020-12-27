@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.FrameLayout
+import com.hjq.permissions.Permission
 import com.rm.baselisten.mvvm.BaseActivity
+import com.rm.baselisten.util.constant.PermissionConstants
 import com.rm.business_lib.R
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter

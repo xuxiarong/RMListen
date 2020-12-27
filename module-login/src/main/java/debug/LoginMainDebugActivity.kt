@@ -4,7 +4,7 @@ import android.widget.ImageView
 import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.baselisten.util.DLog
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.helpter.parseToken
 import com.rm.module_login.R
 import com.rm.module_login.activity.*

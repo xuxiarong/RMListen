@@ -1,16 +1,20 @@
 package com.rm.module_mine.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import com.rm.baselisten.binding.bindKeyboardVisibilityListener
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.FileUtils
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.Drawable
 import com.rm.baselisten.utilExt.dip
+import com.rm.business_lib.utils.BusinessCameraAndAlbum.Companion.ALBUM_REQUEST_CODE
+import com.rm.business_lib.utils.BusinessCameraAndAlbum.Companion.CAMERA_REQUEST_CODE
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivityFeedbackBinding
@@ -128,7 +132,38 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
             else -> {
                 mViewModel.contactVisibility.set(false)
             }
-
         }
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    mViewModel.photoHelp?.getCameraUri()?.let {
+                        val path = FileUtils.getPath(this, it)
+                        path?.let { filePath ->
+                            mViewModel.addImageView(filePath)
+                            mViewModel.cameraList.add(filePath)
+                        }
+                    }
+                } else {
+                    val cameraImagePath = mViewModel.photoHelp?.getCameraImagePath()
+                    cameraImagePath?.let {
+                        mViewModel.addImageView(it)
+                        mViewModel.cameraList.add(it)
+                    }
+                }
+            } else {
+                Toast.makeText(this, "拍照被取消", Toast.LENGTH_LONG).show()
+            }
+        } else if (requestCode == ALBUM_REQUEST_CODE) {
+            data?.data?.let {
+                val path = FileUtils.getPath(this, it)
+                path?.let { filePath -> mViewModel.addImageView(filePath) }
+            }
+        }
+    }
+
 }

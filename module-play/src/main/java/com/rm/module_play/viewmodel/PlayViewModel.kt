@@ -8,17 +8,18 @@ import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.ktx.addAll
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
+import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.PlayGlobalData.chapterRefreshModel
 import com.rm.business_lib.PlayGlobalData.playNextPage
 import com.rm.business_lib.PlayGlobalData.playPrePage
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.bean.AudioRecommend
 import com.rm.business_lib.bean.BusinessAdModel
 import com.rm.business_lib.db.download.DownloadChapter
@@ -109,6 +110,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     val subscriptionCount = ObservableField<String>()
 
+    /**
+     * 评论缺省
+     */
+    var commentEmptyVisible = ObservableField<Boolean>(false)
 
     /**
      * 评论 SmartRefreshLayout的状态变化
@@ -241,7 +246,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnIO {
             repository.playerReport(audioID, chapterId).checkResult(onSuccess = {
                 ExoplayerLogger.exoLog(it)
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 ExoplayerLogger.exoLog(it ?: "")
             })
         }
@@ -268,10 +273,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.finishLoadMore(true)
                     //是第一页，那么取第一条作为播放
                     if (PlayGlobalData.isSortAsc()) {
-                        DLog.d("music-exoplayer-lib","播放页设置公共数据 getNextPageChapterList")
+                        DLog.d("music-exoplayer-lib", "播放页设置公共数据 getNextPageChapterList")
                         PlayGlobalData.setNextPagePlayData(chapterList)
                     } else {
-                        DLog.d("music-exoplayer-lib","播放页设置公共数据 getNextPageChapterList")
+                        DLog.d("music-exoplayer-lib", "播放页设置公共数据 getNextPageChapterList")
                         chapterList.reverse()
                         PlayGlobalData.setPrePagePlayData(chapterList)
                     }
@@ -284,7 +289,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.noMoreData.set(false)
                     chapterRefreshModel.finishLoadMore(false)
                 }
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 it?.let {
                     chapterRefreshModel.finishLoadMore(false)
                     showTip(it)
@@ -316,17 +321,17 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 val chapterList = it.list
                 if (chapterList != null && chapterList.size > 0) {
                     if (PlayGlobalData.isSortAsc()) {
-                        DLog.d("music-exoplayer-lib","播放页设置公共数据 getPrePageChapterList")
+                        DLog.d("music-exoplayer-lib", "播放页设置公共数据 getPrePageChapterList")
                         PlayGlobalData.setPrePagePlayData(chapterList)
                     } else {
                         chapterList.reverse()
-                        DLog.d("music-exoplayer-lib","播放页设置公共数据 getPrePageChapterList")
+                        DLog.d("music-exoplayer-lib", "播放页设置公共数据 getPrePageChapterList")
                         PlayGlobalData.setNextPagePlayData(chapterList)
                     }
                     chapterRefreshModel.canRefresh.set(playPrePage > 1)
                 }
                 chapterRefreshModel.finishRefresh(true)
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 playPrePage++
                 chapterRefreshModel.finishRefresh(false)
                 it?.let {
@@ -345,7 +350,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     ) {
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
-        DLog.d("music-exoplayer-lib","播放页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
+        DLog.d("music-exoplayer-lib", "播放页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
         launchOnIO {
             repository.chapterPageList(
                 audioId = audioId,
@@ -354,21 +359,27 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 sort = AudioSortType.SORT_ASC
             ).checkResult(onSuccess = {
                 val chapterList = it.list
-                DLog.d("music-exoplayer-lib","播放页getChapterListWithId成功")
+                DLog.d("music-exoplayer-lib", "播放页getChapterListWithId成功")
                 playNextPage = it.page
                 playPrePage = it.page
                 showContentView()
                 if (chapterList != null) {
                     chapterRefreshModel.noMoreData.set(chapterList.size < PlayGlobalData.playChapterPageSize)
-                    DLog.d("music-exoplayer-lib","播放页寻找章节 name = ${PlayGlobalData.playChapter.get()?.chapter_name} ,id = ${PlayGlobalData.playChapter.get()?.chapter_id}")
+                    DLog.d(
+                        "music-exoplayer-lib",
+                        "播放页寻找章节 name = ${PlayGlobalData.playChapter.get()?.chapter_name} ,id = ${PlayGlobalData.playChapter.get()?.chapter_id}"
+                    )
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == PlayGlobalData.playChapterId.get()) {
                             initPlayChapter(chapter)
                             if (!PlayGlobalData.isSortAsc()) {
                                 chapterList.reverse()
                             }
-                            DLog.d("music-exoplayer-lib","播放页找到对应章节 id = ${chapter.chapter_id}  name = ${chapter.chapter_name}")
-                            DLog.d("music-exoplayer-lib","播放页设置公共数据 getChapterListWithId")
+                            DLog.d(
+                                "music-exoplayer-lib",
+                                "播放页找到对应章节 id = ${chapter.chapter_id}  name = ${chapter.chapter_name}"
+                            )
+                            DLog.d("music-exoplayer-lib", "播放页设置公共数据 getChapterListWithId")
                             PlayGlobalData.setNextPagePlayData(chapterList)
                             return@forEach
                         }
@@ -376,14 +387,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.canRefresh.set(playNextPage > PlayGlobalData.PLAY_FIRST_PAGE)
                     playNextPage++
                 } else {
-                    DLog.d("music-exoplayer-lib","播放页寻找章节 单数服务器返回数据为空")
-                    DLog.d("music-exoplayer-lib","播放页设置公共数据 单数服务器返回数据为空 getChapterListWithId")
+                    DLog.d("music-exoplayer-lib", "播放页寻找章节 单数服务器返回数据为空")
+                    DLog.d("music-exoplayer-lib", "播放页设置公共数据 单数服务器返回数据为空 getChapterListWithId")
                     PlayGlobalData.setNextPagePlayData(mutableListOf())
                 }
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 chapterRefreshModel.finishLoadMore(false)
                 showContentView()
-                DLog.d("music-exoplayer-lib","首页获取章节列表失败   $it ")
+                DLog.d("music-exoplayer-lib", "首页获取章节列表失败   $it ")
                 it?.let {
                     showTip(it)
                 }
@@ -404,7 +415,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     PlayGlobalData.initPlayAudio(it.list)
                     getAudioFloorAd()
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
                 }
             )
@@ -417,7 +428,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 onSuccess = {
                     audioRecommendAdapter.setList(it.list)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
 
                 }
             )
@@ -460,7 +471,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     }
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     PlayGlobalData.playAdIsPlaying.set(false)
                     PlayGlobalData.playVoiceAdClose.set(true)
                     PlayGlobalData.playVoiceImgAd.set(null)
@@ -494,7 +505,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     }
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.d("suolong", "error = ${it ?: ""}")
                 })
         }
@@ -516,7 +527,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     }
 
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("----->", "评论点赞:$it")
                 }
             )
@@ -539,7 +550,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                     }
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("----->", "评论点赞:$it")
                 })
         }
@@ -563,7 +574,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     }
                     subscribeSuccess(context)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("------->", "订阅失败  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -588,7 +599,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isSubscribe.set(false)
                     showTip("取消订阅成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("------->", "取消订阅  $it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -608,7 +619,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 pageSize
             ).checkResult(onSuccess = {
                 processCommentSuccessData(it)
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 processCommentFailureData(it)
             })
         }
@@ -627,9 +638,14 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     list.add(PlayDetailCommentAdapter.PlayDetailCommentItemEntity(bean))
                 }
             }
-            mCommentAdapter.setList(list)
-            if (list.size > 4) {
-                getAdInfo()
+            if (list.size > 0) {
+                mCommentAdapter.setList(list)
+                if (list.size > 4) {
+                    getAdInfo()
+                }
+                commentEmptyVisible.set(false)
+            } else {
+                commentEmptyVisible.set(true)
             }
             commentRefreshModel.finishRefresh(true)
         } else {
@@ -643,8 +659,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
 
         if (mCommentAdapter.data.size >= bean.total || bean.list?.size ?: 0 < pageSize) {
-            commentRefreshModel.setNoHasMore(true)
+            if (mCommentAdapter.data.size > 0) {
+                commentRefreshModel.setNoHasMore(true)
+            }else{
+                commentRefreshModel.canCanLoadMore.set(false)
+            }
         } else {
+            if (commentRefreshModel.canCanLoadMore.get() == false) {
+                commentRefreshModel.canCanLoadMore.set(true)
+            }
             commentPage++
         }
     }
@@ -665,7 +688,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         )
                     }
                 }
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 DLog.i("===>getAdInfo", "$it")
             })
         }
@@ -760,7 +783,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             } else
                 if (!TextUtils.isEmpty(followId)) {
                     if (isAttention.get()) {
-                        unAttentionAnchor(followId!!)
+                        showUnAttentionDialog(context,followId!!)
                     } else {
                         attentionAnchor(followId!!)
                     }
@@ -786,12 +809,35 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isAttention.set(true)
                     showTip("关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }
+
+    /**
+     * 取消关注二次确认弹窗
+     */
+    private fun showUnAttentionDialog(context: Context, followId: String) {
+        getActivity(context)?.let { activity ->
+            TipsFragmentDialog().apply {
+                titleText = context.String(R.string.business_tips)
+                contentText = context.String(R.string.business_sure_cancel_attention)
+                leftBtnText = context.String(R.string.business_cancel)
+                rightBtnText = context.String(R.string.business_sure)
+                rightBtnTextColor = R.color.business_color_ff5e5e
+                leftBtnClick = {
+                    dismiss()
+                }
+                rightBtnClick = {
+                    unAttentionAnchor(followId)
+                    dismiss()
+                }
+            }.show(activity)
+        }
+    }
+
 
     /**
      * 取消关注主播
@@ -811,7 +857,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     isAttention.set(false)
                     showTip("取消关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })

@@ -27,9 +27,9 @@ class TopListViewModel : BaseVMViewModel() {
         val list = mutableListOf<CategoryTabBean>()
         list.add(CategoryTabBean(1, CONTEXT.getString(R.string.home_popular_list)))
         list.add(CategoryTabBean(3, CONTEXT.getString(R.string.home_new_book_list)))
-        list.add(CategoryTabBean(2, CONTEXT.getString(R.string.home_hot_list)))
-        list.add(CategoryTabBean(4, CONTEXT.getString(R.string.home_search_list)))
-        list.add(CategoryTabBean(5, CONTEXT.getString(R.string.home_praise_list)))
+//        list.add(CategoryTabBean(2, CONTEXT.getString(R.string.home_hot_list)))
+//        list.add(CategoryTabBean(4, CONTEXT.getString(R.string.home_search_list)))
+//        list.add(CategoryTabBean(5, CONTEXT.getString(R.string.home_praise_list)))
         return list
     }
 

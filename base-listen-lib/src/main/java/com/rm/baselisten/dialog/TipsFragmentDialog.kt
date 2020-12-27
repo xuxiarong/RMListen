@@ -1,4 +1,4 @@
-package com.rm.business_lib.base.dialog
+package com.rm.baselisten.dialog
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
+import com.rm.baselisten.R
 import com.rm.baselisten.binding.bindText
-import com.rm.baselisten.dialog.BaseFragmentDialog
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.screenHeight
-import com.rm.business_lib.R
 
 /**
  * desc   : 纯文本内容提示框
@@ -24,7 +22,7 @@ import com.rm.business_lib.R
 class TipsFragmentDialog : BaseFragmentDialog() {
     init {
         val bundle = Bundle()
-        bundle.putInt(LAYOUT_ID, R.layout.business_dialog_tips_layout)
+        bundle.putInt(LAYOUT_ID, R.layout.base_dialog_tips_layout)
         arguments = bundle
     }
 

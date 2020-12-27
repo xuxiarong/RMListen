@@ -8,7 +8,7 @@ import java.io.Serializable
  */
 data class HomeCommentBean(
     @SerializedName("list")
-    val list_comment: MutableList<CommentList>,
+    val list_comment: MutableList<CommentList>?,
     val total: Int
 ) : Serializable
 

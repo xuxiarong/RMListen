@@ -9,7 +9,6 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.Cxt.Companion.context
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.DisplayUtils
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
 import com.rm.business_lib.utils.ApkInstallUtils
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper

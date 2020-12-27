@@ -22,21 +22,51 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MineSettingActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MinePersonalInfoActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineSettingPlayActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineSettingDownloadActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineSettingAccountSecurityActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineSettingPersonalSignatureActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineSettingNicknameActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineMemberActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineMemberFollowAndFansActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineMemberReleaseBooksActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineCropActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineImageActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MineAboutUsActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MimeGetBookActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MimeFeedbackActivity"  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MineSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MinePersonalInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingPlayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingDownloadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingAccountSecurityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingPersonalSignatureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineSettingNicknameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineMemberActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineMemberFollowAndFansActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineMemberReleaseBooksActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineCropActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MineAboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MimeGetBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MimeFeedbackActivity"
+            android:screenOrientation="portrait" />
 
 
     </application>

@@ -4,6 +4,7 @@
     <application>
         <activity
             android:name=".activity.SearchResultActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 </manifest>

@@ -1,7 +1,6 @@
 package com.rm.module_home.util
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -9,7 +8,7 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.rm.business_lib.aria.AriaUploadVersionDownloadManager
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.business_lib.utils.ApkInstallUtils
 import com.rm.business_lib.utils.NotifyManager

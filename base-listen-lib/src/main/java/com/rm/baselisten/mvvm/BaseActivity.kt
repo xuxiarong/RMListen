@@ -5,16 +5,19 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.view.contains
 import androidx.fragment.app.FragmentActivity
 import com.gyf.barlibrary.ImmersionBar
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.XXPermissions
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.R
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.view.BaseTipView
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
 
 
 /**
@@ -22,7 +25,7 @@ import pub.devrel.easypermissions.EasyPermissions
  * date   : 2020/08/05
  * version: 1.0
  */
-abstract class BaseActivity : FragmentActivity(), EasyPermissions.PermissionCallbacks {
+abstract class BaseActivity : FragmentActivity() {
 
     private val immersionBarHelper: ImmersionBarHelper by lazy {
         ImmersionBarHelper.create(this)
@@ -32,11 +35,12 @@ abstract class BaseActivity : FragmentActivity(), EasyPermissions.PermissionCall
         BaseTipView(this)
     }
 
-    private var requestPermission = ""
-    private var requestPermissionCode = 1001
-    var requestPermissionGranted: () -> Unit = {}
-    var requestPermissionDenied: () -> Unit = {}
-    var requestPermanentlyDenied: () -> Unit = {}
+    private var mPermissions: MutableList<String>? = null
+    private var permissionDialog: TipsFragmentDialog? = null
+
+    private var requestPermissionGranted: () -> Unit = {}
+    private var requestPermissionDenied: () -> Unit = {}
+    private var requestPermanentlyDenied: () -> Unit = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,70 +125,96 @@ abstract class BaseActivity : FragmentActivity(), EasyPermissions.PermissionCall
         actionGranted: () -> Unit,
         actionPermanentlyDenied: () -> Unit
     ) {
-        this.requestPermission = permission
-        this.requestPermissionDenied = actionDenied
-        this.requestPermissionGranted = actionGranted
-        this.requestPermanentlyDenied = actionPermanentlyDenied
-        if (EasyPermissions.hasPermissions(this, permission)) {
-            actionGranted()
-        } else {
-            EasyPermissions.requestPermissions(this, "听书需要存储权限",  requestPermissionCode, permission)
-        }
-    }
-
-
-    override fun onPermissionsDenied(
-        requestCode: Int, perms: List<String?>
-    ) {
-        if (requestCode == requestPermissionCode) {
-            perms.forEach {
-                it?.let {
-                    if (it == requestPermission) {
-                        if (EasyPermissions.somePermissionPermanentlyDenied(this, arrayListOf(requestPermission))) {
-                            AppSettingsDialog.Builder(this)
-                                .setTitle("权限已被永久拒绝")
-                                .setRationale("听书需要存储权限，请前往设置页面打开该权限")
-                                .setPositiveButton(R.string.base_to_set)
-                                .setNegativeButton(R.string.base_cancel)
-                                .setRequestCode(AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE)
-                                .build().show()
-                        }else{
-                            requestPermissionDenied()
+        if (!XXPermissions.isGrantedPermission(this, permission)) {
+            mPermissions = mutableListOf(permission)
+            requestPermissionGranted = actionDenied
+            requestPermissionDenied = actionGranted
+            requestPermanentlyDenied = actionPermanentlyDenied
+            XXPermissions.with(this).apply {
+                permission(permission)
+                request(object : OnPermissionCallback {
+                    override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
+                        if (all) {
+                            actionGranted()
                         }
                     }
-                }
-            }
-        }
-    }
 
-    override fun onPermissionsGranted(
-        requestCode: Int, perms: List<String?>
-    ) {
-        if (requestCode == requestPermissionCode) {
-            perms.forEach {
-                it?.let {
-                    if (it == requestPermission) {
-                        requestPermissionGranted()
+                    override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
+                        if (never) {
+                            showPermanentlyDeniedDialog(permissions, actionPermanentlyDenied)
+                        } else {
+                            actionDenied()
+                        }
                     }
-                }
+                })
             }
+        } else {
+            actionGranted()
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+    fun requestPermissionForResult(
+        permission: MutableList<String>,
+        actionDenied: () -> Unit,
+        actionGranted: () -> Unit,
+        actionPermanentlyDenied: () -> Unit
     ) {
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+        if (!XXPermissions.isGrantedPermission(this, permission)) {
+            mPermissions = permission
+            requestPermissionGranted = actionDenied
+            requestPermissionDenied = actionGranted
+            requestPermanentlyDenied = actionPermanentlyDenied
+            XXPermissions.with(this).apply {
+                permission(permission)
+                request(object : OnPermissionCallback {
+                    override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
+                        if (all) {
+                            actionGranted()
+                        }
+                    }
+
+                    override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
+                        if (never) {
+                            showPermanentlyDeniedDialog(permissions, actionPermanentlyDenied)
+                        } else {
+                            actionDenied()
+                        }
+                    }
+                })
+            }
+        } else {
+            actionGranted()
+        }
+    }
+
+    private fun showPermanentlyDeniedDialog(
+        permissions: MutableList<String>?,
+        actionPermanentlyDenied: () -> Unit
+    ) {
+        TipsFragmentDialog().apply {
+            permissionDialog = this
+            titleText = "权限已被永久拒绝"
+            contentText = "听书需要存储权限，请前往设置页面打开该权限"
+            leftBtnText = CONTEXT.resources.getString(R.string.base_cancel)
+            rightBtnText = CONTEXT.resources.getString(R.string.base_to_set)
+            dialogCancel = false
+            leftBtnClick = {
+                dismiss()
+                actionPermanentlyDenied()
+            }
+            rightBtnClick = {
+                XXPermissions.startPermissionActivity(this, permissions)
+            }
+        }.show(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
-            //从设置页面返回，判断权限是否申请。
-            if (EasyPermissions.hasPermissions(this, requestPermission)) {
+        //从设置页面返回，判断权限是否申请。
+        if (mPermissions != null) {
+            if (XXPermissions.isGrantedPermission(this, mPermissions)) {
                 requestPermissionGranted()
+                permissionDialog?.dismiss()
             } else {
                 requestPermanentlyDenied()
             }

@@ -1,5 +1,6 @@
 package com.rm.module_mine.util
 
+import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
@@ -12,14 +13,10 @@ import com.rm.module_mine.viewmodel.MineCommonTakPhotoViewModel
  * @description
  *
  */
-class CommonTakePhotoHelp @JvmOverloads constructor(
-    val activity: FragmentActivity,
-    isCropPic: Boolean = false,
-    onSuccess: (String) -> Unit? = {},
-    onFailure: (String) -> Unit? = {}
-) {
+class CommonTakePhotoHelp @JvmOverloads constructor(val activity: FragmentActivity) {
+
     private val mViewModel by lazy {
-        MineCommonTakPhotoViewModel(activity, isCropPic, onSuccess, onFailure)
+        MineCommonTakPhotoViewModel(activity)
     }
 
     fun showTakePhoto() {
@@ -29,6 +26,14 @@ class CommonTakePhotoHelp @JvmOverloads constructor(
             mViewModel,
             BR.viewModel
         )
+    }
+
+    fun getCameraUri(): Uri? {
+        return mViewModel.getCameraUri()
+    }
+
+    fun getCameraImagePath(): String? {
+        return mViewModel.getCameraImagePath()
     }
 
 }

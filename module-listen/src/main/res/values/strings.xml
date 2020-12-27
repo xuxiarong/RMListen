@@ -69,4 +69,5 @@
     <string name="listen_delete_listen_finish">仅删除已听完</string>
     <string name="listen_no_listen_data">订阅列表还是空的，赶紧去订阅点什么吧</string>
 
+    <string name="listen_book_state">0</string>
 </resources>

@@ -88,6 +88,11 @@ fun SmartRefreshLayout.bindCanRefresh(canRefresh: Boolean?) {
     setEnableRefresh(canRefresh ?: false)
 }
 
+@BindingAdapter("bindCanLoadMore")
+fun SmartRefreshLayout.bindCanLoadMore(canLoadMore: Boolean?) {
+    setEnableLoadMore(canLoadMore ?: false)
+}
+
 @BindingAdapter("bindResetNoMoreData")
 fun SmartRefreshLayout.bindResetNoMoreData(resetNoMoreData: Boolean?) {
     if (resetNoMoreData == null) {

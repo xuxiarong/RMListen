@@ -1,11 +1,15 @@
 package com.rm.module_mine.viewmodel
 
+import android.Manifest
 import android.content.Context
 import android.view.View
 import androidx.databinding.ObservableField
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommBottomDialog
+import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.FileUtils
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.LOGIN_USER_INFO
@@ -47,8 +51,8 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
     //性别 dialog
     private val sexDialog by lazy { CommBottomDialog() }
 
-    //头像dialog
-//    private val imageDialog by lazy { CommBottomDialog() }
+    var photoHelp: CommonTakePhotoHelp? = null
+
 
     //生日
     private val birthdayDialog by lazy { CommBottomDialog() }
@@ -63,7 +67,7 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                         sex.set(getSexStr(userBean))
                         showTip("修改成功")
                     },
-                    onError = {it,_->
+                    onError = { it, _ ->
                         showTip("$it", R.color.business_color_ff5e5e)
                     }
                 )
@@ -82,9 +86,10 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
                         LOGIN_USER_INFO.putMMKV(userBean)
                     }
                     userIconUrl.set(it.url)
+                    val delete = FileUtils.delete(filePath)
+                    DLog.i("=======>", "$delete")
                 },
-                onError = {it,_->
-//                    showToast("")
+                onError = { it, _ ->
                     showTip("$it", R.color.business_color_ff5e5e)
 
                 }
@@ -117,7 +122,22 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      */
     fun clickAvatar(view: View) {
         getActivity(view.context)?.let {
-            CommonTakePhotoHelp(activity = it, isCropPic = true).showTakePhoto()
+            if (it is BaseActivity) {
+                it.requestPermissionForResult(
+                    mutableListOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), actionDenied = {
+                        showTip(it.getString(R.string.business_listen_storage_permission_refuse))
+                    }, actionGranted = {
+                        photoHelp = CommonTakePhotoHelp(activity = it)
+                        photoHelp?.showTakePhoto()
+                    },
+                    actionPermanentlyDenied = {
+                        showTip(it.getString(R.string.business_listen_to_set_storage_permission))
+                    })
+            }
         }
     }
 
@@ -155,21 +175,13 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      * 生日点击事件
      */
     fun clickBirthday(view: View) {
-        var dataBinding: MineDialogBottomSelectBirthdayBinding? = null
         getActivity(view.context)?.let {
             birthdayDialog.showCommonDialog(
                 it,
                 R.layout.mine_dialog_bottom_select_birthday,
                 this,
                 BR.viewModel
-            ).apply {
-                birthdayDialog.mDataBind?.let { binding ->
-                    dataBinding = binding as MineDialogBottomSelectBirthdayBinding
-
-                    val time = dataBinding!!.mineDialogBirthdayTimePicker.getTime()
-                    birthday.set(time)
-                }
-            }
+            )
         }
     }
 
@@ -210,20 +222,31 @@ class MinePersonalInfoViewModel(private val repository: MineRepository) : BaseVM
      * 生日确定
      */
     fun birthdayDialogSureFun() {
-        birthday.get()?.let { bir ->
-            userInfo.get()?.let {
-                updateUserInfo(
-                    UpdateUserInfoBean(
-                        it.nickname!!,
-                        it.gender!!,
-                        bir.trimEnd(),
-                        it.address!!,
-                        it.signature!!
-                    )
-                )
+        if (birthday.get() != null) {
+            uploadUser(birthday.get()!!.trimEnd())
+        } else {
+            birthdayDialog.mDataBind?.let { binding ->
+                val dataBinding = binding as MineDialogBottomSelectBirthdayBinding
+                val time = dataBinding.mineDialogBirthdayTimePicker.getTime()
+                birthday.set(time.trimEnd())
+                uploadUser(time.trimEnd())
             }
         }
         birthdayDialog.dismiss()
+    }
+
+    private fun uploadUser(birthday: String) {
+        userInfo.get()?.let {
+            updateUserInfo(
+                UpdateUserInfoBean(
+                    it.nickname!!,
+                    it.gender!!,
+                    birthday,
+                    it.address!!,
+                    it.signature!!
+                )
+            )
+        }
     }
 
     /**

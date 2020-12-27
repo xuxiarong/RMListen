@@ -82,6 +82,5 @@ dependencies {
     implementation rootProject.ext.androidx["palette"]
     kapt rootProject.ext.dependencies["router_compiler"]
 
-    implementation 'com.github.BugRui.CameraExtend:cameralibrary:1.1.2'
 
 }

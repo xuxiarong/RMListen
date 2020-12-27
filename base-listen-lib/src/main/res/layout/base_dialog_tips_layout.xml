@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/business_shape_white_16dp"
+    android:background="@drawable/base_shape_white_16dp"
     android:orientation="vertical">
 
     <!-- 标题部分，为什么要包这一层？当标题隐藏时，内容距离顶部的距离就变小了，上下距离就没居中了-->
@@ -12,16 +12,20 @@
         android:id="@+id/business_tips_dialog_title_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_16"
-        android:layout_marginTop="@dimen/dp_16"
-        android:layout_marginEnd="@dimen/dp_16">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/business_tips_dialog_title"
-            style="@style/BusinessTextStyleFirst_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:lineSpacingExtra="@dimen/dp_4"
             android:lines="1"
+            android:textColor="@color/base_333"
+            android:textSize="18sp"
             android:textStyle="bold"
             tools:ignore="MissingConstraints,SpUsage"
             tools:text="我是标题" />
@@ -36,10 +40,13 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/business_tips_dialog_content"
-            style="@style/BusinessTextStyleFirst_2"
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:padding="@dimen/dp_8"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/dp_4"
+            android:padding="8dp"
+            android:textColor="@color/base_333"
+            android:textSize="16sp"
             tools:text="副标题文案样式就是这样显示的" />
     </ScrollView>
 
@@ -47,7 +54,7 @@
         android:id="@+id/business_tips_dialog_view"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/stroke_color" />
+        android:background="@color/base_e8e8e8" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,28 +63,32 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/business_tips_dialog_left_btn"
-            style="@style/BusinessTextStyleSecond_3"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_58"
+            android:layout_height="58dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/business_cancel"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/base_cancel"
+            android:textColor="@color/base_666666"
+            android:textSize="@dimen/sp_14"
             android:textStyle="bold" />
 
         <View
             android:id="@+id/business_tips_dialog_left_right_line"
             android:layout_width="0.5dp"
-            android:layout_height="@dimen/dp_58"
-            android:background="@color/stroke_color" />
+            android:layout_height="58dp"
+            android:background="@color/base_e8e8e8" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/business_tips_dialog_right_btn"
-            style="@style/BusinessTextStyleSecond_3"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_58"
+            android:layout_height="58dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/business_sure"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/base_ok"
+            android:textColor="@color/base_666666"
+            android:textSize="@dimen/sp_14"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

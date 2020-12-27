@@ -25,5 +25,6 @@ data class HomeTopListDataBean(
     var progress: Int,//连载状态，1：未开播，2：连载中，3：已完结
     var quality: Int,//清晰度，1：标清，2：高清
     var short_intro: String,//音频简介
+    var anchor_name: String,//作者名称
     var status: Int//有效状态，0：下架，1：上架
 )

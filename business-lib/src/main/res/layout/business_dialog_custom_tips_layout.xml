@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/business_shape_white_16dp">
+    android:background="@drawable/base_shape_white_16dp">
 
     <!-- 标题部分，为什么要包这一层？当标题隐藏时，内容距离顶部的距离就变小了，上下距离就没居中了-->
     <FrameLayout

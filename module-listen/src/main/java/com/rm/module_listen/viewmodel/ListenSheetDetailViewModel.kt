@@ -10,12 +10,10 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.bean.AudioListBean
 import com.rm.business_lib.bean.SheetInfoBean
 import com.rm.business_lib.db.download.DownloadAudio
-import com.rm.business_lib.share.Share2
-import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
@@ -23,7 +21,6 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenMySheetDetailActivity
-import com.rm.module_listen.bean.ListenSubscriptionListBean
 import com.rm.module_listen.repository.ListenRepository
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 
@@ -95,7 +92,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     data.set(it)
                 },
 
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     refreshStateModel.finishRefresh(false)
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -113,7 +110,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                 onSuccess = {
                     processAudioList(it)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     if (mPage == 1) {
                         refreshStateModel.finishRefresh(false)
                     } else {
@@ -157,7 +154,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     deleteSuccess()
                     mDialog.dismiss()
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                 }
             )
@@ -190,9 +187,9 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
         getActivity(context)?.let {
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)
-                contentText = "该内容已下架，是否移出听单？"
-                rightBtnText = "移除听单"
-                leftBtnText = context.String(R.string.business_cancel)
+                contentText = "该书籍已下架，是否移除？"
+                rightBtnText = "移除"
+                leftBtnText = "不移除"
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
                     dismiss()
@@ -287,7 +284,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     }
                     setResult(data.get()?.sheet_name ?: "")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("-------->", "移除失败  $it")
                 }
             )

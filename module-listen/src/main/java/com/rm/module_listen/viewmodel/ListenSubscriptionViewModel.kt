@@ -8,11 +8,9 @@ import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.base.dialog.TipsFragmentDialog
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
-import com.rm.business_lib.share.Share2
-import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
@@ -67,9 +65,9 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
         getActivity(context)?.let {
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)
-                contentText = "该内容已下架，是否移除？"
+                contentText = "该书籍已下架，是否移除？"
                 rightBtnText = "移除"
-                leftBtnText = context.String(R.string.business_cancel)
+                leftBtnText = "不移除"
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
                     dismiss()
