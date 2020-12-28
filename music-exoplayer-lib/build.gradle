@@ -21,13 +21,6 @@ android {
         }
     }
 
-    //配置阿里ARouter路由
-    kapt {
-        arguments {
-            arg("AROUTER_MODULE_NAME", project.getName())
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false

@@ -33,6 +33,4 @@ public interface ARouterModuleServicePath {
     //download
     String PATH_DOWNLOAD_SERVICE = "/module_download/service";
 
-    String PATH_MUSIC_SERVICE = "/music-exoplayer-lib/service";
-
 }

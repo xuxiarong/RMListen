@@ -51,10 +51,12 @@ class PlayReceiver : BroadcastReceiver() {
             MUSIC_INTENT_ACTION_CLICK_CLOSE -> {
 
             }
-            Intent.ACTION_SCREEN_OFF ->{
+            Intent.ACTION_SCREEN_OFF -> {
+                if (musicPlayerManger.isPlaying()) {
                     val screenIntent = Intent(context, MusicLockActivity::class.java)
                     screenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context?.startActivity(screenIntent)
+                }
             }
             else -> {
             }
