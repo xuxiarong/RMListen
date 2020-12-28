@@ -27,7 +27,8 @@ fun TextView.bindSubsText(number: Int?) {
             resources.getString(R.string.listen_my_listen_subs)
         }
         else -> {
-            String.format(resources.getString((R.string.listen_my_listen_subs_number), number))
+            val numberStr = if(number < 100){"$number"}else{"99+"}
+            String.format(resources.getString((R.string.listen_my_listen_subs_number), numberStr))
         }
     }
 }

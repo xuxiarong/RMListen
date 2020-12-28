@@ -42,7 +42,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            isVisible="@{!viewModel.searchHasData}"
+            isVisible="@{!viewModel.searchHasData &amp;&amp; !viewModel.dataEmpty}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -64,9 +64,32 @@
                 android:text="@string/base_search_no_result" />
         </LinearLayout>
 
+        <FrameLayout
+            isVisible="@{viewModel.dataEmpty}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/base_no_data" />
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/base_fine_no_data"
+                android:layout_marginTop="105dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/base_b1b1b1"
+                android:textSize="14sp" />
+        </FrameLayout>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listenHistorySearchRv"
-            isVisible="@{viewModel.searchHasData}"
+            isVisible="@{viewModel.searchHasData &amp;&amp; !viewModel.dataEmpty}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"

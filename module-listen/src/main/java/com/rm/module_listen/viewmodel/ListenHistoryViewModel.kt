@@ -32,6 +32,8 @@ class ListenHistoryViewModel : BaseVMViewModel() {
 
     var searchHasData = ObservableBoolean(true)
 
+    var dataEmpty = ObservableBoolean(false)
+
     val keyword = ObservableField<String>("")
 
     val deleteListenFinish = ObservableBoolean(false)
@@ -137,7 +139,9 @@ class ListenHistoryViewModel : BaseVMViewModel() {
             allHistory.value = mutableListOf()
             mSwipeAdapter.data.clear()
         }
-
+        if(mSwipeAdapter.data.isEmpty()){
+            dataEmpty.set(true)
+        }
     }
 
     fun startListenRecentDetail(context: Context, model: ListenHistoryModel) {
@@ -156,6 +160,9 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         DaoUtil(ListenAudioEntity::class.java, "").delete(item.audio)
         if (mSwipeAdapter.data.size < 8) {
             mSwipeAdapter.footerLayout?.visibility = View.GONE
+        }
+        if(mSwipeAdapter.data.isEmpty()){
+            dataEmpty.set(true)
         }
     }
 

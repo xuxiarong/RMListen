@@ -2,9 +2,13 @@ package com.rm.module_download.activity
 
 import android.content.Context
 import android.content.Intent
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.receiver.NetworkChangeReceiver
+import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
 import com.rm.module_download.BR
@@ -44,7 +48,27 @@ class DownloadMainActivity :
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
-
+        NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                NetworkChangeReceiver.isAvailable.get().let {
+                    try {
+                        if(it){
+                            if(DownloadMemoryCache.isDownAll.get()){
+                                DownloadMemoryCache.downloadingChapter.get()?.let{
+                                    AriaDownloadManager.startDownload(it,true)
+                                }
+                            }
+                        }else{
+                            DownloadMemoryCache.pauseDownloadingChapter()
+                            tipView.showTipView(this@DownloadMainActivity,getString(R.string.net_error))
+                        }
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
+                }
+            }
+        })
     }
 
     override fun initData() {

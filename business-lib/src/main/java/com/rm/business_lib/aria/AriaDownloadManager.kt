@@ -7,6 +7,7 @@ import com.arialyy.aria.core.task.DownloadTask
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.NetWorkUtils
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
@@ -27,7 +28,6 @@ object AriaDownloadManager {
     var isSingleDown = ObservableBoolean(false)
 
     init {
-        BaseApplication.CONTEXT
     }
 
     fun startDownload(chapter: DownloadChapter,isSingleDownload : Boolean = false) {
@@ -111,6 +111,9 @@ object AriaDownloadManager {
     @Download.onTaskFail
     fun onTaskFail(task: DownloadTask) {
         isDownloading.set(false)
+        if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+               BaseApplication
+        }
         DLog.d(TAG, "onTaskFail")
     }
 }

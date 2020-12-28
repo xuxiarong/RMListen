@@ -7,7 +7,7 @@
     <string name="listen_recent">最近</string>
     <string name="listen_search">搜索</string>
 
-    <string name="listen_my_listen_subs_number">订阅(%d)</string>
+    <string name="listen_my_listen_subs_number">订阅(%s)</string>
 
     <string name="listen_my_listen_buy">已购</string>
     <string name="listen_my_listen_download">下载</string>
