@@ -91,7 +91,6 @@ class ListenHistoryViewModel : BaseVMViewModel() {
         val resultList = ArrayList<ListenHistoryModel>()
 
         if (TextUtils.isEmpty(search) && sourceList != null) {
-            keyword.set(search)
             searchHasData.set(true)
             mSwipeAdapter.data.clear()
             mSwipeAdapter.addData(sourceList)
@@ -101,7 +100,6 @@ class ListenHistoryViewModel : BaseVMViewModel() {
                 mSwipeAdapter.footerLayout?.visibility = View.GONE
             }
         } else {
-            keyword.set(search)
             if (sourceList != null && sourceList.isNotEmpty()) {
                 sourceList.forEach {
                     if (it.audio.audio_name.contains(search)) {
@@ -177,6 +175,12 @@ class ListenHistoryViewModel : BaseVMViewModel() {
                 imm.hideSoftInputFromWindow(it.applicationWindowToken, 0)
             }
         }
+    }
+    /**
+     * 清除输入内容
+     */
+    fun clickClearInput() {
+        keyword.set("")
     }
 
     fun changeCheckListenFinish() {

@@ -115,7 +115,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         PlayGlobalData.playIsError.set(true)
     }
 
-    override fun onPrepared(totalDurtion: Long) {
+    override fun onPrepared(totalDurtion: Long,isAd : Boolean) {
         DLog.d("suolong_GlobalPlayHelper","onPrepared")
         PlayGlobalData.playIsError.set(false)
         //播放广告的时候，播放速度不生效，正常播放生效

@@ -330,7 +330,7 @@ class MusicLockActivity : BaseVMActivity<MusicActivityLockBinding,MusicLockViewM
         }
     }
 
-    override fun onPrepared(totalDurtion: Long) {}
+    override fun onPrepared(totalDurtion: Long,isAd : Boolean) {}
     override fun onBufferingUpdate(percent: Int) {}
     override fun onInfo(event: Int, extra: Int) {}
 

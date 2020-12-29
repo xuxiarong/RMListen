@@ -51,7 +51,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     private var currentDatePosition = 0
     private var currentSubsDateFirstPosition = 0
     private var isClickScroll = false
-    private var isShowFooter = false
+//    private var isShowFooter = false
 
     // 下拉刷新和加载更多控件状态控制Model
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
@@ -106,15 +106,16 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                     refreshStatusModel.setNoHasMore(it.list.size < pageSize)
                     refreshStatusModel.finishLoadMore(true)
                     if (it.list.size < pageSize) {
-                        isShowFooter = !(pageSize == 1 && (it.list.size in 1..4))
+//                        isShowFooter = !(pageSize == 1 && (it.list.size in 1..4))
                         if (currentPage == 1 && it.list.isEmpty()) {
                             subsDataEmpty.set(true)
                         } else {
                             subsDataEmpty.set(false)
                         }
-                    } else {
-                        isShowFooter = false
                     }
+//                    else {
+//                        isShowFooter = false
+//                    }
                     currentPage++
                     dealData(it.list)
                 }, onError = {it,_->
@@ -136,11 +137,11 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                     refreshStatusModel.setResetNoMoreData(true)
                     refreshStatusModel.setNoHasMore(it.list.size < pageSize)
                     if (it.list.size > 0) {
-                        isShowFooter = if (it.list.size < pageSize) {
-                            !(pageSize == 1 && (it.list.size in 1..4))
-                        } else {
-                            false
-                        }
+//                        isShowFooter = if (it.list.size < pageSize) {
+//                            !(pageSize == 1 && (it.list.size in 1..4))
+//                        } else {
+//                            false
+//                        }
                         currentPage++
                         subsDateAdapter.data.clear()
                         subsAudioAdapter.data.clear()
@@ -270,11 +271,11 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             }
             subsAudioAdapter.addData(audio)
         }
-        if (isShowFooter && subsAudioAdapter.data.size > 0) {
-            if (subsAudioAdapter.data.last() !is ListenSubsFooterModel) {
-                subsAudioAdapter.addData(ListenSubsFooterModel())
-            }
-        }
+//        if (isShowFooter && subsAudioAdapter.data.size > 0) {
+//            if (subsAudioAdapter.data.last() !is ListenSubsFooterModel) {
+//                subsAudioAdapter.addData(ListenSubsFooterModel())
+//            }
+//        }
     }
 
     /**

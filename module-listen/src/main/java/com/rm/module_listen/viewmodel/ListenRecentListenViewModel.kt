@@ -62,6 +62,9 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
                             listenHistoryModel.itemType = R.layout.listen_item_recent_listen
                             audioList.add(listenHistoryModel)
                         }
+                        if(recentChapter == null){
+                            DLog.d("suolong getListenHistory","${audio.audio_name} --- ${audio.listenChapterId}")
+                        }
                     }
                 }
                 if(audioList.isNotEmpty()){
