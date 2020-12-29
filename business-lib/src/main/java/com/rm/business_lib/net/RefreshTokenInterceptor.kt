@@ -19,11 +19,10 @@ import com.rm.business_lib.utils.DeviceUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.Interceptor
-import okhttp3.Protocol
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.Buffer
+import okio.GzipSource
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
@@ -74,12 +73,14 @@ class RefreshTokenInterceptor : Interceptor {
             Log.i("=====>TokenInterceptor", "=====>>>>$originReqUrl")
 
             val responseString = getResponseString(originResponse)
+            Log.i("=====>TokenInterceptor", "====response=>>>>$responseString")
+
             if (TextUtils.isEmpty(responseString)) {
                 Log.i("=====>TokenInterceptor", "=====000000000   ${request.url}")
                 return originResponse.newBuilder().code(originResponse.code)
                     .body(body).build()
             }
-            val code = getResponseCode(originResponse)
+            val code = getResponseCode(responseString)
             Log.i("=====>TokenInterceptor", "=====code:>>>>$code")
             return if (code == CODE_REFRESH_TOKEN) {
                 Log.i("=====>TokenInterceptor", "token 过期$code")
@@ -146,16 +147,32 @@ class RefreshTokenInterceptor : Interceptor {
 
     private fun getResponseString(response: Response): String? {
         val body = response.body
-        val source = body?.source()
-        val buffer = source?.buffer
-        val contentType = body?.contentType()
-        val charset: Charset =
-            contentType?.charset(StandardCharsets.UTF_8) ?: StandardCharsets.UTF_8
-        return buffer?.clone()?.readString(charset)
+        if (body != null) {
+            val contentLength = body.contentLength()
+            val source = body.source()
+            source.request(Long.MAX_VALUE)
+            var buffer = source.buffer
+            val headers = response.headers
+            if ("gzip".equals(headers["Content-Encoding"], ignoreCase = true)) {
+                GzipSource(buffer.clone()).use { gzippedResponseBody ->
+                    buffer = Buffer()
+                    buffer.writeAll(gzippedResponseBody)
+                }
+            }
+            val contentType = body.contentType()
+            val charset: Charset =
+                contentType?.charset(StandardCharsets.UTF_8) ?: StandardCharsets.UTF_8
+            return if (contentLength != 0L) {
+                buffer.clone().readString(charset)
+            }else{
+                null
+            }
+        } else {
+            return null
+        }
     }
 
-    private fun getResponseCode(response: Response): Int {
-        val readString = getResponseString(response)
+    private fun getResponseCode(readString: String?): Int {
         if (readString.isNullOrEmpty()) {
             return -1
         }

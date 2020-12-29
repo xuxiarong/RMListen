@@ -207,6 +207,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/home_detail_line">
 
@@ -393,7 +394,7 @@
             android:paddingTop="@dimen/dp_20"
             android:paddingBottom="@dimen/dp_20"
             android:text="@string/business_comment_empty"
-            android:textColor="@color/business_text_color_333333"
+            android:textColor="@color/business_color_b1b1b1"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintTop_toBottomOf="@id/home_detail_drag_layout"
             tools:visibility="visible" />

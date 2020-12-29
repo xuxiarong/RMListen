@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
+import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.DetailAudioSortDao
@@ -99,10 +100,10 @@ class HomeDetailActivity :
         }
 
         //监听章节列表停留的位置，如果在顶部则现实title
-        mDataBind.homeDetailInterceptLayout.setScrollTopListener(object :
-            HomeDetailInterceptLayout.ScrollTopListener {
-            override fun toTop(isTop: Boolean) {
-                if (isTop) {
+        mDataBind.homeDetailInterceptLayout.setScrollChangeTypeListener(object :
+            HomeDetailInterceptLayout.ScrollChangeTypeListener {
+            override fun changeType(@HomeDetailInterceptLayout.HomeDetailInterceptChangeType nowType: Int) {
+                if (nowType == HomeDetailInterceptLayout.TYPE_TOP) {
                     mDataBind.homeDetailTitle.visibility = View.VISIBLE
                     mDataBind.homeDetailBlur.alpha = 1f
                 } else {
@@ -110,6 +111,12 @@ class HomeDetailActivity :
                         mDataBind.homeDetailBlur.alpha = oldAlpha
                         mDataBind.homeDetailTitle.visibility = View.INVISIBLE
                     }
+                }
+
+                if (nowType == HomeDetailInterceptLayout.TYPE_BOTTOM) {
+                    mViewModel.basePlayControlModel.set(BasePlayControlModel(false) { startPlayActivity() })
+                } else {
+                    mViewModel.basePlayControlModel.set(BasePlayControlModel(true) { startPlayActivity() })
                 }
             }
         })
@@ -152,12 +159,13 @@ class HomeDetailActivity :
 
 
     override fun startObserve() {
-        mViewModel.listenAudio.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+        mViewModel.listenAudio.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val listenAudio = mViewModel.listenAudio.get()
-                if(listenAudio!=null){
+                if (listenAudio != null) {
                     mViewModel.getChapterListWithId(listenAudio.listenChapterId)
-                }else{
+                } else {
                     mViewModel.getChapterList(1)
                 }
             }

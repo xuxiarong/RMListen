@@ -758,7 +758,7 @@
             android:paddingTop="@dimen/dp_20"
             android:paddingBottom="@dimen/dp_20"
             android:text="@string/business_comment_empty"
-            android:textColor="@color/business_text_color_333333"
+            android:textColor="@color/business_color_b1b1b1"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintTop_toBottomOf="@id/home_detail_drag_layout"
             tools:visibility="visible" />
