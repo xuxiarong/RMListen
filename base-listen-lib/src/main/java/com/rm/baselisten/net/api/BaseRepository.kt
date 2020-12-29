@@ -1,5 +1,6 @@
 package com.rm.baselisten.net.api
 
+import android.util.Log
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.baselisten.util.DLog
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +30,14 @@ open class BaseRepository {
         return coroutineScope {
             if (response.code != 0) {
                 errorBlock?.let { it() }
-                BaseResult.Error(response.msg,response.code)
+                val message =
+                    if (response.code == 1013 || response.code == 1204 || response.code == 1014) {
+                        "登录凭证已过期，请重新登陆"
+                    } else {
+                        response.msg
+                    }
+                Log.i("=====>executeResponse", message)
+                BaseResult.Error(message,response.code)
             } else {
                 successBlock?.let { it() }
                 BaseResult.Success(response.data)

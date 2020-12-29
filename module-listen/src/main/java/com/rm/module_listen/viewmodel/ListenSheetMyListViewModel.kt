@@ -100,6 +100,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                 },
                 onError = { it, _ ->
                     showContentView()
+                    showTip("$it",R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -205,6 +206,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                 }
                 rightBtnClick = {
                     deleteSheet(sheetId)
+                    dismiss()
                 }
             }.show(it)
         }

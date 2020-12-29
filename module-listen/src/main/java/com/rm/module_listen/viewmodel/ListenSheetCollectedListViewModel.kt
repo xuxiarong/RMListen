@@ -83,14 +83,16 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
     /**
      * 听单取消收藏
      */
-    private fun unFavoriteSheet(sheetId: String, dialog: Dialog?) {
+    private fun unFavoriteSheet(sheetId: String) {
+        showLoading()
         launchOnIO {
             repository.listenUnFavoriteSheet(sheetId).checkResult(
                 onSuccess = {
+                    showContentView()
                     removeIndex(sheetId)
-                    dialog?.dismiss()
                 },
                 onError = {it,_->
+                    showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
@@ -182,7 +184,8 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                     dismiss()
                 }
                 rightBtnClick = {
-                    unFavoriteSheet(sheetId, dialog)
+                    unFavoriteSheet(sheetId)
+                    dismiss()
                 }
             }.show(it)
         }

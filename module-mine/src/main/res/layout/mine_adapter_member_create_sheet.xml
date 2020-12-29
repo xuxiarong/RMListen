@@ -12,6 +12,9 @@
         <variable
             name="createSheetViewModel"
             type="com.rm.module_mine.viewmodel.MineFragmentMemberMainViewModel" />
+
+        <import type="android.text.TextUtils" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,8 +70,8 @@
             style="@style/BusinessTextStyleFirst_2"
             bindText="@{createSheetItem.sheet_name}"
             android:layout_width="0dp"
-            android:singleLine="true"
             android:layout_marginStart="@dimen/dp_12"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/mine_create_sheet_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/mine_create_sheet_adapter_view"
@@ -79,6 +82,7 @@
             android:id="@+id/mine_create_sheet_adapter_create_time"
             style="@style/BusinessTextStyleThird_4"
             bindDateString="@{createSheetItem.created_at}"
+            isVisible="@{createSheetItem.created_from!=3}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_day"
@@ -104,6 +108,7 @@
             android:id="@+id/mine_create_sheet_adapter_collected_num"
             style="@style/BusinessTextStyleThird_4"
             bindPlayCountString="@{createSheetItem.num_favor}"
+            isVisible="@{createSheetItem.created_from!=3}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             android:drawableStart="@drawable/business_icon_unfavorites"

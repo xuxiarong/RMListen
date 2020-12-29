@@ -58,9 +58,10 @@ class HomeServiceImpl : HomeService {
     override fun showCommentDialog(
         mActivity: FragmentActivity,
         audio: String,
+        anchorId: String,
         commentSuccessBlock: () -> Unit
     ) {
-        HomeCommentDialogHelper(mActivity, audio, commentSuccessBlock).showDialog()
+        HomeCommentDialogHelper(mActivity, audio,anchorId, commentSuccessBlock).showDialog()
     }
 
     override fun showUploadDownDialog(

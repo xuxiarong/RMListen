@@ -11,6 +11,6 @@ import com.rm.business_lib.BuildConfig
  *
  */
 data class BusinessUpdateVersionBean(
-    val version: String="1.0.0"/* BuildConfig.VERSION_NAME*/,
+    val version: String = BuildConfig.VERSION_NAME,
     val platform: String = "android"
 )

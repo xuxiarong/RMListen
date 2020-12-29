@@ -50,7 +50,7 @@ data class FavorSheetBean(
 
 data class SheetBean(
     val created_at: String,//创建时间
-    val created_from: String,//听单创建来源；3:默认听单，不允许删除
+    val created_from: Int,//听单创建来源；3:默认听单，不允许删除
     val num_audio: String,// 书籍数量
     val num_favor: String,//被收藏数
     val pre_deleted_from: String,//预删除来源；0:不打算删除；1:后管删除；2:创建者删除
