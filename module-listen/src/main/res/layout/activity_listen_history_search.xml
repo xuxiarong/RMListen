@@ -18,31 +18,50 @@
         android:layout_height="match_parent"
         tools:context=".activity.ListenHistorySearchActivity">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            style="@style/BusinessTextStyleFirst_2"
-            afterTextChanged="@{viewModel.startSearchHistory}"
-            bindAction="@{editorInfo.IME_ACTION_SEARCH}"
-            bindBlock="@{viewModel.bindActionListener}"
+        <LinearLayout
+            android:id="@+id/search_main_ed_layout"
             android:layout_width="match_parent"
             android:layout_height="38dp"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_12"
             android:layout_marginEnd="@dimen/dp_16"
-            android:imeOptions="actionSearch"
-            android:singleLine="true"
             android:background="@drawable/business_shape_f7f7f7_12dp"
-            android:drawableStart="@drawable/business_icon_search"
-            android:drawablePadding="@dimen/dp_6"
-            android:gravity="center_vertical"
-            android:hint="@string/listen_search"
-            android:paddingStart="@dimen/dp_12"
-            android:paddingEnd="@dimen/dp_12"
-            android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                style="@style/BusinessTextStyleFirst_2"
+                afterTextChanged="@{viewModel.startSearchHistory}"
+                bindAction="@{editorInfo.IME_ACTION_SEARCH}"
+                bindBlock="@{viewModel.bindActionListener}"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:drawableStart="@drawable/business_icon_search"
+                android:drawablePadding="@dimen/dp_6"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:text="@={viewModel.keyword}"
+                android:hint="@string/listen_search"
+                android:paddingStart="@dimen/dp_12"
+                android:paddingEnd="@dimen/dp_12"
+                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                isVisible="@{viewModel.keyword.length()>0}"
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dp_4"
+                android:layout_marginStart="@dimen/dp_4"
+                android:onClick="@{()->viewModel.clickClearInput()}"
+                android:src="@drawable/business_icon_cancel" />
+
+        </LinearLayout>
 
         <LinearLayout
-            isVisible="@{!viewModel.searchHasData}"
+            isVisible="@{!viewModel.searchHasData &amp;&amp; !viewModel.dataEmpty}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -64,9 +83,32 @@
                 android:text="@string/base_search_no_result" />
         </LinearLayout>
 
+        <FrameLayout
+            isVisible="@{viewModel.dataEmpty}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/base_no_data" />
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listen_no_listen_record"
+                android:layout_marginTop="105dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/base_b1b1b1"
+                android:textSize="14sp" />
+        </FrameLayout>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listenHistorySearchRv"
-            isVisible="@{viewModel.searchHasData}"
+            isVisible="@{viewModel.searchHasData &amp;&amp; !viewModel.dataEmpty}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"

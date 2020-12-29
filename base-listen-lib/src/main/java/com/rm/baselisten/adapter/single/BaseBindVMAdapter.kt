@@ -18,4 +18,8 @@ abstract class BaseBindVMAdapter<T> constructor(var viewModel : BaseVMViewModel,
          DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.setVariable(viewModelBrId,viewModel)
      }
 
+    override fun onViewDetachedFromWindow(holder: BaseViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        DataBindingUtil.getBinding<ViewDataBinding>(holder.itemView)?.unbind()
+    }
 }

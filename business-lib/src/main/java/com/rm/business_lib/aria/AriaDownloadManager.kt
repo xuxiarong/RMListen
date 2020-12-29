@@ -7,6 +7,7 @@ import com.arialyy.aria.core.task.DownloadTask
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.NetWorkUtils
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
@@ -27,7 +28,6 @@ object AriaDownloadManager {
     var isSingleDown = ObservableBoolean(false)
 
     init {
-        BaseApplication.CONTEXT
     }
 
     fun startDownload(chapter: DownloadChapter,isSingleDownload : Boolean = false) {
@@ -73,6 +73,7 @@ object AriaDownloadManager {
     fun taskRunning(task: DownloadTask) {
         DLog.d(TAG, "taskRunning")
         if (task.key == (DownloadMemoryCache.downloadingChapter.get()?.path_url)) {
+            isDownloading.set(true)
             val percent = task.percent    //任务进度百分比
             val convertSpeed = task.convertSpeed    //转换单位后的下载速度，单位转换需要在配置文件中打开
             val speed = ConvertUtils.byte2FitMemorySize(task.speed, 1) //原始byte长度速度
@@ -104,13 +105,18 @@ object AriaDownloadManager {
 
     @Download.onTaskStart
     fun taskStart(task: DownloadTask) {
-        isDownloading.set(true)
+        if (task.key == (DownloadMemoryCache.downloadingChapter.get()?.path_url)) {
+            isDownloading.set(true)
+        }
         DLog.d(TAG, "taskStart")
     }
 
     @Download.onTaskFail
     fun onTaskFail(task: DownloadTask) {
         isDownloading.set(false)
+        if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+               BaseApplication
+        }
         DLog.d(TAG, "onTaskFail")
     }
 }

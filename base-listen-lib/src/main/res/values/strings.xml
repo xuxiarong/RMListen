@@ -8,7 +8,7 @@
     <string name="base_empty_tips_null">暂无数据</string>
     <string name="base_empty_tips_netword">当前无网络，请检查网络设置</string>
     <string name="base_empty_tips_btn">重试</string>
-    <string name="base_fine_no_data">没有任何内容</string>
+    <string name="base_fine_no_data">此页面空荡荡的...什么都没有</string>
     <string name="base_click_me_to_retry">点击重试</string>
     <string name="base_search_no_result">你好像…搜了个寂寞，搜点其他试试?</string>
     <string name="base_ok">确定</string>

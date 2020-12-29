@@ -19,7 +19,7 @@ interface MusicPlayerEventListener {
      * 播放器准备好了
      * @param totalDurtion 总时长
      */
-    fun onPrepared(totalDurtion: Long)
+    fun onPrepared(totalDurtion: Long,isAd: Boolean)
 
     /**
      * 缓冲百分比

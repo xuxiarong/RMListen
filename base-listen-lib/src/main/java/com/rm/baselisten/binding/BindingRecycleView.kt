@@ -150,7 +150,9 @@ fun RecyclerView.bindRecyclerViewScroll(action : ((View)-> Unit)?) {
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                action(recyclerView)
+                if(dx>0 || dy>0){
+                    action(recyclerView)
+                }
             }
         })
     }

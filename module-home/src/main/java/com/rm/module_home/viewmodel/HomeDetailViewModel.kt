@@ -472,7 +472,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                             }
                         }
                     }, onError = { it, _ ->
-                        processChapterFailure(it)
+                        if(listenAudio.get()!=null){
+                            listenAudio.set(null)
+                        }else{
+                            processChapterFailure(it)
+                        }
                     })
         }
     }

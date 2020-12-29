@@ -451,10 +451,17 @@ object PlayGlobalData {
         }
     }
 
-    fun checkCountChapterPlayEnd(allPlayEnd: Boolean) {
-        if (allPlayEnd || playCountDownChapterSize.get() > 0) {
-            playCountDownChapterSize.set(playCountDownChapterSize.get() - 1)
-            playCountSelectPosition.set(-1)
+    fun checkCountChapterPlayEnd(hasNext : Boolean) {
+        if (playCountDownChapterSize.get() > 0) {
+            if(!hasNext ){
+                playCountDownChapterSize.set(0)
+                playCountSelectPosition.set(-1)
+                return
+            }
+            playCountDownChapterSize.set(playCountDownChapterSize.get()-1)
+            if(playCountDownChapterSize.get() == 0){
+                playCountSelectPosition.set(-1)
+            }
         }
     }
 
@@ -466,6 +473,7 @@ object PlayGlobalData {
         } else {
             playCountDownChapterSize.set(-1)
             playCountDownSecond.set(playCountTimerList[position] * 1000L)
+            playTimerHandler.removeMessages(0)
             playTimerHandler.sendEmptyMessageDelayed(0, 1000)
         }
     }

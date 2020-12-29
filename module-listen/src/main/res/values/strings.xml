@@ -7,7 +7,7 @@
     <string name="listen_recent">最近</string>
     <string name="listen_search">搜索</string>
 
-    <string name="listen_my_listen_subs_number">订阅(%d)</string>
+    <string name="listen_my_listen_subs_number">订阅(%s)</string>
 
     <string name="listen_my_listen_buy">已购</string>
     <string name="listen_my_listen_download">下载</string>
@@ -68,6 +68,5 @@
     <string name="listen_delete_content">确定清除所有的播放记录</string>
     <string name="listen_delete_listen_finish">仅删除已听完</string>
     <string name="listen_no_listen_data">订阅列表还是空的，赶紧去订阅点什么吧</string>
-
-    <string name="listen_book_state">0</string>
+    <string name="listen_no_listen_record">最近很懒，没有听过书哦</string>
 </resources>

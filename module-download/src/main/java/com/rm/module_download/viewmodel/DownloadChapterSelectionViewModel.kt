@@ -67,7 +67,6 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         //筛选已选择的章节
         mAdapter.data.forEach {
             if (it.chapter_edit_select && it.down_status == DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
-                it.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
                 tempDownloadList.add(it)
             }
         }

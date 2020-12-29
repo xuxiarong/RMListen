@@ -115,7 +115,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         PlayGlobalData.playIsError.set(true)
     }
 
-    override fun onPrepared(totalDurtion: Long) {
+    override fun onPrepared(totalDurtion: Long,isAd : Boolean) {
         DLog.d("suolong_GlobalPlayHelper","onPrepared")
         PlayGlobalData.playIsError.set(false)
         //播放广告的时候，播放速度不生效，正常播放生效
@@ -195,13 +195,14 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             BaseConstance.updatePlayFinish()
             PlayGlobalData.updatePlayChapterProgress(isPlayFinish = true)
             PlayGlobalData.playNeedQueryChapterProgress.set(false)
-            PlayGlobalData.checkCountChapterPlayEnd(playWhenReady)
-            if(PlayGlobalData.playCountDownChapterSize.get() == 0){
-                musicPlayerManger.pause()
-            }else{
-                when (musicPlayerManger.getPlayerModel()) {
-                    //顺序播放
-                    MUSIC_MODEL_ORDER -> {
+
+            when (musicPlayerManger.getPlayerModel()) {
+                //顺序播放
+                MUSIC_MODEL_ORDER -> {
+                    PlayGlobalData.checkCountChapterPlayEnd(PlayGlobalData.hasNextChapter.get())
+                    if(PlayGlobalData.playCountDownChapterSize.get() == 0){
+                        musicPlayerManger.pause()
+                    }else{
                         if (PlayGlobalData.hasNextChapter.get()) {
                             PlayGlobalData.playNeedQueryChapterProgress.set(false)
                             getChapterAd {
@@ -209,8 +210,13 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                             }
                         }
                     }
-                    //单曲播放
-                    MUSIC_MODEL_SINGLE -> {
+                }
+                //单曲播放
+                MUSIC_MODEL_SINGLE -> {
+                    PlayGlobalData.checkCountChapterPlayEnd(true)
+                    if(PlayGlobalData.playCountDownChapterSize.get() == 0){
+                        musicPlayerManger.pause()
+                    }else{
                         PlayGlobalData.playChapterId.get()?.let {
                             PlayGlobalData.playNeedQueryChapterProgress.set(false)
                             getChapterAd {

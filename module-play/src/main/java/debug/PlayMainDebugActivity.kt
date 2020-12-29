@@ -29,7 +29,7 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
         TODO("Not yet implemented")
     }
 
-    override fun onPrepared(totalDurtion: Long) {
+    override fun onPrepared(totalDurtion: Long, isAd: Boolean) {
         seek_bar.max = totalDurtion.toInt()
     }
 

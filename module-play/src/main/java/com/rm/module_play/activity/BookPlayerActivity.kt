@@ -90,6 +90,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     baseActivity.tipView.showTipView(baseActivity, "书籍或者章节的ID不能为空")
                     return
                 }else{
+                    PlayGlobalData.playAudioId.set(playAudioId)
+                    PlayGlobalData.playChapterId.set(playChapterId)
                     BaseConstance.basePlayInfoModel.get()?.let {
                         //如果播放的书籍或者章节不一致，则先把播放器的数据清除掉
                         if(playAudioId!=it.playAudioId || playChapterId!=it.playChapterId){
