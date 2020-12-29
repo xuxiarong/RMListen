@@ -574,7 +574,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         val count = "${it.subscription_count.toInt() + 1}"
                         it.subscription_count = count
                         subscriptionCount.set(count)
-                        PlayGlobalData.initPlayAudio(it)
+                        PlayGlobalData.playAudioModel.set(it)
                     }
                     subscribeSuccess(context)
                 },
@@ -598,7 +598,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         val count = "${it.subscription_count.toInt() - 1}"
                         it.subscription_count = count
                         subscriptionCount.set(count)
-                        PlayGlobalData.initPlayAudio(it)
+                        PlayGlobalData.playAudioModel.set(it)
                     }
                     isSubscribe.set(false)
                     showTip("取消订阅成功")
@@ -807,7 +807,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     PlayGlobalData.playAudioModel.get()?.let {
                         it.anchor?.let { anchor ->
                             anchor.status = true
-                            PlayGlobalData.initPlayAudio(it)
+                            PlayGlobalData.playAudioModel.set(it)
                         }
                     }
                     isAttention.set(true)
@@ -855,7 +855,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     PlayGlobalData.playAudioModel.get()?.let {
                         it.anchor?.let { anchor ->
                             anchor.status = false
-                            PlayGlobalData.initPlayAudio(it)
+                            PlayGlobalData.playAudioModel.set(it)
                         }
                     }
                     isAttention.set(false)

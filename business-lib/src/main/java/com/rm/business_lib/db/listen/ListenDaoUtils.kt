@@ -50,6 +50,12 @@ object ListenDaoUtils {
 
     fun deleteAudio(audio: ListenAudioEntity) {
         listenAudioDao.delete(audio)
+        deleteChapterByAudio(audio.audio_id)
+    }
+
+    fun deleteAllAudio(){
+        listenAudioDao.deleteAll()
+        listenChapterDao.deleteAll()
     }
 
     fun queryAudioById(audioId: Long): ListenAudioEntity? {
@@ -68,6 +74,21 @@ object ListenDaoUtils {
             e.printStackTrace()
         }
         return null
+    }
+
+    fun deleteChapterByAudio(audioId: Long){
+        try {
+            val queryBuilder = listenChapterDao.queryBuilder()
+            if (queryBuilder != null) {
+                val result = queryBuilder
+                    .where(ListenChapterEntityDao.Properties.Audio_id.eq(audioId)).list()
+                if(result!=null){
+                    listenChapterDao.delete(result)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 

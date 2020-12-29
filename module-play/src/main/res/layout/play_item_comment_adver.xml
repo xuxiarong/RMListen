@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.clickDelCommentAd(item)}"
-            android:src="@drawable/play_icon_del_df"
+            android:src="@drawable/business_ic_ad_close"
             app:layout_constraintBottom_toBottomOf="@id/play_item_comment_advertise_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/play_item_comment_advertise_icon" />

@@ -90,12 +90,13 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     baseActivity.tipView.showTipView(baseActivity, "书籍或者章节的ID不能为空")
                     return
                 }else{
-                    PlayGlobalData.playAudioId.set(playAudioId)
-                    PlayGlobalData.playChapterId.set(playChapterId)
                     BaseConstance.basePlayInfoModel.get()?.let {
                         //如果播放的书籍或者章节不一致，则先把播放器的数据清除掉
                         if(playAudioId!=it.playAudioId || playChapterId!=it.playChapterId){
                             PlayGlobalData.playChapterList.value = mutableListOf()
+                            PlayGlobalData.playAudioId.set(playAudioId)
+                            PlayGlobalData.playChapterId.set(playChapterId)
+                            BaseConstance.updateBaseChapterId(playAudioId, playChapterId)
                         }
                     }
                 }
@@ -186,7 +187,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     } else {
                         GlobalPlayHelper.INSTANCE.onPlayMusiconInfo(
                                 currentPlayerMusic,
-                                musicPlayerManger.getCurrentPlayIndex()
+                                musicPlayerManger.getCurrentPlayIndex(),false
                         )
                     }
                 } else {
@@ -249,18 +250,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         }
         when {
             playCurrentDuration <= 0 -> {
-                PlayGlobalData.process.set(0F)
-                //如果播放的是
-                if (chapterId == BaseConstance.basePlayInfoModel.get()?.playChapterId) {
-                    musicPlayerManger.startPlayMusic(chapterId = chapterId)
-                } else {
-                    mViewModel.getChapterAd { musicPlayerManger.startPlayMusic(chapterId = chapterId) }
-                }
+                mViewModel.getChapterAd { musicPlayerManger.startPlayMusic(chapterId = chapterId) }
             }
             else -> {
                 musicPlayerManger.setAdPath(arrayListOf())
                 musicPlayerManger.startPlayMusic(chapterId = chapterId)
-                musicPlayerManger.seekTo(playCurrentDuration)
             }
         }
     }
@@ -272,7 +266,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
             mViewModel.getDetailInfo(playAudioId)
         } else {
-            PlayGlobalData.initPlayAudio(playAudioModel)
+            PlayGlobalData.playAudioModel.set(playAudioModel)
+            mViewModel.getDetailInfo(playAudioId)
         }
         //首次进入获取一次广告数据
         mViewModel.getAudioFloorAd()
@@ -319,7 +314,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 PlayGlobalData.playChapterId.get() ?: "",
                 PlayGlobalData.playChapter.get()?.chapter_name ?: ""
         )
-
     }
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {

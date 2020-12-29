@@ -281,20 +281,22 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     override fun startPlayMusic(chapterId: String) {
         mCurrentPlayIndex = mAudios.indexOfFirst { it.chapterId == chapterId }
-        postViewHandlerCurrentPosition(mCurrentPlayIndex)
         if (mAdAudios.isNotEmpty()) {
+            postViewHandlerCurrentPosition(mCurrentPlayIndex,true)
             startPlayAd(mAdAudios[Random.nextInt(mAdAudios.size)].audioPath)
         } else {
+            postViewHandlerCurrentPosition(mCurrentPlayIndex,false)
             playChapter()
         }
     }
 
     private fun startPlayMusic(playIndex: Int) {
         mCurrentPlayIndex = playIndex
-        postViewHandlerCurrentPosition(mCurrentPlayIndex)
         if (mAdAudios.isNotEmpty()) {
+            postViewHandlerCurrentPosition(mCurrentPlayIndex,true)
             startPlayAd(mAdAudios[Random.nextInt(mAdAudios.size)].audioPath)
         } else {
+            postViewHandlerCurrentPosition(mCurrentPlayIndex,false)
             playChapter()
         }
     }
@@ -501,13 +503,13 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      * 上报给UI组件，当前内部自动正在处理的对象位置
      * @param currentPlayIndex 数据源中的Index
      */
-    private fun postViewHandlerCurrentPosition(currentPlayIndex: Int) {
+    private fun postViewHandlerCurrentPosition(currentPlayIndex: Int,isAd : Boolean) {
         //最后更新通知栏
         showNotification()
         if (mAudios.size > currentPlayIndex && currentPlayIndex >= 0) {
             mOnPlayerEventListeners.forEach {
                 it.onPlayMusiconInfo(
-                        mAudios[currentPlayIndex], currentPlayIndex
+                        mAudios[currentPlayIndex], currentPlayIndex,isAd
                 )
             }
         }

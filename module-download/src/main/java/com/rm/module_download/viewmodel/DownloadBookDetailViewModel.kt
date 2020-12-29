@@ -5,6 +5,7 @@ import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonPositionVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.component_comm.play.PlayService
@@ -34,10 +35,12 @@ class DownloadBookDetailViewModel : BaseVMViewModel() {
     }
 
     fun downloadChapterClick(context: Context, chapter: DownloadChapter) {
+        PlayGlobalData.playNeedQueryChapterProgress.set(true)
         playService.startPlayActivity(
             context,
             audioId = chapter.audio_id.toString(),
             chapterId = chapter.chapter_id.toString(),
+            audioInfo = downloadAudio.get()?:DownloadAudio(),
             chapterList = downloadingAdapter.data,
             currentDuration = chapter.listen_duration
         )

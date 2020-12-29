@@ -35,7 +35,7 @@
             android:layout_height="@dimen/dp_40"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_16"
-            android:src="@drawable/business_icon_swipe_delete" />
+            android:src="@drawable/business_ic_ad_close" />
 
     </LinearLayout>
 </layout>
