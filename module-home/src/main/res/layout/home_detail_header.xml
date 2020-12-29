@@ -16,147 +16,139 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/search_main_tool_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_detail_icon"
+            bindUrl="@{viewModel.detailInfoData.list.audio_cover_url}"
+            corner="@{8.0f}"
+            android:layout_width="@dimen/dp_144"
+            android:layout_height="@dimen/dp_144"
+            android:layout_marginTop="@dimen/dp_16"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="#3f00" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/home_detail_icon"
-                bindUrl="@{viewModel.detailInfoData.list.audio_cover_url}"
-                corner="@{8.0f}"
-                android:layout_width="@dimen/dp_144"
-                android:layout_height="@dimen/dp_144"
-                android:layout_marginTop="@dimen/dp_16"
-                android:scaleType="fitXY"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="#3f00" />
+        <View
+            android:id="@+id/home_book_adapter_play_bg"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_28"
+            android:background="@drawable/business_shape_gradient_0000000_66000000"
+            app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
+            app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
+            app:layout_constraintStart_toStartOf="@id/home_detail_icon" />
 
-            <View
-                android:id="@+id/home_book_adapter_play_bg"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_28"
-                android:background="@drawable/business_shape_gradient_0000000_66000000"
-                app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
-                app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
-                app:layout_constraintStart_toStartOf="@id/home_detail_icon" />
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/home_menu_book_adapter_tips"
+            bindText="@{viewModel.detailInfoData.list.audio_label}"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_16"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_4"
+            android:textColor="@color/businessWhite"
+            android:textSize="@dimen/business_text_size_10sp"
+            app:layout_constraintRight_toRightOf="@id/home_detail_icon"
+            app:layout_constraintTop_toTopOf="@id/home_detail_icon"
+            app:rv_backgroundColor="@color/business_color_ff5e5e"
+            app:rv_cornerRadius_BL="@dimen/dp_4"
+            app:rv_cornerRadius_TR="@dimen/dp_4"
+            tools:text="文案" />
 
-            <com.flyco.roundview.RoundTextView
-                android:id="@+id/home_menu_book_adapter_tips"
-                bindText="@{viewModel.detailInfoData.list.audio_label}"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_16"
-                android:enabled="false"
-                android:gravity="center"
-                android:paddingStart="@dimen/dp_4"
-                android:paddingEnd="@dimen/dp_4"
-                android:textColor="@color/businessWhite"
-                android:textSize="@dimen/business_text_size_10sp"
-                app:layout_constraintRight_toRightOf="@id/home_detail_icon"
-                app:layout_constraintTop_toTopOf="@id/home_detail_icon"
-                app:rv_backgroundColor="@color/business_color_ff5e5e"
-                app:rv_cornerRadius_BL="@dimen/dp_4"
-                app:rv_cornerRadius_TR="@dimen/dp_4"
-                tools:text="文案" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                bindPlayCountString="@{viewModel.detailInfoData.list.play_count}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:drawableStart="@drawable/home_icon_play_ed"
-                android:textColor="@color/businessWhite"
-                app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
-                app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
-                tools:text="14W" />
+        <androidx.appcompat.widget.AppCompatTextView
+            bindPlayCountString="@{viewModel.detailInfoData.list.play_count}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:drawableStart="@drawable/home_icon_play_ed"
+            android:textColor="@color/businessWhite"
+            app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
+            app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
+            tools:text="14W" />
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_detail_audio_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_12"
-                android:maxLines="2"
-                android:text="@{viewModel.detailInfoData.list.audio_name}"
-                android:textColor="@color/business_text_color_333333"
-                android:textSize="@dimen/business_text_size_18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/home_detail_icon"
-                app:layout_constraintTop_toTopOf="@id/home_detail_icon"
-                tools:text="书名" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_detail_audio_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:maxLines="2"
+            android:text="@{viewModel.detailInfoData.list.audio_name}"
+            android:textColor="@color/business_text_color_333333"
+            android:textSize="@dimen/business_text_size_18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/home_detail_icon"
+            app:layout_constraintTop_toTopOf="@id/home_detail_icon"
+            tools:text="书名" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_detail_author"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/home_detail_icon_author_ee"
-                android:paddingTop="@dimen/dp_4"
-                android:paddingBottom="@dimen/dp_6"
-                android:singleLine="true"
-                android:text="@{viewModel.detailInfoData.list.author}"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="@dimen/business_text_size_12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/home_detail_audio_name"
-                app:layout_constraintTop_toBottomOf="@id/home_detail_audio_name"
-                tools:text="作者：曹雪芹" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_detail_author"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/home_detail_icon_author_ee"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_6"
+            android:singleLine="true"
+            android:text="@{viewModel.detailInfoData.list.author}"
+            android:textColor="@color/business_text_color_666666"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/home_detail_audio_name"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_audio_name"
+            tools:text="作者：曹雪芹" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_detail_anchor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/home_detail_icon_anchor_ee"
-                android:singleLine="true"
-                android:text="@{viewModel.detailInfoData.list.anchor.anchor_name}"
-                android:textColor="@color/business_text_color_666666"
-                android:textSize="@dimen/business_text_size_12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/home_detail_audio_name"
-                app:layout_constraintTop_toBottomOf="@id/home_detail_author"
-                tools:text="主播：小丸子的朋友" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_detail_anchor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/home_detail_icon_anchor_ee"
+            android:singleLine="true"
+            android:text="@{viewModel.detailInfoData.list.anchor.anchor_name}"
+            android:textColor="@color/business_text_color_666666"
+            android:textSize="@dimen/business_text_size_12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/home_detail_audio_name"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_author"
+            tools:text="主播：小丸子的朋友" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/home_detail_btn_subscribe"
-                android:layout_width="@dimen/dp_141"
-                android:layout_height="@dimen/dp_30"
-                android:layout_marginTop="@dimen/dp_26"
-                android:background="@{viewModel.isSubscribed?@drawable/business_attention_un_select:@drawable/business_shape_round_ff5e5e_32dp}"
-                android:gravity="center"
-                android:onClick="@{()->viewModel.clickSubscribeFun(context)}"
-                android:text="@{viewModel.isSubscribed?@string/home_detail_subscribed:@string/home_detail_subscription}"
-                android:textColor="@{viewModel.isSubscribed?@color/business_text_color_b1b1b1:@color/businessWhite}"
-                app:layout_constraintBottom_toBottomOf="@+id/home_detail_icon"
-                app:layout_constraintStart_toStartOf="@id/home_detail_audio_name"
-                tools:background="@drawable/business_shape_round_ff5e5e_32dp"
-                tools:text="@string/home_detail_subscription"
-                tools:textColor="@color/businessWhite" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/home_detail_btn_subscribe"
+            android:layout_width="@dimen/dp_141"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_26"
+            android:background="@{viewModel.isSubscribed?@drawable/business_attention_un_select:@drawable/business_shape_round_ff5e5e_32dp}"
+            android:gravity="center"
+            android:onClick="@{()->viewModel.clickSubscribeFun(context)}"
+            android:text="@{viewModel.isSubscribed?@string/home_detail_subscribed:@string/home_detail_subscription}"
+            android:textColor="@{viewModel.isSubscribed?@color/business_text_color_b1b1b1:@color/businessWhite}"
+            app:layout_constraintBottom_toBottomOf="@+id/home_detail_icon"
+            app:layout_constraintStart_toStartOf="@id/home_detail_audio_name"
+            tools:background="@drawable/business_shape_round_ff5e5e_32dp"
+            tools:text="@string/home_detail_subscription"
+            tools:textColor="@color/businessWhite" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                isVisible="@{!viewModel.isSubscribed}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:src="@drawable/business_menu_red_bg"
-                app:layout_constraintEnd_toEndOf="@id/home_detail_btn_subscribe"
-                app:layout_constraintStart_toStartOf="@id/home_detail_btn_subscribe"
-                app:layout_constraintTop_toBottomOf="@id/home_detail_btn_subscribe" />
+        <androidx.appcompat.widget.AppCompatImageView
+            isVisible="@{!viewModel.isSubscribed}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/business_menu_red_bg"
+            app:layout_constraintEnd_toEndOf="@id/home_detail_btn_subscribe"
+            app:layout_constraintStart_toStartOf="@id/home_detail_btn_subscribe"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_btn_subscribe" />
 
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/home_detail_collect_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_12"
-                android:background="@drawable/shape_round"
-                android:onClick="@{()->viewModel.clickCollectionFun(context)}"
-                android:src="@drawable/business_icon_unfavorites"
-                app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/home_detail_btn_subscribe" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_detail_collect_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:background="@drawable/shape_round"
+            android:onClick="@{()->viewModel.clickCollectionFun(context)}"
+            android:src="@drawable/business_icon_unfavorites"
+            app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/home_detail_btn_subscribe" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_detail_tx_status"
@@ -166,7 +158,7 @@
             android:text="@{viewModel.showStatus}"
             android:textColor="@color/business_text_color_666666"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_main_tool_bar"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_icon"
             tools:text="已完结" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -215,6 +207,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/home_detail_line">
 
@@ -397,11 +390,11 @@
             isVisible="@{viewModel.commentEmptyVisible}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingTop="@dimen/dp_20"
             android:paddingBottom="@dimen/dp_20"
-            android:gravity="center"
             android:text="@string/business_comment_empty"
-            android:textColor="@color/business_text_color_333333"
+            android:textColor="@color/business_color_b1b1b1"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintTop_toBottomOf="@id/home_detail_drag_layout"
             tools:visibility="visible" />

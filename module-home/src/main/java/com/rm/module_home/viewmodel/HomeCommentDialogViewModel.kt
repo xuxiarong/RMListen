@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.home_dialog_comment.*
  */
 class HomeCommentDialogViewModel(
     private val audioId: String,
+    private val anchorId: String,
     private val commentSuccessBlock: () -> Unit
 ) : BaseVMViewModel() {
     init {
@@ -169,7 +170,7 @@ class HomeCommentDialogViewModel(
                     isShowProgress = true
                 )
                 if (NetworkChangeReceiver.isAvailable.get()) {
-                    sendComment(view, it, audioId, loginUser.get()!!.id!!)
+                    sendComment(view, it, audioId)
                 } else {
                     showTip(
                         msg = "当前网络不可用",
@@ -192,11 +193,10 @@ class HomeCommentDialogViewModel(
     private fun sendComment(
         view: View,
         content: String,
-        audio_id: String,
-        anchor_id: String
+        audio_id: String
     ) {
         launchOnIO {
-            repository.homeSendComment(content, audio_id, anchor_id).checkResult(
+            repository.homeSendComment(content, audio_id, anchorId).checkResult(
                 onSuccess = {
                     val imm =
                         view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -207,7 +207,7 @@ class HomeCommentDialogViewModel(
                     mDialog.dismiss()
                     hideTipView()
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showTip(
                         msg = "$it",
                         color = R.color.business_color_ff5e5e,

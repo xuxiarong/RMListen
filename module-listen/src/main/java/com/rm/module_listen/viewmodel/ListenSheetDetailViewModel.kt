@@ -196,6 +196,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                 }
                 rightBtnClick = {
                     removeAudioFun(bean)
+                    dismiss()
                 }
             }.show(it)
         }

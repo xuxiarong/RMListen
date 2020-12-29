@@ -74,6 +74,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                 }
                 rightBtnClick = {
                     dialogUnsubscribeFun(bean)
+                    dismiss()
                 }
             }.show(it)
         }

@@ -8,12 +8,13 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
+import androidx.annotation.IntDef
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
-import com.rm.baselisten.utilExt.screenHeight
+import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
+import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.module_home.R
 import kotlin.math.abs
 
@@ -70,7 +71,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     /**
      * 滚动到顶部监听
      */
-    private var topListener: ScrollTopListener? = null
+    private var changeTypeListener: ScrollChangeTypeListener? = null
 
     private lateinit var headerLayout: ConstraintLayout
 
@@ -287,11 +288,11 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                topListener?.toTop(mCurType == TYPE_TOP)
+                changeTypeListener?.changeType(mCurType)
             }
 
             override fun onAnimationCancel(animation: Animator?) {
-                topListener?.toTop(mCurType == TYPE_TOP)
+                changeTypeListener?.changeType(mCurType)
             }
 
             override fun onAnimationStart(animation: Animator?) {
@@ -300,13 +301,17 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
         animator.start()
     }
 
-    fun setScrollTopListener(topListener: ScrollTopListener) {
-        this.topListener = topListener
+    fun setScrollChangeTypeListener(changeTypeListener: ScrollChangeTypeListener) {
+        this.changeTypeListener = changeTypeListener
     }
 
-    interface ScrollTopListener {
-        fun toTop(isTop: Boolean)
+    interface ScrollChangeTypeListener {
+        fun changeType(@HomeDetailInterceptChangeType nowType: Int)
     }
+
+    @IntDef(TYPE_TOP, TYPE_CENTER, TYPE_BOTTOM)
+    annotation class HomeDetailInterceptChangeType(val type: Int = TYPE_CENTER)
+
 }
 
 @BindingAdapter("bindCanLoadMore", "bindCanRefresh", requireAll = false)

@@ -23,7 +23,7 @@ import java.io.File
  * date   : 2020/08/04
  * version: 1.0
  */
-class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
+class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewModel() {
     companion object {
         const val INSTALL_RESULT_CODE = 1003
     }
@@ -83,7 +83,6 @@ class HomeSplashViewModel(val repository: MainRepository) : BaseVMViewModel() {
      * 版本更新
      */
     fun getLaseVersion() {
-        DLog.i("=====>versionInfo", "getLaseVersion")
         launchOnIO {
             repository.homeGetLaseUrl().checkResult(
                 onSuccess = {

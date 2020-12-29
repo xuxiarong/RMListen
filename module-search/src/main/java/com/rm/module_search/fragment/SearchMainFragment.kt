@@ -123,10 +123,14 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         mViewModel.hintBannerList.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                curIndex = 0
-                val list = mViewModel.hintBannerList.get()!!
-                mDataBind.searchMainEditText.hint = list[0]
-                startHintBanner()
+                mViewModel.hintBannerList.get()?.let {
+                    if (it.isNotEmpty()) {
+                        curIndex = 0
+                        mDataBind.searchMainEditText.hint = it[0]
+                        mViewModel.lastHint.set(it[0])
+                        startHintBanner()
+                    }
+                }
             }
         })
 
@@ -214,6 +218,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
                     }
                     val str = list[it.curIndex]
                     it.mViewModel.hintKeyword = str
+                    it.mViewModel.lastHint.set(str)
                     it.mDataBind.searchMainEditText.hint = str
                     it.startHintBanner()
                 }

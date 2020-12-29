@@ -85,11 +85,10 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 val versionInfo = mViewModel.versionInfo.get()
                 if (versionInfo != null) {
                     val lastVersion = versionInfo.version?.replace(".", "") ?: "0"
-//                    val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
-                    val localVersion = BuildConfig.VERSION_CODE
+                    val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
                     try {
-                        if (lastVersion.toInt() - localVersion > 0) {
-//                            //强制更新
+                        if (lastVersion.toInt() - localVersion.toInt() > 0) {
+                            //强制更新
                             if (TextUtils.equals(versionInfo.type, "2")) {
                                 mViewModel.showUploadDialog(this@SplashActivity,
                                     sureIsDismiss = true,
@@ -102,21 +101,21 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                             } else {
                                 //一天内只显示一次
                                 val curTime = 24 * 60 * 60 * 1000
-//                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
-                                UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
-                                //普通更新
-                                mViewModel.showUploadDialog(this@SplashActivity,
-                                    sureIsDismiss = true,
-                                    cancelIsFinish = false,
-                                    sureBlock = {
+                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
+                                    UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
+                                    //普通更新
+                                    mViewModel.showUploadDialog(this@SplashActivity,
+                                        sureIsDismiss = true,
+                                        cancelIsFinish = false,
+                                        sureBlock = {
 
-                                    },
-                                    cancelBlock = {
-                                        loadAd()
-                                    })
-//                                } else {
-//                                    loadAd()
-//                                }
+                                        },
+                                        cancelBlock = {
+                                            loadAd()
+                                        })
+                                } else {
+                                    loadAd()
+                                }
                             }
                         } else {
                             loadAd()

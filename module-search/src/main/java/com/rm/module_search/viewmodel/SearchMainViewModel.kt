@@ -87,6 +87,8 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     //清除按钮是否显示
     val clearVisible = ObservableField<Boolean>(false)
 
+    val lastHint = ObservableField<String>("")
+
     //搜索是否结束
     private var resultIsEnd = true
 
@@ -144,13 +146,16 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                 imm.hideSoftInputFromWindow(it.applicationWindowToken, 0)
             }
         }
-        val keyword =
+        var keyword =
             if (keyWord.get()!!.isEmpty()) {
                 hintKeyword
             } else {
                 keyWord.get()!!
             }
 
+        if (keyword.isEmpty()) {
+            keyword = lastHint.get()!!
+        }
         view?.context?.let {
             SearchResultActivity.startActivity(it, keyword)
         }
@@ -225,7 +230,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                     mTabDataList.set(tabList)
                     hotRecommend.set(list)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("-------->", "searchHotRecommend:$it")
                 }
             )
@@ -241,7 +246,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                 onSuccess = {
                     hintBannerList.set(it.keywords?.split(","))
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("-------->", "searchHintBanner:$it")
                 }
             )
@@ -260,7 +265,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                     recommendVisible.set(true)
                     adapter.setList(split)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("-------->", "searchRecommend:$it")
                 })
         }
@@ -283,7 +288,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                         inputAdapter.setList(null)
                     }
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     resultIsEnd = true
                 }
             )

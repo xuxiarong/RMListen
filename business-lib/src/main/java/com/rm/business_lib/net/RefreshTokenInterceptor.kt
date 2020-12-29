@@ -2,10 +2,10 @@ package com.rm.business_lib.net
 
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.baselisten.net.util.GsonUtils
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
 import com.rm.baselisten.util.putMMKV
@@ -19,11 +19,10 @@ import com.rm.business_lib.utils.DeviceUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.Interceptor
-import okhttp3.Protocol
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.Buffer
+import okio.GzipSource
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
@@ -71,17 +70,20 @@ class RefreshTokenInterceptor : Interceptor {
             // 原请求地址
             val originReqUrl = originRequest.url.toString()
             //没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
-            DLog.i("=====>RefreshTokenInterceptor", "=====>>>>$originReqUrl")
+            Log.i("=====>TokenInterceptor", "=====>>>>$originReqUrl")
 
-            if (TextUtils.isEmpty(getResponseString(originResponse))) {
-                DLog.i("=====>RefreshTokenInterceptor", "=====000000000   ${request.url}")
+            val responseString = getResponseString(originResponse)
+            Log.i("=====>TokenInterceptor", "====response=>>>>$responseString")
+
+            if (TextUtils.isEmpty(responseString)) {
+                Log.i("=====>TokenInterceptor", "=====000000000   ${request.url}")
                 return originResponse.newBuilder().code(originResponse.code)
                     .body(body).build()
             }
-            val code = getResponseCode(originResponse)
-            DLog.i("=====>RefreshTokenInterceptor", "=====code:>>>>$code")
+            val code = getResponseCode(responseString)
+            Log.i("=====>TokenInterceptor", "=====code:>>>>$code")
             return if (code == CODE_REFRESH_TOKEN) {
-                DLog.i("=====>RefreshTokenInterceptor", "token 过期$code")
+                Log.i("=====>TokenInterceptor", "token 过期$code")
                 val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
                 val newToken = getToken(token)
                 //token刷新成功
@@ -89,7 +91,7 @@ class RefreshTokenInterceptor : Interceptor {
                     val headers = request.headers.newBuilder()
                     headers["Authorization"] = "Bearer $newToken"
                     val newRequest = request.newBuilder().headers(headers.build()).build()
-                    DLog.i("=====>RefreshTokenInterceptor", "=====111111  ${request.url}")
+                    Log.i("=====>TokenInterceptor", "=====111111  ${request.url}")
                     chain.proceed(newRequest)
                 } else {
                     //token 刷新失败
@@ -99,30 +101,24 @@ class RefreshTokenInterceptor : Interceptor {
                     val headers = request.headers.newBuilder()
                     headers["Authorization"] = "Bearer "
                     val newRequest = request.newBuilder().headers(headers.build()).build()
-                    DLog.i("=====>RefreshTokenInterceptor", "=====2222222  ${request.url}")
+                    Log.i("=====>TokenInterceptor", "=====2222222  ${request.url}")
                     chain.proceed(newRequest)
                 }
-            } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN /*|| code == CODE_REFRESH_TOKEN_FAILED*/) {
-                DLog.i("=====>RefreshTokenInterceptor", "登陆失效，有可能是token失效 --- code = $code")
-
+            } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN || code == CODE_REFRESH_TOKEN_FAILED) {
+                Log.i("=====>TokenInterceptor", "登陆失效，有可能是token失效  $responseString")
                 //被挤下线了/用户未登陆  需要放在主线程去更新，不然会出现异常
                 GlobalScope.launch(Dispatchers.Main) {
                     loginOut()
                 }
-//            val headers = request.headers.newBuilder()
-//            headers["Authorization"] = "Bearer "
-//            val newRequest = request.newBuilder().headers(headers.build()).build()
-//            DLog.i("=====>RefreshTokenInterceptor", "=====333333 $code")
-//            chain.proceed(newRequest)
                 originResponse.newBuilder().code(originResponse.code)
                     .body(body).build()
             } else {
-                DLog.i("=====>RefreshTokenInterceptor", "=====444444 ${request.url}")
+                Log.i("=====>TokenInterceptor", "=====444444 ${request.url}")
                 originResponse.newBuilder().code(originResponse.code)
                     .body(body).build()
             }
         } catch (e: Exception) {
-            DLog.i("=====>RefreshTokenInterceptor", "Exception:${e.message}")
+            Log.i("=====>TokenInterceptor", "Exception:${e.message}")
             val json = GsonUtils.toJson(BaseResponse(10086, "网络异常", Any()))
             return Response.Builder()
                 .request(chain.request())
@@ -137,7 +133,7 @@ class RefreshTokenInterceptor : Interceptor {
     @Throws(IOException::class)
     fun getToken(token: String): String {
         val refreshToken = REFRESH_TOKEN.getStringMMKV("")
-        DLog.i("=====>RefreshTokenInterceptor", "=====getToken $refreshToken")
+        Log.i("=====>TokenInterceptor", "=====getToken $refreshToken")
 
         val result = apiService.refreshToken(token).execute().body()
         return if (result?.code == 0) {
@@ -151,16 +147,32 @@ class RefreshTokenInterceptor : Interceptor {
 
     private fun getResponseString(response: Response): String? {
         val body = response.body
-        val source = body?.source()
-        val buffer = source?.buffer
-        val contentType = body?.contentType()
-        val charset: Charset =
-            contentType?.charset(StandardCharsets.UTF_8) ?: StandardCharsets.UTF_8
-        return buffer?.clone()?.readString(charset)
+        if (body != null) {
+            val contentLength = body.contentLength()
+            val source = body.source()
+            source.request(Long.MAX_VALUE)
+            var buffer = source.buffer
+            val headers = response.headers
+            if ("gzip".equals(headers["Content-Encoding"], ignoreCase = true)) {
+                GzipSource(buffer.clone()).use { gzippedResponseBody ->
+                    buffer = Buffer()
+                    buffer.writeAll(gzippedResponseBody)
+                }
+            }
+            val contentType = body.contentType()
+            val charset: Charset =
+                contentType?.charset(StandardCharsets.UTF_8) ?: StandardCharsets.UTF_8
+            return if (contentLength != 0L) {
+                buffer.clone().readString(charset)
+            }else{
+                null
+            }
+        } else {
+            return null
+        }
     }
 
-    private fun getResponseCode(response: Response): Int {
-        val readString = getResponseString(response)
+    private fun getResponseCode(readString: String?): Int {
         if (readString.isNullOrEmpty()) {
             return -1
         }

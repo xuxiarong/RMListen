@@ -51,6 +51,8 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     //输入框内容监听
     var inputKeyWord: (String) -> Unit = { inputKeyWordChange(it) }
 
+    val inputHint = ObservableField<String>("")
+
     //清除按钮是否显示
     val clearVisible = ObservableField<Boolean>(false)
 
@@ -199,12 +201,13 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
             repository.searchResult(keyword, REQUEST_TYPE_ALL, 1, 12).checkResult(
                 onSuccess = {
                     showContentView()
+                    inputHint.set(keyword)
                     searchResultData.postValue(it)
                     historyVisible.set(false)
                     suggestIsVisible.set(false)
                     contentIsVisible.set(true)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     searchResultData.postValue(
                         SearchResultBean(
@@ -235,7 +238,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
                     val list = it.keywords?.split(",")
                     inputAdapter.setList(list)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     resultIsEnd = true
                 }
             )

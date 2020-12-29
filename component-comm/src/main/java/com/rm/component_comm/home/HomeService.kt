@@ -55,6 +55,7 @@ interface HomeService : ApplicationProvider {
     fun showCommentDialog(
         mActivity: FragmentActivity,
         audio: String,
+        anchorId: String,
         commentSuccessBlock: () -> Unit
     )
 

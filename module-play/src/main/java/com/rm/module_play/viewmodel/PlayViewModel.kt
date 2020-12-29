@@ -723,9 +723,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun clickCommentFun(context: Context) {
         getActivity(context)?.let {
             if (isLogin.get()) {
-                PlayGlobalData.playAudioId.get()?.let { audioId ->
+                PlayGlobalData.playAudioModel.get()?.let { playAudio ->
                     RouterHelper.createRouter(HomeService::class.java)
-                        .showCommentDialog(it, audioId) {
+                        .showCommentDialog(it, playAudio.audio_id.toString(),playAudio.anchor_id) {
                             showTip("评论成功")
                             commentPage = 1
                             getCommentList()

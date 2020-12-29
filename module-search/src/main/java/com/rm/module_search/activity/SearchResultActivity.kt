@@ -58,6 +58,7 @@ class SearchResultActivity :
 
         searchResultAdapter = SearchResultAdapter(this, mViewModel.tabList)
         mViewModel.keyWord.set(keyword)
+        mViewModel.inputHint.set(keyword)
 
         params = mDataBind.searchResultSuggestLayout.layoutParams as ConstraintLayout.LayoutParams
         mDataBind.root.viewTreeObserver.addOnGlobalLayoutListener(windowListener)

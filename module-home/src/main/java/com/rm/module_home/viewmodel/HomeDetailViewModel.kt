@@ -262,7 +262,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     listenAudio.set(audioRecord)
                     isAttention.set(audioRecord?.anchor?.status ?: false)
                     isSubscribed.set(audioRecord?.is_subscribe)
-                    if(audioRecord == null){
+                    if (audioRecord == null) {
                         listenAudio.notifyChange()
                     }
                 } catch (e: Exception) {
@@ -463,14 +463,15 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                         upChapterPage = chapterListModel.page
                         nextChapterPage = chapterListModel.page
                         processChapterData(chapterListModel, chapterListModel.page)
-                        val predicate: (DownloadChapter) -> Boolean = { it.chapter_id.toString() == chapterId }
+                        val predicate: (DownloadChapter) -> Boolean =
+                            { it.chapter_id.toString() == chapterId }
                         val position = chapterListModel.list?.indexOfFirst(predicate)
 
                         position?.let {
-                            if(position>0){
+                            if (position > 0) {
                                 chapterAdapter.recyclerView.postDelayed({
                                     chapterAdapter.recyclerView.smoothScrollToPosition(it)
-                                },200)
+                                }, 200)
                             }
                         }
                     }, onError = { it, _ ->
@@ -516,10 +517,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             configChapterPageList()
         }
         maxChapterPage = ceil(chapterTotal.get()!! / chapterPageSize.toFloat()).toInt()
-        DLog.i(
-            "------------>",
-            "$mCurSort     $nextChapterPage      $upChapterPage       $oldChapterPage     $page    "
-        )
 
         if (oldChapterPage > page) {
             bean.list?.let { chapterList.addAll(0, it) }
@@ -878,13 +875,14 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         getActivity(context)?.let {
             if (isLogin.get()) {
                 audioId.get()?.let { audioId ->
-                    HomeCommentDialogHelper(it, audioId) {
-                        commentPage = 1
-                        getCommentList(audioId)
-                        showTip("评论成功")
-                    }.showDialog()
+                    anchorId.get()?.let { anchorId ->
+                        HomeCommentDialogHelper(it, audioId, anchorId) {
+                            commentPage = 1
+                            getCommentList(audioId)
+                            showTip("评论成功")
+                        }.showDialog()
+                    }
                 }
-
             } else {
                 quicklyLogin(it)
             }

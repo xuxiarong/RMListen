@@ -18,8 +18,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{(view)->viewModel.itemClickFun(view,item)}"
-        android:layout_marginBottom="@dimen/dp_20">
+        android:layout_marginBottom="@dimen/dp_20"
+        android:onClick="@{(view)->viewModel.itemClickFun(view,item)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search_adapter_content_books_icon"
@@ -57,7 +57,7 @@
             bindSpanKeyword="@{viewModel.keyword}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
-           android:singleLine="true"
+            android:maxLines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
             app:layout_constraintTop_toTopOf="@id/search_adapter_content_books_icon"
@@ -71,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_6"
-            android:maxLines="2"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
             app:layout_constraintTop_toBottomOf="@id/search_adapter_content_books_title"
@@ -82,9 +82,9 @@
             style="@style/BusinessTextStyleThird_4"
             bindText="@{item.nickname}"
             android:layout_marginStart="@dimen/dp_12"
-            android:singleLine="true"
-            android:maxWidth="@dimen/dp_180"
             android:drawableStart="@drawable/search_icon_anchor"
+            android:maxWidth="@dimen/dp_180"
+            android:singleLine="true"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_content_books_icon"
             app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
             tools:text="我是中国人" />
