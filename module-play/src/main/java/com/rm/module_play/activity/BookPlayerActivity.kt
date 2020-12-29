@@ -295,6 +295,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     }
                 } else {
                     DLog.d("music-exoplayer-lib","initData  playAudioId = ${playAudioId} -- playChapterId = $playChapterId")
+                    PlayGlobalData.process.set(0F)
                     mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
                 }
             }
