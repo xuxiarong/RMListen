@@ -191,6 +191,7 @@ public class BendTabLayout extends HorizontalScrollView {
     int mSelectedTabTextColor;
     int mUnSelectedTabTextColor;
     float mTabTextSize;
+    float mTabSelectTextSize;
     float mTabTextMultiLineSize;
     boolean mTabTextSelectIsBold;
     final int mTabBackgroundResId;
@@ -262,6 +263,7 @@ public class BendTabLayout extends HorizontalScrollView {
         mTabPaddingBottom = a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabPaddingBottom, mTabPaddingBottom);
 
         mTabTextSize = a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabTextSize, dpToPx(DEFAULT_TAB_SIZE));
+        mTabSelectTextSize = a.getDimensionPixelSize(R.styleable.BendTabLayout_bendTabTextSelectTextSize, (int) mTabTextSize);
         mTabTextSelectIsBold = a.getBoolean(R.styleable.BendTabLayout_bendTabTextSelectIsBold, false);
         mSelectedTabTextColor = a.getColor(R.styleable.BendTabLayout_bendTabSelectedTextColor, Color.parseColor("#333333"));
 
@@ -1488,6 +1490,12 @@ public class BendTabLayout extends HorizontalScrollView {
             } else {
                 textView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             }
+
+            if (selected) {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabSelectTextSize);
+            } else {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
+            }
         }
 
         @Override
@@ -1560,6 +1568,9 @@ public class BendTabLayout extends HorizontalScrollView {
                     }
 
                     if (updateTextView) {
+                        if (mTextView.isSelected()) {
+                            textSize = mTabSelectTextSize;
+                        }
                         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
                         mTextView.setMaxLines(maxLines);
                         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

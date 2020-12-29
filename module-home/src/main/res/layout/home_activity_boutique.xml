@@ -30,6 +30,7 @@
             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
             app:bendTabTextSelectIsBold="true"
             app:bendTabTextSize="@dimen/business_text_size_16sp"
+            app:bendTabTextSelectTextSize="@dimen/business_text_size_20sp"
             app:bendTabUnSelectedTextColor="@color/business_text_color_333333" />
 
         <androidx.viewpager.widget.ViewPager

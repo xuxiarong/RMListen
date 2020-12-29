@@ -60,73 +60,75 @@ class RefreshTokenInterceptor : Interceptor {
         )
     }
 
+    @Synchronized
     override fun intercept(chain: Interceptor.Chain): Response {
-        try {
-            val originRequest = chain.request()
-            val request = getRequestHeaderBuilder(originRequest.newBuilder()).build()
-            //获取请求结果
-            val originResponse = chain.proceed(request)
-            val body = originResponse.body
-            // 原请求地址
-            val originReqUrl = originRequest.url.toString()
-            //没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
-            Log.i("=====>TokenInterceptor", "=====>>>>$originReqUrl")
+        synchronized(this) {
+            try {
+                val originRequest = chain.request()
+                val request = getRequestHeaderBuilder(originRequest.newBuilder()).build()
+                //获取请求结果
+                val originResponse = chain.proceed(request)
+                val body = originResponse.body
+                // 原请求地址
+                val originReqUrl = originRequest.url.toString()
+                //没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
+                Log.i("=====>TokenInterceptor", "=====>>>>$originReqUrl")
 
-            val responseString = getResponseString(originResponse)
-            Log.i("=====>TokenInterceptor", "====response=>>>>$responseString")
+                val responseString = getResponseString(originResponse)
+                Log.i("=====>TokenInterceptor", "====response=>>>>$responseString")
 
-            if (TextUtils.isEmpty(responseString)) {
-                Log.i("=====>TokenInterceptor", "=====000000000   ${request.url}")
-                return originResponse.newBuilder().code(originResponse.code)
-                    .body(body).build()
-            }
-            val code = getResponseCode(responseString)
-            Log.i("=====>TokenInterceptor", "=====code:>>>>$code")
-            return if (code == CODE_REFRESH_TOKEN) {
-                Log.i("=====>TokenInterceptor", "token 过期$code")
-                val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
-                val newToken = getToken(token)
-                //token刷新成功
-                if (!TextUtils.isEmpty(newToken)) {
-                    val headers = request.headers.newBuilder()
-                    headers["Authorization"] = "Bearer $newToken"
-                    val newRequest = request.newBuilder().headers(headers.build()).build()
-                    Log.i("=====>TokenInterceptor", "=====111111  ${request.url}")
-                    chain.proceed(newRequest)
-                } else {
-                    //token 刷新失败
+                if (TextUtils.isEmpty(responseString)) {
+                    Log.i("=====>TokenInterceptor", "=====000000000   ${request.url}")
+                    return originResponse.newBuilder().code(originResponse.code)
+                        .body(body).build()
+                }
+                val code = getResponseCode(responseString)
+                Log.i("=====>TokenInterceptor", "=====code:>>>>$code")
+                return if (code == CODE_REFRESH_TOKEN) {
+                    Log.i("=====>TokenInterceptor", "token 过期$code")
+                    val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
+                    val newToken = getToken(token)
+                    //token刷新成功
+                    if (!TextUtils.isEmpty(newToken)) {
+                        val headers = request.headers.newBuilder()
+                        headers["Authorization"] = "Bearer $newToken"
+                        val newRequest = request.newBuilder().headers(headers.build()).build()
+                        Log.i("=====>TokenInterceptor", "=====111111  ${request.url}")
+                        chain.proceed(newRequest)
+                    } else {
+                        //token 刷新失败
+                        GlobalScope.launch(Dispatchers.Main) {
+                            loginOut()
+                        }
+                        val headers = request.headers.newBuilder()
+                        headers["Authorization"] = "Bearer "
+                        val newRequest = request.newBuilder().headers(headers.build()).build()
+                        Log.i("=====>TokenInterceptor", "=====2222222  ${request.url}")
+                        chain.proceed(newRequest)
+                    }
+                } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN || code == CODE_REFRESH_TOKEN_FAILED) {
+                    Log.i("=====>TokenInterceptor", "登陆失效，有可能是token失效  $responseString")
+                    //被挤下线了/用户未登陆  需要放在主线程去更新，不然会出现异常
                     GlobalScope.launch(Dispatchers.Main) {
                         loginOut()
                     }
-                    val headers = request.headers.newBuilder()
-                    headers["Authorization"] = "Bearer "
-                    val newRequest = request.newBuilder().headers(headers.build()).build()
-                    Log.i("=====>TokenInterceptor", "=====2222222  ${request.url}")
-                    chain.proceed(newRequest)
+                    originResponse.newBuilder().code(originResponse.code)
+                        .body(body).build()
+                } else {
+                    Log.i("=====>TokenInterceptor", "=====444444 ${request.url}")
+                    originResponse.newBuilder().code(originResponse.code)
+                        .body(body).build()
                 }
-            } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN || code == CODE_REFRESH_TOKEN_FAILED) {
-                Log.i("=====>TokenInterceptor", "登陆失效，有可能是token失效  $responseString")
-                //被挤下线了/用户未登陆  需要放在主线程去更新，不然会出现异常
-                GlobalScope.launch(Dispatchers.Main) {
-                    loginOut()
-                }
-                originResponse.newBuilder().code(originResponse.code)
-                    .body(body).build()
-            } else {
-                Log.i("=====>TokenInterceptor", "=====444444 ${request.url}")
-                originResponse.newBuilder().code(originResponse.code)
-                    .body(body).build()
+            } catch (e: Exception) {
+                Log.i("=====>TokenInterceptor", "Exception:${e.message}")
+                val json = GsonUtils.toJson(BaseResponse(10086, "网络异常", Any()))
+                return Response.Builder()
+                    .request(chain.request())
+                    .code(200)
+                    .body(json.toResponseBody())
+                    .message("请求出错")
+                    .protocol(Protocol.HTTP_2).build()
             }
-        } catch (e: Exception) {
-            Log.i("=====>TokenInterceptor", "Exception:${e.message}")
-            val json = GsonUtils.toJson(BaseResponse(10086, "网络异常", Any()))
-            return Response.Builder()
-                .request(chain.request())
-                .code(200)
-                .body(json.toResponseBody())
-                .message("请求出错")
-                .protocol(Protocol.HTTP_2).build()
-
         }
     }
 
@@ -164,7 +166,7 @@ class RefreshTokenInterceptor : Interceptor {
                 contentType?.charset(StandardCharsets.UTF_8) ?: StandardCharsets.UTF_8
             return if (contentLength != 0L) {
                 buffer.clone().readString(charset)
-            }else{
+            } else {
                 null
             }
         } else {

@@ -50,6 +50,7 @@
         <attr name="bendTabIndicatorStrokeWidth" format="dimension" /><!-- 线条粗细值-->
         <attr name="indicatorMarginTop" format="dimension" />
         <attr name="bendTabTextSelectIsBold" format="boolean" /><!--是否选中加粗-->
+        <attr name="bendTabTextSelectTextSize" format="dimension" /><!--选中字体大小-->
     </declare-styleable>
 
     <declare-styleable name="BendTabItem">

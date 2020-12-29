@@ -8,4 +8,9 @@
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
+
+    <style name="popup_anim_style">
+        <item name="android:windowEnterAnimation">@anim/home_popup_in</item>
+        <item name="android:windowExitAnimation">@anim/home_popup_out</item>
+    </style>
 </resources>

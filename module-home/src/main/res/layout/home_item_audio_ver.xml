@@ -68,7 +68,7 @@
 
         <TextView
             android:id="@+id/home_book_adapter_tips"
-            isVisible="@{!item.verModel.audioIsAd}"
+            isVisible="@{!item.verModel.audioIsAd &amp;&amp; item.verModel.audio_label.length()>0}"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
             android:text="@{item.verModel.audio_label}"
             app:layout_constraintRight_toRightOf="@id/home_book_adapter_icon"

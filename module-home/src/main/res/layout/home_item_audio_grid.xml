@@ -27,8 +27,8 @@
 
         <com.rm.business_lib.wedgit.BusinessAdImageView
             android:id="@+id/homeItemRecommendHorDoubleTopIcon"
-            bindUrl="@{item.gridRecommendRvModel.imageUrl}"
             bindAdId="@{String.valueOf(item.gridRecommendRvModel.adModel.ad_id)}"
+            bindUrl="@{item.gridRecommendRvModel.imageUrl}"
             corner="@{4.0f}"
             android:layout_width="106dp"
             android:layout_height="106dp"
@@ -38,19 +38,18 @@
 
         <com.flyco.roundview.RoundTextView
             style="@style/BusinessAdText"
-            app:rv_cornerRadius="@dimen/dp_4"
-            app:rv_backgroundColor="@color/business_color_4c333333"
             isVisible="@{item.gridRecommendRvModel.audioIsAd()}"
-            app:layout_constraintBottom_toBottomOf="@+id/homeItemRecommendHorDoubleTopIcon"
-            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/dp_4"
             android:layout_marginBottom="@dimen/dp_4"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:rv_backgroundColor="@color/business_color_4c333333"
+            app:rv_cornerRadius="@dimen/dp_4" />
 
         <View
-            isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
             android:id="@+id/home_book_adapter_play_bg"
+            isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_28"
             android:background="@drawable/business_shape_gradient_0000000_66000000"
@@ -59,15 +58,15 @@
             app:layout_constraintStart_toStartOf="@id/homeItemRecommendHorDoubleTopIcon" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
             bindPlayCount="@{item.gridRecommendRvModel.play_count}"
+            isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_28"
             android:layout_marginEnd="@dimen/dp_8"
             android:drawableStart="@drawable/business_icon_subs_play"
+            android:drawablePadding="@dimen/dp_2"
             android:gravity="center_vertical"
             android:textColor="@color/business_text_color_ffffff"
-            android:drawablePadding="@dimen/dp_2"
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_play_bg"
             app:layout_constraintEnd_toEndOf="@id/homeItemRecommendHorDoubleTopIcon"
@@ -76,7 +75,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
-            isVisible="@{!item.gridRecommendRvModel.audioIsAd}"
+            isVisible="@{!item.gridRecommendRvModel.audioIsAd &amp;&amp; item.gridRecommendRvModel.audio_label.length()>0}"
             android:text="@{item.gridRecommendRvModel.audio_label}"
             app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
             app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
