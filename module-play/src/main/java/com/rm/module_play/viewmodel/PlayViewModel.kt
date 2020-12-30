@@ -922,7 +922,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (IS_FIRST_SUBSCRIBE.getBooleanMMKV(true) && activity != null) {
             CustomTipsFragmentDialog().apply {
                 titleText = context.getString(R.string.business_favorites_success)
-                contentText = context.getString(R.string.business_favorites_success_content)
+                contentText = context.getString(R.string.business_subscribe_success_content)
                 leftBtnText = context.getString(R.string.business_know)
                 rightBtnText = context.getString(R.string.business_goto_look)
                 leftBtnTextColor = R.color.business_text_color_333333

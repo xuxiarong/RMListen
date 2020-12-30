@@ -75,9 +75,6 @@ class ListenMySheetDetailActivity :
             mSheetId = it.getStringExtra(SHEET_ID)
         }
 
-        mViewModel.blockSuccess = {
-            headerDataBind?.listenSheetDetailDescription?.text = it
-        }
         mDataBind.listenSheetDetailRecyclerView.apply {
             bindVerticalLayout(mViewModel.mAdapter)
             createHeader()

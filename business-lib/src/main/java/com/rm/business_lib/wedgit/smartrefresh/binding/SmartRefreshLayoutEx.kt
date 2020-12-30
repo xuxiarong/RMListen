@@ -74,14 +74,25 @@ fun SmartRefreshLayout.bindNoMoreData(noMoreData: Boolean?, contentRvId: Int? = 
         if (contentRvId != null && refreshFooter is BaseLoadMoreFooter) {
             val rv = findViewById<RecyclerView>(contentRvId)
             val footer = refreshFooter as BaseLoadMoreFooter
-                if(contentRvId>0){
-                    footer.bindRecyclerView(rv)
-                }
+            if (contentRvId > 0) {
+                footer.bindRecyclerView(rv)
+            }
         }
         finishLoadMoreWithNoMoreData()
     }
 }
 
+@BindingAdapter("bindNeedShowMoreData", requireAll = false)
+fun SmartRefreshLayout.bindNeedShowMoreData(bindNeedShowMoreData: Boolean?) {
+    // 没有更多数据了
+    post {
+        if (refreshFooter is BaseLoadMoreFooter) {
+            val footer = refreshFooter as BaseLoadMoreFooter
+            footer.setNeedShowFooter(bindNeedShowMoreData)
+        }
+    }
+
+}
 
 @BindingAdapter("bindCanRefresh")
 fun SmartRefreshLayout.bindCanRefresh(canRefresh: Boolean?) {

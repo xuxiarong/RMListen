@@ -96,10 +96,10 @@ class MineGetBookViewModel(private val repository: MineRepository) : BaseVMViewM
     fun requestBook() {
         when {
             (bookName.get()!!.isEmpty()) -> {
-                showTip("书籍信息不能为空", R.color.business_color_ff5e5e)
+                showTip("书籍名称不能为空", R.color.business_color_ff5e5e)
             }
             bookName.get()!!.length > 50 -> {
-                showTip("作者名字数不能超过50", R.color.business_color_ff5e5e)
+                showTip("书籍名称字数不能超过50", R.color.business_color_ff5e5e)
             }
             author.get()!!.length > 50 -> {
                 showTip("作者名字数不能超过50", R.color.business_color_ff5e5e)

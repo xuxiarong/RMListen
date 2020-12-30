@@ -31,6 +31,7 @@ class BaseLoadMoreFooter @JvmOverloads constructor(
     private val DEFAULT_DELAY_LOAD_FINISH_TIME = 0
 
     private lateinit var mTitleText: TextView
+    private var needShowFooter = true
 
     /**
      * 内容是否满屏
@@ -129,8 +130,13 @@ class BaseLoadMoreFooter @JvmOverloads constructor(
         return true
     }
 
+    fun setNeedShowFooter(needShowFooter: Boolean? = true) {
+        this.needShowFooter = needShowFooter ?: true
+        mTitleText.visibility = View.GONE
+    }
+
     private fun canShowFooter(noMoreData: Boolean) {
-        if (noMoreData && recyclerView != null) {
+        if (noMoreData && recyclerView != null && needShowFooter) {
             if (recyclerView!!.layoutManager != null && recyclerView!!.adapter != null)
                 if (recyclerView!!.layoutManager is LinearLayoutManager) {
                     listener = ViewTreeObserver.OnGlobalLayoutListener {

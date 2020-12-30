@@ -217,7 +217,7 @@
                             app:bendTabMode="scrollable"
                             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
                             app:bendTabTextSize="@dimen/business_text_size_16sp"
-                            app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
+                            app:bendTabUnSelectedTextColor="@color/business_text_color_333333"
                             app:layout_constraintTop_toBottomOf="@id/search_main_recycler_view" />
 
 

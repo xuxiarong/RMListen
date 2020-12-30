@@ -78,14 +78,16 @@ class HomeCommentDialogViewModel(
                 }
 
                 dialog?.setOnShowListener {
-                    home_dialog_comment_ed.postDelayed({
-                        home_dialog_comment_ed.isFocusable = true
-                        home_dialog_comment_ed.requestFocus()
-                        home_dialog_comment_ed.isFocusableInTouchMode = true
-                        val inputManager =
-                            home_dialog_comment_ed.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
-                    }, 50)
+                    home_dialog_comment_ed?.apply {
+                        postDelayed({
+                            isFocusable = true
+                            requestFocus()
+                            isFocusableInTouchMode = true
+                            val inputManager =
+                                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+                        }, 50)
+                    }
                 }
             }
         }
