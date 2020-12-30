@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/download_tv_name"
-            android:layout_width="290dp"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_6"
             android:layout_marginTop="10dp"

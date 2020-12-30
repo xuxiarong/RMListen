@@ -3,9 +3,11 @@ package com.rm.module_download.fragment
 import android.view.View
 import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMFragment
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.module_download.BR
 import com.rm.module_download.R
+import com.rm.module_download.binding.bindDownFinishAudioSize
 import com.rm.module_download.databinding.DownloadFragmentDownloadCompletedBinding
 import com.rm.module_download.viewmodel.DownloadMainViewModel
 import kotlinx.android.synthetic.main.download_fragment_download_completed.*
@@ -23,11 +25,25 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
-        mViewModel.downloadAudioList.observe(this, Observer {
-            if(it.size>0){
+        DownloadMemoryCache.downloadingAudioList.observe(this, Observer {
+            val realFinishList = mutableListOf<DownloadAudio>()
+            it.forEach { downloadAudio ->
+                if(downloadAudio.download_num>0){
+                    realFinishList.add(downloadAudio)
+                }
+            }
+            if(realFinishList.size>0){
+                realFinishList.sortWith(Comparator { o1, o2 ->
+                    return@Comparator if (o1.updateMillis < o2.updateMillis) {
+                        1
+                    } else {
+                        -1
+                    }
+                })
                 showData()
-                it.reverse()
-                mViewModel.downloadFinishAdapter.setList(it)
+                mViewModel.downloadFinishAdapter.setList(realFinishList)
+                down_finish_list_space.bindDownFinishAudioSize(realFinishList)
+                down_finish_list_size.text = String.format(getString(R.string.download_downloaded_number),realFinishList.size)
             }else{
                 mViewModel.downloadFinishAdapter.data.clear()
                 showEmpty()

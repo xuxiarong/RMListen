@@ -26,11 +26,12 @@ fun DownloadStatusView.bindChapterList(
     if (downloadAudio != null) {
         this.audio = downloadAudio
     }
-    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
-    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
+    if (downloadChapter != null && chapter.chapter_id == downloadChapter.chapter_id) {
         chapter.current_offset = downloadChapter.current_offset
+        chapter.down_status = downloadChapter.down_status
     }
-    setDownloadStatus(checkChapter)
+    setDownloadStatus(chapter)
+
 }
 
 @BindingAdapter("bindDownloadNum")

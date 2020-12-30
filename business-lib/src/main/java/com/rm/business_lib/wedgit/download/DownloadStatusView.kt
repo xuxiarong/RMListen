@@ -97,9 +97,9 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
     }
 
     private fun startDownloadChapter(chapter: DownloadChapter) {
-//        if (audio != null) {
-//            DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
-//        }
+        if (audio != null) {
+            DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
+        }
         DownloadMemoryCache.addDownloadingChapter(chapter)
     }
 

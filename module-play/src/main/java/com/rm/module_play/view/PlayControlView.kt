@@ -70,9 +70,8 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
                     }
                 }
             }
-
+            initFinish = true
         },300)
-        initFinish = true
     }
 
     fun startAnim() {

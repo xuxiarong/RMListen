@@ -42,7 +42,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     var selectChapterSize = ObservableLong(0L)
     var downloadAudio = ObservableField<DownloadAudio>()
     val refreshModel = SmartRefreshLayoutStatusModel()
-
+    val rvId = R.id.down_select_rv
     //选集下载的逻辑
     private var chapterStartSequence = "1"
     var startSequence = ObservableField<String>("")
@@ -76,7 +76,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         }
 
 //        //将音频信息存储
-//        downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
+        downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
         //存储已选择的下载章节
         DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
         //调用下载服务开始下载
@@ -155,8 +155,8 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                                         } else {
                                             mAdapter.addData(list)
                                         }
-                                        if (list.size < pageSize && mAdapter.footerLayout == null) {
-                                            mAdapter.addFooterView(View.inflate(context, R.layout.business_foot_view, null))
+                                        if (list.size < pageSize ) {
+                                           refreshModel.noMoreData.set(true)
                                         }
                                     }
                                 },

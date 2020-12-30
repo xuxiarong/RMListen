@@ -8,6 +8,7 @@ import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadFragmentInProgressBinding
 import com.rm.module_download.viewmodel.DownloadMainViewModel
+import kotlinx.android.synthetic.main.download_fragment_download_completed.*
 import kotlinx.android.synthetic.main.download_fragment_in_progress.*
 
 class DownloadInProgressFragment :
@@ -26,6 +27,7 @@ class DownloadInProgressFragment :
             if (it.size > 0) {
                 showData()
                 mViewModel.downloadingAdapter.setList(it)
+                downloading_list_size.text = String.format(getString(R.string.download_downloading_number),it.size)
             } else {
                 mViewModel.downloadingAdapter.data.clear()
                 showEmpty()
@@ -43,6 +45,7 @@ class DownloadInProgressFragment :
             DownloadMemoryCache.downloadingChapterList.value?.let {
                 if (it.size > 0) {
                     showData()
+                    downloading_list_size.text = String.format(getString(R.string.download_downloading_number),it.size)
                     mViewModel.downloadingAdapter.setList(it)
                 } else {
                     mViewModel.downloadingAdapter.data.clear()

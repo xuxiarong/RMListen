@@ -85,6 +85,7 @@
             bindIsLoadMoreSuccess="@{viewModel.refreshModel.isLoadMoreSuccess()}"
             bindNoMoreData="@{viewModel.refreshModel.noMoreData}"
             bindOnLoadMoreListener="@{()->viewModel.getDownloadChapterList(context)}"
+            bindContentRvId="@{viewModel.rvId}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_48"
@@ -93,6 +94,7 @@
             app:srlEnableRefresh="false">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/down_select_rv"
                 bindVerticalLayout="@{viewModel.mAdapter}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

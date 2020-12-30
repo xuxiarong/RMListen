@@ -14,6 +14,7 @@ import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.db.download.DownloadDaoUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -54,7 +55,7 @@ object DownloadMemoryCache {
     }
 
 
-    fun updateAudioToDownloadMemoryCache(audio: DownloadAudio) {
+    fun addAudioToDownloadMemoryCache(audio: DownloadAudio) {
         val cacheAudio = getAudioFromCache(audio)
         if (cacheAudio == null) {
             audio.download_num = 0
@@ -73,7 +74,7 @@ object DownloadMemoryCache {
                 }
             }
         }
-        return null
+        return DownloadDaoUtils.queryAudioById(audio.audio_id)
     }
 
     private fun updateDownloadingAudio(chapter: DownloadChapter): Boolean {
@@ -87,7 +88,7 @@ object DownloadMemoryCache {
                     DaoUtil(DownloadAudio::class.java, "").saveOrUpdate(it)
                     downloadingAudioList.postValue(audioList)
                     DLog.d(
-                        "suolong",
+                        "suolong updateDownloadingAudio",
                         "name = ${chapter.chapter_name}" + it.down_size + "audioDownNum = ${it.download_num}"
                     )
                     return true
@@ -127,7 +128,6 @@ object DownloadMemoryCache {
             }else{
                 iterator.remove()
             }
-
         }
         if (chapterList.size == 0) {
             ToastUtil.show(
@@ -361,9 +361,9 @@ object DownloadMemoryCache {
             val downChapterList = mutableListOf<DownloadChapter>()
             if (audioList != null) {
                 downloadingAudioList.postValue(audioList.toMutableList())
-                if (audioList.size >= 2) {
-                    audioList[1].listen_finish = true
-                }
+//                if (audioList.size >= 2) {
+//                    audioList[1].listen_finish = true
+//                }
                 audioList.forEach { audio ->
                     audio.edit_select = false
                     val chapterList = audio.chapterList

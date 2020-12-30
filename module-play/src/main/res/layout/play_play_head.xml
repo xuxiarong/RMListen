@@ -413,29 +413,38 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/play_control_bg"
-            android:layout_width="74dp"
-            android:layout_height="74dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_marginTop="24dp"
             android:src="@drawable/play_start_play_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/music_play_bubbleSeekBar" />
 
-        <com.rm.baselisten.view.progressbar.CircularProgressView
-            android:id="@+id/progress_play"
-            bindPlayPrepareProgress="@{BaseConstance.INSTANCE.basePlayStatusModel}"
+<!--        <com.rm.baselisten.view.progressbar.CircularProgressView-->
+<!--            android:id="@+id/progress_play"-->
+<!--            bindPlayPrepareProgress="@{BaseConstance.INSTANCE.basePlayStatusModel}"-->
+<!--            android:layout_width="66dp"-->
+<!--            android:layout_height="66dp"-->
+<!--            app:backColor="@color/business_color_f7f7f7"-->
+<!--            app:backWidth="1dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/play_control_bg"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/play_control_bg"-->
+<!--            app:progColor="@color/base_ff5e5e"-->
+<!--            app:progWidth="1dp"-->
+<!--            tools:progress="65" />-->
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="66dp"
             android:layout_height="66dp"
-            app:backColor="@color/business_color_f7f7f7"
-            app:backWidth="1dp"
+            bindPlayPrepareProgress="@{BaseConstance.INSTANCE.basePlayStatusModel}"
             app:layout_constraintBottom_toBottomOf="@id/play_control_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/play_control_bg"
-            app:progColor="@color/base_ff5e5e"
-            app:progWidth="1dp"
-            tools:progress="65" />
-
+            android:background="@drawable/play_prepare_list" />
 
         <com.rm.module_play.view.PlayControlView
             android:id="@+id/animation_view"
@@ -446,8 +455,8 @@
             bindPlayError="@{PlayGlobalData.INSTANCE.playIsError}"
             bindResetPlay="@{()->viewModel.playManger.seekTo(0L)}"
             bindStartPlayClick="@{viewModel.playManger.play}"
-            android:layout_width="@dimen/dp_56"
-            android:layout_height="@dimen/dp_56"
+            android:layout_width="@dimen/dp_54"
+            android:layout_height="@dimen/dp_54"
             android:layout_gravity="center"
             app:layout_constraintBottom_toBottomOf="@id/play_control_bg"
             app:layout_constraintEnd_toEndOf="parent"

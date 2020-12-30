@@ -20,8 +20,6 @@ import com.rm.module_download.repository.DownloadRepository
 
 class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVMViewModel() {
 
-    private val homeService by lazy { RouterHelper.createRouter(HomeService::class.java) }
-
     val downloadingAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
             this,
@@ -53,19 +51,16 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
     var downloadFinishSelectNum = ObservableInt(0)
     var downloadFinishDeleteListenFinish = ObservableBoolean(false)
 
-
-    var downloadAudioList = DownloadMemoryCache.downloadingAudioList
-
     fun operatingAll() {
         DownloadMemoryCache.operatingAll()
     }
 
 
     fun getDownloadFromDao() {
-        if (downloadAudioList.value == null) {
+        if (DownloadMemoryCache.downloadingAudioList.value == null) {
             DownloadMemoryCache.getDownAudioOnAppCreate()
         } else {
-            val tempList = downloadAudioList.value!!
+            val tempList = DownloadMemoryCache.downloadingAudioList.value!!
             tempList.forEach {
                 it.edit_select = false
             }
