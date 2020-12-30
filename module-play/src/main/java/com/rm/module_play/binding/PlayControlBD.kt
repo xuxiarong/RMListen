@@ -5,12 +5,14 @@ import android.graphics.drawable.AnimationDrawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.view.progressbar.CircularProgressView
 import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.wedgit.seekbar.BubbleSeekBar
 import com.rm.module_play.R
 import com.rm.module_play.view.PlayControlView
@@ -51,6 +53,24 @@ fun BubbleSeekBar.progressChangedListener(action: ((String) -> Unit)?) {
             action("")
         }
     })
+}
+
+@BindingAdapter("bindPlayStatusModel","bindItemChapter")
+fun ImageView.bindPlayStatusModel(statusModel: BasePlayStatusModel?,item:DownloadChapter?) {
+    if (statusModel == null || item == null) {
+        visibility = View.GONE
+        return
+    }
+    if (item.chapter_id == MusicPlayerManager.musicPlayerManger.getCurrentPlayerMusic()?.chapterId?.toLong()) {
+            visibility = View.VISIBLE
+            if (statusModel.isPause()) {
+                setImageResource(R.drawable.business_ic_play_pause)
+            } else {
+                setImageResource(R.drawable.business_ic_playing)
+            }
+    } else {
+        visibility = View.GONE
+    }
 }
 
 
@@ -106,8 +126,8 @@ fun PlayControlView.bindResetPlay(resetPlay: (() -> Unit)?) {
 fun PlayControlView.bindPlayCountDownSecond(second: Long) {
     if (second == 0L) {
         pausePlayVar?.let {
-            BaseConstance.basePlayStatusModel.get()?.let{
-                if(it.isStart()){
+            BaseConstance.basePlayStatusModel.get()?.let {
+                if (it.isStart()) {
                     pauseAnim()
                     it()
                 }
@@ -129,11 +149,11 @@ fun PlayControlView.bindPlayCountDownSize(chapterSize: Int) {
 
 @BindingAdapter("bindPlayTimerItemText")
 fun TextView.bindPlayTimerItemText(position: Int) {
-    if(position in 0..9){
-        text = if(PlayGlobalData.playCountTimerList[position] in 1..5){
-            String.format(context.getString(R.string.play_timer_chapter),PlayGlobalData.playCountTimerList[position])
-        }else{
-            String.format(context.getString(R.string.play_timer_second),PlayGlobalData.playCountTimerList[position])
+    if (position in 0..9) {
+        text = if (PlayGlobalData.playCountTimerList[position] in 1..5) {
+            String.format(context.getString(R.string.play_timer_chapter), PlayGlobalData.playCountTimerList[position])
+        } else {
+            String.format(context.getString(R.string.play_timer_second), PlayGlobalData.playCountTimerList[position])
         }
     }
 }
@@ -151,27 +171,25 @@ fun TextView.bindPlayCountDownSecondText(second: Long) {
 }
 
 @SuppressLint("SetTextI18n")
-@BindingAdapter("bindPlayCountDownSizeText","bindPlayCountDownSecondText","bindPlayCountPosition","bindItemPosition",requireAll = false)
-fun TextView.bindPlayCountDownSizeText(chapterSize: Int,second: Long,playPosition: Int = 0,itemPosition : Int = 0) {
-    if(playPosition == itemPosition){
+@BindingAdapter("bindPlayCountDownSizeText", "bindPlayCountDownSecondText", "bindPlayCountPosition", "bindItemPosition", requireAll = false)
+fun TextView.bindPlayCountDownSizeText(chapterSize: Int, second: Long, playPosition: Int = 0, itemPosition: Int = 0) {
+    if (playPosition == itemPosition) {
         if (second > 0L) {
             text = TimeUtils.getPlayDuration(second)
             visibility = View.VISIBLE
-        }else if (chapterSize > 0) {
+        } else if (chapterSize > 0) {
             visibility = View.VISIBLE
-            text = String.format(context.getString(R.string.play_timer_count_chapter),chapterSize)
+            text = String.format(context.getString(R.string.play_timer_count_chapter), chapterSize)
 
-        }else{
+        } else {
             text = ""
             visibility = View.GONE
         }
-    }else{
+    } else {
         text = ""
         visibility = View.GONE
     }
 }
-
-
 
 
 @BindingAdapter("bindPlayPrepareProgress")
@@ -193,7 +211,7 @@ fun ImageView.bindPlayPrepareProgress(playStatus: BasePlayStatusModel?) {
         return
     }
     val animationDrawable = background as AnimationDrawable
-    if(background is AnimationDrawable){
+    if (background is AnimationDrawable) {
         if (playStatus.playStatus == STATE_BUFFERING) {
             visibility = View.VISIBLE
             animationDrawable.start()

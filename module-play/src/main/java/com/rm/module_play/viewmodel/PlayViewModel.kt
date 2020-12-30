@@ -971,7 +971,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         )
     }
 
-
     /**
      * 关闭音频楼层广告
      */
@@ -990,6 +989,18 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     fun audioAdClick(context: Context, businessAdModel: BusinessAdModel?) {
         businessAdModel?.let {
             BannerJumpUtils.onBannerClick(context, it.jump_url, it.ad_id.toString())
+        }
+    }
+
+    /**
+     * 章节点击事件
+     */
+    fun chapterClick(context : Context,item : DownloadChapter){
+        if (item.chapter_id == playManger.getCurrentPlayerID()) {
+            if(playManger.isPlaying()){ playManger.pause() }else{ playManger.play() }
+        } else {
+            PlayGlobalData.playNeedQueryChapterProgress.set(true)
+            getChapterAd { playManger.startPlayMusic(item.chapter_id.toString()) }
         }
     }
 

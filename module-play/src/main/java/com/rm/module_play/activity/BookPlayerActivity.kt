@@ -119,6 +119,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         GlobalPlayHelper.INSTANCE.addOnPlayerEventListener()
     }
 
+
+
     override fun onResume() {
         super.onResume()
         mViewModel.playManger.resumePlayState(true)

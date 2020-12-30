@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.BaseConstance
+import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.reverse
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.AudioSortType
@@ -27,6 +28,7 @@ import com.rm.business_lib.binding.bindDuration
 import com.rm.business_lib.binding.bindPlayCountString
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.LivingView
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.component_comm.download.DownloadService
@@ -58,23 +60,13 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     lateinit var viewModel: PlayViewModel
     private lateinit var mDataBind: ViewDataBinding
     private val chapterAdapter by lazy {
-        TimeSAdapter(activity!! ,viewModel).apply {
-            setOnItemClickListener { _, _, position ->
-                val chapterId = data[position].chapter_id
-                if (chapterId == viewModel.playManger.getCurrentPlayerID()) {
-                    if(viewModel.playManger.isPlaying()){
-                        viewModel.playManger.pause()
-                    }else{
-                        viewModel.playManger.play()
-                    }
-                } else {
-                    PlayGlobalData.playNeedQueryChapterProgress.set(true)
-                    viewModel.getChapterAd {
-                        viewModel.playManger.startPlayMusic(data[position].chapter_id.toString())
-                    }
-                }
-            }
-        }
+        CommonBindVMAdapter<DownloadChapter>(
+                viewModel,
+                mutableListOf(),
+                R.layout.play_dialog_item_chapter,
+                BR.viewModel,
+                BR.item
+        )
     }
 
     override fun getBackgroundAlpha() = 0f
@@ -154,58 +146,28 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
     }
 
     private fun startObserve() {
-        DownloadMemoryCache.downloadingChapter.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                chapterAdapter.notifyDataSetChanged()
-            }
+        DownloadMemoryCache.downloadingChapterList.observe(viewLifecycleOwner, Observer {
+            chapterAdapter.setList(getChapterStatus(chapterAdapter.data))
+            chapterAdapter.notifyDataSetChanged()
+        })
+        DownloadMemoryCache.downloadingAudioList.observe(viewLifecycleOwner, Observer {
+            chapterAdapter.setList(getChapterStatus(chapterAdapter.data))
+            chapterAdapter.notifyDataSetChanged()
         })
         PlayGlobalData.playChapterList.observe(viewLifecycleOwner, Observer {
-            chapterAdapter.setList(it)
+            chapterAdapter.setList(getChapterStatus(it))
         })
-        BaseConstance.basePlayStatusModel.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                BaseConstance.basePlayStatusModel.get()?.let {
-                    if(!it.isBuffering()){
-                        chapterAdapter.notifyDataSetChanged()
-                    }
-                }
-            }
-        })
-
     }
-    internal class TimeSAdapter(val activity: FragmentActivity?,val viewModel: PlayViewModel) :
-        BaseQuickAdapter<DownloadChapter, BaseViewHolder>(
-            R.layout.music_play_item_book_list,
-                PlayGlobalData.playChapterList.value
-        ) {
-        override fun convert(holder: BaseViewHolder, item: DownloadChapter) {
-            val playChapter =
-                item.chapter_id == musicPlayerManger.getCurrentPlayerMusic()?.chapterId?.toLong()
-            val playIcon = holder.getView<AppCompatImageView>(R.id.living_img)
-            if (playChapter) {
-                BaseConstance.basePlayStatusModel.get()?.let {
-                    playIcon.visibility = View.VISIBLE
-                    if (it.isStart()) {
-                        playIcon.setImageResource(R.drawable.business_ic_playing)
-                    } else {
-                        playIcon.setImageResource(R.drawable.business_ic_play_pause)
-                    }
-                }
-            } else {
-                playIcon.visibility = View.GONE
-            }
-            holder.setText(R.id.tv_music_play_chapter_title, item.chapter_name)
-            holder.getView<TextView>(R.id.tv_music_play_count).bindPlayCountString(item.play_count)
-            holder.getView<TextView>(R.id.tv_music_play_time_count).bindDuration(item.realDuration)
-            holder.getView<TextView>(R.id.tv_music_play_up_time).bindDateString(item.created_at)
-            val downloadStatusView = holder.getView<DownloadStatusView>(R.id.image_music_play_down)
-            downloadStatusView.bindChapterList(
-                PlayGlobalData.playAudioModel.get(),
-                item,
-                DownloadMemoryCache.downloadingChapter.get()
-            )
+
+    private fun getChapterStatus(chapterList: List<DownloadChapter>): MutableList<DownloadChapter> {
+        val audioName = PlayGlobalData.playAudioModel.get()?.audio_name?:""
+        val audioId = PlayGlobalData.playAudioModel.get()?.audio_id?:0L
+        chapterList.forEach {
+            it.audio_name = audioName
+            it.audio_id = audioId
+            DownLoadFileUtils.checkChapterIsDownload(chapter = it)
         }
+        return chapterList.toMutableList()
     }
 
     /**
@@ -226,12 +188,4 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         play_iv_play_mode.setCompoundDrawables(resDrawable, null, null, null)
 
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mDataBind.apply {
-            lifecycleOwner = this@MusicPlayBookListDialog
-        }
-    }
-
 }

@@ -3,6 +3,7 @@ package com.rm.business_lib.download.file
 import android.content.Context
 import androidx.annotation.NonNull
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.FileUtils
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.DownloadChapterDao
@@ -23,6 +24,7 @@ object DownLoadFileUtils {
         val file = File(createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
 
         if (file.exists() && file.isFile) {
+            DLog.d("suolong_DownLoadFileUtils","{${chapter.chapter_name}}文件存在")
             chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH
         }else{
             val qb = DaoUtil(DownloadChapter::class.java, "").queryBuilder()
@@ -31,9 +33,13 @@ object DownLoadFileUtils {
             val list = qb?.list()
             if(chapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH){
                 chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
+                DLog.d("suolong_DownLoadFileUtils","{${chapter.chapter_name}}文件不存在，但是状态已下载完，修改成未下载")
             }else{
                 if(list!=null && list.size>0){
+                    DLog.d("suolong_DownLoadFileUtils","{${chapter.chapter_name}}数据库存在 status = ${chapter.down_status}")
                     chapter.down_status = list[0].down_status
+                }else{
+                    DLog.d("suolong_DownLoadFileUtils","{${chapter.chapter_name}}数据库文件不存在")
                 }
             }
         }
