@@ -110,7 +110,6 @@ class MineMemberActivity :
             }
             blurImage(radius)
 
-            DLog.i("====>", "$alpha     ${abs(verticalOffset)}       ${height / 2}  ")
             if (abs(verticalOffset) > height / 2) {
                 mine_member_detail_blur.alpha = abs(verticalOffset).toFloat() / height / 2
             }
