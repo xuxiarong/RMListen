@@ -126,8 +126,8 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
      * @param page Int
      * @param pageSize Int
      */
-    suspend fun getAudioList(page: Int, pageSize: Int,sheetId:String): BaseResult<AudioListBean> {
-        return apiCall { service.listenAudioList(page, pageSize,sheetId) }
+    suspend fun getAudioList(page: Int, pageSize: Int, sheetId: String): BaseResult<AudioListBean> {
+        return apiCall { service.listenAudioList(page, pageSize, sheetId) }
     }
 
     /**
@@ -168,6 +168,15 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
     suspend fun listenSubsReport(report_type: String, member_id: String): BaseResult<Any> {
         return apiCall {
             service.listenSubsReport(report_type, member_id)
+        }
+    }
+
+    /**
+     * 订阅红点上报
+     */
+    suspend fun listenSubsRedReport( audio_id: String): BaseResult<Any> {
+        return apiCall {
+            service.listenSubsRedReport("subscription_red_point", audio_id)
         }
     }
 

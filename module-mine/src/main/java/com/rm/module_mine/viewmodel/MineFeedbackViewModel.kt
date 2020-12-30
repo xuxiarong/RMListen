@@ -67,7 +67,6 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
      */
     private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
         keyboardIsVisibility.set(keyboardVisibility)
-        contactVisibility.set(false)
     }
 
     /**
@@ -146,16 +145,16 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
     private fun getUploadType(): Int? {
         return when (checkedId) {
             R.id.mine_feedback_one -> {
-                2
+                1
             }
             R.id.mine_feedback_two -> {
-                1
+                2
             }
             R.id.mine_feedback_three -> {
                 3
             }
             R.id.mine_feedback_four -> {
-                0
+                100
             }
             else -> {
                 -1
@@ -202,7 +201,8 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                     ), actionDenied = {
-                        showTip(it.getString(R.string.business_listen_to_set_storage_permission))                    }, actionGranted = {
+                        showTip(it.getString(R.string.business_listen_to_set_storage_permission))
+                    }, actionGranted = {
                         photoHelp = CommonTakePhotoHelp(activity = it)
                         photoHelp?.showTakePhoto()
                     },

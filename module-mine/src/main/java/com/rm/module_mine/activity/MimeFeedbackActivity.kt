@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.view.View
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import com.rm.baselisten.binding.bindKeyboardVisibilityListener
@@ -69,6 +70,11 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                     layoutParams.height = keyboardHeight - dip(80)
                     visibility = View.VISIBLE
                 }
+                val contactNotEmpty = mViewModel.inputContact.get()!!.isNotEmpty()
+                val hasFocus = mDataBind.mineFeedbackEdContact.hasFocus()
+
+                mViewModel.contactVisibility.set(contactNotEmpty && it && hasFocus)
+                mViewModel.contactVisibility.notifyChange()
             } else {
                 mDataBind.mineFeedbackView.visibility = View.GONE
             }
@@ -123,14 +129,14 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
         when (v?.id) {
             R.id.mine_feedback_ed_contact -> {
-                mViewModel.contactVisibility.set(
-                    mViewModel.inputContact.get()!!.isNotEmpty() &&
-                            mViewModel.keyboardIsVisibility.get() == true &&
-                            hasFocus
-                )
+                val contactNotEmpty = mViewModel.inputContact.get()!!.isNotEmpty()
+                val keyboardIsVisibility = mViewModel.keyboardIsVisibility.get()
+                mViewModel.contactVisibility.set(contactNotEmpty && keyboardIsVisibility == true && hasFocus)
+                mViewModel.contactVisibility.notifyChange()
             }
             else -> {
                 mViewModel.contactVisibility.set(false)
+                mViewModel.contactVisibility.notifyChange()
             }
         }
     }

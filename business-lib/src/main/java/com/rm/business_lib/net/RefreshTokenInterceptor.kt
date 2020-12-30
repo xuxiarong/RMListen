@@ -121,7 +121,7 @@ class RefreshTokenInterceptor : Interceptor {
                 }
             } catch (e: Exception) {
                 Log.i("=====>TokenInterceptor", "Exception:${e.message}")
-                val json = GsonUtils.toJson(BaseResponse(10086, "网络异常", Any()))
+                val json = GsonUtils.toJson(BaseResponse(10086, "服务器连接异常", Any()))
                 return Response.Builder()
                     .request(chain.request())
                     .code(200)

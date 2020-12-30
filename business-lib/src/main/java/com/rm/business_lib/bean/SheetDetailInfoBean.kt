@@ -1,6 +1,6 @@
 package com.rm.business_lib.bean
 
-data class SheetDetailInfoBean(
+data class  SheetDetailInfoBean(
     var audio_list: AudioListBean?,//音频列表
     var avatar_url: String,//创建者头像URL
     var cover_url: String,//听单封面URL

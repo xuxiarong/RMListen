@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
@@ -17,6 +18,8 @@ import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineImageActivity
 import com.rm.module_mine.activity.MineMemberFollowAndFansActivity
 import com.rm.module_mine.bean.MineInfoDetail
+import com.rm.module_mine.memberFansNum
+import com.rm.module_mine.memberFollowNum
 import com.rm.module_mine.repository.MineRepository
 
 class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewModel() {
@@ -29,8 +32,8 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
     val memberId = ObservableField<String>("")
 
     var detailInfoData = ObservableField<MineInfoDetail>()
-    var fans = ObservableField(0)
-    var follows = ObservableField(0)
+    var fans = memberFansNum
+    var follows = memberFollowNum
 
     /**
      * 获取个人/主播详情
@@ -41,8 +44,8 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     detailInfoData.set(it)
-                    fans.set(it.fans)
-                    follows.set(it.follows)
+                    memberFollowNum.set(it.follows)
+                    memberFansNum.set(it.fans)
                     attentionVisibility.set(it.id != loginUser.get()?.id)
                     isAttention.set(it.is_followed)
 
@@ -151,8 +154,6 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
         detailInfoData.get()?.let {
             MineMemberFollowAndFansActivity.newInstance(
                 context,
-                it.fans,
-                it.follows,
                 memberId.get()!!,
                 type
             )

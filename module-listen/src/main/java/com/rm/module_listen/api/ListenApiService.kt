@@ -76,7 +76,16 @@ interface ListenApiService {
     suspend fun listenSubsReport(
         @Query("report_type") report_type: String,
         @Query("member_id") member_id: String
-        ): BaseResponse<Any>
+    ): BaseResponse<Any>
+
+    /**
+     * 订阅红点上报
+     */
+    @POST("report/report")
+    suspend fun listenSubsRedReport(
+        @Query("report_type") report_type: String,
+        @Query("audio_id") audio_id: String
+    ): BaseResponse<Any>
 
     /**
      * 最近收听

@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
@@ -18,6 +19,7 @@ import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineMemberActivity
 import com.rm.module_mine.bean.MineMemberFollowBean
 import com.rm.module_mine.bean.MineMemberFollowDetailBean
+import com.rm.module_mine.memberFollowNum
 import com.rm.module_mine.repository.MineRepository
 
 /**
@@ -38,7 +40,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
     var memberId = ""
 
     val refreshStatusModel = SmartRefreshLayoutStatusModel()
-    val contentRvId=R.id.mine_adapter_member_follow
+    val contentRvId = R.id.mine_adapter_member_follow
 
     //当前用户信息  用来判断当前用户是否是自己  控制是否显示关注按钮
     val userInfo = loginUser
@@ -63,7 +65,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     processFailureData(it)
                 }
             )
@@ -81,8 +83,11 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                     showContentView()
                     changeState(bean, 1)
                     showTip("关注成功")
+                    if (TextUtils.equals(memberId, loginUser.get()?.id)) {
+                        memberFollowNum.set((memberFollowNum.get()!! + 1))
+                    }
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -100,10 +105,15 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
             repository.unAttentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
                     showContentView()
-                    changeState(bean, 0)
+                    if (TextUtils.equals(memberId, loginUser.get()?.id)) {
+                        followAdapter.remove(bean)
+                        memberFollowNum.set((memberFollowNum.get()!! - 1))
+                    } else {
+                        changeState(bean, 0)
+                    }
                     showTip("取消关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
