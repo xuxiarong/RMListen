@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
@@ -18,6 +19,8 @@ import com.rm.module_mine.R
 import com.rm.module_mine.activity.MineMemberActivity
 import com.rm.module_mine.bean.MineMemberFansBean
 import com.rm.module_mine.bean.MineMemberFansDetailBean
+import com.rm.module_mine.memberFansNum
+import com.rm.module_mine.memberFollowNum
 import com.rm.module_mine.repository.MineRepository
 
 /**
@@ -62,7 +65,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                 onSuccess = {
                     processSuccessData(it)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     processFailureData(it)
                 }
             )
@@ -80,8 +83,11 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                     showContentView()
                     changeState(bean, 1)
                     showTip("关注成功")
+                    if (TextUtils.equals(memberId, loginUser.get()?.id)) {
+                        memberFollowNum.set((memberFollowNum.get()!! + 1))
+                    }
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     DLog.i("--->", "$it")
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -98,10 +104,14 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
             repository.unAttentionAnchor(bean.member_id).checkResult(
                 onSuccess = {
                     showContentView()
+                    DLog.i("=======>", "$memberId   ${loginUser.get()?.id}")
                     changeState(bean, 0)
                     showTip("取消关注成功")
+                    if (TextUtils.equals(memberId, loginUser.get()?.id)) {
+                        memberFollowNum.set((memberFollowNum.get()!! - 1))
+                    }
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     DLog.i("--->", "$it")
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
@@ -138,6 +148,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
      * 处理成功数据
      */
     private fun processSuccessData(bean: MineMemberFansBean) {
+        memberFansNum.set(bean.total)
         if (fansPage == 1) {
             refreshStatusModel.finishRefresh(true)
             if (bean.list.isNotEmpty()) {

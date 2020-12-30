@@ -53,6 +53,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * item点击事件
      */
     fun itemClickFun(view: View, bookBeanListen: ListenSubscriptionListBean) {
+        subsRedReport(bookBeanListen)
         if (bookBeanListen.audio_status == 0) {
             showTipDialog(view.context, bookBeanListen)
         } else {
@@ -118,6 +119,26 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
+        }
+    }
+
+    /**
+     *订阅红点上报
+     */
+    private fun subsRedReport(bookBean: ListenSubscriptionListBean) {
+        launchOnIO {
+            repository.listenSubsRedReport(bookBean.audio_id.toString())
+                .checkResult(
+                    onSuccess = {
+                        val indexOf = mAdapter.data.indexOf(bookBean)
+                        if (indexOf != -1) {
+                            mAdapter.data[indexOf].unread = 0
+                            mAdapter.notifyItemChanged(indexOf)
+                        }
+                    },
+                    onError = { msg, _ ->
+                        showTip("$msg")
+                    })
         }
     }
 

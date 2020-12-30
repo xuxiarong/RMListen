@@ -42,7 +42,7 @@
             />
 
         <androidx.appcompat.widget.AppCompatTextView
-            isVisible="@{!item.singleModel.audioIsAd()}"
+            isVisible="@{!item.singleModel.audioIsAd() &amp;&amp; item.singleModel.audio_label.length()>0}"
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
             style="@style/BusinessLabStyleHalfRound_FF5E5E"
             android:text="@{item.singleModel.audio_label}"

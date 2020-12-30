@@ -1,9 +1,11 @@
 package com.rm.module_home.adapter
 
 import android.graphics.Typeface
+import android.util.TypedValue
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.rm.baselisten.utilExt.dip
 import com.rm.module_home.R
 import com.rm.module_home.bean.CategoryTabBean
 
@@ -22,14 +24,14 @@ class HomeTopListTabAdapter :
         }
     }
 
-    //设置选中的textview
+    //设置选中的textView
     fun setSelect(position: Int, view: TextView?) {
         setSelectTv(false, mCurTv)
         setSelectTv(true, view)
         mPosition = position
     }
 
-    //修改textview样式
+    //修改textView样式
     private fun setSelectTv(select: Boolean, textView: TextView?) {
         if (select) {
             textView?.apply {
@@ -41,7 +43,7 @@ class HomeTopListTabAdapter :
                     0
                 )
                 setBackgroundResource(R.drawable.home_rank_class)
-
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                 textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
             }
         } else {
@@ -54,6 +56,8 @@ class HomeTopListTabAdapter :
                 )
                 setBackgroundResource(R.drawable.home_top_list_tab_un_bg)
                 textView.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+
             }
         }
     }

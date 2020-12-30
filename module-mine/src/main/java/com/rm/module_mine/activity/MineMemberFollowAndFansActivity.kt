@@ -2,19 +2,20 @@ package com.rm.module_mine.activity
 
 import android.content.Context
 import android.content.Intent
-import android.text.SpannableString
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.spannable.SpannableHelper
+import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.binding.getPlayCount
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.adapter.MineFollowAndFansAdapter
-import com.rm.module_mine.adapter.MineMemberPageAdapter
 import com.rm.module_mine.databinding.MineActivityMemberFollowAndFansBinding
 import com.rm.module_mine.fragment.MineMemberFollowFragment
 import com.rm.module_mine.fragment.MineMemberFansFragment
-import com.rm.module_mine.viewmodel.MineMemberFansViewModel
+import com.rm.module_mine.memberFansNum
+import com.rm.module_mine.memberFollowNum
 
 /**
  *
@@ -24,10 +25,8 @@ import com.rm.module_mine.viewmodel.MineMemberFansViewModel
  *
  */
 class MineMemberFollowAndFansActivity :
-    BaseVMActivity<MineActivityMemberFollowAndFansBinding, MineMemberFansViewModel>() {
+    BaseVMActivity<MineActivityMemberFollowAndFansBinding, BaseVMViewModel>() {
     companion object {
-        private const val FANS_NUM = "fansNum"
-        private const val FOLLOW_NUM = "followNum"
         private const val MEMBER_ID = "memberId"
         private const val TYPE = "type"
         const val TYPE_FOLLOW = 1
@@ -35,14 +34,10 @@ class MineMemberFollowAndFansActivity :
 
         fun newInstance(
             context: Context,
-            fansNum: Int,
-            followNum: Int,
             memberId: String,
             type: Int
         ) {
             val intent = Intent(context, MineMemberFollowAndFansActivity::class.java)
-            intent.putExtra(FANS_NUM, fansNum)
-            intent.putExtra(FOLLOW_NUM, followNum)
             intent.putExtra(MEMBER_ID, memberId)
             intent.putExtra(TYPE, type)
             context.startActivity(intent)
@@ -58,6 +53,16 @@ class MineMemberFollowAndFansActivity :
     }
 
     override fun startObserve() {
+        memberFansNum.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                attachViewPager(memberFansNum.get()!!, memberFollowNum.get()!!)
+            }
+        })
+        memberFollowNum.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                attachViewPager(memberFansNum.get()!!, memberFollowNum.get()!!)
+            }
+        })
     }
 
     /**
@@ -73,7 +78,7 @@ class MineMemberFollowAndFansActivity :
             fragments.add(followFragment)
             fragments.add(fansFragment)
             mDataBind.mineMemberFansViewpager.adapter = MineFollowAndFansAdapter(this, fragments)
-            attachViewPager()
+            attachViewPager(memberFansNum.get()!!, memberFollowNum.get()!!)
             if (type == TYPE_FANS) {
                 mDataBind.mineMemberFansViewpager.setCurrentItem(1, false)
             }
@@ -83,13 +88,10 @@ class MineMemberFollowAndFansActivity :
     /**
      * tabLayout绑定viewpager滑动事件
      */
-    private fun attachViewPager() {
-        val fansNum = intent.getIntExtra(FANS_NUM, 0)
-        val followNum = intent.getIntExtra(FOLLOW_NUM, 0)
+    private fun attachViewPager(fansNum: Int, followNum: Int) {
         val titles = mutableListOf<CharSequence>()
-        titles.add("关注($followNum)")
-        titles.add("粉丝($fansNum)")
-
+        titles.add("关注(${getPlayCount(followNum)})")
+        titles.add("粉丝(${getPlayCount(fansNum)})")
         BendTabLayoutMediator(
             mDataBind.mineMemberFansTab, mDataBind.mineMemberFansViewpager
         ) { tab, position ->

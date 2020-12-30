@@ -25,7 +25,8 @@ import com.rm.module_home.fragment.HomeTopListContentFragment
 import com.rm.module_home.viewmodel.TopListViewModel
 import kotlinx.android.synthetic.main.home_activity_top_list.*
 
-class HomeTopListActivity : ComponentShowPlayActivity<HomeActivityTopListBinding, TopListViewModel>() {
+class HomeTopListActivity :
+    ComponentShowPlayActivity<HomeActivityTopListBinding, TopListViewModel>() {
 
     private var mPopupWindow: PopupWindow? = null
 
@@ -131,7 +132,12 @@ class HomeTopListActivity : ComponentShowPlayActivity<HomeActivityTopListBinding
         val location = IntArray(2)
         home_top_list_title_cl.getLocationInWindow(location)
         val y = location[1] + home_top_list_title_cl.height
-        mPopupWindow?.showAtLocation(home_top_list_title_cl, Gravity.CENTER_HORIZONTAL or Gravity.TOP, 0, y)
+        mPopupWindow?.showAtLocation(
+            home_top_list_title_cl,
+            Gravity.CENTER_HORIZONTAL or Gravity.TOP,
+            0,
+            y
+        )
 
         //改变标题栏中的图标
         home_top_list_title_icon.setImageResource(R.drawable.business_icon_unfold_dc)
@@ -146,7 +152,7 @@ class HomeTopListActivity : ComponentShowPlayActivity<HomeActivityTopListBinding
         mPopupWindow?.apply {
             height = ViewGroup.LayoutParams.WRAP_CONTENT
             width = resources.getDimensionPixelOffset(R.dimen.dp_360)
-
+//            animationStyle = R.style.popup_anim_style
             val rootView = LayoutInflater.from(this@HomeTopListActivity)
                 .inflate(R.layout.home_popup_list_top, home_list_recycler_tab, false)
             val popupRv = rootView.findViewById<RecyclerView>(R.id.home_popup_rv)
@@ -178,7 +184,7 @@ class HomeTopListActivity : ComponentShowPlayActivity<HomeActivityTopListBinding
             isTouchable = true
 
             setOnDismissListener {
-                home_top_list_title_icon.setImageResource( R.drawable.business_icon_unfold_db)
+                home_top_list_title_icon.setImageResource(R.drawable.business_icon_unfold_db)
             }
         }
     }
