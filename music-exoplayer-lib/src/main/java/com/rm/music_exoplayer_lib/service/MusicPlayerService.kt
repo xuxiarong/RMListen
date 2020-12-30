@@ -424,7 +424,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun isPlaying(): Boolean {
-        return mExoPlayer.playWhenReady
+        return mExoPlayer.isPlaying
     }
 
     override fun getDurtion(): Long {

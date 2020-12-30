@@ -17,6 +17,7 @@ import com.rm.baselisten.thridlib.glide.RSBlur
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
 import com.rm.baselisten.utilExt.dip
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.adapter.MineMemberPageAdapter
@@ -32,7 +33,7 @@ import kotlin.math.abs
  *  主播/用户详情
  */
 class MineMemberActivity :
-    BaseVMActivity<MineActivityMemberDetail1BindingImpl, MineMemberViewModel>() {
+    ComponentShowPlayActivity<MineActivityMemberDetail1BindingImpl, MineMemberViewModel>() {
 
     private lateinit var mHandler: Handler
 

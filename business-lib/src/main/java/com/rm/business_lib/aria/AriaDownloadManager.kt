@@ -38,7 +38,7 @@ object AriaDownloadManager {
         } else {
             Aria.download(this).stopAllTask()
             val file = File(DownLoadFileUtils.createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
-            Aria.download(this).register()
+            Aria.download(this).setMaxSpeed(300).register()
             DLog.d(TAG, "register filepath = ${file.absolutePath}")
             Aria.download(this).load(chapter.path_url) //读取下载地址
                     .setFilePath(file.absolutePath) //设置文件保存的完整路径
@@ -80,6 +80,12 @@ object AriaDownloadManager {
             val size = task.fileSize
             DownloadMemoryCache.updateDownloadingSpeed(url = task.key, speed = speed, currentOffset = size * percent / 100)
             DLog.d(TAG, "taskRunning  percent = $percent convertSpeed = $convertSpeed speed = $speed")
+        }else{
+            isDownloading.set(false)
+            Aria.download(this).removeAllTask(false)
+            DownloadMemoryCache.downloadingChapter.get()?.let {
+                startDownload(it,isSingleDown.get())
+            }
         }
     }
 
@@ -87,6 +93,7 @@ object AriaDownloadManager {
     fun taskComplete(task: DownloadTask) {
         DLog.d(TAG, "taskComplete")
         if (task.key == (DownloadMemoryCache.downloadingChapter.get()?.path_url)) {
+            isDownloading.set(false)
             DownloadMemoryCache.setDownloadFinishChapter(task.key)
         }
     }

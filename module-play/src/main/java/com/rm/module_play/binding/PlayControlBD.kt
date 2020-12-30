@@ -1,6 +1,7 @@
 package com.rm.module_play.binding
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.AnimationDrawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -184,6 +185,25 @@ fun CircularProgressView.bindPlayPrepareProgress(playStatus: BasePlayStatusModel
         stopAutoProgress()
     }
 }
+
+@BindingAdapter("bindPlayPrepareProgress")
+fun ImageView.bindPlayPrepareProgress(playStatus: BasePlayStatusModel?) {
+    if (playStatus == null) {
+        visibility = View.GONE
+        return
+    }
+    val animationDrawable = background as AnimationDrawable
+    if(background is AnimationDrawable){
+        if (playStatus.playStatus == STATE_BUFFERING) {
+            visibility = View.VISIBLE
+            animationDrawable.start()
+        } else {
+            visibility = View.GONE
+            animationDrawable.stop()
+        }
+    }
+}
+
 
 @BindingAdapter("bindPlaySpeedText")
 fun TextView.bindPlaySpeedText(float: Float?) {
