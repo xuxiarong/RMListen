@@ -382,6 +382,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                             RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                                 context = context,
                                 audioId = audioId.get() ?: "",
+                                audioInfo = detailInfoData.get()?.list?: DownloadAudio(),
                                 chapterId = playInfo?.playChapterId ?: "",
                                 currentDuration = playProgress?.currentDuration ?: 0,
                                 sortType = mCurSort
@@ -401,6 +402,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                         RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                             context = context,
                             audioId = audioId.get() ?: "",
+                            audioInfo = detailInfoData.get()?.list?:DownloadAudio(),
                             chapterId = listenRecord.listenChapterId ?: "",
                             currentDuration = queryChapterRecentUpdate?.listen_duration ?: 0,
                             sortType = mCurSort
@@ -410,6 +412,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                             RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                                 context = context,
                                 audioId = audioId.get() ?: "",
+                                audioInfo = detailInfoData.get()?.list?:DownloadAudio(),
                                 chapterId = chapterList[0].chapter_id.toString(),
                                 sortType = mCurSort
                             )
@@ -654,6 +657,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             context,
             audioId = audioId.get()!!,
             chapterId = bean.chapter_id.toString(),
+            audioInfo = detailInfoData.get()?.list?:DownloadAudio(),
             sortType = mCurSort
         )
     }

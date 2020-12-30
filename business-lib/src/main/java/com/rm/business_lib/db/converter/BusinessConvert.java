@@ -12,43 +12,45 @@ import com.rm.business_lib.db.listen.ListenChapterEntity;
  */
 public class BusinessConvert {
 
-//    public static DownloadAudio convertToDownloadAudio(ListenAudioEntity listenAudio) {
-//        return new DownloadAudio(
-//                listenAudio.getAudio_id(),
-//                listenAudio.getAudio_type(),
-//                listenAudio.getAudio_name(),
-//                listenAudio.getOriginal_name(),
-//                listenAudio.getStatus(),
-//                listenAudio.getAuthor_intro(),
-//                listenAudio.getAnchor_id(),
-//                listenAudio.getShort_intro(),
-//                listenAudio.getAudio_intro(),
-//                listenAudio.getAudio_cover(),
-//                listenAudio.getCover_url(),
-//                listenAudio.getAudio_label(),
-//                listenAudio.getQuality(),
-//                listenAudio.getProgress(),
-//                listenAudio.getPlay_count(),
-//                listenAudio.getCreated_at(),
-//                listenAudio.getChapter_updated_at(),
-//                listenAudio.getAnchor_name(),
-//                listenAudio.getUpdateMillis(),
-//                listenAudio.getAuthor(),
-//                listenAudio.getMember_id(),
-//                listenAudio.getNickname(),
-//                listenAudio.getSubscription_count(),
-//                listenAudio.getLast_sequence(),
-//                listenAudio.getAudio_cover_url(),
-//                listenAudio.getAnchor(),
-//                listenAudio.getTags(),
-//                listenAudio.getIs_subscribe(),
-//                listenAudio.getIs_fav(),
-//                listenAudio.getDownload_num(),
-//                listenAudio.getDown_size(),
-//                listenAudio.getEdit_select(),
-//                listenAudio.getListen_finish()
-//        );
-//    }
+    public static DownloadAudio convertToDownloadAudio(ListenAudioEntity listenAudio) {
+        DownloadAudio downloadAudio = new DownloadAudio();
+        downloadAudio.setAudio_id(listenAudio.getAudio_id());
+        downloadAudio.setAudio_type(listenAudio.getAudio_type());
+        downloadAudio.setAudio_name(listenAudio.getAudio_name());
+        downloadAudio.setOriginal_name(listenAudio.getOriginal_name());
+        downloadAudio.setStatus(listenAudio.getStatus());
+        downloadAudio.setAuthor_intro(listenAudio.getAuthor_intro());
+        downloadAudio.setAnchor_id(listenAudio.getAnchor_id());
+        downloadAudio.setShort_intro(listenAudio.getShort_intro());
+        downloadAudio.setAudio_intro(listenAudio.getAudio_intro());
+        downloadAudio.setAudio_cover(listenAudio.getAudio_cover());
+        downloadAudio.setCover_url(listenAudio.getCover_url());
+        downloadAudio.setAudio_label(listenAudio.getAudio_label());
+        downloadAudio.setQuality(listenAudio.getQuality());
+        downloadAudio.setProgress(listenAudio.getProgress());
+        downloadAudio.setPlay_count(listenAudio.getPlay_count());
+        downloadAudio.setCreated_at(listenAudio.getCreated_at());
+        downloadAudio.setChapter_updated_at(listenAudio.getChapter_updated_at());
+        downloadAudio.setAnchor_name(listenAudio.getAnchor_name());
+        downloadAudio.setUpdateMillis(listenAudio.getUpdateMillis());
+        downloadAudio.setSortType(listenAudio.getSortType());
+        downloadAudio.setListenChapterId(listenAudio.getListenChapterId());
+        downloadAudio.setAuthor(listenAudio.getAuthor());
+        downloadAudio.setMember_id(listenAudio.getMember_id());
+        downloadAudio.setNickname(listenAudio.getNickname());
+        downloadAudio.setSubscription_count(listenAudio.getSubscription_count());
+        downloadAudio.setLast_sequence(listenAudio.getLast_sequence());
+        downloadAudio.setAudio_cover_url(listenAudio.getAudio_cover_url());
+        downloadAudio.setAnchor(listenAudio.getAnchor());
+        downloadAudio.setTags(listenAudio.getTags());
+        downloadAudio.setIs_subscribe(listenAudio.getIs_subscribe());
+        downloadAudio.setIs_fav(listenAudio.getIs_fav());
+        downloadAudio.setDownload_num(listenAudio.getDownload_num());
+        downloadAudio.setDown_size(listenAudio.getDown_size());
+        downloadAudio.setEdit_select(listenAudio.getEdit_select());
+        downloadAudio.setListen_finish(listenAudio.getListen_finish());
+        return downloadAudio;
+    }
 
     public static ListenAudioEntity convertToListenAudio(DownloadAudio downloadAudio) {
         ListenAudioEntity listenAudioEntity = new ListenAudioEntity();

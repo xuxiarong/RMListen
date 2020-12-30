@@ -41,8 +41,7 @@ class PlayMainDebugActivity : BaseDebugActivity(), MusicPlayerEventListener {
         TODO("Not yet implemented")
     }
 
-    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
-        TODO("Not yet implemented")
+    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int, isAd: Boolean) {
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {

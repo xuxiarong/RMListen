@@ -122,6 +122,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         if (PlayGlobalData.playAdIsPlaying.get()) {
             musicPlayerManger.setPlayerMultiple(1f)
             PlayGlobalData.playSpeed.set(1f)
+            PlayGlobalData.process.set(0F)
         } else {
             SAVA_SPEED.getFloattMMKV(1f).let {
                 PlayGlobalData.playSpeed.set(it)
@@ -135,7 +136,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 it.realDuration = totalDurtion
             }
             //如果需要接着上一次的播放记录，直接跳转到该进度
-            if(PlayGlobalData.playLastPlayProcess.get()>0 ){
+            if(PlayGlobalData.playLastPlayProcess.get()>0 && !isAd){
                 musicPlayerManger.seekTo(PlayGlobalData.playLastPlayProcess.get())
                 PlayGlobalData.playLastPlayProcess.set(-1L)
             }
@@ -148,7 +149,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     override fun onInfo(event: Int, extra: Int) {
     }
 
-    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {
+    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int,isAd: Boolean) {
         PlayGlobalData.playIsError.set(false)
         BaseConstance.updateBaseChapterId(musicInfo.audioId,musicInfo.chapterId)
         PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
@@ -169,7 +170,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         }else{
             BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
         }
-        PlayGlobalData.savePlayChapter(position)
+        PlayGlobalData.savePlayChapter(position,isAd)
 
     }
 

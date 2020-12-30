@@ -378,7 +378,7 @@ class MusicLockActivity : BaseVMActivity<MusicActivityLockBinding,MusicLockViewM
 
     }
 
-    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int) {}
+    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int,isAd: Boolean) {}
     override fun onPlayerStateChanged(
         playWhenReady: Boolean,
         playbackState: Int

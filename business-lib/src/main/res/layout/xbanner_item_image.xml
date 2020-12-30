@@ -42,5 +42,5 @@
         android:visibility="gone"
         android:layout_marginTop="@dimen/dp_6"
         android:layout_marginEnd="@dimen/dp_6"
-        android:src="@drawable/business_icon_swipe_delete" />
+        android:src="@drawable/business_ic_ad_close" />
 </FrameLayout>

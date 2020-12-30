@@ -144,7 +144,7 @@
                 android:layout_marginTop="@dimen/dp_6"
                 android:layout_marginEnd="@dimen/dp_6"
                 android:onClick="@{()->viewModel.closeVoiceImgAd(PlayGlobalData.INSTANCE.playVoiceImgAd)}"
-                android:src="@drawable/ic_play_img_ad_close" />
+                android:src="@drawable/business_ic_ad_close" />
         </FrameLayout>
 
 
@@ -226,7 +226,7 @@
                 android:layout_marginTop="@dimen/dp_6"
                 android:layout_marginEnd="@dimen/dp_6"
                 android:onClick="@{()->viewModel.closeAudioImgAd(PlayGlobalData.INSTANCE.playAudioImgAd)}"
-                android:src="@drawable/ic_play_img_ad_close" />
+                android:src="@drawable/business_ic_ad_close" />
         </FrameLayout>
 
 
@@ -702,7 +702,7 @@
                 android:layout_marginTop="@dimen/dp_6"
                 android:layout_marginEnd="@dimen/dp_6"
                 android:onClick="@{()->viewModel.closeAudioFloorAd(viewModel.playFloorAd)}"
-                android:src="@drawable/business_icon_swipe_delete" />
+                android:src="@drawable/business_ic_ad_close" />
 
             <com.flyco.roundview.RoundTextView
                 style="@style/BusinessAdText"

@@ -8,6 +8,8 @@ import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.viewmodel.BaseVMViewModel
+import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 
@@ -63,13 +65,15 @@ abstract class ComponentShowPlayActivity<V : ViewDataBinding, VM : BaseVMViewMod
             if (!TextUtils.isEmpty(it.playUrl)) {
                 var progress = BaseConstance.basePlayProgressModel.get()?.currentDuration ?: 0
                 val maxProcess = BaseConstance.basePlayProgressModel.get()?.totalDuration ?: 0
-                if(progress>=maxProcess){
-                    progress = 0
+                if(progress>=maxProcess || progress == 0L){
+                    progress = 1L
                 }
+                PlayGlobalData.playNeedQueryChapterProgress.set(true)
                 playService.startPlayActivity(
                     this,
                     audioId = it.playAudioId,
                     chapterId = it.playChapterId,
+                    audioInfo = PlayGlobalData.playAudioModel.get()?: DownloadAudio(),
                     currentDuration = progress
                 )
                 return

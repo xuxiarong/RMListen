@@ -12,10 +12,8 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.AudioSortType
-import com.rm.business_lib.HomeGlobalData
-import com.rm.business_lib.isLogin
-import com.rm.business_lib.loginUser
+import com.rm.business_lib.*
+import com.rm.business_lib.db.converter.BusinessConvert
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
@@ -441,6 +439,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 
     fun onChapterClick(context: Context, model: ListenAudioChapter) {
         val playService = RouterHelper.createRouter(PlayService::class.java)
+        PlayGlobalData.playNeedQueryChapterProgress.set(true)
         playService.startPlayActivity(
             context = context,
             audioId = model.audio_id,

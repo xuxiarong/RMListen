@@ -43,7 +43,8 @@ interface MusicPlayerEventListener {
      */
     fun onPlayMusiconInfo(
         musicInfo: BaseAudioInfo,
-        position: Int
+        position: Int,
+        isAd: Boolean
     )
 
     /**
