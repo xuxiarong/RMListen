@@ -39,7 +39,7 @@
     <string name="business_favorites_success_tip">收藏成功，请在我听-听单中查看</string>
     <string name="business_subscribe_success_tip">订阅成功，请在我听-订阅中查看</string>
     <string name="business_favorites_success_content">可在“我听-听单”中查看</string>
-    <string name="business_subscribe_success_content">可在“我听-听单”中查看</string>
+    <string name="business_subscribe_success_content">可在“我听-订阅”中查看</string>
     <string name="business_no_more_data">到底了</string>
 
     <string name="business_tips">提示</string>

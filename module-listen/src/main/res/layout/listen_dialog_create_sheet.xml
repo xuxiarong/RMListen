@@ -23,9 +23,11 @@
             android:animateLayoutChanges="true"
             android:background="@drawable/base_shape_round_ffffff_16dp"
             android:elevation="6dp"
+            android:focusable="false"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:paddingStart="10dp"
+            android:enabled="false"
             android:paddingEnd="10dp"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,6 +38,7 @@
                 android:layout_height="14dp"
                 android:layout_marginTop="19dp"
                 android:layout_marginEnd="2dp"
+                android:enabled="false"
                 android:indeterminateDrawable="@drawable/shape_base_tip_loading"
                 android:rotation="90"
                 android:visibility="gone" />
@@ -46,8 +49,10 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="15dp"
                 android:ellipsize="end"
+                android:enabled="false"
                 android:gravity="center"
                 android:lines="1"
+                android:focusable="false"
                 android:textColor="@color/base_ff5e5e"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -57,6 +62,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/business_shape_white_top_radius_12dp"
             android:paddingBottom="@dimen/dp_141"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <View
@@ -143,6 +150,8 @@
                 android:layout_marginEnd="@dimen/dp_16"
                 android:background="@drawable/business_shape_stroke_e8e8e8_8dp"
                 android:hint="@string/listen_input_title"
+                android:cursorVisible="true"
+                android:focusableInTouchMode="true"
                 android:focusable="true"
                 android:paddingStart="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_12"

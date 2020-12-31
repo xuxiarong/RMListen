@@ -42,7 +42,6 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
 
     //记录当前点击的实体对象
     val subscriptionData = ObservableField<ListenSubscriptionListBean>()
-
     //当前请求的页码
     private var mPage = 1
 
@@ -234,23 +233,23 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * dialog 取消订阅
      */
     fun dialogUnsubscribeFun(bean: ListenSubscriptionListBean?) {
-        bean?.let {
+        bean?.let {subBean->
             showLoading()
             launchOnIO {
-                repository.unsubscribe(bean.audio_id.toString()).checkResult(
+                repository.unsubscribe(subBean.audio_id.toString()).checkResult(
                     onSuccess = {
                         showContentView()
                         mDialog.dismiss()
-                        if (subscriptionData.get()!!.is_top == 1) {
+                        if (subBean.is_top == 1) {
                             mAdapter.setTopSize(--topSize)
                         }
-                        mAdapter.remove(subscriptionData.get()!!)
+                        mAdapter.remove(subBean)
                         if (mAdapter.data.size <= 0) {
                             showDataEmpty()
                         }
                         BusinessInsertManager.doInsertKeyAndAudio(
                             BusinessInsertConstance.INSERT_TYPE_AUDIO_UNSUBSCRIBED,
-                            subscriptionData.get()!!.audio_id.toString()
+                            subBean.audio_id.toString()
                         )
                     },
                     onError = { it, _ ->

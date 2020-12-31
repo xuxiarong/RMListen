@@ -56,8 +56,6 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     //清除按钮是否显示
     val clearVisible = ObservableField<Boolean>(false)
 
-    //上一次搜索的文本
-    private var oldKeyword = ""
 
     //搜索是否结束
     private var resultIsEnd = true
@@ -189,19 +187,17 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
      * @param keyword 搜索关键字
      */
     fun searchResult(keyword: String) {
+        var word = keyword
         if (keyword.trim().trimEnd().isEmpty()) {
-            showTip("搜索的内容不能为空", R.color.business_color_ff5e5e)
-            DLog.i("=====", Log.getStackTraceString(Throwable()))
-            return
+            word = inputHint.get()!!
         }
-        oldKeyword = keyword
-        saveHistory(keyword)
+        saveHistory(word)
         showLoading()
         launchOnIO {
-            repository.searchResult(keyword, REQUEST_TYPE_ALL, 1, 12).checkResult(
+            repository.searchResult(word, REQUEST_TYPE_ALL, 1, 12).checkResult(
                 onSuccess = {
                     showContentView()
-                    inputHint.set(keyword)
+                    inputHint.set(word)
                     searchResultData.postValue(it)
                     historyVisible.set(false)
                     suggestIsVisible.set(false)

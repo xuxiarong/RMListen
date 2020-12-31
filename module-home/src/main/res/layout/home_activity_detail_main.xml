@@ -94,12 +94,13 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/home_detail_comment_refresh"
+            bindCanLoadMore="@{viewModel.commentRefreshStateMode.canCanLoadMore}"
             bindContentRvId="@{viewModel.commentContentRvId}"
             bindIsLoadMoreSuccess="@{viewModel.commentRefreshStateMode.isLoadMoreSuccess()}"
+            bindNeedShowMoreData="@{false}"
             bindNoMoreData="@{viewModel.commentRefreshStateMode.noMoreData}"
             bindOnLoadMoreListener="@{viewModel.commentLoadMoreData}"
             bindResetNoMoreData="@{viewModel.commentRefreshStateMode.resetNoMoreData}"
-            bindCanLoadMore="@{viewModel.commentRefreshStateMode.canCanLoadMore}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/home_detail_title_cl"
@@ -110,7 +111,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_detail_comment_recycle_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                bindVerticalScroll="@{viewModel.commentRvScrollY}"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/dp_16"
                 android:layout_marginEnd="@dimen/dp_16" />
 
@@ -182,8 +184,8 @@
                     android:layout_height="0dp"
                     android:button="@null"
                     android:drawableEnd="@drawable/home_detail_fold"
-                    android:paddingStart="@dimen/dp_10"
                     android:onClick="@{()->viewModel.clickShowAnthology()}"
+                    android:paddingStart="@dimen/dp_10"
                     android:paddingEnd="@dimen/dp_16"
                     android:text="@{@string/home_detail_chapter_total(viewModel.chapterTotal)}"
                     android:textColor="@color/business_text_color_666666"
@@ -245,8 +247,8 @@
 
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:id="@+id/home_chapter_detail_refresh"
-                bindContentRvId="@{viewModel.chapterContentRvId}"
                 bindCanRefresh="@{viewModel.chapterRefreshStatus.canRefresh}"
+                bindContentRvId="@{viewModel.chapterContentRvId}"
                 bindIsLoadMoreSuccess="@{viewModel.chapterRefreshStatus.isLoadMoreSuccess()}"
                 bindIsRefreshSuccess="@{viewModel.chapterRefreshStatus.isRefreshSuccess()}"
                 bindNoMoreData="@{viewModel.chapterRefreshStatus.noMoreData}"

@@ -31,7 +31,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/listen_sheet_detail_description"
             style="@style/BusinessTextStyleFirst_1"
-            bindText="@{headViewModel.data.sheet_name}"
+            bindText="@{headViewModel.nowSheetName}"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginEnd="@dimen/dp_16"

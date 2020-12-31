@@ -15,6 +15,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.rm.baselisten.decoration.GridSpaceItemDecoration
 import com.rm.baselisten.decoration.LinearItemDecoration
 import com.rm.baselisten.utilExt.dip
+import kotlin.math.abs
 
 
 /**
@@ -88,7 +89,7 @@ fun RecyclerView.bindVerticallyLayoutNoScroll(adapter: RecyclerView.Adapter<*>?)
 }
 
 @BindingAdapter("bindRecyclerViewLargeCache")
-fun RecyclerView.bindRecyclerViewLargeCache(cacheSize : Int){
+fun RecyclerView.bindRecyclerViewLargeCache(cacheSize: Int) {
     val pool = RecyclerView.RecycledViewPool()
     pool.setMaxRecycledViews(0, cacheSize) //TYPE为0，缓存数量为20
     setRecycledViewPool(pool) //给Recycleview设置缓存池对象
@@ -121,7 +122,7 @@ fun RecyclerView.gridItemDecoration(span: Float) {
     )
 }
 
-@BindingAdapter("bindFlexboxLayout",  requireAll = false)
+@BindingAdapter("bindFlexboxLayout", requireAll = false)
 fun RecyclerView.bindFlexboxLayout(adapter: RecyclerView.Adapter<*>?) {
     if (adapter == null) {
         return
@@ -145,12 +146,12 @@ fun RecyclerView.divLinearItemDecoration(span: Int, divHeight: Int, @ColorInt di
 }
 
 @BindingAdapter("bindRecyclerViewScroll")
-fun RecyclerView.bindRecyclerViewScroll(action : ((View)-> Unit)?) {
+fun RecyclerView.bindRecyclerViewScroll(action: ((View) -> Unit)?) {
     action?.let {
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if(dx>0 || dy>0){
+                if (dx > 0 || dy > 0) {
                     action(recyclerView)
                 }
             }
@@ -158,3 +159,10 @@ fun RecyclerView.bindRecyclerViewScroll(action : ((View)-> Unit)?) {
     }
 }
 
+
+@BindingAdapter("bindVerticalScroll")
+fun RecyclerView.bindVerticalScroll(y: Int? = 0) {
+    if (abs(y ?: 0) > 0) {
+        scrollY = y ?: 0
+    }
+}

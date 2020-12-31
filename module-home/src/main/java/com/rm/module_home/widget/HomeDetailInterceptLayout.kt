@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -159,8 +160,11 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
             if (canMoreData || !isTopItem(1, mRecyclerView)) {
                 super.onInterceptTouchEvent(ev)
             } else {
-                onTouchEvent(ev)
-            }
+                if (mCurType== TYPE_TOP){
+                    super.onInterceptTouchEvent(ev)
+                }else{
+                    onTouchEvent(ev)
+                }            }
         }
     }
 

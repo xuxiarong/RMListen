@@ -168,7 +168,6 @@ class ListenDialogCreateSheetViewModel(
                     mDialog?.dismiss()
                 },
                 onError = {it,_->
-//                    showErrorTip(msg = CONTEXT.getString(R.string.listen_edit_fail))
                     showErrorTip(msg = "$it")
                 }
             )
@@ -234,6 +233,11 @@ class ListenDialogCreateSheetViewModel(
     ) {
         dataBinding?.listenDialogCreateSheetLayout?.apply {
             dataBinding?.listenDialogCreateSheetTip?.text = msg
+            dataBinding?.listenDialogCreateSheetEditName?.setOnClickListener {
+                dataBinding?.listenDialogCreateSheetEditName?.requestFocus()
+                dataBinding?.listenDialogCreateSheetEditName?.isFocusableInTouchMode = true
+                dataBinding?.listenDialogCreateSheetEditName?.findFocus()
+            }
             dataBinding?.listenDialogCreateSheetTip?.setTextColor(
                 ContextCompat.getColor(
                     context,

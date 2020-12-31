@@ -119,6 +119,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 评论加载更多
      */
     val commentRefreshStateMode = SmartRefreshLayoutStatusModel()
+    val commentRvScrollY = ObservableField(0)
 
     /**
      * 章节加载更多
@@ -382,7 +383,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                             RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                                 context = context,
                                 audioId = audioId.get() ?: "",
-                                audioInfo = detailInfoData.get()?.list?: DownloadAudio(),
+                                audioInfo = detailInfoData.get()?.list ?: DownloadAudio(),
                                 chapterId = playInfo?.playChapterId ?: "",
                                 currentDuration = playProgress?.currentDuration ?: 0,
                                 sortType = mCurSort
@@ -402,7 +403,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                         RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                             context = context,
                             audioId = audioId.get() ?: "",
-                            audioInfo = detailInfoData.get()?.list?:DownloadAudio(),
+                            audioInfo = detailInfoData.get()?.list ?: DownloadAudio(),
                             chapterId = listenRecord.listenChapterId ?: "",
                             currentDuration = queryChapterRecentUpdate?.listen_duration ?: 0,
                             sortType = mCurSort
@@ -412,7 +413,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                             RouterHelper.createRouter(PlayService::class.java).startPlayActivity(
                                 context = context,
                                 audioId = audioId.get() ?: "",
-                                audioInfo = detailInfoData.get()?.list?:DownloadAudio(),
+                                audioInfo = detailInfoData.get()?.list ?: DownloadAudio(),
                                 chapterId = chapterList[0].chapter_id.toString(),
                                 sortType = mCurSort
                             )
@@ -657,7 +658,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             context,
             audioId = audioId.get()!!,
             chapterId = bean.chapter_id.toString(),
-            audioInfo = detailInfoData.get()?.list?:DownloadAudio(),
+            audioInfo = detailInfoData.get()?.list ?: DownloadAudio(),
             sortType = mCurSort
         )
     }
@@ -672,7 +673,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     commentTotal.set(it.total)
                     processCommentData(it)
-
+                    commentRvScrollY.set(-1)
+                    commentRvScrollY.notifyChange()
                 }, onError = { it, _ ->
                     showTip("$it", R.color.business_color_ff5e5e)
                 }

@@ -45,6 +45,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
 
     //数据源
     val data = ObservableField<SheetInfoBean>()
+    val nowSheetName = ObservableField<String>()
 
     //每页加载的条数
     private val pageSize = 12
@@ -59,9 +60,6 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
 
     //音频书籍数量
     val audioNum = ObservableField(0)
-
-    //编辑成功
-    var blockSuccess: (String) -> Unit = {}
 
     /**
      * 刷新
@@ -90,6 +88,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     showContentView()
                     audioNum.set(it.num_audio)
                     data.set(it)
+                    nowSheetName.set(it.sheet_name)
                 },
 
                 onError = { it, _ ->
@@ -237,6 +236,9 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     it.sheet_id,
                     success = { sheetName ->
                         editSuccess(sheetName)
+                        nowSheetName.set(sheetName)
+                        it.sheet_name=sheetName
+                        data.set(it)
                         showTip("编辑成功")
                     }
                 )
@@ -249,7 +251,6 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
      */
     private fun editSuccess(sheetName: String) {
         mDialog.dismiss()
-        blockSuccess(sheetName)
         setResult(sheetName)
     }
 
