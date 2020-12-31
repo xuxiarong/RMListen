@@ -7,6 +7,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
@@ -262,7 +263,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun getNextPageChapterList() {
         val audioId = PlayGlobalData.playAudioId.get()
-        if (TextUtils.isEmpty(audioId) || noMoreChapter) {
+        if (TextUtils.isEmpty(audioId) || (noMoreChapter && PlayGlobalData.isSortAsc()) ) {
             return
         }
         launchOnIO {
@@ -277,6 +278,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     chapterRefreshModel.noMoreData.set(chapterList.size < PlayGlobalData.playChapterPageSize)
                     noMoreChapter = chapterList.size < PlayGlobalData.playChapterPageSize
                     chapterRefreshModel.finishLoadMore(true)
+                    chapterRefreshModel.finishRefresh(true)
                     //是第一页，那么取第一条作为播放
                     if (PlayGlobalData.isSortAsc()) {
                         DLog.d("music-exoplayer-lib","播放页设置公共数据 getNextPageChapterList")
@@ -357,6 +359,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     ) {
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
         playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
+        chapterRefreshModel.noMoreData.set(false)
+        chapterRefreshModel.canRefresh.set(true)
         DLog.d("music-exoplayer-lib","播放页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
         launchOnIO {
             repository.getChapterListWithId(
@@ -371,11 +375,15 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 playPrePage = it.page
                 showContentView()
                 if (chapterList != null) {
-                    chapterRefreshModel.noMoreData.set(chapterList.size < PlayGlobalData.playChapterPageSize)
+                    if (PlayGlobalData.isSortAsc()) {
+                        chapterRefreshModel.noMoreData.set(chapterList.size < PlayGlobalData.playChapterPageSize)
+                    } else {
+                        chapterRefreshModel.canRefresh.set(chapterList.size < PlayGlobalData.playChapterPageSize)
+                    }
                     noMoreChapter = chapterList.size < PlayGlobalData.playChapterPageSize
                     DLog.d("music-exoplayer-lib","播放页寻找章节 name = ${PlayGlobalData.playChapter.get()?.chapter_name} ,id = ${PlayGlobalData.playChapter.get()?.chapter_id}")
                     chapterList.forEach { chapter ->
-                        if (chapter.chapter_id.toString() == PlayGlobalData.playChapterId.get()) {
+                        if (chapter.chapter_id.toString() == BaseConstance.basePlayInfoModel.get()?.playChapterId) {
                             initPlayChapter(chapter)
                             if (!PlayGlobalData.isSortAsc()) {
                                 chapterList.reverse()
