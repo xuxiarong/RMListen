@@ -184,6 +184,11 @@ object PlayGlobalData {
     var playPrePage = PLAY_FIRST_PAGE
 
     /**
+     * 播放章节总共的页码
+     */
+    var playChapterTotal = 1
+
+    /**
      * 章节每页数量
      */
     var playChapterPageSize = PLAY_PAGE_SIZE
@@ -288,7 +293,8 @@ object PlayGlobalData {
         playAudioModel.set(audio)
         BaseConstance.updateBaseAudioId(
             audioId = audio.audio_id.toString(),
-            playUrl = audio.audio_cover_url
+            playUrl = audio.audio_cover_url,
+            playSort = playChapterListSort.get()?:"asc"
         )
         audio.updateMillis = System.currentTimeMillis()
         playChapterListSort.get()?.let {
@@ -306,11 +312,7 @@ object PlayGlobalData {
      */
     fun setNextPagePlayData(chapterList: MutableList<DownloadChapter>) {
         DLog.d("music-exoplayer-lib", "设置公共数据 setNextPagePlayData")
-        if (playNextPage == PLAY_FIRST_PAGE) {
-            playChapterList.value = chapterList
-        } else {
-            playChapterList.addAll(chapterList)
-        }
+        playChapterList.addAll(chapterList)
     }
 
     fun setPrePagePlayData(chapterList: MutableList<DownloadChapter>) {

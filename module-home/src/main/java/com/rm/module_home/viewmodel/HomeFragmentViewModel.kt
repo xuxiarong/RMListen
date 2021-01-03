@@ -250,6 +250,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     block.single_img_content?.let {
                         allData.add(block)
                         it.itemType = R.layout.home_item_audio_sing_img
+                        it.block_id = block.block_id
                         allData.add(it)
                     }
                 }
@@ -422,7 +423,11 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
             adList: List<BusinessAdModel>?
     ) {
         if (horSingleRvModel.jump_url.isNotEmpty() && adList != null && adList.isNotEmpty()) {
-            horSingleRvModel.img_ad_model = getRandomAdFromList(adList)
+            adList.forEach {
+                if (it.attach_to_block_id == horSingleRvModel.block_id) {
+                    horSingleRvModel.img_ad_model = it
+                }
+            }
         }
     }
 

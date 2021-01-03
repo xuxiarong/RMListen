@@ -100,6 +100,7 @@ data class HomeAudioModel(
 }
 
 data class HomeSingleImgContentModel(
+        var block_id: Int ,
         val jump_url: String = "",
         val image_path: String = "",
         val image_url: String = "",

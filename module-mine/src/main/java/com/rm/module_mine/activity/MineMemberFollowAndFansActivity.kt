@@ -8,6 +8,7 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.binding.getPlayCount
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
+import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.adapter.MineFollowAndFansAdapter
@@ -25,7 +26,7 @@ import com.rm.module_mine.memberFollowNum
  *
  */
 class MineMemberFollowAndFansActivity :
-    BaseVMActivity<MineActivityMemberFollowAndFansBinding, BaseVMViewModel>() {
+    ComponentShowPlayActivity<MineActivityMemberFollowAndFansBinding, BaseVMViewModel>() {
     companion object {
         private const val MEMBER_ID = "memberId"
         private const val TYPE = "type"

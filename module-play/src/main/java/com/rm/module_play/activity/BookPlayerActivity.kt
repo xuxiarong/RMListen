@@ -94,11 +94,12 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         //如果播放的书籍或者章节不一致，则先把播放器的数据清除掉
                         if(playAudioId!=it.playAudioId || playChapterId!=it.playChapterId){
                             PlayGlobalData.playChapterList.value = mutableListOf()
-                            PlayGlobalData.playAudioId.set(playAudioId)
-                            PlayGlobalData.playChapterId.set(playChapterId)
                             BaseConstance.updateBaseChapterId(playAudioId, playChapterId)
                         }
                     }
+                    PlayGlobalData.playAudioId.set(playAudioId)
+                    PlayGlobalData.playChapterId.set(playChapterId)
+                    PlayGlobalData.playChapterListSort.set(playSortType)
                 }
                 val intent = Intent(context, BookPlayerActivity::class.java)
                 context.startActivity(intent)
@@ -262,8 +263,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     }
 
     override fun initData() {
-        PlayGlobalData.playAudioId.set(playAudioId)
-        PlayGlobalData.playChapterListSort.set(playSortType)
         //书籍信息未传入，获取书籍详情信息,有则直接使用
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
             mViewModel.getDetailInfo(playAudioId)
@@ -282,29 +281,24 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             PlayGlobalData.playChapterList.value = playChapterList
         } else {
             mViewModel.isLocalChapterList.set(false)
-            if (TextUtils.isEmpty(playChapterId)) {
-                mViewModel.getNextPageChapterList()
-            } else {
-                PlayGlobalData.playChapterId.set(playChapterId)
-                val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
-                if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
-                    PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
-                    if (musicPlayerManger.getCurDurtion() >= currentPlayerMusic.duration) {
-                        PlayGlobalData.process.set(0F)
-                        musicPlayerManger.seekTo(0L)
-                    } else {
-                        PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
-                    }
-                } else {
-                    DLog.d("music-exoplayer-lib","initData  playAudioId = ${playAudioId} -- playChapterId = $playChapterId")
+            PlayGlobalData.playChapterId.set(playChapterId)
+            val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
+            if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
+                PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
+                if (musicPlayerManger.getCurDurtion() >= currentPlayerMusic.duration) {
                     PlayGlobalData.process.set(0F)
-                    mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
+                    musicPlayerManger.seekTo(0L)
+                } else {
+                    PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
                 }
+            } else {
+                DLog.d("music-exoplayer-lib","initData  playAudioId = ${playAudioId} -- playChapterId = $playChapterId")
+                PlayGlobalData.process.set(0F)
+                mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
             }
         }
         playChapterId = ""
         mViewModel.getCommentList()
-
     }
 
     /**

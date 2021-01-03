@@ -8,5 +8,7 @@ package com.rm.baselisten.model
 data class BasePlayInfoModel constructor(
     var playUrl : String = "",
     var playAudioId : String = "",
-    var playChapterId : String = ""
+    var playChapterId : String = "",
+    var playSort : String = "asc"
+
 )
