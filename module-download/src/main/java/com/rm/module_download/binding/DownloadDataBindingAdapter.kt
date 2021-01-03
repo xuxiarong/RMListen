@@ -109,7 +109,7 @@ fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter, isSelectAll: B
     }
 }
 
-@BindingAdapter("bindItemChapter", "bindDownChapter","bindDownloadAll",requireAll = true)
+@BindingAdapter("bindItemChapter", "bindDownChapter", "bindDownloadAll", requireAll = true)
 fun ImageView.bindDownOrPause(
         chapter: DownloadChapter,
         downloadChapter: DownloadChapter?,
@@ -118,9 +118,12 @@ fun ImageView.bindDownOrPause(
     if (downloadChapter == null) {
         return
     }
-    if(isDownAll!=null && !isDownAll){
+    if (isDownAll != null && !isDownAll && downloadChapter.chapter_id != chapter.chapter_id) {
         setImageResource(R.drawable.download_ic_start_download)
         return
+    }
+    if (isDownAll !=null && isDownAll){
+        chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
     }
 
     if (chapter.chapter_id == downloadChapter.chapter_id) {
@@ -152,7 +155,7 @@ fun ProgressBar.bindDownProgressChapter(
             chapter.current_offset = downloadChapter.current_offset
         }
         progress = (chapter.current_offset / (chapter.size / 100)).toInt()
-    }catch (e : Exception){
+    } catch (e: Exception) {
         progress = 0
     }
 }
@@ -172,12 +175,16 @@ fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: 
     text = String.format(context.getString(R.string.business_down_and_total_size), currentSize, totalSize)
 }
 
-@BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter","bindDownloadAll",requireAll = true)
-fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?,isDownAll: Boolean?) {
-    if(isDownAll!=null && !isDownAll){
+@BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter", "bindDownloadAll", requireAll = true)
+fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?, isDownAll: Boolean?) {
+    if (isDownAll != null && !isDownAll && downloadChapter?.chapter_id != chapter.chapter_id) {
         text = context.getString(R.string.business_download_pause)
         return
     }
+    if (isDownAll !=null && isDownAll){
+        chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+    }
+
     if (downloadChapter != null && chapter.chapter_id == downloadChapter.chapter_id) {
         chapter.down_status = downloadChapter.down_status
         chapter.down_speed = downloadChapter.down_speed

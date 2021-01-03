@@ -7,6 +7,7 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.DownloadAudioDao
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadDaoUtils
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadActivityBookDetailBinding
@@ -32,23 +33,20 @@ class DownloadBookDetailActivity :
     override fun initData() {
         if (intent != null) {
             val audio = intent.getSerializableExtra("download_audio") as DownloadAudio
-            val qb = DaoUtil(DownloadAudio::class.java, "").queryBuilder()
-            qb?.where(DownloadAudioDao.Properties.Audio_id.eq(audio.audio_id))
-            val list = qb?.list()
-            val end = System.currentTimeMillis()
-            if (list != null && list.size > 0) {
-                mViewModel.downloadAudio.set(list[0])
-                list[0].chapterList.sortWith(Comparator { o1, o2 ->
+            mViewModel.downloadAudio.set(audio)
+            val list = DownloadDaoUtils.queryAllFinishChapterWithAudioId(audioId = audio.audio_id)
+            if (list != null && list.isNotEmpty()) {
+                val chapterList = list.toMutableList()
+                chapterList.sortWith(Comparator { o1, o2 ->
                     return@Comparator if (o1.sequence > o2.sequence) {
                         1
                     } else {
                         -1
                     }
                 })
-                mViewModel.downloadingAdapter.setList(list[0].chapterList)
+                mViewModel.downFinishAdapter.setList(chapterList)
             } else {
-                mViewModel.downloadAudio.set(audio)
-                mViewModel.downloadingAdapter.setList(audio.chapterList)
+                mViewModel.downFinishAdapter.setList(audio.chapterList)
             }
         }
     }

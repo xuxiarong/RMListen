@@ -73,14 +73,14 @@
                 android:progressDrawable="@drawable/business_progress_bg" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/dp_22"
+                bindDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
+                bindDownloadAll="@{DownloadMemoryCache.INSTANCE.isDownAll}"
+                bindItemChapter="@{itemBean}"
+                isVisible="@{!viewModel.downloadingEdit}"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_22"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/dp_16"
-                isVisible="@{!viewModel.downloadingEdit}"
-                bindItemChapter="@{itemBean}"
-                bindDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
-                bindDownloadAll="@{DownloadMemoryCache.INSTANCE.isDownAll}"
                 tools:src="@drawable/download_ic_pause_download" />
 
             <androidx.appcompat.widget.AppCompatTextView

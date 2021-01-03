@@ -5,6 +5,7 @@ import com.rm.business_lib.db.ListenAudioEntityDao
 import com.rm.business_lib.db.ListenChapterEntityDao
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenChapterEntity
+import com.rm.business_lib.download.DownloadConstant
 
 /**
  * desc   :
@@ -52,6 +53,24 @@ object DownloadDaoUtils {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun queryAllFinishChapterWithAudioId(audioId: Long) : List<DownloadChapter>?{
+        try {
+            val queryBuilder = downloadChapterDao.queryBuilder()
+            if (queryBuilder != null) {
+                val result = queryBuilder
+                        .where(ListenChapterEntityDao.Properties.Audio_id.eq(audioId))
+                        .where(ListenChapterEntityDao.Properties.Down_status.eq(DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH))
+                        .list()
+                if(result!=null){
+                    return result
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 
 
