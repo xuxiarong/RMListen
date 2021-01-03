@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.business_lib.db.DaoUtil
-import com.rm.business_lib.db.DownloadAudioDao
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadDaoUtils
 import com.rm.module_download.BR
@@ -33,20 +31,20 @@ class DownloadBookDetailActivity :
     override fun initData() {
         if (intent != null) {
             val audio = intent.getSerializableExtra("download_audio") as DownloadAudio
-            mViewModel.downloadAudio.set(audio)
-            val list = DownloadDaoUtils.queryAllFinishChapterWithAudioId(audioId = audio.audio_id)
-            if (list != null && list.isNotEmpty()) {
-                val chapterList = list.toMutableList()
-                chapterList.sortWith(Comparator { o1, o2 ->
-                    return@Comparator if (o1.sequence > o2.sequence) {
-                        1
-                    } else {
-                        -1
-                    }
-                })
-                mViewModel.downFinishAdapter.setList(chapterList)
-            } else {
-                mViewModel.downFinishAdapter.setList(audio.chapterList)
+            mViewModel.launchOnIO {
+                val list = DownloadDaoUtils.queryAllFinishChapterWithAudioId(audio)
+                if (list != null && list.isNotEmpty()) {
+                    val chapterList = list.toMutableList()
+                    chapterList.sortWith(Comparator { o1, o2 ->
+                        return@Comparator if (o1.sequence > o2.sequence) {
+                            1
+                        } else {
+                            -1
+                        }
+                    })
+                    mViewModel.downFinishAdapter.setList(chapterList)
+                    mViewModel.downloadAudio.set(audio)
+                }
             }
         }
     }

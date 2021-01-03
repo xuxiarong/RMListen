@@ -371,6 +371,15 @@ object DownloadMemoryCache {
                         }
                     }
                     downloadingChapterList.remove(finishChapter)
+                    downloadingChapterList.value?.let {
+                        if(it.isEmpty()){
+                            val downloadChapter = DownloadChapter()
+                            downloadChapter.chapter_id = 0L
+                            downloadChapter.audio_id = 0L
+                            downloadChapter.path_url = ""
+                            downloadingChapter.set(downloadChapter)
+                        }
+                    }
                 }
             }
         }

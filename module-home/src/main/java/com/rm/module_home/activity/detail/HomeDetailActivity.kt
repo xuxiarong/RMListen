@@ -6,13 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.utilExt.getStateHeight
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.DetailAudioSortDao
 import com.rm.business_lib.db.audiosort.DetailAudioSort
+import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -170,6 +175,25 @@ class HomeDetailActivity :
                 }
             }
         })
+        DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
+            mViewModel.chapterAdapter.setList(getChapterStatus(mViewModel.chapterAdapter.data))
+            mViewModel.chapterAdapter.notifyDataSetChanged()
+        })
+        DownloadMemoryCache.downloadingAudioList.observe(this, Observer {
+            mViewModel.chapterAdapter.setList(getChapterStatus(mViewModel.chapterAdapter.data))
+            mViewModel.chapterAdapter.notifyDataSetChanged()
+        })
+    }
+
+    private fun getChapterStatus(chapterList: List<DownloadChapter>): MutableList<DownloadChapter> {
+        val audioName = mViewModel.detailInfoData.get()?.list?.audio_name?:""
+        val audioId = mViewModel.detailInfoData.get()?.list?.audio_id?:0L
+        chapterList.forEach {
+            it.audio_name = audioName
+            it.audio_id = audioId
+            DownLoadFileUtils.checkChapterIsDownload(chapter = it)
+        }
+        return chapterList.toMutableList()
     }
 
     override fun initData() {

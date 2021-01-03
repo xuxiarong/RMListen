@@ -33,6 +33,7 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.share.ShareManage
@@ -520,11 +521,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         maxChapterPage = ceil(chapterTotal.get()!! / chapterPageSize.toFloat()).toInt()
 
         if (oldChapterPage > page) {
-            bean.list?.let { chapterList.addAll(0, it) }
+            bean.list?.let { chapterList.addAll(0, getChapterStatus(it)) }
             chapterRefreshStatus.finishRefresh(true)
         } else {
             chapterRefreshStatus.finishLoadMore(true)
-            bean.list?.let { chapterList.addAll(it) }
+            bean.list?.let { chapterList.addAll(getChapterStatus(it)) }
         }
 
         chapterRefreshStatus.setNoHasMore(page == maxChapterPage)
@@ -834,6 +835,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         }
     }
 
+    private fun getChapterStatus(chapterList: List<DownloadChapter>): MutableList<DownloadChapter> {
+        val audioName = detailInfoData.get()?.list?.audio_name?:""
+        val audioId = detailInfoData.get()?.list?.audio_id?:0L
+        chapterList.forEach {
+            it.audio_name = audioName
+            it.audio_id = audioId
+            DownLoadFileUtils.checkChapterIsDownload(chapter = it)
+        }
+        return chapterList.toMutableList()
+    }
 
     /**
      * 点赞点击事件

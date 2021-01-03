@@ -39,7 +39,7 @@ object AriaDownloadManager {
         } else {
             Aria.download(this).stopAllTask()
             val file = File(DownLoadFileUtils.createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
-            Aria.download(this).setMaxSpeed(300).register()
+            Aria.download(this).setMaxSpeed(800).register()
             DLog.d(TAG, "register filepath = ${file.absolutePath}")
             DownloadMemoryCache.downloadingChapter.set(chapter)
             DownloadMemoryCache.setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING,currentOffset = chapter.current_offset)

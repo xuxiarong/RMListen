@@ -1,11 +1,8 @@
 package com.rm.business_lib.db.download
 
-import com.rm.business_lib.db.DaoUtil
-import com.rm.business_lib.db.ListenAudioEntityDao
-import com.rm.business_lib.db.ListenChapterEntityDao
-import com.rm.business_lib.db.listen.ListenAudioEntity
-import com.rm.business_lib.db.listen.ListenChapterEntity
-import com.rm.business_lib.download.DownloadConstant
+import com.rm.baselisten.util.DLog
+import com.rm.business_lib.db.*
+import com.rm.business_lib.download.file.DownLoadFileUtils
 
 /**
  * desc   :
@@ -27,7 +24,7 @@ object DownloadDaoUtils {
             val queryBuilder = downloadAudioDao.queryBuilder()
             if (queryBuilder != null) {
                 val result =
-                    queryBuilder.where(ListenAudioEntityDao.Properties.Audio_id.eq(audioId)).list()
+                    queryBuilder.where(DownloadAudioDao.Properties.Audio_id.eq(audioId)).list()
                 return if (null != result && result.isNotEmpty()) {
                     result[0]
                 } else {
@@ -45,7 +42,7 @@ object DownloadDaoUtils {
             val queryBuilder = downloadChapterDao.queryBuilder()
             if (queryBuilder != null) {
                 val result = queryBuilder
-                    .where(ListenChapterEntityDao.Properties.Audio_id.eq(audioId)).list()
+                    .where(DownloadChapterDao.Properties.Audio_id.eq(audioId)).list()
                 if(result!=null){
                     downloadChapterDao.delete(result)
                 }
@@ -55,29 +52,33 @@ object DownloadDaoUtils {
         }
     }
 
-    fun queryAllFinishChapterWithAudioId(audioId: Long) : List<DownloadChapter>?{
+    fun queryAllFinishChapterWithAudioId(audio: DownloadAudio) : List<DownloadChapter>?{
         try {
             val queryBuilder = downloadChapterDao.queryBuilder()
             if (queryBuilder != null) {
                 val result = queryBuilder
-                        .where(ListenChapterEntityDao.Properties.Audio_id.eq(audioId))
-                        .where(ListenChapterEntityDao.Properties.Down_status.eq(DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH))
+                        .where(DownloadChapterDao.Properties.Audio_id.eq(audio.audio_id))
                         .list()
                 if(result!=null){
+                    val iterator = result.iterator()
+                    audio.download_num = 0
+                    while(iterator.hasNext()){
+                        val next = iterator.next()
+                        if(!DownLoadFileUtils.checkChapterDownFinish(next)){
+                            iterator.remove()
+                        }else{
+                            audio.download_num +=1
+                            audio.down_size += next.size
+                        }
+                    }
                     return result
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            DLog.d("suolong_DownloadDaoUtils","${e.cause}")
         }
         return null
     }
-
-
-    fun saveOrUpdateAudio(audioEntity: ListenAudioEntity) {
-
-    }
-
-
 
 }
