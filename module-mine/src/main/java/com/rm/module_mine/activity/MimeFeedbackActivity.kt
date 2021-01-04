@@ -78,7 +78,6 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                 }
                 val contactNotEmpty = mViewModel.inputContact.get()!!.isNotEmpty()
                 val hasFocus = mDataBind.mineFeedbackEdContact.hasFocus()
-
                 mViewModel.contactVisibility.set(contactNotEmpty && it && hasFocus)
                 mViewModel.contactVisibility.notifyChange()
             } else {
@@ -139,6 +138,19 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                 val keyboardIsVisibility = mViewModel.keyboardIsVisibility.get()
                 mViewModel.contactVisibility.set(contactNotEmpty && keyboardIsVisibility == true && hasFocus)
                 mViewModel.contactVisibility.notifyChange()
+
+                if (hasFocus) {
+                    mine_feedback_scroll_view.postDelayed({
+                        val isBottom =
+                            (mine_feedback_scroll_view.getChildAt(0).height - mine_feedback_scroll_view.height) == (mine_feedback_scroll_view.scrollY)
+                        //如果不在最底部则进行滚动到最底部
+                        if (!isBottom) {
+                            mine_feedback_scroll_view.fullScroll(ScrollView.FOCUS_DOWN)
+                            mine_feedback_ed_contact.requestFocus()
+                            mine_feedback_ed_contact.isFocusableInTouchMode = true
+                        }
+                    }, 200)
+                }
             }
             else -> {
                 mViewModel.contactVisibility.set(false)

@@ -129,7 +129,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
                 mViewModel.hintBannerList.get()?.let {
                     if (it.isNotEmpty()) {
                         curIndex = 0
-                        mDataBind.searchMainEditText.hint = it[0]
+                        search_main_auto_layout.setHint(it[0],false)
                         mViewModel.lastHint.set(it[0])
                         startHintBanner()
                     }
@@ -172,7 +172,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         curType.postValue(REQUEST_TYPE_ALL)
         refreshHistoryData()
         search_main_tv_search.requestFocus()
-        search_main_tv_search.isFocusableInTouchMode=true
+        search_main_tv_search.isFocusableInTouchMode = true
     }
 
 
@@ -226,11 +226,11 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
                     val str = list[it.curIndex]
                     it.mViewModel.hintKeyword = str
                     it.mViewModel.lastHint.set(str)
-                    it.mDataBind.searchMainEditText.hint = str
+//                    it.mDataBind.searchMainEditText.hint = str
+                    it.search_main_auto_layout.setHint(str,true)
                     it.startHintBanner()
                 }
             }
         }
     }
-
 }
