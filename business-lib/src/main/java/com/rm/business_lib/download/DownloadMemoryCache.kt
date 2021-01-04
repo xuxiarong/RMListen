@@ -162,25 +162,32 @@ object DownloadMemoryCache {
 
 
     fun addDownloadingChapter(chapter: DownloadChapter) {
-        isDownAll.set(false)
+        if(!isDownAll.get()){
+            isDownWaitAll.set(true)
+        }
+        val downChapter = downloadingChapter.get()
         if (downloadingChapterList.value != null) {
             val downloadList = downloadingChapterList.value!!
             downloadList.forEach {
-                if (it.path_url == chapter.path_url) {
-                    ToastUtil.show(
-                        BaseApplication.CONTEXT,
-                        BaseApplication.CONTEXT.getString(R.string.business_download_all_exist)
-                    )
+                if (it.chapter_id == chapter.chapter_id) {
+                    if(downChapter!=null && downChapter.isDownloading){
+                        chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+                        setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD)
+                    }else{
+                        AriaDownloadManager.startDownload(chapter)
+                    }
                     return
                 }
             }
         }
-        ToastUtil.show(
-            BaseApplication.CONTEXT,
-            BaseApplication.CONTEXT.getString(R.string.business_download_add_cache)
-        )
+        ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
         downloadingChapterList.add(chapter)
-        AriaDownloadManager.startDownload(chapter)
+        if(downChapter!=null && downChapter.isDownloading){
+            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+            setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING)
+        }else{
+            AriaDownloadManager.startDownload(chapter)
+        }
     }
 
     fun downloadingChapterClick(clickChapter: DownloadChapter) {

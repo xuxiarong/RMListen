@@ -40,7 +40,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    checkContext { startDownloadChapter(chapter) }
+                    checkContext { DownloadMemoryCache.addDownloadingChapter(chapter) }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
@@ -49,8 +49,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.VISIBLE
                 businessDownWaitLv.playAnimation()
                 setOnClickListener {
-//                    if (EasyPermissions.hasPermissions(context, ))
-//                        DownloadMemoryCache.addDownloadingChapter(chapter)
+                    checkContext { DownloadMemoryCache.addDownloadingChapter(chapter) }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
@@ -61,7 +60,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-//                    DownloadMemoryCache.pauseCurrentAndDownNextChapter()
+                    DownloadMemoryCache.pauseDownloadingChapter()
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
@@ -71,7 +70,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    DownloadMemoryCache.resumeDownloadingChapter()
+                    checkContext { DownloadMemoryCache.addDownloadingChapter(chapter) }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {

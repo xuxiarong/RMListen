@@ -74,6 +74,7 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
     }
 
     fun showEmpty(){
+        mViewModel.downloadFinishEdit.set(false)
         downFinishContent.visibility = View.GONE
         downFinishEmpty.visibility = View.VISIBLE
     }
