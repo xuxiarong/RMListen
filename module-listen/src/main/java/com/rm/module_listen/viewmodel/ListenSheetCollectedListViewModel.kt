@@ -229,6 +229,10 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
         if (index != -1) {
             mAdapter.removeAt(index)
         }
+
+        if (mAdapter.data.size <= 0) {
+            showDataEmpty()
+        }
     }
 
     /**

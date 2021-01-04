@@ -41,6 +41,7 @@
                 bindIsLoadMoreSuccess="@{viewModel.commentRefreshModel.isLoadMoreSuccess()}"
                 bindNoMoreData="@{viewModel.commentRefreshModel.noMoreData}"
                 bindCanLoadMore="@{viewModel.commentRefreshModel.canCanLoadMore}"
+                bindNeedShowMoreData="@{false}"
                 bindOnLoadMoreListener="@{viewModel.commentLoadData}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -50,6 +51,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/play_comment_rv"
+                    bindVerticalScroll="@{viewModel.commentRvScrollY}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </com.scwang.smart.refresh.layout.SmartRefreshLayout>

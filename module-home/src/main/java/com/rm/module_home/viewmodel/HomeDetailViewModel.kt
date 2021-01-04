@@ -603,11 +603,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 评论点赞
      */
     private fun likeComment(bean: CommentList) {
-        showLoading()
         launchOnIO {
             repository.homeLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
-                    showContentView()
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = true
                     bean.likes = bean.likes + 1
@@ -616,7 +614,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = { it, _ ->
-                    showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
@@ -628,11 +625,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 取消评论点赞
      */
     private fun unLikeComment(bean: CommentList) {
-        showLoading()
         launchOnIO {
             repository.homeUnLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
-                    showContentView()
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = false
                     bean.likes = bean.likes - 1
@@ -640,7 +635,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = { it, _ ->
-                    showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
