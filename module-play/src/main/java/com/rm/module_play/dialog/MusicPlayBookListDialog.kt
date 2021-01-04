@@ -130,12 +130,13 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         play_cb_chapter_sort.setOnClickListener {
             if(PlayGlobalData.isSortAsc()){
                 PlayGlobalData.playChapterListSort.set(AudioSortType.SORT_DESC)
-                PlayGlobalData.chapterRefreshModel.setResetNoMoreData(PlayGlobalData.chapterRefreshModel.canRefresh.get()?:false)
+                PlayGlobalData.chapterRefreshModel.setCanRefresh(PlayGlobalData.chapterRefreshModel.noMoreData.get()?.not()?:true)
+                PlayGlobalData.chapterRefreshModel.setResetNoMoreData(PlayGlobalData.chapterRefreshModel.canRefresh.get()?.not()?:false)
                 PlayGlobalData.playChapterList.reverse()
                 play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_inverted_ce)
-
             }else{
                 PlayGlobalData.playChapterListSort.set(AudioSortType.SORT_ASC)
+                PlayGlobalData.chapterRefreshModel.setCanRefresh(PlayGlobalData.chapterRefreshModel.canRefresh.get()?:true)
                 PlayGlobalData.chapterRefreshModel.setResetNoMoreData(PlayGlobalData.chapterRefreshModel.noMoreData.get()?:false)
                 PlayGlobalData.playChapterList.reverse()
                 play_cb_chapter_sort.setImageResource(R.drawable.home_detail_chapter_ort_ce)

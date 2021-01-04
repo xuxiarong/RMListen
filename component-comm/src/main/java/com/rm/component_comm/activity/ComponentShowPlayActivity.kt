@@ -74,7 +74,8 @@ abstract class ComponentShowPlayActivity<V : ViewDataBinding, VM : BaseVMViewMod
                     audioId = it.playAudioId,
                     chapterId = it.playChapterId,
                     audioInfo = PlayGlobalData.playAudioModel.get()?: DownloadAudio(),
-                    currentDuration = progress
+                    currentDuration = progress,
+                    sortType = it.playSort
                 )
                 return
             }

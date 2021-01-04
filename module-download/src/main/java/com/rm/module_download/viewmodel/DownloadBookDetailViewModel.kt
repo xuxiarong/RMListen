@@ -2,7 +2,6 @@ package com.rm.module_download.viewmodel
 
 import android.content.Context
 import androidx.databinding.ObservableField
-import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonPositionVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.PlayGlobalData
@@ -17,9 +16,9 @@ class DownloadBookDetailViewModel : BaseVMViewModel() {
 
     var downloadAudio = ObservableField<DownloadAudio>()
 
-    val playService = RouterHelper.createRouter(PlayService::class.java)
+    private val playService = RouterHelper.createRouter(PlayService::class.java)
 
-    val downloadingAdapter by lazy {
+    val downFinishAdapter by lazy {
         CommonPositionVMAdapter<DownloadChapter>(
             this,
             mutableListOf(),
@@ -30,10 +29,6 @@ class DownloadBookDetailViewModel : BaseVMViewModel() {
         )
     }
 
-    fun initAudioList(audio: DownloadAudio) {
-        downloadAudio.set(audio)
-    }
-
     fun downloadChapterClick(context: Context, chapter: DownloadChapter) {
         PlayGlobalData.playNeedQueryChapterProgress.set(true)
         playService.startPlayActivity(
@@ -41,7 +36,7 @@ class DownloadBookDetailViewModel : BaseVMViewModel() {
             audioId = chapter.audio_id.toString(),
             chapterId = chapter.chapter_id.toString(),
             audioInfo = downloadAudio.get()?:DownloadAudio(),
-            chapterList = downloadingAdapter.data,
+            chapterList = downFinishAdapter.data,
             currentDuration = chapter.listen_duration
         )
     }

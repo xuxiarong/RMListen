@@ -9,6 +9,7 @@ import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.NetWorkUtils
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
 import java.io.File
@@ -38,13 +39,14 @@ object AriaDownloadManager {
         } else {
             Aria.download(this).stopAllTask()
             val file = File(DownLoadFileUtils.createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
-            Aria.download(this).setMaxSpeed(300).register()
+            Aria.download(this).setMaxSpeed(800).register()
             DLog.d(TAG, "register filepath = ${file.absolutePath}")
+            DownloadMemoryCache.downloadingChapter.set(chapter)
+            DownloadMemoryCache.setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING,currentOffset = chapter.current_offset)
             Aria.download(this).load(chapter.path_url) //读取下载地址
                     .setFilePath(file.absolutePath) //设置文件保存的完整路径
                     .create() //创建并启动下载
-            DownloadMemoryCache.downloadingChapter.set(chapter)
-            DownloadMemoryCache.downloadingChapter.notifyChange()
+
         }
     }
 
@@ -80,13 +82,14 @@ object AriaDownloadManager {
             val size = task.fileSize
             DownloadMemoryCache.updateDownloadingSpeed(url = task.key, speed = speed, currentOffset = size * percent / 100)
             DLog.d(TAG, "taskRunning  percent = $percent convertSpeed = $convertSpeed speed = $speed")
-        }else{
-            isDownloading.set(false)
-            Aria.download(this).removeAllTask(false)
-            DownloadMemoryCache.downloadingChapter.get()?.let {
-                startDownload(it,isSingleDown.get())
-            }
         }
+//        else{
+//            isDownloading.set(false)
+//            Aria.download(this).removeAllTask(false)
+//            DownloadMemoryCache.downloadingChapter.get()?.let {
+//                startDownload(it,isSingleDown.get())
+//            }
+//        }
     }
 
     @Download.onTaskComplete

@@ -3,6 +3,7 @@
 
     <data>
         <import type="com.rm.business_lib.download.DownloadConstant"/>
+        <import type="com.rm.baselisten.util.ConvertUtils"/>
         <variable
             name="viewModel"
             type="com.rm.module_download.viewmodel.DownloadBookDetailViewModel" />
@@ -79,7 +80,7 @@
             android:textColor="@color/base_666666"
             android:lines="1"
             android:ellipsize="end"
-            android:text="@{DownloadConstant.INSTANCE.getAudioSize(viewModel.downloadAudio)}"
+            android:text="@{ConvertUtils.byte2FitMemorySize(viewModel.downloadAudio.down_size,1)}"
             tools:text="156M"
             />
 
@@ -91,7 +92,7 @@
             android:textColor="@color/business_text_color_333333"
             android:layout_marginStart="@dimen/dp_16"
             android:textSize="@dimen/business_text_size_18sp"
-            android:text="@{@string/download_downloaded_number(viewModel.downloadAudio.chapterList.size())}"
+            android:text="@{@string/download_downloaded_number(viewModel.downloadAudio.download_num)}"
             tools:text = "已下载(23)"
             />
 
@@ -99,7 +100,7 @@
             android:layout_marginTop="208dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bindVerticalLayout="@{viewModel.downloadingAdapter}"
+            bindVerticalLayout="@{viewModel.downFinishAdapter}"
             />
 
     </FrameLayout>

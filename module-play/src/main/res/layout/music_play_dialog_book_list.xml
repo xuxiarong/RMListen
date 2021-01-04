@@ -85,12 +85,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 isVisible="@{!viewModel.isLocalChapterList}"
-                bindCanRefresh="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?PlayGlobalData.INSTANCE.chapterRefreshModel.canRefresh:!PlayGlobalData.INSTANCE.chapterRefreshModel.noMoreData}"
-                bindIsRefreshSuccess="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?PlayGlobalData.INSTANCE.chapterRefreshModel.isRefreshSuccess:PlayGlobalData.INSTANCE.chapterRefreshModel.isLoadMoreSuccess}"
-                bindOnRefreshListener="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?viewModel.getPrePageChapterList:viewModel.getNextPageChapterList}"
-                bindIsLoadMoreSuccess="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?PlayGlobalData.INSTANCE.chapterRefreshModel.isLoadMoreSuccess:PlayGlobalData.INSTANCE.chapterRefreshModel.isRefreshSuccess}"
-                bindNoMoreData="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?PlayGlobalData.INSTANCE.chapterRefreshModel.noMoreData:!PlayGlobalData.INSTANCE.chapterRefreshModel.canRefresh}"
-                bindOnLoadMoreListener="@{PlayGlobalData.INSTANCE.playChapterListSort == AudioSortType.INSTANCE.SORT_ASC?viewModel.getNextPageChapterList:viewModel.getPrePageChapterList}"
+                bindCanRefresh="@{PlayGlobalData.INSTANCE.chapterRefreshModel.canRefresh}"
+                bindIsRefreshSuccess="@{PlayGlobalData.INSTANCE.chapterRefreshModel.isRefreshSuccess}"
+                bindOnRefreshListener="@{viewModel.getPrePageChapterList}"
+                bindIsLoadMoreSuccess="@{PlayGlobalData.INSTANCE.chapterRefreshModel.isLoadMoreSuccess}"
+                bindNoMoreData="@{PlayGlobalData.INSTANCE.chapterRefreshModel.noMoreData}"
+                bindOnLoadMoreListener="@{viewModel.getNextPageChapterList}"
                 bindResetNoMoreData="@{PlayGlobalData.INSTANCE.chapterRefreshModel.resetNoMoreData}"
                 android:layout_marginTop="@dimen/dp_86">
 

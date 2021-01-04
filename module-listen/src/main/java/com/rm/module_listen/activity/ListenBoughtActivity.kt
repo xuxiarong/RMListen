@@ -49,16 +49,13 @@ class ListenBoughtActivity :
                 finish()
             }
         mViewModel.baseTitleModel.value = baseTitleModel
-
-        listen_bought_recycler_view.apply {
-            bindVerticalLayout(mAdapter)
-        }
-
+        mDataShowView = listen_bought_recycler_view
+        mViewModel.showDataEmpty()
 
     }
 
     override fun initData() {
-        mViewModel.getData()
+//        mViewModel.getData()
     }
 
     override fun getLayoutId(): Int {

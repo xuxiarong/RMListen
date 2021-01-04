@@ -123,6 +123,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             musicPlayerManger.setPlayerMultiple(1f)
             PlayGlobalData.playSpeed.set(1f)
             PlayGlobalData.process.set(0F)
+            PlayGlobalData.updateThumbText.set("00:00/00:00")
         } else {
             SAVA_SPEED.getFloattMMKV(1f).let {
                 PlayGlobalData.playSpeed.set(it)
@@ -202,6 +203,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 MUSIC_MODEL_ORDER -> {
                     PlayGlobalData.checkCountChapterPlayEnd(PlayGlobalData.hasNextChapter.get())
                     if(PlayGlobalData.playCountDownChapterSize.get() == 0){
+                        PlayGlobalData.playCountDownChapterSize.set(-1)
                         musicPlayerManger.pause()
                     }else{
                         if (PlayGlobalData.hasNextChapter.get()) {

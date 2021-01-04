@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.binding.bindDownFinishAudioSize
@@ -28,6 +29,12 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
         DownloadMemoryCache.downloadingAudioList.observe(this, Observer {
             val realFinishList = mutableListOf<DownloadAudio>()
             it.forEach { downloadAudio ->
+                downloadAudio.download_num = 0
+                downloadAudio.chapterList.forEach { downloadChapter ->
+                    if(DownLoadFileUtils.checkChapterDownFinish(downloadChapter)){
+                        downloadAudio.download_num +=1
+                    }
+                }
                 if(downloadAudio.download_num>0){
                     realFinishList.add(downloadAudio)
                 }
@@ -67,6 +74,7 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
     }
 
     fun showEmpty(){
+        mViewModel.downloadFinishEdit.set(false)
         downFinishContent.visibility = View.GONE
         downFinishEmpty.visibility = View.VISIBLE
     }

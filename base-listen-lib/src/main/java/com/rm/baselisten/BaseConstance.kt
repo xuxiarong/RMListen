@@ -67,19 +67,20 @@ object BaseConstance {
     /**
      * 更新正在播放的书籍信息
      */
-    fun updateBaseAudioId(audioId: String, playUrl: String) {
+    fun updateBaseAudioId(audioId: String, playUrl: String,playSort : String) {
         val baseAudio = basePlayInfoModel.get()
         if (baseAudio != null) {
-            if(audioId == baseAudio.playAudioId && playUrl == baseAudio.playUrl){
+            if(audioId == baseAudio.playAudioId && playUrl == baseAudio.playUrl && playSort == baseAudio.playSort){
                 return
             }
             baseAudio.playUrl = playUrl
             baseAudio.playAudioId = audioId
+            baseAudio.playSort = playSort
             basePlayInfoModel.set(baseAudio)
             basePlayInfoModel.notifyChange()
             PlAY_LAST_LISTEN_INFO.putMMKV(baseAudio)
         } else {
-            val infoModel = BasePlayInfoModel(playUrl = playUrl, playAudioId = audioId)
+            val infoModel = BasePlayInfoModel(playUrl = playUrl, playAudioId = audioId,playSort = playSort)
             basePlayInfoModel.set(infoModel)
             PlAY_LAST_LISTEN_INFO.putMMKV(infoModel)
         }
