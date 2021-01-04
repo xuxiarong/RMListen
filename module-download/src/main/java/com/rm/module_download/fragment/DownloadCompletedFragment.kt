@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.db.download.DownloadAudio
+import com.rm.business_lib.db.download.DownloadDaoUtils
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.module_download.BR
@@ -22,21 +23,19 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
         }
     }
 
+    var totalAudioSize = 0L
 
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
         DownloadMemoryCache.downloadingAudioList.observe(this, Observer {
+            totalAudioSize = 0L
             val realFinishList = mutableListOf<DownloadAudio>()
             it.forEach { downloadAudio ->
-                downloadAudio.download_num = 0
-                downloadAudio.chapterList.forEach { downloadChapter ->
-                    if(DownLoadFileUtils.checkChapterDownFinish(downloadChapter)){
-                        downloadAudio.download_num +=1
-                    }
-                }
+                DownloadDaoUtils.queryAllFinishChapterWithAudioId(downloadAudio)
                 if(downloadAudio.download_num>0){
                     realFinishList.add(downloadAudio)
+                    totalAudioSize += downloadAudio.down_size
                 }
             }
             if(realFinishList.size>0){
@@ -49,7 +48,7 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
                 })
                 showData()
                 mViewModel.downloadFinishAdapter.setList(realFinishList)
-                down_finish_list_space.bindDownFinishAudioSize(realFinishList)
+                down_finish_list_space.bindDownFinishAudioSize(totalAudioSize)
                 down_finish_list_size.text = String.format(getString(R.string.download_downloaded_number),realFinishList.size)
             }else{
                 mViewModel.downloadFinishAdapter.data.clear()

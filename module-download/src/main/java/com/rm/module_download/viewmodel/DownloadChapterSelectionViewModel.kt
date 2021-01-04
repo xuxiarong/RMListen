@@ -188,6 +188,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     fun showChapterSelectDialog(context: Context) {
         startSequence.set("")
         endSequence.set("")
+        dialogSelectChapterSize.set(0L)
         (context as FragmentActivity).let {
             CommonMvFragmentDialog().apply {
                 gravity = Gravity.BOTTOM
@@ -254,7 +255,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         lastChangeEndIndex = endIndex
         downloadAudio.get()?.audio_id?.let { audioId ->
             launchOnIO {
-                repository.downloadChapterSelection(audioId = audioId, sequences = (startIndex..endIndex).toList())
+                repository.downloadChapterSelection(audioId = audioId, startSequence = startIndex , endSequence = endIndex)
                         .checkResult(
                                 onSuccess = {
                                     it.list?.let { list ->

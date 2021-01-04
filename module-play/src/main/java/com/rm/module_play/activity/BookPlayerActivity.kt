@@ -95,6 +95,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                         if(playAudioId!=it.playAudioId || playChapterId!=it.playChapterId){
                             PlayGlobalData.playChapterList.value = mutableListOf()
                             BaseConstance.updateBaseChapterId(playAudioId, playChapterId)
+                        }else{
+                            playCurrentDuration = BaseConstance.basePlayProgressModel.get()?.currentDuration?:0L
                         }
                     }
                     PlayGlobalData.playAudioId.set(playAudioId)

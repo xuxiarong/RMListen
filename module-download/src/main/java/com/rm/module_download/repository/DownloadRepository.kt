@@ -35,7 +35,6 @@ class DownloadRepository(private val apiService: DownloadApiService) : BaseRepos
                 audio_id = audioId,
                 start_sequence = 0,
                 end_sequence = 0,
-                sequences = sequences,
                 type = TYPE_SEQUENCE_SELECTION
             )
             apiService.downloadChapter(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
@@ -59,7 +58,6 @@ class DownloadRepository(private val apiService: DownloadApiService) : BaseRepos
                 audio_id = audioId,
                 start_sequence = startSequence,
                 end_sequence = endSequence,
-                sequences = listOf(),
                 type = TYPE_SEQUENCE_CONTINUOUS
             )
             apiService.downloadChapter(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))

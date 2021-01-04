@@ -62,6 +62,7 @@ object DownloadDaoUtils {
                 if(result!=null){
                     val iterator = result.iterator()
                     audio.download_num = 0
+                    audio.down_size = 0L
                     while(iterator.hasNext()){
                         val next = iterator.next()
                         if(!DownLoadFileUtils.checkChapterDownFinish(next)){

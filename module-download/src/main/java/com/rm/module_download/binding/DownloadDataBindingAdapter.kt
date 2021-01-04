@@ -109,15 +109,21 @@ fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter, isSelectAll: B
     }
 }
 
-@BindingAdapter("bindItemChapter", "bindDownChapter", "bindDownloadAll", requireAll = true)
+@BindingAdapter("bindItemChapter", "bindDownChapter", "bindDownloadAll","bindEditDownloading", requireAll = true)
 fun ImageView.bindDownOrPause(
         chapter: DownloadChapter,
         downloadChapter: DownloadChapter?,
-        isDownAll: Boolean?
+        isDownAll: Boolean?,
+        isEditDownloading : Boolean?
 ) {
     if (downloadChapter == null) {
         return
     }
+    if(isEditDownloading!=null && isEditDownloading){
+        setImageResource(R.drawable.download_ic_start_download)
+        return
+    }
+
     if (isDownAll != null && !isDownAll && downloadChapter.chapter_id != chapter.chapter_id) {
         setImageResource(R.drawable.download_ic_start_download)
         return
@@ -176,9 +182,14 @@ fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: 
     text = String.format(context.getString(R.string.business_down_and_total_size), currentSize, totalSize)
 }
 
-@BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter", "bindDownloadAll", requireAll = true)
-fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?, isDownAll: Boolean?) {
+@BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter", "bindDownloadAll", "bindEditDownloading",requireAll = true)
+fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?, isDownAll: Boolean?, isEditDownloading : Boolean?) {
     if (downloadChapter == null) {
+        return
+    }
+
+    if(isEditDownloading!=null && isEditDownloading){
+        text = context.getString(R.string.business_download_pause)
         return
     }
 
@@ -305,27 +316,14 @@ fun TextView.bindDownSelectChapterSize(size: Long) {
 }
 
 @BindingAdapter("bindDownFinishAudioSize")
-fun TextView.bindDownFinishAudioSize(list: List<DownloadAudio>?) {
-    if (list != null && list.isNotEmpty()) {
-        try {
-            var totalSize = 0L
-            list.forEach { audio ->
-                audio.chapterList?.forEach { chapter ->
-                    if (chapter.isDownloadFinish) {
-                        totalSize += chapter.size
-                    }
-                }
-            }
-            text = String.format(context.getString(R.string.download_finish_audio_size),
-                    ConvertUtils.byte2FitMemorySize(totalSize, 1),
-                    ConvertUtils.byte2FitMemorySize(SDCardUtils.getExternalAvailableSize(), 1))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            text = ""
-        }
-    } else {
-        text = ""
+fun TextView.bindDownFinishAudioSize(totalSize : Long) {
+    text = try {
+        String.format(context.getString(R.string.download_finish_audio_size),
+            ConvertUtils.byte2FitMemorySize(totalSize, 1),
+            ConvertUtils.byte2FitMemorySize(SDCardUtils.getExternalAvailableSize(), 1))
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
     }
-
 
 }
