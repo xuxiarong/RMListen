@@ -38,7 +38,7 @@ object DownloadMemoryCache {
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
 
     //正在下载的章节
-    var downloadingChapter = ObservableField<DownloadChapter>()
+    var downloadingChapter = ObservableField<DownloadChapter>(DownloadChapter())
 
     //当前是否是下载全部
     var isDownAll = ObservableBoolean(false)

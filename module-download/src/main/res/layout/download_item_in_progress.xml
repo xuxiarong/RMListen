@@ -76,6 +76,7 @@
                 bindDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
                 bindDownloadAll="@{DownloadMemoryCache.INSTANCE.isDownAll}"
                 bindItemChapter="@{itemBean}"
+                bindEditDownloading="@{viewModel.downloadingEdit}"
                 isVisible="@{!viewModel.downloadingEdit}"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_22"
@@ -102,6 +103,7 @@
                 bindDownloadText="@{itemBean}"
                 bindDownloadSpeedChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
                 bindDownloadAll="@{DownloadMemoryCache.INSTANCE.isDownAll}"
+                bindEditDownloading="@{viewModel.downloadingEdit}"
                 tools:text="144kb/s"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp" />

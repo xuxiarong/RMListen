@@ -41,8 +41,12 @@ fun View.bindLongClick(action: (() -> Unit)?) {
 }
 
 @BindingAdapter("isVisible")
-fun View.isVisible(isVisible: Boolean) {
-    visibility = if (isVisible) View.VISIBLE else View.GONE
+fun View.isVisible(visible: Boolean?) {
+    if(visible == null){
+        visibility = View.GONE
+        return
+    }
+    visibility = if (visible) View.VISIBLE else View.GONE
 }
 
 @BindingAdapter("isVisiblePlace")
