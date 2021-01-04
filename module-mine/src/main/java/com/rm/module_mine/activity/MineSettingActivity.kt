@@ -2,8 +2,21 @@ package com.rm.module_mine.activity
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
+import android.view.Gravity
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
+import com.google.android.material.snackbar.Snackbar
+import com.gyf.barlibrary.ImmersionBar.getStatusBarHeight
+import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.util.toast.XToast
+import com.rm.baselisten.utilExt.String
+import com.rm.baselisten.utilExt.getStateHeight
+import com.rm.business_lib.helpter.loginOut
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.databinding.MineActivitySettingBinding
@@ -41,9 +54,10 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
         val titleModel = BaseTitleModel()
             .setLeftIcon(R.drawable.base_icon_back)
             .setTitle(getString(R.string.mine_settings))
-            .setLeftIconClick { finish() }
+            .setLeftIconClick { finish()}
         mViewModel.baseTitleModel.value = titleModel
     }
+
 
     /**
      * 监听数据的变化

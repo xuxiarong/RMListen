@@ -1,6 +1,7 @@
 package com.rm.module_listen.utils
 
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.viewmodel.ListenDialogSheetViewModel
@@ -11,12 +12,13 @@ import com.rm.module_listen.viewmodel.ListenDialogSheetViewModel
 class ListenDialogSheetHelper(
     private val mActivity: FragmentActivity,
     private val audioId: String,
-    private val successBlock: () -> Unit
+    private val successBlock: () -> Unit,
+    private val viewModel: BaseVMViewModel
 ) {
     /**
      * viewModel对象
      */
-    private val mViewModel by lazy { ListenDialogSheetViewModel(mActivity, audioId, successBlock) }
+    private val mViewModel by lazy { ListenDialogSheetViewModel(mActivity, audioId, successBlock,viewModel) }
 
 
     /**

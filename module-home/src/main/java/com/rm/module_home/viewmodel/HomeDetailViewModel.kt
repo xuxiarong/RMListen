@@ -708,8 +708,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     private fun showUnAttentionDialog(context: Context, followId: String) {
         getActivity(context)?.let { activity ->
             TipsFragmentDialog().apply {
-                titleText = context.String(R.string.business_tips)
-                contentText = context.String(R.string.business_sure_cancel_attention)
+                titleText = context.String(R.string.business_attention_title)
+                contentText = context.String(R.string.business_attention_content)
                 leftBtnText = context.String(R.string.business_cancel)
                 rightBtnText = context.String(R.string.business_sure)
                 rightBtnTextColor = R.color.business_color_ff5e5e
@@ -878,7 +878,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             if (isLogin.get()) {
                 audioId.get()?.let { audioId ->
                     anchorId.get()?.let { anchorId ->
-                        HomeCommentDialogHelper(it, audioId, anchorId) {
+                        HomeCommentDialogHelper(it, audioId, anchorId,this) {
                             commentPage = 1
                             getCommentList(audioId)
                             showTip("评论成功")
@@ -933,9 +933,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 quicklyLogin(it)
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
-                    .showMySheetListDialog(it, audioId.get()!!) {
-                        showTip("在“我听-听单”中查看")
-                    }
+                    .showMySheetListDialog(
+                        it, audioId.get()!!,
+                        { showTip("在“我听-听单”中查看") },
+                        this
+                    )
             }
         }
 

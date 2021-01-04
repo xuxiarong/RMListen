@@ -5,6 +5,7 @@ import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.baselisten.net.util.GsonUtils
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.FileUtils
 import com.rm.business_lib.bean.BusinessUpdateVersionBean
 import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.bean.BusinessVersionUrlBean
@@ -166,7 +167,7 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         img_list: Array<String>?,
         contact: String?
     ): BaseResult<Any> {
-        val json = if (feedback_type in 0..4) {
+        val json = if (feedback_type != -1) {
             val bean = MineUploadFeedbackBean(
                 feedback_type,
                 content,
@@ -214,6 +215,7 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         filePath: String
     ): BaseResult<MineUploadPic> {
         val file = File(filePath)
+        DLog.i("===>3333", "${file.length()}")
         val img = file.asRequestBody("image/png".toMediaType())
         val request = MultipartBody.Builder()
             .addFormDataPart("file", filePath, img)

@@ -128,10 +128,29 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
         })
 
         mViewModel.baseToastModel.observe(this, Observer {
-            if (it.contentId > 0) {
-                ToastUtil.show(this@BaseVMFragment.activity, getString(it.contentId))
-            } else {
-                ToastUtil.show(this@BaseVMFragment.activity, it.content)
+            context?.let { context ->
+                if (it.contentId > 0) {
+                    ToastUtil.showTopToast(
+                        context,
+                        getString(it.contentId),
+                        it.colorId,
+                        it.canAutoCancel
+                    )
+                } else {
+                    if (it.content != null) {
+                        ToastUtil.showTopToast(
+                            context, it.content, it.colorId, it.canAutoCancel
+                        )
+                    } else {
+                        ToastUtil.show(context, it.content)
+                    }
+                }
+            }
+        })
+
+        mViewModel.baseCancelToastModel.observe(this, Observer {
+            if (it) {
+                ToastUtil.cancelToast()
             }
         })
 
@@ -228,9 +247,6 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                 }
                 setServiceError()
             }
-            else -> {
-                DLog.d("suolong", " netStatus = ${statusModel.netStatus}")
-            }
         }
     }
 
@@ -302,6 +318,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
     protected open fun initEmptyLayout(): Int {
         return R.layout.base_layout_empty
     }
+
     /**
      * 初始化搜索空数据的View
      * @return Int 空数据View的layoutId

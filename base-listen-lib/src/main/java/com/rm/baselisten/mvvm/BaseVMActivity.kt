@@ -133,11 +133,23 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         mViewModel.baseTitleModel.observe(this, Observer {
             setTitle(it)
         })
+
         mViewModel.baseToastModel.observe(this, Observer {
             if (it.contentId > 0) {
-                ToastUtil.show(this@BaseVMActivity, getString(it.contentId), it.isCenter)
+                ToastUtil.showTopToast(this@BaseVMActivity, getString(it.contentId), it.colorId,it.canAutoCancel)
             } else {
-                ToastUtil.show(this@BaseVMActivity, it.content, it.isCenter)
+                if (it.content != null) {
+                    ToastUtil.showTopToast(
+                        this@BaseVMActivity, it.content, it.colorId,it.canAutoCancel
+                    )
+                } else {
+                    ToastUtil.show(this@BaseVMActivity, it.content)
+                }
+            }
+        })
+        mViewModel.baseCancelToastModel.observe(this, Observer {
+            if (it) {
+                ToastUtil.cancelToast()
             }
         })
 
@@ -309,6 +321,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
     protected open fun initEmptyLayout(): Int {
         return R.layout.base_layout_empty
     }
+
     /**
      * 初始化搜索空数据的View
      * @return Int 空数据View的layoutId

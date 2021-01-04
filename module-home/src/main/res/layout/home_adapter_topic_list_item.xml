@@ -96,6 +96,7 @@
             style="@style/BusinessTextStyleThird_4"
             android:layout_width="0dp"
             android:singleLine="true"
+            app:drawableStartCompat="@drawable/business_icon_anchor"
             android:text="@{audioItem.anchor_name}"
             app:layout_constraintBottom_toBottomOf="@id/home_book_adapter_icon"
             app:layout_constraintEnd_toEndOf="parent"

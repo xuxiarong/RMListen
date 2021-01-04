@@ -84,7 +84,7 @@
             android:layout_marginStart="@dimen/dp_12"
             android:singleLine="true"
             android:maxWidth="@dimen/dp_180"
-            android:drawableStart="@drawable/search_icon_anchor"
+            android:drawableStart="@drawable/business_icon_anchor"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_content_books_icon"
             app:layout_constraintStart_toEndOf="@id/search_adapter_content_books_icon"
             tools:text="我是中国人" />

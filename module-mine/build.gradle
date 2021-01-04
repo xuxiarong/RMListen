@@ -81,6 +81,7 @@ dependencies {
     implementation rootProject.ext.dependencies["material"]
     implementation rootProject.ext.androidx["palette"]
     kapt rootProject.ext.dependencies["router_compiler"]
-    implementation 'io.alterac.blurkit:blurkit:1.1.0'
+    implementation rootProject.ext.dependencies["luban"]
+//    implementation 'io.alterac.blurkit:blurkit:1.1.0'
 
 }

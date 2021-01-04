@@ -58,6 +58,8 @@ open class BaseVMViewModel : BaseViewModel() {
      */
     var baseToastModel = MutableLiveData<BaseToastModel>()
 
+    var baseCancelToastModel = MutableLiveData<Boolean>()
+
     /**
      * 基类的提示数据
      */
@@ -74,7 +76,7 @@ open class BaseVMViewModel : BaseViewModel() {
             viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
         } else {
 //            showNetError()
-            showTip(CONTEXT.getString(R.string.base_empty_tips_netword),R.color.base_ff5e5e)
+            showTip(CONTEXT.getString(R.string.base_empty_tips_netword), R.color.base_ff5e5e)
 
         }
     }
@@ -84,7 +86,7 @@ open class BaseVMViewModel : BaseViewModel() {
             viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
         } else {
 //            showNetError()
-            showTip(CONTEXT.getString(R.string.base_empty_tips_netword),R.color.base_ff5e5e)
+            showTip(CONTEXT.getString(R.string.base_empty_tips_netword), R.color.base_ff5e5e)
         }
     }
 
@@ -150,9 +152,39 @@ open class BaseVMViewModel : BaseViewModel() {
         baseToastModel.postValue(BaseToastModel(content = content))
     }
 
+    fun showErrorToast(content: String) {
+        baseToastModel.postValue(BaseToastModel(content = content, colorId = R.color.base_ff5e5e))
+    }
+
+    fun showToast(content: String, colorId: Int) {
+        baseToastModel.postValue(BaseToastModel(content = content, colorId = colorId))
+    }
+
     fun showToast(contentId: Int) {
         baseToastModel.postValue(BaseToastModel(contentId = contentId))
     }
+
+    fun showErrorToast(contentId: Int) {
+        baseToastModel.postValue(
+            BaseToastModel(
+                contentId = contentId,
+                colorId = R.color.base_ff5e5e
+            )
+        )
+    }
+
+    fun cancelToast() {
+        baseCancelToastModel.postValue(true)
+    }
+
+    fun showToast(contentId: Int, colorId: Int) {
+        baseToastModel.postValue(BaseToastModel(contentId = contentId, colorId = colorId))
+    }
+
+    fun showToast(toastModel: BaseToastModel) {
+        baseToastModel.postValue(toastModel)
+    }
+
 
     fun showContentView() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT))
@@ -178,16 +210,15 @@ open class BaseVMViewModel : BaseViewModel() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING))
     }
 
-    fun showTip(tipModel: BaseTipModel) {
-        baseTipModel.postValue(tipModel)
-    }
 
     fun showTip(content: String) {
-        baseTipModel.postValue(BaseTipModel(content = content, contentColor = R.color.base_333))
+        showToast(content)
+//        baseTipModel.postValue(BaseTipModel(content = content, contentColor = R.color.base_333))
     }
 
     fun showTip(content: String, color: Int) {
-        baseTipModel.postValue(BaseTipModel(content = content, contentColor = color))
+        showToast(content,color)
+//        baseTipModel.postValue(BaseTipModel(content = content, contentColor = color))
     }
 
     /**

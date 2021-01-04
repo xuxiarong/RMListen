@@ -1,21 +1,16 @@
 package com.rm.module_home.viewmodel
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommBottomDialog
-import com.rm.baselisten.model.BaseNetStatus
+import com.rm.baselisten.model.BaseToastModel
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.receiver.NetworkChangeReceiver
-import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.loginUser
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_home.R
 import com.rm.module_home.api.HomeApiService
@@ -33,6 +28,7 @@ import kotlinx.android.synthetic.main.home_dialog_comment.*
 class HomeCommentDialogViewModel(
     private val audioId: String,
     private val anchorId: String,
+    private val viewModel: BaseVMViewModel,
     private val commentSuccessBlock: () -> Unit
 ) : BaseVMViewModel() {
     init {
@@ -40,12 +36,7 @@ class HomeCommentDialogViewModel(
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (!NetworkChangeReceiver.isAvailable.get()) {
-                    showTip(
-                        msg = "当前网络不可用",
-                        color = R.color.business_color_ff5e5e,
-                        isDelayGone = true,
-                        isShowProgress = false
-                    )
+                    viewModel.showErrorToast("当前网络不可用")
                 }
             }
         })
@@ -60,9 +51,6 @@ class HomeCommentDialogViewModel(
 
     val inputComment = ObservableField<String>()
 
-    private var showAnim: ObjectAnimator? = null
-    private var hideAnim: ObjectAnimator? = null
-
     /**
      * 懒加载创建dialog对象
      */
@@ -71,11 +59,6 @@ class HomeCommentDialogViewModel(
             dialogHeightIsMatchParent = true
             initDialog = {
                 dataBinding = mDataBind as HomeDialogCommentBinding
-                dataBinding?.apply {
-                    initDialog = {
-                        initAnim(homeDialogCommentLayout)
-                    }
-                }
 
                 dialog?.setOnShowListener {
                     home_dialog_comment_ed?.apply {
@@ -93,16 +76,6 @@ class HomeCommentDialogViewModel(
         }
     }
 
-    private fun initAnim(view: View) {
-        showAnim =
-            ObjectAnimator.ofFloat(view, "translationY", 0f, CONTEXT.dip(96).toFloat()).apply {
-                duration = 200
-            }
-        hideAnim =
-            ObjectAnimator.ofFloat(view, "translationY", CONTEXT.dip(96).toFloat(), 0f).apply {
-                duration = 200
-            }
-    }
 
     /**
      * 输入框发生变化
@@ -110,44 +83,8 @@ class HomeCommentDialogViewModel(
     private fun inputChange(content: String) {
         inputComment.set(content.trim().trimEnd())
         if (inputComment.get()!!.length > 200) {
-            showTip(
-                msg = CONTEXT.getString(R.string.home_comment_input_limit),
-                color = R.color.business_color_ff5e5e,
-                isDelayGone = true,
-                isShowProgress = false
-            )
+            viewModel.showErrorToast(CONTEXT.getString(R.string.home_comment_input_limit))
         }
-    }
-
-    private fun showTip(msg: String, color: Int, isDelayGone: Boolean, isShowProgress: Boolean) {
-        dataBinding?.homeDialogCommentLayout?.apply {
-            dataBinding?.homeDialogCommentTip?.text = msg
-            dataBinding?.homeDialogCommentTip?.setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    color
-                )
-            )
-            visibility = View.VISIBLE
-            showAnim?.start()
-            handler?.removeCallbacksAndMessages(null)
-            if (isDelayGone) {
-                handler?.postDelayed({
-                    hideTipView()
-                }, 3000)
-            }
-        }
-        if (isShowProgress) {
-            dataBinding?.homeDialogCommentProgress?.visibility = View.VISIBLE
-        } else {
-            dataBinding?.homeDialogCommentProgress?.visibility = View.GONE
-        }
-    }
-
-    private fun hideTipView() {
-        dataBinding?.homeDialogCommentLayout?.visibility = View.GONE
-        dataBinding?.homeDialogCommentLayout?.clearAnimation()
-        hideAnim?.start()
     }
 
 
@@ -157,29 +94,13 @@ class HomeCommentDialogViewModel(
     fun clickSend(view: View) {
         inputComment.get()?.let {
             if (it.length > 200) {
-                showTip(
-                    msg = CONTEXT.getString(R.string.home_comment_input_limit),
-                    color = R.color.business_color_ff5e5e,
-                    isDelayGone = true,
-                    isShowProgress = false
-                )
-
+                viewModel.showErrorToast(CONTEXT.getString(R.string.home_comment_input_limit))
             } else {
-                showTip(
-                    msg = "提交评论中",
-                    color = R.color.business_text_color_333333,
-                    isDelayGone = false,
-                    isShowProgress = true
-                )
+                viewModel.showToast(BaseToastModel(content = "提交评论中", canAutoCancel = false))
                 if (NetworkChangeReceiver.isAvailable.get()) {
                     sendComment(view, it, audioId)
                 } else {
-                    showTip(
-                        msg = "当前网络不可用",
-                        color = R.color.business_color_ff5e5e,
-                        isDelayGone = true,
-                        isShowProgress = false
-                    )
+                    viewModel.showErrorToast("当前网络不可用")
                 }
             }
         }
@@ -205,17 +126,12 @@ class HomeCommentDialogViewModel(
                     if (imm.isActive) {
                         imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
                     }
+                    viewModel.cancelToast()
                     commentSuccessBlock()
                     mDialog.dismiss()
-                    hideTipView()
                 },
                 onError = { it, _ ->
-                    showTip(
-                        msg = "$it",
-                        color = R.color.business_color_ff5e5e,
-                        isDelayGone = true,
-                        isShowProgress = false
-                    )
+                    viewModel.showErrorToast("$it")
                 }
             )
         }
