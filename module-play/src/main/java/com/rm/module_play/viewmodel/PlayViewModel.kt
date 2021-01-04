@@ -736,7 +736,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             if (isLogin.get()) {
                 PlayGlobalData.playAudioModel.get()?.let { playAudio ->
                     RouterHelper.createRouter(HomeService::class.java)
-                        .showCommentDialog(it, playAudio.audio_id.toString(),playAudio.anchor_id) {
+                        .showCommentDialog(it, playAudio.audio_id.toString(),playAudio.anchor_id,this) {
                             showTip("评论成功")
                             commentPage = 1
                             getCommentList()

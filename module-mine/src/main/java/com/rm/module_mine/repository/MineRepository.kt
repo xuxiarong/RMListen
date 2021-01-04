@@ -215,7 +215,6 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
         filePath: String
     ): BaseResult<MineUploadPic> {
         val file = File(filePath)
-        DLog.i("===>3333", "${file.length()}")
         val img = file.asRequestBody("image/png".toMediaType())
         val request = MultipartBody.Builder()
             .addFormDataPart("file", filePath, img)
@@ -231,7 +230,6 @@ class MineRepository(private val service: MineApiService) : BaseRepository() {
      * @param phone String
      */
     suspend fun sendMessage(type: String, area_code: String, phone: String): BaseResult<Any> {
-        DLog.i("========>sendMessage", "$type    ${Log.getStackTraceString(Throwable())}")
         return apiCall { service.sendMessage(type, subPlusChar(area_code), phone) }
     }
 

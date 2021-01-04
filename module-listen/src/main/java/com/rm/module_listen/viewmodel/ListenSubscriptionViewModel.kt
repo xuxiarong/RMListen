@@ -42,6 +42,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
 
     //记录当前点击的实体对象
     val subscriptionData = ObservableField<ListenSubscriptionListBean>()
+
     //当前请求的页码
     private var mPage = 1
 
@@ -180,6 +181,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * 处理失败数据
      */
     private fun processFailData() {
+        showContentView()
         if (mPage == 1) {
             refreshStatusModel.finishRefresh(false)
         } else {
@@ -233,7 +235,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
      * dialog 取消订阅
      */
     fun dialogUnsubscribeFun(bean: ListenSubscriptionListBean?) {
-        bean?.let {subBean->
+        bean?.let { subBean ->
             showLoading()
             launchOnIO {
                 repository.unsubscribe(subBean.audio_id.toString()).checkResult(

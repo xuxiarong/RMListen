@@ -76,13 +76,14 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      * @return BaseResult<LoginInfo>
      */
     suspend fun validateForgetPasswordVerifyCode(
+        type: String,
         area_code: String,
         phone: String,
         code: String
     ): BaseResult<ValidateCodeBean> {
         return apiCall {
             apiService.validateCode(
-                "forget_pwd",
+                type,
                 subPlusChar(area_code),
                 phone,
                 code

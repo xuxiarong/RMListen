@@ -784,32 +784,57 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     private fun configChapterPageList() {
         val totalCount = chapterTotal.get() ?: 0
+        when (mCurSort) {
+            AudioSortType.SORT_ASC -> {
+                chapterSortAsc(totalCount)
+            }
+            AudioSortType.SORT_DESC -> {
+                chapterSortDesc(totalCount)
+            }
+        }
+    }
+
+    /**
+     * 正序
+     */
+    private fun chapterSortAsc(totalCount: Int) {
         val list = mutableListOf<DataStr>()
         val i1 = totalCount / chapterPageSize
         val i2 = totalCount % chapterPageSize
-        when (mCurSort) {
-            AudioSortType.SORT_ASC -> {
-                var y = 0
-                for (i in 1..i1) {
-                    list.add(DataStr("${y + 1}~${i * chapterPageSize}", i))
-                    y = i * chapterPageSize
-                }
-                if (i2 > 0) {
-                    list.add(DataStr("${y + 1}~$totalCount", list.size + 1))
-                }
-                chapterAnthologyAdapter.setList(list)
-            }
-            AudioSortType.SORT_DESC -> {
-                var y = totalCount
-                for (i in 1..i1) {
-                    list.add(DataStr("${y}~${totalCount - i * chapterPageSize}", i))
-                    y = (totalCount - i * chapterPageSize) - 1
-                }
-                if (i2 > 0) {
-                    list.add(DataStr("${y + 1}~1", list.size + 1))
-                }
-                chapterAnthologyAdapter.setList(list)
-            }
+        var y = 0
+        for (i in 1..i1) {
+            list.add(DataStr("${getNumStr(y + 1)}~${i * chapterPageSize}", i))
+            y = i * chapterPageSize
+        }
+        if (i2 > 0) {
+            list.add(DataStr("${getNumStr(y + 1)}~$totalCount", list.size + 1))
+        }
+        chapterAnthologyAdapter.setList(list)
+    }
+
+    /**
+     * 倒序
+     */
+    private fun chapterSortDesc(totalCount: Int) {
+        val list = mutableListOf<DataStr>()
+        val i1 = totalCount / chapterPageSize
+        val i2 = totalCount % chapterPageSize
+        var y = totalCount
+        for (i in 1..i1) {
+            list.add(DataStr("${y}~${getNumStr(totalCount - i * chapterPageSize + 1)}", i))
+            y = (totalCount - i * chapterPageSize)
+        }
+        if (i2 > 0) {
+            list.add(DataStr("${getNumStr(y)}~01", list.size + 1))
+        }
+        chapterAnthologyAdapter.setList(list)
+    }
+
+    private fun getNumStr(num: Int): String {
+        return if (num > 9) {
+            "$num"
+        } else {
+            "0$num"
         }
     }
 
@@ -836,8 +861,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     }
 
     private fun getChapterStatus(chapterList: List<DownloadChapter>): MutableList<DownloadChapter> {
-        val audioName = detailInfoData.get()?.list?.audio_name?:""
-        val audioId = detailInfoData.get()?.list?.audio_id?:0L
+        val audioName = detailInfoData.get()?.list?.audio_name ?: ""
+        val audioId = detailInfoData.get()?.list?.audio_id ?: 0L
         chapterList.forEach {
             it.audio_name = audioName
             it.audio_id = audioId
@@ -889,7 +914,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             if (isLogin.get()) {
                 audioId.get()?.let { audioId ->
                     anchorId.get()?.let { anchorId ->
-                        HomeCommentDialogHelper(it, audioId, anchorId,this) {
+                        HomeCommentDialogHelper(it, audioId, anchorId, this) {
                             commentPage = 1
                             getCommentList(audioId)
                             showTip("评论成功")

@@ -67,9 +67,12 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 // 登录类型,验证码登陆
                 loginByVerifyCode(content)
             }
-            TYPE_RESET_PWD, TYPE_FORGET_PWD -> {
+            TYPE_RESET_PWD -> {
                 // 重置密码类型，校验验证码是否正确
-                verificationCode(content)
+                verificationCode("change_pwd",content)
+            }
+            TYPE_FORGET_PWD -> {
+                verificationCode("forget_pwd",content)
             }
             TYPE_LOGOUT -> {
                 logout(content)
@@ -94,7 +97,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     finish()
 
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     inputClear.set(true)
                     showContentView()
                     errorTips.set(it)
@@ -105,9 +108,9 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
     /**
      * 校验验证码是否正确
      */
-    private fun verificationCode(content: String) {
+    private fun verificationCode(type: String, content: String) {
         launchOnIO {
-            repository.validateForgetPasswordVerifyCode(countryCode, phone, content)
+            repository.validateForgetPasswordVerifyCode(type, countryCode, phone, content)
                 .checkResult(
                     onSuccess = {
                         showContentView()
@@ -118,7 +121,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                         )
                         finish()
                     },
-                    onError = {it,_->
+                    onError = { it, _ ->
                         inputClear.set(true)
                         showContentView()
                         errorTips.set(it)
@@ -139,7 +142,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     delay(1000)
                     loginOut()
                 }
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 inputClear.set(true)
                 showContentView()
                 errorTips.set(it)
@@ -197,9 +200,9 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                     startCountDown()
                     showContentView()
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showTip(
-                      "$it",
+                        "$it",
                         R.color.business_color_ff5e5e
                     )
                     showContentView()

@@ -141,9 +141,11 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 params.bottomMargin = if (mViewModel.keyboardIsVisibility.get() == true) {
+                    stopHintBanner()
                     scrollTop()
                     keyboardHeight
                 } else {
+                    startHintBanner()
                     0
                 }
                 mDataBind.searchMainSuggestRv.layoutParams = params
@@ -169,6 +171,8 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         mViewModel.hintBannerList.get()?.let { startHintBanner() }
         curType.postValue(REQUEST_TYPE_ALL)
         refreshHistoryData()
+        search_main_tv_search.requestFocus()
+        search_main_tv_search.isFocusableInTouchMode=true
     }
 
 

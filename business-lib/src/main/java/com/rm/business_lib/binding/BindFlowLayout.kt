@@ -19,6 +19,7 @@ fun FlowLayout.bindFlowData(list: MutableList<DetailTags>?) {
     if (list == null) {
         return
     }
+    removeAllViews()
     list.forEach {
         val view =
             LayoutInflater.from(context)
@@ -33,6 +34,7 @@ fun FlowLayout.bindFlowData(str: String?) {
     if (str == null || str.isEmpty()) {
         return
     }
+    removeAllViews()
     str.split(" ").forEach {
         val view =
             LayoutInflater.from(context)

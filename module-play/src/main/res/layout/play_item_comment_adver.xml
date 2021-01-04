@@ -18,8 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
-        android:onClick="@{()->viewModel.clickJumpAd(context,item)}"
-        android:layout_marginEnd="@dimen/dp_16">
+        android:layout_marginEnd="@dimen/dp_16"
+        android:onClick="@{()->viewModel.clickJumpAd(context,item)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/play_item_comment_advertise_icon"
@@ -40,7 +40,7 @@
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_10"
             android:singleLine="true"
-            android:text="@{item.data.ad_title}"
+            android:text="@{item.data.ad_sub_title}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintEnd_toStartOf="@id/play_item_comment_advertise_del"
@@ -55,7 +55,7 @@
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_3"
             android:layout_marginEnd="@dimen/dp_10"
-            android:text="@{item.data.ad_sub_title}"
+            android:text="@string/play_comment_now"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintBottom_toBottomOf="@+id/play_item_comment_advertise_icon"
@@ -75,23 +75,31 @@
 
         <com.rm.business_lib.wedgit.BusinessAdImageView
             android:id="@+id/play_item_comment_advertise_jump"
+            bindAdId="@{String.valueOf(item.data.ad_id)}"
             bindUrl="@{item.data.image_url}"
             corner="@{8f}"
-            bindAdId="@{String.valueOf(item.data.ad_id)}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_166"
             android:layout_marginTop="@dimen/dp_8"
-            android:src="#3f00"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="@id/play_item_comment_advertise_del"
             app:layout_constraintStart_toStartOf="@id/play_item_comment_advertise_title"
-            app:layout_constraintTop_toBottomOf="@id/play_item_comment_advertise_icon" />
+            app:layout_constraintTop_toBottomOf="@id/play_item_comment_advertise_icon"
+            tools:src="#3f00" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_80"
+            android:background="@drawable/play_comment_bg"
+            app:layout_constraintBottom_toBottomOf="@id/play_item_comment_advertise_jump"
+            app:layout_constraintEnd_toEndOf="@id/play_item_comment_advertise_jump"
+            app:layout_constraintStart_toStartOf="@id/play_item_comment_advertise_jump" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="@dimen/dp_166"
-            android:layout_height="@dimen/dp_40"
+            android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="@dimen/dp_10"
             android:maxLines="2"
             android:text="@{item.data.ad_title}"
             android:textColor="@color/business_text_color_ffffff"
@@ -99,7 +107,8 @@
             app:layout_constraintBottom_toBottomOf="@id/play_item_comment_advertise_jump"
             app:layout_constraintStart_toStartOf="@id/play_item_comment_advertise_jump"
             app:rv_backgroundColor="#4c333333"
-            app:rv_cornerRadius="@dimen/dp_4" />
+            app:rv_cornerRadius="@dimen/dp_4"
+            tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" />
 
         <com.flyco.roundview.RoundTextView
             android:layout_width="@dimen/dp_24"
