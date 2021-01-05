@@ -69,10 +69,10 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
             }
             TYPE_RESET_PWD -> {
                 // 重置密码类型，校验验证码是否正确
-                verificationCode("change_pwd",content)
+                verificationCode(CODE_TYPE_CHANGE_PWD, content)
             }
             TYPE_FORGET_PWD -> {
-                verificationCode("forget_pwd",content)
+                verificationCode(CODE_TYPE_FORGET_PWD, content)
             }
             TYPE_LOGOUT -> {
                 logout(content)
@@ -117,7 +117,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                         // 验证码校验正确
                         startActivity(
                             ResetPasswordActivity::class.java,
-                            ResetPasswordActivity.getIntent(content, countryCode, phone)
+                            ResetPasswordActivity.getIntent(content, countryCode, phone,type)
                         )
                         finish()
                     },

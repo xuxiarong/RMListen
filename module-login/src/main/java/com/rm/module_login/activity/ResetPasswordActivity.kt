@@ -33,12 +33,14 @@ class ResetPasswordActivity :
         fun getIntent(
             verifyCode: String,
             countryCode: String,
-            phone: String
+            phone: String,
+            type: String
         ): HashMap<String, Any> {
             return hashMapOf(
                 Pair("verifyCode", verifyCode),
                 Pair("countryCode", countryCode),
-                Pair("phone", phone)
+                Pair("phone", phone),
+                Pair("type", type)
             )
         }
     }
@@ -53,9 +55,10 @@ class ResetPasswordActivity :
     override fun initView() {
         super.initView()
         mViewModel.baseTitleModel.value = BaseTitleModel().setLeftIconClick { finish() }
-        mViewModel.verifyCode = intent.getStringExtra("verifyCode")
-        mViewModel.phone = intent.getStringExtra("phone")
-        mViewModel.countryCode = intent.getStringExtra("countryCode")
+        mViewModel.verifyCode = intent.getStringExtra("verifyCode") ?: ""
+        mViewModel.phone = intent.getStringExtra("phone") ?: ""
+        mViewModel.countryCode = intent.getStringExtra("countryCode") ?: ""
+        mViewModel.type = intent.getStringExtra("type") ?: ""
     }
 
 

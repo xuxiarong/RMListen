@@ -89,7 +89,7 @@ interface LoginApiService {
      * @return BaseResponse<Any>
      */
     @POST("member/forget-password")
-    suspend fun resetPasswordByVerifyCode(
+    suspend fun forgetPassword(
         @Query("area_code") area_code: String,
         @Query("account") phone: String,
         @Query("code") code: String,
@@ -103,7 +103,7 @@ interface LoginApiService {
      * @return BaseResponse<Any>
      */
     @PUT("member/change-password")
-    suspend fun resetPasswordByOldPassword(
+    suspend fun changePassword(
         @Query("code") code: String,
         @Query("new_password") new_password: String
     ): BaseResponse<Any>

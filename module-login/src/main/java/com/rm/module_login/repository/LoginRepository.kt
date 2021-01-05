@@ -130,14 +130,14 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      * @param password String
      * @return BaseResult<Any>
      */
-    suspend fun resetPasswordByVerifyCode(
+    suspend fun forgetPassword(
         area_code: String,
         phone: String,
         code: String,
         password: String
     ): BaseResult<Any> {
         return apiCall {
-            apiService.resetPasswordByVerifyCode(
+            apiService.forgetPassword(
                 subPlusChar(area_code),
                 phone,
                 code,
@@ -152,12 +152,12 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      * @param newPassword String
      * @return BaseResult<Any>
      */
-    suspend fun resetPasswordByVerifyCode(
+    suspend fun changePassword(
         code: String,
         newPassword: String
     ): BaseResult<Any> {
         return apiCall {
-            apiService.resetPasswordByOldPassword(
+            apiService.changePassword(
                 code,
                 AESUtil.encryptString2Base64(newPassword, KEY, IV)
             )
