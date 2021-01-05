@@ -64,6 +64,22 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
             }
         }
 
+        fun getUserPrivacy() : String{
+            return if(currentType == TYPE_TEST){
+                "http://192.168.13.235:8481/login/userPrivacy?channel=Andriod"
+            }else{
+                "http://tianlai.leimans.com/login/userPrivacy?channel=Andriod"
+            }
+        }
+
+        fun getUserAgreement() : String{
+            return if(currentType == TYPE_TEST){
+                "http://192.168.13.235:8481/login/userAgreement?channel=Andriod"
+            }else{
+                "http://tianlai.leimans.com/login/userAgreement?channel=Andriod"
+            }
+        }
+
     }
 
     override fun handleBuilder(builder: OkHttpClient.Builder) {

@@ -3,7 +3,6 @@ package com.rm.module_download.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import android.view.Gravity
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -17,7 +16,6 @@ import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.ktx.toIntSafe
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.db.download.DownloadAudio
@@ -62,7 +60,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         )
     }
 
-    fun downloadList() {
+    fun downloadList(context: Context) {
         val tempDownloadList = mutableListOf<DownloadChapter>()
         //筛选已选择的章节
         mAdapter.data.forEach {
@@ -78,7 +76,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
 //        //将音频信息存储
         downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
         //存储已选择的下载章节
-        DownloadMemoryCache.addDownloadingChapter(tempDownloadList)
+        DownloadMemoryCache.addDownloadingChapter(context,tempDownloadList)
         //调用下载服务开始下载
         mAdapter.notifyDataSetChanged()
 
@@ -205,7 +203,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                             download_start_et.setSelection(download_start_et.text.length)
                         }, 50)
                         download_dialog_start_select_chapter.setOnClickListener {
-                            startDownSelectChapter()
+                            startDownSelectChapter(context)
                             dismiss()
                         }
                     }
@@ -234,12 +232,12 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     /**
      * 选集下载弹窗的点击事件
      */
-    fun startDownSelectChapter() {
+    fun startDownSelectChapter(context: Context) {
         if (lastChangStartIndex.toString() == startSequence.get() && lastChangeEndIndex.toString() == endSequence.get()
                 || lastChangStartIndex.toString() == endSequence.get() && lastChangeEndIndex.toString() == startSequence.get()) {
             if (selectDownChapterList.size > 0) {
                 val chapterStatusList = getChapterStatus(selectDownChapterList)
-                DownloadMemoryCache.addDownloadingChapter(chapterStatusList)
+                DownloadMemoryCache.addDownloadingChapter(context,chapterStatusList)
                 mAdapter.notifyDataSetChanged()
             } else {
                 showTip("数据正在加载中，请稍后")

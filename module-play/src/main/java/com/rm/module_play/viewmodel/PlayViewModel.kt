@@ -436,7 +436,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 获取书籍详情信息
      */
-    fun getDetailInfo(audioID: String) {
+    fun getAudioInfo(audioID: String) {
         launchOnIO {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {

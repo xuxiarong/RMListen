@@ -847,6 +847,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             downloadAudio.status = homeDetailModel.list.status
             downloadAudio.last_sequence = homeDetailModel.list.last_sequence
             downloadAudio.anchor = homeDetailModel.list.anchor
+            downloadAudio.count_sequence = homeDetailModel.list.count_sequence
             createRouter.startDownloadChapterSelectionActivity(
                 context,
                 downloadAudio

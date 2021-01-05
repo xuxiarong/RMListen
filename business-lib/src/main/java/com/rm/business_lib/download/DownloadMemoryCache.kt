@@ -1,5 +1,6 @@
 package com.rm.business_lib.download
 
+import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -38,11 +39,10 @@ object DownloadMemoryCache {
     var downloadFinishChapterList = MutableLiveData<MutableList<DownloadChapter>>(mutableListOf())
 
     //正在下载的章节
-    var downloadingChapter = ObservableField<DownloadChapter>(DownloadChapter())
+    var downloadingChapter = ObservableField<DownloadChapter>()
 
     //当前是否是下载全部
     var isDownAll = ObservableBoolean(false)
-    var isDownWaitAll = ObservableBoolean(false)
 
     private fun initDownloadingList() {
         downloadingChapterList.value?.forEach {
@@ -112,7 +112,7 @@ object DownloadMemoryCache {
         }
     }
 
-    fun addDownloadingChapter(chapterList: MutableList<DownloadChapter>) {
+    fun addDownloadingChapter(context: Context,chapterList: MutableList<DownloadChapter>) {
         if (chapterList.isEmpty()) {
             return
         }
@@ -121,6 +121,8 @@ object DownloadMemoryCache {
             val nextChapter = iterator.next()
             if (nextChapter.isNotDown) {
                 nextChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+                nextChapter.down_speed = ""
+                nextChapter.current_offset = 0L
                 downloadingChapterList.value?.forEach {
                     if (it.path_url == nextChapter.path_url) {
                         iterator.remove()
@@ -131,98 +133,77 @@ object DownloadMemoryCache {
             }
         }
         if (chapterList.size == 0) {
-            ToastUtil.show(
-                BaseApplication.CONTEXT,
-                BaseApplication.CONTEXT.getString(R.string.business_download_all_exist)
-            )
+            ToastUtil.showTopToast(context, BaseApplication.CONTEXT.getString(R.string.business_download_all_exist))
         } else {
-            ToastUtil.show(
-                BaseApplication.CONTEXT,
-                BaseApplication.CONTEXT.getString(R.string.business_download_add_cache)
-            )
-            downloadingChapterList.addAll(chapterList)
+
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(chapterList)
             downloadingChapter.get().let {
-                if (it != null) {
-                    if (!isDownAll.get()) {
-                        AriaDownloadManager.startDownload(chapterList[0])
-                        isDownWaitAll.set(true)
-                    } else {
-                        if (!it.isDownloading) {
-                            AriaDownloadManager.startDownload(it)
-                        }
-                    }
+                isDownAll.set(true)
+                downloadingChapterList.addAll(chapterList)
+                if (it != null && it.isDownloading) {
+                    ToastUtil.showTopToast(context, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
                 } else {
-                    isDownAll.set(true)
                     AriaDownloadManager.startDownload(chapterList[0])
                 }
             }
         }
     }
 
-
-    fun addDownloadingChapter(chapter: DownloadChapter) {
-        if(!isDownAll.get()){
-            isDownWaitAll.set(true)
-        }
-        val downChapter = downloadingChapter.get()
-        if (downloadingChapterList.value != null) {
-            val downloadList = downloadingChapterList.value!!
-            downloadList.forEach {
-                if (it.chapter_id == chapter.chapter_id) {
-                    if(downChapter!=null && downChapter.isDownloading){
-                        chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
-                        setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD)
-                    }else{
-                        AriaDownloadManager.startDownload(chapter)
-                    }
-                    return
-                }
-            }
-        }
-        ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
-        downloadingChapterList.add(chapter)
-        if(downChapter!=null && downChapter.isDownloading){
-            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
-            setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING)
-        }else{
-            AriaDownloadManager.startDownload(chapter)
-        }
-    }
-
     fun downloadingChapterClick(clickChapter: DownloadChapter) {
         //如果是下载全部，则停止当前
-        downloadingChapter.get()?.let { downloadChapter ->
-            if (isDownAll.get() || isDownWaitAll.get()) {
-                if (clickChapter.chapter_id == downloadChapter.chapter_id) {
-                    if(downloadChapter.isDownloading){
+
+        val downloadingChapter = downloadingChapter.get()
+        var isClickDownload = false
+
+        downloadingChapterList.value?.let {
+            //改变下载队列中章节的状态为暂停
+            it.forEach { listChild ->
+                if(listChild.chapter_id == clickChapter.chapter_id){
+                    if(clickChapter.chapter_id == downloadingChapter?.chapter_id){
+                        isClickDownload = true
+                    }
+                    if(listChild.isDownloading ){
                         clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
-                        setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
-                        downloadingChapterList.value?.let {
-                            if (it.size <= 1) {
-                                AriaDownloadManager.pauseDownloadChapter(downloadChapter)
-                                isDownAll.set(false)
-                            } else {
-                                downloadNextChapter(clickChapter)
-                            }
+                        listChild.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+                        isClickDownload = true
+                        pauseDownloadingChapter()
+                    }else if(listChild.isDownWait){
+                        clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+                        listChild.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+                    }else{
+                        clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+                        listChild.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+                    }
+                    return@forEach
+                }
+            }
+            //查找是否还有等待下载的章节
+            var hasWaitChapter = false
+            it.forEach { downloadChapter ->
+                if(downloadChapter.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT){
+                    hasWaitChapter = true
+                    return@forEach
+                }
+            }
+
+            //有等待的章节，则下载
+            if(hasWaitChapter ){
+                downloadingChapter?.let {
+                    isDownAll.set(true)
+                    if(isClickDownload){
+                        if(clickChapter.isDownWait){
+                            AriaDownloadManager.startDownload(clickChapter)
+                        }else{
+                            downloadNextWaitChapter(downloadingChapter)
                         }
                     }else{
-                        clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
-                        setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING)
-                        AriaDownloadManager.startDownload(clickChapter)
+                        if(!downloadingChapter.isDownloading){
+                            AriaDownloadManager.startDownload(clickChapter)
+                        }
                     }
-                } else {
-                    setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
-                    AriaDownloadManager.startDownload(clickChapter)
                 }
-            } else {
-                if (clickChapter.chapter_id == downloadChapter.chapter_id && downloadChapter.isDownloading) {
-                    pauseDownloadingChapter()
-                }else{
-                    clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
-                    setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
-                    AriaDownloadManager.startDownload(chapter = clickChapter, isSingleDownload = true)
-                }
+            }else{
+                isDownAll.set(false)
             }
         }
     }
@@ -233,6 +214,9 @@ object DownloadMemoryCache {
         currentOffset: Long = -1L,
         speed: String = ""
     ) {
+        if(status == DownloadConstant.CHAPTER_STATUS_DOWNLOADING){
+            isDownAll.set(true)
+        }
         downloadingChapter.get()?.let {
             it.down_status = status
             it.file_path = filePath
@@ -248,9 +232,9 @@ object DownloadMemoryCache {
 
 
     /**
-     * 停止当前章节，开始下载下一个任务
+     * 开始下载下一个等待中的任务
      */
-    private fun downloadNextChapter(currentChapter: DownloadChapter) {
+    private fun downloadNextWaitChapter(currentChapter: DownloadChapter) {
         downloadingChapterList.value?.let {
             val downList = it
             if (downloadingChapter.get() != null) {
@@ -271,12 +255,6 @@ object DownloadMemoryCache {
                             return
                         }
                     }
-                    if(isDownAll.get()){
-                        if (downList.size >= 2) {
-                            AriaDownloadManager.startDownload(downList[1])
-                            return
-                        }
-                    }
                 }
                 //如果下载任务是队列的最后一个任务
                 else if (firstDownIndex == downList.size - 1) {
@@ -286,10 +264,6 @@ object DownloadMemoryCache {
                                 AriaDownloadManager.startDownload(downList[j])
                                 return
                             }
-                        }
-                        if (downList.size >= 2) {
-                            AriaDownloadManager.startDownload(downList[0])
-                            return
                         }
                     }
                 }
@@ -310,9 +284,9 @@ object DownloadMemoryCache {
                                 return
                             }
                         }
-                        AriaDownloadManager.startDownload(downList[firstDownIndex + 1])
                     }
                 }
+                isDownAll.set(false)
             }
         }
     }
@@ -340,21 +314,32 @@ object DownloadMemoryCache {
     }
 
     fun operatingAll() {
-        isDownWaitAll.set(false)
         isDownAll.set(isDownAll.get().not())
         isDownAll.get().let { downAll ->
             if (downAll) {
                 DOWNLOAD_LAST_DOWN_STATUS.putMMKV(true)
                 setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING)
-                downloadingChapterList.value?.let {
-                    if (it.isNotEmpty()) {
-                        AriaDownloadManager.startDownload(it[0])
+                downloadingChapterList.value?.let { downloadingList ->
+                    if (downloadingList.isNotEmpty()) {
+                        downloadingList.forEach {
+                            it.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+                        }
+                        downloadingChapterList.value = downloadingList
+                        AriaDownloadManager.startDownload(downloadingList[0])
                     }
                 }
             } else {
                 setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
                 AriaDownloadManager.stopAll()
                 DOWNLOAD_LAST_DOWN_STATUS.putMMKV(false)
+                downloadingChapterList.value?.let { downloadingList ->
+                    if (downloadingList.isNotEmpty()) {
+                        downloadingList.forEach {
+                            it.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+                        }
+                        downloadingChapterList.value = downloadingList
+                    }
+                }
             }
         }
     }
@@ -373,8 +358,8 @@ object DownloadMemoryCache {
             downloadingChapterList.value?.let {
                 if (it.size > 0) {
                     if (it.size >= 2) {
-                        if (isDownAll.get() || isDownWaitAll.get()) {
-                            downloadNextChapter(finishChapter)
+                        if (isDownAll.get()) {
+                            downloadNextWaitChapter(finishChapter)
                         }
                     }
                     downloadingChapterList.remove(finishChapter)

@@ -65,8 +65,6 @@
             android:layout_marginEnd="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/base_iv_left1"
-            app:layout_constraintRight_toLeftOf="@+id/base_cl_right"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -83,7 +81,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintVertical_weight="4"
-                tools:text="图片浏览器" />
+                tools:text="图片浏ssssssss览器" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/base_tv_sub_title"

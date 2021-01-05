@@ -17,6 +17,7 @@ import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.LoginPhoneReminder
+import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginDialogQuicklyLoginBinding
@@ -171,7 +172,7 @@ class LoginQuicklyDialogHelper constructor(
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                textView.context,
-                                "www.baidu.com"
+                                BusinessRetrofitClient.getUserAgreement()
                             )
                         }
                     })
@@ -185,7 +186,7 @@ class LoginQuicklyDialogHelper constructor(
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 textView.context,
-                                "www.baidu.com"
+                                    BusinessRetrofitClient.getUserPrivacy()
                             )
                         }
                     })

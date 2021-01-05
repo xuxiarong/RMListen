@@ -55,8 +55,8 @@ class DownloadMainActivity :
                     try {
                         if(it){
                             if(DownloadMemoryCache.isDownAll.get()){
-                                DownloadMemoryCache.downloadingChapter.get()?.let{
-                                    AriaDownloadManager.startDownload(it,true)
+                                DownloadMemoryCache.downloadingChapter.get()?.let{ downloadChapter ->
+                                    AriaDownloadManager.startDownload(downloadChapter)
                                 }
                             }
                         }else{

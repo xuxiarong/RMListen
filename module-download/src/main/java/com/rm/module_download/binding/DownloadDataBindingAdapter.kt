@@ -124,18 +124,16 @@ fun ImageView.bindDownOrPause(
         return
     }
 
-    if (isDownAll != null && !isDownAll && downloadChapter.chapter_id != chapter.chapter_id) {
+    if (isDownAll != null && !isDownAll ) {
+        chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
         setImageResource(R.drawable.download_ic_start_download)
         return
     }
 
     if (chapter.chapter_id == downloadChapter.chapter_id) {
         chapter.down_status = downloadChapter.down_status
-    }else{
-        if (isDownAll !=null && isDownAll){
-            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
-        }
     }
+
     when (chapter.down_status) {
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING, DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
             setImageResource(R.drawable.download_ic_pause_download)
@@ -182,6 +180,7 @@ fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: 
     text = String.format(context.getString(R.string.business_down_and_total_size), currentSize, totalSize)
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter", "bindDownloadAll", "bindEditDownloading",requireAll = true)
 fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?, isDownAll: Boolean?, isEditDownloading : Boolean?) {
     if (downloadChapter == null) {
@@ -193,7 +192,8 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
         return
     }
 
-    if (isDownAll != null && !isDownAll && downloadChapter.chapter_id != chapter.chapter_id) {
+    if (isDownAll != null && !isDownAll ) {
+        chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
         text = context.getString(R.string.business_download_pause)
         return
     }
@@ -201,10 +201,6 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
     if (chapter.chapter_id == downloadChapter.chapter_id) {
         chapter.down_status = downloadChapter.down_status
         chapter.down_speed = downloadChapter.down_speed
-    }else{
-        if (isDownAll !=null && isDownAll){
-            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
-        }
     }
     when (chapter.down_status) {
         DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD -> {
@@ -214,7 +210,7 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
             text = context.getString(R.string.business_download_wait)
         }
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
-            text = chapter.down_speed
+            text = "${chapter.down_speed}/s"
         }
         DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
             text = context.getString(R.string.business_download_pause)
