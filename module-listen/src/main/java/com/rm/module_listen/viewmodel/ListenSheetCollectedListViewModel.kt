@@ -111,7 +111,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                 showContentView()
                 mAdapter.setList(bean.list)
             } else {
-                showDataEmpty()
+                showDataEmpty("暂无收藏")
             }
         } else {
             //加载更多完成
@@ -231,7 +231,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
         }
 
         if (mAdapter.data.size <= 0) {
-            showDataEmpty()
+            showDataEmpty("暂无收藏")
         }
     }
 

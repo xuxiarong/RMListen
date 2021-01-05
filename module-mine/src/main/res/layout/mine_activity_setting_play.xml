@@ -33,6 +33,7 @@
         <com.rm.module_mine.widget.MineCommonSettingView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             bindMineChecked="@{PlaySettingData.INSTANCE.getAutoPlayNext()}"
             bindMineCheckAction="@{viewModel.autoPlayNextVal}"
             app:setting_name="@string/mine_play_setting_next_name"

@@ -153,12 +153,12 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
      * @return BaseResult<Any>
      */
     suspend fun resetPasswordByVerifyCode(
-        password: String,
+        code: String,
         newPassword: String
     ): BaseResult<Any> {
         return apiCall {
             apiService.resetPasswordByOldPassword(
-                AESUtil.encryptString2Base64(password, KEY, IV),
+                code,
                 AESUtil.encryptString2Base64(newPassword, KEY, IV)
             )
         }

@@ -24,6 +24,7 @@
         <com.rm.module_mine.widget.MineCommonMaterialView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_52"
+            android:visibility="gone"
             android:onClick="@{()->viewModel.clickLoginDeviceFun()}"
             app:material_name="@string/mine_recently_logged_device" />
 

@@ -67,6 +67,7 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/search_main_edit_text"
                     style="@style/BusinessTextStyleFirst_2"
+                    bindCanInputEmoji="@{false}"
                     afterTextChanged="@{viewModel.inputKeyWord}"
                     bindAction="@{editorInfo.IME_ACTION_SEARCH}"
                     bindBlock="@{viewModel.bindActionListener}"

@@ -154,7 +154,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
             if (bean.list.isNotEmpty()) {
                 fanAdapter.setList(bean.list)
             } else {
-                showDataEmpty()
+                showDataEmpty("没有粉丝，快去为自己创造影响力吧")
             }
         } else {
             refreshStatusModel.finishLoadMore(true)

@@ -102,9 +102,9 @@ interface LoginApiService {
      * @param new_password String
      * @return BaseResponse<Any>
      */
-    @POST("member/change-password")
+    @PUT("member/change-password")
     suspend fun resetPasswordByOldPassword(
-        @Query("password") password: String,
+        @Query("code") code: String,
         @Query("new_password") new_password: String
     ): BaseResponse<Any>
 
