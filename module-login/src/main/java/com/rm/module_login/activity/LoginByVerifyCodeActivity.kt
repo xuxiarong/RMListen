@@ -13,6 +13,7 @@ import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByVerifyCodeBinding
@@ -103,7 +104,8 @@ class LoginByVerifyCodeActivity :
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 this@LoginByVerifyCodeActivity,
-                                "www.baidu.com"
+                                    BusinessRetrofitClient.getUserAgreement()
+
                             )
                         }
                     })
@@ -117,7 +119,7 @@ class LoginByVerifyCodeActivity :
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 this@LoginByVerifyCodeActivity,
-                                "www.baidu.com"
+                                    BusinessRetrofitClient.getUserPrivacy()
                             )
                         }
                     })

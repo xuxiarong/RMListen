@@ -14,6 +14,7 @@ import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.web.BaseWebActivity
+import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityLoginByPassowrdBinding
@@ -119,7 +120,7 @@ class LoginByPasswordActivity :
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 this@LoginByPasswordActivity,
-                                "www.baidu.com"
+                                    BusinessRetrofitClient.getUserAgreement()
                             )
                         }
                     })
@@ -133,7 +134,7 @@ class LoginByPasswordActivity :
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 this@LoginByPasswordActivity,
-                                "www.baidu.com"
+                                    BusinessRetrofitClient.getUserPrivacy()
                             )
                         }
                     })

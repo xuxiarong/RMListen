@@ -15,7 +15,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
@@ -23,11 +22,8 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
-import com.rm.business_lib.PlayGlobalData.STATE_READY
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.share.Share2
-import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.module_play.BR
@@ -267,10 +263,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         //书籍信息未传入，获取书籍详情信息,有则直接使用
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
-            mViewModel.getDetailInfo(playAudioId)
+            mViewModel.getAudioInfo(playAudioId)
         } else {
             PlayGlobalData.playAudioModel.set(playAudioModel)
-            mViewModel.getDetailInfo(playAudioId)
+            mViewModel.getAudioInfo(playAudioId)
         }
         //首次进入获取一次广告数据
         mViewModel.getAudioFloorAd()

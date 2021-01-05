@@ -40,7 +40,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    checkContext { DownloadMemoryCache.addDownloadingChapter(chapter) }
+                    checkContext { DownloadMemoryCache.addDownloadingChapter(context, mutableListOf(chapter)) }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
@@ -49,7 +49,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.VISIBLE
                 businessDownWaitLv.playAnimation()
                 setOnClickListener {
-                    checkContext { DownloadMemoryCache.addDownloadingChapter(chapter) }
+                    checkContext { DownloadMemoryCache.addDownloadingChapter(context, mutableListOf(chapter)) }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
@@ -60,11 +60,10 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 }else{
                     businessDownProgress.progress = (chapter.current_offset / (chapter.size / 100)).toInt()
                 }
-//                DLog.d("suolong","progress = ${businessDownProgress.progress}")
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    DownloadMemoryCache.pauseDownloadingChapter()
+                    DownloadMemoryCache.downloadingChapterClick(chapter)
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
@@ -74,7 +73,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    checkContext { DownloadMemoryCache.addDownloadingChapter(chapter) }
+                    DownloadMemoryCache.downloadingChapterClick(chapter)
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH -> {
@@ -97,13 +96,6 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 }
             }
         }
-    }
-
-    private fun startDownloadChapter(chapter: DownloadChapter) {
-        if (audio != null) {
-            DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
-        }
-        DownloadMemoryCache.addDownloadingChapter(chapter)
     }
 
     private fun checkContext(actionGranted: () -> Unit) {

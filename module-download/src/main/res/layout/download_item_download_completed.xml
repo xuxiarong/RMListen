@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/download_ic_book_chapter"
-                android:text="@{String.valueOf(itemBean.last_sequence)}"
+                android:text="@{String.valueOf(itemBean.count_sequence)}"
                 android:layout_marginStart="@dimen/dp_12"
                 tools:text="56.78M"
                 android:textColor="@color/business_text_color_666666"

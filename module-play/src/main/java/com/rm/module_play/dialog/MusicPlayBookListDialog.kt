@@ -5,32 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.reverse
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
-import com.rm.business_lib.binding.bindChapterList
-import com.rm.business_lib.binding.bindDateString
-import com.rm.business_lib.binding.bindDuration
-import com.rm.business_lib.binding.bindPlayCountString
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
-import com.rm.business_lib.wedgit.LivingView
-import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.BR
@@ -39,7 +26,6 @@ import com.rm.module_play.viewmodel.PlayViewModel
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
-import com.tencent.bugly.proguard.ac
 import kotlinx.android.synthetic.main.music_play_dialog_book_list.*
 
 /**

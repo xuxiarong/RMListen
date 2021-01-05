@@ -163,7 +163,7 @@
                 android:textSize="@dimen/sp_14" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                bindClick="@{viewModel.downloadList}"
+                android:onClick="@{()->viewModel.downloadList(context)}"
                 android:layout_width="@dimen/dp_64"
                 android:layout_marginTop="@dimen/dp_20"
                 android:layout_height="@dimen/dp_30"

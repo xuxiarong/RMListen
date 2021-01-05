@@ -28,6 +28,7 @@ import com.rm.business_lib.UPLOAD_APP_TIME
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.isLogin
+import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.utils.ApkInstallUtils
 import com.rm.business_lib.utils.ApkInstallUtils.REQUEST_CODE_INSTALL_APP
 import com.rm.component_comm.home.HomeService
@@ -300,7 +301,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 this@SplashActivity,
-                                "www.baidu.com"
+                                BusinessRetrofitClient.getUserPrivacy()
                             )
                         }
                     })
@@ -314,7 +315,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 this@SplashActivity,
-                                "www.baidu.com"
+                                    BusinessRetrofitClient.getUserAgreement()
                             )
                         }
                     })

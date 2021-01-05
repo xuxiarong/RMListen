@@ -1,5 +1,6 @@
 package com.rm.baselisten.web
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.KeyEvent
@@ -19,6 +20,7 @@ class BaseWebActivity : BaseActivity() {
         baseWebView.loadUrl(mHttpUrl)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun initView() {
         super.initView()
         val settings: WebSettings = baseWebView.settings
@@ -30,6 +32,10 @@ class BaseWebActivity : BaseActivity() {
         settings.defaultTextEncodingName = "utf-8"
         settings.loadsImagesAutomatically = true
         settings.domStorageEnabled = true
+        settings.databaseEnabled = true
+        settings.javaScriptEnabled = true
+        settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
+        settings.blockNetworkImage = true
 
         baseWebView.webChromeClient = object : WebChromeClient() {
             override fun onReceivedTitle(view: WebView, title: String) {

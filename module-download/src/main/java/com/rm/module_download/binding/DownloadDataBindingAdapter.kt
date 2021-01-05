@@ -180,6 +180,7 @@ fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: 
     text = String.format(context.getString(R.string.business_down_and_total_size), currentSize, totalSize)
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("bindDownloadText", "bindDownloadSpeedChapter", "bindDownloadAll", "bindEditDownloading",requireAll = true)
 fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: DownloadChapter?, isDownAll: Boolean?, isEditDownloading : Boolean?) {
     if (downloadChapter == null) {
@@ -209,7 +210,7 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
             text = context.getString(R.string.business_download_wait)
         }
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
-            text = chapter.down_speed
+            text = "${chapter.down_speed}/s"
         }
         DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
             text = context.getString(R.string.business_download_pause)

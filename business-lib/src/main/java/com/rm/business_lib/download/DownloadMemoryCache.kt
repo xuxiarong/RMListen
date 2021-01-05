@@ -1,5 +1,6 @@
 package com.rm.business_lib.download
 
+import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -111,7 +112,7 @@ object DownloadMemoryCache {
         }
     }
 
-    fun addDownloadingChapter(chapterList: MutableList<DownloadChapter>) {
+    fun addDownloadingChapter(context: Context,chapterList: MutableList<DownloadChapter>) {
         if (chapterList.isEmpty()) {
             return
         }
@@ -120,6 +121,8 @@ object DownloadMemoryCache {
             val nextChapter = iterator.next()
             if (nextChapter.isNotDown) {
                 nextChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
+                nextChapter.down_speed = ""
+                nextChapter.current_offset = 0L
                 downloadingChapterList.value?.forEach {
                     if (it.path_url == nextChapter.path_url) {
                         iterator.remove()
@@ -130,61 +133,19 @@ object DownloadMemoryCache {
             }
         }
         if (chapterList.size == 0) {
-            ToastUtil.show(
-                BaseApplication.CONTEXT,
-                BaseApplication.CONTEXT.getString(R.string.business_download_all_exist)
-            )
+            ToastUtil.showTopToast(context, BaseApplication.CONTEXT.getString(R.string.business_download_all_exist))
         } else {
-            ToastUtil.show(
-                BaseApplication.CONTEXT,
-                BaseApplication.CONTEXT.getString(R.string.business_download_add_cache)
-            )
-            downloadingChapterList.addAll(chapterList)
+
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(chapterList)
             downloadingChapter.get().let {
-                if (it != null) {
-                    if (!isDownAll.get()) {
-                        isDownAll.set(true)
-                        AriaDownloadManager.startDownload(chapterList[0])
-                    } else {
-                        if (!it.isDownloading) {
-                            isDownAll.set(true)
-                            AriaDownloadManager.startDownload(it)
-                        }
-                    }
+                isDownAll.set(true)
+                downloadingChapterList.addAll(chapterList)
+                if (it != null && it.isDownloading) {
+                    ToastUtil.showTopToast(context, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
                 } else {
-                    isDownAll.set(true)
                     AriaDownloadManager.startDownload(chapterList[0])
                 }
             }
-        }
-    }
-
-
-    fun addDownloadingChapter(chapter: DownloadChapter) {
-
-        val downChapter = downloadingChapter.get()
-        if (downloadingChapterList.value != null) {
-            val downloadList = downloadingChapterList.value!!
-            downloadList.forEach {
-                if (it.chapter_id == chapter.chapter_id) {
-                    if(downChapter!=null && downChapter.isDownloading){
-                        chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
-                        setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD)
-                    }else{
-                        AriaDownloadManager.startDownload(chapter)
-                    }
-                    return
-                }
-            }
-        }
-        ToastUtil.show(BaseApplication.CONTEXT, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
-        downloadingChapterList.add(chapter)
-        if(downChapter!=null && downChapter.isDownloading){
-            chapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
-            setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING)
-        }else{
-            AriaDownloadManager.startDownload(chapter)
         }
     }
 
@@ -245,58 +206,6 @@ object DownloadMemoryCache {
                 isDownAll.set(false)
             }
         }
-//
-//
-//
-//        downloadingChapter.get()?.let { downloadChapter ->
-//            if (isDownAll.get()) {
-//                clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
-//                setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
-//                if (clickChapter.chapter_id == downloadChapter.chapter_id) {
-//                    if(downloadChapter.isDownloading){
-//                        downloadingChapterList.value?.let { downList ->
-//                            var hasWaitChapter = false
-//                            if(downList.isNotEmpty()){
-//                                downList.forEach {
-//                                    if(it.chapter_id == clickChapter.chapter_id){
-//                                        it.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
-//                                    }else{
-//                                        if(it.down_status == DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT){
-//                                            hasWaitChapter = true
-//                                        }
-//                                    }
-//                                }
-//                                if(!hasWaitChapter){
-//                                    AriaDownloadManager.pauseDownloadChapter(downloadChapter)
-//                                    isDownAll.set(false)
-//                                }else{
-//                                    downloadNextWaitChapter(clickChapter)
-//
-//                                }
-//
-//                            }
-////                            if (downList.size <= 1) {
-////                                AriaDownloadManager.pauseDownloadChapter(downloadChapter)
-////                                isDownAll.set(false)
-////                            } else {
-////                                downloadNextWaitChapter(clickChapter)
-////                            }
-//                        }
-//                    } else{
-//                        clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
-//                        setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING)
-//                        AriaDownloadManager.startDownload(clickChapter)
-//                    }
-//                } else {
-//                    setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
-//                    AriaDownloadManager.startDownload(clickChapter)
-//                }
-//            } else {
-//                clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOADING
-//                setCurrentChapter(status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE)
-//                AriaDownloadManager.startDownload(chapter = clickChapter)
-//            }
-//        }
     }
 
     fun setCurrentChapter(
@@ -346,12 +255,6 @@ object DownloadMemoryCache {
                             return
                         }
                     }
-//                    if(isDownAll.get()){
-//                        if (downList.size >= 2) {
-//                            AriaDownloadManager.startDownload(downList[1])
-//                            return
-//                        }
-//                    }
                 }
                 //如果下载任务是队列的最后一个任务
                 else if (firstDownIndex == downList.size - 1) {
@@ -362,10 +265,6 @@ object DownloadMemoryCache {
                                 return
                             }
                         }
-//                        if (downList.size >= 2) {
-//                            AriaDownloadManager.startDownload(downList[0])
-//                            return
-//                        }
                     }
                 }
                 //如果下载任务处于第二个到倒数第二个
@@ -386,8 +285,8 @@ object DownloadMemoryCache {
                             }
                         }
                     }
-                    isDownAll.set(false)
                 }
+                isDownAll.set(false)
             }
         }
     }
