@@ -54,22 +54,33 @@
                 android:layout_gravity="center"
                 android:src="@drawable/business_icon_search" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/search_main_edit_text"
+            <com.rm.module_search.widget.autohint.AutoHintLayout
+                android:id="@+id/search_main_auto_layout"
                 style="@style/BusinessTextStyleFirst_2"
-                afterTextChanged="@{viewModel.inputKeyWord}"
-                bindAction="@{editorInfo.IME_ACTION_SEARCH}"
-                bindBlock="@{viewModel.bindActionListener}"
-                bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"
                 android:layout_weight="1"
                 android:background="@null"
-                android:imeOptions="actionSearch"
-                android:singleLine="true"
-                android:text="@{viewModel.keyWord}"
-                android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e" />
+                android:imeOptions="actionSearch">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/search_main_edit_text"
+                    style="@style/BusinessTextStyleFirst_2"
+                    afterTextChanged="@{viewModel.inputKeyWord}"
+                    bindAction="@{editorInfo.IME_ACTION_SEARCH}"
+                    bindBlock="@{viewModel.bindActionListener}"
+                    bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    android:text="@{viewModel.keyWord}"
+                    android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e" />
+            </com.rm.module_search.widget.autohint.AutoHintLayout>
 
             <androidx.appcompat.widget.AppCompatImageView
                 isVisible="@{viewModel.keyWord.length()>0&amp;&amp;viewModel.keyboardIsVisibility}"

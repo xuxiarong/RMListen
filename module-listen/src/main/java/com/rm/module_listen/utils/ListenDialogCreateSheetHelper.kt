@@ -6,8 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonDragMvDialog
-import com.rm.baselisten.utilExt.dip
-import com.rm.baselisten.view.DragCloseLayout
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenDialogCreateSheetBinding
@@ -18,14 +17,14 @@ import com.rm.module_listen.viewmodel.ListenDialogCreateSheetViewModel
  */
 class ListenDialogCreateSheetHelper(
     private val mActivity: FragmentActivity,
-    private val successBlock: () -> Unit
+    private val successBlock: () -> Unit,
+    private val viewModel: BaseVMViewModel
 ) {
-
     /**
      * viewModel对象
      */
     private val mViewModel by lazy {
-        ListenDialogCreateSheetViewModel(mActivity, successBlock)
+        ListenDialogCreateSheetViewModel(mActivity, successBlock,viewModel)
     }
 
 
@@ -66,7 +65,7 @@ class ListenDialogCreateSheetHelper(
     fun showEditDialog(sheetName: String, sheetId: String, success: (String) -> Unit) {
         mViewModel.sheetId.set(sheetId)
         mViewModel.editSuccess = { success(it) }
-        mViewModel.mDialog = CommonDragMvDialog(moveListener).apply {
+        mViewModel.mDialog = CommonDragMvDialog().apply {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
             dialogHeightIsMatchParent = true
@@ -103,10 +102,4 @@ class ListenDialogCreateSheetHelper(
         )
     }
 
-    /**
-     * 拖拽监听
-     */
-    private val moveListener = DragCloseLayout.IDragMoveListener {
-        mViewModel.hideTipView()
-    }
 }

@@ -1,7 +1,6 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
-import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
@@ -131,8 +130,8 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
     private fun showDialog(context: Context, followId: String) {
         getActivity(context)?.let { activity ->
             TipsFragmentDialog().apply {
-                titleText = context.String(R.string.business_tips)
-                contentText = context.String(R.string.business_sure_cancel_attention)
+                titleText = context.String(R.string.business_attention_title)
+                contentText = context.String(R.string.business_attention_content)
                 leftBtnText = context.String(R.string.business_cancel)
                 rightBtnText = context.String(R.string.business_sure)
                 rightBtnTextColor = R.color.business_color_ff5e5e

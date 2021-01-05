@@ -163,6 +163,6 @@ fun RecyclerView.bindRecyclerViewScroll(action: ((View) -> Unit)?) {
 @BindingAdapter("bindVerticalScroll")
 fun RecyclerView.bindVerticalScroll(y: Int? = 0) {
     if (abs(y ?: 0) > 0) {
-        scrollY = y ?: 0
+            scrollBy(0, 1)
     }
 }

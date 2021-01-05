@@ -1,5 +1,7 @@
 package com.rm.baselisten.model
 
+import com.rm.baselisten.R
+
 /**
  * desc   :
  * date   : 2020/09/03
@@ -8,5 +10,6 @@ package com.rm.baselisten.model
 data class BaseToastModel constructor(
     val content: String? = "",
     val contentId: Int = -1,
-    val isCenter: Boolean = false
+    val colorId: Int = R.color.base_333,
+    val canAutoCancel: Boolean = true
 )

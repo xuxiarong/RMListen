@@ -82,7 +82,7 @@
             style="@style/BusinessTextStyleThird_4"
             bindText="@{item.nickname}"
             android:layout_marginStart="@dimen/dp_12"
-            android:drawableStart="@drawable/search_icon_anchor"
+            android:drawableStart="@drawable/business_icon_anchor"
             android:maxWidth="@dimen/dp_180"
             android:singleLine="true"
             app:layout_constraintBottom_toBottomOf="@id/search_adapter_content_books_icon"

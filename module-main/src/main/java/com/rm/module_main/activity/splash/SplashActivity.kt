@@ -265,7 +265,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                         dismiss()
                     }
                     dialogBand.homeDialogNotAgreeProtocol.setOnClickListener {
-                        ToastUtil.show(
+                        ToastUtil.showTopToast(
                             this@SplashActivity,
                             getString(R.string.main_please_agree_private_service)
                         )

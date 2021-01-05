@@ -103,6 +103,7 @@
             android:layout_marginTop="@dimen/dp_6"
             android:ellipsize="end"
             android:lines="1"
+            app:drawableStartCompat="@drawable/business_icon_anchor"
             android:textColor="@color/business_color_b1b1b1"
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintStart_toStartOf="@+id/homeItemRecommendHorDoubleTopName"

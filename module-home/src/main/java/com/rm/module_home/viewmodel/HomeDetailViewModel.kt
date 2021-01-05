@@ -603,11 +603,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 评论点赞
      */
     private fun likeComment(bean: CommentList) {
-        showLoading()
         launchOnIO {
             repository.homeLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
-                    showContentView()
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = true
                     bean.likes = bean.likes + 1
@@ -616,7 +614,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = { it, _ ->
-                    showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
@@ -628,11 +625,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 取消评论点赞
      */
     private fun unLikeComment(bean: CommentList) {
-        showLoading()
         launchOnIO {
             repository.homeUnLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
-                    showContentView()
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     bean.is_liked = false
                     bean.likes = bean.likes - 1
@@ -640,7 +635,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
                 },
                 onError = { it, _ ->
-                    showContentView()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -709,8 +703,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     private fun showUnAttentionDialog(context: Context, followId: String) {
         getActivity(context)?.let { activity ->
             TipsFragmentDialog().apply {
-                titleText = context.String(R.string.business_tips)
-                contentText = context.String(R.string.business_sure_cancel_attention)
+                titleText = context.String(R.string.business_attention_title)
+                contentText = context.String(R.string.business_attention_content)
                 leftBtnText = context.String(R.string.business_cancel)
                 rightBtnText = context.String(R.string.business_sure)
                 rightBtnTextColor = R.color.business_color_ff5e5e
@@ -784,32 +778,57 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     private fun configChapterPageList() {
         val totalCount = chapterTotal.get() ?: 0
+        when (mCurSort) {
+            AudioSortType.SORT_ASC -> {
+                chapterSortAsc(totalCount)
+            }
+            AudioSortType.SORT_DESC -> {
+                chapterSortDesc(totalCount)
+            }
+        }
+    }
+
+    /**
+     * 正序
+     */
+    private fun chapterSortAsc(totalCount: Int) {
         val list = mutableListOf<DataStr>()
         val i1 = totalCount / chapterPageSize
         val i2 = totalCount % chapterPageSize
-        when (mCurSort) {
-            AudioSortType.SORT_ASC -> {
-                var y = 0
-                for (i in 1..i1) {
-                    list.add(DataStr("${y + 1}~${i * chapterPageSize}", i))
-                    y = i * chapterPageSize
-                }
-                if (i2 > 0) {
-                    list.add(DataStr("${y + 1}~$totalCount", list.size + 1))
-                }
-                chapterAnthologyAdapter.setList(list)
-            }
-            AudioSortType.SORT_DESC -> {
-                var y = totalCount
-                for (i in 1..i1) {
-                    list.add(DataStr("${y}~${totalCount - i * chapterPageSize}", i))
-                    y = (totalCount - i * chapterPageSize) - 1
-                }
-                if (i2 > 0) {
-                    list.add(DataStr("${y + 1}~1", list.size + 1))
-                }
-                chapterAnthologyAdapter.setList(list)
-            }
+        var y = 0
+        for (i in 1..i1) {
+            list.add(DataStr("${getNumStr(y + 1)}~${i * chapterPageSize}", i))
+            y = i * chapterPageSize
+        }
+        if (i2 > 0) {
+            list.add(DataStr("${getNumStr(y + 1)}~$totalCount", list.size + 1))
+        }
+        chapterAnthologyAdapter.setList(list)
+    }
+
+    /**
+     * 倒序
+     */
+    private fun chapterSortDesc(totalCount: Int) {
+        val list = mutableListOf<DataStr>()
+        val i1 = totalCount / chapterPageSize
+        val i2 = totalCount % chapterPageSize
+        var y = totalCount
+        for (i in 1..i1) {
+            list.add(DataStr("${y}~${getNumStr(totalCount - i * chapterPageSize + 1)}", i))
+            y = (totalCount - i * chapterPageSize)
+        }
+        if (i2 > 0) {
+            list.add(DataStr("${getNumStr(y)}~01", list.size + 1))
+        }
+        chapterAnthologyAdapter.setList(list)
+    }
+
+    private fun getNumStr(num: Int): String {
+        return if (num > 9) {
+            "$num"
+        } else {
+            "0$num"
         }
     }
 
@@ -836,8 +855,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     }
 
     private fun getChapterStatus(chapterList: List<DownloadChapter>): MutableList<DownloadChapter> {
-        val audioName = detailInfoData.get()?.list?.audio_name?:""
-        val audioId = detailInfoData.get()?.list?.audio_id?:0L
+        val audioName = detailInfoData.get()?.list?.audio_name ?: ""
+        val audioId = detailInfoData.get()?.list?.audio_id ?: 0L
         chapterList.forEach {
             it.audio_name = audioName
             it.audio_id = audioId
@@ -889,7 +908,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             if (isLogin.get()) {
                 audioId.get()?.let { audioId ->
                     anchorId.get()?.let { anchorId ->
-                        HomeCommentDialogHelper(it, audioId, anchorId) {
+                        HomeCommentDialogHelper(it, audioId, anchorId, this) {
                             commentPage = 1
                             getCommentList(audioId)
                             showTip("评论成功")
@@ -944,9 +963,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 quicklyLogin(it)
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
-                    .showMySheetListDialog(it, audioId.get()!!) {
-                        showTip("在“我听-听单”中查看")
-                    }
+                    .showMySheetListDialog(
+                        it, audioId.get()!!,
+                        { showTip("在“我听-听单”中查看") },
+                        this
+                    )
             }
         }
 
