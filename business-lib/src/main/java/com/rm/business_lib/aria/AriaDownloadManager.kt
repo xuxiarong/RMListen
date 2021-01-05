@@ -25,12 +25,10 @@ object AriaDownloadManager {
     const val TAG = "suolong_AriaDownloadManager"
     //是否在下载状态
     var isDownloading = ObservableBoolean(false)
-    //是否是处于单个任务下载
-    var isSingleDown = ObservableBoolean(false)
 
-    fun startDownload(chapter: DownloadChapter,isSingleDownload : Boolean = false) {
 
-        this.isSingleDown.set(isSingleDownload)
+    fun startDownload(chapter: DownloadChapter) {
+
         val file = File(DownLoadFileUtils.createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
         Aria.download(this).setMaxSpeed(800).register()
         DLog.d(TAG, "register filepath = ${file.absolutePath}")

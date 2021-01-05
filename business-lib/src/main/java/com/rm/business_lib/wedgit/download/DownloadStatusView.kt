@@ -55,7 +55,11 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
             DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
                 businessDownIv.visibility = View.GONE
                 businessDownProgress.visibility = View.VISIBLE
-                businessDownProgress.progress = (chapter.current_offset / (chapter.size / 100)).toInt()
+                if((chapter.size / 100) == 0L){
+                    businessDownProgress.progress  = 0
+                }else{
+                    businessDownProgress.progress = (chapter.current_offset / (chapter.size / 100)).toInt()
+                }
 //                DLog.d("suolong","progress = ${businessDownProgress.progress}")
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
