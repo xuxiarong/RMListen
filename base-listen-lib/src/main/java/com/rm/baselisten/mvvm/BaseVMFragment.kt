@@ -148,9 +148,11 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
             }
         })
 
-        mViewModel.baseCancelToastModel.observe(this, Observer {
-            if (it) {
-                ToastUtil.cancelToast()
+        mViewModel.baseCancelToastModel.observe(this, Observer { isCancel ->
+            context?.let {
+                if (isCancel) {
+                    ToastUtil.cancelToast()
+                }
             }
         })
 

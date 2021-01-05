@@ -192,21 +192,24 @@ object DownloadMemoryCache {
         //如果是下载全部，则停止当前
 
         val downloadingChapter = downloadingChapter.get()
-
+        var isClickDownload = false
 
         downloadingChapterList.value?.let {
             //改变下载队列中章节的状态为暂停
             it.forEach { listChild ->
                 if(listChild.chapter_id == clickChapter.chapter_id){
+                    if(clickChapter.chapter_id == downloadingChapter?.chapter_id){
+                        isClickDownload = true
+                    }
                     if(listChild.isDownloading ){
-                        pauseDownloadingChapter()
                         clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
                         listChild.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
+                        isClickDownload = true
+                        pauseDownloadingChapter()
                     }else if(listChild.isDownWait){
                         clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
                         listChild.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE
                     }else{
-                        pauseDownloadingChapter()
                         clickChapter.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
                         listChild.down_status = DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT
                     }
@@ -221,13 +224,25 @@ object DownloadMemoryCache {
                     return@forEach
                 }
             }
+
             //有等待的章节，则下载
-            if(hasWaitChapter){
-                isDownAll.set(true)
-                AriaDownloadManager.startDownload(clickChapter)
+            if(hasWaitChapter ){
+                downloadingChapter?.let {
+                    isDownAll.set(true)
+                    if(isClickDownload){
+                        if(clickChapter.isDownWait){
+                            AriaDownloadManager.startDownload(clickChapter)
+                        }else{
+                            downloadNextWaitChapter(downloadingChapter)
+                        }
+                    }else{
+                        if(!downloadingChapter.isDownloading){
+                            AriaDownloadManager.startDownload(clickChapter)
+                        }
+                    }
+                }
             }else{
                 isDownAll.set(false)
-                pauseDownloadingChapter()
             }
         }
 //
@@ -370,8 +385,8 @@ object DownloadMemoryCache {
                                 return
                             }
                         }
-//                        AriaDownloadManager.startDownload(downList[firstDownIndex + 1])
                     }
+                    isDownAll.set(false)
                 }
             }
         }
