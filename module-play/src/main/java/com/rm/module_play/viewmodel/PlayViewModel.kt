@@ -17,8 +17,6 @@ import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.PlayGlobalData.chapterRefreshModel
-import com.rm.business_lib.PlayGlobalData.playNextPage
-import com.rm.business_lib.PlayGlobalData.playPrePage
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.PlayGlobalData.playChapterTotal
@@ -86,11 +84,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 每次加载数据的条数
      */
     private val pageSize = 12
-
-    /**
-     * 是否还有更多章节数据
-     */
-    private var noMoreChapter = false
 
     /**
      * 评论数量
@@ -293,7 +286,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         PlayGlobalData.setNextPagePlayData(chapterList)
                     }
                 } else {
-                    noMoreChapter = true
                     chapterRefreshModel.noMoreData.set(true)
                     chapterRefreshModel.finishLoadMore(true)
                 }
@@ -339,7 +331,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 }
                 chapterRefreshModel.finishRefresh(true)
             }, onError = { it, _ ->
-                playPrePage++
                 chapterRefreshModel.finishRefresh(false)
                 it?.let {
                     showTip(it)
@@ -355,12 +346,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             audioId: String,
             chapterId: String
     ) {
-        playNextPage = PlayGlobalData.PLAY_FIRST_PAGE
-        playPrePage = PlayGlobalData.PLAY_FIRST_PAGE
+
         playChapterTotal = 1
         chapterRefreshModel.noMoreData.set(false)
         chapterRefreshModel.canRefresh.set(true)
-        DLog.d("music-exoplayer-lib", "播放页获取章节列表 audioId = $audioId --- chapterId = $chapterId")
         launchOnIO {
             repository.getChapterListWithId(
                     audioId = audioId,
@@ -370,38 +359,21 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
             ).checkResult(onSuccess = {
                 val chapterList = it.list
-                DLog.d("music-exoplayer-lib", "播放页getChapterListWithId成功")
                 showContentView()
                 if (chapterList != null) {
-
-
-                    DLog.d(
-                            "music-exoplayer-lib",
-                            "播放页寻找章节 name = ${PlayGlobalData.playChapter.get()?.chapter_name} ,id = ${PlayGlobalData.playChapter.get()?.chapter_id}"
-                    )
                     chapterList.forEach { chapter ->
                         if (chapter.chapter_id.toString() == BaseConstance.basePlayInfoModel.get()?.playChapterId) {
                             initPlayChapter(chapter)
-                            DLog.d(
-                                    "music-exoplayer-lib",
-                                    "播放页找到对应章节 id = ${chapter.chapter_id}  name = ${chapter.chapter_name}"
-                            )
-                            DLog.d("music-exoplayer-lib", "播放页设置公共数据 getChapterListWithId")
                             PlayGlobalData.setNextPagePlayData(chapterList)
                             return@forEach
                         }
                     }
                 } else {
-                    noMoreChapter = true
-                    DLog.d("music-exoplayer-lib", "播放页寻找章节 单数服务器返回数据为空")
-                    DLog.d("music-exoplayer-lib", "播放页设置公共数据 单数服务器返回数据为空 getChapterListWithId")
                     PlayGlobalData.setNextPagePlayData(mutableListOf())
                 }
             }, onError = { it, _ ->
-                noMoreChapter = true
                 chapterRefreshModel.finishLoadMore(false)
                 showContentView()
-                DLog.d("music-exoplayer-lib", "首页获取章节列表失败   $it ")
                 it?.let {
                     showTip(it)
                 }
@@ -513,7 +485,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     },
                     onError = { it, _ ->
-                        DLog.d("suolong", "error = ${it ?: ""}")
                     })
         }
     }

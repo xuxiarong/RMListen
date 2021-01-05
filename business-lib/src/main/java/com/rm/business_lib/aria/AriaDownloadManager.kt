@@ -53,7 +53,7 @@ object AriaDownloadManager {
     }
 
     fun deleteAllDownload() {
-        Aria.download(this).removeAllTask(true)
+        Aria.download(this).removeAllTask(false)
     }
 
     fun resumeDownloadChapter() {
