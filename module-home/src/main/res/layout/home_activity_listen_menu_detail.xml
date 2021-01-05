@@ -89,7 +89,6 @@
             bindOnLoadMoreListener="@{viewModel.loadData}"
             bindOnRefreshListener="@{viewModel.refreshData}"
             bindResetNoMoreData="@{viewModel.refreshStatusModel.resetNoMoreData}"
-            isVisible="@{!viewModel.showNoData}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -104,29 +103,6 @@
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            isVisible="@{viewModel.showNoData}"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_menu_detail_title_cl">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/base_no_data" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/home_menu_detail_no_data"
-                android:textColor="@color/base_b1b1b1"
-                android:textSize="14sp" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

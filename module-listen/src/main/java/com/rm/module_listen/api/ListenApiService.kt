@@ -81,10 +81,11 @@ interface ListenApiService {
     /**
      * 订阅红点上报
      */
+    @FormUrlEncoded
     @POST("report/report")
     suspend fun listenSubsRedReport(
-        @Query("report_type") report_type: String,
-        @Query("audio_id") audio_id: String
+        @Field("report_type") report_type: String,
+        @Field("audio_id") audio_id: String
     ): BaseResponse<Any>
 
     /**

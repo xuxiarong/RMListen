@@ -20,8 +20,6 @@ import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.loginUser
-import com.rm.business_lib.share.Share2
-import com.rm.business_lib.share.ShareContentType
 import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
@@ -52,9 +50,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     //听单Id
     var sheetId = ObservableField<String>()
 
-
-    //是否显示没数据
-    val showNoData = ObservableField<Boolean>(false)
 
     //刷新控件内的recyclerview
     val contentRvId = R.id.home_menu_detail_recycler_view
@@ -124,7 +119,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     fun clickShare(context: Context) {
         getActivity(context)?.let { activity ->
             data.get()?.let {
-                ShareManage.shareSheet(activity, it.sheet_id, it.sheet_name)
+                ShareManage.shareSheet(activity, it.sheet_id ?: "", it.sheet_name ?: "")
             }
         }
     }
@@ -161,18 +156,22 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
             repository.getData(sheetId.get() ?: "")
                 .checkResult(
                     onSuccess = {
-                        showContentView()
-                        setFavorState(it.favor == 1)
-                        data.set(it)
-                        if (it.created_from == 1 || it.created_from == 3) {
-                            collectedVisibility.set(false)
+                        if (it.sheet_id == null) {
+                            showDataEmpty("此页面空荡荡的…什么都没有")
                         } else {
-                            collectedVisibility.set(
-                                !TextUtils.equals(
-                                    it.member_id,
-                                    loginUser.get()?.id
+                            showContentView()
+                            setFavorState(it.favor == 1)
+                            data.set(it)
+                            if (it.created_from == 1 || it.created_from == 3) {
+                                collectedVisibility.set(false)
+                            } else {
+                                collectedVisibility.set(
+                                    !TextUtils.equals(
+                                        it.member_id,
+                                        loginUser.get()?.id
+                                    )
                                 )
-                            )
+                            }
                         }
                     },
                     onError = { it, _ ->
@@ -205,15 +204,13 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     }
 
     private fun processAudioList(bean: AudioListBean) {
-        showContentView()
         if (mPage == 1) {
             //刷新完成
             refreshStatusModel.finishRefresh(true)
             if (bean.list?.size ?: 0 > 0) {
                 mAdapter.setList(bean.list)
-                showNoData.set(false)
             } else {
-                showNoData.set(true)
+                showDataEmpty("此页面空荡荡的…什么都没有")
             }
         } else {
             refreshStatusModel.finishLoadMore(true)
@@ -233,6 +230,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
      * 收藏听单
      */
     private fun favoritesSheet(view: View, sheetId: String) {
+        showLoading()
         launchOnIO {
             repository.favoritesSheet(sheetId).checkResult(
                 onSuccess = {
@@ -245,6 +243,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     )
                 },
                 onError = { it, _ ->
+                    showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
@@ -255,6 +254,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
      * 取消收藏
      */
     private fun unFavoritesSheet(sheetId: String) {
+        showLoading()
         launchOnIO {
             repository.unFavoritesSheet(sheetId).checkResult(
                 onSuccess = {
@@ -267,6 +267,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     )
                 },
                 onError = { it, _ ->
+                    showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
             )

@@ -3,10 +3,12 @@ package com.rm.module_play.repository
 import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.AudioRecommendList
 import com.rm.business_lib.bean.BusinessAdRequestModel
 import com.rm.business_lib.bean.ChapterListModel
+import com.rm.business_lib.utils.DeviceUtils
 import com.rm.module_play.api.PlayApiService
 import com.rm.module_play.model.AudioCommentsModel
 import com.rm.module_play.model.PlayAdChapterModel
@@ -49,7 +51,12 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
 
     //上报
     suspend fun playerReport(audio_id: String, chapter_id: String): BaseResult<Any> {
-        return apiCall { playApi.playerReport("player", audio_id, chapter_id) }
+        return apiCall {
+            val device_id = DeviceUtils.uniqueDeviceId
+            DLog.i("=====playerReport","audio_id:$audio_id   chapter_id:$chapter_id     device_id:$device_id")
+            //audio_id:175598650063499264   chapter_id:175598650671673344     device_id:22a0af77e0b0e3695bcab815607013871
+            playApi.playerReport("player", audio_id, chapter_id, device_id)
+        }
     }
 
     /**
