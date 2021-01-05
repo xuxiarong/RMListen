@@ -3,9 +3,11 @@ package com.rm.business_lib.net
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.baselisten.net.util.GsonUtils
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.encodeMD5
 import com.rm.baselisten.util.getStringMMKV
 import com.rm.baselisten.util.putMMKV
@@ -14,6 +16,7 @@ import com.rm.business_lib.ACCESS_TOKEN_INVALID_TIMESTAMP
 import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.helpter.loginOut
 import com.rm.business_lib.helpter.parseToken
+import com.rm.business_lib.isLogin
 import com.rm.business_lib.net.api.BusinessApiService
 import com.rm.business_lib.utils.DeviceUtils
 import kotlinx.coroutines.Dispatchers
@@ -64,6 +67,7 @@ class RefreshTokenInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         synchronized(this) {
             try {
+
                 val originRequest = chain.request()
                 val request = getRequestHeaderBuilder(originRequest.newBuilder()).build()
                 //获取请求结果
@@ -110,6 +114,15 @@ class RefreshTokenInterceptor : Interceptor {
                     Log.i("=====>TokenInterceptor", "登陆失效，有可能是token失效  $responseString")
                     //被挤下线了/用户未登陆  需要放在主线程去更新，不然会出现异常
                     GlobalScope.launch(Dispatchers.Main) {
+                        val activity = BaseApplication.baseApplication.getTopTaskActivity()
+                        if (isLogin.get()) {
+                            activity?.let { context ->
+                                ToastUtil.showTopToast(
+                                    context,
+                                    "登录凭证已过期，请重新登陆"
+                                )
+                            }
+                        }
                         loginOut()
                     }
                     originResponse.newBuilder().code(originResponse.code)

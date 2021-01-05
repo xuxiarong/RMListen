@@ -32,11 +32,13 @@ interface PlayApiService {
     /**
      * 播放上报
      */
+    @FormUrlEncoded
     @POST("report/report")
     suspend fun playerReport(
         @Field("report_type") report_type: String,
         @Field("audio_id") audio_id: String,
-        @Field("chapter_id") chapter_id: String
+        @Field("chapter_id") chapter_id: String,
+        @Field("device_id") device_id: String
     ): BaseResponse<Any>
 
 

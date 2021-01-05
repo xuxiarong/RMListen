@@ -19,12 +19,13 @@ import kotlin.properties.Delegates
  */
 open class BaseApplication : Application() {
 
-    var activityList : MutableList<Activity> = mutableListOf()
-    var allActivityDestroyListener : IOnAllActivityDestroy? = null
+    var activityList: MutableList<Activity> = mutableListOf()
+    var allActivityDestroyListener: IOnAllActivityDestroy? = null
 
     companion object {
         var CONTEXT: Context by Delegates.notNull()
-        lateinit var baseApplication : BaseApplication
+        lateinit var baseApplication: BaseApplication
+
         @JvmStatic
         fun getContext(): Context {
             return CONTEXT
@@ -36,7 +37,7 @@ open class BaseApplication : Application() {
         CONTEXT = applicationContext
         baseApplication = this
         NetworkChangeReceiver.registerNetWorkReceiver()
-        CrashReport.initCrashReport(applicationContext,"7eeebc3f3a",true)
+        CrashReport.initCrashReport(applicationContext, "7eeebc3f3a", true)
         registerActivityCallback()
     }
 
@@ -51,8 +52,8 @@ open class BaseApplication : Application() {
         Log.i("BaseApplication", "onTerminate()")
     }
 
-    private fun registerActivityCallback(){
-        this.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks{
+    private fun registerActivityCallback() {
+        this.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityPaused(activity: Activity) {
             }
 
@@ -62,12 +63,13 @@ open class BaseApplication : Application() {
             override fun onActivityDestroyed(activity: Activity) {
                 activityList.remove(activity)
 
-                DLog.d("suolong","activityList size = ${activityList.size}")
+                DLog.d("suolong", "activityList size = ${activityList.size}")
                 activityList.let {
-                    if(it.isEmpty()){
-                        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    if (it.isEmpty()) {
+                        val manager =
+                            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                         manager.cancelAll()
-                        DLog.d("suolong","cancelAll Notification")
+                        DLog.d("suolong", "cancelAll Notification")
                         allActivityDestroyListener?.onAllActivityDestroy()
                     }
                 }
@@ -90,11 +92,18 @@ open class BaseApplication : Application() {
 
     }
 
-    fun registerAllActivityDestroy(listener: IOnAllActivityDestroy){
+    fun registerAllActivityDestroy(listener: IOnAllActivityDestroy) {
         allActivityDestroyListener = listener
     }
 
-    interface IOnAllActivityDestroy{
+    fun getTopTaskActivity(): Activity? {
+        if (activityList.size > 0) {
+            return activityList[0]
+        }
+        return null
+    }
+
+    interface IOnAllActivityDestroy {
         fun onAllActivityDestroy()
     }
 
