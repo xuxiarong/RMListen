@@ -58,6 +58,7 @@ interface PlayApiService {
     @GET("audio/chapter/list")
     suspend fun getChapterListWithId(
         @Query("audio_id") audioId: String,
+        @Query("page") page : Int,
         @Query("chapter_id") chapterId:String,
         @Query("page_size") page_size:Int,
         @Query("sort") sort: String
@@ -74,7 +75,7 @@ interface PlayApiService {
             @Query("page") page : Int,
             @Query("page_size") page_size:Int,
             @Query("sort") sort: String,
-            @Query("direction") direction : String = "backward"
+            @Query("direction") direction :String
     ): BaseResponse<ChapterListModel>
 
     /**
@@ -87,7 +88,7 @@ interface PlayApiService {
             @Query("page") page : Int,
             @Query("page_size") page_size:Int,
             @Query("sort") sort: String,
-            @Query("direction") direction : String = "forward"
+            @Query("direction") direction :String
     ): BaseResponse<ChapterListModel>
 
     /**

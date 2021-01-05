@@ -231,11 +231,13 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     private fun requestPermissions() {
         requestPermissionForResult(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE,
             actionDenied = {
-                initSplashData()
+//                initSplashData()
             },
             actionGranted = {
                 // todo
-                initSplashData()
+//                initSplashData()
+                MainMainActivity.startMainActivity(this@SplashActivity)
+                finish()
             },
             actionPermanentlyDenied = {
                 finish()

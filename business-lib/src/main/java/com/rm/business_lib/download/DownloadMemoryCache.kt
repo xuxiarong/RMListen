@@ -125,11 +125,19 @@ object DownloadMemoryCache {
                 nextChapter.current_offset = 0L
                 downloadingChapterList.value?.forEach {
                     if (it.path_url == nextChapter.path_url) {
-                        iterator.remove()
+                        try {
+                            iterator.remove()
+                        }catch (e : Exception){
+                            e.printStackTrace()
+                        }
                     }
                 }
             } else {
-                iterator.remove()
+                try {
+                    iterator.remove()
+                }catch (e : Exception){
+                    e.printStackTrace()
+                }
             }
         }
         if (chapterList.size == 0) {

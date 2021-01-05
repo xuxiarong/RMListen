@@ -77,6 +77,7 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
             playApi.getChapterListWithId(
                     audioId = audioId,
                     chapterId = chapterId,
+                    page = 1,
                     page_size = page_size,
                     sort = sort
             )
@@ -91,7 +92,8 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
             chapterId: String,
             page: Int,
             page_size: Int,
-            sort: String
+            sort: String,
+            direction:String
     ): BaseResult<ChapterListModel> {
         return apiCall {
             playApi.getNextPage(
@@ -99,7 +101,9 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
                     chapterId = chapterId,
                     page = page,
                     page_size = page_size,
-                    sort = sort
+                    sort = sort,
+                    direction = direction
+
             )
         }
     }
@@ -110,9 +114,10 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
     suspend fun getPrePage(
             audioId: String,
             chapterId: String,
-            page_size: Int,
             page: Int,
-            sort: String
+            page_size: Int,
+            sort: String,
+            direction:String
     ): BaseResult<ChapterListModel> {
         return apiCall {
             playApi.getPrePage(
@@ -120,7 +125,8 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
                     chapterId = chapterId,
                     page = page,
                     page_size = page_size,
-                    sort = sort
+                    sort = sort,
+                    direction = direction
             )
         }
     }
