@@ -65,16 +65,16 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         }
 
         fun getUserPrivacy() : String{
-            return if(currentType == TYPE_TEST){
-                "http://192.168.13.235:8481/login/userPrivacy?channel=Andriod"
+            if(currentType == TYPE_TEST){
+                return "http://10.1.9.197:8481/login/userPrivacy?channel=Andriod"
             }else{
-                "http://tianlai.leimans.com/login/userPrivacy?channel=Andriod"
+                return "http://tianlai.leimans.com/login/userPrivacy?channel=Andriod"
             }
         }
 
         fun getUserAgreement() : String{
             return if(currentType == TYPE_TEST){
-                "http://192.168.13.235:8481/login/userAgreement?channel=Andriod"
+                "http://10.1.9.197:8481/login/userAgreement?channel=Andriod"
             }else{
                 "http://tianlai.leimans.com/login/userAgreement?channel=Andriod"
             }
