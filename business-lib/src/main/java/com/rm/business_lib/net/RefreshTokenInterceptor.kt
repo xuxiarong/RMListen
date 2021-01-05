@@ -102,6 +102,15 @@ class RefreshTokenInterceptor : Interceptor {
                     } else {
                         //token 刷新失败
                         GlobalScope.launch(Dispatchers.Main) {
+                            val activity = BaseApplication.baseApplication.getTopTaskActivity()
+                            if (isLogin.get()) {
+                                activity?.let { context ->
+                                    ToastUtil.showTopToast(
+                                        context,
+                                        "登录凭证已过期，请重新登陆"
+                                    )
+                                }
+                            }
                             loginOut()
                         }
                         val headers = request.headers.newBuilder()
@@ -114,15 +123,6 @@ class RefreshTokenInterceptor : Interceptor {
                     Log.i("=====>TokenInterceptor", "登陆失效，有可能是token失效  $responseString")
                     //被挤下线了/用户未登陆  需要放在主线程去更新，不然会出现异常
                     GlobalScope.launch(Dispatchers.Main) {
-                        val activity = BaseApplication.baseApplication.getTopTaskActivity()
-                        if (isLogin.get()) {
-                            activity?.let { context ->
-                                ToastUtil.showTopToast(
-                                    context,
-                                    "登录凭证已过期，请重新登陆"
-                                )
-                            }
-                        }
                         loginOut()
                     }
                     originResponse.newBuilder().code(originResponse.code)
