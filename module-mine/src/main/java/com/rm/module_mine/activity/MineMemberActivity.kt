@@ -2,6 +2,7 @@ package com.rm.module_mine.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Handler
@@ -36,6 +37,7 @@ class MineMemberActivity :
     ComponentShowPlayActivity<MineActivityMemberDetail1BindingImpl, MineMemberViewModel>() {
 
     private lateinit var mHandler: Handler
+    private var mBitmap: Bitmap? = null
 
     companion object {
         const val MEMBER_ID = "memberId"
@@ -128,15 +130,19 @@ class MineMemberActivity :
     }
 
     private fun blurImage(mRadius: Int) {
-        var bitmap = BitmapFactory.decodeResource(resources, R.mipmap.img_my_bac)
-        bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (mBitmap == null) {
+            val options = BitmapFactory.Options()
+            options.inSampleSize = 2
+            mBitmap = BitmapFactory.decodeResource(resources, R.mipmap.img_my_bac, options)
+        }
+        val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             try {
-                RSBlur.blur(this, bitmap, mRadius)
+                RSBlur.blur(this, mBitmap, mRadius)
             } catch (e: RSRuntimeException) {
-                FastBlur.blur(bitmap, mRadius, true)
+                FastBlur.blur(mBitmap, mRadius, true)
             }
         } else {
-            FastBlur.blur(bitmap, mRadius, true)
+            FastBlur.blur(mBitmap, mRadius, true)
         }
         img_mine_background.setImageBitmap(bitmap)
     }

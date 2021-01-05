@@ -108,6 +108,10 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                     if (TextUtils.equals(memberId, loginUser.get()?.id)) {
                         followAdapter.remove(bean)
                         memberFollowNum.set((memberFollowNum.get()!! - 1))
+
+                        if (followAdapter.data.size<=0){
+                            showDataEmpty("没有关注的人")
+                        }
                     } else {
                         changeState(bean, 0)
                     }
@@ -156,7 +160,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
             if (bean.list.isNotEmpty()) {
                 followAdapter.setList(bean.list)
             } else {
-                showDataEmpty()
+                showDataEmpty("没有关注的人")
             }
         } else {
             refreshStatusModel.finishLoadMore(true)

@@ -10,7 +10,7 @@
     <string name="base_empty_tips_btn">重试</string>
     <string name="base_fine_no_data">此页面空荡荡的...什么都没有</string>
     <string name="base_click_me_to_retry">点击重试</string>
-    <string name="base_search_no_result">你好像…搜了个寂寞，搜点其他试试?</string>
+    <string name="base_search_no_result">没有相关内容，搜点其他试试?</string>
     <string name="base_ok">确定</string>
     <string name="base_to_set">去设置</string>
     <string name="base_cancel">取消</string>

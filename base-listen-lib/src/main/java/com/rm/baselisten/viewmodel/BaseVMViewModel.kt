@@ -202,6 +202,10 @@ open class BaseVMViewModel : BaseViewModel() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_DATA_EMPTY))
     }
 
+    fun showDataEmpty(tips: String) {
+        baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_DATA_EMPTY, tips))
+    }
+
     fun showSearchDataEmpty() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_SEARCH_DATA_EMPTY))
     }
@@ -217,7 +221,7 @@ open class BaseVMViewModel : BaseViewModel() {
     }
 
     fun showTip(content: String, color: Int) {
-        showToast(content,color)
+        showToast(content, color)
 //        baseTipModel.postValue(BaseTipModel(content = content, contentColor = color))
     }
 

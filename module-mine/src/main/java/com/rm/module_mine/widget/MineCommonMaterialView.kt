@@ -2,7 +2,6 @@ package com.rm.module_mine.widget
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.text.TextUtils
 import android.util.AttributeSet

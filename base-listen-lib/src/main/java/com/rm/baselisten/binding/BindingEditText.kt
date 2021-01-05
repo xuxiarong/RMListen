@@ -145,7 +145,7 @@ fun EditText.bindCanInputEmoji(bindCanInputEmoji: Boolean? = true) {
     }
     val inputFilter: InputFilter = object : InputFilter {
         var pattern: Pattern =
-            Pattern.compile("[^a-zA-Z0-9\\u4E00-\\u9FA5_\\{\\}\\[\\]\\|,.\"!@#$%^&*()_+=-「」（）！？¥:;'。，；/【】、｜…<《》>]")
+            Pattern.compile("[^a-zA-Z0-9\\u4E00-\\u9FA5_\\{\\}\\[\\]\\|,：.\"!@#$%^&*()_+=-「」（）！？¥:;'。，；/【】、｜…<《》>]")
 
         override fun filter(
             charSequence: CharSequence,
@@ -200,4 +200,5 @@ fun EditText.bindCanInputEmojiAndSymbol(bindCanInputEmojiAndSymbol: Boolean? = t
     val filter = arrayOf(inputFilter)
     filters = filter
 }
+
 

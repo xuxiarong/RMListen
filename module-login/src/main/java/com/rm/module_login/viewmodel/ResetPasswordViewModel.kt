@@ -31,8 +31,6 @@ class ResetPasswordViewModel(private val repository: LoginRepository) : BaseVMVi
         showLoading()
         launchOnIO {
             repository.resetPasswordByVerifyCode(
-                countryCode,
-                phone,
                 verifyCode,
                 passwordInputViewModel.password.get()!!
             ).checkResult(

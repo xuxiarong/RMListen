@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -207,8 +208,10 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
             BaseNetStatus.BASE_SHOW_DATA_EMPTY -> {
                 if (!mBaseBinding.baseEmpty.isInflated) {
                     mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
-                    mBaseBinding.baseEmpty.viewStub?.inflate()
-
+                    mBaseBinding.baseEmpty.viewStub?.inflate()?.apply {
+                        val tv = findViewById<TextView>(R.id.tv_empty)
+                        statusModel.msgTips?.let { tv.text = it }
+                    }
                 }
                 if (mDataShowView != null) {
                     mDataShowView!!.visibility = View.GONE

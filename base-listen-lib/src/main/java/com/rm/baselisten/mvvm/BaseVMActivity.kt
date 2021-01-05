@@ -7,6 +7,7 @@ import android.os.IBinder
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -136,11 +137,16 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
 
         mViewModel.baseToastModel.observe(this, Observer {
             if (it.contentId > 0) {
-                ToastUtil.showTopToast(this@BaseVMActivity, getString(it.contentId), it.colorId,it.canAutoCancel)
+                ToastUtil.showTopToast(
+                    this@BaseVMActivity,
+                    getString(it.contentId),
+                    it.colorId,
+                    it.canAutoCancel
+                )
             } else {
                 if (it.content != null) {
                     ToastUtil.showTopToast(
-                        this@BaseVMActivity, it.content, it.colorId,it.canAutoCancel
+                        this@BaseVMActivity, it.content, it.colorId, it.canAutoCancel
                     )
                 } else {
                     ToastUtil.show(this@BaseVMActivity, it.content)
@@ -211,7 +217,10 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             BaseNetStatus.BASE_SHOW_DATA_EMPTY -> {
                 if (!mBaseBinding.baseEmpty.isInflated) {
                     mBaseBinding.baseEmpty.viewStub?.layoutResource = initEmptyLayout()
-                    mBaseBinding.baseEmpty.viewStub?.inflate()
+                    mBaseBinding.baseEmpty.viewStub?.inflate()?.apply {
+                        val tv = findViewById<TextView>(R.id.tv_empty)
+                        statusModel.msgTips?.let { tv.text = it }
+                    }
                 }
                 if (mDataShowView != null) {
                     mDataShowView!!.visibility = View.GONE
