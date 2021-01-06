@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.adapter.multi.CommonMultiVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
+import com.rm.baselisten.ktx.toIntSafe
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
@@ -311,7 +312,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         rvList.add(audio.info)
         if (audio.chapter.isNotEmpty()) {
             audio.chapter.sortWith(Comparator { o1, o2 ->
-                return@Comparator if (o1.sequence < o2.sequence) {
+                return@Comparator if (o1.sequence.toIntSafe() < o2.sequence.toIntSafe()) {
                     1
                 } else {
                     -1
