@@ -7,10 +7,7 @@ import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BuildConfig
 import com.rm.baselisten.net.bean.BaseResponse
 import com.rm.baselisten.net.util.GsonUtils
-import com.rm.baselisten.util.ToastUtil
-import com.rm.baselisten.util.encodeMD5
-import com.rm.baselisten.util.getStringMMKV
-import com.rm.baselisten.util.putMMKV
+import com.rm.baselisten.util.*
 import com.rm.business_lib.ACCESS_TOKEN
 import com.rm.business_lib.ACCESS_TOKEN_INVALID_TIMESTAMP
 import com.rm.business_lib.REFRESH_TOKEN
@@ -19,9 +16,7 @@ import com.rm.business_lib.helpter.parseToken
 import com.rm.business_lib.isLogin
 import com.rm.business_lib.net.api.BusinessApiService
 import com.rm.business_lib.utils.DeviceUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
@@ -103,13 +98,11 @@ class RefreshTokenInterceptor : Interceptor {
                         //token 刷新失败
                         GlobalScope.launch(Dispatchers.Main) {
                             val activity = BaseApplication.baseApplication.getTopTaskActivity()
-                            if (isLogin.get()) {
-                                activity?.let { context ->
-                                    ToastUtil.showTopToast(
-                                        context,
-                                        "登录凭证已过期，请重新登陆"
-                                    )
-                                }
+                            activity?.let { context ->
+                                ToastUtil.showTopToast(
+                                    context,
+                                    "登录凭证已过期，请重新登陆"
+                                )
                             }
                             loginOut()
                         }
@@ -118,6 +111,7 @@ class RefreshTokenInterceptor : Interceptor {
                         val newRequest = request.newBuilder().headers(headers.build()).build()
                         Log.i("=====>TokenInterceptor", "=====2222222  ${request.url}")
                         chain.proceed(newRequest)
+
                     }
                 } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN || code == CODE_REFRESH_TOKEN_FAILED) {
                     Log.i("=====>TokenInterceptor", "登陆失效，有可能是token失效  $responseString")
