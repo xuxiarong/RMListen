@@ -137,7 +137,6 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                         }
                     },
                     onError = { msg, _ ->
-                        showTip("$msg")
                     })
         }
     }

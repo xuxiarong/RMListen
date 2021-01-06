@@ -84,7 +84,7 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                             mine_feedback_ed_contact.requestFocus()
                             mine_feedback_ed_contact.isFocusableInTouchMode = true
                         }
-                    }, 200)
+                    }, 100)
                 }
 
             } else {

@@ -385,7 +385,13 @@ class XToast @JvmOverloads constructor(context: Context) {
         try {
             // 如果这个 View 对象被重复添加到 WindowManager 则会抛出异常
             // java.lang.IllegalStateException: View android.widget.TextView{3d2cee7 V.ED..... ......ID 0,0-312,153} has already been added to the window manager.
-            mWindowManager!!.addView(mRootView, mWindowParams)
+            mRootView?.let {
+                if (it.isAttachedToWindow) {
+                    mWindowManager?.removeView(it)
+                }
+                mWindowManager?.addView(it, mWindowParams)
+            }
+
             // 当前已经显示
             mShow = true
             // 如果当前限定了显示时长
@@ -430,7 +436,7 @@ class XToast @JvmOverloads constructor(context: Context) {
 
                 // 如果当前 WindowManager 没有附加这个 View 则会抛出异常
                 // java.lang.IllegalArgumentException: View=android.widget.TextView{3d2cee7 V.ED..... ........ 0,0-312,153} not attached to window manager
-                mWindowManager!!.removeViewImmediate(mRootView)
+                mWindowManager?.removeViewImmediate(mRootView)
 
                 // 回调监听
                 if (mListener != null) {
