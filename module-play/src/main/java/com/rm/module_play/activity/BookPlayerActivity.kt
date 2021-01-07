@@ -263,10 +263,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun initData() {
         //书籍信息未传入，获取书籍详情信息,有则直接使用
         if (TextUtils.isEmpty(playAudioModel.audio_cover_url)) {
-            mViewModel.getAudioInfo(playAudioId)
+            mViewModel.getAudioInfo(this,playAudioId)
         } else {
             PlayGlobalData.playAudioModel.set(playAudioModel)
-            mViewModel.getAudioInfo(playAudioId)
+            mViewModel.getAudioInfo(this,playAudioId)
         }
         //首次进入获取一次广告数据
         mViewModel.getAudioFloorAd()

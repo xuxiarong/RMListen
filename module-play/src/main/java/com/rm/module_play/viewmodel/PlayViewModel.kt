@@ -19,6 +19,7 @@ import com.rm.business_lib.*
 import com.rm.business_lib.PlayGlobalData.chapterRefreshModel
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.baselisten.dialog.TipsFragmentDialog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.PlayGlobalData.playChapterTotal
 import com.rm.business_lib.bean.AudioRecommend
 import com.rm.business_lib.bean.BusinessAdModel
@@ -384,7 +385,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 获取书籍详情信息
      */
-    fun getAudioInfo(audioID: String) {
+    fun getAudioInfo(context: Context,audioID: String) {
         launchOnIO {
             repository.getDetailInfo(audioID).checkResult(
                     onSuccess = {
@@ -395,7 +396,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         getAudioFloorAd()
                     },
                     onError = { it, _ ->
-                        it?.let { it1 -> ExoplayerLogger.exoLog(it1) }
+                        it?.let {
+                            ToastUtil.showTopToast(context,it,R.color.business_color_ff5e5e)
+                        }
                     }
             )
         }

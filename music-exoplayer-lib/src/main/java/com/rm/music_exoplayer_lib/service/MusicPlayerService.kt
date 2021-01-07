@@ -74,8 +74,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     //显示播放状态而不重新播放
     var showState = false
-    var isPlayAd = false
-
 
     private val notificationManger by lazy {
         getCurrentPlayerMusic()?.let {
@@ -269,7 +267,6 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private fun startPlayAd(adPath: String) {
         mUpdateProgressHandler.removeMessages(0)
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
-            isPlayAd = true
             val source = ProgressiveMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(Uri.parse(adPath))
             mExoPlayer.removeListener(mEventListener)

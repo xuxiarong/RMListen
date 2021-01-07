@@ -6,10 +6,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.ktx.*
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.ToastUtil
-import com.rm.baselisten.util.getBooleanMMKV
-import com.rm.baselisten.util.putMMKV
+import com.rm.baselisten.util.*
 import com.rm.business_lib.R
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.DaoUtil
@@ -116,6 +113,10 @@ object DownloadMemoryCache {
         if (chapterList.isEmpty()) {
             return
         }
+        if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+            ToastUtil.showTopToast(context,BaseApplication.CONTEXT.getString(R.string.base_empty_tips_netword))
+        }
+
         val iterator = chapterList.iterator()
         while (iterator.hasNext()) {
             val nextChapter = iterator.next()
@@ -162,7 +163,6 @@ object DownloadMemoryCache {
 
         val downloadingChapter = downloadingChapter.get()
         var isClickDownload = false
-
         downloadingChapterList.value?.let {
             //改变下载队列中章节的状态为暂停
             it.forEach { listChild ->

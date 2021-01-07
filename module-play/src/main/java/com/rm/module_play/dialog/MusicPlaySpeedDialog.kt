@@ -73,7 +73,9 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
         TimeSAdapter(timeList).apply {
             setOnItemClickListener { _, _, position ->
                 timeSet[data[position]]?.let {
-                    musicPlayerManger.setPlayerMultiple(it)
+                    if(!PlayGlobalData.playAdIsPlaying.get()){
+                        musicPlayerManger.setPlayerMultiple(it)
+                    }
                     SAVA_SPEED.putMMKV(it)
                     PlayGlobalData.playSpeed.set(it)
                     dismissAllowingStateLoss()
