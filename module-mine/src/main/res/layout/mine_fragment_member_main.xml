@@ -45,6 +45,7 @@
                     bindPlayCountSuffix="@{@string/mine_suffix}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_2"
                     android:textColor="@color/business_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_16sp"
                     tools:text="(23)" />
@@ -94,6 +95,7 @@
                     bindPlayCountSuffix="@{@string/mine_suffix}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_2"
                     android:textColor="@color/business_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_16sp"
                     tools:text="(23)" />
@@ -143,6 +145,7 @@
                     bindPlayCountSuffix="@{@string/mine_suffix}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_2"
                     android:textColor="@color/business_color_b1b1b1"
                     android:textSize="@dimen/business_text_size_16sp"
                     tools:text="(23)" />

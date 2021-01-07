@@ -10,21 +10,31 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:wheelview1_label="年" />
+        app:wheelView_label="年" />
+
+    <View
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="match_parent"
+        android:background="@drawable/mine_time_picker_line" />
 
     <com.rm.module_mine.widget.picker.WheelView
         android:id="@+id/mine_time_picker_month"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:wheelview1_label="月" />
+        app:wheelView_label="月" />
+
+    <View
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="match_parent"
+        android:background="@drawable/mine_time_picker_line" />
 
     <com.rm.module_mine.widget.picker.WheelView
         android:id="@+id/mine_time_picker_day"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:wheelview1_label="日" />
+        app:wheelView_label="日" />
 
 </merge>
 

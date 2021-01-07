@@ -28,9 +28,9 @@
             android:id="@+id/mine_member_detail_blur"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_160"
-            android:background="#CC000000"
-            android:scaleType="fitXY"
             android:alpha="0"
+            android:background="#80000000"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,9 +70,8 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/img_mine_member_icon"
-                                bindUrl="@{viewModel.detailInfoData.avatar_url}"
-                                defaultIcon="@{@drawable/business_ic_default_user}"
+                                android:id="@+id/mine_member_icon_bg"
+                                defaultIcon="@{@drawable/business_shape_circle_white_bg}"
                                 isCircle="@{true}"
                                 android:layout_width="@dimen/dp_84"
                                 android:layout_height="@dimen/dp_84"
@@ -81,6 +80,20 @@
                                 android:onClick="@{()->viewModel.clickIconFun(context,viewModel.detailInfoData.avatar_url)}"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/view"
+                                tools:src="@drawable/business_shape_circle_white_bg" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/mine_member_icon"
+                                bindUrl="@{viewModel.detailInfoData.avatar_url}"
+                                defaultIcon="@{@drawable/business_ic_default_user}"
+                                isCircle="@{true}"
+                                android:layout_width="@dimen/dp_80"
+                                android:layout_height="@dimen/dp_80"
+                                android:onClick="@{()->viewModel.clickIconFun(context,viewModel.detailInfoData.avatar_url)}"
+                                app:layout_constraintBottom_toBottomOf="@id/mine_member_icon_bg"
+                                app:layout_constraintEnd_toEndOf="@id/mine_member_icon_bg"
+                                app:layout_constraintStart_toStartOf="@id/mine_member_icon_bg"
+                                app:layout_constraintTop_toTopOf="@id/mine_member_icon_bg"
                                 tools:src="@drawable/business_ic_default_user" />
 
 
@@ -97,8 +110,8 @@
                                 android:textColor="@color/business_text_color_333333"
                                 android:textSize="@dimen/business_text_size_18sp"
                                 android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="@id/img_mine_member_icon"
-                                app:layout_constraintStart_toEndOf="@id/img_mine_member_icon"
+                                app:layout_constraintBottom_toBottomOf="@id/mine_member_icon"
+                                app:layout_constraintStart_toEndOf="@id/mine_member_icon"
                                 tools:text="iphone12发布会我不想关注" />
 
 
@@ -122,16 +135,16 @@
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/mine_member_detail_signature"
+                                bindText="@{viewModel.detailInfoData.signature}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/dp_16"
                                 android:layout_marginTop="@dimen/dp_4"
                                 android:layout_marginEnd="@dimen/dp_16"
-                                android:text="@{viewModel.detailInfoData.signature}"
                                 android:textColor="@color/business_text_color_666666"
                                 android:textSize="@dimen/business_text_size_12sp"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/img_mine_member_icon"
+                                app:layout_constraintTop_toBottomOf="@id/mine_member_icon"
                                 tools:text="iphone12发布会我不想关注，我更关注的是iphone12Pro带来视觉，触碰的手感" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -143,7 +156,7 @@
                                 android:drawableStart="@drawable/mine_icon_certification_eh"
                                 android:drawablePadding="@dimen/dp_2"
                                 android:text="@string/mine_certified_anchor"
-                                app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
+                                app:layout_constraintStart_toStartOf="@id/mine_member_icon"
                                 app:layout_constraintTop_toBottomOf="@id/mine_member_detail_signature" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -155,7 +168,7 @@
                                 android:text="@string/mine_attention_num"
                                 android:textColor="@color/business_text_color_b1b1b1"
                                 android:textSize="@dimen/business_text_size_12sp"
-                                app:layout_constraintStart_toStartOf="@id/img_mine_member_icon"
+                                app:layout_constraintStart_toStartOf="@id/mine_member_icon"
                                 app:layout_constraintTop_toTopOf="@id/mine_member_attention" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -246,7 +259,7 @@
                             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
                             app:bendTabTextSelectIsBold="true"
                             app:bendTabTextSize="@dimen/business_text_size_16sp"
-                            app:bendTabUnSelectedTextColor="@color/business_text_color_b1b1b1"
+                            app:bendTabUnSelectedTextColor="@color/business_text_color_333333"
                             app:layout_constraintTop_toBottomOf="@id/mine_member_detail_info_layout" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -278,9 +291,9 @@
             android:id="@+id/mine_member_detail_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:singleLine="true"
-            android:gravity="center_vertical"
             android:layout_marginEnd="@dimen/dp_4"
+            android:gravity="center_vertical"
+            android:singleLine="true"
             android:text="@{viewModel.detailInfoData.nickname}"
             android:textColor="@color/businessWhite"
             android:textSize="@dimen/business_text_size_18sp"

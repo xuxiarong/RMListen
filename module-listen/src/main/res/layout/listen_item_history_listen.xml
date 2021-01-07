@@ -85,7 +85,7 @@
                 android:layout_height="@dimen/dp_14"
                 android:layout_marginStart="@dimen/dp_12"
                 android:layout_marginBottom="2dp"
-                android:src="@drawable/listen_icon_recent_time"
+                android:src="@drawable/business_icon_time_eb"
                 app:layout_constraintBottom_toBottomOf="@id/listenItemRecentIv"
                 app:layout_constraintLeft_toRightOf="@id/listenItemRecentIv"/>
 

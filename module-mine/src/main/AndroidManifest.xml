@@ -26,7 +26,9 @@
         <activity
             android:name=".activity.MineSettingPlayActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.MineSettingDownloadActivity" />
+        <activity
+            android:name=".activity.MineSettingDownloadActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MineSettingAccountSecurityActivity"
             android:screenOrientation="portrait" />

@@ -1,12 +1,14 @@
 package com.rm.baselisten.mvvm
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.contains
 import androidx.fragment.app.FragmentActivity
 import com.gyf.barlibrary.ImmersionBar
@@ -16,6 +18,7 @@ import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.R
 import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.view.BaseTipView
 
@@ -125,7 +128,7 @@ abstract class BaseActivity : FragmentActivity() {
         actionGranted: () -> Unit,
         actionPermanentlyDenied: () -> Unit
     ) {
-        if (!XXPermissions.isGrantedPermission(this, permission)) {
+        if (!hasPermission(permission)) {
             mPermissions = mutableListOf(permission)
             requestPermissionGranted = actionDenied
             requestPermissionDenied = actionGranted
@@ -159,10 +162,10 @@ abstract class BaseActivity : FragmentActivity() {
         actionGranted: () -> Unit,
         actionPermanentlyDenied: () -> Unit
     ) {
-        if (!XXPermissions.isGrantedPermission(this, permission)) {
+        if (!hasPermissions(permission)) {
             mPermissions = permission
-            requestPermissionGranted = actionDenied
-            requestPermissionDenied = actionGranted
+            requestPermissionGranted = actionGranted
+            requestPermissionDenied = actionDenied
             requestPermanentlyDenied = actionPermanentlyDenied
             XXPermissions.with(this).apply {
                 permission(permission)
@@ -212,12 +215,32 @@ abstract class BaseActivity : FragmentActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         //从设置页面返回，判断权限是否申请。
         if (mPermissions != null) {
-            if (XXPermissions.isGrantedPermission(this, mPermissions)) {
+            if (hasPermissions(mPermissions!!)) {
+                mPermissions = null
                 requestPermissionGranted()
                 permissionDialog?.dismiss()
             } else {
                 requestPermanentlyDenied()
             }
         }
+    }
+
+    private fun hasPermissions(permissions: MutableList<String>): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permissions.forEach {
+                if (hasPermission(it)) {
+                    return false
+                }
+            }
+            return true
+        } else {
+            return true
+        }
+    }
+
+    private fun hasPermission(permission: String): Boolean {
+        val b = ContextCompat.checkSelfPermission(this, permission) ==
+                PackageManager.PERMISSION_DENIED
+        return b
     }
 }

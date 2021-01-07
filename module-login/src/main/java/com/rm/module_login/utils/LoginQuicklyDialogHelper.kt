@@ -83,6 +83,7 @@ class LoginQuicklyDialogHelper constructor(
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
             dialogHasBackground = true
+            themeResId=R.style.BottomToTopAnim
 //            dialogHeight = BaseApplication.CONTEXT.dip(752)
             initDialog = {
                 // 设置checkbox选择协议相关文本

@@ -87,18 +87,28 @@
             app:layout_constraintTop_toBottomOf="@+id/play_item_comment_advertise_title"
             tools:text="08/20" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/play_item_comment_lottie"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:gravity="center"
+            android:onClick="@{()->viewModel.playLikeBook(context,item)}"
+            android:src="@{item.data.is_liked?@drawable/business_icon_love:@drawable/icon_detail_comment_like}"
+            app:layout_constraintBottom_toBottomOf="@+id/play_item_comment_advertise_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/play_item_comment_advertise_icon" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/play_item_comment_advertise_del"
             bindPlayCount="@{item.data.likes}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableEnd="@{item.data.is_liked?@drawable/business_icon_love:@drawable/music_play_ic_icon_like_dc}"
             android:gravity="center"
             android:onClick="@{()->viewModel.playLikeBook(context,item)}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintBottom_toBottomOf="@+id/play_item_comment_advertise_icon"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/play_item_comment_lottie"
             app:layout_constraintTop_toTopOf="@+id/play_item_comment_advertise_icon"
             tools:text="100000000" />
 

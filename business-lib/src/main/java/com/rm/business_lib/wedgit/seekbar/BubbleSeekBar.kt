@@ -139,7 +139,7 @@ class BubbleSeekBar @JvmOverloads constructor(
                 mProgress =
                     if (mTrackLength != 0) mMin + (mMax - mMin) * mThumbOffset / mTrackLength else mMin
                 mThumbText =
-                    "${TimeUtils.getPlayDuration(mProgress.toLong())}/${TimeUtils.getPlayDuration(getMax().toLong())}"
+                    "${TimeUtils.getPlayDuration(mProgress.toLong())} / ${TimeUtils.getPlayDuration(getMax().toLong())}"
                 mOnProgressChangedListener?.onProgressChanged(this, getProgress(), mThumbText,true)
                 postInvalidate()
 

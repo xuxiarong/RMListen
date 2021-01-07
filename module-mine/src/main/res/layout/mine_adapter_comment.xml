@@ -78,6 +78,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
+            android:paddingStart="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_8"
             android:background="@drawable/business_shape_f7f7f7_8dp"
             android:onClick="@{()->commentViewModel.commentBookItemClick(context,commentItem.audio.id)}"
             android:orientation="horizontal"
@@ -92,7 +94,6 @@
                 corner="@{4f}"
                 android:layout_width="@dimen/dp_36"
                 android:layout_height="@dimen/dp_36"
-                android:layout_marginStart="@dimen/dp_8"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginBottom="@dimen/dp_8"
                 tools:src="#3f00" />

@@ -101,6 +101,7 @@
                     <CheckBox
                         android:layout_width="@dimen/dp_22"
                         android:layout_height="@dimen/dp_22"
+                        android:background="@android:color/transparent"
                         android:button="@drawable/login_selector_check_box_button"
                         android:checked="@={viewModel.isCheck}" />
 
@@ -177,7 +178,7 @@
                     app:vcv_et_inputType="number"
                     app:vcv_et_number="6"
                     app:vcv_et_text_color="@color/business_text_color_333333"
-                    app:vcv_et_text_size="@dimen/business_text_size_8sp"
+                    app:vcv_et_text_size="@dimen/business_text_size_24sp"
                     app:vcv_et_width="@dimen/dp_46" />
 
                 <androidx.appcompat.widget.AppCompatTextView

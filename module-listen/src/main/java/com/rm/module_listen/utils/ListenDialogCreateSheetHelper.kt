@@ -24,7 +24,7 @@ class ListenDialogCreateSheetHelper(
      * viewModel对象
      */
     private val mViewModel by lazy {
-        ListenDialogCreateSheetViewModel(mActivity, successBlock,viewModel)
+        ListenDialogCreateSheetViewModel(mActivity, successBlock, viewModel)
     }
 
 

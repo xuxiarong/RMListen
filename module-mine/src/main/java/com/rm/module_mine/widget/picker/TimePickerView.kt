@@ -98,18 +98,22 @@ class TimePickerView @JvmOverloads constructor(
         ) // 设置"年"的显示数据
         yearView.currentItem = year - startYear // 初始化时显示的数据
         // 月
-        if (year == startYear) {
-            //起始日期的月份控制
-            monthView.adapter = NumericWheelAdapter(startMonth, 12)
-            monthView.currentItem = month + 1 - startMonth
-        } else if (year == endYear) {
-            //终止日期的月份控制
-//            monthView.adapter = NumericWheelAdapter(1, endMonth)
-            monthView.adapter = NumericWheelAdapter(1, month + 1)
-            monthView.currentItem = month
-        } else {
-            monthView.adapter = NumericWheelAdapter(1, 12)
-            monthView.currentItem = month
+        when (year) {
+            startYear -> {
+                //起始日期的月份控制
+                monthView.adapter = NumericWheelAdapter(startMonth, 12)
+                monthView.currentItem = month + 1 - startMonth
+            }
+            endYear -> {
+                //终止日期的月份控制
+    //            monthView.adapter = NumericWheelAdapter(1, endMonth)
+                monthView.adapter = NumericWheelAdapter(1, month + 1)
+                monthView.currentItem = month
+            }
+            else -> {
+                monthView.adapter = NumericWheelAdapter(1, 12)
+                monthView.currentItem = month
+            }
         }
         // 日
         val leapYear = year % 4 == 0 && year % 100 != 0 || year % 400 == 0

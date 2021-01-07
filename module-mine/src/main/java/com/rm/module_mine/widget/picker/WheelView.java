@@ -16,6 +16,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
 import com.rm.module_mine.R;
 
 import java.util.concurrent.Executors;
@@ -56,12 +58,14 @@ public class WheelView extends View {
     private Paint paintOuterText;
     private Paint paintCenterText;
     private Paint paintIndicator;
+    private Paint paintBg;
     private Paint paintLabel;
 
     private WheelAdapter adapter;
 
     private String label;//附加单位
-    private int textSize;//选项的文字大小
+    private int textCenterSize;//选项的文字大小
+    private int textOutSize;//选项的文字大小
     private int labelSize;//选项的文字大小
     private int maxTextWidth;
     private int maxTextHeight;
@@ -116,6 +120,7 @@ public class WheelView extends View {
     private int mGravity = Gravity.CENTER;
     private int drawCenterContentStart = 0;//中间选中文字开始绘制位置
     private int drawOutContentStart = 0;//非中间文字开始绘制位置
+    private float labelMarginEnd = 0;//label marginEnd
     private static final float SCALE_CONTENT = 0.8F;//非中间文字则用此控制高度，压扁形成3d错觉
     private float CENTER_CONTENT_OFFSET;//偏移量
 
@@ -128,7 +133,8 @@ public class WheelView extends View {
     public WheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        textSize = getResources().getDimensionPixelSize(R.dimen.business_text_size_20sp);//默认大小
+        textCenterSize = getResources().getDimensionPixelSize(R.dimen.business_text_size_22sp);//默认大小
+        textOutSize = getResources().getDimensionPixelSize(R.dimen.business_text_size_20sp);//默认大小
         labelSize = getResources().getDimensionPixelSize(R.dimen.business_text_size_14sp);//默认大小
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -143,18 +149,19 @@ public class WheelView extends View {
         } else if (density >= 3) {
             CENTER_CONTENT_OFFSET = density * 2.5F;
         }
-
+        labelMarginEnd = context.getResources().getDimension(R.dimen.dp_12);
         if (attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WheelView1, 0, 0);
-            mGravity = a.getInt(R.styleable.WheelView1_wheelview1_gravity, Gravity.CENTER);
-            textColorOut = a.getColor(R.styleable.WheelView1_wheelview1_textColorOut, 0xFFa8a8a8);
-            textColorCenter = a.getColor(R.styleable.WheelView1_wheelview1_textColorCenter, 0xFF2a2a2a);
-            dividerColor = a.getColor(R.styleable.WheelView1_wheelview1_dividerColor, 0xFFd5d5d5);
-            dividerWidth = a.getDimensionPixelSize(R.styleable.WheelView1_wheelview1_dividerWidth, 2);
-            textSize = a.getDimensionPixelOffset(R.styleable.WheelView1_wheelview1_textSize, textSize);
-            lineSpacingMultiplier = a.getFloat(R.styleable.WheelView1_wheelview1_lineSpacingMultiplier, lineSpacingMultiplier);
-            label = a.getString(R.styleable.WheelView1_wheelview1_label);
-            isCenterLabel = a.getBoolean(R.styleable.WheelView1_wheelview1_isShowLabel, true);
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WheelView, 0, 0);
+            mGravity = a.getInt(R.styleable.WheelView_wheelView_gravity, Gravity.CENTER);
+            textColorOut = a.getColor(R.styleable.WheelView_wheelView_textColorOut, 0xFFa8a8a8);
+            textColorCenter = a.getColor(R.styleable.WheelView_wheelView_textColorCenter, 0xFF2a2a2a);
+            dividerColor = a.getColor(R.styleable.WheelView_wheelView_dividerColor, 0xFFd5d5d5);
+            dividerWidth = a.getDimensionPixelSize(R.styleable.WheelView_wheelView_dividerWidth, 2);
+            textCenterSize = a.getDimensionPixelOffset(R.styleable.WheelView_wheelView_textCenterSize, textCenterSize);
+            textOutSize = a.getDimensionPixelOffset(R.styleable.WheelView_wheelView_textOutSize, textOutSize);
+            lineSpacingMultiplier = a.getFloat(R.styleable.WheelView_wheelView_lineSpacingMultiplier, lineSpacingMultiplier);
+            label = a.getString(R.styleable.WheelView_wheelView_label);
+            isCenterLabel = a.getBoolean(R.styleable.WheelView_wheelView_isShowLabel, true);
             a.recycle();//回收内存
         }
 
@@ -190,14 +197,14 @@ public class WheelView extends View {
         paintOuterText.setColor(textColorOut);
         paintOuterText.setAntiAlias(true);
         paintOuterText.setTypeface(typeface);
-        paintOuterText.setTextSize(textSize);
+        paintOuterText.setTextSize(textOutSize);
 
         paintCenterText = new Paint();
         paintCenterText.setColor(textColorCenter);
         paintCenterText.setAntiAlias(true);
         paintCenterText.setTextScaleX(1.1F);
         paintCenterText.setTypeface(typeface);
-        paintCenterText.setTextSize(textSize);
+        paintCenterText.setTextSize(textCenterSize);
 
         paintLabel = new Paint();
         paintLabel.setColor(textColorCenter);
@@ -209,6 +216,11 @@ public class WheelView extends View {
         paintIndicator = new Paint();
         paintIndicator.setColor(dividerColor);
         paintIndicator.setAntiAlias(true);
+
+        paintBg = new Paint();
+        paintBg.setColor(dividerColor);
+        paintBg.setAntiAlias(true);
+        paintBg.setColor(ContextCompat.getColor(context, R.color.business_color_f8f8f8));
 
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
@@ -231,6 +243,7 @@ public class WheelView extends View {
         //计算两条横线 和 选中项画笔的基线Y位置
         firstLineY = (measuredHeight - itemHeight) / 2.0F;
         secondLineY = (measuredHeight + itemHeight) / 2.0F;
+
         centerY = secondLineY - (itemHeight - maxTextHeight) / 2.0f - CENTER_CONTENT_OFFSET;
 
         //初始化显示的item的position
@@ -260,7 +273,7 @@ public class WheelView extends View {
         }
         paintCenterText.getTextBounds("\u661F\u671F", 0, 2, rect); // 星期的字符编码（以它为标准高度）
         maxTextHeight = rect.height() + 2;
-        itemHeight = lineSpacingMultiplier * maxTextHeight;
+        itemHeight = lineSpacingMultiplier * maxTextHeight + getResources().getDimension(R.dimen.dp_14);
     }
 
     public void smoothScroll(ACTION action) {//平滑滚动的实现
@@ -304,11 +317,11 @@ public class WheelView extends View {
         paintCenterText.setTypeface(typeface);
     }
 
-    public final void setTextSize(float size) {
+    public final void setTextCenterSize(float size) {
         if (size > 0.0F) {
-            textSize = (int) (context.getResources().getDisplayMetrics().density * size);
-            paintOuterText.setTextSize(textSize);
-            paintCenterText.setTextSize(textSize);
+            textCenterSize = (int) (context.getResources().getDisplayMetrics().density * size);
+            paintOuterText.setTextSize(textCenterSize);
+            paintCenterText.setTextSize(textCenterSize);
         }
     }
 
@@ -442,16 +455,19 @@ public class WheelView extends View {
             float radius = Math.max((endX - startX), itemHeight) / 1.8f;
             canvas.drawCircle(measuredWidth / 2f, measuredHeight / 2f, radius, paintIndicator);
         } else {
-            canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, paintIndicator);
-            canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, paintIndicator);
+//            canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, paintIndicator);
+//            canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, paintIndicator);
+
+            canvas.drawRect(0.0F, firstLineY, measuredWidth, secondLineY, paintBg);
+
         }
 
         //只显示选中项Label文字的模式，并且Label文字不为空，则进行绘制
         if (!TextUtils.isEmpty(label) && isCenterLabel) {
             //绘制文字，靠右并留出空隙
-            int drawRightContentStart = measuredWidth - getTextWidth(paintLabel, label);
-           Log.i("------------->",""+drawRightContentStart+"  ::  "+CENTER_CONTENT_OFFSET);
-            canvas.drawText(label, drawRightContentStart - 60, centerY, paintLabel);
+            int drawRightContentStart = measuredWidth - getTextWidth(paintLabel, label) ;
+            Log.i("------------->", "" + drawRightContentStart + "  ::  " + CENTER_CONTENT_OFFSET);
+            canvas.drawText(label, drawRightContentStart - labelMarginEnd, centerY - 6, paintLabel);
         }
 
         // 设置数组中每个元素的值
@@ -548,7 +564,7 @@ public class WheelView extends View {
                     canvas.restore();
                 }
                 canvas.restore();
-                paintCenterText.setTextSize(textSize);
+                paintCenterText.setTextSize(textCenterSize);
             }
             counter++;
         }
@@ -580,7 +596,7 @@ public class WheelView extends View {
         Rect rect = new Rect();
         paintCenterText.getTextBounds(contentText, 0, contentText.length(), rect);
         int width = rect.width();
-        int size = textSize;
+        int size = textCenterSize;
         while (width > measuredWidth) {
             size--;
             //设置2条横线中间的文字大小
@@ -632,11 +648,12 @@ public class WheelView extends View {
         paintCenterText.getTextBounds(content, 0, content.length(), rect);
         switch (mGravity) {
             case Gravity.CENTER://显示内容居中
-                if (isOptions || label == null || label.equals("") || !isCenterLabel) {
-                    drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
-                } else {//只显示中间label时，时间选择器内容偏左一点，留出空间绘制单位标签
-                    drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.25);
-                }
+//                if (isOptions || label == null || label.equals("") || !isCenterLabel) {
+//                    drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
+//                } else {//只显示中间label时，时间选择器内容偏左一点，留出空间绘制单位标签
+//                    drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.25);
+//                }
+                drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
                 break;
             case Gravity.LEFT:
                 drawCenterContentStart = 0;
@@ -652,11 +669,12 @@ public class WheelView extends View {
         paintOuterText.getTextBounds(content, 0, content.length(), rect);
         switch (mGravity) {
             case Gravity.CENTER:
-                if (isOptions || label == null || label.equals("") || !isCenterLabel) {
-                    drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
-                } else {//只显示中间label时，时间选择器内容偏左一点，留出空间绘制单位标签
-                    drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.25);
-                }
+//                if (isOptions || label == null || label.equals("") || !isCenterLabel) {
+//                    drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
+//                } else {//只显示中间label时，时间选择器内容偏左一点，留出空间绘制单位标签
+//                    drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.25);
+//                }
+                drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
                 break;
             case Gravity.LEFT:
                 drawOutContentStart = 0;

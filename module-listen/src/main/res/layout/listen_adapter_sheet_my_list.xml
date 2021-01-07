@@ -27,11 +27,19 @@
             corner="@{4f}"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
-            android:foreground="@{item.created_from==3?@color/business_color_0f000000:@color/business_transparent}"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
+            android:scaleType="fitXY"
+            android:src="@drawable/listen_love_foreground"
+            isVisible="@{item.created_from==3}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listen_sheet_adapter_love"
@@ -79,8 +87,8 @@
             style="@style/BusinessTextStyleFirst_2"
             bindText="@{item.sheet_name}"
             android:layout_width="0dp"
-            android:singleLine="true"
             android:layout_marginStart="@dimen/dp_12"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/listen_sheet_adapter_view"
             app:layout_constraintTop_toTopOf="@id/listen_sheet_adapter_view"

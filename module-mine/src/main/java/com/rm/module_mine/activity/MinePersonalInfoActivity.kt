@@ -2,7 +2,6 @@ package com.rm.module_mine.activity
 
 import android.content.Intent
 import android.os.Build
-import android.widget.Toast
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
@@ -101,7 +100,20 @@ class MinePersonalInfoActivity :
                         }
                     }
                 } else {
-                    Toast.makeText(this, "拍照被取消", Toast.LENGTH_LONG).show()
+                    //todo 拍照取消后图库内会存在无法打开的文件，这里进行删除。但是无法删除成功
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        mViewModel.photoHelp?.getCameraUri()?.let {
+                            val path = FileUtils.getPath(this, it)
+                            path?.let { filePath ->
+                                FileUtils.delete(filePath)
+                            }
+                        }
+                    } else {
+                        val cameraImagePath = mViewModel.photoHelp?.getCameraImagePath()
+                        cameraImagePath?.let {
+                            FileUtils.delete(it)
+                        }
+                    }
                 }
             }
             BusinessCameraAndAlbum.ALBUM_REQUEST_CODE -> {

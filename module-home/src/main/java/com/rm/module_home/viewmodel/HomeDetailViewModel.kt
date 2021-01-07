@@ -179,6 +179,12 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     var commentEmptyVisible = ObservableField<Boolean>(false)
 
+    /**
+     * 评论点赞是否播放动画
+     */
+    var commentLottieIsPlay = ObservableField<Boolean>(false)
+    var commentLottieEndBlock: () -> Unit = { commentLottieIsPlay.set(false) }
+
     val commentContentRvId = R.id.home_detail_comment_recycle_view
 
     val chapterContentRvId = R.id.home_detail_chapter_rv
@@ -527,8 +533,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             chapterRefreshStatus.finishLoadMore(true)
             bean.list?.let { chapterList.addAll(getChapterStatus(it)) }
         }
-
-        chapterRefreshStatus.setNoHasMore(page == maxChapterPage)
+        chapterRefreshStatus.setNoHasMore(nextChapterPage == maxChapterPage)
         chapterRefreshStatus.setCanRefresh(upChapterPage != 1)
         chapterAdapter.setList(chapterList)
         oldChapterPage = page
@@ -607,11 +612,14 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.homeLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
-                    bean.is_liked = true
-                    bean.likes = bean.likes + 1
-                    //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
-                    val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
-                    homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    if (indexOf != -1) {
+                        commentLottieIsPlay.set(true)
+                        bean.is_liked = true
+                        bean.likes = bean.likes + 1
+                        //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
+                        val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
+                        homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    }
                 },
                 onError = { it, _ ->
                     DLog.i("----->", "评论点赞:$it")
@@ -629,10 +637,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.homeUnLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
-                    bean.is_liked = false
-                    bean.likes = bean.likes - 1
-                    val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
-                    homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    if (indexOf != -1) {
+                        commentLottieIsPlay.set(true)
+                        bean.is_liked = false
+                        bean.likes = bean.likes - 1
+                        val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
+                        homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                    }
                 },
                 onError = { it, _ ->
                     DLog.i("----->", "评论点赞:$it")

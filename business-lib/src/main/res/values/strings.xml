@@ -60,4 +60,6 @@
     <string name="business_listen_finish">已听完</string>
     <string name="business_listen_progress">已听%d</string>
     <string name="business_comment_empty">这本书还没有人评论，赶紧抢下沙发吧！</string>
+    <string name="business_cancel_like">business_like.json</string>
+    <string name="business_like">business_cancel_like.json</string>
 </resources>

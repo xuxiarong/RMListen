@@ -7,15 +7,13 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Handler
 import android.renderscript.RSRuntimeException
-import android.util.TypedValue
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.Observable
 import com.google.android.material.appbar.AppBarLayout
-import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.thridlib.glide.FastBlur
 import com.rm.baselisten.thridlib.glide.RSBlur
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
 import com.rm.baselisten.utilExt.dip
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -37,7 +35,6 @@ class MineMemberActivity :
     ComponentShowPlayActivity<MineActivityMemberDetail1BindingImpl, MineMemberViewModel>() {
 
     private lateinit var mHandler: Handler
-    private var mBitmap: Bitmap? = null
 
     companion object {
         const val MEMBER_ID = "memberId"
@@ -88,6 +85,7 @@ class MineMemberActivity :
 
         val minHeight = stateHeight + dip(94)
         mine_member_detail_collapsing_layout.minimumHeight = minHeight
+
         mine_member_detail_appbar_layout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             val height = mine_member_detail_head_layout.measuredHeight - minHeight
             val alpha = abs(verticalOffset).toFloat() / height
@@ -104,17 +102,13 @@ class MineMemberActivity :
             }
 
             var radius = abs(verticalOffset) * 25 / (height)
-            if (radius <= 0) {
-                radius = 1
-            }
             if (radius > 25) {
                 radius = 25
             }
             blurImage(radius)
 
-            if (abs(verticalOffset) > height / 2) {
-                mine_member_detail_blur.alpha = abs(verticalOffset).toFloat() / height / 2
-            }
+            Log.i("initParams: ", "$radius")
+            mine_member_detail_blur.alpha = alpha
         })
     }
 
@@ -129,22 +123,24 @@ class MineMemberActivity :
         }
     }
 
-    private fun blurImage(mRadius: Int) {
-        if (mBitmap == null) {
-            val options = BitmapFactory.Options()
-            options.inSampleSize = 2
-            mBitmap = BitmapFactory.decodeResource(resources, R.mipmap.img_my_bac, options)
-        }
-        val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            try {
-                RSBlur.blur(this, mBitmap, mRadius)
-            } catch (e: RSRuntimeException) {
-                FastBlur.blur(mBitmap, mRadius, true)
-            }
+    private fun blurImage(radius: Int) {
+        if (radius in 1..25) {
+            val newBitmap =
+                try {
+                    RSBlur.blur(this, getBitmap(), radius)
+                } catch (e: RSRuntimeException) {
+                    FastBlur.blur(getBitmap(), radius, true)
+                }
+            img_mine_background.setImageBitmap(newBitmap)
         } else {
-            FastBlur.blur(mBitmap, mRadius, true)
+            img_mine_background.setImageBitmap(getBitmap())
         }
-        img_mine_background.setImageBitmap(bitmap)
+    }
+
+    private fun getBitmap(): Bitmap {
+        val options = BitmapFactory.Options()
+        options.inSampleSize = 2
+        return BitmapFactory.decodeResource(resources, R.mipmap.img_my_bac, options)
     }
 
     private fun createFragment() {

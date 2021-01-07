@@ -33,12 +33,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/business_icon_arrow_right" />
+        android:src="@drawable/business_icon_arrow_db" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/mine_widget_common_setting_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dp_43"
+        android:layout_height="@dimen/dp_25"
+        android:background="@android:color/transparent"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:thumb="@drawable/mine_switch_thumb"
