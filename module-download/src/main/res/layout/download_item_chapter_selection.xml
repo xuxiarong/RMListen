@@ -60,7 +60,7 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:lines="1"
-            android:textColor="@{itemBean.isNotDown?@color/business_text_color_333333:@color/business_text_color_b1b1b1}"
+            bindDownSelectTextColor="@{itemBean}"
             android:text="@{itemBean.chapter_name}"
             android:textSize="@dimen/business_text_size_16sp"
             app:layout_constraintLeft_toRightOf="@+id/download_tv_sequence"
@@ -107,23 +107,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--        <com.rm.business_lib.wedgit.download.DownloadStatusView-->
-        <!--            android:layout_width="@dimen/dp_24"-->
-        <!--            android:layout_height="@dimen/dp_24"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            bindDownloadStatusChapter="@{itemBean}"-->
-        <!--            bindCurrentDownChapter="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"-->
-        <!--            />-->
-
-        <!--        <ProgressBar-->
-        <!--            android:layout_width="23dp"-->
-        <!--            android:layout_height="23dp"-->
-        <!--            isVisible="@{itemBean.downloadChapterUIStatus==DownloadChapterUIStatus.DOWNLOADING}"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"

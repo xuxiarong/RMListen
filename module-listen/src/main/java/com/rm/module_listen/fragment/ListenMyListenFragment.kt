@@ -13,6 +13,8 @@ import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.utilExt.sp
+import com.rm.baselisten.utilExt.sp2px
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.HomeGlobalData.isListenAppBarInTop
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
@@ -103,7 +105,11 @@ class ListenMyListenFragment :
         })
         DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
             download_chapter_num.isVisible = it.isNotEmpty()
-            download_chapter_num.text = it.size.toString()
+            if(it.size>=100){
+                download_chapter_num.text = "99+"
+            }else{
+                download_chapter_num.text = it.size.toString()
+            }
         })
     }
 

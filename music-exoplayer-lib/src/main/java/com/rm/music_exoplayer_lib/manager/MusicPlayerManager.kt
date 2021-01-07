@@ -226,7 +226,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun cleanNotification() {
-        TODO("Not yet implemented")
+        mBinder?.cleanNotification()
     }
 
     override fun setPlayerModel(model: Int): Int {

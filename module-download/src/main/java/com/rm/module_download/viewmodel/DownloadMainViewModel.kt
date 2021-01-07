@@ -265,13 +265,6 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         }
     }
 
-
-    fun deleteAudio(audio: DownloadAudio) {
-        DownloadMemoryCache.deleteAudioToDownloadMemoryCache(audio)
-        downloadingSelectNum.set(downloadingSelectNum.get() - 1)
-        DownLoadFileUtils.deleteAudioFile(audio)
-    }
-
     fun deleteAudio(context: Context) {
         if (downloadFinishSelectNum.get() <= 0) {
             return
@@ -296,9 +289,9 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                         iterator.remove()
                     }
                 }
+                DownLoadFileUtils.deleteAudioFile(tempList)
                 DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
                 downloadFinishSelectNum.set(downloadFinishSelectNum.get() - tempList.size)
-                DownLoadFileUtils.deleteAudioFile(tempList)
                 dismiss()
                 editDownloadFinish()
             }

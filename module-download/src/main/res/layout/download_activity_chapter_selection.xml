@@ -67,13 +67,13 @@
 
             <com.flyco.roundview.RoundTextView
                 android:id="@+id/download_chapter_num"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="2dp"
                 android:gravity="center"
                 android:textColor="@color/business_text_color_ffffff"
-                android:textSize="@dimen/business_text_size_12sp"
+                android:textSize="@dimen/business_text_size_10sp"
                 app:rv_backgroundColor="@color/base_ff5e5e"
                 app:rv_isRadiusHalfHeight="true" />
 

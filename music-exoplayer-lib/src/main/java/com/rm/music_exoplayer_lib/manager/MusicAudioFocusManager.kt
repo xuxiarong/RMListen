@@ -25,7 +25,7 @@ class MusicAudioFocusManager constructor(val context: Context) {
         AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_GAME)
             .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            .build();
+            .build()
     }
 
     fun setFocusListener(focusListener: OnAudioFocusListener) {

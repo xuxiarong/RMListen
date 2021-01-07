@@ -226,6 +226,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_PAUSE)
         intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_CLOSE)
         intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_COLLECT)
+        intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_NEXT_15S)
+        intentFilter.addAction(MUSIC_INTENT_ACTION_CLICK_PRE_15S)
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF)
         mHeadsetBroadcastReceiver = PlayReceiver()
         registerReceiver(mHeadsetBroadcastReceiver, intentFilter)

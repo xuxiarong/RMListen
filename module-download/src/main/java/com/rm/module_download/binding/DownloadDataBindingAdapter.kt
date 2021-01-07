@@ -224,7 +224,7 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
         }
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
             text = if(TextUtils.isEmpty(chapter.down_speed)){
-                "0.0Kb/s"
+                "0.0KB/s"
             }else{
                 "${chapter.down_speed}/s"
             }
