@@ -6,6 +6,7 @@ import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadDaoUtils
+import com.rm.business_lib.share.ShareManage
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadActivityBookDetailBinding
@@ -55,7 +56,9 @@ class DownloadBookDetailActivity :
             setLeftIcon(R.drawable.base_icon_back)
             setRightIcon(R.drawable.business_ic_share)
             setRightIconClick {
-                finish()
+                mViewModel.downloadAudio.get()?.let {
+                    ShareManage.shareAudio(this@DownloadBookDetailActivity,it.audio_id.toString(),it.audio_name)
+                }
             }
             setLeftIconClick {
                 finish()

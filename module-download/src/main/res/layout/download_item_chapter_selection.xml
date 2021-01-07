@@ -45,7 +45,7 @@
             android:layout_marginRight="@dimen/dp_8"
             android:gravity="center"
             android:text="@{String.valueOf(itemBean.sequence)}"
-            android:textColor="@{itemBean.isNotDown?@color/business_text_color_666666:@color/business_text_color_b1b1b1}"
+            bindDownSelectTextColor="@{itemBean}"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/download_iv_check"

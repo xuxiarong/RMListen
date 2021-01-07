@@ -46,15 +46,27 @@ class DownloadChapterSelectionActivity :
                 mViewModel.getDialogSelectChapterList()
             }
         })
+
         DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
             download_chapter_num.isVisible = it.isNotEmpty()
             download_chapter_num.text = it.size.toString()
+            mViewModel.mAdapter.notifyDataSetChanged()
         })
-    }
+        DownloadMemoryCache.downloadFinishChapterList.observe(this, Observer {
+            mViewModel.mAdapter.notifyDataSetChanged()
+        })
 
-    override fun onResume() {
-        super.onResume()
-        mViewModel.mAdapter.notifyDataSetChanged()
+
+        AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                AriaDownloadManager.needShowNetError.get().let {
+                    if(it){
+                        tipView.showNetError(this@DownloadChapterSelectionActivity)
+                    }
+                }
+            }
+        })
     }
 
     override fun initData() {

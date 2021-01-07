@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
+import com.airbnb.lottie.LottieAnimationView
 import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.SDCardUtils
 import com.rm.business_lib.db.download.DownloadAudio
@@ -21,6 +22,7 @@ import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.module_download.R
 import com.rm.module_download.bean.DownloadChapterUIStatus
+import com.tencent.bugly.proguard.s
 import com.tencent.bugly.proguard.t
 
 @BindingAdapter("bindDownloadCheckSrc")
@@ -108,6 +110,17 @@ fun ImageView.bindDownloadChapterStatus(chapter: DownloadChapter, isSelectAll: B
         setImageResource(R.drawable.download_ic_item_unchecked)
     }
 }
+
+@BindingAdapter("bindDownSelectTextColor")
+fun TextView.bindDownSelectTextColor(chapter: DownloadChapter){
+    DownLoadFileUtils.checkChapterIsDownload(chapter)
+    if (chapter.down_status != DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD) {
+        setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
+    }else{
+        setTextColor(ContextCompat.getColor(context, R.color.business_text_color_666666))
+    }
+}
+
 
 @BindingAdapter("bindItemChapter", "bindDownChapter", "bindDownloadAll","bindEditDownloading", requireAll = true)
 fun ImageView.bindDownOrPause(
@@ -210,7 +223,11 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
             text = context.getString(R.string.business_download_wait)
         }
         DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
-            text = "${chapter.down_speed}/s"
+            text = if(TextUtils.isEmpty(chapter.down_speed)){
+                "0.0Kb/s"
+            }else{
+                "${chapter.down_speed}/s"
+            }
         }
         DownloadConstant.CHAPTER_STATUS_DOWNLOAD_PAUSE -> {
             text = context.getString(R.string.business_download_pause)
@@ -322,4 +339,23 @@ fun TextView.bindDownFinishAudioSize(totalSize : Long) {
         ""
     }
 
+}
+
+@BindingAdapter("bindDownSelectLottie")
+fun LottieAnimationView.bindDownSelectLottie(downloadChapter: DownloadChapter?){
+    if(downloadChapter == null){
+        visibility = View.GONE
+        clearAnimation()
+        return
+    }
+
+    if(downloadChapter.isDownloading){
+        if(!isAnimating){
+            visibility = View.VISIBLE
+            playAnimation()
+        }
+    }else{
+        visibility = View.GONE
+        clearAnimation()
+    }
 }

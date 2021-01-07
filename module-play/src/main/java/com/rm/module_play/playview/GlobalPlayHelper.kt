@@ -59,7 +59,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 PlayApiService::class.java
             )
         }
-
     }
 
     private var oldAudio: String = ""
@@ -138,7 +137,11 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             }
             //如果需要接着上一次的播放记录，直接跳转到该进度
             if(PlayGlobalData.playLastPlayProcess.get()>0 && !isAd){
-                musicPlayerManger.seekTo(PlayGlobalData.playLastPlayProcess.get())
+                if(PlayGlobalData.playLastPlayProcess.get()>=totalDurtion){
+                    musicPlayerManger.seekTo(0L)
+                }else{
+                    musicPlayerManger.seekTo(PlayGlobalData.playLastPlayProcess.get())
+                }
                 PlayGlobalData.playLastPlayProcess.set(-1L)
             }
         }
@@ -193,7 +196,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        if (playbackState == STATE_ENDED) {
+        if (playbackState == STATE_ENDED && playWhenReady) {
             BaseConstance.updatePlayFinish()
             PlayGlobalData.updatePlayChapterProgress(isPlayFinish = true)
             PlayGlobalData.playNeedQueryChapterProgress.set(false)
@@ -201,9 +204,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             when (musicPlayerManger.getPlayerModel()) {
                 //顺序播放
                 MUSIC_MODEL_ORDER -> {
-                    PlayGlobalData.checkCountChapterPlayEnd(PlayGlobalData.hasNextChapter.get())
-                    if(PlayGlobalData.playCountDownChapterSize.get() == 0){
-                        PlayGlobalData.playCountDownChapterSize.set(-1)
+                    if(PlayGlobalData.checkCountChapterPlayEnd(PlayGlobalData.hasNextChapter.get())){
                         musicPlayerManger.pause()
                     }else{
                         if (PlayGlobalData.hasNextChapter.get()) {
@@ -216,8 +217,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 }
                 //单曲播放
                 MUSIC_MODEL_SINGLE -> {
-                    PlayGlobalData.checkCountChapterPlayEnd(true)
-                    if(PlayGlobalData.playCountDownChapterSize.get() == 0){
+                    if(PlayGlobalData.checkCountChapterPlayEnd(true)){
                         musicPlayerManger.pause()
                     }else{
                         PlayGlobalData.playChapterId.get()?.let {

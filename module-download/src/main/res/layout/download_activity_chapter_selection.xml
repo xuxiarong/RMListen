@@ -50,7 +50,7 @@
                 android:id="@+id/download_ic_download_iv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                isVisible="@{!AriaDownloadManager.INSTANCE.isDownloading()}"
+                isVisible="@{DownloadMemoryCache.INSTANCE.downloadingChapter.down_status != 2}"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/download_ic_download" />
@@ -60,11 +60,9 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end|center_vertical"
-                isVisible="@{AriaDownloadManager.INSTANCE.isDownloading()}"
+                bindDownSelectLottie="@{DownloadMemoryCache.INSTANCE.downloadingChapter}"
                 android:layout_marginEnd="8dp"
-                app:lottie_fileName="business_download.json"
-                app:lottie_loop="true"
-                app:lottie_autoPlay="true" />
+                app:lottie_fileName="business_download.json" />
 
 
             <com.flyco.roundview.RoundTextView

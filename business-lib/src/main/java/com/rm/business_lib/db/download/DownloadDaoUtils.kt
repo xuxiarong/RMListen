@@ -63,14 +63,21 @@ object DownloadDaoUtils {
                     val iterator = result.iterator()
                     audio.download_num = 0
                     audio.down_size = 0L
+                    var listenFinishNum = 0
                     while(iterator.hasNext()){
                         val next = iterator.next()
                         if(!DownLoadFileUtils.checkChapterDownFinish(next)){
                             iterator.remove()
                         }else{
+                            if(next.listen_duration >= next.realDuration){
+                                listenFinishNum++
+                            }
                             audio.download_num +=1
                             audio.down_size += next.size
                         }
+                    }
+                    if(listenFinishNum>0 && listenFinishNum == result.size){
+                        audio.listen_finish = true
                     }
                     return result
                 }

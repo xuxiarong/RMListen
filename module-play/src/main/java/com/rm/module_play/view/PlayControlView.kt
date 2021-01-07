@@ -7,6 +7,9 @@ import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.util.setPlayOnClickNotDoubleListener
 import com.rm.business_lib.PlayGlobalData
+import com.rm.module_play.playview.GlobalPlayHelper
+import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
+import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
 
 
 /**
@@ -14,17 +17,20 @@ import com.rm.business_lib.PlayGlobalData
  * date   : 2020/11/03
  * version: 1.0
  */
-class PlayControlView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-        LottieAnimationView(context, attrs, defStyleAttr) {
+class PlayControlView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
+    LottieAnimationView(context, attrs, defStyleAttr) {
     var startPlayVar: (() -> Unit)? = {}
     var pausePlayVar: (() -> Unit)? = {}
-    var resetPlayVar: (() -> Unit)? = {}
     var initFinish = false
     var isStart = false
     var isError = false
 
     fun processPlayStatus(playState: BasePlayStatusModel) {
-        if(playState.isBuffering()){
+        if (playState.isBuffering()) {
             return
         }
         if (!initFinish) {
@@ -49,21 +55,29 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
                 }
             }
             setPlayOnClickNotDoubleListener {
-                if(isStart){
+                if (isStart) {
                     pauseAnim()
                     pausePlayVar?.let { pausePlay ->
                         pausePlay()
                     }
-                }else{
+                } else {
                     startAnim()
                     startPlayVar?.let { startPlay ->
                         val statusModel = BaseConstance.basePlayStatusModel.get()
-                        if(statusModel!=null){
-                            if(statusModel.playEnd()){
-                                resetPlayVar?.let { resetPlay ->
-                                    resetPlay()
+                        if (statusModel != null) {
+                            if (statusModel.playEnd()) {
+                                PlayGlobalData.playNeedQueryChapterProgress.set(false)
+                                //顺序播放
+                                GlobalPlayHelper.INSTANCE.getChapterAd {
+                                    if (PlayGlobalData.hasNextChapter.get() && MusicPlayerManager.musicPlayerManger.getPlayerModel() == MUSIC_MODEL_ORDER) {
+                                        MusicPlayerManager.musicPlayerManger.playNextMusic()
+                                    } else {
+                                        BaseConstance.basePlayInfoModel.get()?.playChapterId?.let {
+                                            MusicPlayerManager.musicPlayerManger.startPlayMusic(it)
+                                        }
+                                    }
                                 }
-                            }else{
+                            } else {
                                 startPlay()
                             }
                         }
@@ -71,7 +85,7 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
                 }
             }
             initFinish = true
-        },300)
+        }, 300)
     }
 
     fun startAnim() {
@@ -92,9 +106,9 @@ class PlayControlView @JvmOverloads constructor(context: Context, attrs: Attribu
         playAnimation()
     }
 
-    fun showError(isError : Boolean){
+    fun showError(isError: Boolean) {
         this.isError = isError
-        if (isError){
+        if (isError) {
             pauseAnim()
         }
     }

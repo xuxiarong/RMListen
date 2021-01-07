@@ -72,8 +72,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         if (downloadingAdapter.data.isEmpty()) {
             return
         }
-
-        if (downloadingEdit.get()) {
+        if (downloadingEdit.get() && DownloadMemoryCache.isDownAll.get()) {
             DownloadMemoryCache.resumeDownloadingChapter()
         } else {
             downloadingSelectNum.set(0)

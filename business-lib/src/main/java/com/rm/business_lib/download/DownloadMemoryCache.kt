@@ -113,10 +113,6 @@ object DownloadMemoryCache {
         if (chapterList.isEmpty()) {
             return
         }
-        if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
-            ToastUtil.showTopToast(context,BaseApplication.CONTEXT.getString(R.string.base_empty_tips_netword))
-        }
-
         val iterator = chapterList.iterator()
         while (iterator.hasNext()) {
             val nextChapter = iterator.next()

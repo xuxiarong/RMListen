@@ -14,6 +14,7 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.DownloadMemoryCache
+import com.tencent.bugly.proguard.ad
 import kotlinx.android.synthetic.main.layout_download_status_view.view.*
 
 /**
@@ -40,7 +41,9 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.GONE
                 businessDownWaitLv.clearAnimation()
                 setOnClickListener {
-                    checkContext { DownloadMemoryCache.addDownloadingChapter(context, mutableListOf(chapter)) }
+                    checkContext {
+                        startDownloadChapter(chapter)
+                    }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOAD_WAIT -> {
@@ -49,7 +52,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 businessDownWaitLv.visibility = View.VISIBLE
                 businessDownWaitLv.playAnimation()
                 setOnClickListener {
-                    checkContext { DownloadMemoryCache.addDownloadingChapter(context, mutableListOf(chapter)) }
+                    checkContext { startDownloadChapter(chapter) }
                 }
             }
             DownloadConstant.CHAPTER_STATUS_DOWNLOADING -> {
@@ -96,6 +99,13 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
                 }
             }
         }
+    }
+
+    private fun startDownloadChapter(chapter: DownloadChapter) {
+        if (audio != null) {
+            DownloadMemoryCache.addAudioToDownloadMemoryCache(audio!!)
+        }
+        DownloadMemoryCache.addDownloadingChapter(context, mutableListOf(chapter))
     }
 
     private fun checkContext(actionGranted: () -> Unit) {

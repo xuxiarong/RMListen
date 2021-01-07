@@ -39,6 +39,7 @@ object DownLoadFileUtils {
                     DLog.d("suolong_DownLoadFileUtils","{${chapter.chapter_name}}数据库存在 status = ${chapter.down_status}")
                     chapter.down_status = list[0].down_status
                 }else{
+                    chapter.down_status = DownloadConstant.CHAPTER_STATUS_NOT_DOWNLOAD
                     DLog.d("suolong_DownLoadFileUtils","{${chapter.chapter_name}}数据库文件不存在")
                 }
             }
