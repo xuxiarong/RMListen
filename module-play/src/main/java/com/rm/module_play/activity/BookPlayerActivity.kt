@@ -294,6 +294,17 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             mViewModel.isLocalChapterList.set(true)
             PlayGlobalData.playChapterId.set(playChapterId)
             PlayGlobalData.playChapterList.value = playChapterList
+            val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
+            if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
+                PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
+                if (playCurrentDuration == 1L) {
+                    PlayGlobalData.process.set(0F)
+                    PlayGlobalData.playNeedQueryChapterProgress.set(false)
+                    musicPlayerManger.seekTo(0L)
+                } else {
+                    PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
+                }
+            }
         } else {
             mViewModel.isLocalChapterList.set(false)
             PlayGlobalData.playChapterId.set(playChapterId)

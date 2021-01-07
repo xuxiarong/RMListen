@@ -3,6 +3,7 @@ package com.rm.module_listen.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
@@ -219,7 +220,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
         clickBean.get()?.let {
             if (it.sheet_id.toString() == sheetId) {
                 mAdapter.remove(it)
-                showTip("删除成功")
+                showTip(BaseApplication.CONTEXT.getString(R.string.business_delete_success))
             }
 
             if (mAdapter.data.size <= 0) {

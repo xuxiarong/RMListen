@@ -79,9 +79,7 @@ object DownloadDaoUtils {
                             audio.down_size += next.size
                         }
                     }
-                    if(listenFinishNum>0 && listenFinishNum == result.size){
-                        audio.listen_finish = true
-                    }
+                    audio.listen_finish = listenFinishNum>0 && listenFinishNum == result.size
                     return result
                 }
             }

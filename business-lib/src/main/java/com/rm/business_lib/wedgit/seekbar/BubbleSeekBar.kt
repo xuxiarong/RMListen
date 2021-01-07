@@ -464,7 +464,7 @@ class BubbleSeekBar @JvmOverloads constructor(
             val rect = Rect()
             mPaint.getTextBounds(mThumbText, 0, mThumbText.length, rect)
             val x = (mThumbWidth - rect.width()) / 2.0f + rect.width() / 2.0f
-            val y = (mThumbHeight - rect.height()) / 2.0f + rect.height()
+            val y = (mThumbHeight - rect.height()) / 2.0f + rect.height() * 0.9f
             canvas.drawText(mThumbText, x, y, mPaint)
         }
         canvas.restoreToCount(save)

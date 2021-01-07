@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.baselisten.dialog.TipsFragmentDialog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -171,6 +173,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                 }
                 dismiss()
                 downloadingEdit.set(false)
+                ToastUtil.showTopToast(context,context.getString(R.string.business_delete_success))
                 DownloadMemoryCache.deleteDownloadingChapter(tempList)
             }
         }.show(context as FragmentActivity)
@@ -291,6 +294,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                 }
                 DownLoadFileUtils.deleteAudioFile(tempList)
                 DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
+                ToastUtil.showTopToast(context,context.getString(R.string.business_delete_success))
                 downloadFinishSelectNum.set(downloadFinishSelectNum.get() - tempList.size)
                 dismiss()
                 editDownloadFinish()

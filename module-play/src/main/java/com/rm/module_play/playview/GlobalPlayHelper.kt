@@ -120,7 +120,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         //播放广告的时候，播放速度不生效，正常播放生效
         if (isAd) {
             musicPlayerManger.setPlayerMultiple(1f)
-            PlayGlobalData.playSpeed.set(1f)
             PlayGlobalData.process.set(0F)
             PlayGlobalData.updateThumbText.set("00:00/00:00")
         } else {

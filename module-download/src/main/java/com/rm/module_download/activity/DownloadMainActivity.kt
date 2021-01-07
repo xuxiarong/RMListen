@@ -59,7 +59,7 @@ class DownloadMainActivity :
                                 }
                             }
                         }else{
-                            DownloadMemoryCache.pauseDownloadingChapter()
+//                            DownloadMemoryCache.pauseDownloadingChapter()
                             tipView.showNetError(this@DownloadMainActivity)
                         }
                     }catch (e : Exception){
