@@ -50,7 +50,7 @@ class ListenBoughtActivity :
             }
         mViewModel.baseTitleModel.value = baseTitleModel
         mDataShowView = listen_bought_recycler_view
-        mViewModel.showDataEmpty()
+        mViewModel.showDataEmpty("暂未购买书籍内容")
 
     }
 

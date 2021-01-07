@@ -25,6 +25,21 @@ data class Country(val cn: String, val en: String, val phone_code: String) : Com
         return cn
     }
 
+    fun isNeedLine(letter: String): Boolean {
+        return if (TextUtils.equals(letter, "A")) {
+            false
+        } else {
+            chineseIsLetter(letter)
+        }
+    }
+
+    fun chineseIsLetter(letter: String): Boolean {
+        val p = Pattern.compile("[A-Z]")
+        val m = p.matcher(letter)
+        return m.matches()
+
+    }
+
     override fun phoneCode(): String {
         return phone_code
     }

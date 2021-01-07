@@ -3,9 +3,9 @@ package com.rm.module_mine.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.widget.ScrollView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import com.rm.baselisten.binding.bindKeyboardVisibilityListener
 import com.rm.baselisten.model.BaseTitleModel
@@ -177,7 +177,19 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                     }
                 }
             } else {
-                Toast.makeText(this, "拍照被取消", Toast.LENGTH_LONG).show()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    mViewModel.photoHelp?.getCameraUri()?.let {
+                        val path = FileUtils.getPath(this, it)
+                        path?.let { filePath ->
+                            val delete = FileUtils.delete(filePath)
+                        }
+                    }
+                } else {
+                    val cameraImagePath = mViewModel.photoHelp?.getCameraImagePath()
+                    cameraImagePath?.let {
+                        val delete = FileUtils.delete(it)
+                    }
+                }
             }
         } else if (requestCode == ALBUM_REQUEST_CODE) {
             data?.data?.let {

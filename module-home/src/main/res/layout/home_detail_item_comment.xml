@@ -41,8 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
-            android:singleLine="true"
             android:maxWidth="@dimen/dp_200"
+            android:singleLine="true"
             android:text="@{commentItem.member.nickname}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
@@ -87,18 +87,28 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_comment_like_count_tx"
+            bindPlayCount="@{commentItem.likes}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableEnd="@{commentItem.is_liked?@drawable/business_icon_love:@drawable/icon_detail_comment_like}"
             android:gravity="center"
             android:onClick="@{()->commentViewModel.itemLikeClick(context,commentItem)}"
-            bindPlayCount="@{commentItem.likes}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintBottom_toBottomOf="@+id/detail_comment_author_img"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/home_item_comment_lottie"
             app:layout_constraintTop_toTopOf="@+id/detail_comment_author_img"
             tools:text="100000000" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/home_item_comment_lottie"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:gravity="center"
+            android:onClick="@{()->commentViewModel.itemLikeClick(context,commentItem)}"
+            android:src="@{commentItem.is_liked?@drawable/business_icon_love:@drawable/icon_detail_comment_like}"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_comment_author_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/detail_comment_author_img" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_comment_content_tx"

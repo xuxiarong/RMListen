@@ -13,6 +13,7 @@ import androidx.annotation.IntDef
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
@@ -160,11 +161,12 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
             if (canMoreData || !isTopItem(1, mRecyclerView)) {
                 super.onInterceptTouchEvent(ev)
             } else {
-                if (mCurType== TYPE_TOP){
+                if (mCurType == TYPE_TOP) {
                     super.onInterceptTouchEvent(ev)
-                }else{
+                } else {
                     onTouchEvent(ev)
-                }            }
+                }
+            }
         }
     }
 
@@ -252,6 +254,10 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
      */
     private fun moveEnd() {
         val offsetY = upY - downY
+        //如果滑动不超过10像素就不滑动
+        if (abs(offsetY) < 10) {
+            return
+        }
         when (mCurType) {
             TYPE_TOP -> {
                 if (offsetY >= 0) {

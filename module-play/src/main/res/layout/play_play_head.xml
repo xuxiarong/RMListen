@@ -283,7 +283,7 @@
             android:layout_height="26dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/dp_11"
-            android:drawableStart="@drawable/business_icon_unfavorites"
+            android:drawableStart="@drawable/business_icon_favorites_ee"
             android:gravity="center"
             android:onClick="@{()->viewModel.joinListenList(context)}"
             android:paddingStart="@dimen/dp_8"
@@ -307,6 +307,7 @@
             android:layout_marginEnd="@dimen/dp_16"
             android:gravity="center"
             android:text="@{viewModel.seekText}"
+            android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -334,7 +335,7 @@
             android:id="@+id/music_play_bubbleSeekBar"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_48"
+            android:layout_marginTop="@dimen/dp_61"
             android:layout_toEndOf="@+id/tv_music_left_next"
             app:barHeight="4dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -346,10 +347,10 @@
             app:setProgress="@{PlayGlobalData.INSTANCE.process}"
             app:setProgressMax="@{PlayGlobalData.INSTANCE.maxProcess}"
             app:thumb="@drawable/thumb"
-            app:thumbHeight="20dp"
+            app:thumbHeight="16dp"
             app:thumbTextColor="#FFFFFFFF"
             app:thumbTextSize="10dp"
-            app:thumbWidth="60dp"
+            app:thumbWidth="69dp"
             app:track="@drawable/track"
             app:updateThumbText="@{PlayGlobalData.INSTANCE.updateThumbText}" />
 
@@ -421,30 +422,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/music_play_bubbleSeekBar" />
 
-<!--        <com.rm.baselisten.view.progressbar.CircularProgressView-->
-<!--            android:id="@+id/progress_play"-->
-<!--            bindPlayPrepareProgress="@{BaseConstance.INSTANCE.basePlayStatusModel}"-->
-<!--            android:layout_width="66dp"-->
-<!--            android:layout_height="66dp"-->
-<!--            app:backColor="@color/business_color_f7f7f7"-->
-<!--            app:backWidth="1dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/play_control_bg"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/play_control_bg"-->
-<!--            app:progColor="@color/base_ff5e5e"-->
-<!--            app:progWidth="1dp"-->
-<!--            tools:progress="65" />-->
+        <!--        <com.rm.baselisten.view.progressbar.CircularProgressView-->
+        <!--            android:id="@+id/progress_play"-->
+        <!--            bindPlayPrepareProgress="@{BaseConstance.INSTANCE.basePlayStatusModel}"-->
+        <!--            android:layout_width="66dp"-->
+        <!--            android:layout_height="66dp"-->
+        <!--            app:backColor="@color/business_color_f7f7f7"-->
+        <!--            app:backWidth="1dp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/play_control_bg"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/play_control_bg"-->
+        <!--            app:progColor="@color/base_ff5e5e"-->
+        <!--            app:progWidth="1dp"-->
+        <!--            tools:progress="65" />-->
 
         <androidx.appcompat.widget.AppCompatImageView
+            bindPlayPrepareProgress="@{BaseConstance.INSTANCE.basePlayStatusModel}"
             android:layout_width="66dp"
             android:layout_height="66dp"
-            bindPlayPrepareProgress="@{BaseConstance.INSTANCE.basePlayStatusModel}"
+            android:background="@drawable/play_prepare_list"
             app:layout_constraintBottom_toBottomOf="@id/play_control_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/play_control_bg"
-            android:background="@drawable/play_prepare_list" />
+            app:layout_constraintTop_toTopOf="@id/play_control_bg" />
 
         <com.rm.module_play.view.PlayControlView
             android:id="@+id/animation_view"
@@ -481,19 +482,16 @@
             app:rv_strokeWidth="@dimen/dp_1"
             tools:text="HD" />
 
-        <com.rm.business_lib.wedgit.menupoint.MenuPointView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/music_play_point"
             android:layout_width="@dimen/dp_24"
-            android:layout_height="@dimen/dp_28"
+            android:layout_height="@dimen/dp_24"
             android:layout_marginEnd="@dimen/dp_24"
             android:onClick="@{()->viewModel.showPlaySettingDialog(context)}"
+            android:src="@drawable/business_icon_more_ce"
             app:layout_constraintBottom_toBottomOf="@id/play_control_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/play_control_bg"
-            app:menu_number="3"
-            app:menu_point_color="@color/business_text_color_666666"
-            app:menu_point_width="3dp"
-            app:menu_type="horizontal"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -518,7 +516,11 @@
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_marginEnd="@dimen/dp_16"
-            android:background="@drawable/shape_radius_f7f7f7"
+            android:background="@drawable/business_shape_f7f7f7_8dp"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_8"
             app:layout_constraintTop_toBottomOf="@id/play_control_bg"
             tools:ignore="MissingConstraints">
 
@@ -602,7 +604,11 @@
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_26"
             android:layout_marginEnd="@dimen/dp_16"
-            android:background="@drawable/shape_radius_f7f7f7"
+            android:background="@drawable/business_shape_f7f7f7_8dp"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_8"
             app:layout_constraintTop_toBottomOf="@id/play_audio_recommend_rv">
 
             <!-- 主播 -->
@@ -747,7 +753,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_18"
-                android:background="@drawable/business_shape_round_f7f7f7_12dp"
+                android:background="@drawable/business_shape_f7f7f7_12dp"
                 android:hint="@string/business_comment_hint"
                 android:onClick="@{()->viewModel.clickCommentFun(context)}"
                 android:paddingStart="@dimen/dp_12"

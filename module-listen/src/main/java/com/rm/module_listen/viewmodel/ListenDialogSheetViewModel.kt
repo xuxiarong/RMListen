@@ -1,21 +1,16 @@
 package com.rm.module_listen.viewmodel
 
-import android.view.Gravity
-import android.view.View
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.dialog.CommonMvFragmentDialog
+import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.getBooleanMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_ADD_SHEET
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
-import com.rm.business_lib.loginUser
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
@@ -25,7 +20,6 @@ import com.rm.module_listen.R
 import com.rm.module_listen.api.ListenApiService
 import com.rm.module_listen.bean.ListenSheetBean
 import com.rm.module_listen.bean.ListenSheetMyListBean
-import com.rm.module_listen.databinding.ListenDialogSheetListBinding
 import com.rm.module_listen.repository.ListenRepository
 import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 
@@ -35,46 +29,15 @@ class ListenDialogSheetViewModel(
     private val successBlock: () -> Unit,
     private val viewModel: BaseVMViewModel
 ) : BaseVMViewModel() {
+
     private val repository by lazy {
         ListenRepository(BusinessRetrofitClient().getService(ListenApiService::class.java))
     }
 
-    private var dataBinding: ListenDialogSheetListBinding? = null
-
     /**
      * 懒加载dialog
      */
-    val mDialog by lazy {
-        CommonMvFragmentDialog().apply {
-            gravity = Gravity.BOTTOM
-            dialogWidthIsMatchParent = true
-            dialogHeightIsMatchParent = true
-            dialogHasBackground = true
-            initDialog = {
-                dataBinding = mDataBind as ListenDialogSheetListBinding
-                initView(dataBinding!!)
-            }
-        }
-    }
-
-    /**
-     * 初始化操作
-     */
-    private fun CommonMvFragmentDialog.initView(dateBinding: ListenDialogSheetListBinding) {
-        dateBinding.listenDialogSheetCreateBookList.setOnClickListener {
-            ListenDialogCreateSheetHelper(
-                mActivity,
-                successBlock = successBlock,
-                viewModel = viewModel
-            ).showCreateSheetDialog(audioId)
-            dismiss()
-        }
-        dateBinding.listenDialogSheetRootLayout.setOnClickListener {
-            dismiss()
-        }
-        getData()
-        dismiss = { dismiss() }
-    }
+    val mDialog by lazy { CommBottomDialog() }
 
     /**
      * 懒加载adapter
@@ -91,11 +54,12 @@ class ListenDialogSheetViewModel(
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
     val contentRvId = R.id.listen_dialog_sheet_recycler_view
-
-    var dismiss: () -> Unit = {}
-
     private val pageSize = 12
     private var page = 1
+
+    init {
+        getData()
+    }
 
     /**
      * 获取我的听单列表
@@ -127,6 +91,18 @@ class ListenDialogSheetViewModel(
                 }
             )
         }
+    }
+
+    /**
+     * 创建听单点击事件
+     */
+    fun clickCreateSheet() {
+        ListenDialogCreateSheetHelper(
+            mActivity,
+            successBlock = successBlock,
+            viewModel = viewModel
+        ).showCreateSheetDialog(audioId)
+        mDialog.dismiss()
     }
 
     /**
@@ -227,7 +203,7 @@ class ListenDialogSheetViewModel(
      *dismiss
      */
     private fun dismissFun() {
-        dismiss()
+        mDialog.dismiss()
     }
 
 }

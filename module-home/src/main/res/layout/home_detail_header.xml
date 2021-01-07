@@ -62,6 +62,7 @@
             android:layout_marginEnd="@dimen/dp_10"
             android:drawableStart="@drawable/home_icon_play_ed"
             android:textColor="@color/businessWhite"
+            android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
             app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
             tools:text="14W" />
@@ -152,10 +153,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_detail_tx_status"
+            bindText="@{viewModel.showStatus}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/dp_26"
-            android:text="@{viewModel.showStatus}"
             android:textColor="@color/business_text_color_666666"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_icon"
@@ -285,7 +286,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
-            android:background="@drawable/shape_radius_f7f7f7"
+            android:background="@drawable/business_shape_f7f7f7_8dp"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_8"
             app:layout_constraintTop_toBottomOf="@id/home_detail_vip_cl">
 
             <!-- 主播 -->
@@ -374,7 +379,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_18"
-                android:background="@drawable/business_shape_round_f7f7f7_12dp"
+                android:background="@drawable/business_shape_f7f7f7_12dp"
                 android:hint="@string/home_detail_comment_hint"
                 android:onClick="@{()->viewModel.clickCommentFun(context)}"
                 android:paddingStart="@dimen/dp_12"

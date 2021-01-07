@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
+import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -76,6 +77,9 @@ abstract class BaseFragmentDialog : DialogFragment() {
      */
     var dialogHeight = 0
 
+    @StyleRes
+    var themeResId = 0
+
     /**
      * 创建Dialog实例对象
      * @param savedInstanceState Bundle?
@@ -111,7 +115,6 @@ abstract class BaseFragmentDialog : DialogFragment() {
                 val params: WindowManager.LayoutParams = dialog!!.window!!.attributes
                 params.gravity = gravity
                 //设置Dialog外部透明
-                //设置Dialog外部透明
                 params.dimAmount = 0f
                 dialog!!.window!!.attributes = params
                 dialog!!.window?.setBackgroundDrawableResource(R.color.base_transparent) // 背景透明
@@ -136,6 +139,9 @@ abstract class BaseFragmentDialog : DialogFragment() {
                 } else {
                     WindowManager.LayoutParams.WRAP_CONTENT
                 }
+            }
+            if (themeResId > 0) {
+                dialog!!.window!!.setWindowAnimations(themeResId)
             }
             dialog!!.window!!.setLayout(layoutWidth, layoutHeight)
         }

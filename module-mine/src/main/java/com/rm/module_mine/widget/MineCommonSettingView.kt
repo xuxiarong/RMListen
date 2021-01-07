@@ -23,8 +23,7 @@ class MineCommonSettingView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) :
-    RelativeLayout(context, attrs, defStyleAttr) {
+) : RelativeLayout(context, attrs, defStyleAttr) {
     private lateinit var settingName: AppCompatTextView
     private lateinit var settingTip: AppCompatTextView
     lateinit var settingSwitch: SwitchCompat

@@ -150,6 +150,7 @@
                     <androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="@dimen/dp_22"
                         android:layout_height="@dimen/dp_22"
+                        android:background="@android:color/transparent"
                         android:button="@drawable/login_selector_check_box_button"
                         android:checked="@={viewModel.isCheck}" />
 

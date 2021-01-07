@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/business_icon_arrow_right" />
+        android:src="@drawable/business_icon_arrow_db" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/mine_widget_common_material_user_icon"

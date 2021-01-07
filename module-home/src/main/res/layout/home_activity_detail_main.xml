@@ -110,8 +110,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_detail_comment_recycle_view"
-                android:layout_width="match_parent"
                 bindVerticalScroll="@{viewModel.commentRvScrollY}"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/dp_16"
                 android:layout_marginEnd="@dimen/dp_16" />
@@ -126,22 +126,21 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_10"
             android:orientation="vertical"
+            android:background="@drawable/business_dialog_top_9bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_title_cl">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/business_dialog_top_9bg" />
+<!--            <androidx.appcompat.widget.AppCompatImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/business_dialog_top_9bg" />-->
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_detail_chapter_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_25"
-                android:background="@color/businessWhite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -149,7 +148,7 @@
                     android:id="@+id/home_detail_view"
                     android:layout_width="@dimen/dp_50"
                     android:layout_height="@dimen/dp_6"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="@dimen/dp_11"
                     android:background="@drawable/business_shape_round_b1b1b1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -161,18 +160,16 @@
                     bindPlayListenModel="@{viewModel.listenAudio}"
                     bindPlayStatusModel="@{BaseConstance.INSTANCE.basePlayStatusModel}"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/dp_20"
                     android:layout_marginStart="@dimen/dp_4"
-                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_18"
                     android:alpha="@{viewModel.hideOr? 0.3f:1f}"
                     android:drawableStart="@drawable/home_detail_icon_all_play"
                     android:drawablePadding="@dimen/dp_4"
                     android:enabled="@{!viewModel.hideOr}"
                     android:onClick="@{()->viewModel.clickPlayPage(context)}"
                     android:paddingStart="@dimen/dp_16"
-                    android:paddingTop="@dimen/dp_9"
                     android:paddingEnd="@dimen/dp_16"
-                    android:paddingBottom="@dimen/dp_9"
                     android:textColor="@color/business_text_color_666666"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -207,13 +204,13 @@
                     app:layout_constraintEnd_toStartOf="@id/home_detail_play_sort"
                     app:layout_constraintTop_toTopOf="@id/home_detail_play_all" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/home_detail_play_sort"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:alpha="@{viewModel.hideOr? 0.3f:1f}"
                     android:button="@null"
-                    android:drawableStart="@drawable/home_detail_chapter_ce"
+                    android:src="@drawable/home_detail_chapter_ce"
                     android:enabled="@{!viewModel.hideOr}"
                     android:onClick="@{()->viewModel.clickSort()}"
                     android:paddingStart="@dimen/dp_10"
@@ -225,7 +222,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_0.5dp"
-                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginTop="@dimen/dp_14"
                     android:background="@color/business_color_e8e8e8"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/home_detail_play_all" />

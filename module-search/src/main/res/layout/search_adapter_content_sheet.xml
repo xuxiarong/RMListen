@@ -61,7 +61,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_create"
-            style="@style/BusinessTextStyleSecond_4"
+            style="@style/BusinessTextStyleThird_4"
             bindDateString="@{item.created_at}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
@@ -73,7 +73,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_book_num"
-            style="@style/BusinessTextStyleSecond_4"
+            style="@style/BusinessTextStyleThird_4"
             bindPlayCountString="@{String.valueOf(item.audio_num)}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
@@ -85,7 +85,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/search_adapter_collected"
-            style="@style/BusinessTextStyleSecond_4"
+            style="@style/BusinessTextStyleThird_4"
             bindPlayCount="@{item.favour_num}"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
