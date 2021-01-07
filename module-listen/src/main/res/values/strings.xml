@@ -35,7 +35,7 @@
     <string name="listen_bought">已购</string>
     <string name="listen_my_sheet">我的听单</string>
     <string name="listen_create_sheet">创建的听单</string>
-    <string name="listen_collected_sheet">收藏的听单</string>
+    <string name="listen_collected_sheet">收藏听单</string>
     <string name="listen_subscription">订阅</string>
 
 
