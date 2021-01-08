@@ -117,7 +117,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                         // 验证码校验正确
                         startActivity(
                             ResetPasswordActivity::class.java,
-                            ResetPasswordActivity.getIntent(content, countryCode, phone,type)
+                            ResetPasswordActivity.getIntent(content, countryCode, phone, type)
                         )
                         finish()
                     },
@@ -137,11 +137,7 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
         launchOnIO {
             repository.logout(code).checkResult(onSuccess = {
                 showContentView()
-                showTip("注销成功")
-                viewModelScope.launch {
-                    delay(1000)
-                    loginOut()
-                }
+                loginOut()
             }, onError = { it, _ ->
                 inputClear.set(true)
                 showContentView()

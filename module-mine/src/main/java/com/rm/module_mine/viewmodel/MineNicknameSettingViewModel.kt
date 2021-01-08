@@ -1,5 +1,6 @@
 package com.rm.module_mine.viewmodel
 
+import android.text.TextUtils
 import androidx.databinding.ObservableField
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
@@ -32,7 +33,7 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
     private fun inputChange(content: String) {
         inputText.set(content)
         val titleModel = baseTitleModel.value
-        if (inputText.get()?.length ?: 0 > 0) {
+        if (enable()) {
             titleModel?.setRightEnabled(true)
             titleModel?.setRightTextColor(R.color.business_color_ff5e5e)
         } else {
@@ -42,10 +43,18 @@ class MineNicknameSettingViewModel(private val repository: MineRepository) : Bas
         baseTitleModel.value = titleModel
     }
 
+    private fun enable(): Boolean {
+        return inputText.get()?.length ?: 0 > 0
+                && !TextUtils.equals(inputText.get(), loginUser.get()?.nickname)
+    }
+
     /**
      * 修改用户信息
      */
     fun updateUserInfo() {
+        if (!enable()) {
+            return
+        }
         loginUser.get()?.let {
             val updateUserInfo = UpdateUserInfoBean(
                 inputText.get()!!,

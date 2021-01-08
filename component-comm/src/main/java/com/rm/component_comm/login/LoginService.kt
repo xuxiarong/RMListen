@@ -42,5 +42,5 @@ interface LoginService : ApplicationProvider {
     /**
      * 输入验证码节目
      */
-    fun startVerificationInput(context: Context, countryCode: String, phoneNumber: String, type: Int)
+    fun startVerificationInput(activity: Activity, countryCode: String, phoneNumber: String, type: Int)
 }

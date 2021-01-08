@@ -1,6 +1,7 @@
 package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.R
@@ -25,11 +26,17 @@ class ResetPasswordViewModel(private val repository: LoginRepository) : BaseVMVi
 
     // 错误提示信息
     var errorTips = ObservableField<String>("")
+    private val passwordRegex =
+        Regex("(?!^\\d+\$)(?!^[A-Za-z]+\$)(?!^[^A-Za-z0-9]+\$)(?!^.*[\\u4E00-\\u9FA5].*\$)^\\S{8,16}\$")
 
     /**
      * 修改密码
      */
     fun modify() {
+        if (!passwordRegex.matches(passwordInputViewModel.password.get()!!)) {
+            errorTips.set(BaseApplication.getContext().getString(R.string.login_psd_error))
+            return
+        }
         // 网络请求，根据验证码修改密码
         when (type) {
             CODE_TYPE_FORGET_PWD -> {

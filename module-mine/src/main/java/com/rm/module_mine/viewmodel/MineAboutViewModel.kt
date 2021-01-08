@@ -82,12 +82,14 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
                     if (lastVersion.toInt() - localVersion.toInt() > 0) {
                         mAdapter.data[0].showRed = true
                         mAdapter.data[0].sub_title = version
-                    }else{
-                        mAdapter.data[0].sub_title = BaseApplication.getContext().getString(R.string.mine_newest_version)
+                    } else {
+                        mAdapter.data[0].sub_title =
+                            BaseApplication.getContext().getString(R.string.mine_newest_version)
                     }
                 } catch (e: Exception) {
-                    mAdapter.data[0].sub_title =BuildConfig.VERSION_NAME
                     e.printStackTrace()
+                    mAdapter.data[0].sub_title =
+                        BaseApplication.getContext().getString(R.string.mine_newest_version)
                 }
                 mAdapter.notifyItemChanged(0)
             }, onError = { it, _ ->

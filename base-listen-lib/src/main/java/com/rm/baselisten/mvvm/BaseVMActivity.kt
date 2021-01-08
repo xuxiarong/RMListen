@@ -96,13 +96,13 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
 
     /**
      * 获取InputMethodManager，隐藏软键盘
-     * @param token
+     * @param view
      */
-    fun hideKeyboard(token: IBinder?) {
-        if (token != null) {
+    fun hideKeyboard(view: View?) {
+        if (view != null) {
             val im: InputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS)
+            im.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

@@ -21,6 +21,7 @@ import com.rm.module_login.databinding.LoginActivityLoginByPassowrdBinding
 import com.rm.module_login.utils.CountryListDialogHelper
 import com.rm.module_login.viewmodel.LoginByPasswordViewModel
 import kotlinx.android.synthetic.main.login_activity_login_by_passowrd.*
+import kotlinx.android.synthetic.main.login_include_layout_password_input.*
 import kotlinx.android.synthetic.main.login_include_layout_phone_input.*
 
 
@@ -83,6 +84,18 @@ class LoginByPasswordActivity :
                 startTranslationAnim(inputLayout, 0f)
             }
         }
+
+        login_by_verify_code_input.bindKeyboardVisibilityListener { b, _ ->
+            if (!b) {
+                login_by_verify_code_input.clearFocus()
+                login_include_password_input.clearFocus()
+            }
+        }
+        login_by_password_root_view.setOnClickListener {
+            hideKeyboard(login_by_password_root_view)
+            login_by_verify_code_input.clearFocus()
+            login_include_password_input.clearFocus()
+        }
     }
 
     private fun startTranslationAnim(view: View, translation: Float) {
@@ -120,7 +133,7 @@ class LoginByPasswordActivity :
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 this@LoginByPasswordActivity,
-                                    BusinessRetrofitClient.getUserAgreement()
+                                BusinessRetrofitClient.getUserAgreement()
                             )
                         }
                     })
@@ -134,21 +147,32 @@ class LoginByPasswordActivity :
                         override fun onTextClick(clickContent: String) {
                             BaseWebActivity.startBaseWebActivity(
                                 this@LoginByPasswordActivity,
-                                    BusinessRetrofitClient.getUserPrivacy()
+                                BusinessRetrofitClient.getUserPrivacy()
                             )
                         }
                     })
             ).build()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 200 && resultCode == 0x02) {
+            val extras = data?.extras
+            val phone = extras?.getString("inputPhone")
+            val countryCode = extras?.getString("inputCountryCode")
+            phone?.let {
+                mViewModel.phoneInputViewModel.phone.set(it)
+            }
+            countryCode?.let {
+                mViewModel.phoneInputViewModel.countryCode.set(it)
+            }
+        }
     }
 
     override fun finish() {
         intent.putExtra("inputPhone", mViewModel.phoneInputViewModel.phone.get()!!)
         intent.putExtra("inputCountryCode", mViewModel.phoneInputViewModel.countryCode.get()!!)
-        setResult(0x01,intent)
+        setResult(0x01, intent)
         super.finish()
     }
 

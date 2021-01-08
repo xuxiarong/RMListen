@@ -118,7 +118,7 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
                         loginUser.set(it)
                         updateUserInfoTime = System.currentTimeMillis()
                     },
-                    onError = {it,_->
+                    onError = { it, _ ->
                         showTip("$it")
                     })
             }
@@ -134,7 +134,7 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
             repository.mineGetLaseUrl().checkResult(onSuccess = {
                 showContentView()
                 showUploadDialog(context, it)
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 showContentView()
                 showTip("$it", R.color.business_color_ff5e5e)
             })
@@ -189,7 +189,9 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
      * @param context Context
      */
     fun settingClick(context: Context) {
-        MineSettingActivity.startActivity(context)
+        getActivity(context)?.let {
+            MineSettingActivity.startActivity(it)
+        }
     }
 
     /**

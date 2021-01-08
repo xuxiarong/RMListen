@@ -50,8 +50,8 @@ class LoginServiceImpl : LoginService {
         CountryListActivity.newInstance(activity, code)
     }
 
-    override fun startVerificationInput(context: Context, countryCode: String, phoneNumber: String, type: Int) {
-        VerificationInputActivity.startActivity(context, countryCode, phoneNumber, type)
+    override fun startVerificationInput(activity: Activity, countryCode: String, phoneNumber: String, type: Int) {
+        VerificationInputActivity.startActivity(activity, countryCode, phoneNumber, type)
     }
 
 }

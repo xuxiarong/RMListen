@@ -30,11 +30,6 @@ class LoginByVerifyViewModel(private val repository: LoginRepository) : BaseVMVi
 
     var loginStatus = ObservableField(0)
 
-//    // 回调到Activity中的方法块
-//    var callBackToActivity: (Int) -> Unit = {}
-
-//    var testDialogData = MutableLiveData<MutableList<LoginDialogModel>>(mutableListOf())
-
     /**
      * 获取验证码
      */

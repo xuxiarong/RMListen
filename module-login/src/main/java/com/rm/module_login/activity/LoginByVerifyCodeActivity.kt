@@ -4,9 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.view.ViewGroup
 import androidx.databinding.Observable
+import com.rm.baselisten.binding.bindKeyboardVisibilityListener
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
@@ -69,6 +68,16 @@ class LoginByVerifyCodeActivity :
 
         login_include_phone_input_arrow_view.setOnClickListener {
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
+        }
+
+        login_by_verify_code_input.bindKeyboardVisibilityListener { b, _ ->
+            if (!b){
+                login_by_verify_code_input.clearFocus()
+            }
+        }
+        login_verify_root_view.setOnClickListener {
+            hideKeyboard(login_verify_logo)
+            login_by_verify_code_input.clearFocus()
         }
     }
 

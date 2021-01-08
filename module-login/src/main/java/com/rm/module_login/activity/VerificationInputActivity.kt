@@ -1,5 +1,6 @@
 package com.rm.module_login.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.WindowManager
@@ -40,12 +41,17 @@ class VerificationInputActivity :
             )
         }
 
-        fun startActivity(context: Context, countryCode: String, phoneNumber: String, type: Int) {
-            context.startActivity(Intent(context, VerificationInputActivity::class.java).apply {
-                putExtra("countryCode", countryCode)
-                putExtra("phone", phoneNumber)
-                putExtra("type", type)
-            })
+        fun startActivity(activity: Activity, countryCode: String, phoneNumber: String, type: Int) {
+            activity.startActivityForResult(
+                Intent(
+                    activity,
+                    VerificationInputActivity::class.java
+                ).apply {
+                    putExtra("countryCode", countryCode)
+                    putExtra("phone", phoneNumber)
+                    putExtra("type", type)
+                }, 1007
+            )
         }
     }
 
@@ -88,9 +94,17 @@ class VerificationInputActivity :
         mViewModel.startCountDown()
     }
 
+    override fun finish() {
+        if (mViewModel.codeType.get() == TYPE_LOGOUT) {
+            setResult(1001)
+        }
+        super.finish()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mViewModel.countDownTime.set(0)
     }
+
 }
 
