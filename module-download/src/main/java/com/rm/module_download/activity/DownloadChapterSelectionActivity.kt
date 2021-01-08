@@ -7,7 +7,7 @@ import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.utilExt.sp
+import com.rm.baselisten.util.DLog
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -57,7 +57,8 @@ class DownloadChapterSelectionActivity :
             }
             mViewModel.mAdapter.notifyDataSetChanged()
         })
-        DownloadMemoryCache.downloadFinishChapterList.observe(this, Observer {
+        DownloadMemoryCache.downloadingAudioList.observe(this, Observer {
+            DLog.d("suolong","已下载列表变化")
             mViewModel.mAdapter.notifyDataSetChanged()
         })
 

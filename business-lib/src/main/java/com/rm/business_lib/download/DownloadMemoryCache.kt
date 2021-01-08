@@ -140,7 +140,6 @@ object DownloadMemoryCache {
         if (chapterList.size == 0) {
             ToastUtil.showTopToast(context, BaseApplication.CONTEXT.getString(R.string.business_download_all_exist))
         } else {
-
             DaoUtil(DownloadChapter::class.java, "").saveOrUpdate(chapterList)
             downloadingChapter.get().let {
                 isDownAll.set(true)
@@ -148,6 +147,7 @@ object DownloadMemoryCache {
                 if (it != null && it.isDownloading) {
                     ToastUtil.showTopToast(context, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
                 } else {
+                    ToastUtil.showTopToast(context, BaseApplication.CONTEXT.getString(R.string.business_download_add_cache))
                     AriaDownloadManager.startDownload(chapterList[0])
                 }
             }

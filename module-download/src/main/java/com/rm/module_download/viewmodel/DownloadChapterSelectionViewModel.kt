@@ -45,7 +45,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     val refreshModel = SmartRefreshLayoutStatusModel()
     val rvId = R.id.down_select_rv
     //选集下载的逻辑
-    private var chapterStartSequence = "1"
+    var chapterStartSequence = "1"
     var startSequence = ObservableField<String>("")
     var endSequence = ObservableField<String>("")
     private var lastChangStartIndex = 0
@@ -82,6 +82,8 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             //存储已选择的下载章节
             DownloadMemoryCache.addDownloadingChapter(context,tempDownloadList)
             //调用下载服务开始下载
+            isSelectAll.set(false)
+            selectChapterNum.set(0)
             mAdapter.notifyDataSetChanged()
         }
 
@@ -243,10 +245,16 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         if (lastChangStartIndex.toString() == startSequence.get() && lastChangeEndIndex.toString() == endSequence.get()
                 || lastChangStartIndex.toString() == endSequence.get() && lastChangeEndIndex.toString() == startSequence.get()) {
             if (selectDownChapterList.size > 0) {
+                mAdapter.data.forEach {
+                    it.chapter_edit_select = false
+                }
+                isSelectAll.set(false)
+                isSelectAll.notifyChange()
+                selectChapterNum.set(0)
+                mAdapter.notifyDataSetChanged()
                 val chapterStatusList = getChapterStatus(selectDownChapterList)
                 downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
                 DownloadMemoryCache.addDownloadingChapter(context,chapterStatusList)
-                mAdapter.notifyDataSetChanged()
             } else {
                 showTip("数据正在加载中，请稍后")
             }
@@ -259,6 +267,9 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
     private fun getDialogStartToEndIndexChapterList(startIndex: Int, endIndex: Int) {
         lastChangStartIndex = startIndex
         lastChangeEndIndex = endIndex
+        if(startIndex==0 || endIndex==0){
+            return
+        }
         downloadAudio.get()?.audio_id?.let { audioId ->
             launchOnIO {
                 repository.downloadChapterSelection(audioId = audioId, startSequence = startIndex , endSequence = endIndex)
@@ -273,7 +284,6 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                                 },
                                 onError = {it,_->
                                     DLog.i("download", "$it")
-                                    showTip("$it", R.color.business_color_ff5e5e)
                                 }
                         )
             }

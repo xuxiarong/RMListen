@@ -69,6 +69,7 @@
                 <EditText
                     android:id="@+id/download_start_et"
                     bindDownloadMaxSequence="@{viewModel.downloadAudio.last_sequence}"
+                    bindDownloadMinSequence="@{viewModel.chapterStartSequence}"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_33"
                     android:layout_weight="1"
@@ -94,6 +95,7 @@
 
                 <EditText
                     bindDownloadMaxSequence="@{viewModel.downloadAudio.last_sequence}"
+                    bindDownloadMinSequence="@{viewModel.chapterStartSequence}"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_33"
                     android:layout_weight="1"
