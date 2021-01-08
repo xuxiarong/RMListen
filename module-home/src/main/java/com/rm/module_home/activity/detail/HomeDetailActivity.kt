@@ -170,7 +170,9 @@ class HomeDetailActivity :
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val listenAudio = mViewModel.listenAudio.get()
                 if (listenAudio != null) {
-                    mViewModel.getChapterListWithId(listenAudio.listenChapterId)
+                    if(mViewModel.chapterAdapter.data.isEmpty()){
+                        mViewModel.getChapterListWithId(listenAudio.listenChapterId)
+                    }
                 } else {
                     mViewModel.getChapterList(1)
                 }

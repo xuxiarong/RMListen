@@ -103,4 +103,15 @@ object DownLoadFileUtils {
         }
         return false
     }
+
+    fun getPlayChapterFilePath(chapter: DownloadChapter) : String{
+        val file = File(createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
+        if (file.exists() && file.isFile) {
+           if(file.length() >= chapter.size){
+               return file.absolutePath
+           }
+        }
+        return ""
+    }
+
 }

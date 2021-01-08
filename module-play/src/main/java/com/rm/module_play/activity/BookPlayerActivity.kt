@@ -26,6 +26,7 @@ import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.module_play.BR
@@ -58,6 +59,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playChapterList: MutableList<DownloadChapter> = mutableListOf()
         var playCurrentDuration: Long = 0L
         var playSortType: String = AudioSortType.SORT_ASC
+        var isContinuePlay : Boolean = false
 
         fun startPlayActivity(
                 context: Context,
@@ -84,6 +86,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
                 //音频ID不能为空
                 if (playAudioId.isEmpty() || playChapterId.isEmpty()) {
+                    isContinuePlay = false
                     val baseActivity = context as BaseActivity
                     baseActivity.tipView.showTipView(baseActivity, "书籍或者章节的ID不能为空")
                     return
@@ -91,9 +94,11 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     BaseConstance.basePlayInfoModel.get()?.let {
                         //如果播放的书籍或者章节不一致，则先把播放器的数据清除掉
                         if(playAudioId!=it.playAudioId || playChapterId!=it.playChapterId){
+                            isContinuePlay = false
                             PlayGlobalData.playChapterList.value = mutableListOf()
                             BaseConstance.updateBaseChapterId(playAudioId, playChapterId)
                         }else{
+                            isContinuePlay = true
                             if(sortType!=PlayGlobalData.playChapterListSort.get()){
                                 PlayGlobalData.playChapterList.value?.let { playList ->
                                     playList.reverse()
@@ -248,16 +253,21 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
      */
     private fun updateMusicPlayerData(playPath: List<DownloadChapter>, chapterId: String) {
         val baseAudioList = mutableListOf<BaseAudioInfo>()
-        playPath.forEach {
+        playPath.forEach { chapter ->
+            val playUrl = if(TextUtils.isEmpty(DownLoadFileUtils.getPlayChapterFilePath(chapter))){
+                chapter.path_url
+            }else{
+                DownLoadFileUtils.getPlayChapterFilePath(chapter)
+            }
             baseAudioList.add(
                     BaseAudioInfo(
-                            audioPath = it.path_url,
-                            audioName = it.chapter_name,
-                            filename = it.chapter_name,
-                            audioId = it.audio_id.toString(),
-                            chapterId = it.chapter_id.toString(),
-                            duration = it.realDuration,
-                            playCount = it.play_count.toString()
+                            audioPath = playUrl,
+                            audioName = chapter.chapter_name,
+                            filename = chapter.chapter_name,
+                            audioId = chapter.audio_id.toString(),
+                            chapterId = chapter.chapter_id.toString(),
+                            duration = chapter.realDuration,
+                            playCount = chapter.play_count.toString()
                     )
             )
         }
@@ -271,10 +281,20 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             chapterId: String,
             chapterDuration: Long
     ) {
+        //如果播放进度大于章节进度，则重新从0开始
         if (playCurrentDuration >= chapterDuration) {
             playCurrentDuration = 0
         }
+        //如果播放的是上一次播放的
+        if(isContinuePlay){
+            musicPlayerManger.setAdPath(arrayListOf())
+            musicPlayerManger.startPlayMusic(chapterId = chapterId)
+            return
+        }
+
         mViewModel.getChapterAd { musicPlayerManger.startPlayMusic(chapterId = chapterId) }
+
+
     }
 
     override fun initData() {

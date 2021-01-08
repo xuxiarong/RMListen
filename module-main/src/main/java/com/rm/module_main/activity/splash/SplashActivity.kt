@@ -229,15 +229,13 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     }
 
     private fun requestPermissions() {
-        requestPermissionForResult(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        requestPermissionForResult(permission = mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),
             actionDenied = {
-//                initSplashData()
+                initSplashData()
             },
             actionGranted = {
                 // todo
-//                initSplashData()
-                MainMainActivity.startMainActivity(this@SplashActivity)
-                finish()
+                initSplashData()
             },
             actionPermanentlyDenied = {
                 finish()

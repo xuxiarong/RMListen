@@ -129,7 +129,7 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
 
     private fun requestPermission(baseActivity : BaseActivity?, actionGranted: () -> Unit) {
         baseActivity?.let {
-            baseActivity.requestPermissionForResult(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            baseActivity.requestPermissionForResult(permission = mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),
                 actionDenied = {
                     baseActivity.tipView.showTipView(
                         baseActivity,

@@ -288,8 +288,8 @@ fun DownloadStatusView.bindChapterList(
     setDownloadStatus(checkChapter)
 }
 
-@BindingAdapter("bindDownloadMaxSequence")
-fun EditText.bindDownloadMaxSequence(maxSelectSequence: String) {
+@BindingAdapter("bindDownloadMaxSequence","bindDownloadMinSequence",requireAll = true)
+fun EditText.bindDownloadMaxSequence(maxSelectSequence: String,minSelectSequence: String) {
 
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -305,6 +305,8 @@ fun EditText.bindDownloadMaxSequence(maxSelectSequence: String) {
                         val result = s.toString().toInt()
                         if (result > maxSelectSequence.toInt()) {
                             setText(maxSelectSequence)
+                        }else if(result == 0){
+                            setText(minSelectSequence)
                         }
                         setSelection(s.length)
                     }
