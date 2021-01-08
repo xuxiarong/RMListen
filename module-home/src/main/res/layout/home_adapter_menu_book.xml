@@ -60,7 +60,7 @@
             android:id="@+id/home_menu_book_adapter_tips"
             bindText="@{audioBean.audio_label}"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_16"
+            android:layout_height="@dimen/dp_14"
             android:enabled="false"
             android:gravity="center"
             android:paddingStart="@dimen/dp_4"
@@ -70,8 +70,8 @@
             app:layout_constraintRight_toRightOf="@id/home_menu_book_adapter_icon"
             app:layout_constraintTop_toTopOf="@id/home_menu_book_adapter_icon"
             app:rv_backgroundColor="@color/business_text_color_333333"
-            app:rv_cornerRadius_BL="@dimen/dp_4"
-            app:rv_cornerRadius_TR="@dimen/dp_4"
+            app:rv_cornerRadius_BL="@dimen/dp_3"
+            app:rv_cornerRadius_TR="@dimen/dp_3"
             tools:text="文案" />
 
         <androidx.appcompat.widget.AppCompatTextView

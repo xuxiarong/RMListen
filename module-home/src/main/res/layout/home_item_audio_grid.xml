@@ -72,13 +72,23 @@
             app:layout_constraintEnd_toEndOf="@id/homeItemRecommendHorDoubleTopIcon"
             tools:text="123" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.flyco.roundview.RoundTextView
             android:id="@+id/homeItemRecommendHorDoubleTopTag"
-            style="@style/BusinessLabStyleHalfRound_FF5E5E"
             isVisible="@{!item.gridRecommendRvModel.audioIsAd &amp;&amp; item.gridRecommendRvModel.audio_label.length()>0}"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_14"
+            android:paddingStart="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_4"
             android:text="@{item.gridRecommendRvModel.audio_label}"
+            android:textColor="@color/business_text_color_ffffff"
+            android:textSize="@dimen/business_text_size_10sp"
             app:layout_constraintEnd_toEndOf="@+id/homeItemRecommendHorDoubleTopIcon"
-            app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon" />
+            app:layout_constraintTop_toTopOf="@+id/homeItemRecommendHorDoubleTopIcon"
+            app:rv_backgroundColor="@color/business_color_ff5e5e"
+            app:rv_cornerRadius_BL="@dimen/dp_3"
+            app:rv_cornerRadius_TR="@dimen/dp_3"
+            tools:text="文案" />
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/homeItemRecommendHorDoubleTopName"
@@ -103,7 +113,6 @@
             android:layout_marginTop="@dimen/dp_6"
             android:ellipsize="end"
             android:lines="1"
-            app:drawableStartCompat="@drawable/business_icon_anchor"
             android:textColor="@color/business_color_b1b1b1"
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintStart_toStartOf="@+id/homeItemRecommendHorDoubleTopName"
