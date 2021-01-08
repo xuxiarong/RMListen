@@ -234,6 +234,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
             }
             dialogSelectChapterSize.set(chapterSize)
         } else {
+            dialogSelectChapterSize.set(0)
             selectDownChapterList.clear()
         }
     }
@@ -283,6 +284,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                                     }
                                 },
                                 onError = {it,_->
+                                    checkDialogSelectChapterLegal(mutableListOf())
                                     DLog.i("download", "$it")
                                 }
                         )

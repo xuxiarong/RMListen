@@ -237,8 +237,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      * 被动暂停播放，仅提供给失去焦点时内部调用
      */
     private fun passivePause() {
-        mExoPlayer.playWhenReady = false
-        this.mIsPassive = true
+        if(isPlaying()){
+            this.mIsPassive = true
+            pause()
+        }
         showNotification()
     }
 
@@ -251,6 +253,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     private fun startPlay(musicInfo: BaseAudioInfo) {
+        mAudioFocusManager.requestAudioFocus()
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
             if (musicInfo.audioPath.isNotEmpty()) {
                 val source = ProgressiveMediaSource.Factory(dataSourceFactory)
@@ -263,21 +266,13 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 exoLog("没有链接")
             }
         } else {
-            if (mAudioFocusManager.requestAudioFocus() == AUDIOFOCUS_REQUEST_GRANTED) {
-
-            } else {
-                exoLog("获取不到焦点")
-            }
+            exoLog("获取不到焦点")
         }
     }
 
-    private fun prePlay(){
-
-    }
-
-
     private fun startPlayAd(adPath: String) {
         mUpdateProgressHandler.removeMessages(0)
+        mAudioFocusManager.requestAudioFocus()
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
             val source = ProgressiveMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(Uri.parse(adPath))

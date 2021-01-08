@@ -10,6 +10,7 @@ import com.rm.baselisten.model.BasePlayProgressModel
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.NetWorkUtils
 import com.rm.baselisten.util.getFloattMMKV
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
@@ -244,6 +245,11 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
     fun getChapterAd(actionPlayAd: () -> Unit) {
+        if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+            actionPlayAd()
+            return
+        }
+
         GlobalScope.launch(Dispatchers.IO) {
             val requestBean =
                 BusinessAdRequestModel(arrayOf("ad_player_voice", "ad_player_audio_cover"))

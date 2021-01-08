@@ -3,6 +3,7 @@ package com.rm.baselisten.binding
 import android.view.View
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.util.setGlobalPlayOnClickNotDoubleListener
+import com.rm.baselisten.util.setPlayOnClickNotDoubleListener
 
 /**
  * desc   :

@@ -128,7 +128,7 @@
                 android:layout_height="@dimen/dp_44"
                 android:layout_marginTop="@dimen/dp_44"
                 android:background="@drawable/business_selector_round_btn"
-                android:enabled="@{!TextUtils.isEmpty(viewModel.startSequence) &amp;&amp; !TextUtils.isEmpty(viewModel.endSequence)}"
+                android:enabled="@{viewModel.dialogSelectChapterSize>0}"
                 android:gravity="center"
                 android:onClick="@{()->viewModel.startDownSelectChapter(context)}"
                 android:text="@string/download_download"
@@ -140,7 +140,7 @@
                 android:layout_height="@dimen/dp_15"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="fitXY"
-                android:src="@{!TextUtils.isEmpty(viewModel.startSequence) &amp;&amp; !TextUtils.isEmpty(viewModel.endSequence)?@drawable/business_menu_red_bg:@drawable/business_banner_bg}" />
+                android:src="@{viewModel.dialogSelectChapterSize>0?@drawable/business_menu_red_bg:@drawable/business_banner_bg}" />
 
             <TextView
                 bindDownSelectChapterSize="@{viewModel.dialogSelectChapterSize}"

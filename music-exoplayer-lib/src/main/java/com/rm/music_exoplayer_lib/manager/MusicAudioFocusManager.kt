@@ -58,19 +58,6 @@ class MusicAudioFocusManager constructor(val context: Context) {
         }
 
     }
-    //重新获取
-    fun cxAudioFocus(): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mFocusRequest?.let {
-                mAudioManager.requestAudioFocus(it)
-            }?:-1
-        } else {
-            mAudioManager.requestAudioFocus(
-                onAudioFocusChangeListener,
-                AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN
-            )
-        }
-    }
 
     /**
      * 停止播放释放音频焦点
