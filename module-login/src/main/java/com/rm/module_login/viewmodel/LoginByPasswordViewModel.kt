@@ -79,8 +79,13 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
      * 忘记密码
      */
     fun forgetPassword(context: Context) {
-        ForgetPasswordActivity.startActivity(context, phoneInputViewModel.phone.get()!!)
-//        startActivity(ForgetPasswordActivity::class.java)
+        getActivity(context)?.let {
+            ForgetPasswordActivity.startActivity(
+                it,
+                phoneInputViewModel.phone.get()!!,
+                phoneInputViewModel.countryCode.get()!!
+            )
+        }
     }
 
     /**

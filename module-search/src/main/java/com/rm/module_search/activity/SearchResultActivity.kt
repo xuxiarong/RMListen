@@ -69,10 +69,10 @@ class SearchResultActivity :
         attachViewPager()
 
         mDataBind.root.setOnClickListener {
-            hideKeyboard(mDataBind.searchResultEditText.applicationWindowToken)
+            hideKeyboard(mDataBind.searchResultEditText)
         }
         mDataBind.searchResultSuggestLayout.setOnClickListener {
-            hideKeyboard(mDataBind.searchResultEditText.applicationWindowToken)
+            hideKeyboard(mDataBind.searchResultEditText)
         }
 
     }

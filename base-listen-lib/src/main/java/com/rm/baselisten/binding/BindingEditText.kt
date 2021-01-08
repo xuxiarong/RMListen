@@ -1,10 +1,7 @@
 package com.rm.baselisten.binding
 
 import android.content.Context
-import android.text.Editable
-import android.text.InputFilter
-import android.text.Spanned
-import android.text.TextWatcher
+import android.text.*
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
@@ -12,6 +9,7 @@ import android.view.View
 import android.widget.EditText
 import androidx.databinding.BindingAdapter
 import com.rm.baselisten.helper.KeyboardStatusDetector
+import com.rm.baselisten.util.DLog
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -35,10 +33,10 @@ fun EditText.afterTextChanged(action: ((String) -> Unit)?) {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             action(s.toString())
-
         }
     })
 }
+
 
 @BindingAdapter(value = ["afterTextChanged"])
 fun EditText.afterTextChanged(action: ((Context, String) -> Unit)?) {
@@ -136,7 +134,7 @@ fun EditText.isShowPasswordText(isShow: Boolean) {
 
 
 /**
- * 是否能够输入表情（非表情以外其他都能输入）
+ * 是否能够输入表情和空格（非表情和空格以外其他都能输入）
  */
 @BindingAdapter("bindCanInputEmoji")
 fun EditText.bindCanInputEmoji(bindCanInputEmoji: Boolean? = true) {
@@ -146,6 +144,38 @@ fun EditText.bindCanInputEmoji(bindCanInputEmoji: Boolean? = true) {
     val inputFilter: InputFilter = object : InputFilter {
         var pattern: Pattern =
             Pattern.compile("[^a-zA-Z0-9\\u4E00-\\u9FA5_\\{\\}\\[\\]\\|,：.\"!@#$%^&*()_+=-「」（）！？¥:;'。，；/【】、｜…<《》>]")
+
+        override fun filter(
+            charSequence: CharSequence,
+            i: Int,
+            i1: Int,
+            spanned: Spanned,
+            i2: Int,
+            i3: Int
+        ): CharSequence {
+            val matcher: Matcher = pattern.matcher(charSequence)
+            return if (!matcher.find()) {
+                charSequence
+            } else {
+                ""
+            }
+        }
+    }
+    val filter = arrayOf(inputFilter)
+    filters = filter
+}
+
+/**
+ * 是否能够输入表情（非表情以外其他都能输入）
+ */
+@BindingAdapter("bindCanInputEmojiAndSpace")
+fun EditText.bindCanInputEmojiAndSpace(bindCanInputEmoji: Boolean? = true) {
+    if (bindCanInputEmoji == true) {
+        return
+    }
+    val inputFilter: InputFilter = object : InputFilter {
+        var pattern: Pattern =
+            Pattern.compile("[^a-zA-Z0-9\\u4E00-\\u9FA5_\\{\\}\\[\\]\\|,：.\\\t \"!@#$%^&*()_+=-「」（）！？¥:;'。，；/【】、｜…<《》>]")
 
         override fun filter(
             charSequence: CharSequence,

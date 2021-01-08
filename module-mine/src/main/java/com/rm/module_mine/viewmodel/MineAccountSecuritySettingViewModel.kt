@@ -46,13 +46,12 @@ class MineAccountSecuritySettingViewModel(private val repository: MineRepository
             ).checkResult(
                 onSuccess = {
                     showContentView()
-                    RouterHelper.createRouter(LoginService::class.java)
-                        .startVerificationInput(context, countryCode, phone, type)
-                    if (type == 2) {
-                        finish()
+                    getActivity(context)?.let {
+                        RouterHelper.createRouter(LoginService::class.java)
+                            .startVerificationInput(it, countryCode, phone, type)
                     }
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     it?.let { showTip(it, R.color.business_color_ff5e5e) }
                 }

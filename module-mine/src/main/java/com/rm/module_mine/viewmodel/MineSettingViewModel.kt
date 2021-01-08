@@ -84,7 +84,7 @@ class MineSettingViewModel : BaseVMViewModel() {
         if (clearAllCache) {
             showTip("缓存清除成功")
             cacheSize.set("0.00KB")
-        }else{
+        } else {
             showTip("缓存清除失败")
         }
     }
@@ -94,7 +94,9 @@ class MineSettingViewModel : BaseVMViewModel() {
      */
     fun clickAccountSecurity(context: Context) {
         if (isLogin.get()) {
-            startActivity(MineSettingAccountSecurityActivity::class.java)
+            getActivity(context)?.let {
+                MineSettingAccountSecurityActivity.startActivity(it)
+            }
         } else {
             quicklyLogin(context)
         }
@@ -120,7 +122,6 @@ class MineSettingViewModel : BaseVMViewModel() {
     fun clickNotify(context: Context) {
 
     }
-
 
 
     private fun quicklyLogin(context: Context) {

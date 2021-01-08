@@ -2,17 +2,12 @@ package com.rm.module_mine.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.binding.bindUrl
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
-import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.loginUser
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
@@ -20,6 +15,8 @@ import com.rm.module_mine.activity.MimeFeedbackActivity.Companion.FEEDBACK_REQUE
 import com.rm.module_mine.activity.MimeFeedbackActivity.Companion.FEEDBACK_RESULT_CODE
 import com.rm.module_mine.activity.MimeGetBookActivity.Companion.GET_BOOK_REQUEST_CODE
 import com.rm.module_mine.activity.MimeGetBookActivity.Companion.GET_BOOK_RESULT_CODE
+import com.rm.module_mine.activity.MineSettingActivity.Companion.SETTING_REQUEST_CODE
+import com.rm.module_mine.activity.MineSettingActivity.Companion.SETTING_RESULT_CODE
 import com.rm.module_mine.databinding.MineFragmentHomeBinding
 import com.rm.module_mine.viewmodel.MineHomeViewModel
 
@@ -85,9 +82,11 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
                 mViewModel.showTip("反馈成功")
             }
             requestCode == GET_BOOK_REQUEST_CODE && resultCode == GET_BOOK_RESULT_CODE -> {
-                mViewModel.showTip("提交成功")
+                mViewModel.showToast("提交成功小编会尽快收集您提交的书籍，请耐心等候")
             }
-
+            requestCode == SETTING_REQUEST_CODE && resultCode == SETTING_RESULT_CODE -> {
+                mViewModel.showTip("注销成功")
+            }
         }
     }
 }

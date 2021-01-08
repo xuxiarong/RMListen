@@ -44,13 +44,22 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.flyco.roundview.RoundTextView
                 android:id="@+id/home_book_adapter_tips"
-                style="@style/BusinessLabStyleHalfRound_FF5E5E"
                 bindText="@{item.audio.audio_label}"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_14"
+                android:paddingStart="@dimen/dp_4"
+                android:paddingEnd="@dimen/dp_4"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_10sp"
                 app:layout_constraintRight_toRightOf="@id/listenItemRecentIv"
                 app:layout_constraintTop_toTopOf="@id/listenItemRecentIv"
+                app:rv_backgroundColor="@color/business_color_ff5e5e"
+                app:rv_cornerRadius_BL="@dimen/dp_3"
+                app:rv_cornerRadius_TR="@dimen/dp_3"
                 tools:text="文案" />
+
 
             <TextView
                 android:id="@+id/home_book_adapter_name"

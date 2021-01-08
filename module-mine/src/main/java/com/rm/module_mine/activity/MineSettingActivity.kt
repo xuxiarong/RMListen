@@ -1,24 +1,14 @@
 package com.rm.module_mine.activity
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
-import android.util.Log
-import android.view.Gravity
-import android.widget.FrameLayout
-import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
-import com.google.android.material.snackbar.Snackbar
-import com.gyf.barlibrary.ImmersionBar.getStatusBarHeight
-import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.ToastUtil
-import com.rm.baselisten.util.toast.XToast
-import com.rm.baselisten.utilExt.String
-import com.rm.baselisten.utilExt.getStateHeight
-import com.rm.business_lib.helpter.loginOut
+import com.rm.baselisten.util.DLog
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
+import com.rm.module_mine.activity.MineSettingAccountSecurityActivity.Companion.ACCOUNT_SECURITY_REQUEST_CODE
+import com.rm.module_mine.activity.MineSettingAccountSecurityActivity.Companion.ACCOUNT_SECURITY_RESULT_CODE
 import com.rm.module_mine.databinding.MineActivitySettingBinding
 import com.rm.module_mine.util.DataCacheUtils
 import com.rm.module_mine.viewmodel.MineSettingViewModel
@@ -33,8 +23,13 @@ import com.rm.module_mine.viewmodel.MineSettingViewModel
 class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSettingViewModel>() {
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, MineSettingActivity::class.java))
+        const val SETTING_REQUEST_CODE = 1005
+        const val SETTING_RESULT_CODE = 1006
+        fun startActivity(activity: Activity) {
+            activity.startActivityForResult(
+                Intent(activity, MineSettingActivity::class.java),
+                SETTING_REQUEST_CODE
+            )
         }
     }
 
@@ -54,7 +49,7 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
         val titleModel = BaseTitleModel()
             .setLeftIcon(R.drawable.base_icon_back)
             .setTitle(getString(R.string.mine_settings))
-            .setLeftIconClick { finish()}
+            .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = titleModel
     }
 
@@ -68,11 +63,18 @@ class MineSettingActivity : BaseVMActivity<MineActivitySettingBinding, MineSetti
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        DLog.i(
+            "setting onActivityResult: ",
+            "requestCode:$requestCode         resultCode:$resultCode"
+        )
         when {
             requestCode == MimeGetBookActivity.GET_BOOK_REQUEST_CODE && resultCode == MimeGetBookActivity.GET_BOOK_RESULT_CODE -> {
-                mViewModel.showTip("提交成功")
+                mViewModel.showToast("提交成功小编会尽快收集您提交的书籍，请耐心等候")
             }
-
+            requestCode == ACCOUNT_SECURITY_REQUEST_CODE && resultCode == ACCOUNT_SECURITY_RESULT_CODE -> {
+                setResult(SETTING_RESULT_CODE)
+                finish()
+            }
         }
     }
 }
