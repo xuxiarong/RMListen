@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_12"
                 android:drawableLeft="@drawable/download_ic_duration"
-                android:text="@{TimeUtils.getListenDuration(itemBean.duration)}"
+                android:text="@{TimeUtils.getPlayDuration(itemBean.realDuration)}"
                 android:textColor="@color/business_text_color_b1b1b1"
                 tools:text="15:14"
                 android:textSize="@dimen/business_text_size_12sp" />

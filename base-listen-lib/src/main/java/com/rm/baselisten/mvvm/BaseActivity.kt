@@ -228,7 +228,7 @@ abstract class BaseActivity : FragmentActivity() {
     private fun hasPermissions(permissions: MutableList<String>): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             permissions.forEach {
-                if (hasPermission(it)) {
+                if (!hasPermission(it)) {
                     return false
                 }
             }
@@ -240,7 +240,7 @@ abstract class BaseActivity : FragmentActivity() {
 
     private fun hasPermission(permission: String): Boolean {
         val b = ContextCompat.checkSelfPermission(this, permission) ==
-                PackageManager.PERMISSION_DENIED
+                PackageManager.PERMISSION_GRANTED
         return b
     }
 }

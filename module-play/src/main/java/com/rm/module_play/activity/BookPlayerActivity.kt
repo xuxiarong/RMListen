@@ -26,6 +26,7 @@ import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.share.ShareManage
 import com.rm.business_lib.wedgit.swipleback.SwipeBackLayout
 import com.rm.module_play.BR
@@ -252,16 +253,21 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
      */
     private fun updateMusicPlayerData(playPath: List<DownloadChapter>, chapterId: String) {
         val baseAudioList = mutableListOf<BaseAudioInfo>()
-        playPath.forEach {
+        playPath.forEach { chapter ->
+            val playUrl = if(TextUtils.isEmpty(DownLoadFileUtils.getPlayChapterFilePath(chapter))){
+                chapter.path_url
+            }else{
+                DownLoadFileUtils.getPlayChapterFilePath(chapter)
+            }
             baseAudioList.add(
                     BaseAudioInfo(
-                            audioPath = it.path_url,
-                            audioName = it.chapter_name,
-                            filename = it.chapter_name,
-                            audioId = it.audio_id.toString(),
-                            chapterId = it.chapter_id.toString(),
-                            duration = it.realDuration,
-                            playCount = it.play_count.toString()
+                            audioPath = playUrl,
+                            audioName = chapter.chapter_name,
+                            filename = chapter.chapter_name,
+                            audioId = chapter.audio_id.toString(),
+                            chapterId = chapter.chapter_id.toString(),
+                            duration = chapter.realDuration,
+                            playCount = chapter.play_count.toString()
                     )
             )
         }
