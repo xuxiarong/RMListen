@@ -23,6 +23,7 @@
         android:layout_height="190dp"
         app:AutoPlayTime="5000"
         app:clipChildrenTopBottomMargin="0dp"
+        app:placeholderDrawable="@drawable/base_ic_default"
         app:pageChangeDuration="1000"
         app:pointsPosition="CENTER"
         app:viewPagerClipChildren="true" />

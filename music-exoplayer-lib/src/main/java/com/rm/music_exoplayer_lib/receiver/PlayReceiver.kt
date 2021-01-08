@@ -6,9 +6,11 @@ import android.content.Intent
 import android.media.AudioManager.ACTION_AUDIO_BECOMING_NOISY
 import android.view.KeyEvent
 import android.widget.Toast
+import com.rm.business_lib.PlayGlobalData
 import com.rm.music_exoplayer_lib.activity.MusicLockActivity
 import com.rm.music_exoplayer_lib.constants.*
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
+import com.rm.music_exoplayer_lib.notification.NotificationManger
 import com.rm.music_exoplayer_lib.utils.ExoplayerLogger
 
 
@@ -49,7 +51,19 @@ class PlayReceiver : BroadcastReceiver() {
             }
             //前台进程关闭进程
             MUSIC_INTENT_ACTION_CLICK_CLOSE -> {
-
+                musicPlayerManger.cleanNotification()
+            }
+            //前台进程关闭进程
+            MUSIC_INTENT_ACTION_CLICK_NEXT_15S -> {
+                if(!PlayGlobalData.playAdIsPlaying.get()){
+                    musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() + 1000 * 15)
+                }
+            }
+            //前台进程关闭进程
+            MUSIC_INTENT_ACTION_CLICK_PRE_15S -> {
+                if(!PlayGlobalData.playAdIsPlaying.get()){
+                    musicPlayerManger.seekTo(musicPlayerManger.getCurDurtion() - 1000 * 15)
+                }
             }
             Intent.ACTION_SCREEN_OFF -> {
                 if (musicPlayerManger.isPlaying()) {

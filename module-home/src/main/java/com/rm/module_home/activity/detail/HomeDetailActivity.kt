@@ -8,10 +8,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.utilExt.getStateHeight
-import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.DetailAudioSortDao
 import com.rm.business_lib.db.audiosort.DetailAudioSort
@@ -183,6 +184,17 @@ class HomeDetailActivity :
             mViewModel.chapterAdapter.setList(getChapterStatus(mViewModel.chapterAdapter.data))
             mViewModel.chapterAdapter.notifyDataSetChanged()
         })
+        AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                AriaDownloadManager.needShowNetError.get().let {
+                    if(it){
+                        tipView.showNetError(this@HomeDetailActivity)
+                    }
+                }
+            }
+        })
+
     }
 
     private fun getChapterStatus(chapterList: List<DownloadChapter>): MutableList<DownloadChapter> {
@@ -198,4 +210,16 @@ class HomeDetailActivity :
 
     override fun initData() {
     }
+
+    override fun onResume() {
+        super.onResume()
+        if(mViewModel.listenAudio.get() == null){
+            BaseConstance.basePlayInfoModel.get()?.let {
+                if(it.playAudioId == mViewModel.audioId.get()){
+                    mViewModel.queryAudioListenRecord()
+                }
+            }
+        }
+    }
+
 }

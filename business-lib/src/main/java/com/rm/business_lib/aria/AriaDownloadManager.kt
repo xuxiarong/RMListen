@@ -25,10 +25,11 @@ object AriaDownloadManager {
     const val TAG = "suolong_AriaDownloadManager"
     //是否在下载状态
     var isDownloading = ObservableBoolean(false)
+    var needShowNetError = ObservableBoolean(false)
 
 
     fun startDownload(chapter: DownloadChapter) {
-
+        checkNetWork()
         val file = File(DownLoadFileUtils.createFileWithAudio(chapter.audio_id.toString()).absolutePath, chapter.chapter_name)
         Aria.download(this).setMaxSpeed(800).register()
         DLog.d(TAG, "register filepath = ${file.absolutePath}")
@@ -39,6 +40,19 @@ object AriaDownloadManager {
                 .create() //创建并启动下载
 
     }
+
+    private fun checkNetWork(){
+        if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+            if(needShowNetError.get()){
+                needShowNetError.notifyChange()
+            }else{
+                needShowNetError.set(true)
+            }
+        }else{
+            needShowNetError.set(false)
+        }
+    }
+
 
     fun pauseDownloadChapter(chapter: DownloadChapter) {
         Aria.download(this).stopAllTask()
@@ -75,14 +89,6 @@ object AriaDownloadManager {
                 DLog.d(TAG, "taskRunning  percent = $percent convertSpeed = $convertSpeed speed = $speed")
             }
         }
-
-//        else{
-//            isDownloading.set(false)
-//            Aria.download(this).removeAllTask(false)
-//            DownloadMemoryCache.downloadingChapter.get()?.let {
-//                startDownload(it,isSingleDown.get())
-//            }
-//        }
     }
 
     @Download.onTaskComplete
@@ -128,6 +134,8 @@ object AriaDownloadManager {
                         startDownload(it)
                     }
                 }
+            }else{
+                checkNetWork()
             }
         }catch (e : Exception){
             e.printStackTrace()

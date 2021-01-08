@@ -61,9 +61,20 @@ class NotificationRemoteView constructor(val context: Context) {
         )
         //关闭
         defaultRemoteView.setOnClickPendingIntent(
-                R.id.music_notice_def_btn_close,
+                R.id.play_notify_close,
                 getClickPending(MUSIC_INTENT_ACTION_CLICK_CLOSE)
         )
+        //往前15秒
+        defaultRemoteView.setOnClickPendingIntent(
+                R.id.music_pre_15s,
+                getClickPending(MUSIC_INTENT_ACTION_CLICK_PRE_15S)
+        )
+        //往后15秒
+        defaultRemoteView.setOnClickPendingIntent(
+                R.id.music_next_15s,
+                getClickPending(MUSIC_INTENT_ACTION_CLICK_NEXT_15S)
+        )
+
         return defaultRemoteView
     }
 

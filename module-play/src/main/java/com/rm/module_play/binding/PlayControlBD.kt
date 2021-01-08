@@ -117,11 +117,6 @@ fun PlayControlView.bindPausePlayClick(pausePlay: (() -> Unit)?) {
     pausePlayVar = pausePlay
 }
 
-@BindingAdapter("bindResetPlay")
-fun PlayControlView.bindResetPlay(resetPlay: (() -> Unit)?) {
-    resetPlayVar = resetPlay
-}
-
 @BindingAdapter("bindPlayCountDownSecond")
 fun PlayControlView.bindPlayCountDownSecond(second: Long) {
     if (second == 0L) {

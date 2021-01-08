@@ -2,6 +2,7 @@ package com.rm.business_lib.db.download
 
 import com.rm.baselisten.util.DLog
 import com.rm.business_lib.db.*
+import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.file.DownLoadFileUtils
 
 /**
@@ -37,12 +38,14 @@ object DownloadDaoUtils {
         return null
     }
 
-    fun deleteChapterByAudio(audioId: Long){
+    fun deleteFinishChapterByAudio(audioId: Long){
         try {
             val queryBuilder = downloadChapterDao.queryBuilder()
             if (queryBuilder != null) {
                 val result = queryBuilder
-                    .where(DownloadChapterDao.Properties.Audio_id.eq(audioId)).list()
+                    .where(DownloadChapterDao.Properties.Audio_id.eq(audioId))
+                    .where(DownloadChapterDao.Properties.Down_status.eq(DownloadConstant.CHAPTER_STATUS_DOWNLOAD_FINISH))
+                    .list()
                 if(result!=null){
                     downloadChapterDao.delete(result)
                 }
@@ -63,15 +66,20 @@ object DownloadDaoUtils {
                     val iterator = result.iterator()
                     audio.download_num = 0
                     audio.down_size = 0L
+                    var listenFinishNum = 0
                     while(iterator.hasNext()){
                         val next = iterator.next()
                         if(!DownLoadFileUtils.checkChapterDownFinish(next)){
                             iterator.remove()
                         }else{
+                            if(next.listen_duration >= next.realDuration){
+                                listenFinishNum++
+                            }
                             audio.download_num +=1
                             audio.down_size += next.size
                         }
                     }
+                    audio.listen_finish = listenFinishNum>0 && listenFinishNum == result.size
                     return result
                 }
             }

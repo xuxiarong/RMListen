@@ -100,12 +100,12 @@ object DownloadMemoryCache {
         audioList.forEach { deleteAudioToDownloadMemoryCache(it) }
     }
 
-    fun deleteAudioToDownloadMemoryCache(audio: DownloadAudio) {
+    private fun deleteAudioToDownloadMemoryCache(audio: DownloadAudio) {
         val cacheAudio = getAudioFromCache(audio)
         if (cacheAudio != null) {
             downloadingAudioList.remove(cacheAudio)
             DaoUtil(DownloadAudio::class.java, "").delete(audio)
-            audio.chapterList.forEach { DaoUtil(DownloadChapter::class.java, "").delete(it) }
+            DownloadDaoUtils.deleteFinishChapterByAudio(audio.audio_id)
         }
     }
 
@@ -113,10 +113,6 @@ object DownloadMemoryCache {
         if (chapterList.isEmpty()) {
             return
         }
-        if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
-            ToastUtil.showTopToast(context,BaseApplication.CONTEXT.getString(R.string.base_empty_tips_netword))
-        }
-
         val iterator = chapterList.iterator()
         while (iterator.hasNext()) {
             val nextChapter = iterator.next()

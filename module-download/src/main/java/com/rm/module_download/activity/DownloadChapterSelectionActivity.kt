@@ -7,6 +7,7 @@ import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.utilExt.sp
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -46,15 +47,31 @@ class DownloadChapterSelectionActivity :
                 mViewModel.getDialogSelectChapterList()
             }
         })
+
         DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
             download_chapter_num.isVisible = it.isNotEmpty()
-            download_chapter_num.text = it.size.toString()
+            if(it.size>=100){
+                download_chapter_num.text = "99+"
+            }else{
+                download_chapter_num.text = it.size.toString()
+            }
+            mViewModel.mAdapter.notifyDataSetChanged()
         })
-    }
+        DownloadMemoryCache.downloadFinishChapterList.observe(this, Observer {
+            mViewModel.mAdapter.notifyDataSetChanged()
+        })
 
-    override fun onResume() {
-        super.onResume()
-        mViewModel.mAdapter.notifyDataSetChanged()
+
+        AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                AriaDownloadManager.needShowNetError.get().let {
+                    if(it){
+                        tipView.showNetError(this@DownloadChapterSelectionActivity)
+                    }
+                }
+            }
+        })
     }
 
     override fun initData() {

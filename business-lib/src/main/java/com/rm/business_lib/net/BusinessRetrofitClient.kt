@@ -24,7 +24,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
     companion object {
         // 基础host
         private const val BASE_DEVELOP_URL = "http://dev-api.ls.com:9602/api/v1_0/"
-        private const val BASE_MOCK_URL = "http://192.168.11.217:3000/mock/154/api/v1_0/"
+        private const val BASE_MOCK_URL = "http://192.168.13.244:9604/api/v1_0/"
         private const val BASE_RELEASE_URL = "http://tianlai.leimans.com/api/v1_0/"
         private const val BASE_STG_URL = "http://10.1.20.201:9602/api/v1_0/"
 

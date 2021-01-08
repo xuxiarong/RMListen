@@ -237,6 +237,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 || lastChangStartIndex.toString() == endSequence.get() && lastChangeEndIndex.toString() == startSequence.get()) {
             if (selectDownChapterList.size > 0) {
                 val chapterStatusList = getChapterStatus(selectDownChapterList)
+                downloadAudio.get()?.let { DownloadMemoryCache.addAudioToDownloadMemoryCache(it) }
                 DownloadMemoryCache.addDownloadingChapter(context,chapterStatusList)
                 mAdapter.notifyDataSetChanged()
             } else {

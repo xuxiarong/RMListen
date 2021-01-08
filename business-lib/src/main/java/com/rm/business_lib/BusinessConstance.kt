@@ -449,18 +449,22 @@ object PlayGlobalData {
         }
     }
 
-    fun checkCountChapterPlayEnd(hasNext : Boolean) {
+    fun checkCountChapterPlayEnd(hasNext : Boolean) : Boolean{
         if (playCountDownChapterSize.get() > 0) {
             if(!hasNext ){
                 playCountDownChapterSize.set(0)
+                playCountDownChapterSize.set(-1)
                 playCountSelectPosition.set(-1)
-                return
+                return true
             }
             playCountDownChapterSize.set(playCountDownChapterSize.get()-1)
             if(playCountDownChapterSize.get() == 0){
+                playCountDownChapterSize.set(-1)
                 playCountSelectPosition.set(-1)
+                return true
             }
         }
+        return false
     }
 
     fun setCountDownTimer(position: Int) {

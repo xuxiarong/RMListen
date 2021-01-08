@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.BaseConstance
@@ -22,6 +23,7 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.share.ShareManage
@@ -92,7 +94,19 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                             PlayGlobalData.playChapterList.value = mutableListOf()
                             BaseConstance.updateBaseChapterId(playAudioId, playChapterId)
                         }else{
-                            playCurrentDuration = BaseConstance.basePlayProgressModel.get()?.currentDuration?:0L
+                            if(sortType!=PlayGlobalData.playChapterListSort.get()){
+                                PlayGlobalData.playChapterList.value?.let { playList ->
+                                    playList.reverse()
+                                    PlayGlobalData.playChapterList.value = playList
+                                }
+                            }
+                            BaseConstance.basePlayProgressModel.get()?.let { progressModel ->
+                                playCurrentDuration = if(progressModel.currentDuration >= progressModel.totalDuration){
+                                    1L
+                                }else{
+                                    progressModel.currentDuration
+                                }
+                            }
                         }
                     }
                     PlayGlobalData.playAudioId.set(playAudioId)
@@ -216,6 +230,17 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 }
             }
         })
+
+        AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                AriaDownloadManager.needShowNetError.get().let {
+                    if(it){
+                        tipView.showNetError(this@BookPlayerActivity)
+                    }
+                }
+            }
+        })
     }
 
     /**
@@ -246,18 +271,10 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             chapterId: String,
             chapterDuration: Long
     ) {
-        if (playCurrentDuration > chapterDuration) {
+        if (playCurrentDuration >= chapterDuration) {
             playCurrentDuration = 0
         }
-        when {
-            playCurrentDuration <= 0 -> {
-                mViewModel.getChapterAd { musicPlayerManger.startPlayMusic(chapterId = chapterId) }
-            }
-            else -> {
-                musicPlayerManger.setAdPath(arrayListOf())
-                musicPlayerManger.startPlayMusic(chapterId = chapterId)
-            }
-        }
+        mViewModel.getChapterAd { musicPlayerManger.startPlayMusic(chapterId = chapterId) }
     }
 
     override fun initData() {
@@ -277,14 +294,26 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             mViewModel.isLocalChapterList.set(true)
             PlayGlobalData.playChapterId.set(playChapterId)
             PlayGlobalData.playChapterList.value = playChapterList
+            val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
+            if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
+                PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
+                if (playCurrentDuration == 1L) {
+                    PlayGlobalData.process.set(0F)
+                    PlayGlobalData.playNeedQueryChapterProgress.set(false)
+                    musicPlayerManger.seekTo(0L)
+                } else {
+                    PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
+                }
+            }
         } else {
             mViewModel.isLocalChapterList.set(false)
             PlayGlobalData.playChapterId.set(playChapterId)
             val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
             if (currentPlayerMusic != null && currentPlayerMusic.chapterId == playChapterId) {
                 PlayGlobalData.maxProcess.set(currentPlayerMusic.duration.toFloat())
-                if (musicPlayerManger.getCurDurtion() >= currentPlayerMusic.duration) {
+                if (playCurrentDuration == 1L) {
                     PlayGlobalData.process.set(0F)
+                    PlayGlobalData.playNeedQueryChapterProgress.set(false)
                     musicPlayerManger.seekTo(0L)
                 } else {
                     PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())

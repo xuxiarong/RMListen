@@ -149,7 +149,7 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     }
 
     fun cleanNotification() {
-        TODO("Not yet implemented")
+        presenter.cleanNotification()
     }
 
     fun setPlayerModel(model: Int): Int {

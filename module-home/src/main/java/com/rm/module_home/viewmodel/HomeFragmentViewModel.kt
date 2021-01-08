@@ -85,7 +85,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                             showServiceError()
                         }
                         errorMsg.set(it)
-                        DLog.d("suolong ", "error = $it")
                     }
             )
         }, netErrorBlock = {

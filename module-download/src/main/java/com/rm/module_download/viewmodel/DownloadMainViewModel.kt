@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.baselisten.dialog.TipsFragmentDialog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -72,8 +74,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         if (downloadingAdapter.data.isEmpty()) {
             return
         }
-
-        if (downloadingEdit.get()) {
+        if (downloadingEdit.get() && DownloadMemoryCache.isDownAll.get()) {
             DownloadMemoryCache.resumeDownloadingChapter()
         } else {
             downloadingSelectNum.set(0)
@@ -172,6 +173,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                 }
                 dismiss()
                 downloadingEdit.set(false)
+                ToastUtil.showTopToast(context,context.getString(R.string.business_delete_success))
                 DownloadMemoryCache.deleteDownloadingChapter(tempList)
             }
         }.show(context as FragmentActivity)
@@ -266,13 +268,6 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         }
     }
 
-
-    fun deleteAudio(audio: DownloadAudio) {
-        DownloadMemoryCache.deleteAudioToDownloadMemoryCache(audio)
-        downloadingSelectNum.set(downloadingSelectNum.get() - 1)
-        DownLoadFileUtils.deleteAudioFile(audio)
-    }
-
     fun deleteAudio(context: Context) {
         if (downloadFinishSelectNum.get() <= 0) {
             return
@@ -297,9 +292,10 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                         iterator.remove()
                     }
                 }
-                DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
-                downloadFinishSelectNum.set(downloadFinishSelectNum.get() - tempList.size)
                 DownLoadFileUtils.deleteAudioFile(tempList)
+                DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
+                ToastUtil.showTopToast(context,context.getString(R.string.business_delete_success))
+                downloadFinishSelectNum.set(downloadFinishSelectNum.get() - tempList.size)
                 dismiss()
                 editDownloadFinish()
             }

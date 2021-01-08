@@ -477,6 +477,10 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
             mPlaceholderImg.setScaleType(mScaleType);
             mPlaceholderImg.setImageResource(mPlaceholderDrawableResId);
             LayoutParams layoutParams = new LayoutParams(RMP, RMP);
+            layoutParams.leftMargin = XBannerUtils.dp2px(getContext(), 16);
+            layoutParams.rightMargin = XBannerUtils.dp2px(getContext(), 16);
+            layoutParams.topMargin = XBannerUtils.dp2px(getContext(), 16);
+            layoutParams.bottomMargin = XBannerUtils.dp2px(getContext(), 16);
             addView(mPlaceholderImg, layoutParams);
         }
     }

@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.BaseApplication
-import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.receiver.NetworkChangeReceiver
 import com.rm.business_lib.aria.AriaDownloadManager
@@ -60,11 +59,22 @@ class DownloadMainActivity :
                                 }
                             }
                         }else{
-                            DownloadMemoryCache.pauseDownloadingChapter()
-                            tipView.showTipView(this@DownloadMainActivity,getString(R.string.net_error))
+//                            DownloadMemoryCache.pauseDownloadingChapter()
+                            tipView.showNetError(this@DownloadMainActivity)
                         }
                     }catch (e : Exception){
                         e.printStackTrace()
+                    }
+                }
+            }
+        })
+        AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                AriaDownloadManager.needShowNetError.get().let {
+                    if(it){
+                        DownloadMemoryCache.pauseDownloadingChapter()
+                        tipView.showNetError(this@DownloadMainActivity)
                     }
                 }
             }
