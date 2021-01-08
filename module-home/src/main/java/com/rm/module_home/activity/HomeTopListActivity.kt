@@ -1,10 +1,16 @@
 package com.rm.module_home.activity
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
-import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -24,6 +30,7 @@ import com.rm.module_home.databinding.HomeActivityTopListBinding
 import com.rm.module_home.fragment.HomeTopListContentFragment
 import com.rm.module_home.viewmodel.TopListViewModel
 import kotlinx.android.synthetic.main.home_activity_top_list.*
+
 
 class HomeTopListActivity :
     ComponentShowPlayActivity<HomeActivityTopListBinding, TopListViewModel>() {
@@ -117,7 +124,6 @@ class HomeTopListActivity :
             }
             mCurPosition = position
             tabAdapter.setSelect(position, view as TextView)
-
             home_list_content.setCurrentItem(position, false)
         }
     }
@@ -129,30 +135,19 @@ class HomeTopListActivity :
         if (mPopupWindow == null) {
             createPopupWindow()
         }
-        val location = IntArray(2)
-        home_top_list_title_cl.getLocationInWindow(location)
-        val y = location[1] + home_top_list_title_cl.height
-        mPopupWindow?.showAtLocation(
-            home_top_list_title_cl,
-            Gravity.CENTER_HORIZONTAL or Gravity.TOP,
-            0,
-            y
-        )
-
-        //改变标题栏中的图标
-        home_top_list_title_icon.setImageResource(R.drawable.business_icon_unfold_dc)
+        startAnim(false)
+        mPopupWindow?.showAsDropDown(home_top_list_title_cl)
     }
 
     /**
      * 创建popupWindow
      */
     private fun createPopupWindow() {
-        mPopupWindow = PopupWindow()
-
-        mPopupWindow?.apply {
-            height = ViewGroup.LayoutParams.WRAP_CONTENT
-            width = resources.getDimensionPixelOffset(R.dimen.dp_360)
-//            animationStyle = R.style.popup_anim_style
+        mPopupWindow = PopupWindow(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        ).apply {
+            animationStyle = R.style.popup_anim_style
             val rootView = LayoutInflater.from(this@HomeTopListActivity)
                 .inflate(R.layout.home_popup_list_top, home_list_recycler_tab, false)
             val popupRv = rootView.findViewById<RecyclerView>(R.id.home_popup_rv)
@@ -173,20 +168,28 @@ class HomeTopListActivity :
                         home_top_list_title.text = it[position].name
                         observerRankSeg(it[position])
                     }
-
                     dismiss()
                 }
             }
             contentView = rootView
-
             isOutsideTouchable = true
             isFocusable = true
             isTouchable = true
-
             setOnDismissListener {
-                home_top_list_title_icon.setImageResource(R.drawable.business_icon_unfold_db)
+                startAnim(true)
             }
         }
+    }
+
+    private fun startAnim(isExpand: Boolean) {
+        val value = if (!isExpand) {
+            floatArrayOf(0f, 180f)
+        } else {
+            floatArrayOf(180f, 0f)
+        }
+        val anim = ObjectAnimator.ofFloat(home_top_list_title_icon, "rotation", value[0], value[1])
+        anim.duration = 300
+        anim.start()
     }
 
     override fun initData() {
@@ -201,4 +204,6 @@ class HomeTopListActivity :
             it.changRankSeg(rankSegBean.type)
         }
     }
+    
+
 }

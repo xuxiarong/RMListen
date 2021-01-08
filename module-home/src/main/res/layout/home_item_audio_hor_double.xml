@@ -30,8 +30,8 @@
 
             <com.rm.business_lib.wedgit.BusinessAdImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
-                bindUrl="@{item.topRecommendModel.imageUrl}"
                 bindAdId="@{String.valueOf(item.topRecommendModel.adModel.ad_id)}"
+                bindUrl="@{item.topRecommendModel.imageUrl}"
                 corner="@{4.0f}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -41,20 +41,30 @@
 
             <com.flyco.roundview.RoundTextView
                 style="@style/BusinessAdText"
-                app:rv_cornerRadius="@dimen/dp_4"
-                app:rv_backgroundColor="@color/business_color_4c333333"
                 isVisible="@{item.topRecommendModel.audioIsAd()}"
-                app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
                 app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
-                />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                isVisible="@{!item.topRecommendModel.audioIsAd() &amp;&amp; item.topRecommendModel.audio_label.length()>0}"
-                android:id="@+id/homehorSingleItemRecommendHorDoubleTopTag"
-                style="@style/BusinessLabStyleHalfRound_FF5E5E"
-                android:text="@{item.topRecommendModel.audio_label}"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
-                app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon" />
+                app:rv_backgroundColor="@color/business_color_4c333333"
+                app:rv_cornerRadius="@dimen/dp_4" />
+
+            <com.flyco.roundview.RoundTextView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleTopTag"
+                isVisible="@{!item.topRecommendModel.audioIsAd() &amp;&amp; item.topRecommendModel.audio_label.length()>0}"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_14"
+                android:layout_gravity="end"
+                android:paddingStart="@dimen/dp_4"
+                android:paddingEnd="@dimen/dp_4"
+                android:text="@{item.topRecommendModel.audio_label}"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_10sp"
+                app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
+                app:rv_backgroundColor="@color/business_color_ff5e5e"
+                app:rv_cornerRadius_BL="@dimen/dp_3"
+                app:rv_cornerRadius_TR="@dimen/dp_3"
+                tools:text="文案" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleTopName"
@@ -82,7 +92,6 @@
                 android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:lines="1"
-                app:drawableStartCompat="@drawable/business_icon_anchor"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleTopIcon"
@@ -102,8 +111,8 @@
 
             <com.rm.business_lib.wedgit.BusinessAdImageView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
-                bindUrl="@{item.bottomRecommendModel.imageUrl}"
                 bindAdId="@{String.valueOf(item.bottomRecommendModel.adModel.ad_id)}"
+                bindUrl="@{item.bottomRecommendModel.imageUrl}"
                 corner="@{4.0f}"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -113,20 +122,30 @@
 
             <com.flyco.roundview.RoundTextView
                 style="@style/BusinessAdText"
-                app:rv_cornerRadius="@dimen/dp_4"
-                app:rv_backgroundColor="@color/business_color_4c333333"
                 isVisible="@{item.bottomRecommendModel.audioIsAd()}"
-                app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
                 app:layout_constraintBottom_toBottomOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
-                />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/homehorSingleItemRecommendHorDoubleBottomTag"
-                style="@style/BusinessLabStyleHalfRound_FF5E5E"
-                isVisible="@{!item.bottomRecommendModel.audioIsAd() &amp;&amp; item.bottomRecommendModel.audio_label.length()>0}"
-                android:text="@{item.bottomRecommendModel.audio_label}"
                 app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
-                app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon" />
+                app:rv_backgroundColor="@color/business_color_4c333333"
+                app:rv_cornerRadius="@dimen/dp_4" />
+
+            <com.flyco.roundview.RoundTextView
+                android:id="@+id/homehorSingleItemRecommendHorDoubleBottomTag"
+                isVisible="@{!item.bottomRecommendModel.audioIsAd() &amp;&amp; item.bottomRecommendModel.audio_label.length()>0}"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_14"
+                android:layout_gravity="end"
+                android:paddingStart="@dimen/dp_4"
+                android:paddingEnd="@dimen/dp_4"
+                android:text="@{item.bottomRecommendModel.audio_label}"
+                android:textColor="@color/business_text_color_ffffff"
+                android:textSize="@dimen/business_text_size_10sp"
+                app:layout_constraintEnd_toEndOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                app:layout_constraintTop_toTopOf="@+id/homehorSingleItemRecommendHorDoubleBottomIcon"
+                app:rv_backgroundColor="@color/business_color_ff5e5e"
+                app:rv_cornerRadius_BL="@dimen/dp_3"
+                app:rv_cornerRadius_TR="@dimen/dp_3"
+                tools:text="文案" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homehorSingleItemRecommendHorDoubleBottomName"
@@ -153,7 +172,6 @@
                 android:layout_marginStart="@dimen/dp_8"
                 android:layout_marginBottom="8dp"
                 android:ellipsize="end"
-                app:drawableStartCompat="@drawable/business_icon_anchor"
                 android:lines="1"
                 android:textColor="@color/business_text_color_b1b1b1"
                 android:textSize="@dimen/business_text_size_12sp"

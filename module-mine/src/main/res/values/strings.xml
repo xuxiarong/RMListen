@@ -143,5 +143,6 @@
     <string name="mine_private_pact">《个人信息保护及隐私政策协议》</string>
     <string name="mine_lm_name">深圳雷漫网络科技</string>
     <string name="mine_customer">客服电话：123213</string>
+    <string name="mine_newest_version">当前已是最新版本</string>
 
 </resources>

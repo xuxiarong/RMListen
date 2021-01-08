@@ -3,6 +3,7 @@ package com.rm.module_mine.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -74,15 +75,18 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
             repository.mineGetLaseUrl().checkResult(onSuccess = {
                 versionInfo = it
                 val version = it.version ?: BuildConfig.VERSION_NAME
-                mAdapter.data[0].sub_title = version
                 try {
                     val lastVersion = versionInfo?.version?.replace(".", "") ?: "0"
                     val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
 
                     if (lastVersion.toInt() - localVersion.toInt() > 0) {
                         mAdapter.data[0].showRed = true
+                        mAdapter.data[0].sub_title = version
+                    }else{
+                        mAdapter.data[0].sub_title = BaseApplication.getContext().getString(R.string.mine_newest_version)
                     }
                 } catch (e: Exception) {
+                    mAdapter.data[0].sub_title =BuildConfig.VERSION_NAME
                     e.printStackTrace()
                 }
                 mAdapter.notifyItemChanged(0)
