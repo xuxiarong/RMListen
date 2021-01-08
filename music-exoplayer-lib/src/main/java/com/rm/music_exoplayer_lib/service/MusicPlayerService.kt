@@ -250,21 +250,31 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         return mPlayerBinder as MusicPlayerBinder
     }
 
-    private fun startPlay(musicInfo: BaseAudioInfo) =
-            if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
-                if (musicInfo.audioPath.isNotEmpty()) {
-                    val source = ProgressiveMediaSource.Factory(dataSourceFactory)
-                            .createMediaSource(Uri.parse(musicInfo.audioPath))
-                    mExoPlayer.removeListener(mAdListener)
-                    mExoPlayer.addListener(mEventListener)
-                    mExoPlayer.prepare(source)
-                    mExoPlayer.playWhenReady = true
-                } else {
-                    exoLog("没有链接")
-                }
+    private fun startPlay(musicInfo: BaseAudioInfo) {
+        if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
+            if (musicInfo.audioPath.isNotEmpty()) {
+                val source = ProgressiveMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(Uri.parse(musicInfo.audioPath))
+                mExoPlayer.removeListener(mAdListener)
+                mExoPlayer.addListener(mEventListener)
+                mExoPlayer.prepare(source)
+                mExoPlayer.playWhenReady = true
             } else {
-                exoLog("未成功获取音频输出焦点")
+                exoLog("没有链接")
             }
+        } else {
+            if (mAudioFocusManager.requestAudioFocus() == AUDIOFOCUS_REQUEST_GRANTED) {
+
+            } else {
+                exoLog("获取不到焦点")
+            }
+        }
+    }
+
+    private fun prePlay(){
+
+    }
+
 
     private fun startPlayAd(adPath: String) {
         mUpdateProgressHandler.removeMessages(0)
@@ -281,10 +291,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun startPlayMusic(chapterId: String) {
         mCurrentPlayIndex = mAudios.indexOfFirst { it.chapterId == chapterId }
         if (mAdAudios.isNotEmpty()) {
-            postViewHandlerCurrentPosition(mCurrentPlayIndex,true)
+            postViewHandlerCurrentPosition(mCurrentPlayIndex, true)
             startPlayAd(mAdAudios[Random.nextInt(mAdAudios.size)].audioPath)
         } else {
-            postViewHandlerCurrentPosition(mCurrentPlayIndex,false)
+            postViewHandlerCurrentPosition(mCurrentPlayIndex, false)
             playChapter()
         }
     }
@@ -292,10 +302,10 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private fun startPlayMusic(playIndex: Int) {
         mCurrentPlayIndex = playIndex
         if (mAdAudios.isNotEmpty()) {
-            postViewHandlerCurrentPosition(mCurrentPlayIndex,true)
+            postViewHandlerCurrentPosition(mCurrentPlayIndex, true)
             startPlayAd(mAdAudios[Random.nextInt(mAdAudios.size)].audioPath)
         } else {
-            postViewHandlerCurrentPosition(mCurrentPlayIndex,false)
+            postViewHandlerCurrentPosition(mCurrentPlayIndex, false)
             playChapter()
         }
     }
@@ -502,13 +512,13 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
      * 上报给UI组件，当前内部自动正在处理的对象位置
      * @param currentPlayIndex 数据源中的Index
      */
-    private fun postViewHandlerCurrentPosition(currentPlayIndex: Int,isAd : Boolean) {
+    private fun postViewHandlerCurrentPosition(currentPlayIndex: Int, isAd: Boolean) {
         //最后更新通知栏
         showNotification()
         if (mAudios.size > currentPlayIndex && currentPlayIndex >= 0) {
             mOnPlayerEventListeners.forEach {
                 it.onPlayMusiconInfo(
-                        mAudios[currentPlayIndex], currentPlayIndex,isAd
+                        mAudios[currentPlayIndex], currentPlayIndex, isAd
                 )
             }
         }
@@ -704,7 +714,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
             mOnPlayerEventListeners.forEach {
                 it.onStopPlayAd()
                 if (isPlaying) {
-                    it.onPrepared(getDurtion(),false)
+                    it.onPrepared(getDurtion(), false)
                 }
             }
         }
@@ -782,7 +792,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             if (isPlaying) {
                 mOnPlayerEventListeners.forEach {
-                    it.onPrepared(getDurtion(),true)
+                    it.onPrepared(getDurtion(), true)
                     it.onStartPlayAd()
                 }
             }
