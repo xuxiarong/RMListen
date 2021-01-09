@@ -33,7 +33,7 @@ class ListenSheetCollectedListAdapter(
             } else {
                 it
             }
-            if (list.size > 0) {
+            if (list.isNotEmpty()) {
                 tipView.visibility = View.GONE
                 rv.visibility = View.VISIBLE
                 rv.apply {

@@ -95,5 +95,6 @@ dependencies {
     api rootProject.ext.dependencies["bugly_native"]
 //    api rootProject.ext.dependencies["easypermissions"]
     api rootProject.ext.dependencies["xxpermissions"]
+    debugImplementation rootProject.ext.dependencies["leakcanary"]
 
 }

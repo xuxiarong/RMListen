@@ -143,9 +143,17 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
                 imm.hideSoftInputFromWindow(it.applicationWindowToken, 0)
             }
         }
-        keyWord.get()?.let {
-            searchResult(it)
+        when {
+            keyWord.get() != null && keyWord.get()!!.isNotEmpty() -> {
+                searchResult(keyWord.get()!!)
+                return
+            }
+            inputHint.get() != null && inputHint.get()!!.isNotEmpty() -> {
+                searchResult(inputHint.get()!!)
+                return
+            }
         }
+
     }
 
     /**
@@ -197,7 +205,6 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
             repository.searchResult(word, REQUEST_TYPE_ALL, 1, 12).checkResult(
                 onSuccess = {
                     showContentView()
-                    inputHint.set(word)
                     searchResultData.postValue(it)
                     historyVisible.set(false)
                     suggestIsVisible.set(false)

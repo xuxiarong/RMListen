@@ -6,6 +6,7 @@ import android.graphics.Rect
 import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.observe
+import com.rm.baselisten.binding.bindKeyboardVisibilityListener
 import com.rm.baselisten.util.Cxt.Companion.context
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
@@ -19,6 +20,7 @@ import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_B
 import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_SHEET
 import com.rm.module_search.databinding.SearchActivityResultBinding
 import com.rm.module_search.viewmodel.SearchResultViewModel
+import kotlinx.android.synthetic.main.search_activity_result.*
 import kotlin.math.abs
 
 /**
@@ -33,12 +35,16 @@ class SearchResultActivity :
 
     companion object {
         const val KEY_WORD = "keyword"
-        fun startActivity(context: Context, keyword: String) {
+        const val INPUT_HINT = "inputHint"
+        fun startActivity(context: Context, keyword: String, inputHint: String) {
             context.startActivity(
                 Intent(
                     context,
                     SearchResultActivity::class.java
-                ).putExtra(KEY_WORD, keyword)
+                ).apply {
+                    putExtra(KEY_WORD, keyword)
+                    putExtra(INPUT_HINT, inputHint)
+                }
             )
         }
     }
@@ -58,10 +64,19 @@ class SearchResultActivity :
 
         searchResultAdapter = SearchResultAdapter(this, mViewModel.tabList)
         mViewModel.keyWord.set(keyword)
-        mViewModel.inputHint.set(keyword)
+
+        mViewModel.inputHint.set(intent.getStringExtra(INPUT_HINT) ?: "")
 
         params = mDataBind.searchResultSuggestLayout.layoutParams as ConstraintLayout.LayoutParams
-        mDataBind.root.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
+
+        search_result_edit_text.bindKeyboardVisibilityListener { b, height ->
+            if (b) {
+                params.bottomMargin = height
+                mDataBind.searchResultSuggestLayout.layoutParams = params
+            } else {
+                search_result_edit_text.clearFocus()
+            }
+        }
 
         mDataBind.searchResultEditText.setText(keyword)
 
@@ -132,27 +147,4 @@ class SearchResultActivity :
         }.attach()
 
     }
-
-    /**
-     * 动态获取输入法的高度，并且给联想的RV设置bottomMargin，修复联想被挡住的bug
-     */
-    private val windowListener = ViewTreeObserver.OnGlobalLayoutListener {
-        val rect = Rect()
-        mDataBind.root.getWindowVisibleDisplayFrame(rect)
-        val bottom = rect.bottom
-        val height = screenHeight - bottom + getStateHeight(context)
-
-        //超过屏幕的五分之一则表示显示了输入框
-        if (abs(height) > screenHeight / 5 && height != params.bottomMargin) {
-            params.bottomMargin = height
-            mDataBind.searchResultSuggestLayout.layoutParams = params
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mDataBind.root.viewTreeObserver.removeOnGlobalLayoutListener(windowListener)
-    }
-
-
 }

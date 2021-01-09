@@ -96,7 +96,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
      * 历史 item 点击事件
      */
     val historyItemClickFun: (View, String) -> Unit = { view, content ->
-        SearchResultActivity.startActivity(view.context, content)
+        SearchResultActivity.startActivity(view.context, content, "")
     }
 
     /**
@@ -155,9 +155,10 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
 
         if (keyword.isEmpty()) {
             keyword = lastHint.get()!!
-        }
-        view?.context?.let {
-            SearchResultActivity.startActivity(it, keyword)
+        } else {
+            view?.context?.let {
+                SearchResultActivity.startActivity(it, keyword, lastHint.get()!!)
+            }
         }
     }
 
@@ -208,7 +209,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
      * 跳转到搜索
      */
     private fun toSearch(context: Context, content: String) {
-        SearchResultActivity.startActivity(context, content)
+        SearchResultActivity.startActivity(context, content, "")
     }
 
     /**

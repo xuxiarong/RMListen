@@ -35,7 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="#3f00" />
-        <!--bindUrl = "@{viewModel.list.author}"-->
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail_comment_name_tx"
             android:layout_width="wrap_content"
@@ -105,7 +105,8 @@
             android:layout_height="@dimen/dp_22"
             android:gravity="center"
             android:onClick="@{()->commentViewModel.itemLikeClick(context,commentItem)}"
-            android:src="@{commentItem.is_liked?@drawable/business_icon_love:@drawable/icon_detail_comment_like}"
+
+            android:src="@{commentItem.is_liked?@drawable/business_icon_like:@drawable/business_icon_unlike}"
             app:layout_constraintBottom_toBottomOf="@+id/detail_comment_author_img"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/detail_comment_author_img" />

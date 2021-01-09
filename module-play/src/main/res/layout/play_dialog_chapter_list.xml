@@ -54,7 +54,7 @@
                 android:layout_height="@dimen/dp_22"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/dp_16"
-                android:drawableStart="@drawable/home_detail_chapter_ce" />
+                android:drawableStart="@drawable/business_chapter_select" />
 
         </FrameLayout>
 

@@ -210,7 +210,7 @@
                     android:layout_height="0dp"
                     android:alpha="@{viewModel.hideOr? 0.3f:1f}"
                     android:button="@null"
-                    android:src="@drawable/home_detail_chapter_ce"
+                    android:src="@drawable/business_chapter_select"
                     android:enabled="@{!viewModel.hideOr}"
                     android:onClick="@{()->viewModel.clickSort()}"
                     android:paddingStart="@dimen/dp_10"
@@ -245,7 +245,7 @@
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:id="@+id/home_chapter_detail_refresh"
                 bindCanRefresh="@{viewModel.chapterRefreshStatus.canRefresh}"
-                bindContentRvId="@{viewModel.chapterContentRvId}"
+                bindContentRvId="@{@id/home_detail_chapter_rv}"
                 bindIsLoadMoreSuccess="@{viewModel.chapterRefreshStatus.isLoadMoreSuccess()}"
                 bindIsRefreshSuccess="@{viewModel.chapterRefreshStatus.isRefreshSuccess()}"
                 bindNoMoreData="@{viewModel.chapterRefreshStatus.noMoreData}"

@@ -93,7 +93,7 @@
             android:layout_height="@dimen/dp_22"
             android:gravity="center"
             android:onClick="@{()->viewModel.playLikeBook(context,item)}"
-            android:src="@{item.data.is_liked?@drawable/business_icon_love:@drawable/music_play_ic_icon_like_dc}"
+            android:src="@{item.data.is_liked?@drawable/business_icon_like:@drawable/business_icon_unlike}"
             app:layout_constraintBottom_toBottomOf="@+id/play_item_comment_advertise_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/play_item_comment_advertise_icon" />
