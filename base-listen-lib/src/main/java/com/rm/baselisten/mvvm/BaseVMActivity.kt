@@ -136,6 +136,10 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         })
 
         mViewModel.baseToastModel.observe(this, Observer {
+            if(it.isNetError){
+                ToastUtil.showTopNetErrorToast(this@BaseVMActivity)
+                return@Observer
+            }
             if (it.contentId > 0) {
                 ToastUtil.showTopToast(
                     this@BaseVMActivity,

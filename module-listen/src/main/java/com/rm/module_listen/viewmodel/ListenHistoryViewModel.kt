@@ -58,7 +58,7 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
     fun getListenHistory() {
-        launchOnIO {
+        queryDataBaseOnIO {
             val queryPlayBookList = ListenDaoUtils.getAllAudioByRecent()
             val audioList = ArrayList<ListenHistoryModel>()
             if (queryPlayBookList.isNotEmpty()) {

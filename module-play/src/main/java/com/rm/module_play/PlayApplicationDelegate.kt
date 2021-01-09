@@ -23,17 +23,6 @@ class PlayApplicationDelegate : IApplicationDelegate {
     override fun onCreate() {
         DLog.d(TAG, "Module Play onCreate()!!!")
         loadKoinModules(playModules)
-        initPlayService()
-    }
-
-    private fun initPlayService() {
-        MusicPlayerManager.musicPlayerManger.initialize(CONTEXT)
-        SAVA_SPEED.getFloattMMKV(1f).let {
-            MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it)
-            PlayGlobalData.playSpeed.set(it)
-        }
-        CacheUtils.instance.initSharedPreferencesConfig(CONTEXT)
-        initPlayHistory()
     }
 
     override fun onTerminate() {
@@ -46,21 +35,6 @@ class PlayApplicationDelegate : IApplicationDelegate {
 
     override fun onTrimMemory(level: Int) {
         DLog.d(TAG, "Module Play onTrimMemory(),---level--->>>$level")
-    }
-
-    private fun initPlayHistory() {
-        try {
-            //每次进入应用时，做一下数据的过滤，只展示最近一年的收听记录
-            val playList = DaoUtil(ListenAudioEntity::class.java, "").queryAll()
-            playList?.let { audioList ->
-                audioList.forEach { audio ->
-                    if (System.currentTimeMillis() - audio.updateMillis > (365 * 24 * 60 * 60 * 1000L))
-                        DaoUtil(ListenAudioEntity::class.java, "").delete(audio)
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
 }

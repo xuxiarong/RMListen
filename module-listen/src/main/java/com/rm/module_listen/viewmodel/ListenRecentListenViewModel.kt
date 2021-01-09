@@ -50,7 +50,7 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
     }
 
     fun getListenHistory() {
-        launchOnIO {
+        queryDataBaseOnIO {
             val queryPlayBookList = ListenDaoUtils.getAllAudioByRecentLimit10()
             val audioList = ArrayList<MultiItemEntity>()
             if (queryPlayBookList.isNotEmpty()) {

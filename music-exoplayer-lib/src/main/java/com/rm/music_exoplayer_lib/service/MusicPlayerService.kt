@@ -116,58 +116,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val CHANNEL_ID = "CHANNEL_ID"
-        val CHANNEL_NAME = "听书"
-        val notificationChannel: NotificationChannel
-        //进行8.0的判断
-        //进行8.0的判断
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
-            )
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.RED
-            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(notificationChannel)
-            manager.cancelAll()
-        }
-
-        val notifyIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://www.baidu.com")
-        )
-        val pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0)
-
-        var notification: Notification? = null
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notification = Notification.Builder(this, CHANNEL_ID)
-                    .setTicker("听书")
-                    .setContentTitle("听书标题")
-                    .setContentIntent(pendingIntent)
-                    .setContentText("听书需要启动音乐播放器服务")
-                    .build()
-            notification.flags = notification.flags or Notification.FLAG_NO_CLEAR
-            startForeground(1, notification)
-        }
-
         return START_STICKY
     }
-
-//    private fun getNotification(): Notification? {
-//        val builder  = Notification.Builder(this)
-//                .setSmallIcon(R.mipmap.ic_launcher)
-//                .setContentTitle("测试服务")
-//                .setContentText("我正在运行")
-//        //设置Notification的ChannelID,否则不能正常显示
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            builder.setChannelId(notificationId)
-//        }
-//        return builder.build()
-//    }
-
 
     //音频焦点
     var requestAudioFocus = AUDIOFOCUS_REQUEST_GRANTED

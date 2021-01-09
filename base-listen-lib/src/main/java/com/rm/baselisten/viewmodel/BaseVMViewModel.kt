@@ -75,11 +75,14 @@ open class BaseVMViewModel : BaseViewModel() {
         if (NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
             viewModelScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
         } else {
-//            showNetError()
-            showTip(CONTEXT.getString(R.string.base_empty_tips_netword), R.color.base_ff5e5e)
-
+            showNetWorkError()
         }
     }
+
+    fun <T> queryDataBaseOnIO(block: suspend CoroutineScope.() -> T){
+        viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
+    }
+
 
     fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
         if (NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
@@ -156,6 +159,10 @@ open class BaseVMViewModel : BaseViewModel() {
         baseToastModel.postValue(BaseToastModel(content = content, colorId = R.color.base_ff5e5e))
     }
 
+    fun showNetErrorToast(){
+        baseToastModel.postValue(BaseToastModel(isNetError = true))
+    }
+
     fun showToast(content: String, colorId: Int) {
         baseToastModel.postValue(BaseToastModel(content = content, colorId = colorId))
     }
@@ -194,7 +201,7 @@ open class BaseVMViewModel : BaseViewModel() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_SERVICE_ERROR))
     }
 
-    fun showNetError() {
+    fun showNetWorkError() {
         baseStatusModel.postValue(BaseStatusModel(BaseNetStatus.BASE_SHOW_NET_ERROR))
     }
 

@@ -11,5 +11,6 @@ data class BaseToastModel constructor(
     val content: String? = "",
     val contentId: Int = -1,
     val colorId: Int = R.color.base_333,
-    val canAutoCancel: Boolean = true
+    val canAutoCancel: Boolean = true,
+    val isNetError : Boolean= false
 )

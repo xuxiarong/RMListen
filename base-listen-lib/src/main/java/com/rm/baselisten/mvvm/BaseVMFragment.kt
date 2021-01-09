@@ -130,6 +130,10 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
 
         mViewModel.baseToastModel.observe(this, Observer {
             context?.let { context ->
+                if(it.isNetError){
+                    ToastUtil.showTopNetErrorToast(context)
+                    return@Observer
+                }
                 if (it.contentId > 0) {
                     ToastUtil.showTopToast(
                         context,

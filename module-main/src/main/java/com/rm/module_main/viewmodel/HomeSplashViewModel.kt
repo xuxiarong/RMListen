@@ -72,8 +72,8 @@ class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewMo
                         DLog.d("suolong", "it.ad_name = ${it.ad_name}")
                     }
                 },
-                onError = {it,_->
-                    DLog.d("suolong", "error = ${it ?: ""}")
+                onError = { it, _ ->
+                    isSkipAd.set(true)
                 }
             )
         }
@@ -82,16 +82,22 @@ class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewMo
     /**
      * 版本更新
      */
-    fun getLaseVersion() {
-        launchOnIO {
-            repository.homeGetLaseUrl().checkResult(
-                onSuccess = {
-                    versionInfo.set(it)
-                }, onError = {it,_->
-                    showTip("$it", R.color.business_color_ff5e5e)
-                    versionInfo.set(null)
-                })
-        }
+    fun getLaseVersion(action : ()->Unit) {
+        launchOnIO(
+            block = {
+                repository.homeGetLaseUrl().checkResult(
+                    onSuccess = {
+                        versionInfo.set(it)
+                    }, onError = { it, _ ->
+                        showTip("$it", R.color.business_color_ff5e5e)
+                        versionInfo.set(null)
+                        versionInfo.notifyChange()
+                    })
+            },
+            netErrorBlock = {
+                action()
+            }
+        )
     }
 
 

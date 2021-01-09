@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_toast_net_error_ll"
     android:layout_width="match_parent"
     android:layout_height="52dp"
     android:layout_gravity="center_horizontal"
@@ -11,16 +11,6 @@
     android:orientation="horizontal">
 
     <ProgressBar
-        android:id="@+id/baseTipProgress"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginEnd="2dp"
-        android:indeterminateDrawable="@drawable/shape_base_tip_loading"
-        android:rotation="90"
-        android:visibility="gone" />
-
-    <ProgressBar
-        android:id="@+id/baseNetErrorProgress"
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_marginEnd="2dp"
@@ -28,9 +18,7 @@
         android:rotation="90"
         android:visibility="gone" />
 
-
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/baseTipText"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:ellipsize="end"
@@ -40,7 +28,6 @@
         android:paddingEnd="@dimen/dp_10"
         android:textColor="@color/base_ff5e5e"
         android:textSize="16sp"
-        tools:text="文字超过" />
-
+        android:text="@string/net_error" />
 
 </LinearLayout>

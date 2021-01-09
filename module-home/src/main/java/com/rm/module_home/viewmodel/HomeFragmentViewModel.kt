@@ -69,6 +69,9 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
      */
     fun getHomeDataFromService() {
         refreshStatusModel.setNoHasMore(true)
+        if(homeAllData.value == null){
+            showLoading()
+        }
         launchOnIO(block = {
             repository.getHomeData().checkResult(
                     onSuccess = {

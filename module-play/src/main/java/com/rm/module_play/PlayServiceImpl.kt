@@ -4,6 +4,9 @@ import android.content.Context
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.util.getFloattMMKV
+import com.rm.business_lib.PlayGlobalData
+import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
@@ -15,6 +18,7 @@ import com.rm.component_comm.router.ARouterModuleServicePath
 import com.rm.module_play.activity.BookPlayerActivity
 import com.rm.module_play.playview.GlobalPlayHelper
 import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
+import com.rm.music_exoplayer_lib.utils.CacheUtils
 
 /**
  * desc   : play module 路由服务实现类
@@ -57,6 +61,12 @@ class PlayServiceImpl : PlayService {
 
     override fun initPlayService(context: Context) {
         MusicPlayerManager.musicPlayerManger.initialize(BaseApplication.CONTEXT)
+        SAVA_SPEED.getFloattMMKV(1f).let {
+            MusicPlayerManager.musicPlayerManger.setPlayerMultiple(it)
+            PlayGlobalData.playSpeed.set(it)
+        }
+        CacheUtils.instance.initSharedPreferencesConfig(BaseApplication.CONTEXT)
+        initPlayHistory()
     }
 
     override fun continueLastPlay(playChapter: DownloadChapter, playList: MutableList<DownloadChapter>) {
@@ -69,5 +79,20 @@ class PlayServiceImpl : PlayService {
 
     override fun init(context: Context?) {
 
+    }
+
+    private fun initPlayHistory() {
+        try {
+            //每次进入应用时，做一下数据的过滤，只展示最近一年的收听记录
+            val playList = DaoUtil(ListenAudioEntity::class.java, "").queryAll()
+            playList?.let { audioList ->
+                audioList.forEach { audio ->
+                    if (System.currentTimeMillis() - audio.updateMillis > (365 * 24 * 60 * 60 * 1000L))
+                        DaoUtil(ListenAudioEntity::class.java, "").delete(audio)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

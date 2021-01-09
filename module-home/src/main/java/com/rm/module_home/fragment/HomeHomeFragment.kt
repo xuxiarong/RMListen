@@ -179,7 +179,7 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.showNetError.get()) {
-                    (activity as BaseActivity).tipView.showNetError(activity = activity as FragmentActivity)
+                    mViewModel.showNetWorkError()
                 }
             }
         })

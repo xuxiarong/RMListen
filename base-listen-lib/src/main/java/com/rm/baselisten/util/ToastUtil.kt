@@ -2,6 +2,8 @@ package com.rm.baselisten.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -9,11 +11,12 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import com.rm.baselisten.R
+import com.rm.baselisten.util.toast.OnClickListener
 import com.rm.baselisten.util.toast.XToast
 import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.screenWidth
+import com.tencent.bugly.proguard.v
 
 
 /**
@@ -113,6 +116,26 @@ object ToastUtil {
             show()
         }
     }
+
+    fun showTopNetErrorToast(
+        context: Context
+    ) {
+        if (xToast == null || context != xToast?.getContext()) {
+            xToast = XToast(context)
+            xToast?.setView(R.layout.base_toast_net_error)
+        }
+        xToast?.apply {
+            setDuration(1500)
+            setAnimStyle(android.R.style.Animation_Toast)
+            getView()?.setOnClickListener {
+                context.startActivity(Intent(Settings.ACTION_WIFI_IP_SETTINGS))
+            }
+            setGravity(Gravity.TOP)
+            setWidth(context.screenWidth - context.dip(20))
+            show()
+        }
+    }
+
 
     fun cancelToast() {
         xToast?.cancel()

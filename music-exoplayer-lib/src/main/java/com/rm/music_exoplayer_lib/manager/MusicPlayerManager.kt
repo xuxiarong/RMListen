@@ -64,11 +64,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         mConnection = MusicPlayerServiceConnection()
         mConnection?.let {
             val intent = Intent(context, MusicPlayerService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent)
-            } else {
-                context.startService(intent)
-            }
+            context.startService(intent)
             ExoplayerLogger.exoLog("1 开始bindService")
             context.bindService(
                 intent, it,
@@ -77,7 +73,6 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         }
 
     }
-
 
     override fun startPlayMusic(chapterId: String) {
         mBinder?.startPlayMusic(chapterId)

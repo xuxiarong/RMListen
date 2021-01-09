@@ -205,12 +205,11 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     private fun initSplashData() {
         if (FIRST_OPEN_APP.getBooleanMMKV(true)) {
-            FIRST_OPEN_APP.getBooleanMMKV(false)
+            FIRST_OPEN_APP.putMMKV(false)
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVATION)
         }
 
-        mViewModel.getLaseVersion()
-//        loadAd()
+        mViewModel.getLaseVersion{loadAd()}
 
     }
 
