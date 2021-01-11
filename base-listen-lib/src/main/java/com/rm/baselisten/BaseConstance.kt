@@ -103,6 +103,20 @@ object BaseConstance {
         }
     }
 
+    fun updateBaseAudioSort(sort: String){
+        val baseAudio = basePlayInfoModel.get()
+        if (baseAudio != null) {
+            baseAudio.playSort = sort
+            basePlayInfoModel.set(baseAudio)
+            PlAY_LAST_LISTEN_INFO.putMMKV(baseAudio)
+        } else {
+            val infoModel = BasePlayInfoModel(playSort = sort)
+            basePlayInfoModel.set(infoModel)
+            PlAY_LAST_LISTEN_INFO.putMMKV(infoModel)
+        }
+    }
+
+
     /**
      * 更新正在播放的章节进度
      */

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.FrameLayout
 import com.hjq.permissions.Permission
 import com.rm.baselisten.mvvm.BaseActivity
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.constant.PermissionConstants
 import com.rm.business_lib.R
 import com.rm.business_lib.db.download.DownloadAudio
@@ -131,19 +132,13 @@ class DownloadStatusView @JvmOverloads constructor(context: Context, attrs: Attr
         baseActivity?.let {
             baseActivity.requestPermissionForResult(permission = mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),
                 actionDenied = {
-                    baseActivity.tipView.showTipView(
-                        baseActivity,
-                        baseActivity.getString(R.string.business_listen_storage_permission_refuse)
-                    )
+                    ToastUtil.showTopToast(baseActivity, baseActivity.getString(R.string.business_listen_storage_permission_refuse))
                 },
                 actionGranted = {
                     actionGranted()
                 },
                 actionPermanentlyDenied = {
-                    baseActivity.tipView.showTipView(
-                        baseActivity,
-                        baseActivity.getString(R.string.business_listen_to_set_storage_permission)
-                    )
+                    ToastUtil.showTopToast(baseActivity, baseActivity.getString(R.string.business_listen_to_set_storage_permission))
                 })
         }
     }

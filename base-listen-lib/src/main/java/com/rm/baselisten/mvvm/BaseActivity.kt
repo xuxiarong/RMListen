@@ -34,10 +34,6 @@ abstract class BaseActivity : FragmentActivity() {
         ImmersionBarHelper.create(this)
     }
 
-    val tipView: BaseTipView by lazy {
-        BaseTipView(this)
-    }
-
     private var mPermissions: MutableList<String>? = null
     private var permissionDialog: TipsFragmentDialog? = null
 

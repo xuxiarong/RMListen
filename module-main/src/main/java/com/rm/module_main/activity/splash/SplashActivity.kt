@@ -191,7 +191,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     override fun initView() {
         super.initView()
         setTransparentStatusBar()
-
+        mDataShowView = splash_ad_img
         if (isLogin.get()) {
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_LOGIN)
         }
@@ -226,7 +226,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     private fun loadAd() {
         if (!HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.getBooleanMMKV(false)) {
             showPrivateServiceDialog()
-
             mViewModel.isShowAd.set(false)
         } else {
             mViewModel.isShowAd.set(true)

@@ -7,6 +7,7 @@ import androidx.databinding.ViewDataBinding
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.mvvm.BaseVMActivity
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
@@ -80,7 +81,7 @@ abstract class ComponentShowPlayActivity<V : ViewDataBinding, VM : BaseVMViewMod
                 return
             }
         }
-        tipView.showTipView(this, getString(com.rm.business_lib.R.string.business_no_content))
+       ToastUtil.showTopToast(this, getString(com.rm.business_lib.R.string.business_no_content))
     }
 
     open fun isShowPlayWhenEmptyUrl(): Boolean {

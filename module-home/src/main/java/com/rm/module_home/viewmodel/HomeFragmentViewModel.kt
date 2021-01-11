@@ -98,7 +98,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 showContentView()
             } else {
                 DLog.d("suolong","netErrorBlock")
-                showServiceError()
+//                showDataEmpty()
             }
             refreshStatusModel.finishRefresh(false)
         })

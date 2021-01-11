@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.download.DownloadMemoryCache
@@ -73,8 +74,8 @@ class DownloadChapterSelectionActivity :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 AriaDownloadManager.needShowNetError.get().let {
-                    if (it) {
-                        tipView.showNetError(this@DownloadChapterSelectionActivity)
+                    if(it){
+                        ToastUtil.showTopNetErrorToast(this@DownloadChapterSelectionActivity)
                     }
                 }
             }

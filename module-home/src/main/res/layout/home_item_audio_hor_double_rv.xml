@@ -17,7 +17,7 @@
     <com.rm.business_lib.wedgit.recycler.LeftAutoScrollRecyclerView
         android:id="@+id/homeRvRecommendHorDouble"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_176"
         android:layout_marginTop="@dimen/dp_14"
         bindHorizontalLayout="@{viewModel.getAdapterWithList(item.horDoubleList)}"
         bindLeftScroll="@{item}"

@@ -23,7 +23,7 @@ public class AESUtil {
         if (password == null) {
             password = "";
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(password);
         String s =null;
         while (sb.length() < 32) {

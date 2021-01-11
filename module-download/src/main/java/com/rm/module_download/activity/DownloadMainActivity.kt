@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.receiver.NetworkChangeReceiver
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
@@ -64,7 +65,7 @@ class DownloadMainActivity :
                             }
                         } else {
 //                            DownloadMemoryCache.pauseDownloadingChapter()
-                            tipView.showNetError(this@DownloadMainActivity)
+                            ToastUtil.showTopNetErrorToast(this@DownloadMainActivity)
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -82,7 +83,7 @@ class DownloadMainActivity :
                 AriaDownloadManager.needShowNetError.get().let {
                     if (it) {
                         DownloadMemoryCache.pauseDownloadingChapter()
-                        tipView.showNetError(this@DownloadMainActivity)
+                        ToastUtil.showTopNetErrorToast(this@DownloadMainActivity)
                     }
                 }
             }

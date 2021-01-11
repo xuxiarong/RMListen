@@ -42,14 +42,14 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlay
 
 @SuppressLint("InflateParams")
 @Suppress(
-    "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING",
-    "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+        "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING",
+        "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
 )
 /**
  * 播放器主要界面
  */
 class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewModel>(),
-    GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
+        GlobalPlayHelper.IPlayStatusListener, SwipeBackLayout.SwipeBackListener {
     companion object {
         //记录上次打开的时间，防止多次快速点击打开多次，影响体验
         private var lastOpenTime: Long = 0L
@@ -59,7 +59,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         var playChapterList: MutableList<DownloadChapter> = mutableListOf()
         var playCurrentDuration: Long = 0L
         var playSortType: String = AudioSortType.SORT_ASC
-        var isContinuePlay: Boolean = false
+        var isContinuePlay : Boolean = false
 
         fun startPlayActivity(
             context: Context,
@@ -87,31 +87,29 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 //音频ID不能为空
                 if (playAudioId.isEmpty() || playChapterId.isEmpty()) {
                     isContinuePlay = false
-                    val baseActivity = context as BaseActivity
-                    baseActivity.tipView.showTipView(baseActivity, "书籍或者章节的ID不能为空")
+                    ToastUtil.showTopToast(context, context.getString(R.string.play_audio_not_be_empty))
                     return
-                } else {
+                }else{
                     BaseConstance.basePlayInfoModel.get()?.let {
                         //如果播放的书籍或者章节不一致，则先把播放器的数据清除掉
-                        if (playAudioId != it.playAudioId || playChapterId != it.playChapterId) {
+                        if(playAudioId!=it.playAudioId || playChapterId!=it.playChapterId){
                             isContinuePlay = false
                             PlayGlobalData.playChapterList.value = mutableListOf()
                             BaseConstance.updateBaseChapterId(playAudioId, playChapterId)
-                        } else {
+                        }else{
                             isContinuePlay = true
-                            if (sortType != PlayGlobalData.playChapterListSort.get()) {
+                            if(sortType!=PlayGlobalData.playChapterListSort.get()){
                                 PlayGlobalData.playChapterList.value?.let { playList ->
                                     playList.reverse()
                                     PlayGlobalData.playChapterList.value = playList
                                 }
                             }
                             BaseConstance.basePlayProgressModel.get()?.let { progressModel ->
-                                playCurrentDuration =
-                                    if (progressModel.currentDuration >= progressModel.totalDuration) {
-                                        1L
-                                    } else {
-                                        progressModel.currentDuration
-                                    }
+                                playCurrentDuration = if(progressModel.currentDuration >= progressModel.totalDuration){
+                                    1L
+                                }else{
+                                    progressModel.currentDuration
+                                }
                             }
                         }
                     }
@@ -141,7 +139,6 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         GlobalPlayHelper.INSTANCE.registerPlayStatusListener(this@BookPlayerActivity)
         GlobalPlayHelper.INSTANCE.addOnPlayerEventListener()
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -201,7 +198,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
         PlayGlobalData.playChapterList.observe(this, Observer { playPath ->
 
-            DLog.d("music-exoplayer-lib", "playPath = ${playPath.size}")
+            DLog.d("music-exoplayer-lib","playPath = ${playPath.size}")
 
             val currentPlayerMusic = musicPlayerManger.getCurrentPlayerMusic()
             val chapterId = PlayGlobalData.playChapterId.get()
@@ -246,8 +243,8 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
         needShowNetErrorChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 AriaDownloadManager.needShowNetError.get().let {
-                    if (it) {
-                        tipView.showNetError(this@BookPlayerActivity)
+                    if(it){
+                       ToastUtil.showTopNetErrorToast(this@BookPlayerActivity)
                     }
                 }
             }
@@ -349,10 +346,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                     PlayGlobalData.process.set(musicPlayerManger.getCurDurtion().toFloat())
                 }
             } else {
-                DLog.d(
-                    "music-exoplayer-lib",
-                    "initData  playAudioId = ${playAudioId} -- playChapterId = $playChapterId"
-                )
+                DLog.d("music-exoplayer-lib","initData  playAudioId = ${playAudioId} -- playChapterId = $playChapterId")
                 PlayGlobalData.process.set(0F)
                 mViewModel.getChapterListWithId(audioId = playAudioId, chapterId = playChapterId)
             }
@@ -375,7 +369,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         if (playerState == -1) {
-            tipView.showTipView(this, this.getString(R.string.business_play_error))
+            ToastUtil.showTopToast(this, this.getString(R.string.business_play_error))
             mViewModel.playManger.pause()
         }
 

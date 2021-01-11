@@ -48,6 +48,7 @@ class MainMainActivity :
     }
 
     override fun initView() {
+        mDataShowView = view_pager
         if(TextUtils.isEmpty(jumpUrl)){
             initPager()
         }else{

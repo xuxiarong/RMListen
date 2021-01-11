@@ -50,6 +50,16 @@ fun LeftAutoScrollRecyclerView.bindLeftScroll(model: HomeAudioHorDoubleRvModel) 
             super.onScrolled(recyclerView, dx, dy)
             isSlidingToLeft = dx > 10
             firstScrollLast = false
+//            val manager = recyclerView.layoutManager as LinearLayoutManager?
+//            // 获取最后一个完全显示的itemPosition
+//            val lastItemPosition = manager!!.findLastVisibleItemPosition()
+//            val itemCount = manager.itemCount
+//            // 判断是否滑动到了最后一个Item，并且是向左滑动
+//            if (lastItemPosition == itemCount - 1 && blockName == model.block.block_name ) {
+//                showShowArc(dx)
+//            }else{
+//                setCantScroll()
+//            }
         }
     })
 
