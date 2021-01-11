@@ -108,7 +108,7 @@ class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewMo
         activity: FragmentActivity,
         sureIsDismiss: Boolean,
         cancelIsFinish: Boolean,
-        sureBlock: () -> Unit?,
+        sureBlock: () -> Unit?={},
         cancelBlock: () -> Unit? = {}
     ) {
         versionInfo.get()?.let {

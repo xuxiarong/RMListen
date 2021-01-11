@@ -118,7 +118,6 @@ object SpannableHelper {
         content: String?,
         changeItems: MutableList<ChangeItem>
     ): SpannableString {
-
         val spannable = SpannableString(content)
 
         if (TextUtils.isEmpty(content) || changeItems.isEmpty())
@@ -135,7 +134,6 @@ object SpannableHelper {
                     val clickableSpan = object : ClickableSpan() {
                         override fun onClick(view: View) {
                             it.clickListener.onTextClick(changeStr)
-//                            textClickListener?.onTextClick(changeStr)
                         }
 
                         override fun updateDrawState(ds: TextPaint) {

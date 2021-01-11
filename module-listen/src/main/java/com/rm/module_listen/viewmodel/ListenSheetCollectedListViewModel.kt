@@ -7,7 +7,6 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.baselisten.dialog.TipsFragmentDialog
-import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper

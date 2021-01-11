@@ -38,6 +38,11 @@ import kotlinx.android.synthetic.main.home_home_fragment.*
  * version: 1.0
  */
 class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentViewModel>() {
+    private var homeDialogAdModelChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var homeItemDataAdModelChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var errorMsgChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var showNetErrorChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var isAvailableChangedCallback: Observable.OnPropertyChangedCallback? = null
 
     override fun initLayoutId() = R.layout.home_home_fragment
 
@@ -134,18 +139,19 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             mViewModel.homeAdapter.setList(it)
         })
 
-        mViewModel.homeDialogAdModel.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        homeDialogAdModelChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val homeDialogAdModel = mViewModel.homeDialogAdModel.get()
                 if (homeDialogAdModel != null && !TextUtils.isEmpty(homeDialogAdModel.image_url)) {
                     showHomeAdDialog()
                 }
             }
-        })
+        }
+        homeDialogAdModelChangedCallback?.let {
+            mViewModel.homeDialogAdModel.addOnPropertyChangedCallback(it)
+        }
 
-        mViewModel.homeItemDataAdModel.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        homeItemDataAdModelChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val homeItemAdModel = mViewModel.homeItemDataAdModel.get()
                 if (homeItemAdModel != null) {
@@ -159,11 +165,12 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                     mViewModel.setHomeItemDataAd(homeItemAdModel)
                 }
             }
-        })
+        }
+        homeItemDataAdModelChangedCallback?.let {
+            mViewModel.homeItemDataAdModel.addOnPropertyChangedCallback(it)
+        }
 
-
-        mViewModel.errorMsg.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        errorMsgChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.errorMsg.get() != null) {
                     (activity as BaseActivity).tipView.showTipView(
@@ -172,20 +179,23 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                     )
                 }
             }
-        })
+        }
+        errorMsgChangedCallback?.let {
+            mViewModel.errorMsg.addOnPropertyChangedCallback(it)
+        }
 
-        mViewModel.showNetError.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-
+        showNetErrorChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.showNetError.get()) {
                     mViewModel.showNetWorkError()
                 }
             }
-        })
+        }
+        showNetErrorChangedCallback?.let {
+            mViewModel.showNetError.addOnPropertyChangedCallback(it)
+        }
 
-        NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        isAvailableChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (NetworkChangeReceiver.isAvailable.get()) {
                     if (mViewModel.baseStatusModel.value != null) {
@@ -197,7 +207,10 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
                     }
                 }
             }
-        })
+        }
+        isAvailableChangedCallback?.let {
+            NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(it)
+        }
 
     }
 
@@ -248,6 +261,33 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             blockModel.topic_id,
             blockModel.block_name
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        homeDialogAdModelChangedCallback?.let {
+            mViewModel.homeDialogAdModel.removeOnPropertyChangedCallback(it)
+            homeDialogAdModelChangedCallback = null
+        }
+
+        homeItemDataAdModelChangedCallback?.let {
+            mViewModel.homeItemDataAdModel.removeOnPropertyChangedCallback(it)
+            homeItemDataAdModelChangedCallback = null
+        }
+
+        errorMsgChangedCallback?.let {
+            mViewModel.errorMsg.removeOnPropertyChangedCallback(it)
+            errorMsgChangedCallback = null
+        }
+
+        showNetErrorChangedCallback?.let {
+            mViewModel.showNetError.removeOnPropertyChangedCallback(it)
+            showNetErrorChangedCallback = null
+        }
+        isAvailableChangedCallback?.let {
+            NetworkChangeReceiver.isAvailable.removeOnPropertyChangedCallback(it)
+            isAvailableChangedCallback = null
+        }
     }
 
 }

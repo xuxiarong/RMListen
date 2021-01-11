@@ -262,7 +262,7 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
     private fun quicklyLogin(context: Context) {
         getActivity(context)?.let {
             RouterHelper.createRouter(LoginService::class.java)
-                .quicklyLogin(this, it)
+                .quicklyLogin(it)
         }
     }
 }

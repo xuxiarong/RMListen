@@ -2,14 +2,9 @@ package com.rm.module_search.activity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
-import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.observe
-import com.rm.baselisten.binding.bindKeyboardVisibilityListener
-import com.rm.baselisten.util.Cxt.Companion.context
-import com.rm.baselisten.utilExt.getStateHeight
-import com.rm.baselisten.utilExt.screenHeight
+import com.rm.baselisten.helper.KeyboardStatusDetector.Companion.bindKeyboardVisibilityListener
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_search.*
@@ -21,7 +16,6 @@ import com.rm.module_search.adapter.SearchResultAdapter.Companion.TYPE_CONTENT_S
 import com.rm.module_search.databinding.SearchActivityResultBinding
 import com.rm.module_search.viewmodel.SearchResultViewModel
 import kotlinx.android.synthetic.main.search_activity_result.*
-import kotlin.math.abs
 
 /**
  *
@@ -66,30 +60,35 @@ class SearchResultActivity :
         mViewModel.keyWord.set(keyword)
 
         mViewModel.inputHint.set(intent.getStringExtra(INPUT_HINT) ?: "")
+        mDataBind?.let { dataBind ->
+            params =
+                dataBind.searchResultSuggestLayout.layoutParams as ConstraintLayout.LayoutParams
 
-        params = mDataBind.searchResultSuggestLayout.layoutParams as ConstraintLayout.LayoutParams
+            bindKeyboardVisibilityListener { b, height ->
+                if (b) {
+                    params.bottomMargin = height
+                    dataBind.searchResultSuggestLayout.layoutParams = params
+                } else {
+                    search_result_edit_text.clearFocus()
+                    if (!b) {
+                        dataBind.searchResultEditText.clearFocus()
+                    }
+                }
+                mViewModel.keyboardVisibilityListener(b)
+            }
 
-        search_result_edit_text.bindKeyboardVisibilityListener { b, height ->
-            if (b) {
-                params.bottomMargin = height
-                mDataBind.searchResultSuggestLayout.layoutParams = params
-            } else {
-                search_result_edit_text.clearFocus()
+            dataBind.searchResultEditText.setText(keyword)
+
+            dataBind.searchResultViewPager.adapter = searchResultAdapter
+            attachViewPager()
+
+            dataBind.root.setOnClickListener {
+                hideKeyboard(dataBind.searchResultEditText)
+            }
+            dataBind.searchResultSuggestLayout.setOnClickListener {
+                hideKeyboard(dataBind.searchResultEditText)
             }
         }
-
-        mDataBind.searchResultEditText.setText(keyword)
-
-        mDataBind.searchResultViewPager.adapter = searchResultAdapter
-        attachViewPager()
-
-        mDataBind.root.setOnClickListener {
-            hideKeyboard(mDataBind.searchResultEditText)
-        }
-        mDataBind.searchResultSuggestLayout.setOnClickListener {
-            hideKeyboard(mDataBind.searchResultEditText)
-        }
-
     }
 
     override fun initData() {
@@ -98,7 +97,7 @@ class SearchResultActivity :
 
     override fun startObserve() { //tab变化监听
         curType.observe(this) {
-            mDataBind.searchResultViewPager.currentItem = when (it) {
+            mDataBind?.searchResultViewPager?.currentItem = when (it) {
                 REQUEST_TYPE_ALL -> {
                     0
                 }
@@ -123,28 +122,29 @@ class SearchResultActivity :
      * tabLayout绑定viewpager滑动事件
      */
     private fun attachViewPager() {
-        BendTabLayoutMediator(
-            mDataBind.searchResultTabLayout,
-            mDataBind.searchResultViewPager
-        ) { tab, position ->
-            tab.text = when (mViewModel.tabList[position]) {
-                TYPE_CONTENT_ALL -> {
-                    getString(R.string.search_all)
+        mDataBind?.let { dataBind ->
+            BendTabLayoutMediator(
+                dataBind.searchResultTabLayout,
+                dataBind.searchResultViewPager
+            ) { tab, position ->
+                tab.text = when (mViewModel.tabList[position]) {
+                    TYPE_CONTENT_ALL -> {
+                        getString(R.string.search_all)
+                    }
+                    TYPE_CONTENT_BOOKS -> {
+                        getString(R.string.search_books)
+                    }
+                    TYPE_CONTENT_ANCHOR -> {
+                        getString(R.string.search_anchor)
+                    }
+                    TYPE_CONTENT_SHEET -> {
+                        getString(R.string.search_sheet)
+                    }
+                    else -> {
+                        getString(R.string.search_all)
+                    }
                 }
-                TYPE_CONTENT_BOOKS -> {
-                    getString(R.string.search_books)
-                }
-                TYPE_CONTENT_ANCHOR -> {
-                    getString(R.string.search_anchor)
-                }
-                TYPE_CONTENT_SHEET -> {
-                    getString(R.string.search_sheet)
-                }
-                else -> {
-                    getString(R.string.search_all)
-                }
-            }
-        }.attach()
-
+            }.attach()
+        }
     }
 }

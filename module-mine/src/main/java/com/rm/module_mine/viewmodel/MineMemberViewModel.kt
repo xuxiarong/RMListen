@@ -164,7 +164,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
      */
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
-            .quicklyLogin(this, it, loginSuccess = {
+            .quicklyLogin(it, loginSuccess = {
                 getInfoDetail(memberId.get()!!)
             })
     }

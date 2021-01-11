@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.rm.baselisten.mvvm.BaseViewModel
+import androidx.lifecycle.observe
+import com.rm.baselisten.util.ToastUtil
+import com.rm.baselisten.viewmodel.BaseVMViewModel
 
 /**
  * desc   :
@@ -14,9 +16,9 @@ import com.rm.baselisten.mvvm.BaseViewModel
  * version: 1.0
  */
 @Suppress("UNCHECKED_CAST")
-abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
+abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
 
-    companion object{
+    companion object {
         const val VIEW_MODEL_BR_ID = "viewModelBrId"
         const val VIEW_MODEL = "viewModel"
     }
@@ -24,25 +26,69 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
     /**
      * 定义子类的dataBing对象
      */
-     var mDataBind: ViewDataBinding? = null
+    var mDataBind: ViewDataBinding? = null
 
-    var initDialog : (() -> Unit) = {}
+    var initDialog: (() -> Unit) = {}
+    var destroyDialog: (() -> Unit) = {}
 
-    val clickMap : HashMap<Int,()->Unit> = HashMap()
+    val clickMap: HashMap<Int, () -> Unit> = HashMap()
 
-    val disMissIdMap : HashMap<Int,()->Unit> = HashMap()
+    val disMissIdMap: HashMap<Int, () -> Unit> = HashMap()
+
     /**
      * 开启子类的LiveData观察者
      */
-    abstract fun startObserve()
+    fun startObserve(mViewModel: BaseVMViewModel) {
+        context?.let { context ->
+            mViewModel.baseToastModel.observe(this) {
+                if (it.isNetError) {
+                    ToastUtil.showTopNetErrorToast(context, this)
+                    return@observe
+                }
+                if (it.contentId > 0) {
+                    ToastUtil.showTopToast(
+                        context,
+                        getString(it.contentId),
+                        it.colorId,
+                        it.canAutoCancel,
+                        this
+                    )
+                } else {
+                    if (it.content != null) {
+                        ToastUtil.showTopToast(
+                            context,
+                            it.content,
+                            it.colorId,
+                            it.canAutoCancel,
+                            this
+                        )
+                    } else {
+                        ToastUtil.show(context, it.content)
+                    }
+                }
+            }
+            mViewModel.baseCancelToastModel.observe(this) { isCancel ->
+                if (dialog?.isShowing == true) {
+                    if (isCancel) {
+                        ToastUtil.cancelToast()
+                    }
+                }
+            }
+        }
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val layoutId = arguments?.getInt(LAYOUT_ID, 0)?:0
-        mDataBind =DataBindingUtil.inflate(inflater, layoutId, container, false)
-        val viewModelBrId = arguments?.getInt(VIEW_MODEL_BR_ID, 0)?:0
-        val viewModel :  BaseViewModel? = arguments?.getParcelable(VIEW_MODEL)
-        if(viewModelBrId>0 && viewModel!=null){
-            mDataBind?.setVariable(viewModelBrId,viewModel)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val layoutId = arguments?.getInt(LAYOUT_ID, 0) ?: 0
+        mDataBind = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        val viewModelBrId = arguments?.getInt(VIEW_MODEL_BR_ID, 0) ?: 0
+        val viewModel: BaseVMViewModel? = arguments?.getParcelable(VIEW_MODEL)
+        if (viewModelBrId > 0 && viewModel != null) {
+            mDataBind?.setVariable(viewModelBrId, viewModel)
         }
         disMissIdMap.forEach { entry ->
             mDataBind?.root?.findViewById<View>(entry.key)?.setOnClickListener {
@@ -51,20 +97,23 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog(){
             }
         }
         initDialog()
+        viewModel?.let { startObserve(it) }
+
         return mDataBind?.root
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mDataBind = null
+        destroyDialog()
         mDataBind?.unbind()
+        mDataBind = null
     }
 
-    fun setClicks(viewId : Int,viewClickAction : ()->Unit){
+    fun setClicks(viewId: Int, viewClickAction: () -> Unit) {
         clickMap[viewId] = viewClickAction
     }
 
-    fun setDismissIdAndAction(id : Int, action : ()->Unit){
+    fun setDismissIdAndAction(id: Int, action: () -> Unit) {
         disMissIdMap[id] = action
     }
 

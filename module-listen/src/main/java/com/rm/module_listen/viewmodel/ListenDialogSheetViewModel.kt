@@ -26,8 +26,7 @@ import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 class ListenDialogSheetViewModel(
     private val mActivity: FragmentActivity,
     private val audioId: String,
-    private val successBlock: () -> Unit,
-    private val viewModel: BaseVMViewModel
+    private val successBlock: () -> Unit
 ) : BaseVMViewModel() {
 
     private val repository by lazy {
@@ -87,7 +86,7 @@ class ListenDialogSheetViewModel(
                     addSheetSuccess()
                 },
                 onError = { it, _ ->
-                    viewModel.showErrorToast("$it")
+                    showErrorToast("$it")
                 }
             )
         }
@@ -99,8 +98,7 @@ class ListenDialogSheetViewModel(
     fun clickCreateSheet() {
         ListenDialogCreateSheetHelper(
             mActivity,
-            successBlock = successBlock,
-            viewModel = viewModel
+            successBlock = successBlock
         ).showCreateSheetDialog(audioId)
         mDialog.dismiss()
     }
@@ -140,7 +138,7 @@ class ListenDialogSheetViewModel(
         } else {
             refreshStateModel.finishLoadMore(false)
         }
-        viewModel.showErrorToast("$msg")
+        showErrorToast("$msg")
     }
 
     /**

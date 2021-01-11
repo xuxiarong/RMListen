@@ -3,14 +3,10 @@ package com.rm.module_home.activity.menu
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_home.BR
@@ -45,21 +41,23 @@ class HomeMenuDetailActivity :
         mViewModel.sheetId.set(sheetId)
 
         setTransparentStatusBar()//设置透明沉浸状态栏
+        mDataBind?.let {
+            val layoutParams =
+                (it.homeMenuDetailTitleCl.layoutParams) as ConstraintLayout.LayoutParams
+            layoutParams.apply {
+                //动态获取状态栏的高度,并设置标题栏的topMargin
+                val stateHeight = getStateHeight(this@HomeMenuDetailActivity)
+                topMargin = stateHeight
+            }
 
-        val layoutParams =
-            (mDataBind.homeMenuDetailTitleCl.layoutParams) as ConstraintLayout.LayoutParams
-        layoutParams.apply {
-            //动态获取状态栏的高度,并设置标题栏的topMargin
-            val stateHeight = getStateHeight(this@HomeMenuDetailActivity)
-            topMargin = stateHeight
+            it.homeMenuDetailRecyclerView.apply {
+                bindVerticalLayout(mViewModel.mAdapter)
+                createHeader()
+            }
+
+            it.homeMenuDetailRefresh.refreshFooter
         }
 
-        mDataBind.homeMenuDetailRecyclerView.apply {
-            bindVerticalLayout(mViewModel.mAdapter)
-            createHeader()
-        }
-
-        mDataBind.homeMenuDetailRefresh.refreshFooter
 
         recycleScrollListener()
     }
@@ -70,14 +68,16 @@ class HomeMenuDetailActivity :
     }
 
     private fun createHeader() {
-        dataBinding = DataBindingUtil.inflate<HomeHeaderMenuDetailBinding>(
-            LayoutInflater.from(this@HomeMenuDetailActivity),
-            R.layout.home_header_menu_detail,
-            mDataBind.homeMenuDetailRecyclerView,
-            false
-        ).apply {
-            mViewModel.mAdapter.addHeaderView(root)
-            setVariable(BR.headerViewModel, mViewModel)
+        mDataBind?.let {
+            dataBinding = DataBindingUtil.inflate<HomeHeaderMenuDetailBinding>(
+                LayoutInflater.from(this@HomeMenuDetailActivity),
+                R.layout.home_header_menu_detail,
+                it.homeMenuDetailRecyclerView,
+                false
+            ).apply {
+                mViewModel.mAdapter.addHeaderView(root)
+                setVariable(BR.headerViewModel, mViewModel)
+            }
         }
     }
 
@@ -92,24 +92,26 @@ class HomeMenuDetailActivity :
      * recyclerView滑动监听
      */
     private fun recycleScrollListener() {
-        mDataBind.homeMenuDetailRecyclerView.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            private var totalDy = 0
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val top = dataBinding?.homeMenuDetailFrontCover?.top ?: 0
-                val height = dataBinding?.homeMenuDetailFrontCover?.height ?: 0
-                totalDy += dy
-                if (totalDy > 0) {
-                    val alpha = if (totalDy.toFloat() / (top + height) > 1f) {
-                        1f
-                    } else {
-                        totalDy.toFloat() / (top + height)
+        mDataBind?.let {
+            it.homeMenuDetailRecyclerView.addOnScrollListener(object :
+                RecyclerView.OnScrollListener() {
+                private var totalDy = 0
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val top = dataBinding?.homeMenuDetailFrontCover?.top ?: 0
+                    val height = dataBinding?.homeMenuDetailFrontCover?.height ?: 0
+                    totalDy += dy
+                    if (totalDy > 0) {
+                        val alpha = if (totalDy.toFloat() / (top + height) > 1f) {
+                            1f
+                        } else {
+                            totalDy.toFloat() / (top + height)
+                        }
+                        it.homeMenuDetailBlur.alpha = alpha
                     }
-                    mDataBind.homeMenuDetailBlur.alpha = alpha
                 }
-            }
-        })
+            })
+        }
     }
 
     /**

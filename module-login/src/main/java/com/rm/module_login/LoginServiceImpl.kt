@@ -33,24 +33,28 @@ class LoginServiceImpl : LoginService {
     }
 
     override fun quicklyLogin(
-        baseViewModel: BaseVMViewModel,
         fragmentActivity: FragmentActivity,
         loginSuccess: () -> Unit
     ) {
-        val loginQuicklyDialogHelper = LoginQuicklyDialogHelper(baseViewModel, fragmentActivity)
+        val loginQuicklyDialogHelper = LoginQuicklyDialogHelper(fragmentActivity)
         loginQuicklyDialogHelper.loginSuccess = loginSuccess
         loginQuicklyDialogHelper.show()
     }
 
-    override fun quicklyLogin(baseViewModel: BaseVMViewModel, fragmentActivity: FragmentActivity) {
-        LoginQuicklyDialogHelper(baseViewModel, fragmentActivity).show()
+    override fun quicklyLogin(fragmentActivity: FragmentActivity) {
+        LoginQuicklyDialogHelper(fragmentActivity).show()
     }
 
     override fun startCountry(activity: Activity, code: Int) {
         CountryListActivity.newInstance(activity, code)
     }
 
-    override fun startVerificationInput(activity: Activity, countryCode: String, phoneNumber: String, type: Int) {
+    override fun startVerificationInput(
+        activity: Activity,
+        countryCode: String,
+        phoneNumber: String,
+        type: Int
+    ) {
         VerificationInputActivity.startActivity(activity, countryCode, phoneNumber, type)
     }
 

@@ -28,18 +28,22 @@ import kotlinx.android.synthetic.main.home_dialog_comment.*
 class HomeCommentDialogViewModel(
     private val audioId: String,
     private val anchorId: String,
-    private val viewModel: BaseVMViewModel,
     private val commentSuccessBlock: () -> Unit
 ) : BaseVMViewModel() {
+    private var isAvailableChangedCallback: Observable.OnPropertyChangedCallback? = null
+
     init {
-        NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
+        isAvailableChangedCallback = object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (!NetworkChangeReceiver.isAvailable.get()) {
-                    viewModel.showErrorToast("当前网络不可用")
+                    showErrorToast("当前网络不可用")
                 }
             }
-        })
+        }
+        isAvailableChangedCallback?.let {
+            NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(it)
+        }
     }
 
     private val repository by lazy {
@@ -73,6 +77,12 @@ class HomeCommentDialogViewModel(
                     }
                 }
             }
+            destroyDialog = {
+                isAvailableChangedCallback?.let {
+                    NetworkChangeReceiver.isAvailable.removeOnPropertyChangedCallback(it)
+                    isAvailableChangedCallback = null
+                }
+            }
         }
     }
 
@@ -83,7 +93,7 @@ class HomeCommentDialogViewModel(
     private fun inputChange(content: String) {
         inputComment.set(content.trim().trimEnd())
         if (inputComment.get()!!.length > 200) {
-            viewModel.showErrorToast(CONTEXT.getString(R.string.home_comment_input_limit))
+            showErrorToast(CONTEXT.getString(R.string.home_comment_input_limit))
         }
     }
 
@@ -94,13 +104,13 @@ class HomeCommentDialogViewModel(
     fun clickSend(view: View) {
         inputComment.get()?.let {
             if (it.length > 200) {
-                viewModel.showErrorToast(CONTEXT.getString(R.string.home_comment_input_limit))
+                showErrorToast(CONTEXT.getString(R.string.home_comment_input_limit))
             } else {
-                viewModel.showToast(BaseToastModel(content = "提交评论中", canAutoCancel = false))
+                showToast(BaseToastModel(content = "提交评论中", canAutoCancel = false))
                 if (NetworkChangeReceiver.isAvailable.get()) {
                     sendComment(view, it, audioId)
                 } else {
-                    viewModel.showErrorToast("当前网络不可用")
+                    showErrorToast("当前网络不可用")
                 }
             }
         }
@@ -126,12 +136,12 @@ class HomeCommentDialogViewModel(
                     if (imm.isActive) {
                         imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
                     }
-                    viewModel.cancelToast()
+                    cancelToast()
                     commentSuccessBlock()
                     mDialog.dismiss()
                 },
                 onError = { it, _ ->
-                    viewModel.showErrorToast("$it")
+                    showErrorToast("$it")
                 }
             )
         }

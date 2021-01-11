@@ -19,7 +19,6 @@ import com.rm.business_lib.*
 import com.rm.business_lib.PlayGlobalData.chapterRefreshModel
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
 import com.rm.baselisten.dialog.TipsFragmentDialog
-import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.PlayGlobalData.playChapterTotal
 import com.rm.business_lib.bean.AudioRecommend
 import com.rm.business_lib.bean.BusinessAdModel
@@ -239,7 +238,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
-            .quicklyLogin(this, it, loginSuccess = {
+            .quicklyLogin(it, loginSuccess = {
                 commentPage = 1
                 getCommentList()
             })
@@ -396,7 +395,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 获取书籍详情信息
      */
-    fun getAudioInfo(context: Context, audioID: String) {
+    fun getAudioInfo(audioID: String) {
         launchOnIO {
             repository.getDetailInfo(audioID).checkResult(
                 onSuccess = {
@@ -408,7 +407,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 },
                 onError = { it, _ ->
                     it?.let {
-                        ToastUtil.showTopToast(context, it, R.color.business_color_ff5e5e)
+                        showToast(it, R.color.business_color_ff5e5e)
                     }
                 }
             )
@@ -542,7 +541,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         launchOnIO {
             repository.homeLikeComment(bean.data.id).checkResult(
                 onSuccess = {
-                    lastCommentUnLikeTime=System.currentTimeMillis()
+                    lastCommentUnLikeTime = System.currentTimeMillis()
                     val indexOf = mCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
                         bean.data.is_liked = true
@@ -553,7 +552,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     }
                 },
                 onError = { it, _ ->
-                    lastCommentUnLikeTime=System.currentTimeMillis()
+                    lastCommentUnLikeTime = System.currentTimeMillis()
                     DLog.i("----->", "评论点赞:$it")
                 })
         }
@@ -909,14 +908,13 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         if (context is FragmentActivity) {
             if (!isLogin.get()) {
                 RouterHelper.createRouter(LoginService::class.java)
-                    .quicklyLogin(this, context)
+                    .quicklyLogin(context)
             } else {
-                RouterHelper.createRouter(ListenService::class.java).showMySheetListDialog(
-                    context,
-                    PlayGlobalData.playAudioId.get()!!,
-                    { showTip("在“我听-听单”中查看") },
-                    this
-                )
+                RouterHelper.createRouter(ListenService::class.java)
+                    .showMySheetListDialog(
+                        context,
+                        PlayGlobalData.playAudioId.get()!!
+                    ) { showTip("在“我听-听单”中查看") }
             }
         }
     }
@@ -992,7 +990,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 广告点击事件
      */
-
     fun audioAdClick(context: Context, businessAdModel: BusinessAdModel?) {
         businessAdModel?.let {
             BannerJumpUtils.onBannerClick(context, it.jump_url, it.ad_id.toString())

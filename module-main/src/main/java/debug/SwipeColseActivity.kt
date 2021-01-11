@@ -33,7 +33,7 @@ class SwipeColseActivity : BaseVMActivity<DemoSwipeCloseBinding,DemoSwipeViewMod
         }
 
         mViewModel.mSwipeAdapter.setHasStableIds(true)
-        mDataBind.demoSwipeRv.bindVerticalLayout(mViewModel.mSwipeAdapter)
+        mDataBind?.demoSwipeRv?.bindVerticalLayout(mViewModel.mSwipeAdapter)
 
     }
 

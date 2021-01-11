@@ -3,10 +3,12 @@ package com.rm.module_login.activity
 import android.content.Context
 import android.content.Intent
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.Observable
-import com.rm.baselisten.binding.bindKeyboardVisibilityListener
+import com.rm.baselisten.helper.KeyboardStatusDetector.Companion.bindKeyboardVisibilityListener
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.spannable.ChangeItem
+import com.rm.baselisten.util.spannable.SpannableBuilder
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.getStateHeight
@@ -28,6 +30,7 @@ import kotlinx.android.synthetic.main.login_include_layout_phone_input.*
  */
 class LoginByVerifyCodeActivity :
     BaseVMActivity<LoginActivityLoginByVerifyCodeBinding, LoginByVerifyViewModel>() {
+    private var changedCallback: Observable.OnPropertyChangedCallback? = null
 
     companion object {
         fun startActivity(context: Context) {
@@ -35,27 +38,29 @@ class LoginByVerifyCodeActivity :
         }
     }
 
+    private var spannableHelper: SpannableBuilder? = null
+
     override fun getLayoutId(): Int = R.layout.login_activity_login_by_verify_code
 
     override fun initModelBrId() = BR.viewModel
 
     override fun startObserve() {
-
-        // 监听登陆状态
-        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+        changedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (isLogin.get()) {
                     // 登陆成功，关闭当前界面
                     finish()
                 }
             }
-        })
+        }
+        // 监听登陆状态
+        changedCallback?.let { isLogin.addOnPropertyChangedCallback(it) }
     }
 
     override fun initView() {
         super.initView()
         setTransparentStatusBar()
-        mDataBind.loginCodeBack.apply {
+        mDataBind?.loginCodeBack?.apply {
             (layoutParams as ViewGroup.MarginLayoutParams).apply {
                 //动态获取状态栏的高度,并设置标题栏的topMargin
                 topMargin = getStateHeight(this@LoginByVerifyCodeActivity)
@@ -70,8 +75,8 @@ class LoginByVerifyCodeActivity :
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
         }
 
-        login_by_verify_code_input.bindKeyboardVisibilityListener { b, _ ->
-            if (!b){
+        bindKeyboardVisibilityListener { b, _ ->
+            if (!b) {
                 login_by_verify_code_input.clearFocus()
             }
         }
@@ -100,38 +105,45 @@ class LoginByVerifyCodeActivity :
 
     override fun initData() {
         // 设置checkbox选择协议相关文本
-        SpannableHelper.with(
+        spannableHelper = SpannableHelper.with(
             login_by_verify_code_tips,
             resources.getString(R.string.login_login_tips_all)
-        )
-            .addChangeItem(
-                ChangeItem(
-                    resources.getString(R.string.login_login_tips_user),
-                    ChangeItem.Type.COLOR,
-                    resources.getColor(R.color.login_high_color),
-                    object : TextClickListener {
-                        override fun onTextClick(clickContent: String) {
-                            BaseWebActivity.startBaseWebActivity(
-                                this@LoginByVerifyCodeActivity,
-                                    BusinessRetrofitClient.getUserAgreement()
+        ).addChangeItem(
+            ChangeItem(
+                resources.getString(R.string.login_login_tips_user),
+                ChangeItem.Type.COLOR,
+                ContextCompat.getColor(this, R.color.login_high_color),
+                object : TextClickListener {
+                    override fun onTextClick(clickContent: String) {
+                        BaseWebActivity.startBaseWebActivity(
+                            this@LoginByVerifyCodeActivity,
+                            BusinessRetrofitClient.getUserAgreement()
 
-                            )
-                        }
-                    })
-            )
-            .addChangeItem(
-                ChangeItem(
-                    resources.getString(R.string.login_login_tips_privacy),
-                    ChangeItem.Type.COLOR,
-                    resources.getColor(R.color.login_high_color),
-                    object : TextClickListener {
-                        override fun onTextClick(clickContent: String) {
-                            BaseWebActivity.startBaseWebActivity(
-                                this@LoginByVerifyCodeActivity,
-                                    BusinessRetrofitClient.getUserPrivacy()
-                            )
-                        }
-                    })
-            ).build()
+                        )
+                    }
+                })
+        ).addChangeItem(
+            ChangeItem(
+                resources.getString(R.string.login_login_tips_privacy),
+                ChangeItem.Type.COLOR,
+                ContextCompat.getColor(this, R.color.login_high_color),
+                object : TextClickListener {
+                    override fun onTextClick(clickContent: String) {
+                        BaseWebActivity.startBaseWebActivity(
+                            this@LoginByVerifyCodeActivity,
+                            BusinessRetrofitClient.getUserPrivacy()
+                        )
+                    }
+                })
+        ).build()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        changedCallback?.let {
+            isLogin.removeOnPropertyChangedCallback(it)
+            changedCallback = null
+        }
+        spannableHelper?.removeSpan()
     }
 }

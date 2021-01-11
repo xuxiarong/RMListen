@@ -37,10 +37,9 @@ class ListenServiceImpl : ListenService {
     override fun showMySheetListDialog(
         activity: FragmentActivity,
         audioId: String,
-        successBlock: () -> Unit,
-        viewModel: BaseVMViewModel
+        successBlock: () -> Unit
     ) {
-        ListenDialogSheetHelper(activity, audioId, successBlock,viewModel).showDialog()
+        ListenDialogSheetHelper(activity, audioId, successBlock).showDialog()
     }
 
     override fun startListenSheetList(context: Activity, sheetListType: Int, memberId: String) {

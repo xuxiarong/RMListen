@@ -24,7 +24,7 @@ class HomeCommentDialogHelper(
      * viewModel对象
      */
     private val mViewModel by lazy {
-        HomeCommentDialogViewModel(audio, anchorId, viewModel, commentSuccessBlock)
+        HomeCommentDialogViewModel(audio, anchorId, commentSuccessBlock)
     }
 
     fun showDialog() {

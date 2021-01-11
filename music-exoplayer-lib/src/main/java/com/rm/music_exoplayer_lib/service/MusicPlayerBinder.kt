@@ -13,7 +13,7 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
  * @data: 8/19/20 3:05 PM
  * @Version: 1.0.0
  */
-class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binder() {
+class MusicPlayerBinder constructor(var presenter: MusicPlayerPresenter) : Binder() {
 
     fun startPlayMusic(position: String) {
         presenter.startPlayMusic(position)

@@ -30,8 +30,7 @@ import com.rm.module_listen.repository.ListenRepository
 
 class ListenDialogCreateSheetViewModel(
     private val mActivity: FragmentActivity,
-    private val successBlock: () -> Unit,
-    private val mViewModel: BaseVMViewModel
+    private val successBlock: () -> Unit
 ) : BaseVMViewModel() {
 
     private val repository by lazy {
@@ -67,19 +66,19 @@ class ListenDialogCreateSheetViewModel(
      * @param description 听单简介
      */
     private fun createSheet(sheet_name: String, description: String) {
-        mViewModel.showToast("创建听单中")
+        showToast("创建听单中")
         launchOnIO {
             repository.createSheet(sheet_name, description).checkResult(
                 onSuccess = {
                     if (TextUtils.isEmpty(audioId)) {
-                        mViewModel.showToast(CONTEXT.getString(R.string.listen_add_success_tip))
+                        showToast(CONTEXT.getString(R.string.listen_add_success_tip))
                         mDialog?.dismiss()
                     } else {
                         addSheet(it.sheet_id)
                     }
                 },
                 onError = { it, _ ->
-                    mViewModel.showErrorToast("$it")
+                    showErrorToast("$it")
                 }
             )
         }
@@ -95,7 +94,7 @@ class ListenDialogCreateSheetViewModel(
                     addSheetSuccess()
                 },
                 onError = { it, _ ->
-                    mViewModel.showErrorToast("$it")
+                    showErrorToast("$it")
                 }
             )
         }
@@ -129,7 +128,7 @@ class ListenDialogCreateSheetViewModel(
             }.show(mActivity)
         } else {
             successBlock()
-            mViewModel.showToast("添加成功")
+            showToast("添加成功")
         }
         mDialog?.dismiss()
         IS_FIRST_ADD_SHEET.putMMKV(false)
@@ -142,16 +141,16 @@ class ListenDialogCreateSheetViewModel(
      * @param bean 听单json
      */
     private fun editSheet(bean: ListenPatchSheetBean) {
-        mViewModel.showToast("修改听单中")
+        showToast("修改听单中")
         launchOnIO {
             repository.editSheet(bean).checkResult(
                 onSuccess = {
                     editSuccess(bean.sheet_name)
-                    mViewModel.showToast(R.string.listen_edit_success_tip)
+                    showToast(R.string.listen_edit_success_tip)
                     mDialog?.dismiss()
                 },
                 onError = { it, _ ->
-                    mViewModel.showErrorToast("$it")
+                    showErrorToast("$it")
                 }
             )
         }
@@ -167,13 +166,13 @@ class ListenDialogCreateSheetViewModel(
             dataBinding?.listenDialogCreateSheetEditSynopsis?.text.toString()
         when {
             str.isEmpty() -> {
-                mViewModel.showErrorToast(R.string.listen_input_no_null_tip)
+                showErrorToast(R.string.listen_input_no_null_tip)
             }
             EmojiUtils.containsEmoji(str) -> {
-                mViewModel.showErrorToast(R.string.listen_input_char_tip)
+                showErrorToast(R.string.listen_input_char_tip)
             }
             numberOfWords(str) -> {
-                mViewModel.showErrorToast(R.string.listen_input_length_tip)
+                showErrorToast(R.string.listen_input_length_tip)
             }
             else -> {
                 if (sheetId.get() == null) {

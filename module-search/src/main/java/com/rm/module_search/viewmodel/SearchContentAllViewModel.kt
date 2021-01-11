@@ -134,7 +134,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
      */
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
-            .quicklyLogin(this, it, loginSuccess = {
+            .quicklyLogin(it, loginSuccess = {
 //                intDetailInfo(audioId.get()!!)
             })
     }
@@ -153,9 +153,9 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
                     anchorAdapter.notifyItemChanged(indexOf)
                     showTip("关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }
@@ -174,9 +174,9 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
                     anchorAdapter.notifyItemChanged(indexOf)
                     showTip("取消关注成功")
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
     }

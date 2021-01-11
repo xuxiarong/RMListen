@@ -1,9 +1,12 @@
 package com.rm.module_download.viewmodel
 
 import android.content.Context
+import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleOwner
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -173,7 +176,15 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                 }
                 dismiss()
                 downloadingEdit.set(false)
-                ToastUtil.showTopToast(context,context.getString(R.string.business_delete_success))
+                var lifecycleOwner: LifecycleOwner? = null
+                if (context is ComponentActivity) {
+                    lifecycleOwner = context
+                }
+                ToastUtil.showTopToast(
+                    context = context,
+                    tipText = context.getString(R.string.business_delete_success),
+                    lifecycleOwner = lifecycleOwner
+                )
                 DownloadMemoryCache.deleteDownloadingChapter(tempList)
             }
         }.show(context as FragmentActivity)
@@ -221,7 +232,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                     }
                 }
                 downloadFinishDeleteListenFinish.set(true)
-            }else{
+            } else {
                 downloadFinishDeleteListenFinish.set(false)
             }
         } else {
@@ -294,7 +305,15 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                 }
                 DownLoadFileUtils.deleteAudioFile(tempList)
                 DownloadMemoryCache.deleteAudioToDownloadMemoryCache(tempList)
-                ToastUtil.showTopToast(context,context.getString(R.string.business_delete_success))
+                var lifecycleOwner: LifecycleOwner? = null
+                if (context is ComponentActivity) {
+                    lifecycleOwner = context
+                }
+                ToastUtil.showTopToast(
+                    context = context,
+                    tipText = context.getString(R.string.business_delete_success),
+                    lifecycleOwner = lifecycleOwner
+                )
                 downloadFinishSelectNum.set(downloadFinishSelectNum.get() - tempList.size)
                 dismiss()
                 editDownloadFinish()

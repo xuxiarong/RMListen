@@ -45,6 +45,9 @@ class MineMemberFollowAndFansActivity :
         }
     }
 
+    private var memberFansNumChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var memberFollowNumChangedCallback: Observable.OnPropertyChangedCallback? = null
+
     override fun initModelBrId() = BR.viewModel
 
     override fun getLayoutId() = R.layout.mine_activity_member_follow_and_fans
@@ -54,16 +57,24 @@ class MineMemberFollowAndFansActivity :
     }
 
     override fun startObserve() {
-        memberFansNum.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+        memberFansNumChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 attachViewPager(memberFansNum.get()!!, memberFollowNum.get()!!)
             }
-        })
-        memberFollowNum.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+        }
+        memberFansNumChangedCallback?.let {
+            memberFansNum.addOnPropertyChangedCallback(it)
+        }
+
+        memberFollowNumChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 attachViewPager(memberFansNum.get()!!, memberFollowNum.get()!!)
             }
-        })
+        }
+
+        memberFollowNumChangedCallback?.let {
+            memberFollowNum.addOnPropertyChangedCallback(it)
+        }
     }
 
     /**
@@ -78,10 +89,10 @@ class MineMemberFollowAndFansActivity :
             val fragments = mutableListOf<Fragment>()
             fragments.add(followFragment)
             fragments.add(fansFragment)
-            mDataBind.mineMemberFansViewpager.adapter = MineFollowAndFansAdapter(this, fragments)
+            mDataBind?.mineMemberFansViewpager?.adapter = MineFollowAndFansAdapter(this, fragments)
             attachViewPager(memberFansNum.get()!!, memberFollowNum.get()!!)
             if (type == TYPE_FANS) {
-                mDataBind.mineMemberFansViewpager.setCurrentItem(1, false)
+                mDataBind?.mineMemberFansViewpager?.setCurrentItem(1, false)
             }
         }
     }
@@ -93,10 +104,26 @@ class MineMemberFollowAndFansActivity :
         val titles = mutableListOf<CharSequence>()
         titles.add("关注(${getPlayCount(followNum)})")
         titles.add("粉丝(${getPlayCount(fansNum)})")
-        BendTabLayoutMediator(
-            mDataBind.mineMemberFansTab, mDataBind.mineMemberFansViewpager
-        ) { tab, position ->
-            tab.text = titles[position]
-        }.attach()
+        mDataBind?.let {
+            BendTabLayoutMediator(
+                it.mineMemberFansTab, it.mineMemberFansViewpager
+            ) { tab, position ->
+                tab.text = titles[position]
+            }.attach()
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        memberFansNumChangedCallback?.let {
+            memberFansNum.removeOnPropertyChangedCallback(it)
+            memberFansNumChangedCallback = null
+        }
+
+        memberFollowNumChangedCallback?.let {
+            memberFollowNum.removeOnPropertyChangedCallback(it)
+            memberFollowNumChangedCallback = null
+        }
     }
 }

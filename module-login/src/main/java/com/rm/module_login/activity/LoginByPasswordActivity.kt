@@ -2,14 +2,14 @@ package com.rm.module_login.activity
 
 import android.animation.ObjectAnimator
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
-import com.rm.baselisten.binding.bindKeyboardVisibilityListener
+import androidx.core.content.ContextCompat
+import com.rm.baselisten.helper.KeyboardStatusDetector.Companion.bindKeyboardVisibilityListener
 import com.rm.baselisten.mvvm.BaseVMActivity
-import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.spannable.ChangeItem
+import com.rm.baselisten.util.spannable.SpannableBuilder
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.getStateHeight
@@ -46,6 +46,8 @@ class LoginByPasswordActivity :
         }
     }
 
+    private var spannableHelper: SpannableBuilder? = null
+
     override fun getLayoutId(): Int = R.layout.login_activity_login_by_passowrd
 
     override fun initModelBrId() = BR.viewModel
@@ -58,7 +60,7 @@ class LoginByPasswordActivity :
         super.initView()
         setTransparentStatusBar()
 
-        mDataBind.loginPasswordBack.apply {
+        mDataBind?.loginPasswordBack?.apply {
             (layoutParams as ViewGroup.MarginLayoutParams).apply {
                 //动态获取状态栏的高度,并设置标题栏的topMargin
                 topMargin = getStateHeight(this@LoginByPasswordActivity)
@@ -72,8 +74,9 @@ class LoginByPasswordActivity :
         login_include_phone_input_arrow_view.setOnClickListener {
             CountryListDialogHelper.show(this, mViewModel, mViewModel.phoneInputViewModel)
         }
-        login_by_verify_code_input.bindKeyboardVisibilityListener { it, _ ->
-            if (it) {
+
+        bindKeyboardVisibilityListener { b, _ ->
+            if (b) {
                 startScaleAnim(layout_top_logo, 0.5f)
                 val translation = -resources.getDimension(R.dimen.dp_30)
                 startTranslationAnim(rootLayout, translation)
@@ -82,15 +85,12 @@ class LoginByPasswordActivity :
                 startScaleAnim(layout_top_logo, 1f)
                 startTranslationAnim(rootLayout, 0f)
                 startTranslationAnim(inputLayout, 0f)
-            }
-        }
 
-        login_by_verify_code_input.bindKeyboardVisibilityListener { b, _ ->
-            if (!b) {
                 login_by_verify_code_input.clearFocus()
                 login_include_password_input.clearFocus()
             }
         }
+
         login_by_password_root_view.setOnClickListener {
             hideKeyboard(login_by_password_root_view)
             login_by_verify_code_input.clearFocus()
@@ -120,38 +120,36 @@ class LoginByPasswordActivity :
         mViewModel.phoneInputViewModel.countryCode.set(intent.getStringExtra("countryCode"))
 
         // 设置checkbox选择协议相关文本
-        SpannableHelper.with(
+        spannableHelper = SpannableHelper.with(
             login_by_password_tips,
             resources.getString(R.string.login_login_tips_all)
-        )
-            .addChangeItem(
-                ChangeItem(
-                    resources.getString(R.string.login_login_tips_user),
-                    ChangeItem.Type.COLOR,
-                    resources.getColor(R.color.login_high_color),
-                    object : TextClickListener {
-                        override fun onTextClick(clickContent: String) {
-                            BaseWebActivity.startBaseWebActivity(
-                                this@LoginByPasswordActivity,
-                                BusinessRetrofitClient.getUserAgreement()
-                            )
-                        }
-                    })
-            )
-            .addChangeItem(
-                ChangeItem(
-                    resources.getString(R.string.login_login_tips_privacy),
-                    ChangeItem.Type.COLOR,
-                    resources.getColor(R.color.login_high_color),
-                    object : TextClickListener {
-                        override fun onTextClick(clickContent: String) {
-                            BaseWebActivity.startBaseWebActivity(
-                                this@LoginByPasswordActivity,
-                                BusinessRetrofitClient.getUserPrivacy()
-                            )
-                        }
-                    })
-            ).build()
+        ).addChangeItem(
+            ChangeItem(
+                resources.getString(R.string.login_login_tips_user),
+                ChangeItem.Type.COLOR,
+               ContextCompat.getColor(this,R.color.login_high_color),
+                object : TextClickListener {
+                    override fun onTextClick(clickContent: String) {
+                        BaseWebActivity.startBaseWebActivity(
+                            this@LoginByPasswordActivity,
+                            BusinessRetrofitClient.getUserAgreement()
+                        )
+                    }
+                })
+        ).addChangeItem(
+            ChangeItem(
+                resources.getString(R.string.login_login_tips_privacy),
+                ChangeItem.Type.COLOR,
+                ContextCompat.getColor(this,R.color.login_high_color),
+                object : TextClickListener {
+                    override fun onTextClick(clickContent: String) {
+                        BaseWebActivity.startBaseWebActivity(
+                            this@LoginByPasswordActivity,
+                            BusinessRetrofitClient.getUserPrivacy()
+                        )
+                    }
+                })
+        ).build()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -176,4 +174,8 @@ class LoginByPasswordActivity :
         super.finish()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        spannableHelper?.removeSpan()
+    }
 }

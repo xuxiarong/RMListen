@@ -3,7 +3,6 @@ package com.rm.baselisten.mvvm
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.IBinder
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -64,7 +63,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
     /**
      * 定义子类的dataBing对象
      */
-    protected lateinit var mDataBind: V
+    protected var mDataBind: V? = null
 
     /**
      * 设置dataBind为true，让父类不要setContentView
@@ -91,7 +90,8 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
 
     override fun onDestroy() {
         super.onDestroy()
-        mDataBind.unbind()
+        mDataBind?.unbind()
+        mDataBind = null
     }
 
     /**
@@ -113,9 +113,9 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         if (!mBaseBinding.baseChildView.isInflated) {
             mBaseBinding.baseChildView.viewStub?.layoutResource = getLayoutId()
             mChildView = mBaseBinding.baseChildView.viewStub?.inflate()
-            if (mChildView != null) {
-                mDataBind = DataBindingUtil.bind(mChildView!!)!!
-                mDataBind.setVariable(initModelBrId(), mViewModel)
+            mChildView?.let {
+                mDataBind = DataBindingUtil.bind(it)
+                mDataBind?.setVariable(initModelBrId(), mViewModel)
             }
         }
     }
@@ -136,7 +136,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         })
 
         mViewModel.baseToastModel.observe(this, Observer {
-            if(it.isNetError){
+            if (it.isNetError) {
                 ToastUtil.showTopNetErrorToast(this@BaseVMActivity)
                 return@Observer
             }
@@ -145,12 +145,17 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
                     this@BaseVMActivity,
                     getString(it.contentId),
                     it.colorId,
-                    it.canAutoCancel
+                    it.canAutoCancel,
+                    this@BaseVMActivity
                 )
             } else {
                 if (it.content != null) {
                     ToastUtil.showTopToast(
-                        this@BaseVMActivity, it.content, it.colorId, it.canAutoCancel
+                        this@BaseVMActivity,
+                        it.content,
+                        it.colorId,
+                        it.canAutoCancel,
+                        this@BaseVMActivity
                     )
                 } else {
                     ToastUtil.show(this@BaseVMActivity, it.content)
@@ -158,7 +163,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             }
         })
         mViewModel.baseCancelToastModel.observe(this, Observer { isCancel ->
-            if(!isFinishing){
+            if (!isFinishing) {
                 if (isCancel) {
                     ToastUtil.cancelToast()
                 }
@@ -268,7 +273,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
         }
     }
 
-    fun setServiceError() {
+    private fun setServiceError() {
         if (!mBaseBinding.baseError.isInflated) {
             mBaseBinding.baseError.viewStub?.layoutResource = initErrorLayout()
             mBaseBinding.baseError.viewStub?.inflate()

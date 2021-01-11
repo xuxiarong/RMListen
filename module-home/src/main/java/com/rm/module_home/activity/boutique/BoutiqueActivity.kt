@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.home_activity_boutique.*
  */
 class BoutiqueActivity :
     ComponentShowPlayActivity<HomeActivityBoutiqueBinding, BoutiqueViewModel>() {
+    private var tabSizeChangeBack: Observable.OnPropertyChangedCallback? = null
 
     companion object {
         fun startActivity(context: Context) {
@@ -28,12 +29,15 @@ class BoutiqueActivity :
 
 
     override fun startObserve() {
-        mViewModel.tabSize.addOnPropertyChangedCallback(object :
+        tabSizeChangeBack = object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 home_boutique_view_pager.offscreenPageLimit = mViewModel.tabSize.get()
             }
-        })
+        }
+        tabSizeChangeBack?.let {
+            mViewModel.tabSize.addOnPropertyChangedCallback(it)
+        }
     }
 
     override fun initView() {
@@ -51,5 +55,13 @@ class BoutiqueActivity :
 
     override fun initData() {
         mViewModel.getTabListInfo()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        tabSizeChangeBack?.let {
+            mViewModel.tabSize.removeOnPropertyChangedCallback(it)
+            tabSizeChangeBack = null
+        }
     }
 }

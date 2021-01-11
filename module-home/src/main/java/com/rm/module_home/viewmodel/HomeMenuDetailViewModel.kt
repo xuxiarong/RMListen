@@ -97,7 +97,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
         } else {
             getActivity(view.context)?.let {
                 RouterHelper.createRouter(LoginService::class.java)
-                    .quicklyLogin(this, it) {
+                    .quicklyLogin(it) {
                         showLoading()
                         getData()
                     }

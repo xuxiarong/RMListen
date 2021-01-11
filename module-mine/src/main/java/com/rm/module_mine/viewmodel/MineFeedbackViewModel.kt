@@ -58,15 +58,11 @@ class MineFeedbackViewModel(private val repository: MineRepository) : BaseVMView
      */
     val keyboardIsVisibility = ObservableField<Boolean>(false)
 
-    /**
-     * 输入法显示/隐藏监听
-     */
-    var keyboardVisibility: (Boolean, Int) -> Unit = { it, _ -> keyboardVisibilityListener(it) }
 
     /**
      * 键盘的显示隐藏监听
      */
-    private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
+    fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
         keyboardIsVisibility.set(keyboardVisibility)
     }
 

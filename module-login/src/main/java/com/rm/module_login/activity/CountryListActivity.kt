@@ -1,7 +1,6 @@
 package com.rm.module_login.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,8 +25,7 @@ class CountryListActivity :
     companion object {
         fun newInstance(context: Activity, code: Int) {
             context.startActivityForResult(
-                Intent(context, CountryListActivity::class.java)
-                , code
+                Intent(context, CountryListActivity::class.java), code
             )
         }
     }
@@ -38,17 +36,18 @@ class CountryListActivity :
 
     override fun initView() {
         super.initView()
-        mDataBind.loginActivityCountryLetterBar.setIndexChangeListener { position, tag, event ->
-            val index = mViewModel.countryListAdapter.getLetterPosition(tag)
-            if (index != -1) {
-                (mDataBind.loginActivityCountryRecyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                    index,
-                    0
-                )
-                mDataBind.loginActivityCountryIndexBar.setDrawData(event.y, tag, position)
+        mDataBind?.let {
+            it.loginActivityCountryLetterBar.setIndexChangeListener { position, tag, event ->
+                val index = mViewModel.countryListAdapter.getLetterPosition(tag)
+                if (index != -1) {
+                    (it.loginActivityCountryRecyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                        index,
+                        0
+                    )
+                    it.loginActivityCountryIndexBar.setDrawData(event.y, tag, position)
+                }
             }
         }
-
 
         mViewModel.countryListAdapter.setOnItemClickListener { _, _, position: Int ->
             if (TextUtils.isEmpty(mViewModel.countryListAdapter.data[position].data.phone_code)) return@setOnItemClickListener

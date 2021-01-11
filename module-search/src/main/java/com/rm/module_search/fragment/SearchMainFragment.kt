@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.Observable
 import com.google.android.material.appbar.AppBarLayout
+import com.rm.baselisten.helper.KeyboardStatusDetector.Companion.bindKeyboardVisibilityListener
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.util.getListString
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
@@ -35,6 +36,11 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     //当前输入框轮播index
     private var curIndex = 0
+
+    private var hotRecommendChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var hintBannerListChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var keyboardIsVisibilityChangedCallback: Observable.OnPropertyChangedCallback? = null
+
     override fun initModelBrId() = BR.viewModel
 
     override fun initLayoutId() = R.layout.search_fragment_main
@@ -60,6 +66,12 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
                 mDataBind.root.setOnClickListener {
                     hideKeyboard(mDataBind.searchMainEditText.applicationWindowToken)
                 }
+            }
+            bindKeyboardVisibilityListener { b, _ ->
+                if (!b) {
+                    mDataBind.searchMainEditText.clearFocus()
+                }
+                mViewModel.keyboardVisibilityListener(b)
             }
         }
     }
@@ -112,33 +124,39 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     }
 
+
     override fun startObserve() {
         //推荐搜索数据监听
-        hotRecommend.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+        hotRecommendChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 hotRecommend.get()?.let {
                     setData()
                 }
             }
-        })
+        }
+        hotRecommendChangedCallback?.let {
+            hotRecommend.addOnPropertyChangedCallback(it)
+        }
 
         //搜索框轮播数据监听
-        mViewModel.hintBannerList.addOnPropertyChangedCallback(object :
+        hintBannerListChangedCallback = object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 mViewModel.hintBannerList.get()?.let {
                     if (it.isNotEmpty()) {
                         curIndex = 0
-                        search_main_auto_layout.setHint(it[0],false)
+                        search_main_auto_layout.setHint(it[0], false)
                         mViewModel.lastHint.set(it[0])
                         startHintBanner()
                     }
                 }
             }
-        })
+        }
+        hintBannerListChangedCallback?.let {
+            mViewModel.hintBannerList.addOnPropertyChangedCallback(it)
+        }
 
-        mViewModel.keyboardIsVisibility.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        keyboardIsVisibilityChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 params.bottomMargin = if (mViewModel.keyboardIsVisibility.get() == true) {
                     stopHintBanner()
@@ -150,7 +168,11 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
                 }
                 mDataBind.searchMainSuggestRv.layoutParams = params
             }
-        })
+        }
+        keyboardIsVisibilityChangedCallback?.let {
+            mViewModel.keyboardIsVisibility.addOnPropertyChangedCallback(it)
+        }
+
     }
 
     private fun setData() {
@@ -184,6 +206,21 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
     override fun onDestroy() {
         super.onDestroy()
         mDataBind.root.viewTreeObserver.removeOnGlobalLayoutListener(windowListener)
+        hotRecommendChangedCallback?.let {
+            hotRecommend.removeOnPropertyChangedCallback(it)
+            hotRecommendChangedCallback = null
+        }
+
+        keyboardIsVisibilityChangedCallback?.let {
+            mViewModel.keyboardIsVisibility.removeOnPropertyChangedCallback(it)
+            keyboardIsVisibilityChangedCallback = null
+        }
+
+        hintBannerListChangedCallback?.let {
+            mViewModel.hintBannerList.removeOnPropertyChangedCallback(it)
+            hintBannerListChangedCallback = null
+        }
+
     }
 
     /**
@@ -227,7 +264,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
                     it.mViewModel.hintKeyword = str
                     it.mViewModel.lastHint.set(str)
 //                    it.mDataBind.searchMainEditText.hint = str
-                    it.search_main_auto_layout.setHint(str,true)
+                    it.search_main_auto_layout.setHint(str, true)
                     it.startHintBanner()
                 }
             }

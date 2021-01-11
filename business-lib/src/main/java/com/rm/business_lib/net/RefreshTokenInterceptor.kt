@@ -97,13 +97,13 @@ class RefreshTokenInterceptor : Interceptor {
                     } else {
                         //token 刷新失败
                         GlobalScope.launch(Dispatchers.Main) {
-                            val activity = BaseApplication.baseApplication.getTopTaskActivity()
-                            activity?.let { context ->
-                                ToastUtil.showTopToast(
-                                    context,
-                                    "登录凭证已过期，请重新登陆"
-                                )
-                            }
+//                            val activity = BaseApplication.baseApplication.getTopTaskActivity()
+//                            activity?.let { context ->
+//                                ToastUtil.showTopToast(
+//                                    context,
+//                                    "登录凭证已过期，请重新登陆"
+//                                )
+//                            }
                             loginOut()
                         }
                         val headers = request.headers.newBuilder()

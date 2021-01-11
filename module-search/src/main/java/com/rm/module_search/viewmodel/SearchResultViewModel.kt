@@ -30,9 +30,6 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     //当前输入框的内容
     var keyWord = searchKeyword
 
-    //输入法显示/隐藏监听
-    var keyboardVisibility: (Boolean, Int) -> Unit = { it, _ -> keyboardVisibilityListener(it) }
-
     //输入法是否显示
     val keyboardIsVisibility = ObservableField<Boolean>(false)
 
@@ -102,7 +99,7 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
     /**
      * 键盘的显示隐藏监听
      */
-    private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
+    fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
         keyboardIsVisibility.set(keyboardVisibility)
         //键盘是否显示
         if (keyboardVisibility) {

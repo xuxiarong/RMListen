@@ -2,7 +2,6 @@ package com.rm.module_main.activity.splash
 
 import android.Manifest
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Build
 import android.os.Handler
 import android.text.TextUtils
@@ -16,6 +15,7 @@ import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.*
 import com.rm.baselisten.util.spannable.ChangeItem
+import com.rm.baselisten.util.spannable.SpannableBuilder
 import com.rm.baselisten.util.spannable.SpannableHelper
 import com.rm.baselisten.util.spannable.TextClickListener
 import com.rm.baselisten.utilExt.Color
@@ -25,6 +25,7 @@ import com.rm.baselisten.web.BaseWebActivity
 import com.rm.business_lib.FIRST_OPEN_APP
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.UPLOAD_APP_TIME
+import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.isLogin
@@ -51,11 +52,15 @@ import kotlinx.android.synthetic.main.home_activity_splash.*
  * version: 1.0
  */
 class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewModel>() {
+    private var isSkipAdyChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var mainAdScreenChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var versionInfoChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var spannableBuilder: SpannableBuilder? = null
 
     override fun initModelBrId() = BR.viewModel
     override fun getLayoutId() = R.layout.home_activity_splash
     override fun startObserve() {
-        mViewModel.isSkipAd.addOnPropertyChangedCallback(object :
+        isSkipAdyChangedCallback = object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.isSkipAd.get()) {
@@ -63,9 +68,11 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     finish()
                 }
             }
-        })
-        mViewModel.mainAdScreen.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        }
+        isSkipAdyChangedCallback?.let {
+            mViewModel.isSkipAd.addOnPropertyChangedCallback(it)
+        }
+        mainAdScreenChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val adScreen = mViewModel.mainAdScreen.get()
                 if (null != adScreen && !TextUtils.isEmpty(adScreen.image_url)) {
@@ -78,65 +85,71 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                         .into(splash_ad_img)
                 }
             }
-        })
+        }
+        mainAdScreenChangedCallback?.let {
+            mViewModel.mainAdScreen.addOnPropertyChangedCallback(it)
+        }
 
-        mViewModel.versionInfo.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+
+        versionInfoChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val versionInfo = mViewModel.versionInfo.get()
                 if (versionInfo != null) {
-                    val lastVersion = versionInfo.version?.replace(".", "") ?: "0"
-                    val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
-                    try {
-                        if (lastVersion.toInt() - localVersion.toInt() > 0) {
-                            //强制更新
-                            if (TextUtils.equals(versionInfo.type, "2")) {
-                                mViewModel.showUploadDialog(this@SplashActivity,
-                                    sureIsDismiss = true,
-                                    cancelIsFinish = true,
-                                    sureBlock = {
-
-                                    },
-                                    cancelBlock = {
-                                    })
-                            } else {
-                                //一天内只显示一次
-                                val curTime = 24 * 60 * 60 * 1000
-                                if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
-                                    UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
-                                    //普通更新
-                                    mViewModel.showUploadDialog(this@SplashActivity,
-                                        sureIsDismiss = true,
-                                        cancelIsFinish = false,
-                                        sureBlock = {
-
-                                        },
-                                        cancelBlock = {
-                                            loadAd()
-                                        })
-                                } else {
-                                    loadAd()
-                                }
-                            }
-                        } else {
-                            loadAd()
-                        }
-                    } catch (e: Exception) {
-                        DLog.i("=====>versionInfo", "Exception:${e.message}")
-                        e.printStackTrace()
-                        loadAd()
-                    }
+                    uploadVersion(versionInfo)
                 } else {
                     loadAd()
                 }
             }
-        })
+        }
+        versionInfoChangedCallback?.let {
+            mViewModel.versionInfo.addOnPropertyChangedCallback(it)
+        }
 
+    }
+
+    /**
+     * 版本更新
+     */
+    private fun uploadVersion(versionInfo: BusinessVersionUrlBean) {
+        val lastVersion = versionInfo.version?.replace(".", "") ?: "0"
+        val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
+        try {
+            if (lastVersion.toInt() - localVersion.toInt() > 0) {
+                //强制更新
+                if (TextUtils.equals(versionInfo.type, "2")) {
+                    mViewModel.showUploadDialog(
+                        this@SplashActivity,
+                        sureIsDismiss = true,
+                        cancelIsFinish = true
+                    )
+                } else {
+                    //一天内只显示一次
+                    val curTime = 24 * 60 * 60 * 1000
+                    if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
+                        UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
+                        //普通更新
+                        mViewModel.showUploadDialog(this@SplashActivity,
+                            sureIsDismiss = true,
+                            cancelIsFinish = false,
+                            cancelBlock = {
+                                loadAd()
+                            })
+                    } else {
+                        loadAd()
+                    }
+                }
+            } else {
+                loadAd()
+            }
+        } catch (e: Exception) {
+            DLog.i("=====>versionInfo", "Exception:${e.message}")
+            e.printStackTrace()
+            loadAd()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        DLog.i("requestCode", "requestCode:$requestCode   resultCode$resultCode")
         if (requestCode == INSTALL_RESULT_CODE) {
             val path = data?.getStringExtra("apkPath")
             if (requestCode == RESULT_OK) {
@@ -144,12 +157,9 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             } else {
                 //200毫秒后再次查询
                 Handler().postDelayed({
-                    DLog.i("requestCode", "=====${mViewModel.downPath}")
                     if (mViewModel.downPath.isNotEmpty()) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val hasInstallPermission =
-                                packageManager.canRequestPackageInstalls()
-                            DLog.i("requestCode", "=====$hasInstallPermission")
+                            val hasInstallPermission = packageManager.canRequestPackageInstalls()
                             if (!hasInstallPermission) {
                                 RouterHelper.createRouter(HomeService::class.java)
                                     .gotoInstallPermissionSetting(
@@ -209,7 +219,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_ACTIVATION)
         }
 
-        mViewModel.getLaseVersion{loadAd()}
+        mViewModel.getLaseVersion { loadAd() }
 
     }
 
@@ -228,7 +238,10 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
     }
 
     private fun requestPermissions() {
-        requestPermissionForResult(permission = mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),
+        requestPermissionForResult(permission = mutableListOf(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ),
             actionDenied = {
                 initSplashData()
             },
@@ -266,8 +279,9 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     }
                     dialogBand.homeDialogNotAgreeProtocol.setOnClickListener {
                         ToastUtil.showTopToast(
-                            this@SplashActivity,
-                            getString(R.string.main_please_agree_private_service)
+                            context = this@SplashActivity,
+                            tipText = getString(R.string.main_please_agree_private_service),
+                            lifecycleOwner = this@SplashActivity
                         )
                     }
                 }
@@ -287,37 +301,54 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
      * @param textView TextView
      */
     private fun setSpannableText(fragmentActivity: FragmentActivity, textView: TextView) {
-        SpannableHelper.with(
+        spannableBuilder = SpannableHelper.with(
             textView,
             fragmentActivity.resources.getString(R.string.home_private_service_content)
-        )
-            .addChangeItem(
-                ChangeItem(
-                    fragmentActivity.String(R.string.home_private_protocol),
-                    ChangeItem.Type.COLOR,
-                    fragmentActivity.Color(R.color.business_color_789dcb),
-                    object : TextClickListener {
-                        override fun onTextClick(clickContent: String) {
-                            BaseWebActivity.startBaseWebActivity(
-                                this@SplashActivity,
-                                BusinessRetrofitClient.getUserPrivacy()
-                            )
-                        }
-                    })
-            )
-            .addChangeItem(
-                ChangeItem(
-                    fragmentActivity.String(R.string.home_service_protocol),
-                    ChangeItem.Type.COLOR,
-                    fragmentActivity.Color(R.color.business_color_789dcb),
-                    object : TextClickListener {
-                        override fun onTextClick(clickContent: String) {
-                            BaseWebActivity.startBaseWebActivity(
-                                this@SplashActivity,
-                                    BusinessRetrofitClient.getUserAgreement()
-                            )
-                        }
-                    })
-            ).build()
+        ).addChangeItem(
+            ChangeItem(
+                fragmentActivity.String(R.string.home_private_protocol),
+                ChangeItem.Type.COLOR,
+                fragmentActivity.Color(R.color.business_color_789dcb),
+                object : TextClickListener {
+                    override fun onTextClick(clickContent: String) {
+                        BaseWebActivity.startBaseWebActivity(
+                            this@SplashActivity,
+                            BusinessRetrofitClient.getUserPrivacy()
+                        )
+                    }
+                })
+        ).addChangeItem(
+            ChangeItem(
+                fragmentActivity.String(R.string.home_service_protocol),
+                ChangeItem.Type.COLOR,
+                fragmentActivity.Color(R.color.business_color_789dcb),
+                object : TextClickListener {
+                    override fun onTextClick(clickContent: String) {
+                        BaseWebActivity.startBaseWebActivity(
+                            this@SplashActivity,
+                            BusinessRetrofitClient.getUserAgreement()
+                        )
+                    }
+                })
+        ).build()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        versionInfoChangedCallback?.let {
+            mViewModel.versionInfo.removeOnPropertyChangedCallback(it)
+        }
+
+        mainAdScreenChangedCallback?.let {
+            mViewModel.mainAdScreen.removeOnPropertyChangedCallback(it)
+            mainAdScreenChangedCallback = null
+        }
+
+        isSkipAdyChangedCallback?.let {
+            mViewModel.isSkipAd.removeOnPropertyChangedCallback(it)
+            isSkipAdyChangedCallback = null
+        }
+
+        spannableBuilder?.removeSpan()
     }
 }

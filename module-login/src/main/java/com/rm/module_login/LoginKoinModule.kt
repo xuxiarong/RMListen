@@ -32,7 +32,7 @@ val viewModelModule = module {
     // 测试所需debug viewModel
     viewModel { LoginDebugViewModel() }
     // 快速登陆dialog viewModel
-    viewModel { LoginQuicklyViewModel(get()) }
+    viewModel { LoginQuicklyViewModel() }
 
     viewModel { LoginCountryListViewModel() }
 }

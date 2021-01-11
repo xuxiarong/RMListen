@@ -22,12 +22,15 @@ import kotlinx.android.synthetic.main.download_activity_download_main.*
 class DownloadMainActivity :
     BaseVMActivity<DownloadActivityDownloadMainBinding, DownloadMainViewModel>() {
 
+    private var isAvailableChangeCallback: Observable.OnPropertyChangedCallback? = null
+    private var needShowNetErrorChangeCallback: Observable.OnPropertyChangedCallback? = null
 
     companion object {
-        fun startActivity(context: Context,startTab : Int = 0) {
+        fun startActivity(context: Context, startTab: Int = 0) {
             context.startActivity(Intent(context, DownloadMainActivity::class.java))
             this.startTab = startTab
         }
+
         var startTab = 0
     }
 
@@ -47,38 +50,46 @@ class DownloadMainActivity :
     override fun initModelBrId(): Int = BR.viewModel
 
     override fun startObserve() {
-        NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(object :
+        isAvailableChangeCallback = object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 NetworkChangeReceiver.isAvailable.get().let {
                     try {
-                        if(it){
-                            if(DownloadMemoryCache.isDownAll.get()){
-                                DownloadMemoryCache.downloadingChapter.get()?.let{ downloadChapter ->
-                                    AriaDownloadManager.startDownload(downloadChapter)
-                                }
+                        if (it) {
+                            if (DownloadMemoryCache.isDownAll.get()) {
+                                DownloadMemoryCache.downloadingChapter.get()
+                                    ?.let { downloadChapter ->
+                                        AriaDownloadManager.startDownload(downloadChapter)
+                                    }
                             }
-                        }else{
+                        } else {
 //                            DownloadMemoryCache.pauseDownloadingChapter()
                             tipView.showNetError(this@DownloadMainActivity)
                         }
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
-        })
-        AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(object :
+        }
+        isAvailableChangeCallback?.let {
+            NetworkChangeReceiver.isAvailable.addOnPropertyChangedCallback(it)
+        }
+
+        needShowNetErrorChangeCallback = object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 AriaDownloadManager.needShowNetError.get().let {
-                    if(it){
+                    if (it) {
                         DownloadMemoryCache.pauseDownloadingChapter()
                         tipView.showNetError(this@DownloadMainActivity)
                     }
                 }
             }
-        })
+        }
+        needShowNetErrorChangeCallback?.let {
+            AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(it)
+        }
     }
 
     override fun initData() {
@@ -89,12 +100,16 @@ class DownloadMainActivity :
     override fun initView() {
         super.initView()
 
-        mPagerAdapter = DownloadDetailPagerAdapter(fm = this.supportFragmentManager,tabList = tabList, fragmentList = mListTabFragment)
+        mPagerAdapter = DownloadDetailPagerAdapter(
+            fm = this.supportFragmentManager,
+            tabList = tabList,
+            fragmentList = mListTabFragment
+        )
         download_detail_view_pager.offscreenPageLimit = 2
         download_detail_view_pager.adapter = mPagerAdapter
 
         download_main_tab.setupWithViewPager(download_detail_view_pager)
-        download_main_tab.addOnTabSelectedListener(object : BendTabLayout.OnTabSelectedListener{
+        download_main_tab.addOnTabSelectedListener(object : BendTabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: BendTabLayout.BendTab?) {
             }
 
@@ -102,10 +117,10 @@ class DownloadMainActivity :
             }
 
             override fun onTabSelected(tab: BendTabLayout.BendTab?) {
-                if(tab?.position == 0){
+                if (tab?.position == 0) {
                     mViewModel.downloadingSelected.set(true)
                     mViewModel.downloadFinishSelected.set(false)
-                }else{
+                } else {
                     mViewModel.downloadingSelected.set(false)
                     mViewModel.downloadFinishSelected.set(true)
                 }
@@ -114,7 +129,7 @@ class DownloadMainActivity :
         download_iv_back.setOnClickListener {
             finish()
         }
-        download_detail_view_pager.setCurrentItem(startTab,false)
+        download_detail_view_pager.setCurrentItem(startTab, false)
         mViewModel.downloadingSelected.set(startTab == 0)
         mViewModel.downloadingEdit.set(false)
         mViewModel.downloadingSelectAll.set(false)
@@ -126,6 +141,20 @@ class DownloadMainActivity :
         mViewModel.downloadFinishSelectNum.set(0)
 
         DownloadMemoryCache.initData()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        needShowNetErrorChangeCallback?.let {
+            AriaDownloadManager.needShowNetError.removeOnPropertyChangedCallback(it)
+            needShowNetErrorChangeCallback = null
+        }
+
+        isAvailableChangeCallback?.let {
+            NetworkChangeReceiver.isAvailable.removeOnPropertyChangedCallback(it)
+            isAvailableChangeCallback = null
+        }
 
     }
 }

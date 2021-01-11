@@ -109,7 +109,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                         followAdapter.remove(bean)
                         memberFollowNum.set((memberFollowNum.get()!! - 1))
 
-                        if (followAdapter.data.size<=0){
+                        if (followAdapter.data.size <= 0) {
                             showDataEmpty("没有关注的人")
                         }
                     } else {
@@ -235,7 +235,7 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
      */
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
-            .quicklyLogin(this, it, loginSuccess = {
+            .quicklyLogin(it, loginSuccess = {
                 refreshData()
             })
     }

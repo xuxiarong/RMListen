@@ -8,6 +8,6 @@ class CommBottomDialog : CommonMvFragmentDialog() {
         gravity = Gravity.BOTTOM
         dialogWidthIsMatchParent = true
         dialogHasBackground = true
-        themeResId= R.style.BottomToTopAnim
+        themeResId = R.style.BottomToTopAnim
     }
 }

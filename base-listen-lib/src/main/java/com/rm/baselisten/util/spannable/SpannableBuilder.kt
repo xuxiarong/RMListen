@@ -2,7 +2,9 @@ package com.rm.baselisten.util.spannable
 
 import android.content.Context
 import android.graphics.Color
+import android.text.SpannableString
 import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.widget.TextView
 
 /**
@@ -14,7 +16,9 @@ class SpannableBuilder {
     private lateinit var context: Context
     private var tv: TextView? = null
     private var content: String? = ""
-//    private var textClickListener: TextClickListener? = null
+    private var spannableString: SpannableString? = null
+
+    //    private var textClickListener: TextClickListener? = null
     private val changeItemList = mutableListOf<ChangeItem>()
 
     fun setTextView(tv: TextView): SpannableBuilder {
@@ -49,9 +53,20 @@ class SpannableBuilder {
 //        return this
 //    }
 
-    fun build() {
+    fun build(): SpannableBuilder {
         tv?.highlightColor = Color.parseColor("#00ffffff")
         tv?.movementMethod = LinkMovementMethod.getInstance()
-        tv?.text = SpannableHelper.changeMultiPart(context, content, changeItemList)
+        spannableString = SpannableHelper.changeMultiPart(context, content, changeItemList)
+        tv?.text = spannableString
+        return this
+    }
+
+    fun removeSpan() {
+        spannableString?.let {
+            val spans = it.getSpans(0, it.length, ClickableSpan::class.java)
+            spans.forEach { span ->
+                it.removeSpan(span)
+            }
+        }
     }
 }

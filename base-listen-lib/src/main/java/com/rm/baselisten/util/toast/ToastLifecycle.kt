@@ -1,9 +1,10 @@
 package com.rm.baselisten.util.toast
 
-import android.app.Activity
-import android.app.Application.ActivityLifecycleCallbacks
-import android.os.Build
-import android.os.Bundle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.OnLifecycleEvent
+import com.rm.baselisten.util.DLog
 
 /**
  *
@@ -12,71 +13,38 @@ import android.os.Bundle
  * @description
  *
  */
-class ToastLifecycle constructor(toast: XToast?, activity: Activity?) :
-    ActivityLifecycleCallbacks {
+class ToastLifecycle(toast: XToast?, private val lifecycleRegistry: LifecycleRegistry) :
+    LifecycleObserver {
 
-    private var mActivity: Activity? = null
     private var mToast: XToast? = null
 
     init {
-        mActivity = activity
         mToast = toast
     }
 
-    /**
-     * 注册监听
-     */
-    fun register() {
-        if (mActivity != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                mActivity!!.registerActivityLifecycleCallbacks(this)
-            } else {
-                mActivity!!.application.registerActivityLifecycleCallbacks(this)
-            }
-        }
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreate() {
+        DLog.i("xToast onCreate: ", "==")
     }
 
-    /**
-     * 取消监听
-     */
-    fun unregister() {
-        if (mActivity != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                mActivity!!.unregisterActivityLifecycleCallbacks(this)
-            } else {
-                mActivity!!.application.unregisterActivityLifecycleCallbacks(this)
-            }
-        }
-    }
-
-    override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {}
-
-    override fun onActivityStarted(activity: Activity?) {}
-
-    override fun onActivityResumed(activity: Activity?) {}
-
-    override fun onActivityPaused(activity: Activity) {
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPause() {
         // 一定要在 onPaused 方法中销毁掉，如果放在 onDestroyed 方法中还是有一定几率会导致内存泄露
-        if (mActivity != null && mToast != null && mActivity === activity && mToast!!.isShow() && mActivity!!.isFinishing) {
+        if (mToast != null && mToast!!.isShow()) {
             mToast!!.cancel()
         }
     }
 
-    override fun onActivityStopped(activity: Activity?) {}
-
-    override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {}
-
-    override fun onActivityDestroyed(activity: Activity) {
-        if (mActivity === activity) {
-            // 释放 Activity 的引用
-            mActivity = null
-            if (mToast != null) {
-                if (mToast!!.isShow()) {
-                    mToast!!.cancel()
-                }
-                mToast!!.recycle()
-                mToast = null
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy() {
+        DLog.i("xToast onActivityDestroyed: ", "==")
+        mToast?.apply {
+            if (isShow()) {
+                cancel()
             }
+            recycle()
+            mToast = null
         }
+        lifecycleRegistry.removeObserver(this)
     }
 }

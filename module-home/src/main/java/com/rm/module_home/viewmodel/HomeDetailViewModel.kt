@@ -189,7 +189,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
 
     val commentContentRvId = R.id.home_detail_comment_recycle_view
 
-    val chapterContentRvId = R.id.home_detail_chapter_rv
 
     /**
      * 头部dataBinding对象
@@ -987,11 +986,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 quicklyLogin(it)
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
-                    .showMySheetListDialog(
-                        it, audioId.get()!!,
-                        { showTip("在“我听-听单”中查看") },
-                        this
-                    )
+                    .showMySheetListDialog(it, audioId.get()!!)
+                    { showTip("在“我听-听单”中查看") }
             }
         }
 
@@ -1020,7 +1016,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
-            .quicklyLogin(this, it, loginSuccess = {
+            .quicklyLogin(it, loginSuccess = {
                 intDetailInfo(audioId.get()!!)
                 commentPage = 1
                 getCommentList(audioId.get()!!)

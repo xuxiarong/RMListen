@@ -229,7 +229,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
      */
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
-            .quicklyLogin(this, it, loginSuccess = {
+            .quicklyLogin(it, loginSuccess = {
                 fansPage = 1
                 refreshStatusModel.setNoHasMore(false)
                 mineMemberFansList()

@@ -16,12 +16,13 @@ import com.rm.module_listen.viewmodel.ListenRecentListenViewModel
  * date   : 2020/09/09
  * version: 1.0
  */
-class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBinding, ListenRecentListenViewModel>() {
-
+class ListenRecentListenFragment :
+    BaseVMFragment<ListenFragmentRecentListenBinding, ListenRecentListenViewModel>() {
+    private var basePlayInfoModelChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var homeGlobalSelectTabChangedCallback: Observable.OnPropertyChangedCallback? = null
 
     override fun initLayoutId() = R.layout.listen_fragment_recent_listen
     override fun initModelBrId() = BR.viewModel
-
 
 
     override fun startObserve() {
@@ -29,25 +30,31 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
             mViewModel.mSwipeAdapter.setList(it)
         })
         //如果播放的书籍，章节列表有改变，则重新加载一下数据库
-        BaseConstance.basePlayInfoModel.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+        basePlayInfoModelChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 BaseConstance.basePlayInfoModel.get()?.let {
-                    if(!TextUtils.isEmpty(it.playAudioId)){
+                    if (!TextUtils.isEmpty(it.playAudioId)) {
                         mViewModel.getListenHistory()
                     }
                 }
             }
-        })
+        }
+        basePlayInfoModelChangedCallback?.let {
+            BaseConstance.basePlayInfoModel.addOnPropertyChangedCallback(it)
+        }
         //如果首页几个Tab切换后选择了我听，则重新加载一下数据库
-        HomeGlobalData.homeGlobalSelectTab.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+        homeGlobalSelectTabChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 HomeGlobalData.homeGlobalSelectTab.get().let {
-                    if(HomeGlobalData.LISTEN_SELECT == it){
+                    if (HomeGlobalData.LISTEN_SELECT == it) {
                         mViewModel.getListenHistory()
                     }
                 }
             }
-        })
+        }
+        homeGlobalSelectTabChangedCallback?.let {
+            HomeGlobalData.homeGlobalSelectTab.addOnPropertyChangedCallback(it)
+        }
     }
 
     override fun onResume() {
@@ -61,6 +68,18 @@ class ListenRecentListenFragment: BaseVMFragment<ListenFragmentRecentListenBindi
     companion object {
         fun newInstance(): ListenRecentListenFragment {
             return ListenRecentListenFragment()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        homeGlobalSelectTabChangedCallback?.let {
+            HomeGlobalData.homeGlobalSelectTab.addOnPropertyChangedCallback(it)
+            homeGlobalSelectTabChangedCallback = null
+        }
+        basePlayInfoModelChangedCallback?.let {
+            BaseConstance.basePlayInfoModel.addOnPropertyChangedCallback(it)
+            basePlayInfoModelChangedCallback = null
         }
     }
 }

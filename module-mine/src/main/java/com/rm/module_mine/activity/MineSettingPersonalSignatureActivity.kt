@@ -1,7 +1,7 @@
 package com.rm.module_mine.activity
 
 import android.view.WindowManager
-import com.rm.baselisten.binding.bindKeyboardVisibilityListener
+import com.rm.baselisten.helper.KeyboardStatusDetector.Companion.bindKeyboardVisibilityListener
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.business_lib.loginUser
@@ -52,7 +52,7 @@ class MineSettingPersonalSignatureActivity :
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) // 设置默认键盘弹出
 
 
-        mine_sign_ed.bindKeyboardVisibilityListener { b, _ ->
+        bindKeyboardVisibilityListener { b, _ ->
             if (!b) {
                 mine_sign_ed.clearFocus()
             }

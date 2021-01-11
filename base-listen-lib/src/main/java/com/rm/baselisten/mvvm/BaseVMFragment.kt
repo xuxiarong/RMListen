@@ -139,12 +139,17 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                         context,
                         getString(it.contentId),
                         it.colorId,
-                        it.canAutoCancel
+                        it.canAutoCancel,
+                        this@BaseVMFragment
                     )
                 } else {
                     if (it.content != null) {
                         ToastUtil.showTopToast(
-                            context, it.content, it.colorId, it.canAutoCancel
+                            context,
+                            it.content,
+                            it.colorId,
+                            it.canAutoCancel,
+                            this@BaseVMFragment
                         )
                     } else {
                         ToastUtil.show(context, it.content)
