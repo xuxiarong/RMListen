@@ -43,10 +43,6 @@ fun FragmentActivity.navigateToForResult(path: String, code: Int) {
 
 }
 
-fun hasLoginNavigateTo() {
-
-}
-
 /**
  * forResult携带参数
  */

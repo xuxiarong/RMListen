@@ -19,6 +19,7 @@ import com.rm.baselisten.ktx.toIntSafe
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.db.download.DownloadAudio
@@ -346,7 +347,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE),
                 actionDenied = {
-                    baseActivity.tipView.showTipView(
+                   ToastUtil.showTopToast(
                         baseActivity,
                         baseActivity.getString(com.rm.business_lib.R.string.business_listen_storage_permission_refuse)
                     )
@@ -355,7 +356,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
                     actionGranted()
                 },
                 actionPermanentlyDenied = {
-                    baseActivity.tipView.showTipView(
+                    ToastUtil.showTopToast(
                         baseActivity,
                         baseActivity.getString(com.rm.business_lib.R.string.business_listen_to_set_storage_permission)
                     )

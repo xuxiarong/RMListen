@@ -11,6 +11,7 @@ import com.rm.baselisten.model.BaseNetStatus
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.receiver.NetworkChangeReceiver
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.dip
 import com.rm.business_lib.HomeGlobalData.isHomeDouClick
@@ -166,8 +167,8 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (mViewModel.errorMsg.get() != null) {
-                    (activity as BaseActivity).tipView.showTipView(
-                        activity = activity as FragmentActivity,
+                    ToastUtil.showTopToast(
+                        context = activity as FragmentActivity,
                         tipText = mViewModel.errorMsg.get()!!
                     )
                 }

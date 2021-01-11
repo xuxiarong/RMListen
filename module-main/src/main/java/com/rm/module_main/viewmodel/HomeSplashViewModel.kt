@@ -62,21 +62,24 @@ class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewMo
     }
 
     fun getSplashAd() {
-        launchOnIO {
-            repository.getSplashAd(arrayOf("ad_screen")).checkResult(
-                onSuccess = { mainAdResultModel ->
-                    mainAdResultModel.ad_screen?.forEach {
-                        if (null == mainAdScreen.get()) {
-                            mainAdScreen.set(it)
-                        }
-                        DLog.d("suolong", "it.ad_name = ${it.ad_name}")
-                    }
-                },
-                onError = { it, _ ->
-                    isSkipAd.set(true)
-                }
-            )
-        }
+        launchOnIO (
+           block = {repository.getSplashAd(arrayOf("ad_screen")).checkResult(
+               onSuccess = { mainAdResultModel ->
+                   mainAdResultModel.ad_screen?.forEach {
+                       if (null == mainAdScreen.get()) {
+                           mainAdScreen.set(it)
+                       }
+                       DLog.d("suolong", "it.ad_name = ${it.ad_name}")
+                   }
+               },
+               onError = { it, _ ->
+                   isSkipAd.set(true)
+               }
+           )} ,netErrorBlock = {
+                isSkipAd.set(true)
+                isShowAd.set(false)
+            }
+        )
     }
 
     /**

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BasePlayControlModel
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.DaoUtil
@@ -191,7 +192,7 @@ class HomeDetailActivity :
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 AriaDownloadManager.needShowNetError.get().let {
                     if(it){
-                        tipView.showNetError(this@HomeDetailActivity)
+                        ToastUtil.showTopNetErrorToast(this@HomeDetailActivity)
                     }
                 }
             }

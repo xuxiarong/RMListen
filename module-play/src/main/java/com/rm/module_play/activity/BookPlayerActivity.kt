@@ -87,8 +87,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 //音频ID不能为空
                 if (playAudioId.isEmpty() || playChapterId.isEmpty()) {
                     isContinuePlay = false
-                    val baseActivity = context as BaseActivity
-                    baseActivity.tipView.showTipView(baseActivity, "书籍或者章节的ID不能为空")
+                    ToastUtil.showTopToast(context, context.getString(R.string.play_audio_not_be_empty))
                     return
                 }else{
                     BaseConstance.basePlayInfoModel.get()?.let {
@@ -241,7 +240,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 AriaDownloadManager.needShowNetError.get().let {
                     if(it){
-                        tipView.showNetError(this@BookPlayerActivity)
+                       ToastUtil.showTopNetErrorToast(this@BookPlayerActivity)
                     }
                 }
             }
@@ -362,7 +361,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
 
     override fun onMusicPlayerState(playerState: Int, message: String?) {
         if (playerState == -1) {
-            tipView.showTipView(this, this.getString(R.string.business_play_error))
+            ToastUtil.showTopToast(this, this.getString(R.string.business_play_error))
             mViewModel.playManger.pause()
         }
 

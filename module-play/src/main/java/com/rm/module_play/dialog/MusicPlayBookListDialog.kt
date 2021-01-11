@@ -10,6 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.ktx.reverse
 import com.rm.business_lib.AudioSortType
@@ -116,9 +117,11 @@ class MusicPlayBookListDialog : BottomDialogFragment() {
         play_cb_chapter_sort.setOnClickListener {
             if(PlayGlobalData.isSortAsc()){
                 PlayGlobalData.playChapterListSort.set(AudioSortType.SORT_DESC)
+                BaseConstance.updateBaseAudioSort(AudioSortType.SORT_DESC)
                 play_cb_chapter_sort.setImageResource(R.drawable.business_icon_ortinverted_de)
             }else{
                 PlayGlobalData.playChapterListSort.set(AudioSortType.SORT_ASC)
+                BaseConstance.updateBaseAudioSort(AudioSortType.SORT_ASC)
                 play_cb_chapter_sort.setImageResource(R.drawable.business_icon_sort_de)
             }
             PlayGlobalData.chapterRefreshModel.setCanRefresh(PlayGlobalData.chapterRefreshModel.canRefresh.get()?:true)

@@ -18,7 +18,6 @@
             android:gravity="center"
             android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_12sp"
-            android:background="@drawable/business_shape_f7f7f7_80dp"
             android:text="@string/home_swipe_open_detail"
             />
 

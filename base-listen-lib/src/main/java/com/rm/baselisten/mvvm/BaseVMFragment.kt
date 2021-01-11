@@ -185,22 +185,6 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                 this@BaseVMFragment.activity?.finish()
             }
         })
-
-        mViewModel.baseTipModel.observe(this, Observer {
-            if (activity is BaseActivity) {
-                val baseActivity = activity as BaseActivity
-                baseActivity.tipView.showTipView(
-                    activity = baseActivity,
-                    tipText = it.content,
-                    tipColor = it.contentColor,
-                    tipProgress = it.isProgress,
-                    netError = it.isNetError
-                )
-            } else {
-                ToastUtil.show(this@BaseVMFragment.activity, it.content)
-            }
-        })
-
     }
 
     /**
@@ -251,10 +235,10 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                 }
             }
             BaseNetStatus.BASE_SHOW_NET_ERROR -> {
-                if (activity is BaseActivity) {
-                    (activity as BaseActivity).tipView.showNetError(activity!!)
+                this@BaseVMFragment.activity?.let {
+                    ToastUtil.showTopNetErrorToast(it)
+                    setServiceError()
                 }
-                setServiceError()
             }
         }
     }

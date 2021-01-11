@@ -61,11 +61,6 @@ open class BaseVMViewModel : BaseViewModel() {
     var baseCancelToastModel = MutableLiveData<Boolean>()
 
     /**
-     * 基类的提示数据
-     */
-    val baseTipModel = MutableLiveData<BaseTipModel>()
-
-    /**
      * 是否显示音乐按钮入口
      */
     var basePlayControlModel = ObservableField<BasePlayControlModel>(BasePlayControlModel())
@@ -89,7 +84,7 @@ open class BaseVMViewModel : BaseViewModel() {
             viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
         } else {
 //            showNetError()
-            showTip(CONTEXT.getString(R.string.base_empty_tips_netword), R.color.base_ff5e5e)
+            showNetErrorToast()
         }
     }
 

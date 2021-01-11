@@ -201,17 +201,6 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
                 setResult(it.resultCode)
             }
         })
-
-        mViewModel.baseTipModel.observe(this, Observer {
-            tipView.showTipView(
-                activity = this,
-                tipText = it.content,
-                tipColor = it.contentColor,
-                tipProgress = it.isProgress,
-                netError = it.isNetError
-            )
-        })
-
     }
 
     /**
@@ -263,7 +252,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
             }
             BaseNetStatus.BASE_SHOW_NET_ERROR -> {
                 setServiceError()
-                tipView.showNetError(this)
+                ToastUtil.showTopNetErrorToast(this@BaseVMActivity)
             }
         }
     }

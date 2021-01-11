@@ -23,4 +23,7 @@ class HomeDetailRecyclerView @JvmOverloads constructor(
 
         return super.onTouchEvent(e)
     }
+
+
+
 }

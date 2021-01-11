@@ -6,8 +6,8 @@ package com.rm.business_lib.bean
  * version: 1.0
  */
 data class TokenBean(
-    val iat: Long,
-    val nbf: Long,
+    private val iat: Long,
+    private val nbf: Long,
     val exp: Long, // token 过期时间戳
     val jti: String,
     val typ: String,
