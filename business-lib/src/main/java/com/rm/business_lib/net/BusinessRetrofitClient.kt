@@ -12,7 +12,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
-
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 /**
@@ -39,7 +39,7 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         private const val TYPE_DEVELOP = 3
         private const val TYPE_STG = 4
 
-        private var currentType = TYPE_RELEASE
+        private var currentType = TYPE_TEST
 
         fun getBaseUrl(): String {
             when (currentType) {

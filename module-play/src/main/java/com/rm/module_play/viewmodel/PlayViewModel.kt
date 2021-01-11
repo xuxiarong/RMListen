@@ -124,6 +124,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     val commentContentRvId = R.id.play_comment_rv
 
+    private var lastCommentLikeTime = 0L
+    private var lastCommentUnLikeTime = 0L
+
     /**
      * 评论adapter
      */
@@ -469,8 +472,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     actionPlayAd()
                     DLog.d("suolong", "error = ${it ?: ""}")
                 })
-        }
-            , netErrorBlock = { actionPlayAd() }
+        }, netErrorBlock = { actionPlayAd() }
         )
     }
 
@@ -506,9 +508,13 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 取消评论点赞
      */
     private fun unLikeComment(bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity) {
+        if (System.currentTimeMillis() - lastCommentLikeTime < 1000) {
+            return
+        }
         launchOnIO {
             repository.homeUnLikeComment(bean.data.id).checkResult(
                 onSuccess = {
+                    lastCommentLikeTime = System.currentTimeMillis()
                     val indexOf = mCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
                         bean.data.is_liked = false
@@ -519,6 +525,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
                 },
                 onError = { it, _ ->
+                    lastCommentLikeTime = System.currentTimeMillis()
                     DLog.i("----->", "评论点赞:$it")
                 }
             )
@@ -529,9 +536,13 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 评论点赞
      */
     private fun likeComment(bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity) {
+        if (System.currentTimeMillis() - lastCommentUnLikeTime < 1000) {
+            return
+        }
         launchOnIO {
             repository.homeLikeComment(bean.data.id).checkResult(
                 onSuccess = {
+                    lastCommentUnLikeTime=System.currentTimeMillis()
                     val indexOf = mCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
                         bean.data.is_liked = true
@@ -542,6 +553,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     }
                 },
                 onError = { it, _ ->
+                    lastCommentUnLikeTime=System.currentTimeMillis()
                     DLog.i("----->", "评论点赞:$it")
                 })
         }

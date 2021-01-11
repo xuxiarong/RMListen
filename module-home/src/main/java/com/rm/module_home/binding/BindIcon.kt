@@ -9,7 +9,7 @@ fun ImageView.isSrc(isLiked: Boolean){
     if(isLiked){
         setImageResource(R.drawable.home_icon_play_ed)
     }else{
-        setImageResource(R.drawable.icon_detail_comment_like)
+        setImageResource(R.drawable.business_icon_unlike)
     }
 }
 

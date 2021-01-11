@@ -7,7 +7,7 @@
 
         <variable
             name="bookBean"
-            type="com.rm.business_lib.db.download.DownloadAudio" />
+            type="com.rm.module_listen.bean.SheetFavorAudioBean" />
 
         <variable
             name="viewModel"

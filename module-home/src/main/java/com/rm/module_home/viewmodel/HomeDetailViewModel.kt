@@ -184,6 +184,8 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     var commentLottieIsPlay = ObservableField<Boolean>(false)
     var commentLottieEndBlock: () -> Unit = { commentLottieIsPlay.set(false) }
+    private var lastCommentLikeTime = 0L
+    private var lastCommentUnLikeTime = 0L
 
     val commentContentRvId = R.id.home_detail_comment_recycle_view
 
@@ -608,9 +610,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 评论点赞
      */
     private fun likeComment(bean: CommentList) {
+        if (System.currentTimeMillis() - lastCommentLikeTime < 1000) {
+            return
+        }
         launchOnIO {
             repository.homeLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
+                    lastCommentLikeTime = System.currentTimeMillis()
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
                         commentLottieIsPlay.set(true)
@@ -623,6 +629,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 },
                 onError = { it, _ ->
                     DLog.i("----->", "评论点赞:$it")
+                    lastCommentLikeTime = System.currentTimeMillis()
                     showTip("$it", R.color.business_color_ff5e5e)
                 })
         }
@@ -633,9 +640,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      * 取消评论点赞
      */
     private fun unLikeComment(bean: CommentList) {
+        if (System.currentTimeMillis() - lastCommentUnLikeTime < 1000) {
+            return
+        }
         launchOnIO {
             repository.homeUnLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
+                    lastCommentUnLikeTime = System.currentTimeMillis()
                     val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
                         commentLottieIsPlay.set(true)
@@ -646,6 +657,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                     }
                 },
                 onError = { it, _ ->
+                    lastCommentUnLikeTime = System.currentTimeMillis()
                     DLog.i("----->", "评论点赞:$it")
                     showTip("$it", R.color.business_color_ff5e5e)
                 }

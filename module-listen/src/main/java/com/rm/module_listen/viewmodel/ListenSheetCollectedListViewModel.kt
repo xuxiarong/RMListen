@@ -1,6 +1,5 @@
 package com.rm.module_listen.viewmodel
 
-import android.app.Dialog
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
@@ -14,6 +13,7 @@ import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.R
 import com.rm.module_listen.adapter.ListenSheetCollectedListAdapter
+import com.rm.module_listen.bean.SheetFavorAudioBean
 import com.rm.module_listen.bean.SheetFavorBean
 import com.rm.module_listen.bean.SheetFavorDataBean
 import com.rm.module_listen.repository.ListenRepository
@@ -60,7 +60,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                 onSuccess = {
                     successData(it)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     failData()
                 }
             )
@@ -73,7 +73,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                 onSuccess = {
                     successData(it)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     failData()
                 }
             )
@@ -91,7 +91,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                     showContentView()
                     removeIndex(sheetId)
                 },
-                onError = {it,_->
+                onError = { it, _ ->
                     showContentView()
                     showTip("$it", R.color.business_color_ff5e5e)
                 }
@@ -156,17 +156,17 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      */
     fun itemClickFun(context: Context, bean: SheetFavorDataBean) {
         when (bean.pre_deleted_from) {
-            "1" -> {
-                showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否取消收藏？", bean.sheet_id.toString())
+            1 -> {
+                showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否取消收藏？", bean.sheet_id ?: "")
             }
-            "2" -> {
-                showTipDialog(context, "该听单已被作者删除，是否取消收藏？", bean.sheet_id.toString())
+            2 -> {
+                showTipDialog(context, "该听单已被作者删除，是否取消收藏？", bean.sheet_id ?: "")
             }
             else -> {
                 getActivity(context)?.let {
                     clickBean = bean
                     RouterHelper.createRouter(HomeService::class.java)
-                        .startHomeSheetDetailActivity(it, bean.sheet_id.toString())
+                        .startHomeSheetDetailActivity(it, bean.sheet_id ?: "")
                 }
             }
         }
@@ -195,8 +195,8 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
     /**
      * 子view item点击事件
      */
-    fun itemChildClickFun(view: View, bean: DownloadAudio) {
-        if (TextUtils.equals(bean.status, "0")) {
+    fun itemChildClickFun(view: View, bean: SheetFavorAudioBean) {
+        if (bean.status == 0) {
             showTip("该内容已下架", R.color.business_color_ff5e5e)
         } else {
             getActivity(view.context)?.let {
