@@ -45,7 +45,8 @@ class ListenMyListenFragment :
     AppBarLayout.OnOffsetChangedListener {
 
     private lateinit var mViewPagerAdapter: ListenMyListenPagerAdapter
-
+    private var isLoginChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var isShowSubsRedPointChangedCallback: Observable.OnPropertyChangedCallback? = null
 
     private val mMyListenFragmentList = mutableListOf<Fragment>(
         ListenRecentListenFragment.newInstance(),
@@ -83,7 +84,7 @@ class ListenMyListenFragment :
     }
 
     override fun startObserve() {
-        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+        isLoginChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (isLogin.get()) {
                     mViewModel.getSubsTotalNumberFromService()
@@ -92,9 +93,12 @@ class ListenMyListenFragment :
                     HomeGlobalData.isShowSubsRedPoint.set(false)
                 }
             }
-        })
-        HomeGlobalData.isShowSubsRedPoint.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        }
+        isLoginChangedCallback?.let {
+            isLogin.addOnPropertyChangedCallback(it)
+        }
+
+        isShowSubsRedPointChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (HomeGlobalData.isShowSubsRedPoint.get()) {
                     listenMyListenRtl?.getTabAt(1)?.tabView?.setRedPointVisible(true)
@@ -102,12 +106,16 @@ class ListenMyListenFragment :
                     listenMyListenRtl?.getTabAt(1)?.tabView?.setRedPointVisible(false)
                 }
             }
-        })
+        }
+        isShowSubsRedPointChangedCallback?.let {
+            HomeGlobalData.isShowSubsRedPoint.addOnPropertyChangedCallback(it)
+        }
+
         DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
             download_chapter_num.isVisible = it.isNotEmpty()
-            if(it.size>=100){
+            if (it.size >= 100) {
                 download_chapter_num.text = "99+"
-            }else{
+            } else {
                 download_chapter_num.text = it.size.toString()
             }
         })
@@ -147,7 +155,7 @@ class ListenMyListenFragment :
         listenBuyCl.setOnClickListener {
             if (!isLogin.get()) {
                 activity?.let {
-                    router.quicklyLogin(mViewModel, it)
+                    router.quicklyLogin(it)
                 }
             } else {
                 ListenBoughtActivity.startActivity(it.context)
@@ -157,7 +165,7 @@ class ListenMyListenFragment :
 
         listenSubCl.setOnClickListener {
             if (!isLogin.get()) {
-                router.quicklyLogin(mViewModel, activity!!)
+                router.quicklyLogin(activity!!)
             } else {
 //                (mMyListenFragmentList[1] as ListenSubscriptionUpdateFragment).checkRedPointStatus()
                 ListenSubscriptionActivity.startActivity(it.context)
@@ -165,12 +173,12 @@ class ListenMyListenFragment :
         }
         listenListCl.setOnClickListener {
             if (!isLogin.get()) {
-                router.quicklyLogin(mViewModel, activity!!)
+                router.quicklyLogin(activity!!)
             } else {
                 ListenSheetListActivity.startActivity(
                     activity!!,
                     LISTEN_SHEET_LIST_MY_LIST,
-                    ""
+                    loginUser.get()?.id ?: ""
                 )
             }
         }
@@ -197,6 +205,18 @@ class ListenMyListenFragment :
             isListenAppBarInTop.set(true)
         } else {
             isListenAppBarInTop.set(false)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isLoginChangedCallback?.let {
+            isLogin.removeOnPropertyChangedCallback(it)
+            isLoginChangedCallback = null
+        }
+        isShowSubsRedPointChangedCallback?.let {
+            HomeGlobalData.isShowSubsRedPoint.removeOnPropertyChangedCallback(it)
+            isShowSubsRedPointChangedCallback = null
         }
     }
 

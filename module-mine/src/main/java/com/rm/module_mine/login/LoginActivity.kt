@@ -47,7 +47,7 @@ class LoginActivity : BaseVMActivity<ActivityLoginBinding, LoginViewModel>() {
     override fun onResume() {
         super.onResume()
         count++
-        mDataBind.login.visibility = View.VISIBLE
+        mDataBind?.login?.visibility = View.VISIBLE
 
         if (count % 4 == 0) {
             mViewModel.baseStatusModel.value =
@@ -58,7 +58,7 @@ class LoginActivity : BaseVMActivity<ActivityLoginBinding, LoginViewModel>() {
         } else if (count % 4 == 2) {
             mViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_CONTENT)
         } else {
-            mDataBind.login.visibility = View.GONE
+            mDataBind?.login?.visibility = View.GONE
             mViewModel.baseStatusModel.value = BaseStatusModel(BaseNetStatus.BASE_SHOW_LOADING)
         }
 

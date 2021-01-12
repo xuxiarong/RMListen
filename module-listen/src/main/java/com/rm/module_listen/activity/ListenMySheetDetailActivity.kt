@@ -75,7 +75,7 @@ class ListenMySheetDetailActivity :
             mSheetId = it.getStringExtra(SHEET_ID)
         }
 
-        mDataBind.listenSheetDetailRecyclerView.apply {
+        mDataBind?.listenSheetDetailRecyclerView?.apply {
             bindVerticalLayout(mViewModel.mAdapter)
             createHeader()
         }
@@ -114,7 +114,7 @@ class ListenMySheetDetailActivity :
      * recyclerView滑动监听
      */
     private fun recycleScrollListener() {
-        mDataBind.listenSheetDetailRecyclerView.addOnScrollListener(object :
+        mDataBind?.listenSheetDetailRecyclerView?.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             private var totalDy = 0
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -128,7 +128,7 @@ class ListenMySheetDetailActivity :
                     } else {
                         totalDy.toFloat() / (top + height)
                     }
-                    mDataBind.listenSheetDetailBlur.alpha = alpha
+                    mDataBind?.listenSheetDetailBlur?.alpha = alpha
                 }
             }
         })

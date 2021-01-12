@@ -20,27 +20,29 @@ interface LoginService : ApplicationProvider {
 
     /**
      * 快捷登陆dialog
-     * @param baseViewModel BaseVMViewModel
      * @param fragmentActivity FragmentActivity
      */
     fun quicklyLogin(
-        baseViewModel: BaseVMViewModel,
         fragmentActivity: FragmentActivity,
         loginSuccess: () -> Unit
     )
 
     fun quicklyLogin(
-        baseViewModel: BaseVMViewModel,
         fragmentActivity: FragmentActivity
     )
 
     /**
      * 跳转国家选择节目
      */
-    fun startCountry(activity: Activity,code:Int)
+    fun startCountry(activity: Activity, code: Int)
 
     /**
      * 输入验证码节目
      */
-    fun startVerificationInput(activity: Activity, countryCode: String, phoneNumber: String, type: Int)
+    fun startVerificationInput(
+        activity: Activity,
+        countryCode: String,
+        phoneNumber: String,
+        type: Int
+    )
 }

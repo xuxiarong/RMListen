@@ -13,9 +13,6 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  */
 open class CommonMvFragmentDialog : BaseMvFragmentDialog() {
 
-    override fun startObserve() {
-
-    }
 
     fun showCommonDialog(activity: FragmentActivity,layoutId : Int,viewModel : BaseVMViewModel,viewModelBrId : Int) : CommonMvFragmentDialog{
         val bundle  = Bundle()

@@ -14,9 +14,11 @@ import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.aria.AriaDownloadManager
+import com.rm.business_lib.db.DaoManager
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.DetailAudioSortDao
 import com.rm.business_lib.db.audiosort.DetailAudioSort
+import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
@@ -35,6 +37,14 @@ import com.rm.module_home.widget.HomeDetailInterceptLayout
  */
 class HomeDetailActivity :
     ComponentShowPlayActivity<HomeActivityDetailMainBinding, HomeDetailViewModel>() {
+
+    private var changeTypeListener: HomeDetailInterceptLayout.ScrollChangeTypeListener? = null
+    private var needShowNetErrorChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var listenAudioChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var rvScrollListener: RecyclerView.OnScrollListener? = null
+    private var downloadingChapterListObserve: Observer<MutableList<DownloadChapter>>? = null
+    private var downloadingAudioListObserve: Observer<MutableList<DownloadAudio>>? = null
+
     override fun getLayoutId(): Int = R.layout.home_activity_detail_main
 
     override fun initModelBrId() = BR.viewModel
@@ -56,12 +66,12 @@ class HomeDetailActivity :
 
         recycleScrollListener()
 
-        mDataBind.homeDetailCommentRecycleView.apply {
+        mDataBind?.homeDetailCommentRecycleView?.apply {
             bindVerticalLayout(mViewModel.homeDetailCommentAdapter)
             mViewModel.createHeader(this)
         }
 
-        (mDataBind.homeDetailTitleCl.layoutParams as ViewGroup.MarginLayoutParams).apply {
+        (mDataBind?.homeDetailTitleCl?.layoutParams as ViewGroup.MarginLayoutParams).apply {
             //动态获取状态栏的高度,并设置标题栏的topMargin
             topMargin = getStateHeight(this@HomeDetailActivity)
         }
@@ -95,28 +105,28 @@ class HomeDetailActivity :
             mViewModel.getCommentList(it)
         }
 
-        mDataBind.homeDetailChapterHeader.post {
+        mDataBind?.homeDetailChapterHeader?.post {
             //获取章节头部的高度
-            val measuredHeight = mDataBind.homeDetailChapterHeader.measuredHeight
+            val measuredHeight = mDataBind?.homeDetailChapterHeader?.measuredHeight ?: 0
             val params =
-                mDataBind.homeDetailCommentRefresh.layoutParams as ConstraintLayout.LayoutParams
+                mDataBind?.homeDetailCommentRefresh?.layoutParams as ConstraintLayout.LayoutParams
 
             //评论列表设置bottomMargin使其不被挡住
             params.bottomMargin = measuredHeight + 20
-            mDataBind.homeDetailCommentRefresh.layoutParams = params
+            mDataBind?.homeDetailCommentRefresh?.layoutParams = params
         }
 
         //监听章节列表停留的位置，如果在顶部则现实title
-        mDataBind.homeDetailInterceptLayout.setScrollChangeTypeListener(object :
+        changeTypeListener = object :
             HomeDetailInterceptLayout.ScrollChangeTypeListener {
             override fun changeType(@HomeDetailInterceptLayout.HomeDetailInterceptChangeType nowType: Int) {
                 if (nowType == HomeDetailInterceptLayout.TYPE_TOP) {
-                    mDataBind.homeDetailTitle.visibility = View.VISIBLE
-                    mDataBind.homeDetailBlur.alpha = 1f
+                    mDataBind?.homeDetailTitle?.visibility = View.VISIBLE
+                    mDataBind?.homeDetailBlur?.alpha = 1f
                 } else {
                     if (!titleIsVisible) {
-                        mDataBind.homeDetailBlur.alpha = oldAlpha
-                        mDataBind.homeDetailTitle.visibility = View.INVISIBLE
+                        mDataBind?.homeDetailBlur?.alpha = oldAlpha
+                        mDataBind?.homeDetailTitle?.visibility = View.INVISIBLE
                     }
                 }
 
@@ -126,7 +136,12 @@ class HomeDetailActivity :
                     mViewModel.basePlayControlModel.set(BasePlayControlModel(true) { startPlayActivity() })
                 }
             }
-        })
+        }
+        changeTypeListener?.let {
+            mDataBind?.homeDetailInterceptLayout?.setScrollChangeTypeListener(
+                it
+            )
+        }
     }
 
     private var titleIsVisible = false
@@ -136,7 +151,7 @@ class HomeDetailActivity :
      * recyclerView滑动监听
      */
     private fun recycleScrollListener() {
-        mDataBind.homeDetailCommentRecycleView.addOnScrollListener(object :
+        rvScrollListener = object :
             RecyclerView.OnScrollListener() {
             private var totalDy = 0
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -151,8 +166,8 @@ class HomeDetailActivity :
                         totalDy.toFloat() / (top + height)
                     }
                     oldAlpha = alpha
-                    mDataBind.homeDetailBlur.alpha = alpha
-                    mDataBind.homeDetailTitle.visibility = if (alpha > 0.9) {
+                    mDataBind?.homeDetailBlur?.alpha = alpha
+                    mDataBind?.homeDetailTitle?.visibility = if (alpha > 0.9) {
                         titleIsVisible = true
                         View.VISIBLE
                     } else {
@@ -161,48 +176,66 @@ class HomeDetailActivity :
                     }
                 }
             }
-        })
+        }
+        rvScrollListener?.let {
+            mDataBind?.homeDetailCommentRecycleView?.addOnScrollListener(it)
+        }
     }
 
 
     override fun startObserve() {
-        mViewModel.listenAudio.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        listenAudioChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val listenAudio = mViewModel.listenAudio.get()
                 if (listenAudio != null) {
-                    if(mViewModel.chapterAdapter.data.isEmpty()){
+                    if (mViewModel.chapterAdapter.data.isEmpty()) {
                         mViewModel.getChapterListWithId(listenAudio.listenChapterId)
                     }
                 } else {
                     mViewModel.getChapterList(1)
                 }
             }
-        })
-        DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
+        }
+        listenAudioChangedCallback?.let { mViewModel.listenAudio.addOnPropertyChangedCallback(it) }
+
+
+        downloadingChapterListObserve = Observer {
             mViewModel.chapterAdapter.setList(getChapterStatus(mViewModel.chapterAdapter.data))
             mViewModel.chapterAdapter.notifyDataSetChanged()
-        })
-        DownloadMemoryCache.downloadingAudioList.observe(this, Observer {
+        }
+
+        downloadingChapterListObserve?.let {
+            DownloadMemoryCache.downloadingChapterList.observe(this, it)
+        }
+
+
+        downloadingAudioListObserve = Observer {
             mViewModel.chapterAdapter.setList(getChapterStatus(mViewModel.chapterAdapter.data))
             mViewModel.chapterAdapter.notifyDataSetChanged()
-        })
-        AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(object :
+        }
+        downloadingAudioListObserve?.let {
+            DownloadMemoryCache.downloadingAudioList.observe(this, it)
+        }
+
+        needShowNetErrorChangedCallback = object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 AriaDownloadManager.needShowNetError.get().let {
-                    if(it){
+                    if (it) {
                         ToastUtil.showTopNetErrorToast(this@HomeDetailActivity)
                     }
                 }
             }
-        })
+        }
+        needShowNetErrorChangedCallback?.let {
+            AriaDownloadManager.needShowNetError.addOnPropertyChangedCallback(it)
+        }
 
     }
 
     private fun getChapterStatus(chapterList: List<DownloadChapter>): MutableList<DownloadChapter> {
-        val audioName = mViewModel.detailInfoData.get()?.list?.audio_name?:""
-        val audioId = mViewModel.detailInfoData.get()?.list?.audio_id?:0L
+        val audioName = mViewModel.detailInfoData.get()?.list?.audio_name ?: ""
+        val audioId = mViewModel.detailInfoData.get()?.list?.audio_id ?: 0L
         chapterList.forEach {
             it.audio_name = audioName
             it.audio_id = audioId
@@ -216,13 +249,40 @@ class HomeDetailActivity :
 
     override fun onResume() {
         super.onResume()
-        if(mViewModel.listenAudio.get() == null){
+        if (mViewModel.listenAudio.get() == null) {
             BaseConstance.basePlayInfoModel.get()?.let {
-                if(it.playAudioId == mViewModel.audioId.get()){
+                if (it.playAudioId == mViewModel.audioId.get()) {
                     mViewModel.queryAudioListenRecord()
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        needShowNetErrorChangedCallback?.let {
+            AriaDownloadManager.needShowNetError.removeOnPropertyChangedCallback(it)
+            needShowNetErrorChangedCallback = null
+        }
+
+        listenAudioChangedCallback?.let {
+            mViewModel.listenAudio.removeOnPropertyChangedCallback(it)
+            listenAudioChangedCallback = null
+        }
+
+        rvScrollListener?.let {
+            mDataBind?.homeDetailCommentRecycleView?.removeOnScrollListener(it)
+            rvScrollListener = null
+        }
+
+        downloadingChapterListObserve?.let {
+            DownloadMemoryCache.downloadingChapterList.removeObserver(it)
+        }
+
+        downloadingAudioListObserve?.let {
+            DownloadMemoryCache.downloadingAudioList.removeObserver(it)
+        }
+        changeTypeListener = null
     }
 
 }

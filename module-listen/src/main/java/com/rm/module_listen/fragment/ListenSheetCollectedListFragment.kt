@@ -3,8 +3,6 @@ package com.rm.module_listen.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
-import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -34,8 +32,9 @@ class ListenSheetCollectedListFragment :
         mViewModel.showLoading()
         arguments?.getString(MEMBER_ID)?.let {
             mViewModel.memberId = it
+            mViewModel.getFavorList(it)
         }
-        mViewModel.getData(mViewModel.memberId)
+
     }
 
     override fun startObserve() {

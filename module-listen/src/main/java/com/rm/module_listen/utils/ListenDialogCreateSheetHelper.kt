@@ -17,14 +17,13 @@ import com.rm.module_listen.viewmodel.ListenDialogCreateSheetViewModel
  */
 class ListenDialogCreateSheetHelper(
     private val mActivity: FragmentActivity,
-    private val successBlock: () -> Unit,
-    private val viewModel: BaseVMViewModel
+    private val successBlock: () -> Unit
 ) {
     /**
      * viewModel对象
      */
     private val mViewModel by lazy {
-        ListenDialogCreateSheetViewModel(mActivity, successBlock, viewModel)
+        ListenDialogCreateSheetViewModel(mActivity, successBlock)
     }
 
 

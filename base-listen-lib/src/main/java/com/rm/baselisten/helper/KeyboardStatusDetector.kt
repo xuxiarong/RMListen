@@ -3,7 +3,7 @@ package com.rm.baselisten.helper
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewTreeObserver
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleRegistry
 
@@ -15,6 +15,41 @@ import androidx.lifecycle.LifecycleRegistry
  *
  */
 class KeyboardStatusDetector {
+
+    companion object {
+        fun ComponentActivity.bindKeyboardVisibilityListener(block: ((Boolean, Int) -> Unit)?) {
+            if (block == null) {
+                return
+            }
+            KeyboardStatusDetector()
+                .registerVisibilityListener(this)
+                .setVisibilityListener(object : KeyboardVisibilityListener {
+                    override fun onVisibilityChanged(
+                        keyboardVisible: Boolean,
+                        keyboardHeight: Int
+                    ) {
+                        block(keyboardVisible, keyboardHeight)
+                    }
+                })
+        }
+
+        fun Fragment.bindKeyboardVisibilityListener(block: ((Boolean, Int) -> Unit)?) {
+            if (block == null) {
+                return
+            }
+            KeyboardStatusDetector()
+                .registerVisibilityListener(this)
+                .setVisibilityListener(object : KeyboardVisibilityListener {
+                    override fun onVisibilityChanged(
+                        keyboardVisible: Boolean,
+                        keyboardHeight: Int
+                    ) {
+                        block(keyboardVisible, keyboardHeight)
+                    }
+                })
+        }
+    }
+
     //纪录根视图的显示高度
     private var rootViewVisibleHeight = 0
 
@@ -23,7 +58,7 @@ class KeyboardStatusDetector {
 
     private var mView: View? = null
 
-    fun registerVisibilityListener(activity: AppCompatActivity): KeyboardStatusDetector {
+    fun registerVisibilityListener(activity: ComponentActivity): KeyboardStatusDetector {
         val view = activity.window.decorView.findViewById<View>(android.R.id.content)
         view?.let {
             mView = it
@@ -41,15 +76,6 @@ class KeyboardStatusDetector {
             it.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
             val lifecycleRegistry = LifecycleRegistry(fragment)
             lifecycleRegistry.addObserver(KeyboardLifecycle(this))
-        }
-        return this
-    }
-
-
-    fun registerVisibilityListener(view: View?): KeyboardStatusDetector {
-        view?.let {
-            mView = it
-            it.viewTreeObserver.addOnGlobalLayoutListener(windowListener)
         }
         return this
     }
@@ -100,5 +126,5 @@ class KeyboardStatusDetector {
     interface KeyboardVisibilityListener {
         fun onVisibilityChanged(keyboardVisible: Boolean, keyboardHeight: Int)
     }
-
 }
+

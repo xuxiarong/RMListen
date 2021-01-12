@@ -32,7 +32,6 @@ class LoginDebugActivity :
 
     override fun initView() {
         login_debug_quickly_login.setOnClickListener {
-            LoginQuicklyDialogHelper(mViewModel, this).show()
         }
     }
 

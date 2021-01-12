@@ -76,13 +76,11 @@ class MineGetBookViewModel(private val repository: MineRepository) : BaseVMViewM
     //输入法是否显示
     val keyboardIsVisibility = ObservableField<Boolean>(false)
 
-    //输入法显示/隐藏监听
-    var keyboardVisibility: (Boolean, Int) -> Unit = { it, _ -> keyboardVisibilityListener(it) }
 
     /**
      * 键盘的显示隐藏监听
      */
-    private fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
+    fun keyboardVisibilityListener(keyboardVisibility: Boolean) {
         keyboardIsVisibility.set(keyboardVisibility)
         bookIconIsVisibility.set(false)
         memberIconIsVisibility.set(false)
@@ -119,9 +117,9 @@ class MineGetBookViewModel(private val repository: MineRepository) : BaseVMViewM
                         contact.get()!!
                     ).checkResult(
                         onSuccess = {
-                          setResultAndFinish(GET_BOOK_RESULT_CODE)
+                            setResultAndFinish(GET_BOOK_RESULT_CODE)
                         },
-                        onError = {it,_->
+                        onError = { it, _ ->
                             showTip("$it", R.color.business_color_ff5e5e)
                         }
                     )

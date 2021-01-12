@@ -230,7 +230,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
         data.get()?.let {
             getActivity(context)?.let { activity ->
                 mDialog.dismiss()
-                ListenDialogCreateSheetHelper(activity, {}, this).showEditDialog(
+                ListenDialogCreateSheetHelper(activity) {}.showEditDialog(
                     it.sheet_name,
                     it.sheet_id,
                     success = { sheetName ->

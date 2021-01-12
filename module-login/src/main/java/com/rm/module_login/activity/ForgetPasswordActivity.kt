@@ -1,11 +1,9 @@
 package com.rm.module_login.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import com.rm.baselisten.binding.bindKeyboardVisibilityListener
+import com.rm.baselisten.helper.KeyboardStatusDetector.Companion.bindKeyboardVisibilityListener
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_login.BR
@@ -14,8 +12,6 @@ import com.rm.module_login.databinding.LoginActivityForgetPasswordBinding
 import com.rm.module_login.utils.CountryListDialogHelper
 import com.rm.module_login.viewmodel.ForgetPasswordViewModel
 import kotlinx.android.synthetic.main.login_activity_forget_password.*
-import kotlinx.android.synthetic.main.login_activity_login_by_passowrd.*
-import kotlinx.android.synthetic.main.login_activity_login_by_passowrd.login_by_password_root_view
 import kotlinx.android.synthetic.main.login_include_layout_phone_input.*
 
 /**
@@ -65,7 +61,7 @@ class ForgetPasswordActivity :
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) // 设置默认键盘弹出
 
         //监听键盘的显示/隐藏
-        login_by_verify_code_input.bindKeyboardVisibilityListener { b, _ ->
+        bindKeyboardVisibilityListener { b, _ ->
             if (!b) {
                 login_by_verify_code_input.clearFocus()
             }

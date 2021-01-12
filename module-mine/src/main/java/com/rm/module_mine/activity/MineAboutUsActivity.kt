@@ -43,11 +43,14 @@ class MineAboutUsActivity : BaseVMActivity<MineActivityAboutBinding, MineAboutVi
 
         context.let {
             val height = DisplayUtils.getStateHeight(it)
-            val noticeParams =
-                mDataBind.mineAboutBack.layoutParams as ConstraintLayout.LayoutParams
-            val setupParams = mDataBind.mineAboutBack.layoutParams as ConstraintLayout.LayoutParams
-            noticeParams.topMargin = height
-            setupParams.topMargin = height
+            mDataBind?.let { dataBind ->
+                val noticeParams =
+                    dataBind.mineAboutBack.layoutParams as ConstraintLayout.LayoutParams
+                val setupParams =
+                    dataBind.mineAboutBack.layoutParams as ConstraintLayout.LayoutParams
+                noticeParams.topMargin = height
+                setupParams.topMargin = height
+            }
         }
     }
 

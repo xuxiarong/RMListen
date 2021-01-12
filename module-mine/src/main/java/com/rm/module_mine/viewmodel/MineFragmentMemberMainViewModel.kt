@@ -88,7 +88,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
                 onSuccess = {
                     showContentView()
                     processData(it)
-                }, onError = {it,_->
+                }, onError = { it, _ ->
                     showContentView()
                     DLog.i("----->", "$it")
                     showServiceError()
@@ -167,7 +167,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
     fun clickCreateFun(context: Context) {
         getActivity(context)?.let {
             val id = if (TextUtils.equals(memberId, loginUser.get()?.id)) {
-                ""
+                loginUser.get()?.id ?: ""
             } else {
                 memberId
             }

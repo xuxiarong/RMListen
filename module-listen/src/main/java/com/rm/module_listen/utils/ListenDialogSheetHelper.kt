@@ -12,13 +12,13 @@ import com.rm.module_listen.viewmodel.ListenDialogSheetViewModel
 class ListenDialogSheetHelper(
     private val mActivity: FragmentActivity,
     private val audioId: String,
-    private val successBlock: () -> Unit,
-    private val viewModel: BaseVMViewModel
+    private val memberId: String,
+    private val successBlock: () -> Unit
 ) {
     /**
      * viewModel对象
      */
-    private val mViewModel by lazy { ListenDialogSheetViewModel(mActivity, audioId, successBlock,viewModel) }
+    private val mViewModel by lazy { ListenDialogSheetViewModel(mActivity, audioId, memberId,successBlock) }
 
 
     /**

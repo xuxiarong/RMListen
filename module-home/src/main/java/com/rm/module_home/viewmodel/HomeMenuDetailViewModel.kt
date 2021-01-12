@@ -97,7 +97,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
         } else {
             getActivity(view.context)?.let {
                 RouterHelper.createRouter(LoginService::class.java)
-                    .quicklyLogin(this, it) {
+                    .quicklyLogin(it) {
                         showLoading()
                         getData()
                     }
@@ -295,7 +295,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
                         activity,
                         LISTEN_SHEET_LIST_COLLECTED_LIST,
-                        ""
+                        loginUser.get()?.id?:""
                     )
                     dismiss()
                 }

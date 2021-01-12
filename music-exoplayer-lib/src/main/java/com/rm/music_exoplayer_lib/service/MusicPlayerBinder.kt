@@ -13,106 +13,111 @@ import com.rm.music_exoplayer_lib.manager.MusicPlayerManager
  * @data: 8/19/20 3:05 PM
  * @Version: 1.0.0
  */
-class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binder() {
+class MusicPlayerBinder constructor(presenter: MusicPlayerPresenter) : Binder() {
+    private var presenter: MusicPlayerPresenter? = null
+
+    init {
+        this.presenter = presenter
+    }
 
     fun startPlayMusic(position: String) {
-        presenter.startPlayMusic(position)
+        presenter?.startPlayMusic(position)
     }
 
     //暂停
     fun pause() {
-        presenter.pause()
+        presenter?.pause()
     }
 
     fun setOnPlayerEventListener(listener: MusicPlayerEventListener) {
-        presenter.addOnPlayerEventListener(listener)
+        presenter?.addOnPlayerEventListener(listener)
     }
 
     fun removePlayerListener(listener: MusicPlayerEventListener) {
-        presenter.removePlayerListener(listener)
+        presenter?.removePlayerListener(listener)
     }
 
     fun removeAllPlayerListener() {
-        presenter.removeAllPlayerListener()
+        presenter?.removeAllPlayerListener()
     }
 
     fun getDurtion(): Long {
         //播放总长度
-        return presenter.getDurtion()
+        return presenter?.getDurtion() ?: 0L
     }
 
     /**
      * 播放倍数
      */
     fun setPlayerMultiple(p: Float) {
-        presenter.setPlayerMultiple(p)
+        presenter?.setPlayerMultiple(p)
     }
 
     fun seekTo(currentTime: Long) {
-        presenter.seekTo(currentTime)
+        presenter?.seekTo(currentTime)
     }
 
     /**
      * 返回当前播放时长
      */
     fun getCurDurtion(): Long {
-        return presenter.getCurDurtion()
+        return presenter?.getCurDurtion() ?: 0L
     }
 
     /**
      * 定时关闭播放器
      */
     fun setAlarm(times: Int) {
-        presenter.setAlarm(times)
+        presenter?.setAlarm(times)
     }
 
     fun playLastMusic() {
-        presenter.playLastMusic()
+        presenter?.playLastMusic()
     }
 
     fun playNextMusic() {
-        presenter.playNextMusic()
+        presenter?.playNextMusic()
     }
 
     /**
      * 更新播放器
      */
     fun updateMusicPlayerData(audios: List<BaseAudioInfo>, index: String) {
-        presenter.updateMusicPlayerData(audios, index)
+        presenter?.updateMusicPlayerData(audios, index)
     }
 
     //获取播放状态
-    fun getPlayerState(): Int = presenter.getPlayerState()
+    fun getPlayerState(): Int = presenter?.getPlayerState() ?: 0
 
     //播放或者暂停
     fun playOrPause() {
-        presenter.playOrPause()
+        presenter?.playOrPause()
     }
 
     //播放
     fun play() {
-        presenter.play()
+        presenter?.play()
     }
 
     //当前播放
-    fun getCurrentPlayerMusic(): BaseAudioInfo? = presenter.getCurrentPlayerMusic()
+    fun getCurrentPlayerMusic(): BaseAudioInfo? = presenter?.getCurrentPlayerMusic()
 
     //锁屏对象
     fun setLockActivityName(className: String) {
-        presenter.setLockActivityName(className)
+        presenter?.setLockActivityName(className)
     }
 
     //等待播放队列
-    fun getCurrentPlayList(): List<*>? = presenter.getCurrentPlayList()
+    fun getCurrentPlayList(): List<*>? = presenter?.getCurrentPlayList()
 
-    fun isPlaying(): Boolean = presenter.isPlaying()
+    fun isPlaying(): Boolean = presenter?.isPlaying() ?: false
 
     fun setDefaultAlarmModel(defaultAlarmModel: Int) {
-        presenter.setDefaultAlarmModel(defaultAlarmModel)
+        presenter?.setDefaultAlarmModel(defaultAlarmModel)
     }
 
     fun setDefaultPlayModel(defaultPlayModel: Int) {
-        presenter.setDefaultPlayModel(defaultPlayModel)
+        presenter?.setDefaultPlayModel(defaultPlayModel)
     }
 
 
@@ -149,31 +154,35 @@ class MusicPlayerBinder constructor(val presenter: MusicPlayerPresenter) : Binde
     }
 
     fun cleanNotification() {
-        presenter.cleanNotification()
+        presenter?.cleanNotification()
     }
 
     fun setPlayerModel(model: Int): Int {
-        presenter.setPlayerModel(model)
+        presenter?.setPlayerModel(model)
         return model
     }
 
-    fun getPlayerModel(): Int = presenter.getPlayerModel()
+    fun getPlayerModel(): Int = presenter?.getPlayerModel() ?: 0
 
     fun setNotificationEnable(enable: Boolean) {
-        presenter.setNotificationEnable(enable)
+        presenter?.setNotificationEnable(enable)
 
     }
 
-    fun getServiceName(): String = presenter.getServiceName()
+    fun getServiceName(): String = presenter?.getServiceName() ?: ""
 
     //获取播放速度
-    fun getPlayerMultiple(): Float = presenter.getPlayerMultiple()
+    fun getPlayerMultiple(): Float = presenter?.getPlayerMultiple() ?: 0f
 
 
     //恢复页面播放状态
-    fun resumePlayState(state:Boolean)=presenter.resumePlayState(state)
+    fun resumePlayState(state: Boolean) = presenter?.resumePlayState(state)
 
-    fun getCurrentPlayIndex()  = presenter.getCurrentPlayIndex()
+    fun getCurrentPlayIndex() = presenter?.getCurrentPlayIndex()
 
-    fun setAdPath(adPathList: ArrayList<BaseAudioInfo>) = presenter.setAdPath(adPathList)
+    fun setAdPath(adPathList: ArrayList<BaseAudioInfo>) = presenter?.setAdPath(adPathList)
+
+    fun close() {
+        this.presenter = null
+    }
 }

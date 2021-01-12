@@ -24,8 +24,8 @@ interface ListenService : ApplicationProvider {
     fun showMySheetListDialog(
         activity: FragmentActivity,
         audioId: String,
-        successBlock: () -> Unit,
-         viewModel: BaseVMViewModel
+        memberId: String,
+        successBlock: () -> Unit
     )
 
     /**

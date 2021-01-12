@@ -21,11 +21,7 @@ open class CommonDragMvDialog @JvmOverloads constructor(moveListener: DragCloseL
     private var moveListener: DragCloseLayout.IDragMoveListener? = null
 
     init {
-        this.moveListener = moveListener;
-    }
-
-    override fun startObserve() {
-
+        this.moveListener = moveListener
     }
 
     override fun onCreateView(

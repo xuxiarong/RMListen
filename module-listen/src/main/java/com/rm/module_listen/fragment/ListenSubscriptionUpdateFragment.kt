@@ -19,44 +19,52 @@ import kotlinx.android.synthetic.main.listen_fragment_subscription_update.*
  */
 class ListenSubscriptionUpdateFragment :
     BaseVMFragment<ListenFragmentSubscriptionUpdateBinding, ListenSubsUpdateViewModel>() {
-
+    private var isLoginChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var myListenSelectTabChangedCallback: Observable.OnPropertyChangedCallback? = null
     override fun initModelBrId() = BR.viewModel
 
     override fun startObserve() {
 
-        isLogin.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+        isLoginChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(isLogin.get()){
+                if (isLogin.get()) {
                     mViewModel.refreshSubsDataFromService()
                 }
             }
-        })
-        HomeGlobalData.myListenSelectTab.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback(){
+        }
+        isLoginChangedCallback?.let {
+            isLogin.addOnPropertyChangedCallback(it)
+        }
+
+        myListenSelectTabChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(HomeGlobalData.myListenSelectTab.get() == HomeGlobalData.LISTEN_SELECT_SUBS_UPDATE && isLogin.get()){
+                if (HomeGlobalData.myListenSelectTab.get() == HomeGlobalData.LISTEN_SELECT_SUBS_UPDATE && isLogin.get()) {
                     mViewModel.checkRedPointStatus()
                 }
             }
-        })
+        }
+        myListenSelectTabChangedCallback?.let {
+            HomeGlobalData.myListenSelectTab.addOnPropertyChangedCallback(it)
+        }
 
     }
 
     override fun initLayoutId() = R.layout.listen_fragment_subscription_update
 
     override fun initData() {
-        if(isLogin.get()){
+        if (isLogin.get()) {
             mViewModel.refreshSubsDataFromService()
         }
     }
 
-    fun refreshSubsData(){
-        if(isLogin.get()){
+    fun refreshSubsData() {
+        if (isLogin.get()) {
             mViewModel.refreshSubsDataFromService()
         }
     }
 
-    fun checkRedPointStatus(){
-        if(isLogin.get()){
+    fun checkRedPointStatus() {
+        if (isLogin.get()) {
             mViewModel.checkRedPointStatus()
         }
     }
@@ -71,6 +79,18 @@ class ListenSubscriptionUpdateFragment :
     companion object {
         fun newInstance(): ListenSubscriptionUpdateFragment {
             return ListenSubscriptionUpdateFragment()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isLoginChangedCallback?.let {
+            isLogin.removeOnPropertyChangedCallback(it)
+            isLoginChangedCallback = null
+        }
+        myListenSelectTabChangedCallback?.let {
+            HomeGlobalData.myListenSelectTab.removeOnPropertyChangedCallback(it)
+            myListenSelectTabChangedCallback = null
         }
     }
 }

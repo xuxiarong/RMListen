@@ -71,7 +71,6 @@
                     afterTextChanged="@{viewModel.inputKeyWord}"
                     bindAction="@{editorInfo.IME_ACTION_SEARCH}"
                     bindBlock="@{viewModel.bindActionListener}"
-                    bindKeyboardVisibility="@{viewModel.keyboardVisibility}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_8"

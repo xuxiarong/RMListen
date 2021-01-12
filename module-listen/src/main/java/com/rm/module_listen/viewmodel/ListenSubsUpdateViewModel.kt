@@ -68,7 +68,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
     fun checkLogin(context: Context) {
         if (!isLogin.get()) {
             if (context is FragmentActivity) {
-                RouterHelper.createRouter(LoginService::class.java).quicklyLogin(this, context)
+                RouterHelper.createRouter(LoginService::class.java).quicklyLogin(context)
             }
         }
     }
@@ -87,7 +87,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
             ).checkResult(onSuccess = {
                 HomeGlobalData.isShowSubsRedPoint.set(false)
                 DLog.d("suolong", "订阅更新上报成功")
-            }, onError = {it,_->
+            }, onError = { it, _ ->
                 HomeGlobalData.isShowSubsRedPoint.set(false)
                 DLog.d("suolong", "订阅更新上报失败 ${it ?: "原因为空"}")
             })
@@ -117,7 +117,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
 //                    }
                     currentPage++
                     dealData(it.list)
-                }, onError = {it,_->
+                }, onError = { it, _ ->
                     it?.let {
                         showTip(it)
                     }
@@ -155,7 +155,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                         subsDataEmpty.set(true)
                         HomeGlobalData.isShowSubsRedPoint.set(false)
                     }
-                }, onError = {it,_->
+                }, onError = { it, _ ->
                     it?.let {
                         showTip(it)
                     }
@@ -342,7 +342,7 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
         if (clickPosition == currentDatePosition) {
             return
         }
-        subsRvScrollToSelectDate(clickPosition,model)
+        subsRvScrollToSelectDate(clickPosition, model)
         isClickScroll = true
         val lastModel = subsDateAdapter.data[currentDatePosition]
         lastModel.isSelected = false
@@ -358,13 +358,13 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
      * 滑动到日期点击的那个Item
      * @param model ListenSubsDateModel
      */
-    private fun subsRvScrollToSelectDate(clickPosition : Int,model: ListenSubsDateModel) {
+    private fun subsRvScrollToSelectDate(clickPosition: Int, model: ListenSubsDateModel) {
         try {
             val indexOf = subsAudioAdapter.data.indexOf(ListenSubsDateModel(date = model.date))
             //向下滑动，需要多滑动到日期下面的书籍信息处，index需要+1
-            if(currentDatePosition<clickPosition){
+            if (currentDatePosition < clickPosition) {
                 if (subsAudioAdapter.data.size - indexOf > 2) {
-                    subsAudioAdapter.recyclerView.scrollToPosition(indexOf+1)
+                    subsAudioAdapter.recyclerView.scrollToPosition(indexOf + 1)
                     return
                 }
             }

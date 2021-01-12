@@ -40,8 +40,8 @@ class DemoMultiClickVmActivity : BaseVMActivity<ActivityDemoMultiClickVmBinding,
         super.initView()
         mViewModel.demoItem1Click = {demoItem1Click(it)}
         mViewModel.demoItem2Click = {demoItem2Click(it)}
-        mDataBind.demoMultiClickRv.bindVerticalLayout(mAdapter)
-        mDataBind.demoMultiClickRvBtn.setOnClickListener {
+        mDataBind?.demoMultiClickRv?.bindVerticalLayout(mAdapter)
+        mDataBind?.demoMultiClickRvBtn?.setOnClickListener {
             mViewModel.getServiceData()
         }
     }

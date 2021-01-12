@@ -3,11 +3,10 @@ package com.rm.module_mine.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.widget.ScrollView
 import androidx.appcompat.widget.AppCompatTextView
-import com.rm.baselisten.binding.bindKeyboardVisibilityListener
+import com.rm.baselisten.helper.KeyboardStatusDetector.Companion.bindKeyboardVisibilityListener
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.FileUtils
@@ -67,9 +66,11 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
         onClickListener()
 
 
-        mDataBind.mineFeedbackContent.bindKeyboardVisibilityListener { it, keyboardHeight ->
+        bindKeyboardVisibilityListener { it, keyboardHeight ->
+            mViewModel.keyboardVisibilityListener(it)
+
             if (it) {
-                mDataBind.mineFeedbackView.apply {
+                mDataBind?.mineFeedbackView?.apply {
                     layoutParams.height = keyboardHeight - dip(80)
                     visibility = View.VISIBLE
                 }
@@ -88,11 +89,13 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                 }
 
             } else {
-                mDataBind.mineFeedbackView.visibility = View.GONE
+                mDataBind?.mineFeedbackView?.visibility = View.GONE
+                mDataBind?.mineFeedbackEdContact?.clearFocus()
+                mDataBind?.mineFeedbackContent?.clearFocus()
             }
 
             val contactNotEmpty = mViewModel.inputContact.get()!!.isNotEmpty()
-            val hasFocus = mDataBind.mineFeedbackEdContact.hasFocus()
+            val hasFocus = mDataBind?.mineFeedbackEdContact?.hasFocus() ?: false
             mViewModel.contactVisibility.set(contactNotEmpty && it && hasFocus)
             mViewModel.contactVisibility.notifyChange()
         }
@@ -181,13 +184,13 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                     mViewModel.photoHelp?.getCameraUri()?.let {
                         val path = FileUtils.getPath(this, it)
                         path?.let { filePath ->
-                            val delete = FileUtils.delete(filePath)
+                            FileUtils.delete(filePath)
                         }
                     }
                 } else {
                     val cameraImagePath = mViewModel.photoHelp?.getCameraImagePath()
                     cameraImagePath?.let {
-                        val delete = FileUtils.delete(it)
+                        FileUtils.delete(it)
                     }
                 }
             }

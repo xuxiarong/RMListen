@@ -127,7 +127,7 @@ class MineSettingViewModel : BaseVMViewModel() {
     private fun quicklyLogin(context: Context) {
         getActivity(context)?.let {
             RouterHelper.createRouter(LoginService::class.java)
-                .quicklyLogin(this, it)
+                .quicklyLogin(it)
         }
     }
 

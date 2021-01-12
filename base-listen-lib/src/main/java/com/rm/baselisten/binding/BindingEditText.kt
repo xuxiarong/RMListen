@@ -84,7 +84,7 @@ fun EditText.afterTextChangedNoSpace(action: ((String) -> Unit)?) {
                 }
                 setText(str1)
                 setSelection(start)
-                action(str1.toString())
+                action(str1)
             } else {
                 action(s.toString())
             }
@@ -102,24 +102,12 @@ fun EditText.bindBlock(block: ((View) -> Unit)?, action: Int) {
         if (actionId == action) {
             block(v)
             true
+        } else {
+            false
         }
-        false
     }
 }
 
-@BindingAdapter("bindKeyboardVisibility")
-fun EditText.bindKeyboardVisibilityListener(block: ((Boolean, Int) -> Unit)?) {
-    if (block == null) {
-        return
-    }
-    KeyboardStatusDetector()
-        .registerVisibilityListener(this)
-        .setVisibilityListener(object : KeyboardStatusDetector.KeyboardVisibilityListener {
-            override fun onVisibilityChanged(keyboardVisible: Boolean, keyboardHeight: Int) {
-                block(keyboardVisible, keyboardHeight)
-            }
-        })
-}
 
 @BindingAdapter(value = ["isShowPasswordText"])
 fun EditText.isShowPasswordText(isShow: Boolean) {

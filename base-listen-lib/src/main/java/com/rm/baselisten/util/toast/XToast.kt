@@ -19,7 +19,13 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import com.rm.baselisten.util.DLog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.util.toast.draggable.BaseDraggable
+import java.lang.RuntimeException
 
 /**
  *
@@ -50,9 +56,6 @@ class XToast @JvmOverloads constructor(context: Context) {
     /** 窗口显示时长  */
     private var mDuration = 0
 
-    /** Toast 生命周期管理  */
-    private var mLifecycle: ToastLifecycle? = null
-
     /** 自定义拖动处理  */
     private var mDraggable: BaseDraggable? = null
 
@@ -60,34 +63,20 @@ class XToast @JvmOverloads constructor(context: Context) {
     private var mListener: OnToastListener? = null
     private var mCanAutoCancel = true
 
-    /**
-     * 创建一个局部悬浮窗
-     */
-    constructor (activity: Activity) : this(activity as Context) {
-        if (activity.window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN != 0) {
-            // 如果当前 Activity 是全屏模式，那么需要添加这个标记，否则会导致 WindowManager 在某些机型上移动不到状态栏的位置上
-            // 如果不想让状态栏显示的时候把 WindowManager 顶下来，可以添加 FLAG_LAYOUT_IN_SCREEN，但是会导致软键盘无法调整窗口位置
-            addWindowFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        }
-
-        // 跟随 Activity 的生命周期
-        mLifecycle = ToastLifecycle(this, activity)
-    }
-
-    /**
-     * 创建一个全局悬浮窗
-     */
-    constructor(application: Application) : this(application as Context) {
-        // 设置成全局的悬浮窗，注意需要先申请悬浮窗权限，推荐使用：https://github.com/getActivity/XXPermissions
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setWindowType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
-        } else {
-            setWindowType(WindowManager.LayoutParams.TYPE_PHONE)
-        }
-    }
-
     init {
         mContext = context
+        if (mContext is Application) {
+            throw RuntimeException("content is not application")
+        }
+        if (mContext is Activity) {
+            val activity = mContext as Activity
+            if (activity.window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN != 0) {
+                // 如果当前 Activity 是全屏模式，那么需要添加这个标记，否则会导致 WindowManager 在某些机型上移动不到状态栏的位置上
+                // 如果不想让状态栏显示的时候把 WindowManager 顶下来，可以添加 FLAG_LAYOUT_IN_SCREEN，但是会导致软键盘无法调整窗口位置
+                addWindowFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            }
+        }
+
         mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         // 配置一些默认的参数
         mWindowParams = WindowManager.LayoutParams()
@@ -282,7 +271,7 @@ class XToast @JvmOverloads constructor(context: Context) {
 
     /**
      * 设置窗口方向
-     *
+     * @param orientation
      * 自适应：[ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED]
      * 横屏：[ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE]
      * 竖屏：[ActivityInfo.SCREEN_ORIENTATION_PORTRAIT]
@@ -335,7 +324,7 @@ class XToast @JvmOverloads constructor(context: Context) {
         return setView(LayoutInflater.from(mContext).inflate(id, FrameLayout(mContext!!), false))
     }
 
-    fun setView(view: View?): XToast {
+    private fun setView(view: View?): XToast {
         mRootView = view
         val params = mRootView!!.layoutParams
         if (params != null && mWindowParams!!.width == WindowManager.LayoutParams.WRAP_CONTENT && mWindowParams!!.height == WindowManager.LayoutParams.WRAP_CONTENT) {
@@ -368,7 +357,7 @@ class XToast @JvmOverloads constructor(context: Context) {
     /**
      * 显示
      */
-    fun show(): XToast {
+    fun show(lifecycleOwner: LifecycleOwner? = null): XToast {
         require(!(mRootView == null || mWindowParams == null)) { "WindowParams and view cannot be empty" }
 
         // 如果当前已经显示取消上一次显示
@@ -376,11 +365,11 @@ class XToast @JvmOverloads constructor(context: Context) {
             cancel()
         }
         if (mContext is Activity) {
-            if ((mContext as Activity).isFinishing ||
-                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && (mContext as Activity).isDestroyed)
-            ) {
-                return this
-            }
+            return this
+        }
+        if (lifecycleOwner != null) {
+            val lifecycleRegistry = LifecycleRegistry(lifecycleOwner)
+            lifecycleRegistry.addObserver(ToastLifecycle(this, lifecycleRegistry))
         }
         try {
             // 如果这个 View 对象被重复添加到 WindowManager 则会抛出异常
@@ -402,12 +391,6 @@ class XToast @JvmOverloads constructor(context: Context) {
             if (mDraggable != null) {
                 mDraggable?.start(this)
             }
-
-            // 注册 Activity 生命周期
-            if (mLifecycle != null) {
-                mLifecycle?.register()
-            }
-
             // 回调监听
             if (mListener != null) {
                 mListener?.onShow(this)
@@ -428,12 +411,6 @@ class XToast @JvmOverloads constructor(context: Context) {
     fun cancel(): XToast {
         if (mShow) {
             try {
-
-                // 反注册 Activity 生命周期
-                if (mLifecycle != null) {
-                    mLifecycle?.unregister()
-                }
-
                 // 如果当前 WindowManager 没有附加这个 View 则会抛出异常
                 // java.lang.IllegalArgumentException: View=android.widget.TextView{3d2cee7 V.ED..... ........ 0,0-312,153} not attached to window manager
                 mWindowManager?.removeViewImmediate(mRootView)
@@ -471,6 +448,7 @@ class XToast @JvmOverloads constructor(context: Context) {
         mWindowManager = null
         mListener = null
         mDraggable = null
+        mRootView = null
     }
 
     /**
@@ -513,7 +491,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      */
     fun <V : View?> findViewById(id: Int): V {
         checkNotNull(mRootView) { "Please setup view" }
-        return mRootView!!.findViewById<View>(id) as V
+        return mRootView?.findViewById<View>(id) as V
     }
 
     /**
@@ -591,21 +569,12 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置背景
      */
     fun setBackground(viewId: Int, drawableId: Int): XToast {
-        val drawable: Drawable?
-        drawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mContext!!.getDrawable(drawableId)
-        } else {
-            mContext!!.resources.getDrawable(drawableId)
-        }
+        val drawable: Drawable? = ContextCompat.getDrawable(mContext!!, drawableId)
         return setBackground(viewId, drawable)
     }
 
     fun setBackground(id: Int, drawable: Drawable?): XToast {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            findViewById<View>(id).background = drawable
-        } else {
-            findViewById<View>(id).setBackgroundDrawable(drawable)
-        }
+        findViewById<View>(id).background = drawable
         return this
     }
 
@@ -613,12 +582,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置图片
      */
     fun setImageDrawable(viewId: Int, drawableId: Int): XToast {
-        val drawable: Drawable?
-        drawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mContext!!.getDrawable(drawableId)
-        } else {
-            mContext!!.resources.getDrawable(drawableId)
-        }
+        val drawable: Drawable? = ContextCompat.getDrawable(mContext!!, drawableId)
         return setImageDrawable(viewId, drawable)
     }
 
@@ -706,5 +670,4 @@ class XToast @JvmOverloads constructor(context: Context) {
     fun removeCallbacks() {
         HANDLER.removeCallbacksAndMessages(this)
     }
-
 }

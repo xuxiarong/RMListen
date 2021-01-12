@@ -35,6 +35,8 @@ class MineMemberActivity :
     ComponentShowPlayActivity<MineActivityMemberDetail1BindingImpl, MineMemberViewModel>() {
 
     private lateinit var mHandler: Handler
+    private var detailInfoDataChangedCallback: Observable.OnPropertyChangedCallback? = null
+    private var onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener? = null
 
     companion object {
         const val MEMBER_ID = "memberId"
@@ -64,12 +66,14 @@ class MineMemberActivity :
     override fun getLayoutId() = R.layout.mine_activity_member_detail1
 
     override fun startObserve() {
-        mViewModel.detailInfoData.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
+        detailInfoDataChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 createFragment()
             }
-        })
+        }
+        detailInfoDataChangedCallback?.let {
+            mViewModel.detailInfoData.addOnPropertyChangedCallback(it)
+        }
     }
 
 
@@ -86,7 +90,7 @@ class MineMemberActivity :
         val minHeight = stateHeight + dip(94)
         mine_member_detail_collapsing_layout.minimumHeight = minHeight
 
-        mine_member_detail_appbar_layout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+        onOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             val height = mine_member_detail_head_layout.measuredHeight - minHeight
             val alpha = abs(verticalOffset).toFloat() / height
             mine_member_detail_info_layout.alpha = 1 - alpha
@@ -109,7 +113,8 @@ class MineMemberActivity :
 
             Log.i("initParams: ", "$radius")
             mine_member_detail_blur.alpha = alpha
-        })
+        }
+        mine_member_detail_appbar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
     }
 
     override fun initData() {
@@ -161,5 +166,18 @@ class MineMemberActivity :
                 0
             }, false
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        detailInfoDataChangedCallback?.let {
+            mViewModel.detailInfoData.removeOnPropertyChangedCallback(it)
+            detailInfoDataChangedCallback = null
+        }
+        onOffsetChangedListener?.let {
+            mine_member_detail_appbar_layout.removeOnOffsetChangedListener(it)
+            onOffsetChangedListener = null
+        }
+
     }
 }

@@ -72,7 +72,7 @@ ListenSheetListActivity :
     }
 
     private fun createFragment() {
-        if (memberId!!.isEmpty()) {
+        if (TextUtils.equals(memberId, loginUser.get()?.id)) {
             mListTabText[0] = CONTEXT.getString(R.string.listen_my_sheet)
         } else {
             mListTabText[0] = CONTEXT.getString(R.string.listen_create_sheet)
