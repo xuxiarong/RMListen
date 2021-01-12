@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "org.sonarqube"
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -87,4 +88,12 @@ dependencies {
 //    implementation 'com.arialyy.aria:core:3.8.12'
 //    kapt 'com.arialyy.aria:compiler:3.8.12'
 //    implementation project(path: ':business-lib')
+}
+
+sonarqube{
+    properties{
+        property "sonar.host.url", "http://10.1.0.23:9000/"     //sonarqube 服务器地址
+        property "sonar.verbose", "true"
+        property "sonar.login", "b92857545b70b3769f8934e32548918716e3ed7b"   //sonar.login 配置token,不用配置也可以检测
+    }
 }

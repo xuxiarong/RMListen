@@ -24,6 +24,8 @@ import com.rm.module_main.customview.bottomtab.NavigationController
 import com.rm.module_main.customview.bottomtab.item.NormalItemView
 import com.rm.module_main.databinding.MainActivityMainBindingImpl
 import com.rm.module_main.viewmodel.HomeMainViewModel
+import com.tencent.mars.xlog.Log
+import com.tencent.mars.xlog.Xlog
 import kotlinx.android.synthetic.main.main_activity_main.*
 
 /**
@@ -198,6 +200,7 @@ class MainMainActivity :
             lastExitTime = System.currentTimeMillis()
         } else {
             if (System.currentTimeMillis() - lastExitTime <= 2000) {
+                Log.appenderClose()
                 finish()
             } else {
                 lastExitTime = System.currentTimeMillis()

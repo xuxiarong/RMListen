@@ -3,6 +3,7 @@ package com.rm.module_main.activity.splash
 import android.Manifest
 import android.content.Intent
 import android.os.Build
+import android.os.Environment
 import android.os.Handler
 import android.text.TextUtils
 import android.widget.TextView
@@ -26,6 +27,7 @@ import com.rm.business_lib.FIRST_OPEN_APP
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.UPLOAD_APP_TIME
 import com.rm.business_lib.bean.BusinessVersionUrlBean
+import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.isLogin
@@ -44,6 +46,8 @@ import com.rm.module_main.databinding.HomeActivitySplashBinding
 import com.rm.module_main.databinding.HomeDialogPrivateServiceBinding
 import com.rm.module_main.viewmodel.HomeSplashViewModel
 import com.rm.module_main.viewmodel.HomeSplashViewModel.Companion.INSTALL_RESULT_CODE
+import com.tencent.mars.xlog.Log
+import com.tencent.mars.xlog.Xlog
 import kotlinx.android.synthetic.main.home_activity_splash.*
 
 /**
@@ -223,6 +227,29 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     }
 
+    fun initXLog(){
+        System.loadLibrary("c++_shared");
+        System.loadLibrary("marsxlog");
+
+        val SDCARD = DownLoadFileUtils.getParentFile(this)?.absolutePath
+        val logPath = DownLoadFileUtils.getParentFile(this)?.absolutePath + "/marssample/log";
+
+        // this is necessary, or may crash for SIGBUS
+        val cachePath = "${this.getFilesDir()} + /xlog"
+
+        //init xlog
+        val xlog =  Xlog()
+        Log.setLogImp(xlog)
+
+        if (BuildConfig.DEBUG) {
+            Log.setConsoleLogOpen(true)
+            Log.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, cachePath, logPath, "listen", 0)
+        } else {
+            Log.setConsoleLogOpen(false)
+            Log.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, "listen", 0)
+        }
+    }
+
     private fun loadAd() {
         if (!HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.getBooleanMMKV(false)) {
             showPrivateServiceDialog()
@@ -246,6 +273,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             },
             actionGranted = {
                 initSplashData()
+                initXLog()
             },
             actionPermanentlyDenied = {
                 finish()
