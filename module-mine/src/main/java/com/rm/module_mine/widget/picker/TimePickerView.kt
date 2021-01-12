@@ -76,10 +76,13 @@ class TimePickerView @JvmOverloads constructor(
      * 设置公历
      */
     private fun setSolar(timeMillis: Long = -1L) {
-        if (timeMillis == -1L) {
-            calendar.time = Date(System.currentTimeMillis())
-        } else {
-            calendar.time = Date(timeMillis)
+        when (timeMillis) {
+            -1L -> {
+                calendar.time = Date(System.currentTimeMillis())
+            }
+            else -> {
+                calendar.time = Date(timeMillis)
+            }
         }
         val year = calendar[Calendar.YEAR]
         val month = calendar[Calendar.MONTH]

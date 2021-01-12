@@ -192,8 +192,6 @@ class SearchContentAnchorViewModel(private val repository: SearchRepository) : B
      */
     private fun quicklyLogin(it: FragmentActivity) {
         RouterHelper.createRouter(LoginService::class.java)
-            .quicklyLogin(it, loginSuccess = {
-//                intDetailInfo(audioId.get()!!)
-            })
+            .quicklyLogin(it, loginSuccess = {})
     }
 }

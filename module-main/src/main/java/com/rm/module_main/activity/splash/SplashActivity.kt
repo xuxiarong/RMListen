@@ -66,6 +66,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 if (mViewModel.isSkipAd.get()) {
                     MainMainActivity.startMainActivity(this@SplashActivity)
                     finish()
+                }else{
+                    mViewModel.isShowAd.set(false)
                 }
             }
         }
@@ -177,12 +179,10 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                     }
                 }, 200)
             }
-        } else if (requestCode == REQUEST_CODE_INSTALL_APP) {
-            if (requestCode != RESULT_OK) {
-                mViewModel.versionInfo.get()?.let {
-                    if (!TextUtils.equals(it.type, "2")) {
-                        loadAd()
-                    }
+        } else if (requestCode == REQUEST_CODE_INSTALL_APP && requestCode != RESULT_OK) {
+            mViewModel.versionInfo.get()?.let {
+                if (!TextUtils.equals(it.type, "2")) {
+                    loadAd()
                 }
             }
         }
@@ -245,7 +245,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 initSplashData()
             },
             actionGranted = {
-                // todo
                 initSplashData()
             },
             actionPermanentlyDenied = {

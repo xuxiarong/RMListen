@@ -12,7 +12,6 @@ val viewModelModule = module {
 }
 
 val repositoryModule = module {
-//    single { CoroutinesDispatcherProvider() }
 }
 
 val appModule = listOf(viewModelModule, repositoryModule)

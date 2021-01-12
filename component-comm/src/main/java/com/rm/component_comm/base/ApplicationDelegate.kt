@@ -82,7 +82,6 @@ class ApplicationDelegate {
                     )
                 for (className in classFileNames) {
                     try {
-                        // TODO: 2020-02-19  暂时跳过im sdk 的包名
 //                        if (!className.contains("com.leimans.imsdk")) {
                         val aClass = Class.forName(className)
                         if (clazz.isAssignableFrom(aClass) && clazz != aClass && !aClass.isInterface) {
@@ -204,6 +203,7 @@ class ApplicationDelegate {
                         try {
                             dexfile.close()
                         } catch (ignore: Throwable) {
+                            ignore.printStackTrace()
                         }
                     }
                 }
@@ -372,6 +372,7 @@ class ApplicationDelegate {
                         }
                     }
                 } catch (ignore: Exception) {
+                    ignore.printStackTrace()
                 }
                 Log.i(
                     TAG,
@@ -431,8 +432,6 @@ class ApplicationManager {
                     ApplicationDelegate.ApplicationEvent.trimMemory -> applicationDelegate.onTrimMemory(
                         levels[0]
                     )
-                    else -> {
-                    }
                 }
             }
         }

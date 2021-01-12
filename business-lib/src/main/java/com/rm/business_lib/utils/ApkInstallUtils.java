@@ -91,11 +91,16 @@ public final class ApkInstallUtils {
      * @return
      */
     public static boolean install(Context context, String filePath) {
-        if (ApkInstallUtils.isSystemApplication(context)
-                || ShellUtils.checkRootPermission()) {
-            return installAppSilent(context, filePath);
+        try{
+            if (ApkInstallUtils.isSystemApplication(context)
+                    || ShellUtils.checkRootPermission()) {
+                return installAppSilent(context, filePath);
+            }
+            return installNormal(context, filePath);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return installNormal(context, filePath);
+        return false;
     }
 
     /**
@@ -237,7 +242,7 @@ public final class ApkInstallUtils {
     private static boolean installNormal(Context context, File appFile) {
         try {
             Intent intent = getInstallAppIntent(appFile);
-            if (context.getPackageManager().queryIntentActivities(intent, 0).size() > 0) {
+            if (!context.getPackageManager().queryIntentActivities(intent, 0).isEmpty()) {
                 if (context instanceof Activity) {
                     ((Activity) context).startActivityForResult(intent, REQUEST_CODE_INSTALL_APP);
                 } else {

@@ -4,7 +4,6 @@ import android.view.View;
 
 import androidx.core.view.ViewCompat;
 
-import com.rm.business_lib.xbanner.transformers.BasePageTransformer;
 
 /**
  * Created by jxnk25 on 2016/10/18.
@@ -26,6 +25,7 @@ public class AlphaPageTransformer extends BasePageTransformer {
 
     @Override
     public void handleInvisiblePage(View view, float position) {
+        //noinspection deprecation
         ViewCompat.setAlpha(view, 0);
     }
 

@@ -7,9 +7,7 @@ import kotlinx.android.synthetic.main.activity_demo.*
 
 class DemoActivity : BaseActivity() {
 
-    override fun initData() {
-
-    }
+    override fun initData(){}
 
     override fun getLayoutId() = R.layout.activity_demo
 

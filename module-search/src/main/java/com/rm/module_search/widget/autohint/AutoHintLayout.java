@@ -21,7 +21,7 @@ import androidx.annotation.Nullable;
  */
 public class AutoHintLayout extends LinearLayout {
 
-    private AutoHintHelper mAutoHintHelper;
+    private final AutoHintHelper mAutoHintHelper;
     private EditText mEditText;
     private boolean mInDrawableStateChanged;
 
@@ -63,11 +63,7 @@ public class AutoHintLayout extends LinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 // 输入字符变化的时候判断是否需要显示hint
-                if (TextUtils.isEmpty(mEditText.getText().toString())) {
-                    mAutoHintHelper.showHint(true);
-                } else {
-                    mAutoHintHelper.showHint(false);
-                }
+                mAutoHintHelper.showHint(TextUtils.isEmpty(mEditText.getText().toString()));
             }
         });
     }

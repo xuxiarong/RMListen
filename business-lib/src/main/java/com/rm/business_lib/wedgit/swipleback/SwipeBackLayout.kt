@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
@@ -367,8 +368,10 @@ class SwipeBackLayout @JvmOverloads constructor(
                 state == ViewDragHelper.STATE_IDLE
             ) {
                 // the view stopped from moving.
-                if (draggingOffset == getDragRange()) {
-                    onFinishListener.onFinishState()
+                when (draggingOffset) {
+                    getDragRange() -> {
+                        onFinishListener.onFinishState()
+                    }
                 }
             }
             draggingState = state
@@ -381,12 +384,8 @@ class SwipeBackLayout @JvmOverloads constructor(
           @Px dx: Int,
           @Px dy: Int
       ) {
-            when (dragEdge) {
-                DragEdge.TOP, DragEdge.BOTTOM -> draggingOffset = Math.abs(top)
-                DragEdge.LEFT, DragEdge.RIGHT -> draggingOffset = Math.abs(left)
-                else -> {
-                }
-            }
+          if (dragEdge == DragEdge.TOP || dragEdge == DragEdge.BOTTOM) draggingOffset = abs(top)
+          else if (dragEdge == DragEdge.LEFT || dragEdge == DragEdge.RIGHT) draggingOffset = abs(left)
 
             //The proportion of the sliding.
             var fractionAnchor = draggingOffset.toFloat() / finishAnchor
