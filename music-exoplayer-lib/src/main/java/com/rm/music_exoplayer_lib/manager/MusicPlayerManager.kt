@@ -50,12 +50,14 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
 
         override fun onServiceDisconnected(name: ComponentName?) {
             ExoplayerLogger.exoLog("2 链接播放服务失败")
+            mBinder?.close()
+            mBinder = null
         }
 
     }
 
     fun initialize(context: Context) {
-        if(mBinder!=null){
+        if (mBinder != null) {
             return
         }
 
@@ -125,7 +127,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
     }
 
     override fun getCurrentPlayerID(): Long {
-        return mBinder?.getCurrentPlayerMusic()?.chapterId?.toLong() ?:0L
+        return mBinder?.getCurrentPlayerMusic()?.chapterId?.toLong() ?: 0L
     }
 
     override fun seekTo(currentTime: Long) {

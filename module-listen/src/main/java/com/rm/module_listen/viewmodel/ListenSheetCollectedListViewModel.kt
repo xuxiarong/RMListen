@@ -1,7 +1,6 @@
 package com.rm.module_listen.viewmodel
 
 import android.content.Context
-import android.text.TextUtils
 import android.view.View
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
@@ -42,33 +41,10 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
 
     var memberId = ""
 
-    /**
-     * 请求加载数据
-     */
-    fun getData(memberId: String) {
-        if (TextUtils.isEmpty(memberId)) {
-            getFavorList()
-        } else {
-            getFavorList(memberId)
-        }
-    }
 
-    private fun getFavorList(memberId: String) {
+    fun getFavorList(memberId: String) {
         launchOnIO {
             repository.getCollectedList(mPage, pageSize, memberId).checkResult(
-                onSuccess = {
-                    successData(it)
-                },
-                onError = { it, _ ->
-                    failData()
-                }
-            )
-        }
-    }
-
-    private fun getFavorList() {
-        launchOnIO {
-            repository.getCollectedList(mPage, pageSize).checkResult(
                 onSuccess = {
                     successData(it)
                 },
@@ -140,14 +116,14 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
     fun refreshData() {
         mPage = 1
         refreshStateModel.setResetNoMoreData(true)
-        getData(memberId)
+        getFavorList(memberId)
     }
 
     /**
      * 加载更多
      */
     fun loadData() {
-        getData(memberId)
+        getFavorList(memberId)
     }
 
     /**

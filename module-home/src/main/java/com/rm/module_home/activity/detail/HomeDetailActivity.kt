@@ -14,6 +14,7 @@ import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.aria.AriaDownloadManager
+import com.rm.business_lib.db.DaoManager
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.DetailAudioSortDao
 import com.rm.business_lib.db.audiosort.DetailAudioSort
@@ -106,7 +107,7 @@ class HomeDetailActivity :
 
         mDataBind?.homeDetailChapterHeader?.post {
             //获取章节头部的高度
-            val measuredHeight = mDataBind?.homeDetailChapterHeader?.measuredHeight?:0
+            val measuredHeight = mDataBind?.homeDetailChapterHeader?.measuredHeight ?: 0
             val params =
                 mDataBind?.homeDetailCommentRefresh?.layoutParams as ConstraintLayout.LayoutParams
 
@@ -136,7 +137,11 @@ class HomeDetailActivity :
                 }
             }
         }
-        changeTypeListener?.let { mDataBind?.homeDetailInterceptLayout?.setScrollChangeTypeListener(it) }
+        changeTypeListener?.let {
+            mDataBind?.homeDetailInterceptLayout?.setScrollChangeTypeListener(
+                it
+            )
+        }
     }
 
     private var titleIsVisible = false
@@ -216,7 +221,7 @@ class HomeDetailActivity :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 AriaDownloadManager.needShowNetError.get().let {
-                    if(it){
+                    if (it) {
                         ToastUtil.showTopNetErrorToast(this@HomeDetailActivity)
                     }
                 }
@@ -277,7 +282,6 @@ class HomeDetailActivity :
         downloadingAudioListObserve?.let {
             DownloadMemoryCache.downloadingAudioList.removeObserver(it)
         }
-
         changeTypeListener = null
     }
 

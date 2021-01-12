@@ -178,7 +178,7 @@ class ListenMyListenFragment :
                 ListenSheetListActivity.startActivity(
                     activity!!,
                     LISTEN_SHEET_LIST_MY_LIST,
-                    ""
+                    loginUser.get()?.id ?: ""
                 )
             }
         }

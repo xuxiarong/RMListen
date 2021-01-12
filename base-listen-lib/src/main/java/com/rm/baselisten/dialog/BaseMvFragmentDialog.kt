@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.observe
@@ -63,7 +64,7 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
                             this
                         )
                     } else {
-                        ToastUtil.show(context, it.content)
+                        Toast.makeText(context, it.content, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -295,7 +295,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
                         activity,
                         LISTEN_SHEET_LIST_COLLECTED_LIST,
-                        ""
+                        loginUser.get()?.id?:""
                     )
                     dismiss()
                 }

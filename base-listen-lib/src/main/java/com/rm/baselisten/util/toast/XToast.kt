@@ -64,7 +64,6 @@ class XToast @JvmOverloads constructor(context: Context) {
     private var mCanAutoCancel = true
 
     init {
-        DLog.i("xToast init: ", "==")
         mContext = context
         if (mContext is Application) {
             throw RuntimeException("content is not application")
@@ -368,9 +367,7 @@ class XToast @JvmOverloads constructor(context: Context) {
         if (mContext is Activity) {
             return this
         }
-        DLog.i("xToast show: ", "==")
         if (lifecycleOwner != null) {
-            DLog.i("xToast show11111: ", "==")
             val lifecycleRegistry = LifecycleRegistry(lifecycleOwner)
             lifecycleRegistry.addObserver(ToastLifecycle(this, lifecycleRegistry))
         }

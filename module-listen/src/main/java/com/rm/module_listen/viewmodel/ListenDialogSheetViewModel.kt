@@ -11,6 +11,7 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_ADD_SHEET
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.listen.ListenService
@@ -26,6 +27,7 @@ import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 class ListenDialogSheetViewModel(
     private val mActivity: FragmentActivity,
     private val audioId: String,
+    private val memberId: String,
     private val successBlock: () -> Unit
 ) : BaseVMViewModel() {
 
@@ -57,15 +59,15 @@ class ListenDialogSheetViewModel(
     private var page = 1
 
     init {
-        getData()
+        getMySheetList()
     }
 
     /**
      * 获取我的听单列表
      */
-    fun getData() {
+    private fun getMySheetList() {
         launchOnIO {
-            repository.getMyList(page, pageSize).checkResult(
+            repository.getMyList(page, pageSize, memberId).checkResult(
                 onSuccess = {
                     processSuccessData(it)
                 },
@@ -160,7 +162,7 @@ class ListenDialogSheetViewModel(
                     RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
                         mActivity,
                         LISTEN_SHEET_LIST_MY_LIST,
-                        ""
+                        loginUser.get()?.id ?: ""
                     )
                     dismiss()
                 }
@@ -180,14 +182,14 @@ class ListenDialogSheetViewModel(
      */
     fun refreshData() {
         page = 1
-        getData()
+        getMySheetList()
     }
 
     /**
      * 加载更多数据
      */
     fun loadData() {
-        getData()
+        getMySheetList()
     }
 
     /**

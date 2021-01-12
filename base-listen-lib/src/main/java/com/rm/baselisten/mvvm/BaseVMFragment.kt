@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -130,7 +131,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
 
         mViewModel.baseToastModel.observe(this, Observer {
             context?.let { context ->
-                if(it.isNetError){
+                if (it.isNetError) {
                     ToastUtil.showTopNetErrorToast(context)
                     return@Observer
                 }
@@ -152,7 +153,7 @@ abstract class BaseVMFragment<V : ViewDataBinding, VM : BaseVMViewModel> : BaseF
                             this@BaseVMFragment
                         )
                     } else {
-                        ToastUtil.show(context, it.content)
+                        Toast.makeText(context, it.content, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -986,7 +986,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 quicklyLogin(it)
             } else {
                 RouterHelper.createRouter(ListenService::class.java)
-                    .showMySheetListDialog(it, audioId.get()!!)
+                    .showMySheetListDialog(it, audioId.get() ?: "", loginUser.get()?.id ?: "")
                     { showTip("在“我听-听单”中查看") }
             }
         }

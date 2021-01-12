@@ -119,7 +119,7 @@ class ListenDialogCreateSheetViewModel(
                     RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
                         mActivity,
                         LISTEN_SHEET_LIST_MY_LIST,
-                        ""
+                        loginUser.get()?.id?:""
                     )
                     dismiss()
                 }

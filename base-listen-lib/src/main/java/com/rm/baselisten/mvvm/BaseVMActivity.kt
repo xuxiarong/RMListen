@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -158,7 +159,7 @@ abstract class BaseVMActivity<V : ViewDataBinding, VM : BaseVMViewModel> : BaseA
                         this@BaseVMActivity
                     )
                 } else {
-                    ToastUtil.show(this@BaseVMActivity, it.content)
+                    Toast.makeText(this@BaseVMActivity, it.content, Toast.LENGTH_SHORT).show()
                 }
             }
         })

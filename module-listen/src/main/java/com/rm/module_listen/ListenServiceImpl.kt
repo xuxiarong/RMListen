@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.router.ARouterModuleServicePath
@@ -37,9 +36,10 @@ class ListenServiceImpl : ListenService {
     override fun showMySheetListDialog(
         activity: FragmentActivity,
         audioId: String,
+        memberId: String,
         successBlock: () -> Unit
     ) {
-        ListenDialogSheetHelper(activity, audioId, successBlock).showDialog()
+        ListenDialogSheetHelper(activity, audioId,memberId, successBlock).showDialog()
     }
 
     override fun startListenSheetList(context: Activity, sheetListType: Int, memberId: String) {

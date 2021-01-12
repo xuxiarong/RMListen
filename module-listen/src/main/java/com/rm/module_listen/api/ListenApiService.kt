@@ -101,17 +101,9 @@ interface ListenApiService {
     suspend fun listenSheetMyList(
         @Query("page") page: Int,
         @Query("page_size") page_size: Int,
-        @Query("member_id") member_id: String//传参表示请求他人数据，不传读取登陆态用户id
+        @Query("member_id") member_id: String
     ): BaseResponse<ListenSheetMyListBean>
 
-    /**
-     * 我的听单列表
-     */
-    @GET("sheet/my-list")
-    suspend fun listenSheetMyList(
-        @Query("page") page: Int,
-        @Query("page_size") page_size: Int
-    ): BaseResponse<ListenSheetMyListBean>
 
     /**
      * 收藏听单列表
@@ -120,17 +112,9 @@ interface ListenApiService {
     suspend fun listenSheetFavoriteList(
         @Query("page") page: Int,
         @Query("page_size") page_size: Int,
-        @Query("member_id") member_id: String//传参表示请求他人数据，不传读取登陆态用户id
+        @Query("member_id") member_id: String
     ): BaseResponse<SheetFavorBean>
 
-    /**
-     * 收藏听单列表
-     */
-    @GET("sheet/my-favorite")
-    suspend fun listenSheetFavoriteList(
-        @Query("page") page: Int,
-        @Query("page_size") page_size: Int
-    ): BaseResponse<SheetFavorBean>
 
     /**
      * 听单详情

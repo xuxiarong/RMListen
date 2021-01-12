@@ -913,7 +913,8 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 RouterHelper.createRouter(ListenService::class.java)
                     .showMySheetListDialog(
                         context,
-                        PlayGlobalData.playAudioId.get()!!
+                        PlayGlobalData.playAudioId.get()!!,
+                        loginUser.get()?.id ?: ""
                     ) { showTip("在“我听-听单”中查看") }
             }
         }

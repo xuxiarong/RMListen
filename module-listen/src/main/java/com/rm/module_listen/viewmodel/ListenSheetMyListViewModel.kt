@@ -9,6 +9,7 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.baselisten.dialog.TipsFragmentDialog
+import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -44,19 +45,8 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
 
     var memberId = ""
 
-    /**
-     * 发起网络请求数据
-     */
-    fun getData(memberId: String) {
-        if (TextUtils.isEmpty(memberId)) {
-            getMySheetList()
-        } else {
-            getMySheetList(memberId)
-        }
 
-    }
-
-    private fun getMySheetList(memberId: String) {
+    fun getMySheetList(memberId: String) {
         showLoading()
         launchOnIO {
             repository.getMyList(page, pageSize, memberId).checkResult(
@@ -72,21 +62,6 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
         }
     }
 
-    private fun getMySheetList() {
-        showLoading()
-        launchOnIO {
-            repository.getMyList(page, pageSize).checkResult(
-                onSuccess = {
-                    showContentView()
-                    successData(it)
-                },
-                onError = { it, code ->
-                    showContentView()
-                    failData("$it", code)
-                }
-            )
-        }
-    }
 
     /**
      * 删除听单
@@ -101,7 +76,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                 },
                 onError = { it, _ ->
                     showContentView()
-                    showTip("$it",R.color.business_color_ff5e5e)
+                    showTip("$it", R.color.business_color_ff5e5e)
                 }
             )
         }
@@ -156,14 +131,14 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
     fun refreshData() {
         page = 1
         refreshStateModel.setNoHasMore(false)
-        getData(memberId)
+        getMySheetList(memberId)
     }
 
     /**
      * 加载更多
      */
     fun loadData() {
-        getData(memberId)
+        getMySheetList(memberId)
     }
 
     /**
@@ -179,7 +154,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                 showTipDialog(context, "该听单已被作者删除，是否删除？", bean.sheet_id.toString())
             }
             else -> {
-                if (memberId.isEmpty()) {
+                if (TextUtils.equals(memberId, loginUser.get()?.id)) {
                     getActivity(context)?.let {
                         clickBean.set(bean)
                         ListenMySheetDetailActivity.startActivity(it, bean.sheet_id.toString())

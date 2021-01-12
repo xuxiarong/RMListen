@@ -32,7 +32,7 @@ object ToastUtil {
         try {
             if (null != context && !TextUtils.isEmpty(msg)) {
                 mToast?.cancel()
-                mToast = Toast.makeText(context, "", Toast.LENGTH_SHORT)
+                mToast = Toast.makeText(context.applicationContext, "", Toast.LENGTH_SHORT)
                 mToast?.setText(msg)
                 mToast?.show()
             }
@@ -53,10 +53,11 @@ object ToastUtil {
     private fun showCenter(context: Context?, msg: String?) {
         try {
             if (null != context && !TextUtils.isEmpty(msg)) {
-                val view = LayoutInflater.from(context).inflate(R.layout.base_layout_toast, null)
+                val view = LayoutInflater.from(context.applicationContext)
+                    .inflate(R.layout.base_layout_toast, null)
                 view.findViewById<AppCompatTextView>(R.id.base_toast_msg).text = msg
                 mToast?.cancel()
-                mToast = Toast.makeText(context, "", Toast.LENGTH_LONG)
+                mToast = Toast.makeText(context.applicationContext, "", Toast.LENGTH_LONG)
                 mToast?.view = view
                 mToast?.setGravity(Gravity.CENTER, 0, context.dip(100))
                 mToast?.show()

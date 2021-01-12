@@ -121,7 +121,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
                 context.startActivity(intent)
                 (context as Activity).overridePendingTransition(activity_top_open, 0)
             } catch (e: Exception) {
-                ToastUtil.show(context, "${e.message}")
+                ToastUtil.showTopToast(context, "${e.message}")
             }
         }
     }
