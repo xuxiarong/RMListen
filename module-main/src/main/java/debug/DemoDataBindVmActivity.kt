@@ -11,24 +11,16 @@ class DemoDataBindVmActivity : BaseVMActivity<DemoActivityDataBindVmDemoBinding,
 
     override fun initView() {
         setStatusBar(R.color.base_activity_bg_color)
-
         mViewModel.getDemoData()
-
     }
 
     override fun initData() {
+        setStatusBar(R.color.base_activity_bg_color)
 
     }
 
     override fun startObserve() {
-//        mViewModel.demoData.observe(this, Observer {
-//            mDataBind.demoRv.bindVerticalLayout(
-//                CommonBindAdapter(
-//                    it, ,
-//                )
-//            )
-//
-//        })
+        setStatusBar(R.color.base_activity_bg_color)
     }
 
     override fun getLayoutId() = R.layout.demo_activity_data_bind_vm_demo

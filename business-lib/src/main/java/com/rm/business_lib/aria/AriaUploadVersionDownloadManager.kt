@@ -53,7 +53,7 @@ object AriaUploadVersionDownloadManager {
         )
         Aria.download(this).register()
         downloadUrl = uploadUrl
-        val taskId: Long = Aria.download(this)
+        Aria.download(this)
             .load(uploadUrl) //读取下载地址
             .setFilePath(file.absolutePath) //设置文件保存的完整路径
             .create() //创建并启动下载
@@ -65,10 +65,6 @@ object AriaUploadVersionDownloadManager {
     fun taskRunning(task: DownloadTask) {
         if (TextUtils.equals(downloadUrl, task.key)) {
             val percent = task.percent    //任务进度百分比
-            val convertSpeed = task.convertSpeed    //转换单位后的下载速度，单位转换需要在配置文件中打开
-            val speed = task.speed //原始byte长度速度
-            val size = task.fileSize
-
             mDownloadProgress(percent)
 
         }

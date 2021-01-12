@@ -17,8 +17,6 @@ class DemoSingClickViewModel : BaseVMViewModel() {
 
     var demoItemClick: (SingleVmClickModel) -> Unit = {}
     var demoNameClick: (SingleVmClickModel) -> Unit = {}
-    var demoAgeClick: (SingleVmClickModel) -> Unit = ::demoAgeClickFun
-
 
     fun getSingClickModel() {
         val singData = mutableListOf(

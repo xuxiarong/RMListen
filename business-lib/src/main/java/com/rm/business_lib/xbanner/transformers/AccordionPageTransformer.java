@@ -2,8 +2,6 @@ package com.rm.business_lib.xbanner.transformers;
 
 import android.view.View;
 
-import com.rm.business_lib.xbanner.transformers.BasePageTransformer;
-
 /**
  * Created by jxnk25 on 2016/10/18.
  * <p>

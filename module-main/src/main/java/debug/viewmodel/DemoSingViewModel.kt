@@ -35,12 +35,4 @@ class DemoSingViewModel : BaseVMViewModel() {
         }
     }
 
-    private fun afterInputChange() {
-
-    }
-
-    fun checkUserName(content: String) {
-
-    }
-
 }

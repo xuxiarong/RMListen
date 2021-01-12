@@ -53,7 +53,7 @@ class DemoTopRvActivity : AppCompatActivity() {
 
     }
 
-    fun getData(): MutableList<MultiItemEntity> {
+    private fun getData(): MutableList<MultiItemEntity> {
         val result = ArrayList<MultiItemEntity>()
 
         for (i in 0..30) {

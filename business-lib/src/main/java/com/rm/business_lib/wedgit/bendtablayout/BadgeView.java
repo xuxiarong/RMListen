@@ -41,10 +41,9 @@ public class BadgeView extends AppCompatTextView {
     public static final int POSITION_RIGHT = 6;
 
     private static final int DEFAULT_MARGIN_DIP = 5;
-    private static final int DEFAULT_LR_PADDING_DIP = 3;
-    private static final int DEFAULT_CORNER_RADIUS_DIP = 8;
+
     private static final int DEFAULT_POSITION = POSITION_TOP_RIGHT;
-    private static final int DEFAULT_BADGE_COLOR = Color.parseColor("#FF2741"); //Color.RED;
+    private static final int DEFAULT_BADGE_COLOR = Color.parseColor("#FF2741");
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
 
     private Animation fadeIn;
@@ -308,10 +307,8 @@ public class BadgeView extends AppCompatTextView {
         } else {
             setTextSize(10);
         }
-        if (getBackground() == null) {
-            if (badgeBg == null) {
-                badgeBg = getDefaultBackground();
-            }
+        if (getBackground() == null && badgeBg == null) {
+            badgeBg = getDefaultBackground();
         }
         applyLayoutParams();
 

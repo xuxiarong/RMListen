@@ -1,5 +1,6 @@
 package com.rm.business_lib.wedgit
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -7,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.rm.baselisten.util.DLog
 import com.rm.business_lib.R
-import com.rm.business_lib.bean.DetailTags
 
 /**
  *
@@ -38,8 +37,7 @@ class TagLayout @JvmOverloads constructor(
     ) {
         views.clear()
         lineHeights.clear()
-        //1.计算
-        //该行有多少列数据
+        //1.计算该行有多少列数据
         var lineViews = mutableListOf<View>()
         val width = measuredWidth //容器自己的宽度
         var lineWidth = 0
@@ -166,6 +164,7 @@ class TagLayout @JvmOverloads constructor(
         itemClick = clickBlock
     }
 
+    @SuppressLint("SetTextI18n")
     private fun createView(content: String, resLayoutId: Int): View {
         val view = LayoutInflater.from(context).inflate(
             resLayoutId,

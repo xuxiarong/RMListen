@@ -15,7 +15,6 @@ import debug.model.DemoSwipeModel
 class DemoSwipeViewModel : BaseVMViewModel() {
 
     var swipeData = MutableLiveData<ArrayList<DemoSwipeModel>>()
-    var openItem = MutableLiveData<DemoSwipeModel>()
 
     val mSwipeAdapter : CommonSwipeVmAdapter<DemoSwipeModel> by lazy {
         CommonSwipeVmAdapter(this, mutableListOf<DemoSwipeModel>(),

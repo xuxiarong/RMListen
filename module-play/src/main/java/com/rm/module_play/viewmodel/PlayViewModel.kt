@@ -415,9 +415,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
-    fun getAudioRecommend(audio_id: String) {
+    fun getAudioRecommend(audioId: String) {
         launchOnIO {
-            repository.getAudioRecommend(audio_id.toLong()).checkResult(
+            repository.getAudioRecommend(audioId.toLong()).checkResult(
                 onSuccess = {
                     audioRecommendAdapter.setList(it.list)
                 },
@@ -779,9 +779,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 评论头像点击事件
      */
-    fun commentAvatarClick(context: Context, member_id: String) {
+    fun commentAvatarClick(context: Context, memberId: String) {
         RouterHelper.createRouter(MineService::class.java)
-            .toMineCommentFragment(context = context, memberId = member_id)
+            .toMineCommentFragment(context = context, memberId = memberId)
     }
 
     /**

@@ -2,7 +2,6 @@ package debug.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import debug.model.DemoMultiModel1
 import debug.model.DemoMultiModel2
@@ -13,7 +12,7 @@ import debug.repository.DemoMultiRepository
  * date   : 2020/08/27
  * version: 1.0
  */
-class DemoMultiClickViewModel(val repository: DemoMultiRepository) : BaseVMViewModel() {
+class DemoMultiClickViewModel(private val repository: DemoMultiRepository) : BaseVMViewModel() {
 
     var multiList = MutableLiveData<MutableList<MultiItemEntity>>()
 
@@ -25,9 +24,6 @@ class DemoMultiClickViewModel(val repository: DemoMultiRepository) : BaseVMViewM
 
     var demoItem1Click: (DemoMultiModel1) -> Unit = {}
     var demoItem2Click: (DemoMultiModel2) -> Unit = {}
-    //因为这里不需要Activity响应点击事件，所以声明的方法的引用变量不需要用掉，可以删除
-    var demoItem1AgeClick: (DemoMultiModel1) -> Unit = ::demoAgeClickFun
-
 
     fun getMultiData() {
         readHeader.value = mutableListOf(
@@ -73,9 +69,4 @@ class DemoMultiClickViewModel(val repository: DemoMultiRepository) : BaseVMViewM
     fun demoItem2ClickFun(item2: DemoMultiModel2) {
         demoItem2Click(item2)
     }
-
-    fun demoAgeClickFun(item1: DemoMultiModel1) {
-        DLog.d("suolong", "demoAgeClickFun = ${item1.name} --- age = ${item1.age}")
-    }
-
 }
