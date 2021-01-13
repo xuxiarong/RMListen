@@ -3,7 +3,9 @@
     package="com.rm.module_main">
 
     <application>
-        <activity android:name=".activity.guide.MainGuideActivity"></activity>
+        <activity
+            android:name=".activity.guide.MainGuideActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainMainActivity"
             android:launchMode="singleTask"

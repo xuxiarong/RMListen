@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.observe
+import com.rm.baselisten.model.BaseToastModel
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 
@@ -28,6 +29,7 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
      * 定义子类的dataBing对象
      */
     var mDataBind: ViewDataBinding? = null
+    private var viewModel: BaseVMViewModel? = null
 
     var initDialog: (() -> Unit) = {}
     var destroyDialog: (() -> Unit) = {}
@@ -69,10 +71,8 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
                 }
             }
             mViewModel.baseCancelToastModel.observe(this) { isCancel ->
-                if (dialog?.isShowing == true) {
-                    if (isCancel) {
-                        ToastUtil.cancelToast()
-                    }
+                if (dialog?.isShowing == true && isCancel) {
+                    ToastUtil.cancelToast()
                 }
             }
         }
@@ -84,10 +84,11 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val layoutId = arguments?.getInt(LAYOUT_ID, 0) ?: 0
         mDataBind = DataBindingUtil.inflate(inflater, layoutId, container, false)
         val viewModelBrId = arguments?.getInt(VIEW_MODEL_BR_ID, 0) ?: 0
-        val viewModel: BaseVMViewModel? = arguments?.getParcelable(VIEW_MODEL)
+        viewModel = arguments?.getParcelable(VIEW_MODEL)
         if (viewModelBrId > 0 && viewModel != null) {
             mDataBind?.setVariable(viewModelBrId, viewModel)
         }
@@ -98,7 +99,10 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
             }
         }
         initDialog()
-        viewModel?.let { startObserve(it) }
+        viewModel?.let {
+            it.baseToastModel.value = BaseToastModel()
+            startObserve(it)
+        }
 
         return mDataBind?.root
     }
@@ -108,6 +112,7 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
         destroyDialog()
         mDataBind?.unbind()
         mDataBind = null
+        viewModel = null
     }
 
     fun setClicks(viewId: Int, viewClickAction: () -> Unit) {
