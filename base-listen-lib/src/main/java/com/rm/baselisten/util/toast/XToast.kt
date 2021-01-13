@@ -365,7 +365,9 @@ class XToast @JvmOverloads constructor(context: Context) {
             cancel()
         }
         if (mContext is Activity) {
-            return this
+            if ((mContext as Activity).isFinishing || ((mContext as Activity).isDestroyed)) {
+                return this
+            }
         }
         if (lifecycleOwner != null) {
             val lifecycleRegistry = LifecycleRegistry(lifecycleOwner)
