@@ -55,7 +55,11 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
             }, 100)
         } else {
             bean.jump_url?.let {
-                BaseWebActivity.startBaseWebActivity(view.context, it)
+                if(it.contains("?")){
+                    BaseWebActivity.startBaseWebActivity(view.context, "$it&channel=Andriod")
+                }else{
+                    BaseWebActivity.startBaseWebActivity(view.context, "$it?channel=Andriod")
+                }
             }
         }
     }
