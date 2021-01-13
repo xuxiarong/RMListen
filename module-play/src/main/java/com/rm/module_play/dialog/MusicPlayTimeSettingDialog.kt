@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.business_lib.PlayGlobalData
@@ -16,8 +15,6 @@ import com.rm.module_play.BR
 import com.rm.module_play.R
 import com.rm.module_play.model.PlayCountTimerModel
 import com.rm.module_play.viewmodel.PlayViewModel
-import com.rm.music_exoplayer_lib.constants.MUSIC_ALARM_MODEL_0
-import com.rm.music_exoplayer_lib.manager.MusicPlayerManager.Companion.musicPlayerManger
 import kotlinx.android.synthetic.main.music_play_dialog_time_setting.*
 
 

@@ -69,11 +69,7 @@ public final class SDCardUtils {
                     String path = (String) getPathMethod.invoke(storageVolume);
                     paths.add(new SDCardInfo(path, state, isRemovable));
                 }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
@@ -95,13 +91,7 @@ public final class SDCardUtils {
                     String state = (String) getVolumeStateMethod.invoke(sm, path);
                     paths.add(new SDCardInfo(path, state, isRemovable));
                 }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -116,7 +106,7 @@ public final class SDCardUtils {
     public static List<String> getMountedSDCardPath() {
         List<String> path = new ArrayList<>();
         List<SDCardInfo> sdCardInfo = getSDCardInfo();
-        if (sdCardInfo == null || sdCardInfo.isEmpty()) return path;
+        if (sdCardInfo.isEmpty()) return path;
         for (SDCardInfo cardInfo : sdCardInfo) {
             String state = cardInfo.state;
             if (state == null) continue;

@@ -13,7 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class AESUtil {
     //-- 算法/模式/填充
-    public static final String CIPHER_MODE = "AES/CBC/PKCS7Padding";
+    private static final String CIPHER_MODE = "AES/CBC/PKCS7Padding";
     private static final String CHARSET_UTF = "UTF-8";
     private static final String KEY_SPEC_AES = "AES";
     //--创建密钥

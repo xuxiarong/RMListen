@@ -170,8 +170,6 @@ public final class StringUtils {
                 chars[i] = ' ';
             } else if (65281 <= chars[i] && chars[i] <= 65374) {
                 chars[i] = (char) (chars[i] - 65248);
-            } else {
-                chars[i] = chars[i];
             }
         }
         return new String(chars);
@@ -191,8 +189,6 @@ public final class StringUtils {
                 chars[i] = (char) 12288;
             } else if (33 <= chars[i] && chars[i] <= 126) {
                 chars[i] = (char) (chars[i] + 65248);
-            } else {
-                chars[i] = chars[i];
             }
         }
         return new String(chars);

@@ -34,6 +34,9 @@ public final class TimeUtils {
         }
     };
 
+    private static final String MM_DD = "MM/dd";
+    private static final String YYYY_MM_DD = "yyyy/MM/dd";
+
     private static SimpleDateFormat getDefaultFormat() {
         return getSafeDateFormat("yyyy-MM-dd HH:mm:ss");
     }
@@ -670,7 +673,6 @@ public final class TimeUtils {
         if (span < 0)
             // U can read http://www.apihome.cn/api/java/Formatter.html to understand it.
             //如果小于0 则现实为刚刚
-//            return String.format("%tc", millis);
             return "刚刚";
         if (span < 10000) {
             return "刚刚";
@@ -686,11 +688,10 @@ public final class TimeUtils {
         } else if (millis >= wee - TimeConstants.DAY) {
             return String.format("昨天%tR", millis);
         } else {
-//            return String.format("%tF", millis);
             if (isCurrentYear(millis)) {
-                return millis2String(millis, "MM/dd");
+                return millis2String(millis, MM_DD);
             } else {
-                return millis2String(millis, "yyyy/MM/dd");
+                return millis2String(millis, YYYY_MM_DD);
             }
         }
     }
@@ -1300,7 +1301,7 @@ public final class TimeUtils {
      */
     public static boolean isAm() {
         Calendar cal = Calendar.getInstance();
-        return cal.get(GregorianCalendar.AM_PM) == 0;
+        return cal.get(Calendar.AM_PM) == 0;
     }
 
     /**
@@ -1311,7 +1312,7 @@ public final class TimeUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isAm(final String time) {
-        return getValueByCalendarField(time, getDefaultFormat(), GregorianCalendar.AM_PM) == 0;
+        return getValueByCalendarField(time, getDefaultFormat(), Calendar.AM_PM) == 0;
     }
 
     /**
@@ -1323,7 +1324,7 @@ public final class TimeUtils {
      */
     public static boolean isAm(final String time,
                                @NonNull final DateFormat format) {
-        return getValueByCalendarField(time, format, GregorianCalendar.AM_PM) == 0;
+        return getValueByCalendarField(time, format, Calendar.AM_PM) == 0;
     }
 
     /**
@@ -1333,7 +1334,7 @@ public final class TimeUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isAm(final Date date) {
-        return getValueByCalendarField(date, GregorianCalendar.AM_PM) == 0;
+        return getValueByCalendarField(date, Calendar.AM_PM) == 0;
     }
 
     /**
@@ -1343,7 +1344,7 @@ public final class TimeUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isAm(final long millis) {
-        return getValueByCalendarField(millis, GregorianCalendar.AM_PM) == 0;
+        return getValueByCalendarField(millis, Calendar.AM_PM) == 0;
     }
 
     /**
@@ -1724,9 +1725,9 @@ public final class TimeUtils {
             return "昨天";
         } else {
             if (isCurrentYear(millis)) {
-                return millis2String(millis, "MM/dd");
+                return millis2String(millis, MM_DD);
             } else {
-                return millis2String(millis, "yyyy/MM/dd");
+                return millis2String(millis, YYYY_MM_DD);
             }
         }
     }
@@ -1740,9 +1741,9 @@ public final class TimeUtils {
     public static String getListenYearTime(final long second) {
         long millis = second * 1000;
         if (isCurrentYear(millis)) {
-            return millis2String(millis, "MM/dd");
+            return millis2String(millis, MM_DD);
         } else {
-            return millis2String(millis, "yyyy/MM/dd");
+            return millis2String(millis, YYYY_MM_DD);
         }
     }
 

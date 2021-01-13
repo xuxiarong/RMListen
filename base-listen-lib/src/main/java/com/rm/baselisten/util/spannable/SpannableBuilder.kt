@@ -18,7 +18,6 @@ class SpannableBuilder {
     private var content: String? = ""
     private var spannableString: SpannableString? = null
 
-    //    private var textClickListener: TextClickListener? = null
     private val changeItemList = mutableListOf<ChangeItem>()
 
     fun setTextView(tv: TextView): SpannableBuilder {
@@ -47,11 +46,6 @@ class SpannableBuilder {
         changeItemList.addAll(items)
         return this
     }
-
-//    fun setTextClickListener(listener: TextClickListener): SpannableBuilder {
-//        this.textClickListener = listener
-//        return this
-//    }
 
     fun build(): SpannableBuilder {
         tv?.highlightColor = Color.parseColor("#00ffffff")

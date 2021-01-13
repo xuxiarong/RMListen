@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import java.util.Objects;
+
 /**
  * @author :
  * date : 2019-10-22 11:49
@@ -56,7 +58,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
                 int spanIndex;
 
                 for (int tempPosition = sumCount - mSpanCount; tempPosition < sumCount; tempPosition++) {
-                    spanIndex = ((GridLayoutManager) parent.getLayoutManager()).getSpanSizeLookup()
+                    spanIndex = ((GridLayoutManager) Objects.requireNonNull(parent.getLayoutManager())).getSpanSizeLookup()
                             .getSpanIndex(tempPosition, mSpanCount);
                     countInLine = spanIndex == 0 ? 1 : countInLine + 1;
                 }
@@ -64,12 +66,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
                 if (mOldItemCount != sumCount) {
                     mOldItemCount = sumCount;
                     if (position != 0) {
-                        parent.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                parent.invalidateItemDecorations();
-                            }
-                        });
+                        parent.post(parent::invalidateItemDecorations);
                     }
                 }
             }
@@ -100,9 +97,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
             outRect.right = mRadixX + mRadixX * (index + spanSize - 1);
         }
 
-        if (mSpanCount == 1 && position == sumCount - 1) {
-            outRect.bottom = mSpace;
-        } else if (position >= sumCount - mItemCountInLastLine && position < sumCount) {
+        if (mSpanCount == 1 && position == sumCount - 1 || (position >= sumCount - mItemCountInLastLine && position < sumCount) ) {
             outRect.bottom = mSpace;
         }
         outRect.top = mSpace;

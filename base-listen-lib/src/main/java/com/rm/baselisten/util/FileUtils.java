@@ -66,8 +66,6 @@ public final class FileUtils {
                 if ("primary".equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
-
-                // TODO handle non-primary volumes
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
@@ -653,12 +651,7 @@ public final class FileUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean deleteAllInDir(final File dir) {
-        return deleteFilesInDirWithFilter(dir, new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return true;
-            }
-        });
+        return deleteFilesInDirWithFilter(dir, pathname -> true);
     }
 
     /**
@@ -678,12 +671,7 @@ public final class FileUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean deleteFilesInDir(final File dir) {
-        return deleteFilesInDirWithFilter(dir, new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isFile();
-            }
-        });
+        return deleteFilesInDirWithFilter(dir, pathname -> pathname.isFile());
     }
 
     /**
@@ -819,12 +807,7 @@ public final class FileUtils {
     public static List<File> listFilesInDir(final File dir,
                                             final boolean isRecursive,
                                             final Comparator<File> comparator) {
-        return listFilesInDirWithFilter(dir, new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return true;
-            }
-        }, isRecursive, comparator);
+        return listFilesInDirWithFilter(dir, pathname -> true, isRecursive, comparator);
     }
 
     /**
@@ -1087,13 +1070,14 @@ public final class FileUtils {
      * 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
      */
     private static int isUtf8(byte[] raw) {
-        int i, len;
-        int utf8 = 0, ascii = 0;
-        if (raw.length > 3) {
-            if ((raw[0] == (byte) 0xEF) && (raw[1] == (byte) 0xBB) && (raw[2] == (byte) 0xBF)) {
-                return 100;
-            }
+        int i;
+        int len;
+        int utf8 = 0;
+        int ascii = 0;
+        if (raw.length > 3 && (raw[0] == (byte) 0xEF) && (raw[1] == (byte) 0xBB) && (raw[2] == (byte) 0xBF)) {
+            return 100;
         }
+
         len = raw.length;
         int child = 0;
         for (i = 0; i < len; ) {
@@ -1370,7 +1354,7 @@ public final class FileUtils {
             dis = new DigestInputStream(fis, md);
             byte[] buffer = new byte[1024 * 256];
             while (true) {
-                if (!(dis.read(buffer) > 0)) break;
+                if ((dis.read(buffer) <= 0)) break;
             }
             md = dis.getMessageDigest();
             return md.digest();

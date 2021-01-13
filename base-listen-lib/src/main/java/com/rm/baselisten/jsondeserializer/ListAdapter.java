@@ -20,7 +20,7 @@ public class ListAdapter implements JsonDeserializer<List<?>>{
             return GsonUtils.fromJson(json, typeOfT);
         } else {
             Log.e("CustomJsonDeserializer", json.isJsonNull() ? "null" : json.getAsString() + " is not array.");
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
     }
 }

@@ -9,12 +9,12 @@ public abstract class ViewScrollHelper extends ScrollHelper {
 
     private View view;
 
-    public ViewScrollHelper(View view, GestureHelper gestureHelper) {
+    protected ViewScrollHelper(View view, GestureHelper gestureHelper) {
         super(gestureHelper);
         this.view = view;
     }
 
-    public ViewScrollHelper(View view) {
+    protected ViewScrollHelper(View view) {
         super(view.getContext());
         this.view = view;
     }

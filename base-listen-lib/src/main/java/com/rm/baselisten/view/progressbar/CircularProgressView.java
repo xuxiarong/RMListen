@@ -102,7 +102,7 @@ public class CircularProgressView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawArc(mRectF, 0, 360, false, mBackPaint);
-        canvas.drawArc(mRectF, 275, 360 * mProgress / 100, false, mProgPaint);
+        canvas.drawArc(mRectF, 275, 360 * mProgress / 100F, false, mProgPaint);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -136,12 +136,9 @@ public class CircularProgressView extends View {
         if (animTime <= 0) setProgress(progress);
         else {
             ValueAnimator animator = ValueAnimator.ofInt(mProgress, progress);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mProgress = (int) animation.getAnimatedValue();
-                    invalidate();
-                }
+            animator.addUpdateListener(animation -> {
+                mProgress = (int) animation.getAnimatedValue();
+                invalidate();
             });
             animator.setInterpolator(new OvershootInterpolator());
             animator.setDuration(animTime);

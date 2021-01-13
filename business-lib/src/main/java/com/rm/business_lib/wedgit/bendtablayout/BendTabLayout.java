@@ -13,14 +13,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -79,6 +77,8 @@ import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
 
 @ViewPager.DecorView
 public class BendTabLayout extends HorizontalScrollView {
+
+    private static final String NOT_ATTACHED = "Tab not attached to a TabLayout";
 
     private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72; // dps
     static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
@@ -243,7 +243,7 @@ public class BendTabLayout extends HorizontalScrollView {
 
         // Add the TabStrip
         mTabStrip = new SlidingTabStrip(context);
-        super.addView(mTabStrip, 0, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+        super.addView(mTabStrip, 0, new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BendTabLayout, defStyleAttr, R.style.BendTabLayout_Default_Style);
 
@@ -349,11 +349,7 @@ public class BendTabLayout extends HorizontalScrollView {
             setSelectedTabView(roundedPosition);
         }
     }
-
-    private float getScrollPosition() {
-        return mTabStrip.getIndicatorPosition();
-    }
-
+    
     /**
      * Add a tab to this layout. The tab will be added at the end of the list.
      * If this is the first tab to be added it will become the selected tab.
@@ -841,7 +837,7 @@ public class BendTabLayout extends HorizontalScrollView {
     }
 
     private TabView createTabView(@NonNull final BendTab tab) {
-        TabView tabView = mTabViewPool != null ? mTabViewPool.acquire() : null;
+        TabView tabView =  mTabViewPool.acquire();
         if (tabView == null) {
             tabView = new TabView(getContext());
         }
@@ -895,7 +891,7 @@ public class BendTabLayout extends HorizontalScrollView {
     }
 
     private LinearLayout.LayoutParams createLayoutParamsForTabs() {
-        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         updateTabViewLayoutParams(lp);
         return lp;
     }
@@ -905,7 +901,7 @@ public class BendTabLayout extends HorizontalScrollView {
             lp.width = 0;
             lp.weight = 1;
         } else {
-            lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             lp.weight = 0;
         }
     }
@@ -925,6 +921,8 @@ public class BendTabLayout extends HorizontalScrollView {
                 break;
             case MeasureSpec.UNSPECIFIED:
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(idealHeight, MeasureSpec.EXACTLY);
+                break;
+            default:
                 break;
         }
 
@@ -953,6 +951,8 @@ public class BendTabLayout extends HorizontalScrollView {
                 case MODE_FIXED:
                     // Resize the child so that it doesn't scroll
                     remeasure = child.getMeasuredWidth() != getMeasuredWidth();
+                    break;
+                default:
                     break;
             }
 
@@ -1006,12 +1006,7 @@ public class BendTabLayout extends HorizontalScrollView {
             mScrollAnimator = new ValueAnimator();
             mScrollAnimator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
             mScrollAnimator.setDuration(ANIMATION_DURATION);
-            mScrollAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    scrollTo((int) animator.getAnimatedValue(), 0);
-                }
-            });
+            mScrollAnimator.addUpdateListener(animator -> scrollTo((int) animator.getAnimatedValue(), 0));
         }
     }
 
@@ -1091,7 +1086,10 @@ public class BendTabLayout extends HorizontalScrollView {
             final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
 
             // base scroll amount: places center of tab in center of parent
-            int scrollBase = selectedChild.getLeft() + (selectedWidth / 2) - (getWidth() / 2);
+            int scrollBase = 0;
+            if(selectedChild!=null){
+                scrollBase  = selectedChild.getLeft() + (selectedWidth / 2) - (getWidth() / 2);
+            }
             // offset amount: fraction of the distance between centers of tabs
             int scrollOffset = (int) ((selectedWidth + nextWidth) * 0.5f * positionOffset);
 
@@ -1114,6 +1112,8 @@ public class BendTabLayout extends HorizontalScrollView {
                 break;
             case MODE_SCROLLABLE:
                 mTabStrip.setGravity(GravityCompat.START);
+                break;
+            default:
                 break;
         }
 
@@ -1302,7 +1302,7 @@ public class BendTabLayout extends HorizontalScrollView {
         @NonNull
         public BendTab setIcon(@DrawableRes int resId) {
             if (mParent == null) {
-                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+                throw new IllegalArgumentException(NOT_ATTACHED);
             }
             return setIcon(AppCompatResources.getDrawable(mParent.getContext(), resId));
         }
@@ -1331,7 +1331,7 @@ public class BendTabLayout extends HorizontalScrollView {
         @NonNull
         public BendTab setText(@StringRes int resId) {
             if (mParent == null) {
-                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+                throw new IllegalArgumentException(NOT_ATTACHED);
             }
             return setText(mParent.getResources().getText(resId));
         }
@@ -1341,7 +1341,7 @@ public class BendTabLayout extends HorizontalScrollView {
          */
         public void select() {
             if (mParent == null) {
-                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+                throw new IllegalArgumentException(NOT_ATTACHED);
             }
             mParent.selectTab(this);
         }
@@ -1351,7 +1351,7 @@ public class BendTabLayout extends HorizontalScrollView {
          */
         public boolean isSelected() {
             if (mParent == null) {
-                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+                throw new IllegalArgumentException(NOT_ATTACHED);
             }
             return mParent.getSelectedTabPosition() == mPosition;
         }
@@ -1368,7 +1368,7 @@ public class BendTabLayout extends HorizontalScrollView {
         @NonNull
         public BendTab setContentDescription(@StringRes int resId) {
             if (mParent == null) {
-                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+                throw new IllegalArgumentException(NOT_ATTACHED);
             }
             return setContentDescription(mParent.getResources().getText(resId));
         }
@@ -1535,14 +1535,13 @@ public class BendTabLayout extends HorizontalScrollView {
 
             // We need to switch the text size based on whether the text is spanning 2 lines or not
             if (mTextView != null) {
-                final Resources res = getResources();
                 float textSize = mTabTextSize;
                 int maxLines = mDefaultMaxLines;
 
                 if (mIconView != null && mIconView.getVisibility() == VISIBLE) {
                     // If the icon view is being displayed, we limit the text to 1 line
                     maxLines = 1;
-                } else if (mTextView != null && mTextView.getLineCount() > 1) {
+                } else if ( mTextView.getLineCount() > 1) {
                     // Otherwise when we have text which wraps we reduce the text size
                     textSize = mTabTextMultiLineSize;
                 }
@@ -1600,7 +1599,7 @@ public class BendTabLayout extends HorizontalScrollView {
                     if (customParent != null) {
                         ((ViewGroup) customParent).removeView(custom);
                     }
-                    addView(custom);
+                    super.addView(custom);
                 }
                 mCustomView = custom;
                 if (mTextView != null) {
@@ -1630,14 +1629,14 @@ public class BendTabLayout extends HorizontalScrollView {
                 // If there isn't a custom view, we'll us our own in-built layouts
                 if (mIconView == null) {
                     ImageView iconView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.layout_bend_tab_icon, this, false);
-                    addView(iconView, 0);
+                    super.addView(iconView, 0);
                     mIconView = iconView;
                 }
                 if (mTextView == null) {
                     View frameLayout = LayoutInflater.from(getContext()).inflate(R.layout.layout_bend_tab_text, this, false);
                     TextView textView = frameLayout.findViewById(R.id.bend_tab_tv);
                     mPoint = frameLayout.findViewById(R.id.bend_tab_point);
-                    addView(frameLayout);
+                    super.addView(frameLayout);
                     mTextView = textView;
                     mDefaultMaxLines = TextViewCompat.getMaxLines(mTextView);
                 }
@@ -1731,11 +1730,7 @@ public class BendTabLayout extends HorizontalScrollView {
         float mSelectionOffset;
 
         private boolean mIsSupportIndicatorAnimation = false;
-
-        private RectF mIndicatorRect = new RectF();
-
-        private boolean mIsColorDirty = true;
-
+        
         private int mLayoutDirection = -1;
 
         private int mIndicatorLeft = -1;
@@ -1754,7 +1749,6 @@ public class BendTabLayout extends HorizontalScrollView {
         void setSelectedIndicatorColor(int color) {
             if (mSelectedIndicatorPaint.getColor() != color) {
                 mSelectedIndicatorPaint.setColor(color);
-                mIsColorDirty = true;
                 ViewCompat.postInvalidateOnAnimation(this);
             }
         }
@@ -1813,12 +1807,10 @@ public class BendTabLayout extends HorizontalScrollView {
 
             // Workaround for a bug before Android M where LinearLayout did not relayout itself when
             // layout direction changed.
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && mLayoutDirection != layoutDirection) {
                 //noinspection WrongConstant
-                if (mLayoutDirection != layoutDirection) {
                     requestLayout();
                     mLayoutDirection = layoutDirection;
-                }
             }
         }
 
@@ -1994,35 +1986,32 @@ public class BendTabLayout extends HorizontalScrollView {
                 animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
                 animator.setDuration(duration);
                 animator.setFloatValues(0, 1);
-                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        final float fraction = animator.getAnimatedFraction();
-                        if (mIsSupportIndicatorAnimation) {
-                            int left, right;
-                            if (mSelectedPosition < position) {
-                                if (fraction <= 0.5f) {
-                                    left = startLeft;
-                                    right = lerp(startRight, targetRight, fraction * 2);
-                                } else {
-                                    left = lerp(startLeft, targetLeft, (fraction - 0.5f) * 2);
-                                    right = targetRight;
-                                }
+                animator.addUpdateListener(animator1 -> {
+                    final float fraction = animator1.getAnimatedFraction();
+                    if (mIsSupportIndicatorAnimation) {
+                        int left, right;
+                        if (mSelectedPosition < position) {
+                            if (fraction <= 0.5f) {
+                                left = startLeft;
+                                right = lerp(startRight, targetRight, fraction * 2);
                             } else {
-                                if (fraction <= 0.5f) {
-                                    left = lerp(startLeft, targetLeft, fraction * 2);
-                                    right = startRight;
-                                } else {
-                                    left = targetLeft;
-                                    right = lerp(startRight, targetRight, (fraction - 0.5f) * 2);
-                                }
+                                left = lerp(startLeft, targetLeft, (fraction - 0.5f) * 2);
+                                right = targetRight;
                             }
-                            setIndicatorPosition(left, right);
                         } else {
-                            setIndicatorPosition(lerp(startLeft, targetLeft, fraction), lerp(startRight, targetRight, fraction));
+                            if (fraction <= 0.5f) {
+                                left = lerp(startLeft, targetLeft, fraction * 2);
+                                right = startRight;
+                            } else {
+                                left = targetLeft;
+                                right = lerp(startRight, targetRight, (fraction - 0.5f) * 2);
+                            }
                         }
-
+                        setIndicatorPosition(left, right);
+                    } else {
+                        setIndicatorPosition(lerp(startLeft, targetLeft, fraction), lerp(startRight, targetRight, fraction));
                     }
+
                 });
                 animator.addListener(new AnimatorListenerAdapter() {
                     @Override
@@ -2042,19 +2031,14 @@ public class BendTabLayout extends HorizontalScrollView {
             // Thick colored underline below the current selection
             if (mIndicatorLeft >= 0 && mIndicatorRight > mIndicatorLeft) {
 //                    canvas.drawRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight - mIndicatorMarginTop,
-//                            mIndicatorRight, getHeight() - mIndicatorMarginTop, mSelectedIndicatorPaint);
                 mSelectedIndicatorPaint.setStyle(Paint.Style.STROKE);
                 mSelectedIndicatorPaint.setStrokeCap(Paint.Cap.ROUND);
                 mSelectedIndicatorPaint.setStrokeWidth(mSelectedIndicatorStrokeWidth);
-//                    RectF oval = new RectF(mIndicatorLeft, getTop(),
-//                            mIndicatorRight, getBottom());
-//                    canvas.drawArc(oval,45,45,false,mSelectedIndicatorPaint);
                 // 初始化 路径对象
                 Path path = new Path();
                 // 移动至第一个控制点 A(ax,ay)
                 path.moveTo(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
                 // 画横线
-//                path.lineTo(mIndicatorRight, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
 //                // 填充二阶贝塞尔曲线的另外两个控制点 B(bx,by) 和 C(cx,cy)，切记顺序不能变
                 path.quadTo(mIndicatorRight - ((mIndicatorRight - mIndicatorLeft) / 2), getBottom(), mIndicatorRight, getHeight() - mSelectedIndicatorHeight - mSelectedIndicatorPaint.getStrokeWidth());
                 // 将 贝塞尔曲线 绘制至画布
@@ -2084,8 +2068,6 @@ public class BendTabLayout extends HorizontalScrollView {
         // Default enabled state
         states[i] = EMPTY_STATE_SET;
         colors[i] = defaultColor;
-        i++;
-
         return new ColorStateList(states, colors);
     }
 

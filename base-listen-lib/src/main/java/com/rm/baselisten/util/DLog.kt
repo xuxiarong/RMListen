@@ -86,21 +86,21 @@ object DLog {
         }
 
     // 获取文件名
-    fun _FILE_(): String {
+    fun getFileName(): String {
         val traceElement =
             Exception().stackTrace[2]
         return traceElement.fileName
     }
 
     // 获取方法名
-    fun _FUNC_(): String {
+    fun getFunName(): String {
         val traceElement =
             Exception().stackTrace[1]
         return traceElement.methodName
     }
 
     // 获取行数
-    fun _LINE_(): Int {
+    fun getLineNum(): Int {
         val traceElement =
             Exception().stackTrace[1]
         return traceElement.lineNumber
@@ -108,7 +108,7 @@ object DLog {
 
     // 获取时间
     @SuppressLint("SimpleDateFormat")
-    fun _TIME_(): String {
+    fun getTime(): String {
         val now = Date()
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
         return sdf.format(now)

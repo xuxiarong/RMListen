@@ -48,6 +48,8 @@ public class InterceptTouchHelper {
             case GestureHelper.GESTURE_DOWN:
                 return !canChildrenScrollVertically(event, -1)
                         && canParentScrollVertically(parent, -1);
+            default:
+                break;
         }
         return false;
     }
@@ -67,10 +69,8 @@ public class InterceptTouchHelper {
                 float x = event.getX();
                 float y = event.getY();
                 if (x >= child.getLeft() && x <= child.getRight() &&
-                        y >= child.getTop() && y <= child.getBottom()) {
-                    if (canChildScrollVertically(child, direction)) {
+                        y >= child.getTop() && y <= child.getBottom() && canChildScrollVertically(child, direction)) {
                         return true;
-                    }
                 }
             }
         }
@@ -103,10 +103,9 @@ public class InterceptTouchHelper {
                 float x = event.getX();
                 float y = event.getY();
                 if (x >= child.getLeft() && x <= child.getRight() &&
-                        y >= child.getTop() && y <= child.getBottom()) {
-                    if (canChildScrollHorizontally(child, direction)) {
+                        y >= child.getTop() && y <= child.getBottom() && canChildScrollHorizontally(child, direction) ) {
                         return true;
-                    }
+
                 }
             }
         }

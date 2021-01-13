@@ -18,12 +18,12 @@ public abstract class ScrollHelper {
     private int startScrollX;
     private int startScrollY;
 
-    public ScrollHelper(GestureHelper gestureHelper) {
+    protected ScrollHelper(GestureHelper gestureHelper) {
         this.gestureHelper = gestureHelper;
         this.velocityTracker = VelocityTracker.obtain();
     }
 
-    public ScrollHelper(Context context) {
+    protected ScrollHelper(Context context) {
         this(GestureHelper.createDefault(context));
     }
 
@@ -80,6 +80,8 @@ public abstract class ScrollHelper {
                 }
                 break;
             }
+            default:
+                break;
         }
     }
 
@@ -179,8 +181,6 @@ public abstract class ScrollHelper {
 
     /**
      * 获取视图水平方向可以滑动的范围，一般在此方法返回
-     * {@link ViewGroup#computeHorizontalScrollRange() ViewGroup.computeHorizontalScrollRange} 减去
-     * {@link ViewGroup#computeHorizontalScrollExtent() ViewGroup.computeHorizontalScrollExtent} 的差
      * <br>result = range-extent
      *
      * @return 水平方向可以滑动的范围
@@ -189,8 +189,6 @@ public abstract class ScrollHelper {
 
     /**
      * 获取视图垂直方向可以滑动的范围，一般在此方法返回
-     * {@link ViewGroup#computeVerticalScrollRange() ViewGroup.computeVerticalScrollRange} 减去
-     * {@link ViewGroup#computeVerticalScrollExtent() ViewGroup.computeVerticalScrollExtent} 的差
      * <br>result = range-extent
      *
      * @return 垂直方向可以滑动的范围

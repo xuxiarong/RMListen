@@ -874,7 +874,7 @@ public final class FileIOUtils {
             }
             ByteBuffer byteBuffer = ByteBuffer.allocate((int) fc.size());
             while (true) {
-                if (!((fc.read(byteBuffer)) > 0)) break;
+                if (((fc.read(byteBuffer)) <= 0)) break;
             }
             return byteBuffer.array();
         } catch (IOException e) {

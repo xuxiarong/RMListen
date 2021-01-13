@@ -12,8 +12,6 @@ import android.widget.RelativeLayout;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
-import com.rm.baselisten.utilExt.DisplayUtils;
-
 import me.jessyan.autosize.utils.ScreenUtils;
 
 /**
@@ -25,7 +23,6 @@ import me.jessyan.autosize.utils.ScreenUtils;
  */
 public class DragCloseLayout extends RelativeLayout {
 
-    private String TAG = this.getClass().getSimpleName();
     private ViewDragHelper viewDragHelper;
     private DraggableViewCallback mDragCallback;
     private Dialog mDialog;
@@ -159,10 +156,10 @@ public class DragCloseLayout extends RelativeLayout {
      */
     public void openBottomToTop() {
 
-//        if (viewDragHelper.smoothSlideViewTo(this, 0, ScreenUtils.getScreenSize(getContext())[1])) {
-//            ViewCompat.postInvalidateOnAnimation(this);
-//            mTotalDragY = 0;
-//        }
+        if (viewDragHelper.smoothSlideViewTo(this, 0, ScreenUtils.getScreenSize(getContext())[1])) {
+            ViewCompat.postInvalidateOnAnimation(this);
+            mTotalDragY = 0;
+        }
     }
 
     public interface IDragCloseListener {

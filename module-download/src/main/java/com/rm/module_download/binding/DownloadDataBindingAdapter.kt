@@ -186,8 +186,6 @@ fun TextView.bindDownloadCurrentSize(chapter: DownloadChapter, downloadChapter: 
         chapter.down_speed = downloadChapter.down_speed
         chapter.current_offset = downloadChapter.current_offset
     }
-
-    chapter.current_offset = chapter.current_offset
     val currentSize = ConvertUtils.byte2FitMemorySize(chapter.current_offset, 1)
     val totalSize = ConvertUtils.byte2FitMemorySize(chapter.size, 1)
     text = String.format(context.getString(R.string.business_down_and_total_size), currentSize, totalSize)

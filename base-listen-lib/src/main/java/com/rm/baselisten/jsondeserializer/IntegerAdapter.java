@@ -1,18 +1,4 @@
 package com.rm.baselisten.jsondeserializer;
-
-//public class IntegerAdapter implements JsonDeserializer<Integer> {
-//    @Override
-//    public Integer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-//        try {
-//            return json.getAsInt();
-//        } catch (Exception e) {
-//            Log.e("CustomJsonDeserializer", json.isJsonNull() ? "null" : json.getAsString() + " is not integer.");
-//            return 0;
-//        }
-//    }
-//}
-
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -54,7 +40,7 @@ public class IntegerAdapter extends TypeAdapter<Integer> {
                 return value;
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         return -1;
     }

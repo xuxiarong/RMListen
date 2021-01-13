@@ -35,10 +35,10 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
             int orientation = ((LinearLayoutManager) parent.getLayoutManager()).getOrientation();
             switch (orientation) {
                 case LinearLayoutManager.VERTICAL:
-                    verticalItemDecoration(outRect, view, parent, state);
+                    verticalItemDecoration(outRect, view, parent);
                     break;
                 case LinearLayoutManager.HORIZONTAL:
-                    horizontalItemDecoration(outRect, view, parent, state);
+                    horizontalItemDecoration(outRect, view, parent);
                     break;
                 default:
                     break;
@@ -120,7 +120,7 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
 
 
     //垂直方向的分割线
-    private void verticalItemDecoration(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+    private void verticalItemDecoration(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent) {
         if (getPosition(view, parent) == 0) {
             outRect.top = 0;
         } else {
@@ -133,7 +133,7 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     //水平方向的分割线
-    private void horizontalItemDecoration(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+    private void horizontalItemDecoration(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent) {
         if (getPosition(view, parent) == 0) {
             outRect.left = 0;
         } else {
@@ -156,7 +156,6 @@ public class LinearItemDecoration extends RecyclerView.ItemDecoration {
 
     //获取item总数
     private int getItemCount(RecyclerView recyclerView) {
-        final RecyclerView.Adapter adapter = recyclerView == null ? null : recyclerView.getAdapter();
-        return adapter == null ? 0 : adapter.getItemCount();
+        return recyclerView.getAdapter() == null ? 0 : recyclerView.getAdapter().getItemCount();
     }
 }

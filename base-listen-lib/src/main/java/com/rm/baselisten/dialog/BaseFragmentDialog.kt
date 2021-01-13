@@ -88,11 +88,9 @@ abstract class BaseFragmentDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return object : Dialog(requireContext(), theme) {
             override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-                if (ev.action == MotionEvent.ACTION_DOWN) {
-                    if (dialogInterceptClickInput) {
+                if (ev.action == MotionEvent.ACTION_DOWN && dialogInterceptClickInput) {
                         GlobalCloseInputHelper.DialogDispatchTouchEvent()
                             .dispatchTouchEventCloseInput(ev, this)
-                    }
                 }
                 return super.dispatchTouchEvent(ev)
             }

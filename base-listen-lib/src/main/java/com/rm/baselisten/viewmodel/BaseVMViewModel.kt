@@ -83,7 +83,6 @@ open class BaseVMViewModel : BaseViewModel() {
         if (NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
             viewModelScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT) { block() }
         } else {
-//            showNetError()
             showNetErrorToast()
         }
     }

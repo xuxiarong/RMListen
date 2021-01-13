@@ -1,6 +1,5 @@
 package com.rm.baselisten.decoration;
 
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.view.View;
 
@@ -26,9 +25,6 @@ public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
         public int type() default LINEARLAYOUT;
     }
 
-
-    private int leftRight;
-    private int topBottom;
     /**
      * 头布局个数
      */
@@ -47,20 +43,6 @@ public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
     private int spanCount;
 
     private @LayoutManager int layoutManager;
-
-    /**
-     * GridLayoutManager or StaggeredGridLayoutManager spacing
-     * @param leftRight
-     * @param topBottom
-     * @param headItemCount
-     * @param layoutManager
-     */
-    public GridSpaceItemDecoration(int leftRight, int topBottom, int headItemCount, @LayoutManager int layoutManager) {
-        this.leftRight = leftRight;
-        this.topBottom = topBottom;
-        this.headItemCount = headItemCount;
-        this.layoutManager = layoutManager;
-    }
 
     /**
      * GridLayoutManager or StaggeredGridLayoutManager spacing
@@ -106,27 +88,22 @@ public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        super.onDraw(c, parent, state);
-    }
-
-    @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         switch (layoutManager) {
             case LINEARLAYOUT:
-                setLinearLayoutSpaceItemDecoration(outRect,view,parent,state);
+                setLinearLayoutSpaceItemDecoration(outRect,view,parent);
                 break;
             case GRIDLAYOUT:
                 GridLayoutManager gridLayoutManager = (GridLayoutManager) parent.getLayoutManager();
                 //列数
                 spanCount = gridLayoutManager.getSpanCount();
-                setNGridLayoutSpaceItemDecoration(outRect,view,parent,state);
+                setNGridLayoutSpaceItemDecoration(outRect,view,parent);
                 break;
             case STAGGEREDGRIDLAYOUT:
                 StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) parent.getLayoutManager();
                 //列数
                 spanCount = staggeredGridLayoutManager.getSpanCount();
-                setNGridLayoutSpaceItemDecoration(outRect,view,parent,state);
+                setNGridLayoutSpaceItemDecoration(outRect,view,parent);
                 break;
             default:
                 break;
@@ -139,9 +116,8 @@ public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
      * @param outRect
      * @param view
      * @param parent
-     * @param state
      */
-    private void setLinearLayoutSpaceItemDecoration(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    private void setLinearLayoutSpaceItemDecoration(Rect outRect, View view, RecyclerView parent ) {
         outRect.left = space;
         outRect.right = space;
         outRect.bottom = space;
@@ -157,9 +133,8 @@ public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
      * @param outRect
      * @param view
      * @param parent
-     * @param state
      */
-    private void setNGridLayoutSpaceItemDecoration(Rect outRect, View view, RecyclerView parent, RecyclerView.State state){
+    private void setNGridLayoutSpaceItemDecoration(Rect outRect, View view, RecyclerView parent){
         int position = parent.getChildAdapterPosition(view) - headItemCount;
         if (headItemCount != 0 && position ==  - headItemCount){
             return;
@@ -180,51 +155,5 @@ public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
             }
         }
 
-    }
-
-    /**
-     * GridLayoutManager设置间距（此方法最左边和最右边间距为设置的一半）
-     *
-     * @param outRect
-     * @param view
-     * @param parent
-     * @param state
-     */
-    private void setGridLayoutSpaceItemDecoration(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
-        //判断总的数量是否可以整除
-        int totalCount = layoutManager.getItemCount();
-        int surplusCount = totalCount % layoutManager.getSpanCount();
-        int childPosition = parent.getChildAdapterPosition(view);
-        //竖直方向的
-        if (layoutManager.getOrientation() == GridLayoutManager.VERTICAL) {
-            if (surplusCount == 0 && childPosition > totalCount - layoutManager.getSpanCount() - 1) {
-                //后面几项需要bottom
-                outRect.bottom = topBottom;
-            } else if (surplusCount != 0 && childPosition > totalCount - surplusCount - 1) {
-                outRect.bottom = topBottom;
-            }
-            //被整除的需要右边
-            if ((childPosition + 1 - headItemCount) % layoutManager.getSpanCount() == 0) {
-                //加了右边后最后一列的图就非宽度少一个右边距
-                //outRect.right = leftRight;
-            }
-            outRect.top = topBottom;
-            outRect.left = leftRight / 2;
-            outRect.right = leftRight / 2;
-        } else {
-            if (surplusCount == 0 && childPosition > totalCount - layoutManager.getSpanCount() - 1) {
-                //后面几项需要右边
-                outRect.right = leftRight;
-            } else if (surplusCount != 0 && childPosition > totalCount - surplusCount - 1) {
-                outRect.right = leftRight;
-            }
-            //被整除的需要下边
-            if ((childPosition + 1) % layoutManager.getSpanCount() == 0) {
-                outRect.bottom = topBottom;
-            }
-            outRect.top = topBottom;
-            outRect.left = leftRight;
-        }
     }
 }

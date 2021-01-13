@@ -124,7 +124,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             musicPlayerManger.setPlayerMultiple(1f)
             BaseConstance.updateBaseProgress(0,totalDurtion)
             PlayGlobalData.process.set(0F)
-            PlayGlobalData.updateThumbText.set("00:00/00:00")
+            updateStartUpdateThumbText()
         } else {
             SAVA_SPEED.getFloattMMKV(1f).let {
                 PlayGlobalData.playSpeed.set(it)
@@ -224,9 +224,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                     }else{
                         PlayGlobalData.playChapterId.get()?.let {
                             PlayGlobalData.playNeedQueryChapterProgress.set(false)
-                            getChapterAd {
-                                musicPlayerManger.startPlayMusic(it)
-                            }
+                            musicPlayerManger.startPlayMusic(it)
                         }
                     }
                 }
@@ -305,22 +303,21 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     override fun onStartPlayAd() {
         PlayGlobalData.process.set(0F)
         PlayGlobalData.maxProcess.set(0F)
+        updateStartUpdateThumbText()
+        PlayGlobalData.playAdIsPlaying.set(true)
+    }
+
+    private fun updateStartUpdateThumbText(){
         if ("00:00/00:00" != PlayGlobalData.updateThumbText.get()) {
             PlayGlobalData.updateThumbText.set("00:00/00:00")
         }
-        PlayGlobalData.playAdIsPlaying.set(true)
     }
+
 
     override fun onStopPlayAd() {
         PlayGlobalData.playAdIsPlaying.set(false)
         PlayGlobalData.playVoiceAdClose.set(true)
         PlayGlobalData.playVoiceImgAd.set(null)
-    }
-
-    fun showNotification() {
-//        getCurrentPlayerMusic()?.let {
-//            notificationManger?.showNotification(this, it, "")
-//        }
     }
 
     interface IPlayStatusListener {

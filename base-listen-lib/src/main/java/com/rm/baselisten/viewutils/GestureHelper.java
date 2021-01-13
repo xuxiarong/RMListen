@@ -108,7 +108,6 @@ public class GestureHelper {
      * @param event 事件
      */
     public void onTouchEvent(MotionEvent event) {
-//        System.out.println("onTouchEvent:action=" + event.getAction());
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: // 按下
                 touchDown(event);
@@ -118,10 +117,11 @@ public class GestureHelper {
                 break;
             case MotionEvent.ACTION_CANCEL: // 取消
             case MotionEvent.ACTION_UP: // 抬起
-                touchFinish(event);
+                touchFinish();
+                break;
+            default:
                 break;
         }
-//        System.out.println("onTouchEvent:" + gesture);
     }
 
     /**
@@ -161,8 +161,6 @@ public class GestureHelper {
     private void touchMove(MotionEvent event) {
         float rangeX = event.getRawX() - downX;
         float rangeY = event.getRawY() - downY;
-//        System.out.println(String.format("touchMove:rangeX=%f,rangeY=%f,pointSize=%f",
-//                rangeX, rangeY, pointSize));
         if (gesture == GESTURE_NONE || gesture == GESTURE_PRESSED) { // 未确定手势或正在长按
             if (Math.abs(rangeX) > pointSize || Math.abs(rangeY) > pointSize) {
                 // 超出点的范围，不算点击、按住手势，应该是滑动手势
@@ -187,16 +185,15 @@ public class GestureHelper {
                 gesture = GESTURE_PRESSED; // 按住手势
             }
         }
-        if (gesture == GESTURE_PRESSED) { // 按住中
-            if (System.currentTimeMillis() - downTime >= longClickTime) { // 按住超过长按时间，算长按时间
+        // 按住超过长按时间，算长按时间
+        if (gesture == GESTURE_PRESSED && System.currentTimeMillis() - downTime >= longClickTime) { // 按住中
                 gesture = GESTURE_LONG_CLICK;
-            }
         }
         preX = event.getRawX();
         preY = event.getRawY();
     }
 
-    private void touchFinish(MotionEvent event) {
+    private void touchFinish() {
         if (gesture == GESTURE_PRESSED) { // 按住到释放，应该算点击手势
             if (System.currentTimeMillis() - downTime >= longClickTime) { // 按住超过长按时间，算长按时间
                 gesture = GESTURE_LONG_CLICK;
