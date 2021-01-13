@@ -68,13 +68,19 @@ class PlayControlView @JvmOverloads constructor(
                             if (statusModel.playEnd()) {
                                 PlayGlobalData.playNeedQueryChapterProgress.set(false)
                                 //顺序播放
-                                GlobalPlayHelper.INSTANCE.getChapterAd {
-                                    if (PlayGlobalData.hasNextChapter.get() && MusicPlayerManager.musicPlayerManger.getPlayerModel() == MUSIC_MODEL_ORDER) {
-                                        MusicPlayerManager.musicPlayerManger.playNextMusic()
-                                    } else {
+                                if(MusicPlayerManager.musicPlayerManger.getPlayerModel() == MUSIC_MODEL_ORDER){
+                                    if(PlayGlobalData.hasNextChapter.get()){
+                                        GlobalPlayHelper.INSTANCE.getChapterAd {
+                                            MusicPlayerManager.musicPlayerManger.playNextMusic()
+                                        }
+                                    }else{
                                         BaseConstance.basePlayInfoModel.get()?.playChapterId?.let {
                                             MusicPlayerManager.musicPlayerManger.startPlayMusic(it)
                                         }
+                                    }
+                                }else{
+                                    BaseConstance.basePlayInfoModel.get()?.playChapterId?.let {
+                                        MusicPlayerManager.musicPlayerManger.startPlayMusic(it)
                                     }
                                 }
                             } else {

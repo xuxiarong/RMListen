@@ -224,9 +224,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                     }else{
                         PlayGlobalData.playChapterId.get()?.let {
                             PlayGlobalData.playNeedQueryChapterProgress.set(false)
-                            getChapterAd {
-                                musicPlayerManger.startPlayMusic(it)
-                            }
+                            musicPlayerManger.startPlayMusic(it)
                         }
                     }
                 }
