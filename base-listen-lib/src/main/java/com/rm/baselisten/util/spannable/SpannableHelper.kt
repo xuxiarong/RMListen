@@ -171,9 +171,6 @@ object SpannableHelper {
                             , startIndex, endIndex, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
                     }
-                    else -> {
-
-                    }
                 }
             }
 

@@ -24,17 +24,6 @@ import kotlin.math.abs
  * version: 1.0
  */
 
-//@BindingAdapter(
-//    "itemTopPadding",
-//    "itemLeftPadding",
-//    "itemBottomPadding",
-//    "itemRightPadding",
-//    requireAll = false
-//)
-//fun RecyclerView.addItemPadding(top: Int = 0, left: Int = 0, bottom: Int = 0, right: Int = 0) {
-//    addItemDecoration(DefaultItemAnimator(top, left, bottom, right))
-//}
-
 @BindingAdapter("bindVerticalLayout")
 fun RecyclerView.bindVerticalLayout(adapter: RecyclerView.Adapter<*>?) {
     if (adapter == null) return

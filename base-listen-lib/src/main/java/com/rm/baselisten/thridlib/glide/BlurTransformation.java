@@ -1,30 +1,19 @@
 package com.rm.baselisten.thridlib.glide;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
 import android.renderscript.RSRuntimeException;
-
 import androidx.annotation.NonNull;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
 
 public class BlurTransformation extends BitmapTransformation {
-
-    private static String STRING_CHARSET_NAME = "UTF-8";
-    private static final String ID = "com.rm.baselisten.thridlib.glide.BlurTransformation";
-    private static Charset CHARSET = Charset.forName(STRING_CHARSET_NAME);
-    private static final byte[] ID_BYTES = ID.getBytes(CHARSET);
-
 
     private Context mContext;
     private BitmapPool mBitmapPool;
