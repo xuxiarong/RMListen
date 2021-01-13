@@ -95,6 +95,7 @@ dependencies {
     api rootProject.ext.dependencies["bugly_native"]
 //    api rootProject.ext.dependencies["easypermissions"]
     api rootProject.ext.dependencies["xxpermissions"]
+    api 'com.tencent.mars:mars-xlog:1.2.5'
     debugImplementation rootProject.ext.dependencies["leakcanary"]
 
 }

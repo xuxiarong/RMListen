@@ -39,6 +39,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.androidx.viewmodel.dsl.viewModel
 import kotlin.random.Random
+import kotlin.system.exitProcess
 
 /**
  *
@@ -329,7 +330,9 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     override fun onAllActivityDestroy() {
         if (musicPlayerManger.isPlaying()) {
             musicPlayerManger.pause()
+            musicPlayerManger.cleanNotification()
             PlayGlobalData.clearCountDownTimer()
+            exitProcess(0)
         }
     }
 
