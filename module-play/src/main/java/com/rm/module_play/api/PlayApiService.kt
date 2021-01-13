@@ -60,9 +60,9 @@ interface PlayApiService {
     @GET("audio/chapter/list")
     suspend fun getChapterListWithId(
         @Query("audio_id") audioId: String,
-        @Query("page") page : Int,
-        @Query("chapter_id") chapterId:String,
-        @Query("page_size") page_size:Int,
+        @Query("page") page: Int,
+        @Query("chapter_id") chapterId: String,
+        @Query("page_size") page_size: Int,
         @Query("sort") sort: String
     ): BaseResponse<ChapterListModel>
 
@@ -72,12 +72,12 @@ interface PlayApiService {
      */
     @GET("audio/chapter/list")
     suspend fun getNextPage(
-            @Query("audio_id") audioId: String,
-            @Query("chapter_id") chapterId:String,
-            @Query("page") page : Int,
-            @Query("page_size") page_size:Int,
-            @Query("sort") sort: String,
-            @Query("direction") direction :String
+        @Query("audio_id") audioId: String,
+        @Query("chapter_id") chapterId: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int,
+        @Query("sort") sort: String,
+        @Query("direction") direction: String
     ): BaseResponse<ChapterListModel>
 
     /**
@@ -85,12 +85,12 @@ interface PlayApiService {
      */
     @GET("audio/chapter/list")
     suspend fun getPrePage(
-            @Query("audio_id") audioId: String,
-            @Query("chapter_id") chapterId:String,
-            @Query("page") page : Int,
-            @Query("page_size") page_size:Int,
-            @Query("sort") sort: String,
-            @Query("direction") direction :String
+        @Query("audio_id") audioId: String,
+        @Query("chapter_id") chapterId: String,
+        @Query("page") page: Int,
+        @Query("page_size") page_size: Int,
+        @Query("sort") sort: String,
+        @Query("direction") direction: String
     ): BaseResponse<ChapterListModel>
 
     /**
@@ -104,7 +104,10 @@ interface PlayApiService {
      * 获取听书详情
      */
     @GET("audio/recommend")
-    suspend fun getAudioRecommend(@Query("audio_id") audio_id: Long,@Query("page_size") page_size: Int): BaseResponse<AudioRecommendList>
+    suspend fun getAudioRecommend(
+        @Query("audio_id") audio_id: Long,
+        @Query("page_size") page_size: Int
+    ): BaseResponse<AudioRecommendList>
 
     /**
      * 评论点赞
@@ -120,7 +123,6 @@ interface PlayApiService {
      */
     @DELETE("comment/like")
     suspend fun homeUnLikeComment(@Query("comment_id") comment_id: String): BaseResponse<Any>
-
 
 
     /**

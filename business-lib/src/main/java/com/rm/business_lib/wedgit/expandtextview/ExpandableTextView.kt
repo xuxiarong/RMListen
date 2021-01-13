@@ -110,7 +110,7 @@ class ExpandableTextView @JvmOverloads constructor(
                         }
 
                         //判断最后一行是否能够显示完全，如果显示不全则添加空格让其换行
-                        if ((textHeight * 2 + lastWidth) > maxWidth) {
+                        if ((textHeight * 2 + lastWidth) > maxWidth && buffer.length > 4) {
                             buffer.delete(buffer.length - 4, buffer.length)
                             buffer.append("...")
                         }

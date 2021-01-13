@@ -3,7 +3,6 @@ package com.rm.module_play.repository
 import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
-import com.rm.baselisten.util.DLog
 import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.AudioRecommendList
 import com.rm.business_lib.bean.BusinessAdRequestModel
@@ -34,17 +33,17 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
     }
 
     suspend fun getAudioRecommend(
-            audio_id: Long,
-            page_size: Int = 5
+        audio_id: Long,
+        page_size: Int = 5
     ): BaseResult<AudioRecommendList> {
         return apiCall { playApi.getAudioRecommend(audio_id, page_size) }
     }
 
     //评论
     suspend fun commentAudioComments(
-            audioID: String,
-            page: Int,
-            pageSize: Int
+        audioID: String,
+        page: Int,
+        pageSize: Int
     ): BaseResult<AudioCommentsModel> {
         return apiCall { playApi.commentAudioComments(audioID, page, pageSize) }
     }
@@ -52,10 +51,7 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
     //上报
     suspend fun playerReport(audio_id: String, chapter_id: String): BaseResult<Any> {
         return apiCall {
-            val device_id = DeviceUtils.uniqueDeviceId
-            DLog.i("=====playerReport","audio_id:$audio_id   chapter_id:$chapter_id     device_id:$device_id")
-            //audio_id:175598650063499264   chapter_id:175598650671673344     device_id:22a0af77e0b0e3695bcab815607013871
-            playApi.playerReport("player", audio_id, chapter_id, device_id)
+            playApi.playerReport("player", audio_id, chapter_id, DeviceUtils.uniqueDeviceId)
         }
     }
 
@@ -63,10 +59,10 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
      * 章节列表
      */
     suspend fun chapterList(
-            id: String,
-            page: Int,
-            page_size: Int,
-            sort: String
+        id: String,
+        page: Int,
+        page_size: Int,
+        sort: String
     ): BaseResult<ChapterListModel> {
         return apiCall { playApi.chapterList(id, page, page_size, sort) }
     }
@@ -75,18 +71,18 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
      * 根据章节id获取章节列表和对应的page
      */
     suspend fun getChapterListWithId(
-            audioId: String,
-            chapterId: String,
-            page_size: Int,
-            sort: String
+        audioId: String,
+        chapterId: String,
+        page_size: Int,
+        sort: String
     ): BaseResult<ChapterListModel> {
         return apiCall {
             playApi.getChapterListWithId(
-                    audioId = audioId,
-                    chapterId = chapterId,
-                    page = 1,
-                    page_size = page_size,
-                    sort = sort
+                audioId = audioId,
+                chapterId = chapterId,
+                page = 1,
+                page_size = page_size,
+                sort = sort
             )
         }
     }
@@ -95,21 +91,21 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
      * 根据章节id获取章节列表和对应的page
      */
     suspend fun getNextPage(
-            audioId: String,
-            chapterId: String,
-            page: Int,
-            page_size: Int,
-            sort: String,
-            direction:String
+        audioId: String,
+        chapterId: String,
+        page: Int,
+        page_size: Int,
+        sort: String,
+        direction: String
     ): BaseResult<ChapterListModel> {
         return apiCall {
             playApi.getNextPage(
-                    audioId = audioId,
-                    chapterId = chapterId,
-                    page = page,
-                    page_size = page_size,
-                    sort = sort,
-                    direction = direction
+                audioId = audioId,
+                chapterId = chapterId,
+                page = page,
+                page_size = page_size,
+                sort = sort,
+                direction = direction
 
             )
         }
@@ -119,21 +115,21 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
      * 根据章节id获取章节列表和对应的page
      */
     suspend fun getPrePage(
-            audioId: String,
-            chapterId: String,
-            page: Int,
-            page_size: Int,
-            sort: String,
-            direction:String
+        audioId: String,
+        chapterId: String,
+        page: Int,
+        page_size: Int,
+        sort: String,
+        direction: String
     ): BaseResult<ChapterListModel> {
         return apiCall {
             playApi.getPrePage(
-                    audioId = audioId,
-                    chapterId = chapterId,
-                    page = page,
-                    page_size = page_size,
-                    sort = sort,
-                    direction = direction
+                audioId = audioId,
+                chapterId = chapterId,
+                page = page,
+                page_size = page_size,
+                sort = sort,
+                direction = direction
             )
         }
     }
@@ -194,8 +190,8 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
         return apiCall {
             val requestBean = BusinessAdRequestModel(arrayOf("ad_player_comment"))
             playApi.getCommentAd(
-                    requestBean.toJson().toString()
-                            .toRequestBody("application/json;charset=utf-8".toMediaType())
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
             )
         }
     }
@@ -206,10 +202,10 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
     suspend fun getChapterAd(): BaseResult<PlayAdChapterModel> {
         return apiCall {
             val requestBean =
-                    BusinessAdRequestModel(arrayOf("ad_player_voice", "ad_player_audio_cover"))
+                BusinessAdRequestModel(arrayOf("ad_player_voice", "ad_player_audio_cover"))
             playApi.getChapterAd(
-                    requestBean.toJson().toString()
-                            .toRequestBody("application/json;charset=utf-8".toMediaType())
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
             )
         }
     }
@@ -219,10 +215,11 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
      */
     suspend fun getAudioFloorAd(): BaseResult<PlayFloorAdModel> {
         return apiCall {
-            val requestBean = BusinessAdRequestModel(arrayOf("ad_player_streamer", "ad_player_audio_cover"))
+            val requestBean =
+                BusinessAdRequestModel(arrayOf("ad_player_streamer", "ad_player_audio_cover"))
             playApi.getAudioFloorAd(
-                    requestBean.toJson().toString()
-                            .toRequestBody("application/json;charset=utf-8".toMediaType())
+                requestBean.toJson().toString()
+                    .toRequestBody("application/json;charset=utf-8".toMediaType())
             )
         }
     }

@@ -415,6 +415,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
     fun getAudioRecommend(audioId: String) {
+        if (audioId.isEmpty()) {
+            return
+        }
         launchOnIO {
             repository.getAudioRecommend(audioId.toLong()).checkResult(
                 onSuccess = {
