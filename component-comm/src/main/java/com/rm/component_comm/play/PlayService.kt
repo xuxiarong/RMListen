@@ -16,6 +16,9 @@ import com.rm.component_comm.router.ApplicationProvider
  */
 interface PlayService : ApplicationProvider {
 
+    /**
+     * 跳转播放器页面
+     */
     fun startPlayActivity(
         context: Context,
         audioId: String = "",
@@ -40,11 +43,19 @@ interface PlayService : ApplicationProvider {
 
     fun pausePlay()
 
+    /**
+     * 请求焦点
+     */
     fun requestAudioFocus()
 
+    /**
+     * 初始化播放服务
+     */
     fun initPlayService(context: Context)
 
+    /**
+     * 继续上一次播放
+     */
     fun continueLastPlay(playChapter : DownloadChapter,playList : MutableList<DownloadChapter>)
-
 
 }

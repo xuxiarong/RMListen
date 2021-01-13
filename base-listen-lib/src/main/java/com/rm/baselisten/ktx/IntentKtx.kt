@@ -37,7 +37,5 @@ fun  Intent.putAnyExtras(name : String , value : Any){
         is DoubleArray -> putExtra(name, value)
         is Bundle -> putExtra(name, value)
         is Intent -> putExtra(name, value)
-        else -> {
-        }
     }
 }

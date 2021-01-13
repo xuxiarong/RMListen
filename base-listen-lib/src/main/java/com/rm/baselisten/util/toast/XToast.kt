@@ -491,9 +491,9 @@ class XToast @JvmOverloads constructor(context: Context) {
     /**
      * 根据 ViewId 获取 View
      */
-    fun <V : View?> findViewById(id: Int): V {
+    fun <V : View?> findViewById(id: Int): V? {
         checkNotNull(mRootView) { "Please setup view" }
-        return mRootView?.findViewById<View>(id) as V
+        return mRootView?.findViewById<View>(id) as V?
     }
 
     /**
@@ -515,7 +515,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置可见状态
      */
     fun setVisibility(id: Int, visibility: Int): XToast {
-        findViewById<View>(id).visibility = visibility
+        findViewById<View>(id)?.visibility = visibility
         return this
     }
 
@@ -576,7 +576,7 @@ class XToast @JvmOverloads constructor(context: Context) {
     }
 
     fun setBackground(id: Int, drawable: Drawable?): XToast {
-        findViewById<View>(id).background = drawable
+        findViewById<View>(id)?.background = drawable
         return this
     }
 

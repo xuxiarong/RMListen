@@ -13,8 +13,6 @@ import androidx.customview.widget.ViewDragHelper;
  */
 class DraggableViewCallback extends ViewDragHelper.Callback {
 
-    private static final String TAG = "DraggableViewCallback";
-
     //默认滑动关闭的高度 单位px
     private float DEFAULT_CLOSE_HEIGHT = 800f;
     private float DEFAULT_CLOSE_RATIO = 0.4f;

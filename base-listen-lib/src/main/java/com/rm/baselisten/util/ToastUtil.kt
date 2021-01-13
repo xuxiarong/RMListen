@@ -67,28 +67,6 @@ object ToastUtil {
         }
     }
 
-    /* fun showCustomToast(
-         context: Context?,
-         tipText: String = "",
-         tipColor: Int = R.color.base_333,
-         tipProgress: Boolean = false,
-         netError: Boolean = false
-     ) {
-         if (context != null && !TextUtils.isEmpty(tipText)) {
-             val view = LayoutInflater.from(context).inflate(R.layout.base_tip_view, null)
-             view.findViewById<ProgressBar>(R.id.baseTipProgress).isVisible = tipProgress
-             view.findViewById<ProgressBar>(R.id.baseNetErrorProgress).isVisible = netError
-             view.findViewById<TextView>(R.id.baseTipText).text = tipText
-             view.findViewById<TextView>(R.id.baseTipText)
-                 .setTextColor(ContextCompat.getColor(context, tipColor))
-             mToast?.cancel()
-             mToast = Toast.makeText(context, "", Toast.LENGTH_LONG)
-             mToast?.view = view
-             mToast?.setGravity(Gravity.TOP *//*or Gravity.FILL_HORIZONTAL*//*, 0, 0)
-            mToast?.show()
-        }
-    }*/
-
     /**
      * @param context 上下文对象
      * @param tipText 提示信息
@@ -103,25 +81,29 @@ object ToastUtil {
         canAutoCancel: Boolean? = true,
         lifecycleOwner: LifecycleOwner? = null
     ) {
-        if (xToast == null || context != xToast?.get()?.getContext()) {
-            xToast = WeakReference(XToast(context))
-            xToast?.get()?.setView(R.layout.base_toast_view)
-        }
-        xToast?.get()?.apply {
-            if (canAutoCancel != true) {
-                setCanAutoCancel(false)
-                setVisibility(R.id.baseTipProgress, View.VISIBLE)
-            } else {
-                setCanAutoCancel(true)
-                setVisibility(R.id.baseTipProgress, View.GONE)
+        try {
+            if (xToast == null || context != xToast?.get()?.getContext()) {
+                xToast = WeakReference(XToast(context))
+                xToast?.get()?.setView(R.layout.base_toast_view)
             }
-            setDuration(1500)
-            setAnimStyle(android.R.style.Animation_Toast)
-            setGravity(Gravity.TOP)
-            setWidth(context.screenWidth - context.dip(20))
-            setText(R.id.baseTipText, tipText)
-            setTextColor(R.id.baseTipText, ContextCompat.getColor(context, tipColor))
-            show(lifecycleOwner)
+            xToast?.get()?.apply {
+                if (canAutoCancel != true) {
+                    setCanAutoCancel(false)
+                    setVisibility(R.id.baseTipProgress, View.VISIBLE)
+                } else {
+                    setCanAutoCancel(true)
+                    setVisibility(R.id.baseTipProgress, View.GONE)
+                }
+                setDuration(1500)
+                setAnimStyle(android.R.style.Animation_Toast)
+                setGravity(Gravity.TOP)
+                setWidth(context.screenWidth - context.dip(20))
+                setText(R.id.baseTipText, tipText)
+                setTextColor(R.id.baseTipText, ContextCompat.getColor(context, tipColor))
+                show(lifecycleOwner)
+            }
+        }catch (e : Exception){
+            e.printStackTrace()
         }
     }
 
@@ -129,19 +111,23 @@ object ToastUtil {
         context: Context,
         lifecycleOwner: LifecycleOwner? = null
     ) {
-        if (xToast == null || context != xToast?.get()?.getContext()) {
-            xToast = WeakReference(XToast(context))
-            xToast?.get()?.setView(R.layout.base_toast_net_error)
-        }
-        xToast?.get()?.apply {
-            setDuration(1500)
-            setAnimStyle(android.R.style.Animation_Toast)
-            getView()?.setOnClickListener {
-                context.startActivity(Intent(Settings.ACTION_WIFI_IP_SETTINGS))
+        try {
+            if (xToast == null || context != xToast?.get()?.getContext()) {
+                xToast = WeakReference(XToast(context))
+                xToast?.get()?.setView(R.layout.base_toast_net_error)
             }
-            setGravity(Gravity.TOP)
-            setWidth(context.screenWidth - context.dip(20))
-            show(lifecycleOwner)
+            xToast?.get()?.apply {
+                setDuration(1500)
+                setAnimStyle(android.R.style.Animation_Toast)
+                getView()?.setOnClickListener {
+                    context.startActivity(Intent(Settings.ACTION_WIFI_IP_SETTINGS))
+                }
+                setGravity(Gravity.TOP)
+                setWidth(context.screenWidth - context.dip(20))
+                show(lifecycleOwner)
+            }
+        }catch (e : Exception){
+            e.printStackTrace()
         }
     }
 
