@@ -32,6 +32,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.view.MotionEvent.*;
+
 public class SwipeLayout extends FrameLayout {
     @Deprecated
     public static final int EMPTY_LAYOUT = -1;
@@ -186,7 +188,7 @@ public class SwipeLayout extends FrameLayout {
             mShowEntirely.put(child, false);
         }
         if (mRevealListeners.get(child) == null)
-            mRevealListeners.put(child, new ArrayList<OnRevealListener>());
+            mRevealListeners.put(child, new ArrayList<>());
 
         mRevealListeners.get(child).add(l);
     }
@@ -245,15 +247,13 @@ public class SwipeLayout extends FrameLayout {
                     case Bottom:
                         return getPaddingLeft();
                     case Left:
-                        if (mShowMode == ShowMode.PullOut) {
-                            if (left > getPaddingLeft()) return getPaddingLeft();
+                        if (mShowMode == ShowMode.PullOut && left > getPaddingLeft()) {
+                           return getPaddingLeft();
                         }
                         break;
                     case Right:
-                        if (mShowMode == ShowMode.PullOut) {
-                            if (left < getMeasuredWidth() - mDragDistance) {
+                        if (mShowMode == ShowMode.PullOut && left < getMeasuredWidth() - mDragDistance) {
                                 return getMeasuredWidth() - mDragDistance;
-                            }
                         }
                         break;
                 }
@@ -343,7 +343,6 @@ public class SwipeLayout extends FrameLayout {
             for (SwipeListener l : mSwipeListeners) {
                 l.onHandRelease(SwipeLayout.this, xvel, yvel);
             }
-//            DLog.INSTANCE.d();
             invalidate();
             totalMoveX = 0;
         }
@@ -361,13 +360,6 @@ public class SwipeLayout extends FrameLayout {
 
                 if (mShowMode == ShowMode.PullOut && currentBottomView != null) {
                     if (mCurrentDragEdge == DragEdge.Left || mCurrentDragEdge == DragEdge.Right) {
-//                        totalMoveX+=dx;
-//                        if(totalMoveX>mDragDistance){
-//                            return;
-//                        }
-//                        if(totalMoveX<-mDragDistance){
-//                            return;
-//                        }
                         currentBottomView.offsetLeftAndRight(dx);
                     } else {
                         currentBottomView.offsetTopAndBottom(dy);
@@ -692,7 +684,7 @@ public class SwipeLayout extends FrameLayout {
     private List<OnLayout> mOnLayoutListeners;
 
     public void addOnLayoutListener(OnLayout l) {
-        if (mOnLayoutListeners == null) mOnLayoutListeners = new ArrayList<OnLayout>();
+        if (mOnLayoutListeners == null) mOnLayoutListeners = new ArrayList<>();
         mOnLayoutListeners.add(l);
     }
 
@@ -925,7 +917,7 @@ public class SwipeLayout extends FrameLayout {
         }
 
         switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
+            case ACTION_DOWN:
                 mDragHelper.processTouchEvent(ev);
                 mIsBeingDragged = false;
                 sX = ev.getRawX();
@@ -935,7 +927,7 @@ public class SwipeLayout extends FrameLayout {
                     mIsBeingDragged = true;
                 }
                 break;
-            case MotionEvent.ACTION_MOVE:
+            case ACTION_MOVE:
                 boolean beforeCheck = mIsBeingDragged;
                 checkCanDrag(ev);
                 if (mIsBeingDragged) {
@@ -951,8 +943,8 @@ public class SwipeLayout extends FrameLayout {
                 }
                 break;
 
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
+            case ACTION_CANCEL:
+            case ACTION_UP:
                 mIsBeingDragged = false;
                 mDragHelper.processTouchEvent(ev);
                 break;
@@ -972,14 +964,13 @@ public class SwipeLayout extends FrameLayout {
         gestureDetector.onTouchEvent(event);
 
         switch (action) {
-            case MotionEvent.ACTION_DOWN:
+            case ACTION_DOWN:
                 mDragHelper.processTouchEvent(event);
                 sX = event.getRawX();
                 sY = event.getRawY();
 
 
-            case MotionEvent.ACTION_MOVE: {
-                //the drag state and the direction are already judged at onInterceptTouchEvent
+            case ACTION_MOVE: {
                 checkCanDrag(event);
                 if (mIsBeingDragged) {
                     getParent().requestDisallowInterceptTouchEvent(true);
@@ -987,17 +978,18 @@ public class SwipeLayout extends FrameLayout {
                 }
                 break;
             }
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
+            case ACTION_UP:
+            case ACTION_CANCEL:
                 mIsBeingDragged = false;
                 mDragHelper.processTouchEvent(event);
                 break;
 
-            default://handle other action, such as ACTION_POINTER_DOWN/UP
+            default:
                 mDragHelper.processTouchEvent(event);
+                break;
         }
 
-        return super.onTouchEvent(event) || mIsBeingDragged || action == MotionEvent.ACTION_DOWN;
+        return super.onTouchEvent(event) || mIsBeingDragged || action == ACTION_DOWN;
     }
 
     public boolean isClickToClose() {
@@ -1155,20 +1147,12 @@ public class SwipeLayout extends FrameLayout {
         super.onAttachedToWindow();
         if (insideAdapterView()) {
             if (clickListener == null) {
-                setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        performAdapterViewItemClick();
-                    }
-                });
+                setOnClickListener(v -> performAdapterViewItemClick());
             }
             if (longClickListener == null) {
-                setOnLongClickListener(new OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        performAdapterViewItemLongClick();
-                        return true;
-                    }
+                setOnLongClickListener(v -> {
+                    performAdapterViewItemLongClick();
+                    return true;
                 });
             }
         }
@@ -1290,7 +1274,7 @@ public class SwipeLayout extends FrameLayout {
      * @return all bottomViews: left, top, right, bottom (may null if the edge is not set)
      */
     public List<View> getBottomViews() {
-        ArrayList<View> bottoms = new ArrayList<View>();
+        ArrayList<View> bottoms = new ArrayList<>();
         for (DragEdge dragEdge : DragEdge.values()) {
             bottoms.add(mDragEdges.get(dragEdge));
         }
@@ -1579,7 +1563,7 @@ public class SwipeLayout extends FrameLayout {
     }
 
     public void onViewRemoved(View child) {
-        for (Map.Entry<DragEdge, View> entry : new HashMap<DragEdge, View>(mDragEdges).entrySet()) {
+        for (Map.Entry<DragEdge, View> entry : new HashMap<>(mDragEdges).entrySet()) {
             if (entry.getValue() == child) {
                 mDragEdges.remove(entry.getKey());
             }
@@ -1595,7 +1579,7 @@ public class SwipeLayout extends FrameLayout {
      */
     @Deprecated
     public List<DragEdge> getDragEdges() {
-        return new ArrayList<DragEdge>(mDragEdges.keySet());
+        return new ArrayList<>(mDragEdges.keySet());
     }
 
     /**
@@ -1608,7 +1592,7 @@ public class SwipeLayout extends FrameLayout {
             DragEdge dragEdge = dragEdges.get(i);
             mDragEdges.put(dragEdge, getChildAt(i));
         }
-        if (dragEdges.size() == 0 || dragEdges.contains(DefaultDragEdge)) {
+        if (dragEdges.isEmpty() || dragEdges.contains(DefaultDragEdge)) {
             setCurrentDragEdge(DefaultDragEdge);
         } else {
             setCurrentDragEdge(dragEdges.get(0));

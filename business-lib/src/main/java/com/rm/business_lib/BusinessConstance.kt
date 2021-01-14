@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
 import androidx.annotation.IntDef
 import androidx.databinding.*
 import androidx.lifecycle.MutableLiveData
@@ -366,6 +367,9 @@ object PlayGlobalData {
                 chapter.duration = totalDuration
                 playChapterDao.saveOrUpdate(BusinessConvert.convertToListenChapter(chapter))
                 if (DownLoadFileUtils.checkChapterDownFinish(chapter)) {
+                    if(TextUtils.isEmpty(chapter.file_path)){
+                        chapter.file_path = DownLoadFileUtils.getPlayChapterFilePath(chapter)
+                    }
                     playDownloadDao.saveOrUpdate(chapter)
                 }
                 val audio = playAudioModel.get()
@@ -423,8 +427,6 @@ object PlayGlobalData {
                     audio.updateMillis = System.currentTimeMillis()
                     audio.listenChapterId = startChapter.chapter_id.toString()
                     playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
-                }else{
-
                 }
             }
         }
