@@ -81,29 +81,33 @@ object ToastUtil {
         canAutoCancel: Boolean? = true,
         lifecycleOwner: LifecycleOwner? = null
     ) {
-        try {
-            if (xToast == null || context != xToast?.get()?.getContext()) {
-                xToast = WeakReference(XToast(context))
-                xToast?.get()?.setView(R.layout.base_toast_view)
-            }
-            xToast?.get()?.apply {
-                if (canAutoCancel != true) {
-                    setCanAutoCancel(false)
-                    setVisibility(R.id.baseTipProgress, View.VISIBLE)
-                } else {
-                    setCanAutoCancel(true)
-                    setVisibility(R.id.baseTipProgress, View.GONE)
+        if (tipText.isNotEmpty()) {
+            try {
+                if (xToast == null || context != xToast?.get()?.getContext()) {
+                    xToast = WeakReference(XToast(context))
+                    xToast?.get()?.setView(R.layout.base_toast_view)
                 }
-                setDuration(1500)
-                setAnimStyle(android.R.style.Animation_Toast)
-                setGravity(Gravity.TOP)
-                setWidth(context.screenWidth - context.dip(20))
-                setText(R.id.baseTipText, tipText)
-                setTextColor(R.id.baseTipText, ContextCompat.getColor(context, tipColor))
-                show(lifecycleOwner)
+                xToast?.get()?.apply {
+                    if (canAutoCancel != true) {
+                        setCanAutoCancel(false)
+                        setVisibility(R.id.baseTipProgress, View.VISIBLE)
+                    } else {
+                        setCanAutoCancel(true)
+                        setVisibility(R.id.baseTipProgress, View.GONE)
+                    }
+                    setDuration(1500)
+                    setAnimStyle(android.R.style.Animation_Toast)
+                    setGravity(Gravity.TOP)
+                    setWidth(context.screenWidth - context.dip(20))
+                    setText(R.id.baseTipText, tipText)
+                    setTextColor(R.id.baseTipText, ContextCompat.getColor(context, tipColor))
+                    show(lifecycleOwner)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        }catch (e : Exception){
-            e.printStackTrace()
+        } else {
+            return
         }
     }
 

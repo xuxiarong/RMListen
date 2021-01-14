@@ -66,7 +66,7 @@ class XToast @JvmOverloads constructor(context: Context) {
     init {
         mContext = context
         if (mContext is Application) {
-            throw RuntimeException("content is not application")
+            throw RuntimeException("context is not application")
         }
         if (mContext is Activity) {
             val activity = mContext as Activity
@@ -377,9 +377,6 @@ class XToast @JvmOverloads constructor(context: Context) {
             // 如果这个 View 对象被重复添加到 WindowManager 则会抛出异常
             // java.lang.IllegalStateException: View android.widget.TextView{3d2cee7 V.ED..... ......ID 0,0-312,153} has already been added to the window manager.
             mRootView?.let {
-                if (it.isAttachedToWindow) {
-                    mWindowManager?.removeView(it)
-                }
                 mWindowManager?.addView(it, mWindowParams)
             }
 
