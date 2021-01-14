@@ -48,12 +48,6 @@ class BookPlayRepository(private val playApi: PlayApiService) : BaseRepository()
         return apiCall { playApi.commentAudioComments(audioID, page, pageSize) }
     }
 
-    //上报
-    suspend fun playerReport(audio_id: String, chapter_id: String): BaseResult<Any> {
-        return apiCall {
-            playApi.playerReport("player", audio_id, chapter_id, DeviceUtils.uniqueDeviceId)
-        }
-    }
 
     /**
      * 章节列表

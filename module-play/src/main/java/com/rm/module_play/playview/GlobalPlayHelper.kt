@@ -5,10 +5,7 @@ import com.mei.orc.util.json.toJson
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseApplication.Companion.baseApplication
 import com.rm.baselisten.BaseConstance
-import com.rm.baselisten.ktx.toLongSafe
-import com.rm.baselisten.model.BasePlayProgressModel
 import com.rm.baselisten.model.BasePlayStatusModel
-import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.NetWorkUtils
 import com.rm.baselisten.util.getFloattMMKV
@@ -16,15 +13,11 @@ import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.bean.BusinessAdRequestModel
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.db.listen.ListenChapterEntity
-import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.net.BusinessRetrofitClient
-import com.rm.business_lib.net.api.BusinessApiService
-import com.rm.module_play.activity.BookPlayerActivity
+import com.rm.business_lib.utils.DeviceUtils
 import com.rm.module_play.api.PlayApiService
-import com.rm.module_play.repositoryModule
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_SINGLE
@@ -37,7 +30,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.koin.androidx.viewmodel.dsl.viewModel
 import kotlin.random.Random
 import kotlin.system.exitProcess
 
@@ -177,7 +169,9 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
         }
         PlayGlobalData.savePlayChapter(position,isAd)
-
+        PlayGlobalData.playChapterId.get()?.let {
+            playReport(PlayGlobalData.playAudioId.get()!!, it)
+        }
     }
 
     override fun onMusicPathInvalid(musicInfo: BaseAudioInfo, position: Int) {
@@ -242,7 +236,14 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         }
         DLog.d("suolong", " playWhenReady = $playWhenReady --- status = $playbackState ")
     }
-
+    /**
+     * 上报
+     */
+    private fun playReport(audioId: String, chapterId: String) {
+        GlobalScope.launch (Dispatchers.IO){
+            playApiService.playerReport("player", audioId, chapterId, DeviceUtils.uniqueDeviceId)
+        }
+    }
     fun getChapterAd(actionPlayAd: () -> Unit) {
         if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
             actionPlayAd()

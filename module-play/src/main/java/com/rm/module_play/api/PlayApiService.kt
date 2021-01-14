@@ -39,7 +39,7 @@ interface PlayApiService {
         @Field("audio_id") audio_id: String,
         @Field("chapter_id") chapter_id: String,
         @Field("device_id") device_id: String
-    ): BaseResponse<Any>
+    )
 
 
     /**
