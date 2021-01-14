@@ -2,6 +2,7 @@ package com.rm.business_lib.xbanner;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 
@@ -88,7 +89,7 @@ public class XBannerViewPager extends ViewPager {
             scrollerField.setAccessible(true);
             scrollerField.set(this, new XBannerScroller(getContext(), duration));
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("setScrollDuration", "Exception");
         }
     }
 

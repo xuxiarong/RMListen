@@ -76,20 +76,19 @@ public final class FileIOUtils {
             }
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         } finally {
             try {
                 is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ignored) {
+                Log.e("FileIOUtils","is IOException");
             }
             try {
                 if (os != null) {
                     os.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("FileIOUtils","os IOException");
             }
         }
     }

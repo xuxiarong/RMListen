@@ -98,9 +98,8 @@ public final class ApkInstallUtils {
             }
             return installNormal(context, filePath);
         }catch (Exception e){
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     /**
@@ -191,7 +190,7 @@ public final class ApkInstallUtils {
                         break;
                 }
             } catch (NumberFormatException e) {
-                e.printStackTrace();
+                return APP_INSTALL_AUTO;
             }
         }
         return APP_INSTALL_AUTO;
@@ -343,9 +342,8 @@ public final class ApkInstallUtils {
                     packageName, 0);
             return (app != null && (app.flags & ApplicationInfo.FLAG_SYSTEM) > 0);
         } catch (NameNotFoundException e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
 }

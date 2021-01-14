@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -843,7 +844,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
                             mDatas.remove(realPosition);
                             setBannerData(mDatas);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Log.d("XBanner", "instantiateItem Exception");
                         }
                     }
                 });

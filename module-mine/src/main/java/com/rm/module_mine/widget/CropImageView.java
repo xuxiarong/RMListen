@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 
@@ -55,7 +56,7 @@ public class CropImageView extends AppCompatImageView {
         RECTANGLE, CIRCLE
     }
 
-    private Style[] styles = {Style.RECTANGLE, Style.CIRCLE};
+    private final Style[] styles = {Style.RECTANGLE, Style.CIRCLE};
 
     private int mMaskColor = 0xAF000000;   //暗色
     private int mBorderColor = 0xAA808080; //焦点框的边框颜色
@@ -65,9 +66,9 @@ public class CropImageView extends AppCompatImageView {
     private int mDefaultStyleIndex = 0;    //默认焦点框的形状
 
     private Style mStyle;
-    private Paint mBorderPaint = new Paint();
-    private Path mFocusPath = new Path();
-    private RectF mFocusRect = new RectF();
+    private final Paint mBorderPaint = new Paint();
+    private final Path mFocusPath = new Path();
+    private final RectF mFocusRect = new RectF();
 
     /******************************** 图片缩放位移控制的参数 ************************************/
     private static final float MAX_SCALE = 4.0f;  //最大缩放比，图片缩放后的大小与中间选中区域的比值
@@ -85,11 +86,11 @@ public class CropImageView extends AppCompatImageView {
     private int mRotatedImageWidth;
     private int mRotatedImageHeight;
     private Matrix matrix = new Matrix();      //图片变换的matrix
-    private Matrix savedMatrix = new Matrix(); //开始变幻的时候，图片的matrix
-    private PointF pA = new PointF();          //第一个手指按下点的坐标
-    private PointF pB = new PointF();          //第二个手指按下点的坐标
-    private PointF midPoint = new PointF();    //两个手指的中间点
-    private PointF doubleClickPos = new PointF();  //双击图片的时候，双击点的坐标
+    private final Matrix savedMatrix = new Matrix(); //开始变幻的时候，图片的matrix
+    private final PointF pA = new PointF();          //第一个手指按下点的坐标
+    private final PointF pB = new PointF();          //第二个手指按下点的坐标
+    private final PointF midPoint = new PointF();    //两个手指的中间点
+    private final PointF doubleClickPos = new PointF();  //双击图片的时候，双击点的坐标
     private PointF mFocusMidPoint = new PointF();  //中间View的中间点
     private int mode = NONE;            //初始的模式
     private long doubleClickTime = 0;   //第二次双击的时间
@@ -99,7 +100,7 @@ public class CropImageView extends AppCompatImageView {
     private float mMaxScale = MAX_SCALE;//程序根据不同图片的大小，动态得到的最大缩放比
     private boolean isInited = false;   //是否经过了 onSizeChanged 初始化
     private boolean mSaving = false;    //是否正在保存
-    private static Handler mHandler = new InnerHandler();
+    private static final Handler mHandler = new InnerHandler();
 
     public CropImageView(Context context) {
         this(context, null);
@@ -286,9 +287,9 @@ public class CropImageView extends AppCompatImageView {
                     if (a >= 10) {
                         double cosB = (a * a + c * c - b * b) / (2 * a * c);
                         double angleB = Math.acos(cosB);
-                        double PID4 = Math.PI / 4;
+                        double pid4 = Math.PI / 4;
                         //旋转时，默认角度在 45 - 135 度之间
-                        if (angleB > PID4 && angleB < 3 * PID4) {
+                        if (angleB > pid4 && angleB < 3 * pid4) {
                             mode = ROTATE;
                         } else {
                             mode = ZOOM;
@@ -353,7 +354,7 @@ public class CropImageView extends AppCompatImageView {
                         rotateLevel = 0;
                     }
                     matrix.set(savedMatrix);
-                    matrix.postRotate(90 * rotateLevel, midPoint.x, midPoint.y);
+                    matrix.postRotate(90F * rotateLevel, midPoint.x, midPoint.y);
                     if (rotateLevel == 1 || rotateLevel == 3) {
                         int tmp = mRotatedImageWidth;
                         mRotatedImageWidth = mRotatedImageHeight;
@@ -366,6 +367,8 @@ public class CropImageView extends AppCompatImageView {
                 }
                 mode = NONE;
                 break;
+            default:
+                break;
         }
         //解决部分机型无法拖动的问题
         ViewCompat.postInvalidateOnAnimation(this);
@@ -374,7 +377,7 @@ public class CropImageView extends AppCompatImageView {
 
     /** 修正图片的缩放比 */
     private void fixScale() {
-        float imageMatrixValues[] = new float[9];
+        float[] imageMatrixValues = new float[9];
         matrix.getValues(imageMatrixValues);
         float currentScale = Math.abs(imageMatrixValues[0]) + Math.abs(imageMatrixValues[1]);
         float minScale = getScale(mRotatedImageWidth, mRotatedImageHeight, mFocusWidth, mFocusHeight, true);
@@ -410,7 +413,7 @@ public class CropImageView extends AppCompatImageView {
 
     /** 获取当前图片允许的最大缩放比 */
     private float maxPostScale() {
-        float imageMatrixValues[] = new float[9];
+        float[] imageMatrixValues = new float[9];
         matrix.getValues(imageMatrixValues);
         float curScale = Math.abs(imageMatrixValues[0]) + Math.abs(imageMatrixValues[1]);
         return mMaxScale / curScale;
@@ -430,7 +433,7 @@ public class CropImageView extends AppCompatImageView {
 
     /** 双击触发的方法 */
     private void doubleClick(float x, float y) {
-        float p[] = new float[9];
+        float[] p = new float[9];
         matrix.getValues(p);
         float curScale = Math.abs(p[0]) + Math.abs(p[1]);
         float minScale = getScale(mRotatedImageWidth, mRotatedImageHeight, mFocusWidth, mFocusHeight, true);
@@ -474,7 +477,6 @@ public class CropImageView extends AppCompatImageView {
             try {
                 Bitmap rotateBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                 if (bitmap != rotateBitmap) {
-//                    bitmap.recycle();
                     return rotateBitmap;
                 }
             } catch (OutOfMemoryError ex) {
@@ -544,7 +546,7 @@ public class CropImageView extends AppCompatImageView {
                 }
             }
         } catch (OutOfMemoryError e) {
-            e.printStackTrace();
+            Log.e("CropImageView","OutOfMemoryError");
         }
         return bitmap;
     }
@@ -588,7 +590,7 @@ public class CropImageView extends AppCompatImageView {
                 nomedia.createNewFile();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("CropImageView","IOException");
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
         String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
@@ -612,7 +614,7 @@ public class CropImageView extends AppCompatImageView {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("CropImageView","outputStream IOException");
                 }
             }
         }
@@ -638,6 +640,8 @@ public class CropImageView extends AppCompatImageView {
                     if (mListener != null) {
                         mListener.onBitmapSaveError(saveFile);
                     }
+                    break;
+                default:
                     break;
             }
         }

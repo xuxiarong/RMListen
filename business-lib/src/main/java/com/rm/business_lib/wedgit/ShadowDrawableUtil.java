@@ -36,9 +36,9 @@ public class ShadowDrawableUtil extends Drawable {
     private int[] mBgColor;
     private RectF mRect;
     private TypeEnum type;
-    public static int SHAPE_ROUND = 1;
-    public static int SHAPE_CIRCLE = 2;
-    public static int SHAPE_ROUND_PART = 3;
+    public static final int SHAPE_ROUND = 1;
+    public static final int SHAPE_CIRCLE = 2;
+    public static final int SHAPE_ROUND_PART = 3;
 
     public enum TypeEnum {
         All,
@@ -338,8 +338,8 @@ public class ShadowDrawableUtil extends Drawable {
             return this;
         }
 
-        private Builder setShapeRadius(int ShapeRadius) {
-            this.mShapeRadius = ShapeRadius;
+        private Builder setShapeRadius(int shapeRadius) {
+            this.mShapeRadius = shapeRadius;
             return this;
         }
 

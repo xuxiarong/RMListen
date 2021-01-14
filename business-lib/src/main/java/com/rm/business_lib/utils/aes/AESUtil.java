@@ -1,6 +1,8 @@
 package com.rm.business_lib.utils.aes;
 
 import android.util.Base64;
+import android.util.Log;
+
 import java.io.UnsupportedEncodingException;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -13,6 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class AESUtil {
     //-- 算法/模式/填充
+    public static final String TAG = "AESUtil";
     private static final String CIPHER_MODE = "AES/CBC/PKCS7Padding";
     private static final String CHARSET_UTF = "UTF-8";
     private static final String KEY_SPEC_AES = "AES";
@@ -32,7 +35,7 @@ public class AESUtil {
         try {
             data = s.getBytes(CHARSET_UTF);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.e(TAG, "UnsupportedEncodingException");
         }
         return new SecretKeySpec(data, KEY_SPEC_AES);
     }
@@ -53,7 +56,7 @@ public class AESUtil {
         try {
             data = s.getBytes(CHARSET_UTF);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.e(TAG, "UnsupportedEncodingException");
         }
         return new IvParameterSpec(data);
     }
@@ -67,7 +70,7 @@ public class AESUtil {
             byte[] result = cipher.doFinal(content);
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Exception");
         }
         return null;
     }
@@ -78,7 +81,7 @@ public class AESUtil {
         try {
             data = content.getBytes(CHARSET_UTF);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "UnsupportedEncodingException");
         }
         data = encryptByte2Byte(data,password,iv);
         String result =new String(Base64.encode(data,Base64.DEFAULT));

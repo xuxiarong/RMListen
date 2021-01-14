@@ -116,7 +116,6 @@ public class ShadowHelper {
         try {
             return ShadowManager.getDefault().bind(key);
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -141,7 +140,6 @@ public class ShadowHelper {
         try {
             return ShadowManager.getDefault().get(key);
         } catch (Exception e) {
-            // e.printStackTrace();
             return null;
         }
     }

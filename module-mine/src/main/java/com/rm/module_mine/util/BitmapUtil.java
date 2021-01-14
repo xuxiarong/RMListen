@@ -51,7 +51,7 @@ public class BitmapUtil {
                     break;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            return degree;
         }
         return degree;
     }

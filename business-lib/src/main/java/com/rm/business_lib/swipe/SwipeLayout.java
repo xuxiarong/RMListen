@@ -747,11 +747,11 @@ public class SwipeLayout extends FrameLayout {
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         if (child == null) return;
-        int gravity = Gravity.NO_GRAVITY;
+        int gravity ;
         try {
             gravity = (Integer) params.getClass().getField("gravity").get(params);
         } catch (Exception e) {
-            e.printStackTrace();
+            gravity = Gravity.NO_GRAVITY;
         }
 
         if (gravity > 0) {
@@ -1128,8 +1128,6 @@ public class SwipeLayout extends FrameLayout {
                 handled = (boolean) m.invoke(view, SwipeLayout.this, p, vId);
 
             } catch (Exception e) {
-                e.printStackTrace();
-
                 if (view.getOnItemLongClickListener() != null) {
                     handled = view.getOnItemLongClickListener().onItemLongClick(view, SwipeLayout.this, p, vId);
                 }

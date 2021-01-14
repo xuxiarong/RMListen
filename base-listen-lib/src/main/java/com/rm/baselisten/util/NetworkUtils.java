@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Formatter;
+import android.util.Log;
 
 import androidx.annotation.RequiresPermission;
 
@@ -23,6 +24,7 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
@@ -43,6 +45,7 @@ public final class NetworkUtils {
     private NetworkUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
+    private static final String TAG = "NetworkUtils";
 
     public enum NetworkType {
         NETWORK_ETHERNET,
@@ -116,9 +119,8 @@ public final class NetworkUtils {
             inetAddress = InetAddress.getByName(realDomain);
             return inetAddress != null;
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     /**
@@ -366,7 +368,7 @@ public final class NetworkUtils {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            return "";
         }
         return "";
     }
@@ -392,7 +394,7 @@ public final class NetworkUtils {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            return "";
         }
         return "";
     }
@@ -412,7 +414,6 @@ public final class NetworkUtils {
             inetAddress = InetAddress.getByName(domain);
             return inetAddress.getHostAddress();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
             return "";
         }
     }
