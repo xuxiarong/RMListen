@@ -423,8 +423,6 @@ object PlayGlobalData {
                     audio.updateMillis = System.currentTimeMillis()
                     audio.listenChapterId = startChapter.chapter_id.toString()
                     playAudioDao.saveOrUpdate(BusinessConvert.convertToListenAudio(audio))
-                }else{
-
                 }
             }
         }

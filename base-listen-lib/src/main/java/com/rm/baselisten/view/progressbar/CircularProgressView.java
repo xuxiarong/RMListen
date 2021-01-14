@@ -88,9 +88,9 @@ public class CircularProgressView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int viewWide = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int viewHigh = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
-        int mRectLength = (int) ((viewWide > viewHigh ? viewHigh : viewWide) - (mBackPaint.getStrokeWidth() > mProgPaint.getStrokeWidth() ? mBackPaint.getStrokeWidth() : mProgPaint.getStrokeWidth()));
-        int mRectL = getPaddingLeft() + (viewWide - mRectLength) / 2;
-        int mRectT = getPaddingTop() + (viewHigh - mRectLength) / 2;
+        float mRectLength =  ((viewWide > viewHigh ? viewHigh : viewWide) - (mBackPaint.getStrokeWidth() > mProgPaint.getStrokeWidth() ? mBackPaint.getStrokeWidth() : mProgPaint.getStrokeWidth()));
+        float mRectL = getPaddingLeft() + (viewWide - mRectLength) / 2F;
+        float mRectT = getPaddingTop() + (viewHigh - mRectLength) / 2F;
         mRectF = new RectF(mRectL, mRectT, mRectL + mRectLength, mRectT + mRectLength);
 
         // 设置进度圆环渐变色

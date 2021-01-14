@@ -93,9 +93,11 @@ public final class ConvertUtils {
         int byteLen = bits.length() / 8;
         // add "0" until length to 8 times
         if (lenMod != 0) {
+            StringBuilder bitsBuilder = new StringBuilder(bits);
             for (int i = lenMod; i < 8; i++) {
-                bits = "0" + bits;
+                bitsBuilder.insert(0, "0");
             }
+            bits = bitsBuilder.toString();
             byteLen++;
         }
         byte[] bytes = new byte[byteLen];
@@ -344,7 +346,8 @@ public final class ConvertUtils {
         ByteArrayOutputStream baos;
         ObjectOutputStream oos = null;
         try {
-            oos = new ObjectOutputStream(baos = new ByteArrayOutputStream());
+            baos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(baos);
             oos.writeObject(serializable);
             return baos.toByteArray();
         } catch (Exception e) {
@@ -510,8 +513,13 @@ public final class ConvertUtils {
      * Input stream to bytes.
      */
     public static byte[] inputStream2Bytes(final InputStream is) {
+        ByteArrayOutputStream byteArrayOutputStream = input2OutputStream(is);
         if (is == null) return null;
-        return input2OutputStream(is).toByteArray();
+        if (byteArrayOutputStream == null){
+            return null;
+        }else {
+            return byteArrayOutputStream.toByteArray();
+        }
     }
 
     /**
@@ -545,9 +553,7 @@ public final class ConvertUtils {
             return null;
         } finally {
             try {
-                if (os != null) {
                     os.close();
-                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
