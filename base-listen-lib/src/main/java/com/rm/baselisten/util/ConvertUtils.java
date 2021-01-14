@@ -539,28 +539,6 @@ public final class ConvertUtils {
     }
 
     /**
-     * Bytes to output stream.
-     */
-    public static OutputStream bytes2OutputStream(final byte[] bytes) {
-        if (bytes == null || bytes.length <= 0) return null;
-        ByteArrayOutputStream os = null;
-        try {
-            os = new ByteArrayOutputStream();
-            os.write(bytes);
-            return os;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                    os.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
      * Input stream to string.
      */
     public static String inputStream2String(final InputStream is, final String charsetName) {
@@ -598,19 +576,6 @@ public final class ConvertUtils {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return "";
-        }
-    }
-
-    /**
-     * String to output stream.
-     */
-    public static OutputStream string2OutputStream(final String string, final String charsetName) {
-        if (string == null) return null;
-        try {
-            return bytes2OutputStream(string.getBytes(getSafeCharset(charsetName)));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 

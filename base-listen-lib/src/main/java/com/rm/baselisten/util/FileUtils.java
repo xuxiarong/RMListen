@@ -23,16 +23,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * <pre>
@@ -191,12 +186,8 @@ public final class FileUtils {
                 Uri uri = Uri.parse(filePath);
                 ContentResolver cr = BaseApplication.Companion.getCONTEXT().getContentResolver();
                 AssetFileDescriptor afd = cr.openAssetFileDescriptor(uri, "r");
-                if (afd == null) return false;
-                try {
-                    afd.close();
-                } catch (IOException ignore) {
-                }
-            } catch (FileNotFoundException e) {
+                afd.close();
+            } catch (Exception e) {
                 return false;
             }
             return true;
@@ -539,8 +530,8 @@ public final class FileUtils {
                 File oneDestFile = new File(destPath + file.getName());
                 if (file.isFile()) {
                     if (!copyOrMoveFile(file, oneDestFile, listener, isMove)) return false;
-                } else if (file.isDirectory()) {
-                    if (!copyOrMoveDir(file, oneDestFile, listener, isMove)) return false;
+                } else if (file.isDirectory() && !copyOrMoveDir(file, oneDestFile, listener, isMove)) {
+                    return false;
                 }
             }
         }
@@ -616,8 +607,8 @@ public final class FileUtils {
             for (File file : files) {
                 if (file.isFile()) {
                     if (!file.delete()) return false;
-                } else if (file.isDirectory()) {
-                    if (!deleteDir(file)) return false;
+                } else if (file.isDirectory() && !deleteDir(file)) {
+                    return false;
                 }
             }
         }
@@ -671,7 +662,7 @@ public final class FileUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean deleteFilesInDir(final File dir) {
-        return deleteFilesInDirWithFilter(dir, pathname -> pathname.isFile());
+        return deleteFilesInDirWithFilter(dir, File::isFile);
     }
 
     /**
@@ -705,8 +696,8 @@ public final class FileUtils {
                 if (filter.accept(file)) {
                     if (file.isFile()) {
                         if (!file.delete()) return false;
-                    } else if (file.isDirectory()) {
-                        if (!deleteDir(file)) return false;
+                    } else if (file.isDirectory() && !deleteDir(file)) {
+                        return false;
                     }
                 }
             }
@@ -1276,210 +1267,12 @@ public final class FileUtils {
     /**
      * Return the length of file.
      *
-     * @param filePath The path of file.
-     * @return the length of file
-     */
-    public static long getFileLength(final String filePath) {
-        boolean isURL = filePath.matches("[a-zA-z]+://[^\\s]*");
-        if (isURL) {
-            try {
-                HttpsURLConnection conn = (HttpsURLConnection) new URL(filePath).openConnection();
-                conn.setRequestProperty("Accept-Encoding", "identity");
-                conn.connect();
-                if (conn.getResponseCode() == 200) {
-                    return conn.getContentLength();
-                }
-                return -1;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return getFileLength(getFileByPath(filePath));
-    }
-
-    /**
-     * Return the length of file.
-     *
      * @param file The file.
      * @return the length of file
      */
     private static long getFileLength(final File file) {
         if (!isFile(file)) return -1;
         return file.length();
-    }
-
-    /**
-     * Return the MD5 of file.
-     *
-     * @param filePath The path of file.
-     * @return the md5 of file
-     */
-    public static String getFileMD5ToString(final String filePath) {
-        File file = StringUtils.isSpace(filePath) ? null : new File(filePath);
-        return getFileMD5ToString(file);
-    }
-
-    /**
-     * Return the MD5 of file.
-     *
-     * @param file The file.
-     * @return the md5 of file
-     */
-    public static String getFileMD5ToString(final File file) {
-        return ConvertUtils.bytes2HexString(getFileMD5(file));
-    }
-
-    /**
-     * Return the MD5 of file.
-     *
-     * @param filePath The path of file.
-     * @return the md5 of file
-     */
-    public static byte[] getFileMD5(final String filePath) {
-        return getFileMD5(getFileByPath(filePath));
-    }
-
-    /**
-     * Return the MD5 of file.
-     *
-     * @param file The file.
-     * @return the md5 of file
-     */
-    public static byte[] getFileMD5(final File file) {
-        if (file == null) return null;
-        DigestInputStream dis = null;
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            dis = new DigestInputStream(fis, md);
-            byte[] buffer = new byte[1024 * 256];
-            while (true) {
-                if ((dis.read(buffer) <= 0)) break;
-            }
-            md = dis.getMessageDigest();
-            return md.digest();
-        } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (dis != null) {
-                    dis.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Return the file's path of directory.
-     *
-     * @param file The file.
-     * @return the file's path of directory
-     */
-    public static String getDirName(final File file) {
-        if (file == null) return "";
-        return getDirName(file.getAbsolutePath());
-    }
-
-    /**
-     * Return the file's path of directory.
-     *
-     * @param filePath The path of file.
-     * @return the file's path of directory
-     */
-    public static String getDirName(final String filePath) {
-        if (StringUtils.isSpace(filePath)) return "";
-        int lastSep = filePath.lastIndexOf(File.separator);
-        return lastSep == -1 ? "" : filePath.substring(0, lastSep + 1);
-    }
-
-    /**
-     * Return the name of file.
-     *
-     * @param file The file.
-     * @return the name of file
-     */
-    public static String getFileName(final File file) {
-        if (file == null) return "";
-        return getFileName(file.getAbsolutePath());
-    }
-
-    /**
-     * Return the name of file.
-     *
-     * @param filePath The path of file.
-     * @return the name of file
-     */
-    public static String getFileName(final String filePath) {
-        if (StringUtils.isSpace(filePath)) return "";
-        int lastSep = filePath.lastIndexOf(File.separator);
-        return lastSep == -1 ? filePath : filePath.substring(lastSep + 1);
-    }
-
-    /**
-     * Return the name of file without extension.
-     *
-     * @param file The file.
-     * @return the name of file without extension
-     */
-    public static String getFileNameNoExtension(final File file) {
-        if (file == null) return "";
-        return getFileNameNoExtension(file.getPath());
-    }
-
-    /**
-     * Return the name of file without extension.
-     *
-     * @param filePath The path of file.
-     * @return the name of file without extension
-     */
-    public static String getFileNameNoExtension(final String filePath) {
-        if (StringUtils.isSpace(filePath)) return "";
-        int lastPoi = filePath.lastIndexOf('.');
-        int lastSep = filePath.lastIndexOf(File.separator);
-        if (lastSep == -1) {
-            return (lastPoi == -1 ? filePath : filePath.substring(0, lastPoi));
-        }
-        if (lastPoi == -1 || lastSep > lastPoi) {
-            return filePath.substring(lastSep + 1);
-        }
-        return filePath.substring(lastSep + 1, lastPoi);
-    }
-
-    /**
-     * Return the extension of file.
-     *
-     * @param file The file.
-     * @return the extension of file
-     */
-    public static String getFileExtension(final File file) {
-        if (file == null) return "";
-        return getFileExtension(file.getPath());
-    }
-
-    /**
-     * Return the extension of file.
-     *
-     * @param filePath The path of file.
-     * @return the extension of file
-     */
-    public static String getFileExtension(final String filePath) {
-        if (StringUtils.isSpace(filePath)) return "";
-        int lastPoi = filePath.lastIndexOf('.');
-        int lastSep = filePath.lastIndexOf(File.separator);
-        if (lastPoi == -1 || lastSep >= lastPoi) return "";
-        return filePath.substring(lastPoi + 1);
-    }
-
-    /**
-     * Notify system to scan the file.
-     *
-     * @param filePath The path of file.
-     */
-    public static void notifySystemToScan(final String filePath) {
-        notifySystemToScan(getFileByPath(filePath));
     }
 
     /**

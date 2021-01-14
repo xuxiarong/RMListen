@@ -57,9 +57,9 @@ import java.util.List;
  */
 public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlayDelegate, ViewPager.OnPageChangeListener {
 
-    private static final int RMP = LayoutParams.MATCH_PARENT;
-    private static final int RWC = LayoutParams.WRAP_CONTENT;
-    private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private static final int RMP = ViewGroup.LayoutParams.MATCH_PARENT;
+    private static final int RWC = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private static final int LWC = ViewGroup.LayoutParams.WRAP_CONTENT;
 
     private static final int VEL_THRESHOLD = 400;
     public static final int NO_PLACE_HOLDER = -1;
@@ -68,7 +68,6 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
 
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private OnItemClickListener mOnItemClickListener;
-    private View.OnClickListener mOnAdItemClickListener;
 
     /**
      * 指示点位置
@@ -268,7 +267,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
     /**
      * XBanner图片轮播区域底部Margin
      */
-    public int mBannerBottomMargin = 0;
+    private int mBannerBottomMargin = 0;
 
     /**
      * banner点击位置
@@ -536,9 +535,6 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
     @Deprecated
     public void setData(@LayoutRes int layoutResId, @NonNull List<? extends BaseBannerInfo> models, List<String> tips) {
         mViews = new ArrayList<>();
-        if (models == null) {
-            models = new ArrayList<>();
-        }
         for (int i = 0; i < models.size(); i++) {
             mViews.add(View.inflate(getContext(), layoutResId, null));
         }
@@ -596,9 +592,6 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
     public void setBannerData(@LayoutRes int layoutResId, @NonNull List<? extends BaseBannerInfo> models) {
         mViews = new ArrayList<>();
 
-        if (models == null) {
-            models = new ArrayList<>();
-        }
         for (int i = 0; i < models.size(); i++) {
             View view = createView(layoutResId, models.get(i).getAdId());
             mViews.add(view);
@@ -614,7 +607,6 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
             if (mLessViews.size() == 2) {
                 View view = createView(layoutResId, "");
                 mLessViews.add(view);
-//                mLessViews.add(View.inflate(getContext(), layoutResId, null));
             }
         }
         setBannerData(mViews, models);
@@ -700,27 +692,11 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
         LayoutParams layoutParams = new LayoutParams(RMP, RMP);
         layoutParams.setMargins(0, 0, 0, mBannerBottomMargin);
         if (mIsClipChildrenMode) {
-            /*fix 网络图片只有3张或加载本地资源图片的bug*/
-//            Object data = mDatas.get(0);
-//            if (data instanceof BaseBannerInfo) {
-//                if (!(((BaseBannerInfo) data).getXBannerUrl() instanceof Integer) && mDatas.size() > 4) {
-//                    mViewPager.setOffscreenPageLimit(3);
-//                }
-//            } else {
-//                if (!(data instanceof Integer) && mDatas.size() > 4) {
-//                    mViewPager.setOffscreenPageLimit(3);
-//                }
-//            }
             mViewPager.setPageMargin(mViewPagerMargin);
             mViewPager.setClipChildren(mViewPagerClipChildren);
             setClipChildren(false);
             layoutParams.setMargins(mClipChildrenLeftRightMargin, mClipChildrenTopBottomMargin, mClipChildrenLeftRightMargin, mClipChildrenTopBottomMargin + mBannerBottomMargin);
-            this.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return mViewPager.dispatchTouchEvent(event);
-                }
-            });
+            this.setOnTouchListener((v, event) -> mViewPager.dispatchTouchEvent(event));
         }
 
         addView(mViewPager, 0, layoutParams);
@@ -830,7 +806,8 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
             if (mIsOneImg) {
                 return 1;
             }
-            return mIsAutoPlay ? Integer.MAX_VALUE : (mIsHandLoop ? Integer.MAX_VALUE : getRealCount());
+            if (mIsAutoPlay) return Integer.MAX_VALUE;
+            return mIsHandLoop ? Integer.MAX_VALUE : getRealCount();
         }
 
         @Override
@@ -855,23 +832,21 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
             if (container.equals(view.getParent())) {
                 container.removeView(view);
             }
-            if (realPosition < mDatas.size()) {
-                if (mDatas.get(realPosition).isAdBanner()) {
-                    view.findViewById(R.id.banner_ad_tv).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.banner_ad_close).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.banner_ad_close).setOnClickListener(new OnDoubleClickListener() {
-                        @Override
-                        public void onNoDoubleClick(View v) {
-                            try {
-                                BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE, mDatas.get(realPosition).getAdId());
-                                mDatas.remove(realPosition);
-                                setBannerData(mDatas);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+            if (realPosition < mDatas.size() && mDatas.get(realPosition).isAdBanner()) {
+                view.findViewById(R.id.banner_ad_tv).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.banner_ad_close).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.banner_ad_close).setOnClickListener(new OnDoubleClickListener() {
+                    @Override
+                    public void onNoDoubleClick(View v) {
+                        try {
+                            BusinessInsertManager.doInsertKeyAndAd(BusinessInsertConstance.INSERT_TYPE_AD_CLOSE, mDatas.get(realPosition).getAdId());
+                            mDatas.remove(realPosition);
+                            setBannerData(mDatas);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    });
-                }
+                    }
+                });
             }
             if (mOnItemClickListener != null && mDatas.size() != 0) {
                 view.setOnClickListener(new OnDoubleClickListener() {
@@ -969,7 +944,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
      * @param currentPoint
      */
     private void switchToPoint(int currentPoint) {
-        if (mPointRealContainerLl != null & mDatas != null && getRealCount() > 1) {
+        if (mPointRealContainerLl != null && mDatas != null && getRealCount() > 1) {
             for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
                 if (i == currentPoint) {
                     ((ImageView) mPointRealContainerLl.getChildAt(i)).setImageResource(mPointSelected);
@@ -994,7 +969,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (!mIsOneImg & mViewPager != null) {
+        if (!mIsOneImg && mViewPager != null) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (ev.getX() < mViewPager.getX()) {
@@ -1009,11 +984,9 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    if (mIsClipChildrenMode) {
+                    if (mIsClipChildrenMode && clickPosition == 0) {
                         //点击banner左侧
-                        if (clickPosition == 0) {
                             setBannerCurrentItem(getBannerCurrentItem() - 1, true);
-                        }
                     }
                     startAutoPlay();
                     break;
@@ -1288,10 +1261,6 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
-    }
-
-    public void setOnAdClickListener(View.OnClickListener listener) {
-        this.mOnAdItemClickListener = listener;
     }
 
     public interface OnItemClickListener {

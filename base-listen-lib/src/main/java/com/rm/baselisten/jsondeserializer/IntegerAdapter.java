@@ -16,12 +16,11 @@ public class IntegerAdapter extends TypeAdapter<Integer> {
             out.value(value);
         }catch (Exception e){
             out.value(-1);
-
         }
     }
 
     @Override
-    public Integer read(JsonReader in) throws IOException {
+    public Integer read(JsonReader in) {
         try {
             Integer value;
             if(in.peek() == JsonToken.NULL) {
@@ -40,8 +39,7 @@ public class IntegerAdapter extends TypeAdapter<Integer> {
                 return value;
             }
         }catch (Exception e){
-            e.printStackTrace();
+            return -1;
         }
-        return -1;
     }
 }

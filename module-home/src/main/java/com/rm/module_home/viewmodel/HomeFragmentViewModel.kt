@@ -175,10 +175,11 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                         DLog.d("suolong", "type  = ${blockModel.block_type_id}")
                     }
                 }
-                homeAllData.value = allData
-                //板块数据不为空,每次都获取Item的广告数据
-                getHomeItemDataAd()
+
             }
+            homeAllData.value = allData
+            //板块数据不为空,每次都获取Item的广告数据
+            getHomeItemDataAd()
         }
     }
 

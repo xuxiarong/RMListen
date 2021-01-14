@@ -17,17 +17,16 @@ import androidx.core.content.ContextCompat;
 import com.rm.module_login.R;
 
 
+
 /**
  * Created by MQ on 2017/5/17.
  */
 
 public class LetterBar extends View {
 
-    private int mRealHeight;
-    private int mMeasureHeight;
     private int mMeasureWidth;
     private int mLetterBarMarginTop;
-    private final float DEFAULT_LETTER_SIZE = 35.0f;
+    private static final float DEFAULT_LETTER_SIZE = 35.0f;
     private float mLetterSize;
     private float mLetterMarginTop;
     private int mLetterColor;
@@ -84,9 +83,9 @@ public class LetterBar extends View {
         mPaint.getTextBounds("A", 0, "A".length(), rect);
         mLetterHeight = rect.height();
         //计算真正需要绘制的高度
-        mRealHeight = (int) ((mLetterHeight + mLetterMarginTop) * mLetterArray.length);
+        int mRealHeight = (int) ((mLetterHeight + mLetterMarginTop) * mLetterArray.length);
         mMeasureWidth = getMeasuredWidth();
-        mMeasureHeight = getMeasuredHeight();
+        int mMeasureHeight = getMeasuredHeight();
         mLetterBarMarginTop = (mMeasureHeight - mRealHeight) / 2;
     }
 
@@ -140,11 +139,12 @@ public class LetterBar extends View {
                 isPressing = true;
                 mPaint.setColor(mLetterPressColor);
                 invalidate();
+                break;
             case MotionEvent.ACTION_MOVE:
                 float moveY = (event.getY() - getTop() - mLetterBarMarginTop);
                 float range = moveY / (mLetterHeight + mLetterMarginTop);
                 if (range < 0.5f) {
-                    return true;
+                    break;
                 }
                 int position = (int) Math.floor(range);
                 if (position >= 0 && position < mLetterArray.length) {
@@ -163,6 +163,8 @@ public class LetterBar extends View {
                 ((IndexBar) getParent()).setTagStatus(false);
                 mPaint.setColor(mLetterColor);
                 invalidate();
+                break;
+            default:
                 break;
         }
         return true;
