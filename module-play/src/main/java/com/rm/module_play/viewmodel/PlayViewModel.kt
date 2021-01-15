@@ -161,9 +161,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     private fun initPlayChapter(chapter: DownloadChapter) {
         PlayGlobalData.initPlayChapter(chapter)
-        PlayGlobalData.playChapterId.get()?.let {
-            playReport(PlayGlobalData.playAudioId.get()!!, it)
-        }
     }
 
     fun showChapterListDialog(context: Context) {
@@ -245,19 +242,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     }
 
     /**
-     * 上报
-     */
-    private fun playReport(audioID: String, chapterId: String) {
-        launchOnIO {
-            repository.playerReport(audioID, chapterId).checkResult(onSuccess = {
-                ExoplayerLogger.exoLog(it)
-            }, onError = { it, _ ->
-                ExoplayerLogger.exoLog(it ?: "")
-            })
-        }
-    }
-
-    /**String = String =
      * 通过音频ID直接获取下一页的章节列表，从第一页开始，这里成功后需要记录chapterId
      */
     fun getNextPageChapterList() {
