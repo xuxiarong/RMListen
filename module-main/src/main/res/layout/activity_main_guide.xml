@@ -11,6 +11,14 @@
         android:layout_height="match_parent"
         android:src="@drawable/splash"
         />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/main_guide_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.viewpager.widget.ViewPager>
+
     <com.flyco.roundview.RoundTextView
         android:id="@+id/main_guide_to_main"
         android:layout_width="@dimen/dp_200"
@@ -18,12 +26,42 @@
         app:rv_isRadiusHalfHeight="true"
         android:layout_gravity="bottom|center_horizontal"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/dp_300"
+        android:layout_marginBottom="@dimen/dp_80"
         app:rv_backgroundColor="@color/base_ff5e5e"
         android:textColor="@color/businessWhite"
         android:textSize="@dimen/business_text_size_16sp"
         android:text="@string/main_use_app"
         />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="150dp"
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/main_guide_dot1"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="@dimen/dp_8"
+            android:src="@drawable/main_guide_select_dot"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/main_guide_dot2"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="@dimen/dp_8"
+            android:src="@drawable/main_guide_unselect_dot"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/main_guide_dot3"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="@dimen/dp_8"
+            android:src="@drawable/main_guide_unselect_dot"
+            />
+    </LinearLayout>
+
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="@dimen/dp_200"
         android:layout_height="wrap_content"
@@ -32,5 +70,4 @@
         android:scaleType="fitXY"
         android:src="@drawable/business_menu_red_bg"
         />
-
 </FrameLayout>
