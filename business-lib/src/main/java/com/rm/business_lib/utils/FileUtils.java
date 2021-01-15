@@ -272,9 +272,8 @@ public final class FileUtils {
         try {
             return isPublicPath(file.getCanonicalPath());
         } catch (IOException e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     /**

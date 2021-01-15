@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.format.Formatter;
+import android.util.Log;
 
 import com.rm.baselisten.BaseApplication;
 
@@ -70,7 +71,7 @@ public final class SDCardUtils {
                     paths.add(new SDCardInfo(path, state, isRemovable));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("getSDCardInfo", "Exception");
             }
         } else {
             try {
@@ -92,7 +93,7 @@ public final class SDCardUtils {
                     paths.add(new SDCardInfo(path, state, isRemovable));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("getSDCardInfo", "Exception");
             }
         }
         return paths;

@@ -13,6 +13,7 @@ import android.os.StatFs;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.rm.baselisten.BaseApplication;
 
@@ -39,6 +40,8 @@ import java.util.List;
  */
 public final class FileUtils {
 
+
+    private static final String TAG = "FileUtils";
     private static final String LINE_SEP = System.getProperty("line.separator");
 
     private FileUtils() {
@@ -311,7 +314,6 @@ public final class FileUtils {
         try {
             return file.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -340,7 +342,6 @@ public final class FileUtils {
         try {
             return file.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -561,7 +562,6 @@ public final class FileUtils {
             return FileIOUtils.writeFileFromIS(destFile.getAbsolutePath(), new FileInputStream(srcFile))
                     && !(isMove && !deleteFile(srcFile));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -988,14 +988,14 @@ public final class FileUtils {
             is = new BufferedInputStream(new FileInputStream(file));
             p = (is.read() << 8) + is.read();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException");
         } finally {
             try {
                 if (is != null) {
                     is.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, "IOException");
             }
         }
         switch (p) {
@@ -1039,14 +1039,14 @@ public final class FileUtils {
                 return false;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException");
         } finally {
             try {
                 if (is != null) {
                     is.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, "IOException");
             }
         }
         return false;
@@ -1159,14 +1159,14 @@ public final class FileUtils {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException");
         } finally {
             try {
                 if (is != null) {
                     is.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, "IOException");
             }
         }
         return count;

@@ -823,7 +823,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             y = i * chapterPageSize
         }
         if (i2 > 0) {
-            list.add(DataStr("${getNumStr(y + 1)}~$totalCount", list.size + 1))
+            list.add(DataStr("${getNumStr(y + 1)}~${getNumStr(totalCount)}", list.size + 1))
         }
         chapterAnthologyAdapter.setList(list)
     }

@@ -123,9 +123,8 @@ public final class TimeUtils {
         try {
             return format.parse(time).getTime();
         } catch (ParseException e) {
-            e.printStackTrace();
+            return -1;
         }
-        return -1;
     }
 
     /**
@@ -162,9 +161,8 @@ public final class TimeUtils {
         try {
             return format.parse(time);
         } catch (ParseException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /**

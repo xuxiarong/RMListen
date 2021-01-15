@@ -16,6 +16,8 @@
 
 package com.rm.business_lib.utils;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -163,10 +165,8 @@ class ShellUtils {
                     errorMsg.append(s);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        }  catch (Exception e) {
+            Log.e("execCommand", "Exception");
         } finally {
             try {
                 if (os != null) {
@@ -179,7 +179,7 @@ class ShellUtils {
                     errorResult.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("execCommand", "Exception");
             }
 
             if (process != null) {
