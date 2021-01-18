@@ -241,7 +241,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
             })
     }
 
-    /**String = String =
+    /**
      * 通过音频ID直接获取下一页的章节列表，从第一页开始，这里成功后需要记录chapterId
      */
     fun getNextPageChapterList() {

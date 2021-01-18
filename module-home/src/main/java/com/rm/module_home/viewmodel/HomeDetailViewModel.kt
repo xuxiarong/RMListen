@@ -149,6 +149,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     var mCurSort = AudioSortType.SORT_ASC
 
     /**
+     * 是否为正序
+     */
+    val isSortAsc = ObservableBoolean(true)
+
+    /**
      * 章节总数
      */
     var chapterTotal = ObservableField(0)
@@ -568,9 +573,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         when (mCurSort) {
             AudioSortType.SORT_ASC -> {
                 mCurSort = AudioSortType.SORT_DESC
+                isSortAsc.set(false)
             }
             AudioSortType.SORT_DESC -> {
                 mCurSort = AudioSortType.SORT_ASC
+                isSortAsc.set(true)
             }
         }
         configChapterPageList()

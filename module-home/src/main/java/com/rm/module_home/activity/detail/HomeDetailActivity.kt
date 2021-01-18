@@ -13,6 +13,7 @@ import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BasePlayControlModel
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
+import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.aria.AriaDownloadManager
 import com.rm.business_lib.db.DaoManager
 import com.rm.business_lib.db.DaoUtil
@@ -90,6 +91,7 @@ class HomeDetailActivity :
             sortBean?.let { beanList ->
                 if (beanList.size > 0) {
                     mViewModel.mCurSort = beanList[0].sort
+                    mViewModel.isSortAsc.set(beanList[0].sort == AudioSortType.SORT_ASC)
                 }
             }
 

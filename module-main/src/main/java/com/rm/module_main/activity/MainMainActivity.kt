@@ -52,7 +52,9 @@ class MainMainActivity :
     override fun initView() {
         mDataShowView = view_pager
         if(TextUtils.isEmpty(jumpUrl)){
-            initPager()
+            view_pager.postDelayed({
+                initPager()
+            },50)
         }else{
             view_pager.postDelayed({
                 initPager()

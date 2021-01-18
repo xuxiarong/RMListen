@@ -210,7 +210,7 @@
                     android:layout_height="0dp"
                     android:alpha="@{viewModel.hideOr? 0.3f:1f}"
                     android:button="@null"
-                    android:src="@drawable/business_chapter_select"
+                    android:src="@{viewModel.isSortAsc?@drawable/business_icon_sort_de:@drawable/business_icon_ortinverted_de}"
                     android:enabled="@{!viewModel.hideOr}"
                     android:onClick="@{()->viewModel.clickSort()}"
                     android:paddingStart="@dimen/dp_10"
