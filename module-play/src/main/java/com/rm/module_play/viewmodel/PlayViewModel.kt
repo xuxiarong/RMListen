@@ -161,9 +161,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
     private fun initPlayChapter(chapter: DownloadChapter) {
         PlayGlobalData.initPlayChapter(chapter)
-        PlayGlobalData.playChapterId.get()?.let {
-            playReport(PlayGlobalData.playAudioId.get()!!, it)
-        }
     }
 
     fun showChapterListDialog(context: Context) {
@@ -242,19 +239,6 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 commentPage = 1
                 getCommentList()
             })
-    }
-
-    /**
-     * 上报
-     */
-    private fun playReport(audioID: String, chapterId: String) {
-        launchOnIO {
-            repository.playerReport(audioID, chapterId).checkResult(onSuccess = {
-                ExoplayerLogger.exoLog(it)
-            }, onError = { it, _ ->
-                ExoplayerLogger.exoLog(it ?: "")
-            })
-        }
     }
 
     /**String = String =

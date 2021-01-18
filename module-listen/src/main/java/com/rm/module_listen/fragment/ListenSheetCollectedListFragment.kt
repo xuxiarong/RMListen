@@ -32,7 +32,7 @@ class ListenSheetCollectedListFragment :
         mViewModel.showLoading()
         arguments?.getString(MEMBER_ID)?.let {
             mViewModel.memberId = it
-            mViewModel.getFavorList(it)
+            mViewModel.getData(it)
         }
 
     }
