@@ -171,7 +171,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
      * item点击事件
      */
     fun itemClick(context: Context, bean: ListenSheetBean) {
-
+        clickBean.set(bean)
         when (bean.pre_deleted_from) {
             "1" -> {
                 showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否删除", bean.sheet_id.toString())
@@ -182,7 +182,6 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
             else -> {
                 if (memberId.isEmpty()) {
                     getActivity(context)?.let {
-                        clickBean.set(bean)
                         ListenMySheetDetailActivity.startActivity(it, bean.sheet_id.toString())
                     }
                 } else {

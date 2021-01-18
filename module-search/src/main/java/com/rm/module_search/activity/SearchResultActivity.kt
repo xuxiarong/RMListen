@@ -1,7 +1,9 @@
 package com.rm.module_search.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.observe
 import com.rm.baselisten.helper.KeyboardStatusDetector.Companion.bindKeyboardVisibilityListener
@@ -30,15 +32,17 @@ class SearchResultActivity :
     companion object {
         const val KEY_WORD = "keyword"
         const val INPUT_HINT = "inputHint"
-        fun startActivity(context: Context, keyword: String, inputHint: String) {
-            context.startActivity(
+        const val SEARCH_REQUEST_CODE = 101
+        const val SEARCH_RESULT_CODE = 102
+        fun startActivity(activity: Activity, keyword: String, inputHint: String) {
+            activity.startActivityForResult(
                 Intent(
-                    context,
+                    activity,
                     SearchResultActivity::class.java
                 ).apply {
                     putExtra(KEY_WORD, keyword)
                     putExtra(INPUT_HINT, inputHint)
-                }
+                }, SEARCH_REQUEST_CODE
             )
         }
     }
@@ -146,5 +150,11 @@ class SearchResultActivity :
                 }
             }.attach()
         }
+    }
+
+    override fun finish() {
+        searchKeyword.set("")
+        setResult(SEARCH_RESULT_CODE)
+        super.finish()
     }
 }

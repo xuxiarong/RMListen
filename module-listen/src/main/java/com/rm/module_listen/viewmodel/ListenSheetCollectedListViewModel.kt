@@ -152,6 +152,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      * item点击事件
      */
     fun itemClickFun(context: Context, bean: SheetFavorDataBean) {
+        clickBean = bean
         when (bean.pre_deleted_from) {
             1 -> {
                 showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否取消收藏？", bean.sheet_id ?: "")
@@ -161,7 +162,6 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
             }
             else -> {
                 getActivity(context)?.let {
-                    clickBean = bean
                     RouterHelper.createRouter(HomeService::class.java)
                         .startHomeSheetDetailActivity(it, bean.sheet_id ?: "")
                 }

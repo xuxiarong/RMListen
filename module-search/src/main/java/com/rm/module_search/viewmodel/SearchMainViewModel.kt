@@ -94,7 +94,9 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
      * 历史 item 点击事件
      */
     val historyItemClickFun: (View, String) -> Unit = { view, content ->
-        SearchResultActivity.startActivity(view.context, content, "")
+        getActivity(view.context)?.let {
+            SearchResultActivity.startActivity(it, content, "")
+        }
     }
 
     /**
@@ -136,13 +138,10 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
     /**
      * 搜索点击事件
      */
-    fun clickSearchFun(view: View?) {
-        view?.let {
-            val imm =
-                it.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (imm.isActive) {
-                imm.hideSoftInputFromWindow(it.applicationWindowToken, 0)
-            }
+    fun clickSearchFun(view: View) {
+        val imm = view.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm.isActive) {
+            imm.hideSoftInputFromWindow(view.applicationWindowToken, 0)
         }
         var keyword =
             if (keyWord.get()!!.isEmpty()) {
@@ -154,8 +153,8 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         if (keyword.isEmpty()) {
             keyword = lastHint.get()!!
         } else {
-            view?.context?.let {
-                SearchResultActivity.startActivity(it, keyword, lastHint.get()!!)
+            getActivity(view.context)?.let { activity ->
+                SearchResultActivity.startActivity(activity, keyword, lastHint.get()!!)
             }
         }
     }
@@ -207,7 +206,9 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
      * 跳转到搜索
      */
     private fun toSearch(context: Context, content: String) {
-        SearchResultActivity.startActivity(context, content, "")
+        getActivity(context)?.let {
+            SearchResultActivity.startActivity(it, content, "")
+        }
     }
 
     /**

@@ -20,6 +20,8 @@ class SearchRecommendViewModel : BaseVMViewModel() {
      * item点击事件
      */
     fun itemClickFun(context: Context, bean: SearchHotDetailBean) {
-        SearchResultActivity.startActivity(context, bean.keyword, "")
+        getActivity(context)?.let {
+            SearchResultActivity.startActivity(it, bean.keyword, "")
+        }
     }
 }
