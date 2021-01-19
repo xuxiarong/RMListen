@@ -2,13 +2,11 @@ package com.rm.module_listen.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.ListenSheetListType
-import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR
@@ -66,20 +64,20 @@ ListenSheetListActivity :
         memberId = intent.getStringExtra(MEMBER_ID) ?: ""
         listen_sheet_list_back.setOnClickListener { finish() }
         memberId?.let {
-            createFragment()
+            createFragment(it)
         }
 
     }
 
-    private fun createFragment() {
-        if (TextUtils.equals(memberId, loginUser.get()?.id)) {
+    private fun createFragment(memberId: String) {
+        if (memberId.isEmpty()) {
             mListTabText[0] = CONTEXT.getString(R.string.listen_my_sheet)
         } else {
             mListTabText[0] = CONTEXT.getString(R.string.listen_create_sheet)
         }
         mListTabFragment = mutableListOf(
-            ListenSheetMyListFragment.newInstance(memberId!!),
-            ListenSheetCollectedListFragment.newInstance(memberId!!)
+            ListenSheetMyListFragment.newInstance(memberId),
+            ListenSheetCollectedListFragment.newInstance(memberId)
         )
         val adapter = ListenSheetListPagerAdapter(this, mListTabFragment!!)
         listen_sheet_list_view_pager.adapter = adapter

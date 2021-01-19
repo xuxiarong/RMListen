@@ -1,6 +1,7 @@
 package com.rm.module_listen.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.View
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
@@ -28,8 +29,6 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
 
     val refreshStateModel = SmartRefreshLayoutStatusModel()
 
-    val contentRvId = R.id.listen_sheet_collected_list_recycler_view
-
     //每页加载的数据
     private val pageSize = 12
 
@@ -41,10 +40,33 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
 
     var memberId = ""
 
+    /**
+     * 请求加载数据
+     */
+    fun getData(memberId: String) {
+        if (TextUtils.isEmpty(memberId)) {
+            getFavorList()
+        } else {
+            getFavorList(memberId)
+        }
+    }
 
-    fun getFavorList(memberId: String) {
+    private fun getFavorList(memberId: String) {
         launchOnIO {
             repository.getCollectedList(mPage, pageSize, memberId).checkResult(
+                onSuccess = {
+                    successData(it)
+                },
+                onError = { it, _ ->
+                    failData()
+                }
+            )
+        }
+    }
+
+    private fun getFavorList() {
+        launchOnIO {
+            repository.getCollectedList(mPage, pageSize).checkResult(
                 onSuccess = {
                     successData(it)
                 },
@@ -116,20 +138,21 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
     fun refreshData() {
         mPage = 1
         refreshStateModel.setResetNoMoreData(true)
-        getFavorList(memberId)
+        getData(memberId)
     }
 
     /**
      * 加载更多
      */
     fun loadData() {
-        getFavorList(memberId)
+        getData(memberId)
     }
 
     /**
      * item点击事件
      */
     fun itemClickFun(context: Context, bean: SheetFavorDataBean) {
+        clickBean = bean
         when (bean.pre_deleted_from) {
             1 -> {
                 showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否取消收藏？", bean.sheet_id ?: "")
@@ -139,7 +162,6 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
             }
             else -> {
                 getActivity(context)?.let {
-                    clickBean = bean
                     RouterHelper.createRouter(HomeService::class.java)
                         .startHomeSheetDetailActivity(it, bean.sheet_id ?: "")
                 }

@@ -45,8 +45,19 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
 
     var memberId = ""
 
+    /**
+     * 发起网络请求数据
+     */
+    fun getData(memberId: String) {
+        if (TextUtils.isEmpty(memberId)) {
+            getMySheetList()
+        } else {
+            getMySheetList(memberId)
+        }
 
-    fun getMySheetList(memberId: String) {
+    }
+
+    private fun getMySheetList(memberId: String) {
         showLoading()
         launchOnIO {
             repository.getMyList(page, pageSize, memberId).checkResult(
@@ -62,6 +73,21 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
         }
     }
 
+    private fun getMySheetList() {
+        showLoading()
+        launchOnIO {
+            repository.getMyList(page, pageSize).checkResult(
+                onSuccess = {
+                    showContentView()
+                    successData(it)
+                },
+                onError = { it, code ->
+                    showContentView()
+                    failData("$it", code)
+                }
+            )
+        }
+    }
 
     /**
      * 删除听单
@@ -131,21 +157,21 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
     fun refreshData() {
         page = 1
         refreshStateModel.setNoHasMore(false)
-        getMySheetList(memberId)
+        getData(memberId)
     }
 
     /**
      * 加载更多
      */
     fun loadData() {
-        getMySheetList(memberId)
+        getData(memberId)
     }
 
     /**
      * item点击事件
      */
     fun itemClick(context: Context, bean: ListenSheetBean) {
-
+        clickBean.set(bean)
         when (bean.pre_deleted_from) {
             "1" -> {
                 showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否删除", bean.sheet_id.toString())
@@ -154,9 +180,8 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                 showTipDialog(context, "该听单已被作者删除，是否删除？", bean.sheet_id.toString())
             }
             else -> {
-                if (TextUtils.equals(memberId, loginUser.get()?.id)) {
+                if (memberId.isEmpty()) {
                     getActivity(context)?.let {
-                        clickBean.set(bean)
                         ListenMySheetDetailActivity.startActivity(it, bean.sheet_id.toString())
                     }
                 } else {

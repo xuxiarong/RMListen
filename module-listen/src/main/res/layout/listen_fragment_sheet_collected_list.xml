@@ -9,14 +9,14 @@
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        bindContentRvId="@{viewModel.contentRvId}"
         android:id="@+id/listen_sheet_collected_list_refresh"
-        bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
+        bindContentRvId="@{@id/listen_sheet_collected_list_recycler_view}"
         bindIsLoadMoreSuccess="@{viewModel.refreshStateModel.isLoadMoreSuccess()}"
         bindIsRefreshSuccess="@{viewModel.refreshStateModel.isRefreshSuccess()}"
+        bindNoMoreData="@{viewModel.refreshStateModel.noMoreData}"
         bindOnLoadMoreListener="@{viewModel.loadData}"
-        bindResetNoMoreData="@{viewModel.refreshStateModel.resetNoMoreData}"
         bindOnRefreshListener="@{viewModel.refreshData}"
+        bindResetNoMoreData="@{viewModel.refreshStateModel.resetNoMoreData}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

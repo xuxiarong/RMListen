@@ -98,7 +98,6 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
             getActivity(view.context)?.let {
                 RouterHelper.createRouter(LoginService::class.java)
                     .quicklyLogin(it) {
-                        showLoading()
                         getData()
                     }
             }
@@ -152,14 +151,16 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
      * 获取听单详情
      */
     fun getData() {
+        showLoading()
         launchOnIO {
             repository.getData(sheetId.get() ?: "")
                 .checkResult(
                     onSuccess = {
+                        showContentView()
                         if (it.sheet_id == null) {
                             showDataEmpty("此页面空荡荡的…什么都没有")
                         } else {
-                            showContentView()
+                            getAudioList()
                             setFavorState(it.favor == 1)
                             data.set(it)
                             if (it.created_from == 1 || it.created_from == 3) {
@@ -175,7 +176,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                         }
                     },
                     onError = { it, _ ->
-                        showServiceError()
+                        showContentView()
                         showTip("$it", R.color.business_color_ff5e5e)
                     }
                 )
@@ -185,7 +186,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
     /**
      * 获取听单音频列表
      */
-    fun getAudioList() {
+    private fun getAudioList() {
         launchOnIO {
             repository.getAudioList(sheetId.get() ?: "", mPage, pageSize)
                 .checkResult(
@@ -295,7 +296,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     RouterHelper.createRouter(ListenService::class.java).startListenSheetList(
                         activity,
                         LISTEN_SHEET_LIST_COLLECTED_LIST,
-                        loginUser.get()?.id?:""
+                        ""
                     )
                     dismiss()
                 }

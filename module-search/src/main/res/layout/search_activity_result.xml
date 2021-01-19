@@ -181,8 +181,8 @@
             app:bendTabIndicatorWidth="@dimen/dp_24"
             app:bendTabMode="scrollable"
             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
-            app:bendTabTextSize="@dimen/business_text_size_16sp"
             app:bendTabTextSelectIsBold="true"
+            app:bendTabTextSize="@dimen/business_text_size_16sp"
             app:bendTabUnSelectedTextColor="@color/business_text_color_333333"
             app:layout_constraintTop_toBottomOf="@id/search_result_back" />
 
@@ -192,6 +192,7 @@
             isVisible="@{viewModel.contentIsVisible}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_result_tab_layout" />
 

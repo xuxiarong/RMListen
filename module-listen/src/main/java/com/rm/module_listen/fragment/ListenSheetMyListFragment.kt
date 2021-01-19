@@ -37,7 +37,7 @@ class ListenSheetMyListFragment :
     override fun initData() {
         arguments?.getString(MEMBER_ID)?.let {
             mViewModel.memberId = it
-            mViewModel.getMySheetList(it)
+            mViewModel.getData(it)
         }
 
     }

@@ -167,7 +167,7 @@ class MineFragmentMemberMainViewModel(private val repository: MineRepository) : 
     fun clickCreateFun(context: Context) {
         getActivity(context)?.let {
             val id = if (TextUtils.equals(memberId, loginUser.get()?.id)) {
-                loginUser.get()?.id ?: ""
+                ""
             } else {
                 memberId
             }

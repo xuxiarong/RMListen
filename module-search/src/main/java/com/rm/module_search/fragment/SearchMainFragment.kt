@@ -1,6 +1,8 @@
 package com.rm.module_search.fragment
 
+import android.content.Intent
 import android.graphics.Rect
+import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -13,6 +15,8 @@ import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayoutMediator
 import com.rm.module_search.*
+import com.rm.module_search.activity.SearchResultActivity.Companion.SEARCH_REQUEST_CODE
+import com.rm.module_search.activity.SearchResultActivity.Companion.SEARCH_RESULT_CODE
 import com.rm.module_search.adapter.SearchMainAdapter
 import com.rm.module_search.databinding.SearchFragmentMainBinding
 import com.rm.module_search.viewmodel.SearchMainViewModel
@@ -186,10 +190,6 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     override fun onResume() {
         super.onResume()
-        searchKeyword.set("")
-        mViewModel.keyWord.set("")
-        mViewModel.suggestIsVisible.set(false)
-        mViewModel.recommendVisible.set(true)
         mViewModel.hintBannerList.get()?.let { startHintBanner() }
         curType.postValue(REQUEST_TYPE_ALL)
         refreshHistoryData()
@@ -197,6 +197,15 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
         search_main_tv_search.isFocusableInTouchMode = true
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SEARCH_REQUEST_CODE && resultCode == SEARCH_RESULT_CODE) {
+            searchKeyword.set("")
+            mViewModel.keyWord.set("")
+            mViewModel.suggestIsVisible.set(false)
+            mViewModel.recommendVisible.set(true)
+        }
+    }
 
     override fun onStop() {
         super.onStop()

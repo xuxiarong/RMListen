@@ -29,6 +29,15 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
         return apiCall { service.listenSheetMyList(page, pageSize, memberId) }
     }
 
+    /**
+     * 我的听单
+     */
+    suspend fun getMyList(
+        page: Int,
+        pageSize: Int
+    ): BaseResult<ListenSheetMyListBean> {
+        return apiCall { service.listenSheetMyList(page, pageSize) }
+    }
 
     /**
      * 收藏听单列表
@@ -39,6 +48,16 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
         memberId: String
     ): BaseResult<SheetFavorBean> {
         return apiCall { service.listenSheetFavoriteList(page, pageSize, memberId) }
+    }
+
+    /**
+     * 收藏听单列表
+     */
+    suspend fun getCollectedList(
+        page: Int,
+        pageSize: Int
+    ): BaseResult<SheetFavorBean> {
+        return apiCall { service.listenSheetFavoriteList(page, pageSize) }
     }
 
 
