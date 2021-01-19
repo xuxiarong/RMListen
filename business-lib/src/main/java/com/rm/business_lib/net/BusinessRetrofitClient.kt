@@ -65,10 +65,10 @@ class BusinessRetrofitClient : BaseRetrofitClient() {
         }
 
         fun getUserPrivacy() : String{
-            if(currentType == TYPE_TEST){
-                return "http://10.1.9.197:8481/login/userPrivacy?channel=Andriod"
+            return if(currentType == TYPE_TEST){
+                "http://10.1.9.197:8481/login/userPrivacy?channel=Andriod"
             }else{
-                return "http://tianlai.leimans.com/login/userPrivacy?channel=Andriod"
+                "http://tianlai.leimans.com/login/userPrivacy?channel=Andriod"
             }
         }
 

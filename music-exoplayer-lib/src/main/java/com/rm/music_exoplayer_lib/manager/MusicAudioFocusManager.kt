@@ -134,6 +134,4 @@ class MusicAudioFocusManager constructor(val context: Context) {
     }
 
     var mFocusListener: OnAudioFocusListener? = null
-
-
 }
