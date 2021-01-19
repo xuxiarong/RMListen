@@ -79,6 +79,8 @@ class HomeTopListContentFragment :
         canRefreshData = rankSeg != this.rankSeg
         this.rankSeg = rankSeg
         if (mVisible) {
+            mViewModel.mAdapter.setList(null)
+            mViewModel.refreshStatusModel.setResetNoMoreData(true)
             getData()
         }
     }
