@@ -258,7 +258,7 @@ object DownloadMemoryCache {
     /**
      * 开始下载下一个等待中的任务
      */
-    private fun downloadNextWaitChapter(currentChapter: DownloadChapter) {
+    fun downloadNextWaitChapter(currentChapter: DownloadChapter) {
         downloadingChapterList.value?.let {
             val downList = it
             if (downloadingChapter.get() != null) {
@@ -404,7 +404,7 @@ object DownloadMemoryCache {
     fun deleteDownloadingChapter(chapterList: List<DownloadChapter>) {
         downloadingChapterList.removeAll(chapterList)
         DaoUtil(DownloadChapter::class.java, "").delete(chapterList)
-        AriaDownloadManager.deleteAllDownload()
+//        AriaDownloadManager.deleteAllDownload()
     }
 
     fun getDownAudioOnAppCreate() {

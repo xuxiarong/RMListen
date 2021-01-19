@@ -167,11 +167,20 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
             rightBtnClick = {
                 val iterator = downloadingAdapter.data.iterator()
                 val tempList = mutableListOf<DownloadChapter>()
+                var deleteDownloading = false
+                val downloadingChapter = DownloadMemoryCache.downloadingChapter.get()
+                val isDownAll = DownloadMemoryCache.isDownAll.get()
+                var delayDeleteChapter : DownloadChapter? = null
                 while (iterator.hasNext()) {
                     val next = iterator.next()
                     if (next.down_edit_select) {
-                        tempList.add(next)
-                        iterator.remove()
+                        if(!deleteDownloading && isDownAll && downloadingChapter!=null && downloadingChapter.chapter_id == next.chapter_id){
+                            deleteDownloading = true
+                            delayDeleteChapter = next
+                        }else{
+                            tempList.add(next)
+                            iterator.remove()
+                        }
                     }
                 }
                 dismiss()
@@ -186,6 +195,18 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                     lifecycleOwner = lifecycleOwner
                 )
                 DownloadMemoryCache.deleteDownloadingChapter(tempList)
+                if(isDownAll){
+                    if(deleteDownloading){
+                        downloadingChapter?.let {
+                            DownloadMemoryCache.downloadNextWaitChapter(it)
+                            delayDeleteChapter?.let {
+                                DownloadMemoryCache.deleteDownloadingChapter(mutableListOf(it))
+                            }
+                        }
+                    }else{
+                        DownloadMemoryCache.resumeDownloadingChapter()
+                    }
+                }
             }
         }.show(context as FragmentActivity)
     }
