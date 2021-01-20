@@ -17,7 +17,6 @@ class HomeCommentDialogHelper(
     private val mActivity: FragmentActivity,
     private val audio: String,
     private val anchorId: String,
-    private val viewModel: BaseVMViewModel,
     private val commentSuccessBlock: () -> Unit
 ) {
     /**

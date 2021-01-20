@@ -57,7 +57,6 @@ interface HomeService : ApplicationProvider {
         mActivity: FragmentActivity,
         audio: String,
         anchorId: String,
-        viewModel: BaseVMViewModel,
         commentSuccessBlock: () -> Unit
     )
 

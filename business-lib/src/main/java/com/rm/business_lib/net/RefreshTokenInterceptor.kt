@@ -71,20 +71,20 @@ class RefreshTokenInterceptor : Interceptor {
                 // 原请求地址
                 val originReqUrl = originRequest.url.toString()
                 //没有返回信息，说明没有网络，未请求成功，则原封不动的返回数据
-                Log.i("=====>TokenInterceptor", "=====>>>>$originReqUrl")
+//                Log.i("=====>TokenInterceptor", "=====>>>>$originReqUrl")
 
                 val responseString = getResponseString(originResponse)
-                Log.i("=====>TokenInterceptor", "====response=>>>>$responseString")
+//                Log.i("=====>TokenInterceptor", "====response=>>>>$responseString")
 
                 if (TextUtils.isEmpty(responseString)) {
-                    Log.i("=====>TokenInterceptor", "=====000000000   ${request.url}")
+//                    Log.i("=====>TokenInterceptor", "=====000000000   ${request.url}")
                     return originResponse.newBuilder().code(originResponse.code)
                         .body(body).build()
                 }
                 val code = getResponseCode(responseString)
-                Log.i("=====>TokenInterceptor", "=====code:>>>>$code")
+//                Log.i("=====>TokenInterceptor", "=====code:>>>>$code")
                 return if (code == CODE_REFRESH_TOKEN) {
-                    Log.i("=====>TokenInterceptor", "token 过期$code")
+//                    Log.i("=====>TokenInterceptor", "token 过期$code")
                     val token = request.headers["TOKEN"] ?: REFRESH_TOKEN.getStringMMKV("")
                     val newToken = getToken(token)
                     //token刷新成功
@@ -92,7 +92,7 @@ class RefreshTokenInterceptor : Interceptor {
                         val headers = request.headers.newBuilder()
                         headers["Authorization"] = "Bearer $newToken"
                         val newRequest = request.newBuilder().headers(headers.build()).build()
-                        Log.i("=====>TokenInterceptor", "=====111111  ${request.url}")
+//                        Log.i("=====>TokenInterceptor", "=====111111  ${request.url}")
                         chain.proceed(newRequest)
                     } else {
                         //token 刷新失败
@@ -109,12 +109,12 @@ class RefreshTokenInterceptor : Interceptor {
                         val headers = request.headers.newBuilder()
                         headers["Authorization"] = "Bearer "
                         val newRequest = request.newBuilder().headers(headers.build()).build()
-                        Log.i("=====>TokenInterceptor", "=====2222222  ${request.url}")
+//                        Log.i("=====>TokenInterceptor", "=====2222222  ${request.url}")
                         chain.proceed(newRequest)
 
                     }
                 } else if (code == CODE_LOGIN_OUT || code == CODE_NOT_LOGIN || code == CODE_REFRESH_TOKEN_FAILED) {
-                    Log.i("=====>TokenInterceptor", "登陆失效，有可能是token失效  $responseString")
+//                    Log.i("=====>TokenInterceptor", "登陆失效，有可能是token失效  $responseString")
                     //被挤下线了/用户未登陆  需要放在主线程去更新，不然会出现异常
                     GlobalScope.launch(Dispatchers.Main) {
                         loginOut()
@@ -122,12 +122,12 @@ class RefreshTokenInterceptor : Interceptor {
                     originResponse.newBuilder().code(originResponse.code)
                         .body(body).build()
                 } else {
-                    Log.i("=====>TokenInterceptor", "=====444444 ${request.url}")
+//                    Log.i("=====>TokenInterceptor", "=====444444 ${request.url}")
                     originResponse.newBuilder().code(originResponse.code)
                         .body(body).build()
                 }
             } catch (e: Exception) {
-                Log.i("=====>TokenInterceptor", "Exception:${e.message}")
+//                Log.i("=====>TokenInterceptor", "Exception:${e.message}")
                 val json = GsonUtils.toJson(BaseResponse(10086, "服务器连接异常", Any()))
                 return Response.Builder()
                     .request(chain.request())
@@ -142,7 +142,7 @@ class RefreshTokenInterceptor : Interceptor {
     @Throws(IOException::class)
     fun getToken(token: String): String {
         val refreshToken = REFRESH_TOKEN.getStringMMKV("")
-        Log.i("=====>TokenInterceptor", "=====getToken $refreshToken")
+//        Log.i("=====>TokenInterceptor", "=====getToken $refreshToken")
 
         val result = apiService.refreshToken(token).execute().body()
         return if (result?.code == 0) {
