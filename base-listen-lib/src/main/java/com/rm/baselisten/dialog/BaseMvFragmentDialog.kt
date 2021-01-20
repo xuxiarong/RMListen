@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.observe
 import com.rm.baselisten.model.BaseToastModel
+import com.rm.baselisten.mvvm.BaseViewModel
 import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 
@@ -29,7 +30,7 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
      * 定义子类的dataBing对象
      */
     var mDataBind: ViewDataBinding? = null
-    private var viewModel: BaseVMViewModel? = null
+    private var viewModel: BaseViewModel? = null
 
     var initDialog: (() -> Unit) = {}
     var destroyDialog: (() -> Unit) = {}
@@ -100,8 +101,10 @@ abstract class BaseMvFragmentDialog : BaseFragmentDialog() {
         }
         initDialog()
         viewModel?.let {
-            it.baseToastModel.value = BaseToastModel()
-            startObserve(it)
+            if (it is BaseVMViewModel) {
+                it.baseToastModel.value = BaseToastModel()
+                startObserve(it)
+            }
         }
 
         return mDataBind?.root

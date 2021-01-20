@@ -45,7 +45,9 @@ class ListenSheetCollectedListAdapter(
                         BR.bookBean
                     )
                     bindGridLayout(adapter, 3)
-                    gridItemDecoration(8f)
+                    if (rv.itemDecorationCount == 0) {
+                        gridItemDecoration(8f)
+                    }
                 }
 
             } else {

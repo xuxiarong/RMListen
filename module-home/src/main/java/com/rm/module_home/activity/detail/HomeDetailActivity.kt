@@ -15,7 +15,6 @@ import com.rm.baselisten.util.ToastUtil
 import com.rm.baselisten.utilExt.getStateHeight
 import com.rm.business_lib.AudioSortType
 import com.rm.business_lib.aria.AriaDownloadManager
-import com.rm.business_lib.db.DaoManager
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.DetailAudioSortDao
 import com.rm.business_lib.db.audiosort.DetailAudioSort

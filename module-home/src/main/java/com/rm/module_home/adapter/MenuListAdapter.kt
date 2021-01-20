@@ -29,23 +29,22 @@ class MenuListAdapter(private val mViewModel: HomeMenuViewModel) :
     override fun convert(holder: BaseViewHolder, item: SheetMenuInfoBean) {
         super.convert(holder, item)
         holder.getView<RecyclerView>(R.id.home_menu_adapter_recycler_view).apply {
-            if (tag != true) {
-                tag = true
-                item.audio_list?.let {
-                    val list = if (it.size > 3) {
-                        it.subList(0, 3)
-                    } else {
-                        it
-                    }
-                    bindGridLayout(
-                        CommonBindVMAdapter(
-                            mViewModel,
-                            list,
-                            R.layout.home_adapter_menu_book,
-                            BR.audioViewModel,
-                            BR.audioBean
-                        ), 3
-                    )
+            item.audio_list?.let {
+                val list = if (it.size > 3) {
+                    it.subList(0, 3)
+                } else {
+                    it
+                }
+                bindGridLayout(
+                    CommonBindVMAdapter(
+                        mViewModel,
+                        list,
+                        R.layout.home_adapter_menu_book,
+                        BR.audioViewModel,
+                        BR.audioBean
+                    ), 3
+                )
+                if (itemDecorationCount == 0) {
                     gridItemDecoration(8f)
                 }
             }

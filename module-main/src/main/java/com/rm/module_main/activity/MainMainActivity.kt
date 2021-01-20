@@ -38,27 +38,27 @@ class MainMainActivity :
 
     private lateinit var navigationController: NavigationController
     private var lastExitTime = 0L
-    private lateinit var mAdapter: MyViewPagerAdapter
+    private var mAdapter: MyViewPagerAdapter? = null
 
     override fun getLayoutId() = R.layout.main_activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(!TextUtils.isEmpty(jumpUrl)){
-            BannerJumpUtils.onBannerClick(this,jumpUrl)
+        if (!TextUtils.isEmpty(jumpUrl)) {
+            BannerJumpUtils.onBannerClick(this, jumpUrl)
         }
     }
 
     override fun initView() {
         mDataShowView = view_pager
-        if(TextUtils.isEmpty(jumpUrl)){
+        if (TextUtils.isEmpty(jumpUrl)) {
             view_pager.postDelayed({
                 initPager()
-            },50)
-        }else{
+            }, 50)
+        } else {
             view_pager.postDelayed({
                 initPager()
-            },800)
+            }, 800)
         }
     }
 
@@ -67,78 +67,78 @@ class MainMainActivity :
 
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
-                        R.drawable.main_ic_home_tab_listen_bar,
-                        R.drawable.main_ic_home_tab_listen_bar_selected,
-                        getString(R.string.main_tab_listen_bar)
+                    R.drawable.main_ic_home_tab_listen_bar,
+                    R.drawable.main_ic_home_tab_listen_bar_selected,
+                    getString(R.string.main_tab_listen_bar)
                 )
                 setTextCheckedColor(
-                        ContextCompat.getColor(
-                                this@MainMainActivity,
-                                R.color.main_color_accent
-                        )
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_accent
+                    )
                 )
                 setTextDefaultColor(
-                        ContextCompat.getColor(
-                                this@MainMainActivity,
-                                R.color.main_color_disable
-                        )
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_disable
+                    )
                 )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
-                        R.drawable.main_ic_home_tab_search,
-                        R.drawable.main_ic_home_tab_search_selected,
-                        getString(R.string.main_tab_search)
+                    R.drawable.main_ic_home_tab_search,
+                    R.drawable.main_ic_home_tab_search_selected,
+                    getString(R.string.main_tab_search)
                 )
                 setTextCheckedColor(
-                        ContextCompat.getColor(
-                                this@MainMainActivity,
-                                R.color.main_color_accent
-                        )
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_accent
+                    )
                 )
                 setTextDefaultColor(
-                        ContextCompat.getColor(
-                                this@MainMainActivity,
-                                R.color.main_color_disable
-                        )
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_disable
+                    )
                 )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
-                        R.drawable.main_ic_home_tab_my_listen,
-                        R.drawable.main_ic_home_tab_my_listen_selected,
-                        getString(R.string.main_tab_my_listen)
+                    R.drawable.main_ic_home_tab_my_listen,
+                    R.drawable.main_ic_home_tab_my_listen_selected,
+                    getString(R.string.main_tab_my_listen)
                 )
                 setTextCheckedColor(
-                        ContextCompat.getColor(
-                                this@MainMainActivity,
-                                R.color.main_color_accent
-                        )
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_accent
+                    )
                 )
                 setTextDefaultColor(
-                        ContextCompat.getColor(
-                                this@MainMainActivity,
-                                R.color.main_color_disable
-                        )
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_disable
+                    )
                 )
             })
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
-                        R.drawable.main_ic_home_tab_user,
-                        R.drawable.main_ic_home_tab_user_selected,
-                        getString(R.string.main_tab_user)
+                    R.drawable.main_ic_home_tab_user,
+                    R.drawable.main_ic_home_tab_user_selected,
+                    getString(R.string.main_tab_user)
                 )
                 setTextCheckedColor(
-                        ContextCompat.getColor(
-                                this@MainMainActivity,
-                                R.color.main_color_accent
-                        )
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_accent
+                    )
                 )
                 setTextDefaultColor(
-                        ContextCompat.getColor(
-                                this@MainMainActivity,
-                                R.color.main_color_disable
-                        )
+                    ContextCompat.getColor(
+                        this@MainMainActivity,
+                        R.color.main_color_disable
+                    )
                 )
             })
         }.build()
@@ -154,9 +154,9 @@ class MainMainActivity :
             }
 
             override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
             ) {
 
             }
@@ -186,13 +186,13 @@ class MainMainActivity :
     }
 
     override fun initData() {
-        if(PlaySettingData.getContinueLastPlay()){
+        if (PlaySettingData.getContinueLastPlay()) {
             RouterHelper.createRouter(PlayService::class.java).requestAudioFocus()
             view_pager.postDelayed({
                 BaseConstance.basePlayInfoModel.get()?.let {
-                    mViewModel.getChapterListWithId(it.playAudioId,it.playChapterId)
+                    mViewModel.getChapterListWithId(it.playAudioId, it.playChapterId)
                 }
-            },1500)
+            }, 1500)
         }
     }
 
@@ -213,7 +213,7 @@ class MainMainActivity :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mAdapter.getFragments().forEach {
+        mAdapter?.getFragments()?.forEach {
             if (!it.isDetached) {
                 it.onActivityResult(requestCode, resultCode, data)
             }
@@ -224,7 +224,7 @@ class MainMainActivity :
 
         var currentTab = 0
         var jumpUrl = ""
-        fun startMainActivity(context: Context, selectTab: Int = 0,splashUrl : String = "") {
+        fun startMainActivity(context: Context, selectTab: Int = 0, splashUrl: String = "") {
             //如果context 已经是MainMainActivity，而且想跳转tab等于当前tab则不需要跳转了
             if (context is MainMainActivity && selectTab == currentTab) {
                 return
