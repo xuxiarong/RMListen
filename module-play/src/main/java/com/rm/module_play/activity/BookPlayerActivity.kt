@@ -16,7 +16,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.binding.bindVerticalLayout
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
@@ -137,7 +136,7 @@ class BookPlayerActivity : BaseVMActivity<ActivityBookPlayerBinding, PlayViewMod
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GlobalPlayHelper.INSTANCE.registerPlayStatusListener(this@BookPlayerActivity)
-        GlobalPlayHelper.INSTANCE.addOnPlayerEventListener()
+        GlobalPlayHelper.INSTANCE.addPlayEventListener()
     }
 
     override fun onResume() {

@@ -235,7 +235,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
         val logPath = DownLoadFileUtils.getParentFile(this)?.absolutePath + "/marssample/log";
 
         // this is necessary, or may crash for SIGBUS
-        val cachePath = "${this.getFilesDir()} + /xlog"
+        val cachePath = "${this.filesDir} + /xlog"
 
         //init xlog
         val xlog =  Xlog()
@@ -243,10 +243,10 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
         if (BuildConfig.DEBUG) {
             Log.setConsoleLogOpen(true)
-            Log.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, cachePath, logPath, "listen", 0)
+            Log.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, cachePath, logPath, "listen", 3)
         } else {
             Log.setConsoleLogOpen(false)
-            Log.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, "listen", 0)
+            Log.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, "listen", 3)
         }
     }
 
@@ -259,8 +259,8 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             mViewModel.getSplashAd()
             mViewModel.startSkipTimerCount()
         }
-        RouterHelper.createRouter(PlayService::class.java)
-            .initPlayService(BaseApplication.baseApplication)
+//        RouterHelper.createRouter(PlayService::class.java)
+//            .initPlayService(BaseApplication.baseApplication)
     }
 
     private fun requestPermissions() {

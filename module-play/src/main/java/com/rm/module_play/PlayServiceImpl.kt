@@ -11,7 +11,6 @@ import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
-import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.ARouterModuleServicePath
@@ -78,7 +77,7 @@ class PlayServiceImpl : PlayService {
     }
 
     override fun init(context: Context?) {
-
+        GlobalPlayHelper.INSTANCE.initActivityListener()
     }
 
     private fun initPlayHistory() {
