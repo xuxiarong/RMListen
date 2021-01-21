@@ -273,7 +273,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             },
             actionGranted = {
                 initSplashData()
-                initXLog()
+//                initXLog()
             },
             actionPermanentlyDenied = {
                 finish()

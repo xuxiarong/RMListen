@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Handler
 import android.renderscript.RSRuntimeException
 import android.util.Log
@@ -109,7 +108,11 @@ class MineMemberActivity :
             if (radius > 25) {
                 radius = 25
             }
-            blurImage(radius)
+
+            //加上高斯模糊滑动会比较卡
+            runOnUiThread {
+                blurImage(radius)
+            }
 
             Log.i("initParams: ", "$radius")
             mine_member_detail_blur.alpha = alpha

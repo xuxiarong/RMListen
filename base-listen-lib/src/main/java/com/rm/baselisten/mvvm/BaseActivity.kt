@@ -18,9 +18,7 @@ import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.R
 import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
-import com.rm.baselisten.view.BaseTipView
 
 
 /**
@@ -126,8 +124,8 @@ abstract class BaseActivity : FragmentActivity() {
     ) {
         if (!hasPermission(permission)) {
             mPermissions = mutableListOf(permission)
-            requestPermissionGranted = actionDenied
-            requestPermissionDenied = actionGranted
+            requestPermissionGranted = actionGranted
+            requestPermissionDenied = actionDenied
             requestPermanentlyDenied = actionPermanentlyDenied
             XXPermissions.with(this).apply {
                 permission(permission)
@@ -168,6 +166,7 @@ abstract class BaseActivity : FragmentActivity() {
                 request(object : OnPermissionCallback {
                     override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
                         if (all) {
+                            mPermissions = null
                             actionGranted()
                         }
                     }
@@ -182,6 +181,7 @@ abstract class BaseActivity : FragmentActivity() {
                 })
             }
         } else {
+            mPermissions = null
             actionGranted()
         }
     }
