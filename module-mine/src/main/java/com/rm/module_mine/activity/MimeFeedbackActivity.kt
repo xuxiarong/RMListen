@@ -176,7 +176,9 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                 } else {
                     val cameraImagePath = mViewModel.photoHelp?.getCameraImagePath()
                     cameraImagePath?.let {
-                        compress(it, true)
+                        if (it.isNotEmpty()) {
+                            compress(it, true)
+                        }
                     }
                 }
             } else {
@@ -190,7 +192,9 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
                 } else {
                     val cameraImagePath = mViewModel.photoHelp?.getCameraImagePath()
                     cameraImagePath?.let {
-                        FileUtils.delete(it)
+                        if (it.isNotEmpty()) {
+                            FileUtils.delete(it)
+                        }
                     }
                 }
             }

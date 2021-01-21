@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
@@ -45,7 +46,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     detailInfoData.set(it)
                     memberFollowNum.set(it.follows)
                     memberFansNum.set(it.fans)
-                    attentionVisibility.set(it.id != loginUser.get()?.id)
+                    attentionVisibility.set(!TextUtils.equals(it.id, loginUser.get()?.id))
                     isAttention.set(it.is_followed)
 
                 }, onError = { it, _ ->
