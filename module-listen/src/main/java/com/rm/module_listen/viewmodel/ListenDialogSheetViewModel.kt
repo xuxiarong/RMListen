@@ -27,7 +27,6 @@ import com.rm.module_listen.utils.ListenDialogCreateSheetHelper
 class ListenDialogSheetViewModel(
     private val mActivity: FragmentActivity,
     private val audioId: String,
-    private val memberId: String,
     private val successBlock: () -> Unit
 ) : BaseVMViewModel() {
 
@@ -67,7 +66,7 @@ class ListenDialogSheetViewModel(
      */
     private fun getMySheetList() {
         launchOnIO {
-            repository.getMyList(page, pageSize, memberId).checkResult(
+            repository.getMyList(page, pageSize).checkResult(
                 onSuccess = {
                     processSuccessData(it)
                 },

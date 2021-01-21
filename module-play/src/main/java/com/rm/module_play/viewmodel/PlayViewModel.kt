@@ -716,8 +716,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         .showCommentDialog(
                             it,
                             playAudio.audio_id.toString(),
-                            playAudio.anchor_id,
-                            this
+                            playAudio.anchor_id
                         ) {
                             showTip("评论成功")
                             commentPage = 1
@@ -900,8 +899,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                 RouterHelper.createRouter(ListenService::class.java)
                     .showMySheetListDialog(
                         context,
-                        PlayGlobalData.playAudioId.get()!!,
-                        loginUser.get()?.id ?: ""
+                        PlayGlobalData.playAudioId.get()!!
                     ) { showTip("在“我听-听单”中查看") }
             }
         }

@@ -938,7 +938,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             if (isLogin.get()) {
                 audioId.get()?.let { audioId ->
                     anchorId.get()?.let { anchorId ->
-                        HomeCommentDialogHelper(it, audioId, anchorId, this) {
+                        HomeCommentDialogHelper(it, audioId, anchorId) {
                             commentPage = 1
                             getCommentList(audioId)
                             showTip("评论成功")
@@ -990,14 +990,19 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     fun clickCollectionFun(context: Context) {
         getActivity(context)?.let {
             if (!isLogin.get()) {
-                quicklyLogin(it)
+                quicklyLogin(it) {
+                    showAddSheetDialog(it)
+                }
             } else {
-                RouterHelper.createRouter(ListenService::class.java)
-                    .showMySheetListDialog(it, audioId.get() ?: "", loginUser.get()?.id ?: "")
-                    { showTip("在“我听-听单”中查看") }
+                showAddSheetDialog(it)
             }
         }
+    }
 
+    private fun showAddSheetDialog(it: FragmentActivity) {
+        RouterHelper.createRouter(ListenService::class.java)
+            .showMySheetListDialog(it, audioId.get() ?: "")
+            { showTip("在“我听-听单”中查看") }
     }
 
     /**
@@ -1021,12 +1026,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 快捷登陆
      */
-    private fun quicklyLogin(it: FragmentActivity) {
+    private fun quicklyLogin(it: FragmentActivity, loginSuccess: () -> Unit? = {}) {
         RouterHelper.createRouter(LoginService::class.java)
             .quicklyLogin(it, loginSuccess = {
                 intDetailInfo(audioId.get()!!)
                 commentPage = 1
                 getCommentList(audioId.get()!!)
+                loginSuccess()
             })
     }
 

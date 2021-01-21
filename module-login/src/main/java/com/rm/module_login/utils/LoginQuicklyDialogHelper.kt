@@ -1,8 +1,11 @@
 package com.rm.module_login.utils
 
+import android.content.Context
 import android.view.Gravity
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
@@ -21,6 +24,7 @@ import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginDialogQuicklyLoginBinding
 import com.rm.module_login.viewmodel.dialog.LoginQuicklyViewModel
+import kotlinx.android.synthetic.main.login_include_layout_phone_input.*
 
 /**
  * desc   : 快捷登陆弹出框帮助类
@@ -94,6 +98,17 @@ class LoginQuicklyDialogHelper constructor(private val fragmentActivity: Fragmen
                 }
                 dialogBinding.loginQuicklyPhoneInputLay.loginIncludePhoneInputArrowView.setOnClickListener {
                     showCountryListDialog()
+                }
+                dialog?.setOnShowListener {
+                    login_by_verify_code_input?.setSelection(
+                        login_by_verify_code_input?.text?.length ?: 0
+                    )
+                    login_by_verify_code_input?.postDelayed({
+                        login_by_verify_code_input.requestFocus()
+                        val inputManager =
+                            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+                    }, 50)
                 }
 
                 // 输入号码界面/输入验证界面 显示或隐藏的监听

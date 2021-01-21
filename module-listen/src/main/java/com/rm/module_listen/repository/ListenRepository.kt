@@ -74,15 +74,6 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
         return apiCall { service.listenCreateSheetList(sheet_name, description) }
     }
 
-    /**
-     * 创建听单
-     *
-     * @param sheet_id 听单Id
-     * @param audio_id 音频Id
-     */
-    suspend fun addSheet(sheet_id: String, audio_id: String): BaseResult<Any> {
-        return apiCall { service.listenAddSheetList(sheet_id, audio_id) }
-    }
 
     /**
      * 编辑听单

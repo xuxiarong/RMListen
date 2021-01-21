@@ -65,6 +65,7 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
                 showDataEmpty()
             } else {
                 mAdapter.setList(bean.list)
+
             }
         } else {
             //加载更多完成
@@ -116,6 +117,5 @@ class HomeTopListContentFragmentViewModel(private val repository: HomeRepository
     fun loadData() {
         getListInfo(rankType, rankSeg)
     }
-
 
 }
