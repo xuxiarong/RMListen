@@ -767,7 +767,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      */
     fun commentAvatarClick(context: Context, memberId: String) {
         RouterHelper.createRouter(MineService::class.java)
-            .toMineCommentFragment(context = context, memberId = memberId)
+            .toMineMember(context = context, memberId = memberId)
     }
 
     /**

@@ -148,5 +148,7 @@
     <string name="mine_fans_empty">没有粉丝，快去为自己创造影响力吧</string>
     <string name="mine_follow_empty">没有关注的人</string>
     <string name="mine_member_not_logout">主播账号不允许销户</string>
+    <string name="mine_comment_page">主页</string>
+    <string name="mine_comment_home">评论</string>
 
 </resources>

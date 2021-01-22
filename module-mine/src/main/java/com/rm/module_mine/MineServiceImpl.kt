@@ -37,10 +37,4 @@ class MineServiceImpl : MineService {
         MineMemberActivity.newInstance(context, memberId)
     }
 
-    override fun toMineCommentFragment(context: Context, memberId: String) {
-        MineMemberActivity.toMineCommentFragment(context, memberId)
-    }
-
-
-
 }

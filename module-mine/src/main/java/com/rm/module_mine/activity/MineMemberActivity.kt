@@ -39,18 +39,7 @@ class MineMemberActivity :
 
     companion object {
         const val MEMBER_ID = "memberId"
-        var isNavToCommentFragment = false
         fun newInstance(context: Context, memberId: String) {
-            context.startActivity(
-                Intent(
-                    context,
-                    MineMemberActivity::class.java
-                ).putExtra(MEMBER_ID, memberId)
-            )
-        }
-
-        fun toMineCommentFragment(context: Context, memberId: String) {
-            isNavToCommentFragment = true
             context.startActivity(
                 Intent(
                     context,
@@ -157,18 +146,12 @@ class MineMemberActivity :
         val mainFragment = MineMemberMainFragment.newInstance(memberId)
         val commentFragment = MineMemberCommentFragment.newInstance(memberId, bean.member_type)
         val list = mutableListOf<MineMemberPageAdapter.MemberPageData>()
-        list.add(MineMemberPageAdapter.MemberPageData(mainFragment, "主页"))
-        list.add(MineMemberPageAdapter.MemberPageData(commentFragment, "评论"))
+        list.add(MineMemberPageAdapter.MemberPageData(mainFragment, getString(R.string.mine_comment_home)))
+        list.add(MineMemberPageAdapter.MemberPageData(commentFragment, getString(R.string.mine_comment_page)))
         mine_member_detail_viewpager.adapter =
             MineMemberPageAdapter(list, supportFragmentManager)
         mine_member_detail_tab.setupWithViewPager(mine_member_detail_viewpager)
-        mine_member_detail_viewpager.setCurrentItem(
-            if (isNavToCommentFragment) {
-                1
-            } else {
-                0
-            }, false
-        )
+        mine_member_detail_viewpager.setCurrentItem(0, false)
     }
 
     override fun onDestroy() {
