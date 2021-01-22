@@ -9,6 +9,8 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.helpter.loginIn
+import com.rm.business_lib.insertpoint.BusinessInsertConstance
+import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
 import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_FORGET_PWD
@@ -90,7 +92,6 @@ class VerificationInputViewModel(private val repository: LoginRepository) : Base
                 onSuccess = {
                     // 设置登陆成功数据
                     loginIn(it.access, it.refresh, it.member)
-
                     // 登陆成功
                     showTip(CONTEXT.getString(R.string.login_success))
                     showContentView()

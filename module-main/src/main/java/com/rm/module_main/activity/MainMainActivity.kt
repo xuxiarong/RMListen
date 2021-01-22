@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.core.content.ContextCompat
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.ToastUtil
@@ -25,7 +25,6 @@ import com.rm.module_main.customview.bottomtab.item.NormalItemView
 import com.rm.module_main.databinding.MainActivityMainBindingImpl
 import com.rm.module_main.viewmodel.HomeMainViewModel
 import com.tencent.mars.xlog.Log
-import com.tencent.mars.xlog.Xlog
 import kotlinx.android.synthetic.main.main_activity_main.*
 
 /**
@@ -36,6 +35,7 @@ import kotlinx.android.synthetic.main.main_activity_main.*
 class MainMainActivity :
     ComponentShowPlayActivity<MainActivityMainBindingImpl, HomeMainViewModel>() {
 
+    private var changeCallBack: ViewPager2.OnPageChangeCallback? = null
     private lateinit var navigationController: NavigationController
     private var lastExitTime = 0L
     private var mAdapter: MyViewPagerAdapter? = null
@@ -64,7 +64,6 @@ class MainMainActivity :
 
     private fun initPager() {
         navigationController = mainTab.custom().run {
-
             addItem(NormalItemView(this@MainMainActivity).apply {
                 initialize(
                     R.drawable.main_ic_home_tab_listen_bar,
@@ -143,35 +142,27 @@ class MainMainActivity :
             })
         }.build()
         navigationController.addPlaceholder(2)
-        mAdapter = MyViewPagerAdapter(supportFragmentManager, navigationController.itemCount)
+        mAdapter = MyViewPagerAdapter(this, navigationController.itemCount)
         view_pager.adapter = mAdapter
-        view_pager.offscreenPageLimit = 4
+        view_pager.isUserInputEnabled = false
         navigationController.setupWithViewPager(view_pager)
-
-        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
-            }
-
+        changeCallBack = object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
                 currentTab = position
                 HomeGlobalData.homeGlobalSelectTab.set(position)
             }
-        })
+        }
+        changeCallBack?.let {
+            view_pager.registerOnPageChangeCallback(it)
+        }
         if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
             val data = intent.data
             BannerJumpUtils.onBannerClick(context = this, url = data.toString())
             DLog.i("------>", "data:${data.toString()}")
         }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -218,6 +209,14 @@ class MainMainActivity :
                 it.onActivityResult(requestCode, resultCode, data)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        changeCallBack?.let {
+            view_pager.unregisterOnPageChangeCallback(it)
+        }
+        mAdapter = null
     }
 
     companion object {

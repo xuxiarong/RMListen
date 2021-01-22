@@ -29,8 +29,7 @@ class BusinessInsertManager {
         private fun doInsert(bean: BusinessInsertBean) {
             val toJson = GsonUtils.toJson(bean)
             GlobalScope.launch(Dispatchers.IO) {
-                val result =
-                    apiService.insertPoint(toJson.toRequestBody("application/json;charset=utf-8".toMediaType()))
+                apiService.insertPoint(toJson.toRequestBody("application/json;charset=utf-8".toMediaType()))
             }
         }
 

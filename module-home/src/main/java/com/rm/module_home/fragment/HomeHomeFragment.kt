@@ -198,14 +198,13 @@ class HomeHomeFragment : BaseVMFragment<HomeHomeFragmentBinding, HomeFragmentVie
 
         isAvailableChangedCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (NetworkChangeReceiver.isAvailable.get()) {
-                    if (mViewModel.baseStatusModel.value != null) {
-                        if (mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR
-                            || mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR
-                        ) {
-                            mViewModel.getHomeDataFromService()
-                        }
-                    }
+                if (!NetworkChangeReceiver.isAvailable.get() || mViewModel.baseStatusModel.value == null) {
+                    return
+                }
+                if (mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_NET_ERROR
+                    || mViewModel.baseStatusModel.value!!.netStatus == BaseNetStatus.BASE_SHOW_SERVICE_ERROR
+                ) {
+                    mViewModel.getHomeDataFromService()
                 }
             }
         }

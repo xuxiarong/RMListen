@@ -34,7 +34,7 @@ class KeyboardStatusDetector {
         }
 
         fun Fragment.bindKeyboardVisibilityListener(block: ((Boolean, Int) -> Unit)?) {
-            if (block == null) {
+            if (block == null || !isVisible) {
                 return
             }
             KeyboardStatusDetector()

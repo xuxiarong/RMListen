@@ -25,6 +25,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -294,7 +295,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
      * @param mAdapter
      */
     @Deprecated
-    public void setmAdapter(XBannerAdapter mAdapter) {
+    public void setAdapter(XBannerAdapter mAdapter) {
         this.mAdapter = mAdapter;
     }
 
@@ -380,11 +381,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
 
         /*设置指示器背景容器*/
         RelativeLayout pointContainerRl = new RelativeLayout(getContext());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
-        } else {
-            pointContainerRl.setBackgroundDrawable(mPointContainerBackgroundDrawable);
-        }
+        pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
 
         /*设置内边距*/
         pointContainerRl.setPadding(mPointContainerLeftRightPadding, mPointTopBottomPading, mPointContainerLeftRightPadding, mPointTopBottomPading);
@@ -615,9 +612,7 @@ public class XBanner extends RelativeLayout implements XBannerViewPager.AutoPlay
 
     private View createView(int layoutResId, String adId) {
         View childView = View.inflate(getContext(), layoutResId, null);
-        BusinessAdImageView imageView = childView.findViewById(R.id.banner_img);
-        imageView.setAdId(adId);
-        imageView.setAdIsShow(true);
+        ImageView imageView = childView.findViewById(R.id.banner_img);
         return childView;
     }
 

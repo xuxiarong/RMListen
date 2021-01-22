@@ -75,19 +75,27 @@ object BannerJumpUtils {
                             } else if (page == "audioDetail") {
                                 val homeService = RouterHelper.createRouter(HomeService::class.java)
                                 if (!TextUtils.isEmpty(ids)) {
-                                    homeService.startDetailActivity(context = context, audioID = ids)
+                                    homeService.startDetailActivity(
+                                        context = context,
+                                        audioID = ids
+                                    )
                                 }
                             } else if (page == "sheetInfo") {
                                 val homeService = RouterHelper.createRouter(HomeService::class.java)
-                                if (!TextUtils.isEmpty(ids)) {
-                                    if (context is Activity) {
-                                        homeService.startHomeSheetDetailActivity(context = context, sheetId = ids)
-                                    }
+                                if (!TextUtils.isEmpty(ids) && context is Activity) {
+                                    homeService.startHomeSheetDetailActivity(
+                                        context = context,
+                                        sheetId = ids
+                                    )
                                 }
                             } else if (page == "topic") {
                                 val homeService = RouterHelper.createRouter(HomeService::class.java)
                                 if (!TextUtils.isEmpty(ids)) {
-                                    homeService.startTopicActivity(context = context, topicId = ids.toIntSafe(),blockName = "")
+                                    homeService.startTopicActivity(
+                                        context = context,
+                                        topicId = ids.toIntSafe(),
+                                        blockName = ""
+                                    )
                                 }
                             } else if (page == "listenList") {
                                 val homeService = RouterHelper.createRouter(HomeService::class.java)
@@ -113,7 +121,7 @@ object BannerJumpUtils {
                     }
                 }
             }
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }

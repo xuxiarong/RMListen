@@ -23,6 +23,7 @@ import com.rm.business_lib.insertpoint.BusinessInsertManager
  * @param userInfo LoginUserBean 登陆的用户信息
  */
 fun loginIn(access: String, refresh: String, userInfo: LoginUserBean) {
+    BusinessInsertManager.doInsertKey(BusinessInsertConstance.INSERT_TYPE_LOGIN)
     // 保存登陆信息到本地
     ACCESS_TOKEN.putMMKV(access)
     REFRESH_TOKEN.putMMKV(refresh)

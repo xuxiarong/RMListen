@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.rm.module_main.R
 import com.rm.module_main.customview.bottomtab.internal.*
 import com.rm.module_main.customview.bottomtab.item.BaseTabItem
@@ -25,8 +25,8 @@ class BottomTabView @JvmOverloads constructor(
     private var mTabPaddingTop = 0
     private var mTabPaddingBottom = 0
     private var mNavigationController: NavigationController? = null
-    private var mPageChangeListener: ViewPagerPageChangeListener? = null
-    private var mViewPager: ViewPager? = null
+    private var mPageChangeListener: ViewPager2.OnPageChangeCallback? = null
+    private var mViewPager: ViewPager2? = null
 
     init {
         setPadding(0, 0, 0, 0)
@@ -62,8 +62,8 @@ class BottomTabView @JvmOverloads constructor(
                 continue
             }
             measureChild(child, widthMeasureSpec, heightMeasureSpec)
-            maxWidth = Math.max(maxWidth, child.measuredWidth)
-            maxHeight = Math.max(maxHeight, child.measuredHeight)
+            maxWidth = maxWidth.coerceAtLeast(child.measuredWidth)
+            maxHeight = maxHeight.coerceAtLeast(child.measuredHeight)
         }
         setMeasuredDimension(maxWidth, maxHeight)
     }
@@ -143,13 +143,10 @@ class BottomTabView @JvmOverloads constructor(
     private inner class Controller : BottomLayoutController {
         private var animator: ObjectAnimator? = null
         private var hide = false
-        override fun setupWithViewPager(viewPager: ViewPager) {
-            if (viewPager == null) {
-                return
-            }
+        override fun setupWithViewPager(viewPager: ViewPager2) {
             mViewPager = viewPager
             if (mPageChangeListener != null) {
-                mViewPager!!.removeOnPageChangeListener(mPageChangeListener!!)
+                mViewPager!!.unregisterOnPageChangeCallback(mPageChangeListener!!)
             } else {
                 mPageChangeListener = ViewPagerPageChangeListener()
             }
@@ -158,7 +155,7 @@ class BottomTabView @JvmOverloads constructor(
                 if (mNavigationController!!.selected != n) {
                     mNavigationController!!.setSelect(n)
                 }
-                mViewPager!!.addOnPageChangeListener(mPageChangeListener!!)
+                mViewPager!!.registerOnPageChangeCallback(mPageChangeListener!!)
             }
         }
 
@@ -188,21 +185,12 @@ class BottomTabView @JvmOverloads constructor(
         }
     }
 
-    private inner class ViewPagerPageChangeListener : ViewPager.OnPageChangeListener {
-        override fun onPageScrolled(
-            position: Int,
-            positionOffset: Float,
-            positionOffsetPixels: Int
-        ) {
-        }
-
+    private inner class ViewPagerPageChangeListener : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             if (mNavigationController != null && mNavigationController?.selected != position) {
                 mNavigationController!!.setSelect(position)
             }
         }
-
-        override fun onPageScrollStateChanged(state: Int) {}
     }
 
     private val STATUS_SELECTED = "STATUS_SELECTED"

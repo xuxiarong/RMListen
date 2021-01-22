@@ -218,6 +218,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         launchOnIO {
             repository.searchHotRecommend().checkResult(
                 onSuccess = {
+                    showContentView()
                     val list = mutableListOf<SearchHotRecommendBean>()
                     val tabList = mutableListOf<String>()
                     it.forEach { bean ->
@@ -231,6 +232,7 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
                     hotRecommend.set(list)
                 },
                 onError = { it, _ ->
+                    showContentView()
                     DLog.i("-------->", "searchHotRecommend:$it")
                 }
             )
@@ -244,9 +246,11 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         launchOnIO {
             repository.searchHintBanner().checkResult(
                 onSuccess = {
+                    showContentView()
                     hintBannerList.set(it.keywords?.split(","))
                 },
                 onError = { it, _ ->
+                    showContentView()
                     DLog.i("-------->", "searchHintBanner:$it")
                 }
             )
@@ -260,12 +264,14 @@ class SearchMainViewModel(private val repository: SearchRepository) : BaseVMView
         launchOnIO {
             repository.searchRecommend().checkResult(
                 onSuccess = {
+                    showContentView()
                     val split = it.keywords?.split(",")
                     recommendData.set(it.keywords)
                     recommendVisible.set(true)
                     adapter.setList(split)
                 },
                 onError = { it, _ ->
+                    showContentView()
                     DLog.i("-------->", "searchRecommend:$it")
                 })
         }

@@ -51,8 +51,8 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
     override fun initView() {
         super.initView()
-        setDefault()
-        if (isAdded) {
+        if (isAdded && !isDetached) {
+            setDefault()
             context?.let {
                 val height = getStateHeight(it)
                 val searchParams =
@@ -109,6 +109,7 @@ class SearchMainFragment : BaseVMFragment<SearchFragmentMainBinding, SearchMainV
 
 
     override fun initData() {
+        mViewModel.showLoading()
         mViewModel.searchHotRecommend()
         mViewModel.searchRecommend()
         mViewModel.searchHintBanner()

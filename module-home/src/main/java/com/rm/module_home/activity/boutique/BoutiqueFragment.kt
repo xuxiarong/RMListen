@@ -37,7 +37,7 @@ class BoutiqueFragment(
         mViewModel.categoryTabBean = categoryTabBean
         headView.findViewById<XBanner>(R.id.home_head_banner).apply {
             setIsClipChildrenMode(false)
-            paddingBindData(bannerList, true)
+            paddingBindData(bannerList)
             setOnItemClickListener { _, _, _, position ->
                 BannerJumpUtils.onBannerClick(context, bannerList[position].banner_jump)
             }

@@ -74,11 +74,11 @@ class ListenRecentListenFragment :
     override fun onDestroy() {
         super.onDestroy()
         homeGlobalSelectTabChangedCallback?.let {
-            HomeGlobalData.homeGlobalSelectTab.addOnPropertyChangedCallback(it)
+            HomeGlobalData.homeGlobalSelectTab.removeOnPropertyChangedCallback(it)
             homeGlobalSelectTabChangedCallback = null
         }
         basePlayInfoModelChangedCallback?.let {
-            BaseConstance.basePlayInfoModel.addOnPropertyChangedCallback(it)
+            BaseConstance.basePlayInfoModel.removeOnPropertyChangedCallback(it)
             basePlayInfoModelChangedCallback = null
         }
     }

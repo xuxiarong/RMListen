@@ -1,6 +1,7 @@
 package com.rm.module_main.customview.bottomtab
 
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 
 interface BottomLayoutController {
     /**
@@ -11,7 +12,7 @@ interface BottomLayoutController {
      *
      * @param viewPager [ViewPager]
      */
-    fun setupWithViewPager(viewPager: ViewPager)
+    fun setupWithViewPager(viewPager: ViewPager2)
 
     /**
      * 向下移动隐藏导航栏

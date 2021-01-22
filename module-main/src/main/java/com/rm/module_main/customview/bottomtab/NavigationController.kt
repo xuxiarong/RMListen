@@ -2,6 +2,7 @@ package com.rm.module_main.customview.bottomtab
 
 import android.graphics.drawable.Drawable
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.rm.module_main.customview.bottomtab.item.BaseTabItem
 import com.rm.module_main.customview.bottomtab.listener.OnTabItemSelectedListener
 import com.rm.module_main.customview.bottomtab.listener.SimpleTabItemSelectedListener
@@ -70,7 +71,7 @@ class NavigationController(
         mItemController.addPlaceholder(index)
     }
 
-    override fun setupWithViewPager(viewPager: ViewPager) {
+    override fun setupWithViewPager(viewPager: ViewPager2) {
         mBottomLayoutController.setupWithViewPager(viewPager)
     }
 
