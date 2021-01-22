@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.R
 import com.rm.baselisten.util.toast.XToast
 import com.rm.baselisten.utilExt.dip
@@ -28,11 +29,11 @@ object ToastUtil {
     private var mToast: Toast? = null
     private var xToast: WeakReference<XToast>? = null
 
-    fun show(context: Context?, msg: String?) {
+    fun show(msg: String?) {
         try {
-            if (null != context && !TextUtils.isEmpty(msg)) {
+            if (!TextUtils.isEmpty(msg)) {
                 mToast?.cancel()
-                mToast = Toast.makeText(context.applicationContext, "", Toast.LENGTH_SHORT)
+                mToast = Toast.makeText(BaseApplication.CONTEXT, "", Toast.LENGTH_SHORT)
                 mToast?.setText(msg)
                 mToast?.show()
             }
@@ -41,25 +42,25 @@ object ToastUtil {
         }
     }
 
-    fun show(context: Context?, msg: String?, isCenter: Boolean) {
+    fun show(msg: String?, isCenter: Boolean) {
         if (isCenter) {
-            showCenter(context, msg)
+            showCenter(msg)
         } else {
-            show(context, msg)
+            show(msg)
         }
     }
 
     @SuppressLint("InflateParams")
-    private fun showCenter(context: Context?, msg: String?) {
+    private fun showCenter( msg: String?) {
         try {
-            if (null != context && !TextUtils.isEmpty(msg)) {
-                val view = LayoutInflater.from(context.applicationContext)
+            if ( !TextUtils.isEmpty(msg)) {
+                val view = LayoutInflater.from(BaseApplication.CONTEXT)
                     .inflate(R.layout.base_layout_toast, null)
                 view.findViewById<AppCompatTextView>(R.id.base_toast_msg).text = msg
                 mToast?.cancel()
-                mToast = Toast.makeText(context.applicationContext, "", Toast.LENGTH_LONG)
+                mToast = Toast.makeText(BaseApplication.CONTEXT, "", Toast.LENGTH_LONG)
                 mToast?.view = view
-                mToast?.setGravity(Gravity.CENTER, 0, context.dip(100))
+                mToast?.setGravity(Gravity.CENTER, 0, BaseApplication.CONTEXT.dip(100))
                 mToast?.show()
             }
         } catch (e: Exception) {
@@ -130,7 +131,7 @@ object ToastUtil {
                 setWidth(context.screenWidth - context.dip(20))
                 show(lifecycleOwner)
             }
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }

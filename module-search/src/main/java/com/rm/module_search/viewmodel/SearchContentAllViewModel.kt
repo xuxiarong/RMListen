@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -151,7 +152,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
                     val indexOf = anchorAdapter.data.indexOf(bean)
                     bean.is_follow = 1
                     anchorAdapter.notifyItemChanged(indexOf)
-                    showTip("关注成功")
+                    showTip(BaseApplication.getContext().getString(R.string.business_attention_success))
                 },
                 onError = { it, _ ->
                     showContentView()
@@ -172,7 +173,7 @@ class SearchContentAllViewModel(private val repository: SearchRepository) : Base
                     val indexOf = anchorAdapter.data.indexOf(bean)
                     bean.is_follow = 0
                     anchorAdapter.notifyItemChanged(indexOf)
-                    showTip("取消关注成功")
+                    showTip( BaseApplication.getContext().getString(R.string.business_cancel_attention_success))
                 },
                 onError = { it, _ ->
                     showContentView()

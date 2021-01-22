@@ -145,5 +145,8 @@
     <string name="mine_customer">客服电话：123213</string>
     <string name="mine_newest_version">当前已是最新版本</string>
     <string name="mine_word_count_exceeds_limit">字数超限制</string>
+    <string name="mine_fans_empty">没有粉丝，快去为自己创造影响力吧</string>
+    <string name="mine_follow_empty">没有关注的人</string>
+    <string name="mine_member_not_logout">主播账号不允许销户</string>
 
 </resources>

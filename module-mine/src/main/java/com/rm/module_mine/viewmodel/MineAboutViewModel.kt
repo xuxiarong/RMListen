@@ -16,6 +16,7 @@ import com.rm.module_mine.BuildConfig
 import com.rm.module_mine.R
 import com.rm.module_mine.bean.MineAboutUsBean
 import com.rm.module_mine.repository.MineRepository
+import org.koin.ext.getScopeId
 
 
 /**
@@ -34,10 +35,12 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
     }
 
 
+    private val updateVersion = BaseApplication.getContext().getString(R.string.mine_update_version)
+
     val mAdapter by lazy {
         CommonBindVMAdapter(
             this,
-            mutableListOf(MineAboutUsBean("版本更新", "", "")),
+            mutableListOf(MineAboutUsBean(updateVersion, "", "")),
             R.layout.mine_adapter_about_us,
             BR.viewModel,
             BR.item
@@ -45,19 +48,21 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
     }
 
     fun clickCooperation(view: View, bean: MineAboutUsBean) {
-        if (TextUtils.equals("版本更新", bean.title)) {
+        if (TextUtils.equals(updateVersion, bean.title)) {
             view.postDelayed({
                 if (bean.showRed) {
                     showUploadDialog(view.context)
                 } else {
-                    showTip("当前已经是最新版本了")
+                    showTip(
+                        BaseApplication.getContext().getString(R.string.business_latest_version)
+                    )
                 }
             }, 100)
         } else {
             bean.jump_url?.let {
-                if(it.contains("?")){
+                if (it.contains("?")) {
                     BaseWebActivity.startBaseWebActivity(view.context, "$it&channel=Andriod")
-                }else{
+                } else {
                     BaseWebActivity.startBaseWebActivity(view.context, "$it?channel=Andriod")
                 }
             }

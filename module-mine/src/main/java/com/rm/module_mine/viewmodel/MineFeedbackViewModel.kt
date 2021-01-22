@@ -7,8 +7,6 @@ import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.EmojiUtils
 import com.rm.baselisten.util.FileUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_mine.BR

@@ -20,15 +20,15 @@ class SwipeColseActivity : BaseVMActivity<DemoSwipeCloseBinding,DemoSwipeViewMod
         super.onCreate(savedInstanceState)
 
         rl_swipe.setOnClickListener {
-            ToastUtil.show(this@SwipeColseActivity,"我是点击事件")
+            ToastUtil.show("我是点击事件")
         }
 
         rl_swipe.setOnLongClickListener {
-            ToastUtil.show(this@SwipeColseActivity,"我是长按事件")
+            ToastUtil.show("我是长按事件")
             true
         }
         to_top.setOnClickListener {
-            ToastUtil.show(this@SwipeColseActivity,"我是置顶点击事件")
+            ToastUtil.show("我是置顶点击事件")
             sw.close()
         }
 

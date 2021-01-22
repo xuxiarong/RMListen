@@ -187,7 +187,7 @@ class MainMainActivity :
 
     override fun onBackPressed() {
         if (lastExitTime == 0L) {
-            ToastUtil.show(this, "2秒内再次返回将退出雷曼听书App")
+            ToastUtil.show( "2秒内再次返回将退出雷曼听书App")
             lastExitTime = System.currentTimeMillis()
         } else {
             if (System.currentTimeMillis() - lastExitTime <= 2000) {
@@ -195,7 +195,7 @@ class MainMainActivity :
                 finish()
             } else {
                 lastExitTime = System.currentTimeMillis()
-                ToastUtil.show(this, "2秒内再次返回将退出雷曼听书App")
+                ToastUtil.show( "2秒内再次返回将退出雷曼听书App")
             }
         }
     }

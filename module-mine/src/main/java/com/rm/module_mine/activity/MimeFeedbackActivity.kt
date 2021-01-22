@@ -233,4 +233,8 @@ class MimeFeedbackActivity : BaseVMActivity<MineActivityFeedbackBinding, MineFee
             .launch()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mViewModel.photoHelp = null
+    }
 }

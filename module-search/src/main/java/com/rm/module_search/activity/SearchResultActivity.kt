@@ -153,7 +153,6 @@ class SearchResultActivity :
     }
 
     override fun finish() {
-        searchKeyword.set("")
         setResult(SEARCH_RESULT_CODE)
         super.finish()
     }

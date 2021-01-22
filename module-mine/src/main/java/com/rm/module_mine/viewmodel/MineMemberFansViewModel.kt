@@ -3,6 +3,7 @@ package com.rm.module_mine.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
@@ -82,7 +83,9 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                 onSuccess = {
                     showContentView()
                     changeState(bean, 1)
-                    showTip("关注成功")
+                    showTip(
+                        BaseApplication.getContext().getString(R.string.business_attention_success)
+                    )
                     if (TextUtils.equals(memberId, loginUser.get()?.id)) {
                         memberFollowNum.set((memberFollowNum.get()!! + 1))
                     }
@@ -106,7 +109,10 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
                     showContentView()
                     DLog.i("=======>", "$memberId   ${loginUser.get()?.id}")
                     changeState(bean, 0)
-                    showTip("取消关注成功")
+                    showTip(
+                        BaseApplication.getContext()
+                            .getString(R.string.business_cancel_attention_success)
+                    )
                     if (TextUtils.equals(memberId, loginUser.get()?.id)) {
                         memberFollowNum.set((memberFollowNum.get()!! - 1))
                     }
@@ -154,7 +160,7 @@ class MineMemberFansViewModel(private val repository: MineRepository) : BaseVMVi
             if (bean.list.isNotEmpty()) {
                 fanAdapter.setList(bean.list)
             } else {
-                showDataEmpty("没有粉丝，快去为自己创造影响力吧")
+                showDataEmpty(BaseApplication.getContext().getString(R.string.mine_fans_empty))
             }
         } else {
             refreshStatusModel.finishLoadMore(true)

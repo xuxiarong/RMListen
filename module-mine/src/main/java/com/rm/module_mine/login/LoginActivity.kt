@@ -30,15 +30,6 @@ class LoginActivity : BaseVMActivity<ActivityLoginBinding, LoginViewModel>() {
             .setSubTitle("我是副标题")
             .setLeftIconClick { finish() }
             .setLeftText("左边")
-            .setLeftTextClick { ToastUtil.show(this, "leftTextClick") }
-            .setLeftIcon1(R.drawable.base_icon_back)
-            .setLeftIcon1Click { ToastUtil.show(this, "leftIcon1Click") }
-            .setRightIcon(R.drawable.base_icon_back)
-            .setRightIconClick { ToastUtil.show(this, "RightIconClick") }
-            .setRightText("右边")
-            .setRightTextClick { ToastUtil.show(this, " rightTextClick") }
-            .setRightIcon1(R.drawable.base_icon_back)
-            .setRightIcon1Click { ToastUtil.show(this, " rightIcon1Click") }
         mViewModel.baseTitleModel.value = baseTitleModel
     }
 

@@ -5,6 +5,7 @@ import android.text.TextUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.String
@@ -69,7 +70,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     fans.get()?.let {
                         fans.set(it + 1)
                     }
-                    showTip("关注成功")
+                    showTip(BaseApplication.getContext().getString(R.string.business_attention_success))
                 },
                 onError = { it, _ ->
                     showContentView()
@@ -93,7 +94,7 @@ class MineMemberViewModel(private val repository: MineRepository) : BaseVMViewMo
                     fans.get()?.let {
                         fans.set(it - 1)
                     }
-                    showTip("取消关注成功")
+                    showTip( BaseApplication.getContext().getString(R.string.business_cancel_attention_success))
                 },
                 onError = { it, _ ->
                     DLog.i("--->", "$it")

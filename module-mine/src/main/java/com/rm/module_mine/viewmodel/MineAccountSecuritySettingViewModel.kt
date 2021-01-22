@@ -74,7 +74,7 @@ class MineAccountSecuritySettingViewModel(private val repository: MineRepository
             if (loginUser.get()?.member_type == 2) {
                 TipsFragmentDialog().apply {
                     titleText = context.String(R.string.business_tips)
-                    contentText = "主播账号不允许销户"
+                    contentText = context.getString(R.string.mine_member_not_logout)
                     leftBtnText = context.String(R.string.business_sure)
                     leftBtnClick = {
                         dismiss()

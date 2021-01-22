@@ -717,7 +717,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     isAttention.set(true)
-                    showTip("关注成功")
+                    showTip(BaseApplication.getContext().getString(R.string.business_attention_success))
                 },
                 onError = { it, _ ->
                     showContentView()
@@ -758,7 +758,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     isAttention.set(false)
-                    showTip("取消关注成功")
+                    showTip( BaseApplication.getContext().getString(R.string.business_cancel_attention_success))
                 },
                 onError = { it, _ ->
                     showContentView()

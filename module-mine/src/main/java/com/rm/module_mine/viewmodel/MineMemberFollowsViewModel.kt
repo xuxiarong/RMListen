@@ -3,6 +3,7 @@ package com.rm.module_mine.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import androidx.fragment.app.FragmentActivity
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.DLog
@@ -82,7 +83,9 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                 onSuccess = {
                     showContentView()
                     changeState(bean, 1)
-                    showTip("关注成功")
+                    showTip(
+                        BaseApplication.getContext().getString(R.string.business_attention_success)
+                    )
                     if (TextUtils.equals(memberId, loginUser.get()?.id)) {
                         memberFollowNum.set((memberFollowNum.get()!! + 1))
                     }
@@ -110,12 +113,16 @@ class MineMemberFollowsViewModel(private val repository: MineRepository) : BaseV
                         memberFollowNum.set((memberFollowNum.get()!! - 1))
 
                         if (followAdapter.data.size <= 0) {
-                            showDataEmpty("没有关注的人")
+                            showDataEmpty(BaseApplication.getContext().getString(R.string.mine_follow_empty)
+                            )
                         }
                     } else {
                         changeState(bean, 0)
                     }
-                    showTip("取消关注成功")
+                    showTip(
+                        BaseApplication.getContext()
+                            .getString(R.string.business_cancel_attention_success)
+                    )
                 },
                 onError = { it, _ ->
                     showContentView()

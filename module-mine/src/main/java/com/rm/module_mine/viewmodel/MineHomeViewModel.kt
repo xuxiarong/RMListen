@@ -1,6 +1,7 @@
 package com.rm.module_mine.viewmodel
 
 import android.content.Context
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -162,11 +163,11 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
                             sureBlock = {}
                         )
                 } else {
-                    showTip("当前已经是最新版本了")
+                    showTip(BaseApplication.getContext().getString(R.string.business_latest_version))
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                showTip("当前已经是最新版本了")
+                showTip(BaseApplication.getContext().getString(R.string.business_latest_version))
             }
         }
     }

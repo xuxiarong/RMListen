@@ -32,7 +32,6 @@
     <string name="business_comment_hint">快来发表你的评论吧</string>
 
 
-
     <string name="business_collect_success">收藏成功</string>
     <string name="business_favorites_success">订阅成功</string>
     <string name="business_know">我知道了</string>
@@ -63,4 +62,10 @@
     <string name="business_comment_empty">这本书还没有人评论，赶紧抢下沙发吧！</string>
     <string name="business_cancel_like">business_like.json</string>
     <string name="business_like">business_cancel_like.json</string>
+
+    <string name="business_attention_success">关注成功</string>
+    <string name="business_cancel_attention_success">取消关注成功</string>
+    <string name="business_latest_version">当前已经是最新版本了</string>
+
+
 </resources>

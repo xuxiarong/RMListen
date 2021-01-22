@@ -7,6 +7,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
@@ -803,7 +804,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     }
                     isAttention.set(true)
-                    showTip("关注成功")
+                    showTip(BaseApplication.getContext().getString(R.string.business_attention_success))
                 },
                 onError = { it, _ ->
                     showContentView()
@@ -851,7 +852,7 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     }
                     isAttention.set(false)
-                    showTip("取消关注成功")
+                    showTip( BaseApplication.getContext().getString(R.string.business_cancel_attention_success))
                 },
                 onError = { it, _ ->
                     showContentView()
