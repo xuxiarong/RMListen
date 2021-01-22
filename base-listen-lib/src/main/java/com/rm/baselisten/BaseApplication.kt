@@ -20,7 +20,7 @@ import kotlin.properties.Delegates
 open class BaseApplication : Application() {
 
     var activityList: MutableList<Activity> = mutableListOf()
-    var allActivityDestroyListener: IOnAllActivityDestroy? = null
+    var allActivityListListenerListener: IActivityListListener? = null
 
     companion object {
         var CONTEXT: Context by Delegates.notNull()
@@ -70,7 +70,7 @@ open class BaseApplication : Application() {
                             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                         manager.cancelAll()
                         DLog.d("suolong", "cancelAll Notification")
-                        allActivityDestroyListener?.onAllActivityDestroy()
+                        allActivityListListenerListener?.onAllActivityDestroy()
                     }
                 }
             }
@@ -86,14 +86,21 @@ open class BaseApplication : Application() {
             }
 
             override fun onActivityResumed(activity: Activity) {
+                try {
+                    if(activityList.size == 1){
+                        allActivityListListenerListener?.onFirstActivityResume()
+                    }
+                }catch (e : Exception){
+
+                }
             }
 
         })
 
     }
 
-    fun registerAllActivityDestroy(listener: IOnAllActivityDestroy) {
-        allActivityDestroyListener = listener
+    fun registerAllActivityDestroy(listener: IActivityListListener) {
+        allActivityListListenerListener = listener
     }
 
     fun getTopTaskActivity(): Activity? {
@@ -103,8 +110,9 @@ open class BaseApplication : Application() {
         return null
     }
 
-    interface IOnAllActivityDestroy {
+    interface IActivityListListener {
         fun onAllActivityDestroy()
+        fun onFirstActivityResume()
     }
 
 }

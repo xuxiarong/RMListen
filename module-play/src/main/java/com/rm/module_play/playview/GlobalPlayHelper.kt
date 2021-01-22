@@ -17,6 +17,8 @@ import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.utils.DeviceUtils
+import com.rm.component_comm.play.PlayService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_play.api.PlayApiService
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.constants.MUSIC_MODEL_ORDER
@@ -40,7 +42,7 @@ import kotlin.system.exitProcess
  * @Version: 1.0.0
  */
 class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
-    BaseApplication.IOnAllActivityDestroy {
+    BaseApplication.IActivityListListener {
     companion object {
         val INSTANCE: GlobalPlayHelper by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             GlobalPlayHelper()
@@ -55,18 +57,24 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         }
     }
 
+
+
     private var oldAudio: String = ""
 
     var playStatusListener: IPlayStatusListener? = null
 
 
-    fun addOnPlayerEventListener() {
+    fun initActivityListener() {
         if (listener == null) {
             listener = this
-            musicPlayerManger.addOnPlayerEventListener(this)
             baseApplication.registerAllActivityDestroy(this)
         }
     }
+
+    fun addPlayEventListener(){
+        musicPlayerManger.addOnPlayerEventListener(this)
+    }
+
 
     fun registerPlayStatusListener(playStatusListener: IPlayStatusListener) {
         this.playStatusListener = playStatusListener
@@ -78,7 +86,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
 
     fun continueLastPlay(playChapter: DownloadChapter,playChapterList : MutableList<DownloadChapter>){
         if(playChapterList.isNotEmpty()){
-            addOnPlayerEventListener()
+            addPlayEventListener()
             val baseAudioList = mutableListOf<BaseAudioInfo>()
             playChapterList.forEach {
                 baseAudioList.add(
@@ -332,6 +340,11 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             PlayGlobalData.clearCountDownTimer()
             exitProcess(0)
         }
+    }
+
+    override fun onFirstActivityResume() {
+        RouterHelper.createRouter(PlayService::class.java)
+            .initPlayService(baseApplication)
     }
 
 }

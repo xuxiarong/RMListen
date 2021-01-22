@@ -4,4 +4,11 @@
         <attr name="PaddingBottom" format="dimension"/>
     </declare-styleable>
 
+    <!--闪屏页-->
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
+import com.rm.baselisten.BaseApplication
 import com.rm.music_exoplayer_lib.bean.BaseAudioInfo
 import com.rm.music_exoplayer_lib.iinterface.MusicPlayerPresenter
 import com.rm.music_exoplayer_lib.listener.MusicPlayerEventListener
@@ -29,7 +30,6 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
         }
         private var mBinder: MusicPlayerBinder? = null
         private var mConnection: ServiceConnection? = null
-
         //播放器界面路径、锁屏界面路径、主界面路径
         private var mActivityLockClassName: String? = null //播放器界面路径、锁屏界面路径、主界面路径
 
@@ -52,6 +52,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
             ExoplayerLogger.exoLog("2 链接播放服务失败")
             mBinder?.close()
             mBinder = null
+            musicPlayerManger.initialize(BaseApplication.CONTEXT)
         }
 
     }
@@ -73,11 +74,13 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
                 Context.BIND_NOT_FOREGROUND
             )
         }
-
     }
 
     override fun startPlayMusic(chapterId: String) {
         mBinder?.startPlayMusic(chapterId)
+        if(mBinder == null){
+            initialize(BaseApplication.CONTEXT)
+        }
         ExoplayerLogger.exoLog("startPlayMusic mBinder == null ${mBinder == null}chapterId = $chapterId")
         ExoplayerLogger.exoLog("startPlayMusic isPlaying == null ${mBinder?.isPlaying()} ")
     }

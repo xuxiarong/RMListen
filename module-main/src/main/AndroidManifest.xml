@@ -22,8 +22,9 @@
         <activity
             android:name=".activity.splash.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
-            <intent-filter>
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

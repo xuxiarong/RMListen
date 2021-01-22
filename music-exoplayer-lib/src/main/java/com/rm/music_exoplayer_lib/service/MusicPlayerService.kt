@@ -412,7 +412,9 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun addOnPlayerEventListener(listener: MusicPlayerEventListener) {
-        mOnPlayerEventListeners.add(listener)
+        if(mOnPlayerEventListeners.isEmpty()){
+            mOnPlayerEventListeners.add(listener)
+        }
     }
 
     override fun removePlayerListener(listener: MusicPlayerEventListener) {
