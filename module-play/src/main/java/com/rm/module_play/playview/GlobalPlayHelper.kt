@@ -58,7 +58,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
 
-
     private var oldAudio: String = ""
 
     var playStatusListener: IPlayStatusListener? = null
@@ -71,7 +70,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         }
     }
 
-    fun addPlayEventListener(){
+    fun addPlayEventListener() {
         musicPlayerManger.addOnPlayerEventListener(this)
     }
 
@@ -84,26 +83,34 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         this.playStatusListener = null
     }
 
-    fun continueLastPlay(playChapter: DownloadChapter,playChapterList : MutableList<DownloadChapter>){
-        if(playChapterList.isNotEmpty()){
+    fun continueLastPlay(
+        playChapter: DownloadChapter,
+        playChapterList: MutableList<DownloadChapter>
+    ) {
+        if (playChapterList.isNotEmpty()) {
             addPlayEventListener()
             val baseAudioList = mutableListOf<BaseAudioInfo>()
             playChapterList.forEach {
                 baseAudioList.add(
-                        BaseAudioInfo(
-                                audioPath = it.path_url,
-                                audioName = it.chapter_name,
-                                filename = it.chapter_name,
-                                audioId = it.audio_id.toString(),
-                                chapterId = it.chapter_id.toString(),
-                                duration = it.realDuration,
-                                playCount = it.play_count.toString()
-                        )
+                    BaseAudioInfo(
+                        audioPath = it.path_url,
+                        audioName = it.chapter_name,
+                        filename = it.chapter_name,
+                        audioId = it.audio_id.toString(),
+                        chapterId = it.chapter_id.toString(),
+                        duration = it.realDuration,
+                        playCount = it.play_count.toString()
+                    )
                 )
             }
-            DLog.d("music-exoplayer-lib","continueLastPlay")
-            PlayGlobalData.playLastPlayProcess.set(BaseConstance.basePlayProgressModel.get()?.currentDuration?:-1L)
-            musicPlayerManger.updateMusicPlayerData(audios = baseAudioList, chapterId = playChapter.chapter_id.toString())
+            DLog.d("music-exoplayer-lib", "continueLastPlay")
+            PlayGlobalData.playLastPlayProcess.set(
+                BaseConstance.basePlayProgressModel.get()?.currentDuration ?: -1L
+            )
+            musicPlayerManger.updateMusicPlayerData(
+                audios = baseAudioList,
+                chapterId = playChapter.chapter_id.toString()
+            )
             musicPlayerManger.startPlayMusic(chapterId = playChapter.chapter_id.toString())
         }
     }
@@ -116,13 +123,13 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         PlayGlobalData.playIsError.set(true)
     }
 
-    override fun onPrepared(totalDurtion: Long,isAd : Boolean) {
-        DLog.d("suolong_GlobalPlayHelper","onPrepared isAd = $isAd")
+    override fun onPrepared(totalDurtion: Long, isAd: Boolean) {
+        DLog.d("suolong_GlobalPlayHelper", "onPrepared isAd = $isAd")
         PlayGlobalData.playIsError.set(false)
         //播放广告的时候，播放速度不生效，正常播放生效
         if (isAd) {
             musicPlayerManger.setPlayerMultiple(1f)
-            BaseConstance.updateBaseProgress(0,totalDurtion)
+            BaseConstance.updateBaseProgress(0, totalDurtion)
             PlayGlobalData.process.set(0F)
             updateStartUpdateThumbText()
         } else {
@@ -138,10 +145,10 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 it.realDuration = totalDurtion
             }
             //如果需要接着上一次的播放记录，直接跳转到该进度
-            if(PlayGlobalData.playLastPlayProcess.get()>0 && !isAd){
-                if(PlayGlobalData.playLastPlayProcess.get()>=totalDurtion){
+            if (PlayGlobalData.playLastPlayProcess.get() > 0 && !isAd) {
+                if (PlayGlobalData.playLastPlayProcess.get() >= totalDurtion) {
                     musicPlayerManger.seekTo(0L)
-                }else{
+                } else {
                     musicPlayerManger.seekTo(PlayGlobalData.playLastPlayProcess.get())
                 }
                 PlayGlobalData.playLastPlayProcess.set(-1L)
@@ -155,17 +162,17 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     override fun onInfo(event: Int, extra: Int) {
     }
 
-    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int,isAd: Boolean) {
+    override fun onPlayMusiconInfo(musicInfo: BaseAudioInfo, position: Int, isAd: Boolean) {
         PlayGlobalData.playIsError.set(false)
-        BaseConstance.updateBaseChapterId(musicInfo.audioId,musicInfo.chapterId)
+        BaseConstance.updateBaseChapterId(musicInfo.audioId, musicInfo.chapterId)
         PlayGlobalData.setPlayHasNextAndPre(musicPlayerManger.getCurrentPlayList(), position)
-        if(PlayGlobalData.playAdIsPlaying.get()){
+        if (PlayGlobalData.playAdIsPlaying.get()) {
             BusinessInsertManager.doInsertKeyAndChapter(
                 BusinessInsertConstance.INSERT_TYPE_CHAPTER_PLAY,
                 musicInfo.audioId,
                 musicInfo.chapterId
             )
-            DLog.d("suolong_GlobalPlayHelper","onPlayMusiconInfo")
+            DLog.d("suolong_GlobalPlayHelper", "onPlayMusiconInfo")
             if (!TextUtils.equals(oldAudio, musicInfo.audioId)) {
                 oldAudio = musicInfo.audioId
                 BusinessInsertManager.doInsertKeyAndAudio(
@@ -173,12 +180,15 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                     musicInfo.audioId
                 )
             }
-        }else{
+        } else {
             BaseConstance.updateBaseProgress(0L, musicInfo.duration * 1000)
         }
-        PlayGlobalData.savePlayChapter(position,isAd)
-        PlayGlobalData.playChapterId.get()?.let {
-            playReport(PlayGlobalData.playAudioId.get()!!, it)
+        PlayGlobalData.savePlayChapter(position, isAd)
+
+        if (!isAd) {
+            PlayGlobalData.playChapterId.get()?.let {
+                playReport(PlayGlobalData.playAudioId.get()!!, it)
+            }
         }
     }
 
@@ -208,9 +218,9 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             when (musicPlayerManger.getPlayerModel()) {
                 //顺序播放
                 MUSIC_MODEL_ORDER -> {
-                    if(PlayGlobalData.checkCountChapterPlayEnd(PlayGlobalData.hasNextChapter.get())){
+                    if (PlayGlobalData.checkCountChapterPlayEnd(PlayGlobalData.hasNextChapter.get())) {
                         musicPlayerManger.pause()
-                    }else{
+                    } else {
                         if (PlayGlobalData.hasNextChapter.get()) {
                             PlayGlobalData.playNeedQueryChapterProgress.set(false)
                             getChapterAd {
@@ -221,9 +231,9 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 }
                 //单曲播放
                 MUSIC_MODEL_SINGLE -> {
-                    if(PlayGlobalData.checkCountChapterPlayEnd(true)){
+                    if (PlayGlobalData.checkCountChapterPlayEnd(true)) {
                         musicPlayerManger.pause()
-                    }else{
+                    } else {
                         PlayGlobalData.playChapterId.get()?.let {
                             PlayGlobalData.playNeedQueryChapterProgress.set(false)
                             musicPlayerManger.startPlayMusic(it)
@@ -237,23 +247,30 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
             if (currentStatus.playReady == playWhenReady && currentStatus.playStatus == playbackState) {
                 return
             } else {
-                BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playWhenReady, playbackState))
+                BaseConstance.basePlayStatusModel.set(
+                    BasePlayStatusModel(
+                        playWhenReady,
+                        playbackState
+                    )
+                )
             }
         } else {
             BaseConstance.basePlayStatusModel.set(BasePlayStatusModel(playWhenReady, playbackState))
         }
         DLog.d("suolong", " playWhenReady = $playWhenReady --- status = $playbackState ")
     }
+
     /**
      * 上报
      */
     private fun playReport(audioId: String, chapterId: String) {
-        GlobalScope.launch (Dispatchers.IO){
+        GlobalScope.launch(Dispatchers.IO) {
             playApiService.playerReport("player", audioId, chapterId, DeviceUtils.uniqueDeviceId)
         }
     }
+
     fun getChapterAd(actionPlayAd: () -> Unit) {
-        if(!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)){
+        if (!NetWorkUtils.isNetworkAvailable(BaseApplication.CONTEXT)) {
             actionPlayAd()
             return
         }
@@ -265,14 +282,14 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
                 requestBean.toJson().toString()
                     .toRequestBody("application/json;charset=utf-8".toMediaType())
             )
-            if(chapterAd.code!=0){
+            if (chapterAd.code != 0) {
                 PlayGlobalData.playAdIsPlaying.set(false)
                 PlayGlobalData.playVoiceAdClose.set(true)
                 PlayGlobalData.playVoiceImgAd.set(null)
                 musicPlayerManger.setAdPath(arrayListOf())
                 actionPlayAd()
                 DLog.d("suolong", "error = ${chapterAd.msg}")
-            }else{
+            } else {
                 chapterAd.data.let {
                     val result = arrayListOf<BaseAudioInfo>()
                     if (it.ad_player_voice != null && it.ad_player_voice.isNotEmpty()) {
@@ -308,7 +325,6 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
     }
 
 
-
     override fun onStartPlayAd() {
         PlayGlobalData.process.set(0F)
         PlayGlobalData.maxProcess.set(0F)
@@ -316,7 +332,7 @@ class GlobalPlayHelper private constructor() : MusicPlayerEventListener,
         PlayGlobalData.playAdIsPlaying.set(true)
     }
 
-    private fun updateStartUpdateThumbText(){
+    private fun updateStartUpdateThumbText() {
         if ("00:00/00:00" != PlayGlobalData.updateThumbText.get()) {
             PlayGlobalData.updateThumbText.set("00:00/00:00")
         }

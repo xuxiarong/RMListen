@@ -84,16 +84,16 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     private val mExoPlayer: SimpleExoPlayer by lazy {
         SimpleExoPlayer.Builder(this).build().apply {
             audioAttributes = AudioAttributes.Builder()
-                .setContentType(C.CONTENT_TYPE_MUSIC)
-                .setUsage(C.USAGE_MEDIA)
-                .build()
+                    .setContentType(C.CONTENT_TYPE_MUSIC)
+                    .setUsage(C.USAGE_MEDIA)
+                    .build()
         }
     }
     private val dataSourceFactory: DataSource.Factory by lazy {
 
         DefaultDataSourceFactory(
-            this,
-            getUserAgent(this, this.packageName)
+                this,
+                getUserAgent(this, this.packageName)
         )
     }
     val mAudioFocusManager by lazy {
@@ -106,7 +106,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
         override fun handleMessage(msg: Message) {
             val duration =
-                (getCurrentPlayerMusic()?.duration ?: mExoPlayer.contentDuration)
+                    (getCurrentPlayerMusic()?.duration ?: mExoPlayer.contentDuration)
             val currentPosition = mExoPlayer.contentPosition
             onUpdateProgress(currentPosition, duration)
             sendEmptyMessageDelayed(0, UPDATE_PROGRESS_DELAY)
@@ -127,39 +127,39 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     override fun onCreate() {
         super.onCreate()
         mAudioFocusManager.setFocusListener(
-            object : MusicAudioFocusManager.OnAudioFocusListener {
-                /**
-                 * 恢复音频输出焦点，这里恢复播放需要和用户调用恢复播放有区别
-                 * 因为当用户主动暂停，获取到音频焦点后不应该恢复播放，而是继续保持暂停状态
-                 */
-                override fun onFocusGet() {
-                    //如果是被动失去焦点的，则继续播放，否则继续保持暂停状态
-                    if (mIsPassive) {
-                        play()
+                object : MusicAudioFocusManager.OnAudioFocusListener {
+                    /**
+                     * 恢复音频输出焦点，这里恢复播放需要和用户调用恢复播放有区别
+                     * 因为当用户主动暂停，获取到音频焦点后不应该恢复播放，而是继续保持暂停状态
+                     */
+                    override fun onFocusGet() {
+                        //如果是被动失去焦点的，则继续播放，否则继续保持暂停状态
+                        if (mIsPassive) {
+                            play()
+                        }
                     }
-                }
 
-                /**
-                 * 失去音频焦点后暂停播放，这里暂停播放需要和用户主动暂停有区别，做一个标记，配合onResume。
-                 * 当获取到音频焦点后，根据onResume根据标识状态看是否需要恢复播放
-                 */
-                override fun onFocusOut() {
-                    passivePause()
-                }
+                    /**
+                     * 失去音频焦点后暂停播放，这里暂停播放需要和用户主动暂停有区别，做一个标记，配合onResume。
+                     * 当获取到音频焦点后，根据onResume根据标识状态看是否需要恢复播放
+                     */
+                    override fun onFocusOut() {
+                        passivePause()
+                    }
 
-                override fun onFocusSeize(i: Int) {
-                    //音频被抢占
-                    passivePause()
-                    requestAudioFocus = i
-                }
+                    override fun onFocusSeize(i: Int) {
+                        //音频被抢占
+                        passivePause()
+                        requestAudioFocus = i
+                    }
 
-                /**
-                 * 返回播放器是否正在播放
-                 * @return 为true正在播放
-                 */
-                override val isPlaying: Boolean
-                    get() = isPlaying()
-            })
+                    /**
+                     * 返回播放器是否正在播放
+                     * @return 为true正在播放
+                     */
+                    override val isPlaying: Boolean
+                        get() = isPlaying()
+                })
         registerReceiver()
         initPlayerConfig()
     }
@@ -205,7 +205,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
             if (musicInfo.audioPath.isNotEmpty()) {
                 val source = ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(musicInfo.audioPath))
+                        .createMediaSource(Uri.parse(musicInfo.audioPath))
                 mExoPlayer.removeListener(mAdListener)
                 mExoPlayer.addListener(mEventListener)
                 mExoPlayer.prepare(source)
@@ -223,7 +223,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         mAudioFocusManager.requestAudioFocus()
         if (requestAudioFocus == AUDIOFOCUS_REQUEST_GRANTED) {
             val source = ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(adPath))
+                    .createMediaSource(Uri.parse(adPath))
             mExoPlayer.removeListener(mEventListener)
             mExoPlayer.addListener(mAdListener)
             mExoPlayer.prepare(source)
@@ -397,7 +397,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun getCurrentPlayerMusic(): BaseAudioInfo? =
-        mAudios.getOrNull(mCurrentPlayIndex)
+            mAudios.getOrNull(mCurrentPlayIndex)
 
     override fun getCurrentPlayList(): List<*> {
         return mAudios
@@ -412,7 +412,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun addOnPlayerEventListener(listener: MusicPlayerEventListener) {
-        if(mOnPlayerEventListeners.isEmpty()){
+        if (mOnPlayerEventListeners.isEmpty()) {
             mOnPlayerEventListeners.add(listener)
         }
     }
@@ -463,7 +463,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         if (mAudios.size > currentPlayIndex && currentPlayIndex >= 0) {
             mOnPlayerEventListeners.forEach {
                 it.onPlayMusiconInfo(
-                    mAudios[currentPlayIndex], currentPlayIndex, isAd
+                        mAudios[currentPlayIndex], currentPlayIndex, isAd
                 )
             }
         }
@@ -545,7 +545,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
     }
 
     override fun getServiceName(): String =
-        "com.rm.music_exoplayer_lib.service.${MusicPlayerService::class.simpleName.toString()}"
+            "com.rm.music_exoplayer_lib.service.${MusicPlayerService::class.simpleName.toString()}"
 
 
     override fun getPlayerMultiple(): Float = playerMultiples
@@ -598,7 +598,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                         mMusicPlayerState = MUSIC_PLAYER_PLAYING
                     }
                     mMusicPlayerState =
-                        if (playWhenReady) MUSIC_PLAYER_PLAYING else MUSIC_PLAYER_PAUSE
+                            if (playWhenReady) MUSIC_PLAYER_PLAYING else MUSIC_PLAYER_PAUSE
                 }
                 //播放结束
                 Player.STATE_ENDED -> {
@@ -618,8 +618,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
         override fun onTracksChanged(
-            trackGroups: TrackGroupArray,
-            trackSelections: TrackSelectionArray
+                trackGroups: TrackGroupArray,
+                trackSelections: TrackSelectionArray
         ) {
         }
 
@@ -675,7 +675,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
                 //正在播放
                 Player.STATE_BUFFERING, Player.STATE_READY -> {
                     mMusicPlayerState =
-                        if (playWhenReady) MUSIC_PLAYER_PLAYING else MUSIC_PLAYER_PAUSE
+                            if (playWhenReady) MUSIC_PLAYER_PLAYING else MUSIC_PLAYER_PAUSE
                     mOnPlayerEventListeners.forEach {
                         it.onPlayerStateChanged(playWhenReady, playbackState)
                     }
@@ -701,8 +701,8 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
         }
 
         override fun onTracksChanged(
-            trackGroups: TrackGroupArray,
-            trackSelections: TrackSelectionArray
+                trackGroups: TrackGroupArray,
+                trackSelections: TrackSelectionArray
         ) {
         }
 
@@ -748,6 +748,7 @@ internal class MusicPlayerService : Service(), MusicPlayerPresenter {
 
     override fun onDestroy() {
         super.onDestroy()
+        mUpdateProgressHandler.removeCallbacksAndMessages(null)
         mHeadsetBroadcastReceiver?.let {
             unregisterReceiver(it)
         }

@@ -19,6 +19,7 @@ import com.rm.baselisten.R
 import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.baselisten.thridlib.statusbarlib.ImmersionBarHelper
 import com.rm.baselisten.utilExt.dip
+import leakcanary.AppWatcher
 
 
 /**
@@ -219,6 +220,11 @@ abstract class BaseActivity : FragmentActivity() {
                 requestPermanentlyDenied()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AppWatcher.objectWatcher.clearWatchedObjects()
     }
 
     private fun hasPermissions(permissions: MutableList<String>): Boolean {
