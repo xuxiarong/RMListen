@@ -26,7 +26,7 @@
             isVisible="@{!TextUtils.isEmpty(feedbackItem.path)}"
             android:layout_width="@dimen/dp_62"
             android:layout_height="@dimen/dp_62"
-            android:scaleType="fitXY"
+            android:scaleType="center"
             android:onClick="@{()->feedbackViewModel.clickImage(context,feedbackItem)}"
             android:src="@color/business_color_ffba56"
             app:layout_constraintBottom_toBottomOf="parent"
