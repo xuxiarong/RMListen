@@ -12,7 +12,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="190dp">
+        android:layout_height="180dp">
 
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -27,7 +27,8 @@
             android:layout_height="155dp"
             android:layout_marginTop="@dimen/dp_35"
             android:orientation="horizontal"
-            android:padding="@dimen/dp_25"
+            android:paddingStart="@dimen/dp_25"
+            android:paddingEnd="@dimen/dp_25"
             app:rv_backgroundColor="@android:color/white"
             tools:ignore="MissingConstraints">
 
@@ -35,6 +36,7 @@
                 android:id="@+id/music_play_times"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
                 android:layout_marginStart="17dp"
                 android:orientation="vertical">
 
@@ -70,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="62dp"
+                android:layout_marginTop="@dimen/dp_15"
                 android:orientation="vertical">
 
                 <com.flyco.roundview.RoundFrameLayout
