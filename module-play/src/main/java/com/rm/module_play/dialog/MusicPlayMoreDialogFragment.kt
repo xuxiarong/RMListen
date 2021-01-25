@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.util.getFloattMMKV
+import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
 import com.rm.business_lib.base.dialogfragment.BottomDialogFragment
 import com.rm.module_play.BR
@@ -28,7 +29,7 @@ fun FragmentActivity.showMusicPlayMoreDialog(viewModel: PlayViewModel) {
     }.show(supportFragmentManager, "MusicPlayMoreDialogFragment")
 }
 
-class MusicPlayMoreDialogFragment : BottomDialogFragment() {
+class MusicPlayMoreDialogFragment : BottomDialogFragment(),PlayGlobalData.IPlayTimerListener {
     lateinit var viewModel: PlayViewModel
     lateinit var mDataBind: ViewDataBinding
 
@@ -60,12 +61,32 @@ class MusicPlayMoreDialogFragment : BottomDialogFragment() {
                 viewModel.showPlaySpeedDialog(it)
             }
         }
+        PlayGlobalData.timerListener = this
         playSpeedSettingIv.bindPlaySpeedSrc(SAVA_SPEED.getFloattMMKV())
+        if(PlayGlobalData.playCountDownSecond.get()>0 || PlayGlobalData.playCountDownChapterSize.get()>0){
+            play_more_dialog_time_lv.playAnimation()
+        }else{
+            play_more_dialog_time_lv.clearAnimation()
+            play_more_dialog_time_lv.setImageResource(R.drawable.music_play_ic_icon_timing_ce)
+        }
 
     }
 
     override fun getBackgroundAlpha() = 0f
 
     override fun onSetInflaterLayout(): Int = R.layout.music_play_dialog_more_setting
+    override fun startTimer() {
+        play_more_dialog_time_lv.playAnimation()
+    }
+
+    override fun stopTimer() {
+        play_more_dialog_time_lv.clearAnimation()
+        play_more_dialog_time_lv.setImageResource(R.drawable.music_play_ic_icon_timing_ce)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PlayGlobalData.timerListener = null
+    }
 
 }

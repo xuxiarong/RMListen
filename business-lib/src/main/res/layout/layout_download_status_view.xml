@@ -19,7 +19,7 @@
         android:layout_width="@dimen/dp_22"
         android:layout_height="@dimen/dp_22"
         android:layout_gravity="center"
-        app:backColor="@color/base_666666"
+        app:backColor="@color/base_e8e8e8"
         app:backWidth="1.5dp"
         app:progColor="@color/base_ff5e5e"
         app:progWidth="1.5dp"
