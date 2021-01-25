@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.rm.baselisten.util.getFloattMMKV
+import com.rm.baselisten.util.getStringMMKV
 import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.SAVA_SPEED
@@ -36,7 +38,7 @@ fun FragmentActivity.showMusicPlaySpeedDialog(viewModel: PlayViewModel) {
 }
 
 //速度集合
-internal val timeSet by lazy {
+internal val speedMap by lazy {
     mapOf(
         "0.5X" to 0.5f,
         "0.75X" to 0.75f,
@@ -46,6 +48,7 @@ internal val timeSet by lazy {
         "2X" to 2f
     )
 }
+internal val currentSpeed = SAVA_SPEED.getFloattMMKV(0F)
 
 class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
 
@@ -65,14 +68,15 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
         return mDataBind.root
     }
 
-    private val timeSAdapter by lazy {
+
+    private val speedAdapter by lazy {
         val timeList = mutableListOf<String>()
-        timeSet.keys.forEach {
+        speedMap.keys.forEach {
             timeList.add(it)
         }
         TimeSAdapter(timeList).apply {
             setOnItemClickListener { _, _, position ->
-                timeSet[data[position]]?.let {
+                speedMap[data[position]]?.let {
                     if(!PlayGlobalData.playAdIsPlaying.get()){
                         musicPlayerManger.setPlayerMultiple(it)
                     }
@@ -93,7 +97,7 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
     override fun onInitialize() {
         rv_music_play_time_setting.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        rv_music_play_time_setting.adapter = timeSAdapter
+        rv_music_play_time_setting.adapter = speedAdapter
     }
 
 
@@ -101,15 +105,22 @@ class MusicPlaySpeedDialog : SuperBottomSheetDialogFragment() {
         BaseQuickAdapter<String, BaseViewHolder>(R.layout.rv_item_speed_setting, list) {
         override fun convert(holder: BaseViewHolder, item: String) {
             val isCheckPos = PlayGlobalData.playSpeed.get()
-            holder.getView<ImageView>(R.id.music_play_speed_setting_check).background =
-                if (isCheckPos == timeSet[item]) ContextCompat.getDrawable(
-                    context,
-                    R.drawable.play_timer_item_position_select
-                ) else ContextCompat.getDrawable(
-                    context,
-                    R.drawable.play_timer_item_position_unselect
-                )
             holder.setText(R.id.tv_music_play_setting_time, item)
+                if (isCheckPos == speedMap[item]){
+                    holder.setTextColor(R.id.tv_music_play_setting_time,ContextCompat.getColor(context,R.color.business_color_ff5e5e))
+
+                    holder.getView<ImageView>(R.id.music_play_speed_setting_check).background = ContextCompat.getDrawable(
+                            context,
+                            R.drawable.play_timer_item_position_select
+                    )
+                } else{
+                    holder.setTextColor(R.id.tv_music_play_setting_time,ContextCompat.getColor(context,R.color.business_text_color_333333))
+                    holder.getView<ImageView>(R.id.music_play_speed_setting_check).background = ContextCompat.getDrawable(
+                            context,
+                            R.drawable.play_timer_item_position_unselect
+                    )
+                }
+
         }
     }
 

@@ -482,7 +482,7 @@ object PlayGlobalData {
             timerListener?.startTimer()
         } else {
             playCountDownChapterSize.set(-1)
-            playCountDownSecond.set(playCountTimerList[position] * 1000L)
+            playCountDownSecond.set(playCountTimerList[position] * 1000L * 60)
             playTimerHandler.removeMessages(0)
             playTimerHandler.sendEmptyMessageDelayed(0, 1000)
             timerListener?.startTimer()
