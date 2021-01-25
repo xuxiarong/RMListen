@@ -18,9 +18,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/download_iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_44"
-            android:paddingLeft="@dimen/dp_16"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_14"
+            android:scaleType="center"
             android:src="@drawable/base_icon_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,6 +41,7 @@
             app:bendTabIndicatorWidth="@dimen/dp_24"
             app:bendTabBackground="@null"
             app:bendTabMode="fixed"
+            app:bendTabTextSelectIsBold="true"
             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
             app:bendTabTextSize="@dimen/business_text_size_16sp"
             app:bendTabUnSelectedTextColor="@color/business_text_color_333333" />

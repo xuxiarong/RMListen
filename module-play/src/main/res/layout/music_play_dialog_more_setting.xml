@@ -44,13 +44,12 @@
                     app:rv_cornerRadius="48dp"
                     app:rv_strokeColor="@color/business_color_e8e8e8"
                     app:rv_strokeWidth="1dp">
-
                     <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/play_more_dialog_time_lv"
                         android:layout_width="@dimen/dp_24"
                         android:layout_height="@dimen/dp_24"
                         android:layout_gravity="center"
                         android:src="@drawable/music_play_ic_icon_timing_ce"
-                        app:lottie_autoPlay="true"
                         app:lottie_fileName="play_timer.json"
                         app:lottie_loop="true" />
                 </com.flyco.roundview.RoundFrameLayout>

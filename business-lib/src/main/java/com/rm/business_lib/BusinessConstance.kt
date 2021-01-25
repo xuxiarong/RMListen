@@ -135,6 +135,7 @@ object PlayGlobalData {
                 playCountDownSecond.set(-1000L)
                 playCountSelectPosition.set(-1)
                 removeMessages(0)
+                timerListener?.stopTimer()
             }
         }
     }
@@ -288,6 +289,8 @@ object PlayGlobalData {
     var playAdIsPlaying = ObservableBoolean(false)
     var playVoiceImgAd = ObservableField<BusinessAdModel>()
     var playVoiceAdClose = ObservableField(true)
+
+    var timerListener : IPlayTimerListener? = null
 
 
     fun initPlayAudio(audio: DownloadAudio) {
@@ -457,12 +460,14 @@ object PlayGlobalData {
                 playCountDownChapterSize.set(0)
                 playCountDownChapterSize.set(-1)
                 playCountSelectPosition.set(-1)
+                timerListener?.stopTimer()
                 return true
             }
             playCountDownChapterSize.set(playCountDownChapterSize.get()-1)
             if(playCountDownChapterSize.get() == 0){
                 playCountDownChapterSize.set(-1)
                 playCountSelectPosition.set(-1)
+                timerListener?.stopTimer()
                 return true
             }
         }
@@ -474,11 +479,13 @@ object PlayGlobalData {
         if (playCountTimerList[position] in 1..5) {
             playCountDownChapterSize.set(playCountTimerList[position])
             playCountDownSecond.set(-1000L)
+            timerListener?.startTimer()
         } else {
             playCountDownChapterSize.set(-1)
-            playCountDownSecond.set(playCountTimerList[position] * 1000L)
+            playCountDownSecond.set(playCountTimerList[position] * 1000L * 60)
             playTimerHandler.removeMessages(0)
             playTimerHandler.sendEmptyMessageDelayed(0, 1000)
+            timerListener?.startTimer()
         }
     }
 
@@ -486,6 +493,7 @@ object PlayGlobalData {
         playCountSelectPosition.set(-1)
         playCountDownChapterSize.set(-5)
         playCountDownSecond.set(-1000L)
+        timerListener?.stopTimer()
     }
 
 
@@ -493,6 +501,10 @@ object PlayGlobalData {
         return playChapterListSort.get() == AudioSortType.SORT_ASC
     }
 
+    interface IPlayTimerListener{
+        fun startTimer()
+        fun stopTimer()
+    }
 }
 
 object AudioSortType {

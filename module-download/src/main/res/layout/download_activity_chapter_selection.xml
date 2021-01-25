@@ -32,8 +32,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/download_ic_finish"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="6dp"
                 android:src="@drawable/base_icon_back" />
@@ -67,13 +67,12 @@
 
             <com.flyco.roundview.RoundTextView
                 android:id="@+id/download_chapter_num"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
                 android:layout_gravity="end"
-                android:layout_marginTop="2dp"
                 android:gravity="center"
                 android:textColor="@color/business_text_color_ffffff"
-                android:textSize="@dimen/business_text_size_10sp"
+                android:textSize="@dimen/business_text_size_14sp"
                 app:rv_backgroundColor="@color/base_ff5e5e"
                 app:rv_isRadiusHalfHeight="true" />
 
@@ -110,6 +109,7 @@
                 android:layout_height="@dimen/dp_22"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/dp_25"
+                android:scaleType="center"
                 android:onClick="@{()->viewModel.changeAllChapterSelect()}"
                 android:src="@{viewModel.isSelectAll?@drawable/download_ic_item_checked:@drawable/download_ic_item_unchecked}" />
 

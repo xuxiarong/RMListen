@@ -113,11 +113,18 @@ class ListenMyListenFragment :
 
         DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
             download_chapter_num.isVisible = it.isNotEmpty()
+            val layoutParams = download_chapter_num.layoutParams
             if (it.size >= 100) {
                 download_chapter_num.text = "99+"
-            } else {
+                layoutParams.width = dip(30)
+            } else if(it.size>=10){
                 download_chapter_num.text = it.size.toString()
+                layoutParams.width = dip(26)
+            }else{
+                download_chapter_num.text = it.size.toString()
+                layoutParams.width = dip(22)
             }
+            download_chapter_num.layoutParams = layoutParams
         })
     }
 
