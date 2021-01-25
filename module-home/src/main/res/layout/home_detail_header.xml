@@ -32,7 +32,7 @@
             android:id="@+id/home_book_adapter_play_bg"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_28"
-            android:background="@drawable/business_shape_gradient_0000000_66000000"
+            android:background="@drawable/business_shape_gradient_8dp"
             app:layout_constraintBottom_toBottomOf="@id/home_detail_icon"
             app:layout_constraintEnd_toEndOf="@id/home_detail_icon"
             app:layout_constraintStart_toStartOf="@id/home_detail_icon" />

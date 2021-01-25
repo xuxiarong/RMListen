@@ -226,6 +226,7 @@
                             app:bendTabIndicatorStrokeWidth="@dimen/dp_3"
                             app:bendTabIndicatorWidth="@dimen/dp_24"
                             app:bendTabMode="scrollable"
+                            app:bendTabTextSelectIsBold="true"
                             app:bendTabSelectedTextColor="@color/business_color_ff5e5e"
                             app:bendTabTextSize="@dimen/business_text_size_16sp"
                             app:bendTabUnSelectedTextColor="@color/business_text_color_333333"

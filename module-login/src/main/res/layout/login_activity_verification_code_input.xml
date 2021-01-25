@@ -38,6 +38,7 @@
 
         <com.rm.module_login.widget.verification.VerificationCodeView
             android:id="@+id/loginVerificationCodeInput"
+            inputNeedAnim="@{true}"
             inputTextChange="@{viewModel.completeInput}"
             inputTextClear="@{viewModel.inputClear}"
             android:layout_width="match_parent"

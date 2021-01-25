@@ -3,6 +3,7 @@ package com.rm.module_listen.viewmodel
 import android.content.Context
 import android.view.View
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
@@ -153,7 +154,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
             if (listListen.size > 0) {
                 mAdapter.setList(listListen)
             } else {
-                showDataEmpty()
+                showDataEmpty(BaseApplication.getContext().getString(R.string.listen_subscription_empty))
             }
         } else {
             //加载更多完成
@@ -246,7 +247,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                         }
                         mAdapter.remove(subBean)
                         if (mAdapter.data.size <= 0) {
-                            showDataEmpty()
+                            showDataEmpty(BaseApplication.getContext().getString(R.string.listen_subscription_empty))
                         }
                         BusinessInsertManager.doInsertKeyAndAudio(
                             BusinessInsertConstance.INSERT_TYPE_AUDIO_UNSUBSCRIBED,

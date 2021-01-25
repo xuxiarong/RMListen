@@ -146,8 +146,18 @@ class MineMemberActivity :
         val mainFragment = MineMemberMainFragment.newInstance(memberId)
         val commentFragment = MineMemberCommentFragment.newInstance(memberId, bean.member_type)
         val list = mutableListOf<MineMemberPageAdapter.MemberPageData>()
-        list.add(MineMemberPageAdapter.MemberPageData(mainFragment, getString(R.string.mine_comment_home)))
-        list.add(MineMemberPageAdapter.MemberPageData(commentFragment, getString(R.string.mine_comment_page)))
+        list.add(
+            MineMemberPageAdapter.MemberPageData(
+                mainFragment,
+                getString(R.string.mine_comment_page)
+            )
+        )
+        list.add(
+            MineMemberPageAdapter.MemberPageData(
+                commentFragment,
+                getString(R.string.mine_comment_home)
+            )
+        )
         mine_member_detail_viewpager.adapter =
             MineMemberPageAdapter(list, supportFragmentManager)
         mine_member_detail_tab.setupWithViewPager(mine_member_detail_viewpager)

@@ -265,7 +265,7 @@
             android:drawableEnd="@drawable/business_ic_next"
             android:drawablePadding="@dimen/dp_2"
             android:ellipsize="end"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|end"
             android:lines="1"
             android:onClick="@{(Context)->viewModel.audioNameClick(context)}"
             android:text="@{PlayGlobalData.INSTANCE.playAudioModel.audio_name}"

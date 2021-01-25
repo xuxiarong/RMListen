@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Build;
 import android.renderscript.RSRuntimeException;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
@@ -58,13 +57,9 @@ public class BlurTransformation extends BitmapTransformation {
         paint.setFlags(Paint.FILTER_BITMAP_FLAG);
         canvas.drawBitmap(source, 0, 0, paint);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            try {
-                bitmap = RSBlur.blur(mContext, bitmap, mRadius);
-            } catch (RSRuntimeException e) {
-                bitmap = FastBlur.blur(bitmap, mRadius, true);
-            }
-        } else {
+        try {
+            bitmap = RSBlur.blur(mContext, bitmap, mRadius);
+        } catch (RSRuntimeException e) {
             bitmap = FastBlur.blur(bitmap, mRadius, true);
         }
 

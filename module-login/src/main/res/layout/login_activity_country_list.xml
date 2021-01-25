@@ -14,8 +14,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/business_shape_white_top_radius_12dp"
         android:paddingStart="@dimen/dp_16"
-        android:paddingTop="@dimen/dp_10"
-        android:paddingEnd="@dimen/dp_16">
+        android:paddingTop="@dimen/dp_10">
 
         <!--    <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/login_activity_country_et"
