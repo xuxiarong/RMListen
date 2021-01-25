@@ -19,7 +19,6 @@
             android:id="@+id/mine_home_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
             android:src="@mipmap/mine_main_top_bg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +30,7 @@
             android:onClick="@{()->viewModel.noticeClick(context)}"
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
+            android:scaleType="center"
             android:src="@drawable/business_icon_notice"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +42,7 @@
             android:onClick="@{()->viewModel.settingClick(context)}"
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
+            android:scaleType="center"
             android:src="@drawable/business_icon_setup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

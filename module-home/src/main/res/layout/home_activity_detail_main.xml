@@ -53,11 +53,10 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_detail_back"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dp_10"
                 android:onClick="@{()->viewModel.finish()}"
-                android:paddingStart="@dimen/dp_16"
-                android:paddingEnd="@dimen/dp_16"
                 android:src="@drawable/base_icon_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
