@@ -45,6 +45,8 @@
             android:id="@+id/listenRecentRv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:paddingBottom="43dp"
             android:paddingStart="@dimen/dp_16"
             bindVerticalLayout="@{viewModel.mSwipeAdapter}"
