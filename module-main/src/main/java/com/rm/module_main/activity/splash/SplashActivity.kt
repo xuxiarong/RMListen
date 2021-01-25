@@ -3,7 +3,6 @@ package com.rm.module_main.activity.splash
 import android.Manifest
 import android.content.Intent
 import android.os.Build
-import android.os.Environment
 import android.os.Handler
 import android.text.TextUtils
 import android.widget.TextView
@@ -11,7 +10,6 @@ import androidx.databinding.Observable
 import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.*
@@ -27,7 +25,6 @@ import com.rm.business_lib.FIRST_OPEN_APP
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.UPLOAD_APP_TIME
 import com.rm.business_lib.bean.BusinessVersionUrlBean
-import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.business_lib.isLogin
@@ -35,7 +32,6 @@ import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.utils.ApkInstallUtils
 import com.rm.business_lib.utils.ApkInstallUtils.REQUEST_CODE_INSTALL_APP
 import com.rm.component_comm.home.HomeService
-import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_main.BR
 import com.rm.module_main.BuildConfig
@@ -46,8 +42,6 @@ import com.rm.module_main.databinding.HomeActivitySplashBinding
 import com.rm.module_main.databinding.HomeDialogPrivateServiceBinding
 import com.rm.module_main.viewmodel.HomeSplashViewModel
 import com.rm.module_main.viewmodel.HomeSplashViewModel.Companion.INSTALL_RESULT_CODE
-import com.tencent.mars.xlog.Log
-import com.tencent.mars.xlog.Xlog
 import kotlinx.android.synthetic.main.home_activity_splash.*
 
 /**
@@ -70,7 +64,7 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
                 if (mViewModel.isSkipAd.get()) {
                     MainMainActivity.startMainActivity(this@SplashActivity)
                     finish()
-                }else{
+                } else {
                     mViewModel.isShowAd.set(false)
                 }
             }
@@ -120,33 +114,34 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
         val lastVersion = versionInfo.version?.replace(".", "") ?: "0"
         val localVersion = BuildConfig.VERSION_NAME.replace(".", "")
         try {
-            if (lastVersion.toInt() - localVersion.toInt() > 0) {
-                //强制更新
-                if (TextUtils.equals(versionInfo.type, "2")) {
-                    mViewModel.showUploadDialog(
-                        this@SplashActivity,
-                        sureIsDismiss = true,
-                        cancelIsFinish = true
-                    )
-                } else {
-                    //一天内只显示一次
-                    val curTime = 24 * 60 * 60 * 1000
-                    if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() > curTime) {
-                        UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
-                        //普通更新
-                        mViewModel.showUploadDialog(this@SplashActivity,
-                            sureIsDismiss = true,
-                            cancelIsFinish = false,
-                            cancelBlock = {
-                                loadAd()
-                            })
-                    } else {
-                        loadAd()
-                    }
-                }
-            } else {
+            //当前版本是否是最新版本
+            if (lastVersion.toInt() - localVersion.toInt() <= 0) {
                 loadAd()
+                return
             }
+            //强制更新
+            if (TextUtils.equals(versionInfo.type, "2")) {
+                mViewModel.showUploadDialog(
+                    this@SplashActivity,
+                    sureIsDismiss = true,
+                    cancelIsFinish = true,
+                    downloadFail = {}
+                )
+                return
+            }
+            //一天内只显示一次
+            val curTime = 24 * 60 * 60 * 1000
+            if (System.currentTimeMillis() - UPLOAD_APP_TIME.getLongMMKV() <= curTime) {
+                loadAd()
+                return
+            }
+            UPLOAD_APP_TIME.putMMKV(System.currentTimeMillis())
+            //普通更新
+            mViewModel.showUploadDialog(this@SplashActivity,
+                sureIsDismiss = true,
+                cancelIsFinish = false,
+                cancelBlock = { loadAd() },
+                downloadFail = { loadAd() })
         } catch (e: Exception) {
             DLog.i("=====>versionInfo", "Exception:${e.message}")
             e.printStackTrace()
@@ -156,36 +151,38 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == INSTALL_RESULT_CODE) {
-            val path = data?.getStringExtra("apkPath")
-            if (requestCode == RESULT_OK) {
-                ApkInstallUtils.install(this, path)
-            } else {
+        when {
+            requestCode == INSTALL_RESULT_CODE -> {
+                if (requestCode == RESULT_OK) {
+                    ApkInstallUtils.install(this, mViewModel.downPath)
+                    return
+                }
                 //200毫秒后再次查询
                 Handler().postDelayed({
-                    if (mViewModel.downPath.isNotEmpty()) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val hasInstallPermission = packageManager.canRequestPackageInstalls()
-                            if (!hasInstallPermission) {
-                                RouterHelper.createRouter(HomeService::class.java)
-                                    .gotoInstallPermissionSetting(
-                                        this,
-                                        mViewModel.downPath,
-                                        INSTALL_RESULT_CODE
-                                    )
-
-                            } else {
-                                ApkInstallUtils.install(this, mViewModel.downPath)
-                            }
-                        }
-                    } else {
+                    if (mViewModel.downPath.isEmpty()) {
                         loadAd()
+                        return@postDelayed
                     }
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                        ApkInstallUtils.install(this, mViewModel.downPath)
+                        return@postDelayed
+                    }
+                    val hasInstallPermission = packageManager.canRequestPackageInstalls()
+                    if (!hasInstallPermission) {
+                        RouterHelper.createRouter(HomeService::class.java)
+                            .gotoInstallPermissionSetting(this, INSTALL_RESULT_CODE)
+                        return@postDelayed
+                    }
+                    ApkInstallUtils.install(this, mViewModel.downPath)
                 }, 200)
+
             }
-        } else if (requestCode == REQUEST_CODE_INSTALL_APP && requestCode != RESULT_OK) {
-            mViewModel.versionInfo.get()?.let {
-                if (!TextUtils.equals(it.type, "2")) {
+            requestCode == REQUEST_CODE_INSTALL_APP && requestCode != RESULT_OK -> {
+                mViewModel.versionInfo.get()?.let {
+                    if (TextUtils.equals(it.type, "2")) {
+                        finish()
+                        return
+                    }
                     loadAd()
                 }
             }
@@ -227,29 +224,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
 
     }
 
-    fun initXLog(){
-        System.loadLibrary("c++_shared");
-        System.loadLibrary("marsxlog");
-
-        val SDCARD = DownLoadFileUtils.getParentFile(this)?.absolutePath
-        val logPath = DownLoadFileUtils.getParentFile(this)?.absolutePath + "/marssample/log";
-
-        // this is necessary, or may crash for SIGBUS
-        val cachePath = "${this.filesDir} + /xlog"
-
-        //init xlog
-        val xlog =  Xlog()
-        Log.setLogImp(xlog)
-
-        if (BuildConfig.DEBUG) {
-            Log.setConsoleLogOpen(true)
-            Log.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, cachePath, logPath, "listen", 3)
-        } else {
-            Log.setConsoleLogOpen(false)
-            Log.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, "listen", 3)
-        }
-    }
-
     private fun loadAd() {
         if (!HomeGlobalData.HOME_IS_AGREE_PRIVATE_PROTOCOL.getBooleanMMKV(false)) {
             showPrivateServiceDialog()
@@ -259,8 +233,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             mViewModel.getSplashAd()
             mViewModel.startSkipTimerCount()
         }
-//        RouterHelper.createRouter(PlayService::class.java)
-//            .initPlayService(BaseApplication.baseApplication)
     }
 
     private fun requestPermissions() {
@@ -273,7 +245,6 @@ class SplashActivity : BaseVMActivity<HomeActivitySplashBinding, HomeSplashViewM
             },
             actionGranted = {
                 initSplashData()
-//                initXLog()
             },
             actionPermanentlyDenied = {
                 finish()

@@ -16,7 +16,6 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_main.R
 import com.rm.module_main.repository.MainRepository
 import kotlinx.coroutines.delay
-import java.io.File
 
 /**
  * desc   :
@@ -62,20 +61,22 @@ class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewMo
     }
 
     fun getSplashAd() {
-        launchOnIO (
-           block = {repository.getSplashAd(arrayOf("ad_screen")).checkResult(
-               onSuccess = { mainAdResultModel ->
-                   mainAdResultModel.ad_screen?.forEach {
-                       if (null == mainAdScreen.get()) {
-                           mainAdScreen.set(it)
-                       }
-                       DLog.d("suolong", "it.ad_name = ${it.ad_name}")
-                   }
-               },
-               onError = { it, _ ->
-                   isSkipAd.set(true)
-               }
-           )} ,netErrorBlock = {
+        launchOnIO(
+            block = {
+                repository.getSplashAd(arrayOf("ad_screen")).checkResult(
+                    onSuccess = { mainAdResultModel ->
+                        mainAdResultModel.ad_screen?.forEach {
+                            if (null == mainAdScreen.get()) {
+                                mainAdScreen.set(it)
+                            }
+                            DLog.d("suolong", "it.ad_name = ${it.ad_name}")
+                        }
+                    },
+                    onError = { it, _ ->
+                        isSkipAd.set(true)
+                    }
+                )
+            }, netErrorBlock = {
                 isSkipAd.set(true)
                 isShowAd.set(false)
             }
@@ -85,7 +86,7 @@ class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewMo
     /**
      * 版本更新
      */
-    fun getLaseVersion(action : ()->Unit) {
+    fun getLaseVersion(action: () -> Unit) {
         launchOnIO(
             block = {
                 repository.homeGetLaseUrl().checkResult(
@@ -111,8 +112,9 @@ class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewMo
         activity: FragmentActivity,
         sureIsDismiss: Boolean,
         cancelIsFinish: Boolean,
-        sureBlock: () -> Unit?={},
-        cancelBlock: () -> Unit? = {}
+        sureBlock: () -> Unit? = {},
+        cancelBlock: () -> Unit? = {},
+        downloadFail: () -> Unit? = {}
     ) {
         versionInfo.get()?.let {
             RouterHelper.createRouter(HomeService::class.java)
@@ -125,7 +127,8 @@ class HomeSplashViewModel(private val repository: MainRepository) : BaseVMViewMo
                     downloadComplete = { path -> downPath = path },
                     sureIsDismiss = sureIsDismiss,
                     sureBlock = sureBlock,
-                    cancelBlock = cancelBlock
+                    cancelBlock = cancelBlock,
+                    downloadFail = downloadFail
                 )
         }
     }

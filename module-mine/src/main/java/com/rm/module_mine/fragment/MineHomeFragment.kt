@@ -1,14 +1,20 @@
 package com.rm.module_mine.fragment
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.binding.bindUrl
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
 import com.rm.business_lib.loginUser
+import com.rm.business_lib.utils.ApkInstallUtils
+import com.rm.component_comm.home.HomeService
+import com.rm.component_comm.router.RouterHelper
 import com.rm.module_mine.BR
 import com.rm.module_mine.R
 import com.rm.module_mine.activity.MimeFeedbackActivity.Companion.FEEDBACK_REQUEST_CODE
@@ -18,6 +24,7 @@ import com.rm.module_mine.activity.MimeGetBookActivity.Companion.GET_BOOK_RESULT
 import com.rm.module_mine.activity.MineSettingActivity.Companion.SETTING_REQUEST_CODE
 import com.rm.module_mine.activity.MineSettingActivity.Companion.SETTING_RESULT_CODE
 import com.rm.module_mine.databinding.MineFragmentHomeBinding
+import com.rm.module_mine.viewmodel.MineAboutViewModel
 import com.rm.module_mine.viewmodel.MineHomeViewModel
 
 /**
@@ -86,6 +93,37 @@ class MineHomeFragment : BaseVMFragment<MineFragmentHomeBinding, MineHomeViewMod
             }
             requestCode == SETTING_REQUEST_CODE && resultCode == SETTING_RESULT_CODE -> {
                 mViewModel.showTip("注销成功")
+            }
+            requestCode == MineAboutViewModel.INSTALL_RESULT_CODE -> {
+                if (requestCode == FragmentActivity.RESULT_OK) {
+                    ApkInstallUtils.install(context, mViewModel.downPath)
+                    return
+                }
+                //200毫秒后再次查询
+                Handler().postDelayed({
+                    if (mViewModel.downPath.isEmpty()) {
+                        return@postDelayed
+                    }
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                        ApkInstallUtils.install(context, mViewModel.downPath)
+                        return@postDelayed
+                    }
+                    val hasInstallPermission =
+                        context?.packageManager?.canRequestPackageInstalls()
+                    if (hasInstallPermission == false) {
+                        context?.apply {
+                            mViewModel.getActivity(this)?.let {
+                                RouterHelper.createRouter(HomeService::class.java)
+                                    .gotoInstallPermissionSetting(
+                                        it,
+                                        MineAboutViewModel.INSTALL_RESULT_CODE
+                                    )
+                            }
+                        }
+                        return@postDelayed
+                    }
+                    ApkInstallUtils.install(context, mViewModel.downPath)
+                }, 200)
             }
         }
     }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.home.HomeService
@@ -61,7 +60,7 @@ class HomeServiceImpl : HomeService {
         anchorId: String,
         commentSuccessBlock: () -> Unit
     ) {
-        HomeCommentDialogHelper(mActivity, audio,anchorId, commentSuccessBlock).showDialog()
+        HomeCommentDialogHelper(mActivity, audio, anchorId, commentSuccessBlock).showDialog()
     }
 
     override fun showUploadDownDialog(
@@ -73,7 +72,8 @@ class HomeServiceImpl : HomeService {
         downloadComplete: (String) -> Unit,
         sureIsDismiss: Boolean?,
         sureBlock: () -> Unit?,
-        cancelBlock: () -> Unit?
+        cancelBlock: () -> Unit?,
+        downloadFail: () -> Unit?
     ) {
         HomeUploadDownload(
             versionInfo = versionInfo,
@@ -84,13 +84,14 @@ class HomeServiceImpl : HomeService {
             downloadComplete = downloadComplete,
             sureIsDismiss = sureIsDismiss,
             sureBlock = sureBlock,
-            cancelBlock = cancelBlock
+            cancelBlock = cancelBlock,
+            downloadFail = downloadFail
         ).showUploadDialog()
     }
 
-    override fun gotoInstallPermissionSetting(activity: Activity, path: String, installCode: Int) {
+    override fun gotoInstallPermissionSetting(activity: Activity, installCode: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            HomeUploadDownload.startInstallSettingPermission(activity, path, installCode)
+            HomeUploadDownload.startInstallSettingPermission(activity, installCode)
         }
     }
 

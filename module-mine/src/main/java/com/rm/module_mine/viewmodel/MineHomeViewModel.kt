@@ -44,7 +44,7 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
     var currentIsLogin = isLogin
 
     var updateUserInfoTime = 0L
-
+    var downPath = ""
 
     fun getData() {
         val list = mutableListOf(
@@ -155,15 +155,13 @@ class MineHomeViewModel(private val repository: MineRepository) : BaseVMViewMode
                             installCode = MineAboutViewModel.INSTALL_RESULT_CODE,
                             dialogCancel = true,
                             cancelIsFinish = false,
-                            downloadComplete = {},
-                            sureIsDismiss = true,
-                            cancelBlock = {
-
-                            },
-                            sureBlock = {}
+                            downloadComplete = { downPath = it },
+                            sureIsDismiss = true
                         )
                 } else {
-                    showTip(BaseApplication.getContext().getString(R.string.business_latest_version))
+                    showTip(
+                        BaseApplication.getContext().getString(R.string.business_latest_version)
+                    )
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

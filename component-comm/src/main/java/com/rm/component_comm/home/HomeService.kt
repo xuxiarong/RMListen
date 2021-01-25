@@ -74,15 +74,15 @@ interface HomeService : ApplicationProvider {
         cancelIsFinish: Boolean,
         downloadComplete:(String)->Unit,
         sureIsDismiss: Boolean? ,
-        sureBlock: () -> Unit?,
-        cancelBlock: () -> Unit?
+        sureBlock: () -> Unit?={},
+        cancelBlock: () -> Unit?={},
+        downloadFail: () -> Unit?={}
     )
 
     /**
      * 去到未知来源设置界面
      * @param activity
-     * @param path 安装包目录地址
      * @param installCode 为止来源授权码
      */
-    fun gotoInstallPermissionSetting(activity: Activity, path: String, installCode: Int)
+    fun gotoInstallPermissionSetting(activity: Activity, installCode: Int)
 }

@@ -16,7 +16,6 @@ import com.rm.module_mine.BuildConfig
 import com.rm.module_mine.R
 import com.rm.module_mine.bean.MineAboutUsBean
 import com.rm.module_mine.repository.MineRepository
-import org.koin.ext.getScopeId
 
 
 /**
@@ -29,6 +28,7 @@ import org.koin.ext.getScopeId
 class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewModel() {
 
     var versionInfo: BusinessVersionUrlBean? = null
+    var downPath = ""
 
     companion object {
         const val INSTALL_RESULT_CODE = 10001
@@ -117,13 +117,10 @@ class MineAboutViewModel(private val repository: MineRepository) : BaseVMViewMod
                         installCode = INSTALL_RESULT_CODE,
                         dialogCancel = true,
                         cancelIsFinish = false,
-                        downloadComplete = {},
-                        sureIsDismiss = true,
-                        cancelBlock = {
-
-                        }, sureBlock = {
-
-                        })
+                        downloadComplete = { path ->
+                            downPath = path
+                        },
+                        sureIsDismiss = true)
             }
         }
     }

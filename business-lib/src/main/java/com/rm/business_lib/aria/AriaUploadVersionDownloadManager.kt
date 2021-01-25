@@ -19,22 +19,20 @@ import java.io.File
  */
 object AriaUploadVersionDownloadManager {
 
-    init {
-        BaseApplication.CONTEXT
-    }
-
     private var downloadUrl: String? = ""
 
     var mDownloadStart: () -> Unit = {}
     var mDownloadProgress: (Int) -> Unit = {}
     var mDownloadComplete: (String) -> Unit = {}
+    var mDownloadFail: () -> Unit = {}
 
     fun startDownload(
         uploadUrl: String,
         version: String,
         downloadStart: (() -> Unit)? = null,
         downloadProgress: ((Int) -> Unit)? = null,
-        downloadComplete: ((String) -> Unit)? = null
+        downloadComplete: ((String) -> Unit)? = null,
+        downloadFail: (() -> Unit)? = null
     ) {
         if (downloadStart != null) {
             mDownloadStart = downloadStart
@@ -45,9 +43,12 @@ object AriaUploadVersionDownloadManager {
         if (downloadComplete != null) {
             mDownloadComplete = downloadComplete
         }
+        if (downloadFail != null) {
+            mDownloadFail = downloadFail
+        }
         val file = File(
             DownLoadFileUtils.createFileWithAudio(
-               "download/upload"
+                "download/upload"
             ).absolutePath,
             "V$version.apk"
         )
@@ -62,26 +63,31 @@ object AriaUploadVersionDownloadManager {
 
     //在这里处理任务执行中的状态，如进度进度条的刷新
     @Download.onTaskRunning
-    fun taskRunning(task: DownloadTask) {
-        if (TextUtils.equals(downloadUrl, task.key)) {
-            val percent = task.percent    //任务进度百分比
+    fun taskRunning(task: DownloadTask?) {
+        if (TextUtils.equals(downloadUrl, task?.key)) {
+            val percent = task?.percent ?: 0   //任务进度百分比
             mDownloadProgress(percent)
 
         }
     }
 
     @Download.onTaskComplete
-    fun taskComplete(task: DownloadTask) {
-        if (TextUtils.equals(downloadUrl, task.key)) {
-            DLog.i("====>onTaskComplete", "----->${task.filePath}")
+    fun taskComplete(task: DownloadTask?) {
+        if (TextUtils.equals(downloadUrl, task?.key)) {
+            DLog.i("====>onTaskComplete", "----->${task?.filePath}")
             mDownloadProgress(100)
-            mDownloadComplete(task.filePath)
+            mDownloadComplete(task?.filePath ?: "")
         }
     }
 
     @Download.onTaskStart
-    fun taskStart(task: DownloadTask) {
+    fun taskStart(task: DownloadTask?) {
         mDownloadStart()
+    }
+
+    @Download.onTaskFail
+    fun taskFail(task: DownloadTask?) {
+        mDownloadFail()
     }
 
 }

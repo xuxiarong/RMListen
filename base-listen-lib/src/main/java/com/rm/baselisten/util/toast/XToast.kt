@@ -68,15 +68,6 @@ class XToast @JvmOverloads constructor(context: Context) {
         if (mContext is Application) {
             throw RuntimeException("context is not application")
         }
-        if (mContext is Activity) {
-            val activity = mContext as Activity
-            if (activity.window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN != 0) {
-                // 如果当前 Activity 是全屏模式，那么需要添加这个标记，否则会导致 WindowManager 在某些机型上移动不到状态栏的位置上
-                // 如果不想让状态栏显示的时候把 WindowManager 顶下来，可以添加 FLAG_LAYOUT_IN_SCREEN，但是会导致软键盘无法调整窗口位置
-                addWindowFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            }
-        }
-
         mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         // 配置一些默认的参数
         mWindowParams = WindowManager.LayoutParams()
@@ -91,6 +82,15 @@ class XToast @JvmOverloads constructor(context: Context) {
             flags = (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                     or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                     or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
+        }
+
+        if (mContext is Activity) {
+            val activity = mContext as Activity
+            if (activity.window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN != 0) {
+                // 如果当前 Activity 是全屏模式，那么需要添加这个标记，否则会导致 WindowManager 在某些机型上移动不到状态栏的位置上
+                // 如果不想让状态栏显示的时候把 WindowManager 顶下来，可以添加 FLAG_LAYOUT_IN_SCREEN，但是会导致软键盘无法调整窗口位置
+                addWindowFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            }
         }
 
     }
@@ -141,7 +141,9 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 添加一个标记位
      */
     fun addWindowFlags(flags: Int): XToast {
-        mWindowParams!!.flags = mWindowParams!!.flags or flags
+        mWindowParams?.apply {
+            this.flags = this.flags or flags
+        }
         if (isShow()) {
             update()
         }

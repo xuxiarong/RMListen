@@ -58,7 +58,6 @@ class TipsFragmentDialog : BaseFragmentDialog() {
         // 设置dialog有自己的背景
         dialogHasBackground = true
 
-
         // 设置标题显示
         rootView?.findViewById<TextView>(R.id.business_tips_dialog_title)?.bindText(titleText)
         // 设置内容显示

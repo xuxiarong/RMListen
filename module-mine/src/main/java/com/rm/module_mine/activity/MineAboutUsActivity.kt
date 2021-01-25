@@ -66,26 +66,29 @@ class MineAboutUsActivity : BaseVMActivity<MineActivityAboutBinding, MineAboutVi
         super.onActivityResult(requestCode, resultCode, data)
         DLog.i("requestCode", "requestCode:$requestCode   resultCode$resultCode")
         if (requestCode == INSTALL_RESULT_CODE) {
-            val path = data?.getStringExtra("apkPath")
             if (requestCode == RESULT_OK) {
-                ApkInstallUtils.install(this, path)
-
-            } else {
-                //200毫秒后再次查询
-                Handler().postDelayed({
-                    path?.let {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val hasInstallPermission = packageManager.canRequestPackageInstalls()
-                            if (!hasInstallPermission) {
-                                RouterHelper.createRouter(HomeService::class.java)
-                                    .gotoInstallPermissionSetting(this, it, INSTALL_RESULT_CODE)
-                            } else {
-                                ApkInstallUtils.install(this, it)
-                            }
-                        }
-                    }
-                }, 200)
+                ApkInstallUtils.install(this, mViewModel.downPath)
+                return
             }
+            //200毫秒后再次查询
+            Handler().postDelayed({
+                if (mViewModel.downPath.isEmpty()) {
+                    return@postDelayed
+                }
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    ApkInstallUtils.install(this, mViewModel.downPath)
+                    return@postDelayed
+                }
+                val hasInstallPermission = packageManager.canRequestPackageInstalls()
+                if (!hasInstallPermission) {
+                    RouterHelper.createRouter(HomeService::class.java)
+                        .gotoInstallPermissionSetting(this, INSTALL_RESULT_CODE)
+                    return@postDelayed
+                }
+                ApkInstallUtils.install(this, mViewModel.downPath)
+            }, 200)
+
         }
     }
 }

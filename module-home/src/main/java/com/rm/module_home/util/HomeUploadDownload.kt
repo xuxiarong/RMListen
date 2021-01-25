@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.rm.business_lib.aria.AriaUploadVersionDownloadManager
 import com.rm.baselisten.dialog.TipsFragmentDialog
+import com.rm.baselisten.util.ToastUtil
 import com.rm.business_lib.bean.BusinessVersionUrlBean
 import com.rm.business_lib.utils.ApkInstallUtils
 import com.rm.business_lib.utils.NotifyManager
@@ -30,16 +31,16 @@ class HomeUploadDownload(
     private val downloadComplete: (String) -> Unit,
     private val sureIsDismiss: Boolean? = true,
     private var sureBlock: () -> Unit? = {},
-    private var cancelBlock: () -> Unit? = {}
+    private var cancelBlock: () -> Unit? = {},
+    private var downloadFail: () -> Unit? = {}
 ) {
     companion object {
         @RequiresApi(api = Build.VERSION_CODES.O)
-        fun startInstallSettingPermission(activity: Activity, path: String, installCode: Int) {
+        fun startInstallSettingPermission(activity: Activity, installCode: Int) {
             val intent = Intent(
                 Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
                 Uri.parse("package:" + activity.packageName)
             )
-            intent.putExtra("apkPath", path)
             activity.startActivityForResult(intent, installCode)
         }
 
@@ -63,7 +64,9 @@ class HomeUploadDownload(
                 }
             }
             rightBtnClick = {
-                downApk()
+                downApk {
+                    downloadFail()
+                }
                 if (sureIsDismiss == true) {
                     dismiss()
                 }
@@ -72,10 +75,13 @@ class HomeUploadDownload(
         }.show(mActivity)
     }
 
+    private val downloadUrl =
+        "http://ls-book.leimans.com/common/groups/7722/a7aec234aec865115c23c1c34cc14aaa.apk"
 
-    private fun downApk() {
+    private fun downApk(downloadFail: () -> Unit? = {}) {
         val notifyManager = NotifyManager(mActivity)
         AriaUploadVersionDownloadManager.startDownload(
+//            downloadUrl,
             versionInfo.package_url ?: "",
             versionInfo.version ?: "",
             downloadStart = {
@@ -88,13 +94,18 @@ class HomeUploadDownload(
                 downloadComplete(path)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (!mActivity.packageManager.canRequestPackageInstalls()) {
-                        startInstallSettingPermission(mActivity, path, installCode)
+                        startInstallSettingPermission(mActivity, installCode)
                     } else {
                         ApkInstallUtils.install(mActivity, path)
                     }
                 } else {
                     ApkInstallUtils.install(mActivity, path)
                 }
-            })
+            },
+            downloadFail = {
+                ToastUtil.showTopToast(mActivity, "下载失败")
+                downloadFail()
+            }
+        )
     }
 }
