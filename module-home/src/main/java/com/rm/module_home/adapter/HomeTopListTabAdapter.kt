@@ -3,6 +3,7 @@ package com.rm.module_home.adapter
 import android.graphics.Typeface
 import android.util.TypedValue
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.utilExt.dip
@@ -43,8 +44,9 @@ class HomeTopListTabAdapter :
                     0
                 )
                 setBackgroundResource(R.drawable.home_rank_class)
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                setTextColor(ContextCompat.getColor(context,R.color.business_text_color_333333))
+                typeface = Typeface.defaultFromStyle(Typeface.BOLD)
             }
         } else {
             textView?.apply {
@@ -55,8 +57,9 @@ class HomeTopListTabAdapter :
                     0
                 )
                 setBackgroundResource(R.drawable.home_top_list_tab_un_bg)
-                textView.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+                setTextColor(ContextCompat.getColor(context,R.color.business_text_color_666666))
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
 
             }
         }

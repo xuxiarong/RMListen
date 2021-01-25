@@ -20,6 +20,7 @@
             bindMineChecked="@{PlaySettingData.INSTANCE.getNetwork234GAlert()}"
             bindMineCheckAction="@{viewModel.network234GAlertVal}"
             app:setting_name="@string/mine_play_setting_net_name"
+            android:layout_marginTop="@dimen/dp_20"
             app:setting_tip="@string/mine_play_setting_net_tip" />
 
         <View

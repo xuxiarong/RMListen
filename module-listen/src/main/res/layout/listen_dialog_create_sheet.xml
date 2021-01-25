@@ -12,17 +12,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:onClick="@{()->dialogViewModel.clickCancelFun()}"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:onClick="@{()->dialogViewModel.clickCancelFun()}">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/business_shape_white_top_radius_12dp"
-            android:paddingBottom="@dimen/dp_141"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:paddingBottom="@dimen/dp_141"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <View
@@ -96,6 +96,7 @@
                 android:text="@string/listen_title_text"
                 android:textColor="@color/business_text_color_333333"
                 android:textSize="@dimen/sp_14"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/listen_dialog_create_sheet_line" />
 
@@ -108,15 +109,15 @@
                 android:layout_marginTop="@dimen/dp_4"
                 android:layout_marginEnd="@dimen/dp_16"
                 android:background="@drawable/business_shape_stroke_e8e8e8_8dp"
-                android:hint="@string/listen_input_title"
-                android:singleLine="true"
                 android:cursorVisible="true"
-                android:focusableInTouchMode="true"
                 android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/listen_input_title"
                 android:paddingStart="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_12"
                 android:paddingEnd="@dimen/dp_10"
                 android:paddingBottom="@dimen/dp_12"
+                android:singleLine="true"
                 android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
                 android:textSize="@dimen/business_text_size_14sp"
                 app:layout_constraintTop_toBottomOf="@id/listen_dialog_create_sheet_text_name" />
@@ -145,7 +146,6 @@
                 android:background="@drawable/business_shape_stroke_e8e8e8_8dp"
                 android:gravity="start|top"
                 android:hint="@string/listen_input_optional"
-                android:visibility="invisible"
                 android:minHeight="@dimen/dp_110"
                 android:paddingStart="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_12"
@@ -153,6 +153,7 @@
                 android:paddingBottom="@dimen/dp_12"
                 android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
                 android:textSize="@dimen/business_text_size_14sp"
+                android:visibility="invisible"
                 app:layout_constraintTop_toBottomOf="@id/listen_dialog_create_sheet_text_synopsis" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
