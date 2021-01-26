@@ -43,7 +43,7 @@
         <View
             android:layout_width="280dp"
             android:layout_height="28dp"
-            android:background="@drawable/business_shape_gradient_0000000_66000000"
+            android:background="@drawable/business_shape_gradient_0000000_4f000000"
             android:visibility="@{PlayGlobalData.INSTANCE.playVoiceAdClose?View.VISIBLE:View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/iv_img_layout"
             app:layout_constraintEnd_toEndOf="@id/iv_img_layout"
