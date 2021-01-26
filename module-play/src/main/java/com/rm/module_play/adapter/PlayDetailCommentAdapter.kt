@@ -24,6 +24,7 @@ class PlayDetailCommentAdapter(
     class PlayDetailCommentItemEntity(val data: Comments) : MultiItemEntity {
         override val itemType: Int = R.layout.play_item_comment
     }
+
     class PlayDetailCommentAdvertiseItemEntity(val data: BusinessAdModel) : MultiItemEntity {
         override val itemType: Int = R.layout.play_item_comment_adver
     }

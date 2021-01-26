@@ -12,24 +12,30 @@
 
         <variable
             name="item"
-            type="com.rm.module_listen.model.ListenHistoryModel" />
+            type="com.rm.module_listen.adapter.ListenRecentListenAdapter.ListenRecentListenContentItemEntity" />
 
         <import type="com.rm.baselisten.BaseConstance" />
     </data>
 
-    <com.rm.business_lib.swipe.SwipeLayout
+    <com.rm.business_lib.swipe.EasySwipeMenuLayout
         android:id="@+id/listenRecentSl"
+        attachChildSwipeDeleteId="@{@id/swipe_delete}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_18">
+        android:layout_marginBottom="@dimen/dp_18"
+        app:canRightSwipe="true"
+        app:contentView="@id/content"
+        app:rightMenuView="@id/swipe_delete">
 
         <com.rm.business_lib.wedgit.swipe.SwipeDeleteLayout
             android:id="@+id/swipe_delete"
             bindSwipeDelete="@{()->viewModel.deleteItem(item)}"
             android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80" />
+            android:layout_height="@dimen/dp_80"
+            android:layout_marginStart="@dimen/dp_10" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_80"
             android:onClick="@{()->viewModel.startAudioPlay(context,item)}">
@@ -118,7 +124,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </com.rm.business_lib.swipe.SwipeLayout>
+    </com.rm.business_lib.swipe.EasySwipeMenuLayout>
 
 
 </layout>
