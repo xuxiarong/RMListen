@@ -24,7 +24,6 @@ import com.rm.module_home.model.home.banner.HomeBannerRvModel
 import com.rm.module_home.model.home.collect.HomeMenuRvModel
 import com.rm.module_home.model.home.grid.HomeGridAudioModel
 import com.rm.module_home.model.home.grid.HomeGridAudioRvModel
-import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleFooterModel
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleModel
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel
 import com.rm.module_home.model.home.horsingle.HomeAudioHorSingleModel
@@ -217,9 +216,9 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     }
                     doubleHorList.add(doubleModel)
                 }
-                if (doubleHorList.size >= 3) {
-                    doubleHorList.add(HomeAudioHorDoubleFooterModel())
-                }
+//                if (doubleHorList.size >= 3) {
+//                    doubleHorList.add(HomeAudioHorDoubleFooterModel())
+//                }
                 allData.add(block)
                 allData.add(HomeAudioHorDoubleRvModel(block, doubleHorList))
             }

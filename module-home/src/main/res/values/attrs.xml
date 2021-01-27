@@ -3,4 +3,24 @@
         <attr name="fullscreenBackgroundColor" format="color" />
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
+
+    <attr format="reference" name="elasticDrawerStyle"/>
+    <declare-styleable name="ElasticDrawer">
+
+        <!-- Drawable to use for the background of the menu. -->
+        <attr format="color" name="edMenuBackground"/>
+
+        <!-- The size of the menu. -->
+        <attr format="dimension" name="edMenuSize"/>
+
+        <!-- The touch bezel size. -->
+        <attr format="dimension" name="edTouchBezelSize"/>
+
+        <!-- The maximum animation duration -->
+        <attr format="integer" name="edMaxAnimationDuration"/>
+
+        <!-- The position of the drawer -->
+        <attr format="integer" name="edPosition"/>
+    </declare-styleable>
+
 </resources>
