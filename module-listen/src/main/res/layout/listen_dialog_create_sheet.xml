@@ -117,6 +117,7 @@
                 android:paddingTop="@dimen/dp_12"
                 android:paddingEnd="@dimen/dp_10"
                 android:paddingBottom="@dimen/dp_12"
+                android:maxLength="20"
                 android:singleLine="true"
                 android:textCursorDrawable="@drawable/login_shape_cursor_ff5e5e"
                 android:textSize="@dimen/business_text_size_14sp"
