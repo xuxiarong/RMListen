@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import me.jessyan.autosize.utils.ScreenUtils
 
 /**
  * desc   : 国家列表弹出框帮助类
@@ -32,7 +33,7 @@ object CountryListDialogHelper {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
             dialogHasBackground = true
-            dialogHeight = CONTEXT.dip(752)
+            dialogHeight = ScreenUtils.getScreenSize(CONTEXT)[1] - CONTEXT.dip(60)
             initDialog = {
                 val dialogBinding = this.mDataBind as LoginDialogCountryChoiceListBinding
                 dialogBinding.loginDialogCountryRecyclerView.bindVerticalLayout(countryListAdapter)

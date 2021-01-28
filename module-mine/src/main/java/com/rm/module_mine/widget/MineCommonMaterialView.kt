@@ -17,8 +17,10 @@ import com.rm.baselisten.binding.isVisible
 import com.rm.baselisten.utilExt.Color
 import com.rm.baselisten.utilExt.Drawable
 import com.rm.baselisten.utilExt.dimen
+import com.rm.business_lib.bean.LoginUserBean
 import com.rm.business_lib.wedgit.iamge.RoundImageView
 import com.rm.module_mine.R
+import kotlinx.android.synthetic.main.mine_adapter_test.view.*
 
 /**
  *
@@ -153,6 +155,49 @@ fun MineCommonMaterialView.userText(userText: String?, defaultText: String?) {
         setMaterialUserText(defaultText ?: "")
     }
 }
+
+@BindingAdapter("bindMineUserPhone")
+fun MineCommonMaterialView.bindMineUserPhone(user: LoginUserBean?) {
+    var accountStr: String
+    if (user == null) {
+        setMaterialUserText("")
+    } else {
+        if (!TextUtils.isEmpty(user.account)) {
+            user.account?.let {
+                when (it.length) {
+                    0 -> {
+                        accountStr = ""
+                    }
+                    1 -> {
+                        accountStr = it
+                    }
+                    2 -> {
+                        accountStr = "*" + it.substring(1)
+                    }
+                    3 -> {
+                        accountStr = "**" + it.substring(2)
+                    }
+                    4 -> {
+                        accountStr = "***" + it.substring(3)
+                    }
+                    else -> {
+                        accountStr =
+                            it.substring(0, it.length - 5) + "****" + it.substring(it.length - 1)
+                    }
+                }
+                if (user.area_code != null) {
+                    accountStr = user.area_code!! + "-" + accountStr
+                }
+                setMaterialUserText(accountStr)
+            }
+        } else {
+            user.area_code?.let {
+                setMaterialUserText(it)
+            }
+        }
+    }
+}
+
 
 @BindingAdapter("bindMaterialName")
 fun MineCommonMaterialView.bindMaterialName(bindMaterialName: String?) {

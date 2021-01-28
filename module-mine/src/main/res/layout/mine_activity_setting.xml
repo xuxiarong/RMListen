@@ -41,7 +41,7 @@
 
             <com.rm.module_mine.widget.MineCommonMaterialView
                 android:id="@+id/mine_setting_phone_binding"
-                userText="@{viewModel.userInfo.account}"
+                bindMineUserPhone="@{viewModel.userInfo}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:material_name="@string/mine_phone_binding" />
