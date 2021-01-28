@@ -43,7 +43,7 @@
             android:text="@{item.data.ad_sub_title}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
-            app:layout_constraintEnd_toStartOf="@id/play_item_comment_advertise_del"
+            app:layout_constraintEnd_toStartOf="@id/play_item_comment_likes"
             app:layout_constraintStart_toEndOf="@+id/play_item_comment_advertise_icon"
             app:layout_constraintTop_toTopOf="@+id/play_item_comment_advertise_icon" />
 
@@ -59,12 +59,12 @@
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
             app:layout_constraintBottom_toBottomOf="@+id/play_item_comment_advertise_icon"
-            app:layout_constraintEnd_toStartOf="@id/play_item_comment_advertise_del"
+            app:layout_constraintEnd_toStartOf="@id/play_item_comment_likes"
             app:layout_constraintStart_toEndOf="@+id/play_item_comment_advertise_icon"
             app:layout_constraintTop_toBottomOf="@+id/play_item_comment_advertise_title" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/play_item_comment_advertise_del"
+            android:id="@+id/play_item_comment_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.clickDelCommentAd(item)}"
@@ -82,7 +82,7 @@
             android:layout_height="@dimen/dp_166"
             android:layout_marginTop="@dimen/dp_8"
             android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="@id/play_item_comment_advertise_del"
+            app:layout_constraintEnd_toEndOf="@id/play_item_comment_likes"
             app:layout_constraintStart_toStartOf="@id/play_item_comment_advertise_title"
             app:layout_constraintTop_toBottomOf="@id/play_item_comment_advertise_icon"
             tools:src="#3f00" />

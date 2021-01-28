@@ -92,19 +92,15 @@
             android:layout_width="@dimen/dp_22"
             android:layout_height="@dimen/dp_22"
             android:gravity="center"
-            android:onClick="@{()->viewModel.playLikeBook(context,item)}"
-            android:src="@{item.data.is_liked?@drawable/business_icon_like:@drawable/business_icon_unlike}"
             app:layout_constraintBottom_toBottomOf="@+id/play_item_comment_advertise_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/play_item_comment_advertise_icon" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/play_item_comment_advertise_del"
-            bindPlayCount="@{item.data.likes}"
+            android:id="@+id/play_item_comment_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:onClick="@{()->viewModel.playLikeBook(context,item)}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_12sp"
             app:layout_constraintBottom_toBottomOf="@+id/play_item_comment_advertise_icon"
@@ -120,7 +116,7 @@
             android:text="@{item.data.content}"
             android:textColor="@color/business_text_color_333333"
             android:textSize="@dimen/business_text_size_14sp"
-            app:layout_constraintEnd_toEndOf="@id/play_item_comment_advertise_del"
+            app:layout_constraintEnd_toEndOf="@id/play_item_comment_likes"
             app:layout_constraintStart_toStartOf="@+id/play_item_comment_advertise_subtitle"
             app:layout_constraintTop_toBottomOf="@id/play_item_comment_advertise_icon"
             tools:text="多个内容嵌套且不知道的MMMMMMMM然后才能完全展示美丽地方撒风三大地方撒进范德萨范德萨发带哦" />

@@ -3,9 +3,11 @@ package com.rm.module_play.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
+import com.airbnb.lottie.LottieAnimationView
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseConstance
@@ -23,6 +25,7 @@ import com.rm.baselisten.dialog.TipsFragmentDialog
 import com.rm.business_lib.PlayGlobalData.playChapterTotal
 import com.rm.business_lib.bean.AudioRecommend
 import com.rm.business_lib.bean.BusinessAdModel
+import com.rm.business_lib.binding.getPlayCount
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.insertpoint.BusinessInsertConstance
 import com.rm.business_lib.insertpoint.BusinessInsertManager
@@ -131,7 +134,18 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
      * 评论adapter
      */
     val mCommentAdapter by lazy {
-        PlayDetailCommentAdapter(this@PlayViewModel, BR.viewModel, BR.item)
+        PlayDetailCommentAdapter(this@PlayViewModel, BR.viewModel, BR.item).apply {
+            setOnCommentLikeClickListener(object :
+                PlayDetailCommentAdapter.OnCommentLikeClickListener {
+                override fun onClickLike(
+                    lottieView: LottieAnimationView,
+                    textView: AppCompatTextView,
+                    bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity
+                ) {
+                    playLikeBook(lottieView, textView, bean)
+                }
+            })
+        }
     }
 
     /**
@@ -190,15 +204,18 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
 
 
     //点赞
-    fun playLikeBook(context: Context, bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity) {
+    fun playLikeBook(
+        lottieView: LottieAnimationView,
+        textView: AppCompatTextView, bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity
+    ) {
         if (isLogin.get()) {
             if (bean.data.is_liked) {
-                unLikeComment(bean)
+                unLikeComment(lottieView, textView, bean)
             } else {
-                likeComment(bean)
+                likeComment(lottieView, textView, bean)
             }
         } else {
-            getActivity(context)?.let { quicklyLogin(it) }
+            getActivity(lottieView.context)?.let { quicklyLogin(it) }
         }
     }
 
@@ -494,7 +511,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 取消评论点赞
      */
-    private fun unLikeComment(bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity) {
+    private fun unLikeComment(
+        lottieView: LottieAnimationView,
+        textView: AppCompatTextView, bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity
+    ) {
         if (System.currentTimeMillis() - lastCommentLikeTime < 1000) {
             return
         }
@@ -504,12 +524,11 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     lastCommentLikeTime = System.currentTimeMillis()
                     val indexOf = mCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
+                        textView.text = getPlayCount(bean.data.likes - 1)
                         bean.data.is_liked = false
                         bean.data.likes = bean.data.likes - 1
-                        val headerLayoutCount = mCommentAdapter.headerLayoutCount
-                        mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                        startLottieAnim(lottieView, false)
                     }
-
                 },
                 onError = { it, _ ->
                     lastCommentLikeTime = System.currentTimeMillis()
@@ -522,7 +541,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
     /**
      * 评论点赞
      */
-    private fun likeComment(bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity) {
+    private fun likeComment(
+        lottieView: LottieAnimationView,
+        textView: AppCompatTextView, bean: PlayDetailCommentAdapter.PlayDetailCommentItemEntity
+    ) {
         if (System.currentTimeMillis() - lastCommentUnLikeTime < 1000) {
             return
         }
@@ -532,11 +554,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                     lastCommentUnLikeTime = System.currentTimeMillis()
                     val indexOf = mCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
+                        textView.text = getPlayCount(bean.data.likes + 1)
                         bean.data.is_liked = true
                         bean.data.likes = bean.data.likes + 1
-                        //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
-                        val headerLayoutCount = mCommentAdapter.headerLayoutCount
-                        mCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                        startLottieAnim(lottieView, true)
                     }
                 },
                 onError = { it, _ ->
@@ -546,6 +567,16 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
         }
     }
 
+    private fun startLottieAnim(lottieView: LottieAnimationView, isLike: Boolean) {
+        lottieView.setImageDrawable(null)
+        lottieView.clearAnimation()
+        if (isLike) {
+            lottieView.setAnimation("business_like.json")
+        } else {
+            lottieView.setAnimation("business_unlike.json")
+        }
+        lottieView.playAnimation()
+    }
 
     /**
      * 订阅
@@ -804,7 +835,9 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     }
                     isAttention.set(true)
-                    showTip(BaseApplication.getContext().getString(R.string.business_attention_success))
+                    showTip(
+                        BaseApplication.getContext().getString(R.string.business_attention_success)
+                    )
                 },
                 onError = { it, _ ->
                     showContentView()
@@ -852,7 +885,10 @@ open class PlayViewModel(private val repository: BookPlayRepository) : BaseVMVie
                         }
                     }
                     isAttention.set(false)
-                    showTip( BaseApplication.getContext().getString(R.string.business_cancel_attention_success))
+                    showTip(
+                        BaseApplication.getContext()
+                            .getString(R.string.business_cancel_attention_success)
+                    )
                 },
                 onError = { it, _ ->
                     showContentView()
