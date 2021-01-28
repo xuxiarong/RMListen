@@ -1,15 +1,19 @@
 package com.rm.module_home.viewmodel
 
+import android.animation.Animator
 import android.content.Context
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseConstance
 import com.rm.baselisten.adapter.single.CommonBindAdapter
@@ -27,6 +31,7 @@ import com.rm.business_lib.bean.AudioDetailBean
 import com.rm.business_lib.bean.ChapterListModel
 import com.rm.business_lib.bean.DataStr
 import com.rm.business_lib.bean.DetailTags
+import com.rm.business_lib.binding.getPlayCount
 import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.audiosort.DetailAudioSort
 import com.rm.business_lib.db.download.DownloadAudio
@@ -47,6 +52,7 @@ import com.rm.component_comm.router.RouterHelper
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.adapter.HomeDetailChapterPageAdapter
+import com.rm.module_home.adapter.HomeDetailCommentAdapter
 import com.rm.module_home.databinding.HomeDetailHeaderBinding
 import com.rm.module_home.model.home.detail.CommentList
 import com.rm.module_home.model.home.detail.HomeCommentBean
@@ -184,11 +190,6 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
      */
     var commentEmptyVisible = ObservableField<Boolean>(false)
 
-    /**
-     * 评论点赞是否播放动画
-     */
-    var commentLottieIsPlay = ObservableField<Boolean>(false)
-    var commentLottieEndBlock: () -> Unit = { commentLottieIsPlay.set(false) }
     private var lastCommentLikeTime = 0L
     private var lastCommentUnLikeTime = 0L
 
@@ -214,20 +215,28 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             homeDetailCommentAdapter.addHeaderView(this.root)
             setVariable(BR.viewModel, this@HomeDetailViewModel)
         }
-
     }
 
     /**
      * 评论dapper
      */
     val homeDetailCommentAdapter by lazy {
-        CommonBindVMAdapter<CommentList>(
-            this,
-            mutableListOf(),
-            R.layout.home_detail_item_comment,
-            BR.commentViewModel,
-            BR.commentItem
-        )
+        HomeDetailCommentAdapter(this).apply {
+            setOnCommentLikeClickListener(object :
+                HomeDetailCommentAdapter.OnCommentLikeClickListener {
+                override fun onClickLike(
+                    lottieView: LottieAnimationView,
+                    textView: AppCompatTextView,
+                    bean: CommentList
+                ) {
+                    itemLikeClick(lottieView, textView, bean)
+                }
+
+                override fun onClickMemberIcon(context: Context,  bean: CommentList) {
+                    clickCommentMemberFun(context, bean.member_id)
+                }
+            })
+        }
     }
 
     /**
@@ -615,7 +624,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 评论点赞
      */
-    private fun likeComment(bean: CommentList) {
+    private fun likeComment(
+        lottieView: LottieAnimationView,
+        textView: AppCompatTextView, bean: CommentList
+    ) {
         if (System.currentTimeMillis() - lastCommentLikeTime < 1000) {
             return
         }
@@ -623,14 +635,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.homeLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
                     lastCommentLikeTime = System.currentTimeMillis()
-                    val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
+                    val indexOf =
+                        homeDetailCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
-                        commentLottieIsPlay.set(true)
+                        textView.text = getPlayCount(bean.likes + 1)
                         bean.is_liked = true
                         bean.likes = bean.likes + 1
-                        //记得加上头部的个数，不然会报错  https://github.com/CymChad/BaseRecyclerViewAdapterHelper/issues/871
-                        val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
-                        homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                        startLottieAnim(lottieView, true)
                     }
                 },
                 onError = { it, _ ->
@@ -645,7 +656,11 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 取消评论点赞
      */
-    private fun unLikeComment(bean: CommentList) {
+    private fun unLikeComment(
+        lottieView: LottieAnimationView,
+        textView: AppCompatTextView,
+        bean: CommentList
+    ) {
         if (System.currentTimeMillis() - lastCommentUnLikeTime < 1000) {
             return
         }
@@ -653,13 +668,13 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
             repository.homeUnLikeComment(bean.id.toString()).checkResult(
                 onSuccess = {
                     lastCommentUnLikeTime = System.currentTimeMillis()
-                    val indexOf = homeDetailCommentAdapter.data.indexOf(bean)
+                    val indexOf =
+                        homeDetailCommentAdapter.data.indexOf(bean)
                     if (indexOf != -1) {
-                        commentLottieIsPlay.set(true)
+                        textView.text = getPlayCount(bean.likes - 1)
                         bean.is_liked = false
                         bean.likes = bean.likes - 1
-                        val headerLayoutCount = homeDetailCommentAdapter.headerLayoutCount
-                        homeDetailCommentAdapter.notifyItemChanged(indexOf + headerLayoutCount)
+                        startLottieAnim(lottieView, false)
                     }
                 },
                 onError = { it, _ ->
@@ -671,6 +686,16 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
         }
     }
 
+    private fun startLottieAnim(lottieView: LottieAnimationView, isLike: Boolean) {
+        lottieView.setImageDrawable(null)
+        lottieView.clearAnimation()
+        if (isLike) {
+            lottieView.setAnimation("business_like.json")
+        } else {
+            lottieView.setAnimation("business_unlike.json")
+        }
+        lottieView.playAnimation()
+    }
 
     /**
      *
@@ -717,7 +742,9 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     isAttention.set(true)
-                    showTip(BaseApplication.getContext().getString(R.string.business_attention_success))
+                    showTip(
+                        BaseApplication.getContext().getString(R.string.business_attention_success)
+                    )
                 },
                 onError = { it, _ ->
                     showContentView()
@@ -758,7 +785,10 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
                 onSuccess = {
                     showContentView()
                     isAttention.set(false)
-                    showTip( BaseApplication.getContext().getString(R.string.business_cancel_attention_success))
+                    showTip(
+                        BaseApplication.getContext()
+                            .getString(R.string.business_cancel_attention_success)
+                    )
                 },
                 onError = { it, _ ->
                     showContentView()
@@ -898,15 +928,19 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 点赞点击事件
      */
-    fun itemLikeClick(context: Context, bean: CommentList) {
+    fun itemLikeClick(
+        lottieView: LottieAnimationView,
+        textView: AppCompatTextView,
+        bean: CommentList
+    ) {
         if (isLogin.get()) {
             if (bean.is_liked) {
-                unLikeComment(bean)
+                unLikeComment(lottieView, textView, bean)
             } else {
-                likeComment(bean)
+                likeComment(lottieView, textView, bean)
             }
         } else {
-            getActivity(context)?.let { quicklyLogin(it) }
+            getActivity(lottieView.context)?.let { quicklyLogin(it) }
         }
     }
 

@@ -86,7 +86,9 @@ class MineMemberActivity :
             if (alpha == 1f) {
                 mine_member_detail_title_back.setImageResource(R.drawable.base_icon_write_back)
                 mine_member_detail_title.visibility = View.VISIBLE
-                mine_member_detail_title_follow.visibility = View.VISIBLE
+                if (mViewModel.attentionVisibility.get() == true) {
+                    mine_member_detail_title_follow.visibility = View.VISIBLE
+                }
             } else {
                 mine_member_detail_title.visibility = View.GONE
                 mine_member_detail_title_back.setImageResource(R.drawable.base_icon_back)
@@ -103,7 +105,6 @@ class MineMemberActivity :
                 blurImage(radius)
             }
 
-            Log.i("initParams: ", "$radius")
             mine_member_detail_blur.alpha = alpha
         }
         mine_member_detail_appbar_layout.addOnOffsetChangedListener(onOffsetChangedListener)

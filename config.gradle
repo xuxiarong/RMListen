@@ -73,9 +73,8 @@ ext {
             //scrolllayout              :"1.0.2"
 //            easypermissions           : "3.0.0",
             xxpermissions             : "9.6",
-            lottieVersion             : "3.4.2",
             flexbox                   : "2.0.1",
-            lottie_version            : "3.0.0",
+            lottie_version            : "3.4.2",
             palette                   : "1.0.0",
             bugly                     : "3.2.422",
             bugly_native              : "3.7.5",
