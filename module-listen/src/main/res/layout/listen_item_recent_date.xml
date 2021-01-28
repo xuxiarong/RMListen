@@ -8,9 +8,6 @@
         <variable
             name="viewModel"
             type="com.rm.module_listen.viewmodel.ListenRecentListenViewModel" />
-        <variable
-            name="item"
-            type="com.rm.module_listen.model.ListenRecentDateModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

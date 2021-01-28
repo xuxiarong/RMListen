@@ -2,26 +2,19 @@ package com.rm.module_listen.viewmodel
 
 import android.content.Context
 import android.text.TextUtils
-import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
-import com.airbnb.lottie.LottieAnimationView
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.rm.business_lib.swipe.CommonMultiSwipeVmAdapter
 import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.db.DaoUtil
 import com.rm.business_lib.db.converter.BusinessConvert
-import com.rm.business_lib.db.listen.ListenAudioEntity
-import com.rm.business_lib.db.listen.ListenChapterEntity
 import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.component_comm.play.PlayService
 import com.rm.component_comm.router.RouterHelper
 import com.rm.module_listen.BR
-import com.rm.module_listen.R
 import com.rm.module_listen.activity.ListenHistorySearchActivity
-import com.rm.module_listen.model.ListenHistoryModel
-import com.rm.module_listen.model.ListenRecentDateModel
+import com.rm.module_listen.adapter.ListenRecentListenAdapter
+import com.rm.module_listen.adapter.ListenRecentListenAdapter.*
 
 /**
  * desc   :
@@ -38,16 +31,14 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         RouterHelper.createRouter(PlayService::class.java)
     }
 
-    val mSwipeAdapter: CommonMultiSwipeVmAdapter by lazy {
-        CommonMultiSwipeVmAdapter(
-            this, mutableListOf(),
-            R.layout.listen_item_recent_listen,
-            R.id.listenRecentSl,
-            R.id.swipe_delete,
+    val mSwipeAdapter by lazy {
+        ListenRecentListenAdapter(
+            this,
             BR.viewModel,
             BR.item
         )
     }
+
 
     fun getListenHistory() {
         queryDataBaseOnIO {
@@ -62,8 +53,8 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
                             audio.listenChapterId.toLong()
                         )
                         recentChapter?.let { chapter ->
-                            val listenHistoryModel = ListenHistoryModel(audio, chapter)
-                            listenHistoryModel.itemType = R.layout.listen_item_recent_listen
+                            val listenHistoryModel =
+                                ListenRecentListenContentItemEntity(audio, chapter)
                             audioList.add(listenHistoryModel)
                         }
                         if (recentChapter == null) {
@@ -75,10 +66,11 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
                     }
                 }
                 if (audioList.isNotEmpty()) {
-                    audioList.add(0, ListenRecentDateModel())
+                    audioList.add(0, ListenRecentListenOtherItemEntity())
                     allHistory.postValue(audioList)
-                } else {
                     dataEmpty.set(false)
+                } else {
+                    dataEmpty.set(true)
                 }
             } else {
                 dataEmpty.set(true)
@@ -91,7 +83,7 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         ListenHistorySearchActivity.startListenHistorySearch(context)
     }
 
-    fun startAudioPlay(context: Context, model: ListenHistoryModel) {
+    fun startAudioPlay(context: Context, model: ListenRecentListenContentItemEntity) {
         playService.startPlayActivity(
             context = context,
             audioId = model.audio.audio_id.toString(),
@@ -100,8 +92,8 @@ class ListenRecentListenViewModel : BaseVMViewModel() {
         )
     }
 
-    fun deleteItem(item: ListenHistoryModel) {
-        mSwipeAdapter.mItemManger.closeItem(mSwipeAdapter.data.indexOf(item))
+    fun deleteItem(item: ListenRecentListenContentItemEntity) {
+//        mSwipeAdapter.mItemManger.closeItem(mSwipeAdapter.data.indexOf(item))
         mSwipeAdapter.data.remove(item)
         ListenDaoUtils.deleteAudio(item.audio)
         getListenHistory()
