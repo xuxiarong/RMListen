@@ -16,19 +16,13 @@
             type="com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel" />
     </data>
 
-
-    <com.rm.module_home.widget.CYStickyNavLayouts
+    <com.rm.module_home.widget.recycler.LeftAutoScrollRecyclerView
+        android:id="@+id/homeRvRecommendHorDouble"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        bindOpenTop="@{item}"
-        >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homeRvRecommendHorDouble"
-            android:layout_width="match_parent"
-            android:layout_height="174dp"
-            android:layout_marginTop="@dimen/dp_14"
-            bindHorizontalLayout="@{viewModel.getAdapterWithList(item.horDoubleList)}"
-            />
-    </com.rm.module_home.widget.CYStickyNavLayouts>
+        android:layout_height="@dimen/dp_176"
+        android:layout_marginTop="@dimen/dp_14"
+        bindHorizontalLayout="@{viewModel.getAdapterWithList(item.horDoubleList)}"
+        bindLeftScroll="@{item}"
+        />
 
 </layout>
