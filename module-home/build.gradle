@@ -84,6 +84,7 @@ dependencies {
     //吸顶  https://github.com/donkingliang/ConsecutiveScroller
 //    implementation 'com.github.donkingliang:ConsecutiveScroller:4.3.0'
     implementation project(path: ':business-lib')
-
+//    implementation 'com.mxn.soul:flowingdrawer-core:2.1.0'
+//    implementation 'com.nineoldandroids:library:2.4.0'
 
 }

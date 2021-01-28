@@ -107,7 +107,7 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
     /**
      * 获取首页弹窗广告
      */
-    fun getHomeDialogAd() {
+    private fun getHomeDialogAd() {
         launchOnIO {
             repository.getHomeDialogAd(arrayOf("ad_index_alert")).checkResult(
                     onSuccess = {
@@ -143,7 +143,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                     }
             )
         }
-
     }
 
 
@@ -327,17 +326,6 @@ class HomeFragmentViewModel(var repository: HomeRepository) : BaseVMViewModel() 
                 }
             }
         }
-    }
-
-    /**
-     * 随机从广告列表获取一个广告
-     */
-    private fun getRandomAdFromList(adList: List<BusinessAdModel>?): BusinessAdModel? {
-        if (adList == null || adList.isEmpty()) {
-            return null
-        }
-        val randomAdPosition = Random.nextInt(adList.size)
-        return adList[randomAdPosition]
     }
 
     /**

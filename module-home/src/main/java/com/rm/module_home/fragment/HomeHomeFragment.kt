@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.dialog.CommonMvFragmentDialog
 import com.rm.baselisten.model.BaseNetStatus
-import com.rm.baselisten.mvvm.BaseActivity
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.baselisten.receiver.NetworkChangeReceiver
 import com.rm.baselisten.util.ToastUtil

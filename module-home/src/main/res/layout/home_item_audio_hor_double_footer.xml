@@ -10,15 +10,20 @@
             type="com.rm.module_home.viewmodel.HomeFragmentViewModel" />
     </data>
 
-
-
+    <RelativeLayout
+        android:layout_width="56dp"
+        android:layout_height="match_parent"
+        >
         <androidx.appcompat.widget.AppCompatTextView
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:layout_width="56dp"
-            android:layout_height="174dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/business_text_color_666666"
             android:textSize="@dimen/business_text_size_12sp"
             android:text="@string/home_swipe_open_detail"
             />
+    </RelativeLayout>
 
 </layout>
