@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonDragMvDialog
+import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -31,8 +32,8 @@ class ListenDialogCreateSheetHelper(
         mViewModel.audioId = audioId
         mViewModel.mDialog = CommonDragMvDialog().apply {
             gravity = Gravity.BOTTOM
+            dialogHeight = dip(800)
             dialogWidthIsMatchParent = true
-            dialogHeightIsMatchParent = true
             dialogHasBackground = true
             initDialog = {
                 mViewModel.dataBinding = mDataBind as ListenDialogCreateSheetBinding
@@ -67,7 +68,7 @@ class ListenDialogCreateSheetHelper(
         mViewModel.mDialog = CommonDragMvDialog().apply {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
-            dialogHeightIsMatchParent = true
+            dialogHeight = dip(800)
             dialogHasBackground = true
             initDialog = {
                 mViewModel.dataBinding = mDataBind as ListenDialogCreateSheetBinding
