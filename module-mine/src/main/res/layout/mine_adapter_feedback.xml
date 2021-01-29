@@ -12,7 +12,8 @@
         <variable
             name="feedbackViewModel"
             type="com.rm.module_mine.viewmodel.MineFeedbackViewModel" />
-        <import type="android.text.TextUtils"/>
+
+        <import type="android.text.TextUtils" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,13 +22,14 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/mine_adapter_feedback_img"
-            corner="@{8f}"
             bindUrl="@{feedbackItem.path}"
+            corner="@{8f}"
+            isCenterCrop="@{true}"
             isVisible="@{!TextUtils.isEmpty(feedbackItem.path)}"
             android:layout_width="@dimen/dp_62"
             android:layout_height="@dimen/dp_62"
-            android:scaleType="center"
             android:onClick="@{()->feedbackViewModel.clickImage(context,feedbackItem)}"
+            android:scaleType="center"
             android:src="@color/business_color_ffba56"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,18 +37,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            isVisible="@{!TextUtils.isEmpty(feedbackItem.path)}"
             android:layout_width="@dimen/dp_22"
             android:layout_height="@dimen/dp_22"
             android:onClick="@{()->feedbackViewModel.clickDeleteImg(feedbackItem)}"
             android:src="@drawable/business_icon_del_da"
-            isVisible="@{!TextUtils.isEmpty(feedbackItem.path)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.flyco.roundview.RoundFrameLayout
+            isVisible="@{TextUtils.isEmpty(feedbackItem.path)}"
             android:layout_width="@dimen/dp_62"
             android:layout_height="@dimen/dp_62"
-            isVisible="@{TextUtils.isEmpty(feedbackItem.path)}"
             android:onClick="@{()->feedbackViewModel.clickCamera(context)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -75,9 +77,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="@dimen/dp_6"
+                android:text="@{feedbackViewModel.tipText}"
                 android:textColor="@color/base_b1b1b1"
-                android:textSize="@dimen/business_text_size_10sp"
-                android:text="@{feedbackViewModel.tipText}" />
+                android:textSize="@dimen/business_text_size_10sp" />
         </com.flyco.roundview.RoundFrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

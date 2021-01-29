@@ -18,7 +18,7 @@ open class CommonDragMvDialog @JvmOverloads constructor(moveListener: DragCloseL
     BaseMvFragmentDialog() {
 
     var closeDragAlpha: Boolean = false
-    private var moveListener: DragCloseLayout.IDragMoveListener? = null
+     var moveListener: DragCloseLayout.IDragMoveListener? = null
 
     init {
         this.moveListener = moveListener

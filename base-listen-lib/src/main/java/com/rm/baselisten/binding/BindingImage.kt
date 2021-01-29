@@ -50,12 +50,13 @@ fun ImageView.bindVisible(content: String? = "") {
     }
 }
 
-@BindingAdapter("corner", "bindUrl", "isCircle", "defaultIcon", requireAll = false)
+@BindingAdapter("corner", "bindUrl", "isCircle", "defaultIcon","isCenterCrop", requireAll = false)
 fun ImageView.bindUrl(
     corner: Float = 0f,
     bindUrl: String?,
     isCircle: Boolean = false,
-    defaultIcon: Drawable? = null
+    defaultIcon: Drawable? = null,
+    isCenterCrop: Boolean? = false
 ) {
     val url = bindUrl ?: ""
     when {
@@ -68,9 +69,9 @@ fun ImageView.bindUrl(
         }
         corner > 0 -> {
             if (defaultIcon != null) {
-                loadRoundCornersImage(corner, this, url, defaultIcon)
+                loadRoundCornersImage(corner, this, url, defaultIcon,isCenterCrop)
             } else {
-                loadRoundCornersImage(corner, this, url)
+                loadRoundCornersImage(corner, this, url,isCenterCrop)
             }
         }
         else -> {
@@ -91,17 +92,17 @@ fun ImageView.blurUrl(blurUrl: String?) {
 
 
 @BindingAdapter("bindPlayRotation")
-fun ImageView.bindPlayRotation(model : BasePlayStatusModel?){
-    if(model == null){
+fun ImageView.bindPlayRotation(model: BasePlayStatusModel?) {
+    if (model == null) {
         clearAnimation()
         return
-    }else{
-        if(model.playReady && model.playStatus == 3){
+    } else {
+        if (model.playReady && model.playStatus == 3) {
             val playAnim = AnimationUtils.loadAnimation(context, R.anim.base_rotate_play)
             val interpolator = LinearInterpolator() //设置匀速旋转，在xml文件中设置会出现卡顿
             playAnim!!.interpolator = interpolator
             startAnimation(playAnim) //开始动画
-        }else{
+        } else {
             clearAnimation()
         }
     }

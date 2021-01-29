@@ -52,7 +52,7 @@ class MusicPlayerManager private constructor() : MusicPlayerPresenter {
             ExoplayerLogger.exoLog("2 链接播放服务失败")
             mBinder?.close()
             mBinder = null
-            musicPlayerManger.initialize(BaseApplication.CONTEXT)
+//            musicPlayerManger.initialize(BaseApplication.CONTEXT)
         }
 
     }

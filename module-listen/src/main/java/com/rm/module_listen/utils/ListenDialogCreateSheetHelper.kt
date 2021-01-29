@@ -6,7 +6,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonDragMvDialog
+import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
 import com.rm.baselisten.utilExt.dip
+import com.rm.baselisten.utilExt.screenHeight
+import com.rm.baselisten.view.DragCloseLayout
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
@@ -32,12 +35,11 @@ class ListenDialogCreateSheetHelper(
         mViewModel.audioId = audioId
         mViewModel.mDialog = CommonDragMvDialog().apply {
             gravity = Gravity.BOTTOM
-            dialogHeight = dip(800)
+            dialogHeight = mActivity.screenHeight-getStateHeight(mActivity)
             dialogWidthIsMatchParent = true
             dialogHasBackground = true
             initDialog = {
                 mViewModel.dataBinding = mDataBind as ListenDialogCreateSheetBinding
-
                 dialog?.setOnShowListener {
                     mViewModel.dataBinding?.listenDialogCreateSheetEditName?.postDelayed({
                         mViewModel.dataBinding?.listenDialogCreateSheetEditName?.isFocusable =
@@ -52,6 +54,9 @@ class ListenDialogCreateSheetHelper(
                         inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
                     }, 50)
                 }
+            }
+            moveListener= DragCloseLayout.IDragMoveListener {
+
             }
         }.showCommonDialog(
             mActivity,
@@ -68,7 +73,7 @@ class ListenDialogCreateSheetHelper(
         mViewModel.mDialog = CommonDragMvDialog().apply {
             gravity = Gravity.BOTTOM
             dialogWidthIsMatchParent = true
-            dialogHeight = dip(800)
+            dialogHeight = mActivity.screenHeight-getStateHeight(mActivity)
             dialogHasBackground = true
             initDialog = {
                 mViewModel.dataBinding = mDataBind as ListenDialogCreateSheetBinding

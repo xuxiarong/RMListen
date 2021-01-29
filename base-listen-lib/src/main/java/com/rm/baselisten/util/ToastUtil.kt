@@ -97,7 +97,7 @@ object ToastUtil {
                         setVisibility(R.id.baseTipProgress, View.GONE)
                     }
                     setDuration(1500)
-                    setAnimStyle(android.R.style.Animation_Toast)
+                    setAnimStyle(R.style.TopToBottomAnim)
                     setGravity(Gravity.TOP)
                     setWidth(context.screenWidth - context.dip(20))
                     setText(R.id.baseTipText, tipText)

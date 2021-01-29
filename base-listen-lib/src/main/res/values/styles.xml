@@ -5,6 +5,11 @@
         <item name="android:windowExitAnimation">@anim/business_bottom_dialog_exit_anim</item>
     </style>
 
+    <style name="TopToBottomAnim">
+        <item name="android:windowEnterAnimation">@anim/business_bottom_toast_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/business_bottom_toast_exit_anim</item>
+    </style>
+
     <style name="EnterAnim" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/business_bottom_dialog_enter_anim</item>
     </style>

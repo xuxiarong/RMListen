@@ -117,7 +117,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      */
     fun setBackgroundDimAmount(amount: Float): XToast {
         require(!(amount < 0 || amount > 1)) { "are you ok?" }
-        mWindowParams!!.dimAmount = amount
+        mWindowParams?.dimAmount = amount
         val flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
         if (amount != 0f) {
             addWindowFlags(flags)
@@ -154,7 +154,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 移除一个标记位
      */
     fun clearWindowFlags(flags: Int): XToast {
-        mWindowParams!!.flags = mWindowParams!!.flags and flags.inv()
+        mWindowParams?.flags = mWindowParams!!.flags and flags.inv()
         if (isShow()) {
             update()
         }
@@ -165,7 +165,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置标记位
      */
     fun setWindowFlags(flags: Int): XToast {
-        mWindowParams!!.flags = flags
+        mWindowParams?.flags = flags
         if (isShow()) {
             update()
         }
@@ -176,7 +176,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置窗口类型
      */
     fun setWindowType(type: Int): XToast {
-        mWindowParams!!.type = type
+        mWindowParams?.type = type
         if (isShow()) {
             update()
         }
@@ -187,7 +187,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置动画样式
      */
     fun setAnimStyle(id: Int): XToast {
-        mWindowParams!!.windowAnimations = id
+        mWindowParams?.windowAnimations = id
         if (isShow()) {
             update()
         }
@@ -226,7 +226,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置高度
      */
     fun setHeight(height: Int): XToast {
-        mWindowParams!!.height = height
+        mWindowParams?.height = height
         if (isShow()) {
             update()
         }
@@ -264,7 +264,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置窗口重心
      */
     fun setGravity(gravity: Int): XToast {
-        mWindowParams!!.gravity = gravity
+        mWindowParams?.gravity = gravity
         if (isShow()) {
             update()
         }
@@ -279,7 +279,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 竖屏：[ActivityInfo.SCREEN_ORIENTATION_PORTRAIT]
      */
     fun setOrientation(orientation: Int): XToast {
-        mWindowParams!!.screenOrientation = orientation
+        mWindowParams?.screenOrientation = orientation
         if (isShow()) {
             update()
         }
@@ -290,7 +290,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置水平偏移量
      */
     fun setXOffset(x: Int): XToast {
-        mWindowParams!!.x = x
+        mWindowParams?.x = x
         if (isShow()) {
             update()
         }
@@ -301,7 +301,7 @@ class XToast @JvmOverloads constructor(context: Context) {
      * 设置垂直偏移量
      */
     fun setYOffset(y: Int): XToast {
-        mWindowParams!!.y = y
+        mWindowParams?.y = y
         if (isShow()) {
             update()
         }
@@ -328,15 +328,15 @@ class XToast @JvmOverloads constructor(context: Context) {
 
     private fun setView(view: View?): XToast {
         mRootView = view
-        val params = mRootView!!.layoutParams
-        if (params != null && mWindowParams!!.width == WindowManager.LayoutParams.WRAP_CONTENT && mWindowParams!!.height == WindowManager.LayoutParams.WRAP_CONTENT) {
+        val params = mRootView?.layoutParams
+        if (params != null && mWindowParams?.width == WindowManager.LayoutParams.WRAP_CONTENT && mWindowParams?.height == WindowManager.LayoutParams.WRAP_CONTENT) {
             // 如果当前 Dialog 的宽高设置了自适应，就以布局中设置的宽高为主
             setWidth(params.width)
             setHeight(params.height)
         }
 
         // 如果当前没有设置重心，就自动获取布局重心
-        if (mWindowParams!!.gravity == Gravity.NO_GRAVITY) {
+        if (mWindowParams?.gravity == Gravity.NO_GRAVITY) {
             when (params) {
                 is FrameLayout.LayoutParams -> {
                     setGravity(params.gravity)

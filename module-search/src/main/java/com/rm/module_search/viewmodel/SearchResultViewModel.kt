@@ -1,8 +1,10 @@
 package com.rm.module_search.viewmodel
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.databinding.ObservableField
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.net.checkResult
@@ -234,8 +236,12 @@ class SearchResultViewModel(private val repository: SearchRepository) : BaseVMVi
             repository.searchSuggest(keyword).checkResult(
                 onSuccess = {
                     resultIsEnd = true
-                    val list = it.keywords?.split(",")
-                    inputAdapter.setList(list)
+                    if (it.keywords != null && it.keywords.isNotEmpty()) {
+                        val list = it.keywords.split(",")
+                        inputAdapter.setList(list)
+                    } else {
+                        inputAdapter.setList(null)
+                    }
                 },
                 onError = { it, _ ->
                     resultIsEnd = true
