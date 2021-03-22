@@ -2,7 +2,6 @@ package com.rm.module_login.viewmodel
 
 import android.content.Context
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel

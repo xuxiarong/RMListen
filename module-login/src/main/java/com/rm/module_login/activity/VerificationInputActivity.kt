@@ -1,7 +1,6 @@
 package com.rm.module_login.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.view.WindowManager
 import com.rm.baselisten.model.BaseTitleModel
@@ -72,8 +71,7 @@ class VerificationInputActivity :
     override fun initData() {
         val phone = intent.getStringExtra("phone") as String
         mViewModel.phone = phone
-        var hidePhone = phone
-        hidePhone = if (phone.length == 11) {
+        val hidePhone = if (phone.length == 11) {
             phone.replace("(\\d{3})\\d{4}(\\d{4})".toRegex(), "$1****$2")
         } else {
             phone.replace(

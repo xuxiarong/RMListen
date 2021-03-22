@@ -2,10 +2,8 @@ package com.rm.module_login
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.component_comm.base.IApplicationDelegate
 import com.rm.component_comm.login.LoginService
 import com.rm.component_comm.router.ARouterModuleServicePath

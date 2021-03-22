@@ -7,10 +7,8 @@ import androidx.fragment.app.FragmentActivity
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.dialog.CommonDragMvDialog
 import com.rm.baselisten.utilExt.DisplayUtils.getStateHeight
-import com.rm.baselisten.utilExt.dip
 import com.rm.baselisten.utilExt.screenHeight
 import com.rm.baselisten.view.DragCloseLayout
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.databinding.ListenDialogCreateSheetBinding

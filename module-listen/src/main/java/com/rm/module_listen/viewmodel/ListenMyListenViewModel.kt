@@ -16,10 +16,9 @@ import com.rm.module_listen.repository.ListenRepository
 class ListenMyListenViewModel(val repository: ListenRepository) : BaseVMViewModel() {
 
     var subsNumber = ObservableInt(0)
-    var downloadNumber = ObservableInt(0)
     val refreshStateModel = SmartRefreshLayoutStatusModel()
     var subsRefreshFun: () -> Unit = {}
-    var lastTime = 0L
+    private var lastTime = 0L
 
     fun getSubsTotalNumberFromService() {
         if (isLogin.get() && System.currentTimeMillis() - lastTime > 3000)

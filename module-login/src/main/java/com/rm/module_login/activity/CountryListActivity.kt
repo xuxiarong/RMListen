@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.baselisten.util.DLog
@@ -59,7 +60,7 @@ class CountryListActivity :
             finish()
         }
         val baseTitleModel = BaseTitleModel()
-            .setTitle("选择国家地区")
+            .setTitle(CONTEXT.getString(R.string.login_choice_country))
             .setLeftIcon(R.drawable.base_icon_back)
             .setLeftIconClick { finish() }
         mViewModel.baseTitleModel.value = baseTitleModel

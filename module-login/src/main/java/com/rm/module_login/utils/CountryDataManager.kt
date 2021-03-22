@@ -9,6 +9,7 @@ import com.rm.baselisten.util.putMMKV
 import com.rm.business_lib.bean.Country
 import com.rm.business_lib.pinyin.CNPinyin
 import com.rm.business_lib.pinyin.CNPinyinFactory
+import com.rm.module_login.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
@@ -23,7 +24,7 @@ object CountryDataManager {
     val pinyinCountryList = mutableListOf<CNPinyin<Country>>()
     // 当前全局选中并使用的国家信息(目前就用到了phone_code,所以名字啥的直接写了)
     var choiceCountry: Country =
-        Country("中国", "China", "86")
+        Country(BaseApplication.CONTEXT.getString(R.string.login_china), "China", "86")
 
     /**
      * 当前选中的国家信息
@@ -49,7 +50,7 @@ object CountryDataManager {
     suspend fun getCountryList(): MutableList<CNPinyin<Country>> {
         return withContext(Dispatchers.IO) {
             var tempList = mutableListOf<Country>()
-            val json = getCountryJson("country.json")
+            val json = getCountryJson()
             if (!TextUtils.isEmpty(json)) {
                 tempList = Gson().fromJson<MutableList<Country>>(
                     json,
@@ -62,12 +63,12 @@ object CountryDataManager {
         }
     }
 
-    private fun getCountryJson(fileName: String): String {
+    private fun getCountryJson(): String {
         val stringBuilder = StringBuilder()
         val assetManager = BaseApplication.CONTEXT.assets
         BufferedReader(
             InputStreamReader(
-                assetManager.open(fileName)
+                assetManager.open("country.json")
             )
         ).use {
             var line: String

@@ -9,7 +9,6 @@ import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.baselisten.dialog.TipsFragmentDialog
-import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
 import com.rm.component_comm.router.RouterHelper
@@ -65,9 +64,9 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                     showContentView()
                     successData(it)
                 },
-                onError = { it, code ->
+                onError = { it, _ ->
                     showContentView()
-                    failData("$it", code)
+                    failData("$it")
                 }
             )
         }
@@ -81,9 +80,9 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
                     showContentView()
                     successData(it)
                 },
-                onError = { it, code ->
+                onError = { it, _ ->
                     showContentView()
-                    failData("$it", code)
+                    failData("$it")
                 }
             )
         }
@@ -135,7 +134,7 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
     /**
      * 数据请求失败
      */
-    private fun failData(msg: String, code: Int?) {
+    private fun failData(msg: String) {
         if (page == 1) {
             refreshStateModel.finishRefresh(false)
         } else {
@@ -174,10 +173,10 @@ class ListenSheetMyListViewModel(private val repository: ListenRepository) : Bas
         clickBean.set(bean)
         when (bean.pre_deleted_from) {
             "1" -> {
-                showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否删除", bean.sheet_id.toString())
+                showTipDialog(context, context.getString(R.string.listen_list_ill_is_delete), bean.sheet_id.toString())
             }
             "2" -> {
-                showTipDialog(context, "该听单已被作者删除，是否删除？", bean.sheet_id.toString())
+                showTipDialog(context, context.getString(R.string.listen_author_ill), bean.sheet_id.toString())
             }
             else -> {
                 if (memberId.isEmpty()) {

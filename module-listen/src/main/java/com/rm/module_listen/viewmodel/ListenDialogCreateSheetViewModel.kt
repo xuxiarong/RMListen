@@ -1,15 +1,11 @@
 package com.rm.module_listen.viewmodel
 
 import android.text.TextUtils
-import android.view.View
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.MutableLiveData
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.dialog.CommonDragMvDialog
-import com.rm.baselisten.model.BaseToastModel
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.EmojiUtils
 import com.rm.baselisten.util.getBooleanMMKV
@@ -18,7 +14,6 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.IS_FIRST_ADD_SHEET
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.base.dialog.CustomTipsFragmentDialog
-import com.rm.business_lib.loginUser
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.component_comm.listen.ListenService
 import com.rm.component_comm.router.RouterHelper

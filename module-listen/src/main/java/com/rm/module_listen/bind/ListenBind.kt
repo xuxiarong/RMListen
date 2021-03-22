@@ -8,8 +8,6 @@ import com.rm.baselisten.model.BasePlayInfoModel
 import com.rm.baselisten.model.BasePlayProgressModel
 import com.rm.baselisten.util.TimeUtils
 import com.rm.business_lib.swipe.EasySwipeMenuLayout
-import com.rm.business_lib.swipe.State
-import com.rm.business_lib.wedgit.swipe.SwipeDeleteLayout
 import com.rm.module_listen.R
 import com.rm.module_listen.adapter.ListenRecentListenAdapter.ListenRecentListenContentItemEntity
 import com.rm.module_listen.model.ListenHistoryModel

@@ -3,6 +3,8 @@ package com.rm.module_listen.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
+import com.rm.baselisten.BaseApplication
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
@@ -57,7 +59,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                 onSuccess = {
                     successData(it)
                 },
-                onError = { it, _ ->
+                onError = { _, _ ->
                     failData()
                 }
             )
@@ -70,7 +72,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                 onSuccess = {
                     successData(it)
                 },
-                onError = { it, _ ->
+                onError = { _, _ ->
                     failData()
                 }
             )
@@ -108,7 +110,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
                 showContentView()
                 mAdapter.setList(bean.list)
             } else {
-                showDataEmpty("暂无收藏")
+                showDataEmpty(CONTEXT.getString(R.string.listen_not_collect_now))
             }
         } else {
             //加载更多完成
@@ -155,10 +157,10 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
         clickBean = bean
         when (bean.pre_deleted_from) {
             1 -> {
-                showTipDialog(context, "该听单因存在违规内容已被系统屏蔽，是否取消收藏？", bean.sheet_id ?: "")
+                showTipDialog(context, context.getString(R.string.listen_content_ill), bean.sheet_id ?: "")
             }
             2 -> {
-                showTipDialog(context, "该听单已被作者删除，是否取消收藏？", bean.sheet_id ?: "")
+                showTipDialog(context, context.getString(R.string.listen_delete_and_not_collect), bean.sheet_id ?: "")
             }
             else -> {
                 getActivity(context)?.let {
@@ -194,7 +196,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
      */
     fun itemChildClickFun(view: View, bean: SheetFavorAudioBean) {
         if (bean.status == 0) {
-            showTip("该内容已下架", R.color.business_color_ff5e5e)
+            showTip(CONTEXT.getString(R.string.listen_content_offline), R.color.business_color_ff5e5e)
         } else {
             getActivity(view.context)?.let {
                 RouterHelper.createRouter(HomeService::class.java)
@@ -228,7 +230,7 @@ class ListenSheetCollectedListViewModel(private val repository: ListenRepository
         }
 
         if (mAdapter.data.size <= 0) {
-            showDataEmpty("暂无收藏")
+            showDataEmpty(CONTEXT.getString(R.string.listen_not_collect_now))
         }
     }
 

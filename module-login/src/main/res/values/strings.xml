@@ -41,4 +41,6 @@
 
     <string name="login_search_hint">搜索</string>
     <string name="login_country_plus">+%s</string>
+    <string name="login_china">中国</string>
+    <string name="login_phone_error">手机格式不对</string>
 </resources>

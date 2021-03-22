@@ -7,11 +7,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.converter.BusinessConvert
-import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.listen.ListenDaoUtils
 import com.rm.business_lib.swipe.CommonSwipeVmAdapter
 import com.rm.component_comm.play.PlayService
@@ -88,7 +86,7 @@ class ListenHistoryViewModel : BaseVMViewModel() {
     }
 
 
-    fun searchHistory(search: String) {
+    private fun searchHistory(search: String) {
         val sourceList = allHistory.value
         val resultList = ArrayList<ListenHistoryModel>()
 

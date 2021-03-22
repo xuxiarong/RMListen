@@ -4,8 +4,6 @@ import android.util.Log
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
 import com.rm.baselisten.util.DLog
-import com.rm.baselisten.util.getStringMMKV
-import com.rm.business_lib.REFRESH_TOKEN
 import com.rm.business_lib.utils.aes.AESUtil
 import com.rm.module_login.api.LoginApiService
 import com.rm.module_login.bean.LoginInfo
@@ -28,7 +26,7 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
         const val CODE_TYPE_LOGIN = "login"//登录
         const val CODE_TYPE_CHANGE_PWD = "change_pwd"//修改密码
         const val CODE_TYPE_FORGET_PWD = "forget_pwd"//忘记密码
-        const val CODE_TYPE_REBIND_PHONE = "rebind_phone"//重新绑定手机
+//        const val CODE_TYPE_REBIND_PHONE = "rebind_phone"//重新绑定手机
         const val CODE_TYPE_CLOSE_ACCOUNT = "close_account"//销户
     }
 
@@ -112,14 +110,14 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
         }
     }
 
-    /**
-     * 刷新token
-     * @param refreshToken String
-     * @return BaseResult<LoginInfo>
-     */
-    suspend fun refreshToken(refreshToken: String): BaseResult<LoginInfo> {
-        return apiCall { apiService.refreshToken(REFRESH_TOKEN.getStringMMKV()) }
-    }
+//    /**
+//     * 刷新token
+//     * @param refreshToken String
+//     * @return BaseResult<LoginInfo>
+//     */
+//    suspend fun refreshToken(refreshToken: String): BaseResult<LoginInfo> {
+//        return apiCall { apiService.refreshToken(REFRESH_TOKEN.getStringMMKV()) }
+//    }
 
 
     /**
@@ -148,7 +146,6 @@ class LoginRepository(private val apiService: LoginApiService) : BaseRepository(
 
     /**
      * 通过旧密码重设密码
-     * @param password String
      * @param newPassword String
      * @return BaseResult<Any>
      */

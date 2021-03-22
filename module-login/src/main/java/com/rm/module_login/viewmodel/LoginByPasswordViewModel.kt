@@ -3,11 +3,10 @@ package com.rm.module_login.viewmodel
 import android.content.Context
 import android.text.TextUtils
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.helpter.loginIn
-import com.rm.business_lib.insertpoint.BusinessInsertConstance
-import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.module_login.R
 import com.rm.module_login.activity.ForgetPasswordActivity
 import com.rm.module_login.repository.LoginRepository
@@ -49,7 +48,7 @@ class LoginByPasswordViewModel(private val repository: LoginRepository) : BaseVM
             }
             TextUtils.equals(countryCode, "+86")
                     && (phone.length < 11 || !phone.startsWith("1")) -> {
-                errorTips.set("手机格式不对")
+                errorTips.set(BaseApplication.CONTEXT.getString(R.string.login_phone_error))
             }
             else -> {
                 showLoading()

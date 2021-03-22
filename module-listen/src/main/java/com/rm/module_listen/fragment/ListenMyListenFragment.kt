@@ -1,26 +1,20 @@
 package com.rm.module_listen.fragment
 
 import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
 import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.mvvm.BaseVMFragment
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.DisplayUtils
 import com.rm.baselisten.utilExt.dip
-import com.rm.baselisten.utilExt.sp
-import com.rm.baselisten.utilExt.sp2px
 import com.rm.business_lib.HomeGlobalData
 import com.rm.business_lib.HomeGlobalData.isListenAppBarInTop
 import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.isLogin
-import com.rm.business_lib.loginUser
 import com.rm.business_lib.wedgit.bendtablayout.BendTabLayout
 import com.rm.component_comm.download.DownloadService
 import com.rm.component_comm.login.LoginService
@@ -114,15 +108,19 @@ class ListenMyListenFragment :
         DownloadMemoryCache.downloadingChapterList.observe(this, Observer {
             download_chapter_num.isVisible = it.isNotEmpty()
             val layoutParams = download_chapter_num.layoutParams
-            if (it.size >= 100) {
-                download_chapter_num.text = "99+"
-                layoutParams.width = dip(30)
-            } else if(it.size>=10){
-                download_chapter_num.text = it.size.toString()
-                layoutParams.width = dip(26)
-            }else{
-                download_chapter_num.text = it.size.toString()
-                layoutParams.width = dip(22)
+            when {
+                it.size >= 100 -> {
+                    download_chapter_num.text = getString(R.string.listen_max_num)
+                    layoutParams.width = dip(30)
+                }
+                it.size>=10 -> {
+                    download_chapter_num.text = it.size.toString()
+                    layoutParams.width = dip(26)
+                }
+                else -> {
+                    download_chapter_num.text = it.size.toString()
+                    layoutParams.width = dip(22)
+                }
             }
             download_chapter_num.layoutParams = layoutParams
         })
@@ -159,13 +157,13 @@ class ListenMyListenFragment :
     private fun setClick() {
         val router = RouterHelper.createRouter(LoginService::class.java)
 
-        listenBuyCl.setOnClickListener {
+        listenBuyCl.setOnClickListener { view ->
             if (!isLogin.get()) {
                 activity?.let {
                     router.quicklyLogin(it)
                 }
             } else {
-                ListenBoughtActivity.startActivity(it.context)
+                ListenBoughtActivity.startActivity(view.context)
             }
         }
 

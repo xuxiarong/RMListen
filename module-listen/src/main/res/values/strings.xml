@@ -70,4 +70,18 @@
     <string name="listen_no_listen_data">暂无内容更新</string>
     <string name="listen_no_listen_record">最近很懒，没有听过书哦</string>
     <string name="listen_subscription_empty">订阅列表还是空的，赶紧去订阅点什么吧</string>
+    <string name="listen_not_buy_book">暂未购买书籍内容</string>
+    <string name="listen_max_num">99+</string>
+    <string name="listen_not_collect_now">暂无收藏</string>
+    <string name="listen_content_offline">该内容已下架</string>
+    <string name="listen_delete_and_not_collect">该听单已被作者删除，是否取消收藏？</string>
+    <string name="listen_content_ill">该听单因存在违规内容已被系统屏蔽，是否取消收藏？</string>
+    <string name="listen_think_a_letter">再想想</string>
+    <string name="listen_delete_the_listen_list">确认删除该听单？</string>
+    <string name="listen_edit_success">编辑成功</string>
+    <string name="listen_remove_offline_book">该书籍已下架，是否移除？</string>
+    <string name="listen_remove_book">移除</string>
+    <string name="listen_not_remove_book">不移除</string>
+    <string name="listen_list_ill_is_delete">该听单因存在违规内容已被系统屏蔽，是否删除</string>
+    <string name="listen_author_ill">该听单已被作者删除，是否删除？</string>
 </resources>

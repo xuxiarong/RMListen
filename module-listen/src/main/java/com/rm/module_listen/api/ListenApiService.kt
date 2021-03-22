@@ -88,11 +88,11 @@ interface ListenApiService {
         @Field("audio_id") audio_id: String
     ): BaseResponse<Any>
 
-    /**
-     * 最近收听
-     */
-    @GET("listen/history")
-    suspend fun listenHistory(): BaseResponse<String>
+//    /**
+//     * 最近收听
+//     */
+//    @GET("listen/history")
+//    suspend fun listenHistory(): BaseResponse<String>
 
     /**
      * 我的听单列表

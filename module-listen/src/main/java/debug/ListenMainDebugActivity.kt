@@ -3,7 +3,7 @@ package debug
 import android.content.Intent
 import com.rm.baselisten.debug.BaseDebugActivity
 import com.rm.module_listen.R
-import com.rm.module_listen.player.TestPalyerActivity
+import com.rm.module_listen.player.TestPlayerActivity
 
 /**
  * desc   :
@@ -17,6 +17,6 @@ class ListenMainDebugActivity : BaseDebugActivity() {
     }
 
     override fun initData() {
-        startActivity(Intent(this,TestPalyerActivity::class.java))
+        startActivity(Intent(this,TestPlayerActivity::class.java))
     }
 }

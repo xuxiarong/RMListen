@@ -2,15 +2,12 @@ package com.rm.module_login.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
-import androidx.lifecycle.viewModelScope
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.net.checkResult
 import com.rm.baselisten.util.putMMKV
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
 import com.rm.business_lib.helpter.loginIn
-import com.rm.business_lib.insertpoint.BusinessInsertConstance
-import com.rm.business_lib.insertpoint.BusinessInsertManager
 import com.rm.module_login.R
 import com.rm.module_login.activity.ResetPasswordActivity
 import com.rm.module_login.activity.VerificationInputActivity.Companion.TYPE_FORGET_PWD
@@ -26,7 +23,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 
 /**
  * desc   : 验证码输入ViewModel

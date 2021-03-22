@@ -67,9 +67,9 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
         getActivity(context)?.let {
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)
-                contentText = "该书籍已下架，是否移除？"
-                rightBtnText = "移除"
-                leftBtnText = "不移除"
+                contentText = CONTEXT.getString(R.string.listen_remove_offline_book)
+                rightBtnText = CONTEXT.getString(R.string.listen_remove_book)
+                leftBtnText = CONTEXT.getString(R.string.listen_not_remove_book)
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
                     dismiss()
@@ -137,7 +137,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                             mAdapter.notifyItemChanged(indexOf)
                         }
                     },
-                    onError = { msg, _ ->
+                    onError = { _, _ ->
                     })
         }
     }
@@ -254,7 +254,7 @@ class ListenSubscriptionViewModel(private val repository: ListenRepository) :
                             subBean.audio_id.toString()
                         )
                     },
-                    onError = { it, _ ->
+                    onError = { _, _ ->
                         showContentView()
                     }
                 )

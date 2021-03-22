@@ -2,8 +2,6 @@ package com.rm.module_listen.activity
 
 import android.content.Context
 import android.content.Intent
-import android.view.LayoutInflater
-import androidx.databinding.Observable
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.component_comm.activity.ComponentShowPlayActivity
 import com.rm.module_listen.BR

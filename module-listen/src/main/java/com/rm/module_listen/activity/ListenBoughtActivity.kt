@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.observe
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
-import com.rm.baselisten.binding.bindVerticalLayout
 import com.rm.baselisten.model.BaseTitleModel
 import com.rm.business_lib.bean.BookBean
 import com.rm.component_comm.activity.ComponentShowPlayActivity
@@ -50,7 +49,7 @@ class ListenBoughtActivity :
             }
         mViewModel.baseTitleModel.value = baseTitleModel
         mDataShowView = listen_bought_recycler_view
-        mViewModel.showDataEmpty("暂未购买书籍内容")
+        mViewModel.showDataEmpty(getString(R.string.listen_not_buy_book))
 
     }
 

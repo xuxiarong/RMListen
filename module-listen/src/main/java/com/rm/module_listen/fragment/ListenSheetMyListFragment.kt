@@ -2,8 +2,6 @@ package com.rm.module_listen.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_listen.BR
 import com.rm.module_listen.R

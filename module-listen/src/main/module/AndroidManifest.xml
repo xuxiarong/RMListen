@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".player.TestPalyerActivity"></activity>
+        <activity android:name=".player.TestPlayerActivity"></activity>
 
         <!--已购-->
         <activity

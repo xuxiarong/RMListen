@@ -14,7 +14,6 @@ import com.rm.baselisten.util.DLog
 import com.rm.baselisten.util.TimeUtils
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.*
-import com.rm.business_lib.db.converter.BusinessConvert
 import com.rm.business_lib.net.BusinessRetrofitClient
 import com.rm.business_lib.wedgit.smartrefresh.model.SmartRefreshLayoutStatusModel
 import com.rm.component_comm.home.HomeService
@@ -86,10 +85,8 @@ class ListenSubsUpdateViewModel : BaseVMViewModel() {
                 member_id = loginUser.get()?.id ?: ""
             ).checkResult(onSuccess = {
                 HomeGlobalData.isShowSubsRedPoint.set(false)
-                DLog.d("suolong", "订阅更新上报成功")
-            }, onError = { it, _ ->
+            }, onError = { _, _ ->
                 HomeGlobalData.isShowSubsRedPoint.set(false)
-                DLog.d("suolong", "订阅更新上报失败 ${it ?: "原因为空"}")
             })
         }
     }

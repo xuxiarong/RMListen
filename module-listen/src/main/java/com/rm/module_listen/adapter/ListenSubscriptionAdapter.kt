@@ -4,7 +4,6 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.baselisten.adapter.single.BaseBindVMAdapter
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_listen.R
 import com.rm.module_listen.bean.ListenSubscriptionListBean

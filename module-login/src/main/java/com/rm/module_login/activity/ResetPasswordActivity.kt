@@ -7,9 +7,7 @@ import com.rm.baselisten.mvvm.BaseVMActivity
 import com.rm.module_login.BR
 import com.rm.module_login.R
 import com.rm.module_login.databinding.LoginActivityResetPasswordBinding
-import com.rm.module_login.repository.LoginRepository
 import com.rm.module_login.viewmodel.ResetPasswordViewModel
-import kotlinx.android.synthetic.main.login_activity_reset_password.*
 
 /**
  * desc   :

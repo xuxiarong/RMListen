@@ -63,11 +63,11 @@ class ListenSubscriptionUpdateFragment :
         }
     }
 
-    fun checkRedPointStatus() {
-        if (isLogin.get()) {
-            mViewModel.checkRedPointStatus()
-        }
-    }
+//    fun checkRedPointStatus() {
+//        if (isLogin.get()) {
+//            mViewModel.checkRedPointStatus()
+//        }
+//    }
 
     override fun initView() {
         super.initView()

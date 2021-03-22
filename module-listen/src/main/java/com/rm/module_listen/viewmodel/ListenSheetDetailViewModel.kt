@@ -4,10 +4,10 @@ import android.content.Context
 import android.text.TextUtils
 import android.view.View
 import androidx.databinding.ObservableField
+import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.dialog.CommBottomDialog
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.String
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.baselisten.dialog.TipsFragmentDialog
@@ -109,7 +109,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                 onSuccess = {
                     processAudioList(it)
                 },
-                onError = { it, _ ->
+                onError = { _, _ ->
                     if (mPage == 1) {
                         refreshStateModel.finishRefresh(false)
                     } else {
@@ -153,7 +153,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     deleteSuccess()
                     mDialog.dismiss()
                 },
-                onError = { it, _ ->
+                onError = { _, _ ->
                     showContentView()
                 }
             )
@@ -167,9 +167,9 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
         getActivity(context)?.let {
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)
-                contentText = "确认删除该听单？"
-                leftBtnText = "再想想"
-                rightBtnText = "删除"
+                contentText = CONTEXT.getString(R.string.listen_delete_the_listen_list)
+                leftBtnText = CONTEXT.getString(R.string.listen_think_a_letter)
+                rightBtnText = CONTEXT.getString(R.string.listen_delete)
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
                     dismiss()
@@ -186,9 +186,9 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
         getActivity(context)?.let {
             TipsFragmentDialog().apply {
                 titleText = context.String(R.string.business_tips)
-                contentText = "该书籍已下架，是否移除？"
-                rightBtnText = "移除"
-                leftBtnText = "不移除"
+                contentText = CONTEXT.getString(R.string.listen_remove_offline_book)
+                rightBtnText = CONTEXT.getString(R.string.listen_remove_book)
+                leftBtnText = CONTEXT.getString(R.string.listen_not_remove_book)
                 rightBtnTextColor = R.color.business_color_ff5e5e
                 leftBtnClick = {
                     dismiss()
@@ -238,7 +238,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                         nowSheetName.set(sheetName)
                         it.sheet_name = sheetName
                         data.set(it)
-                        showTip("编辑成功")
+                        showTip(CONTEXT.getString(R.string.listen_edit_success))
                     }
                 )
             }
@@ -285,8 +285,7 @@ class ListenSheetDetailViewModel(private val repository: ListenRepository) : Bas
                     }
                     setResult(data.get()?.sheet_name ?: "")
                 },
-                onError = { it, _ ->
-                    DLog.i("-------->", "移除失败  $it")
+                onError = { _, _ ->
                 }
             )
         }

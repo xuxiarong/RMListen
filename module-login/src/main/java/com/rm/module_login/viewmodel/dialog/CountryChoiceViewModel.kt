@@ -7,8 +7,4 @@ import com.rm.baselisten.viewmodel.BaseVMViewModel
  * date   : 2020/09/07
  * version: 1.0
  */
-class CountryChoiceViewModel : BaseVMViewModel() {
-    fun getCountryList(){
-        launchOnIO {  }
-    }
-}
+class CountryChoiceViewModel : BaseVMViewModel()

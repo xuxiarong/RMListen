@@ -1,7 +1,6 @@
 package com.rm.module_listen.model
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.rm.business_lib.xbanner.XBanner
 import com.rm.module_listen.R
 
 /**
@@ -59,8 +58,4 @@ data class ListenSubsDateModel constructor(
     }else{
         R.layout.listen_item_subs_list_audio_date
     }
-}
-
-class ListenSubsFooterModel  : MultiItemEntity{
-    override var itemType =com.rm.business_lib.R.layout.business_foot_view
 }

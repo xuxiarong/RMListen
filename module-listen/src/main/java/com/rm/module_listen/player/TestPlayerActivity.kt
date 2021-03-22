@@ -1,11 +1,10 @@
 package com.rm.module_listen.player
 
-import android.media.AudioManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.rm.module_listen.R
 
-class TestPalyerActivity : AppCompatActivity() {
+class TestPlayerActivity : AppCompatActivity() {
     /**
      * 播放器
      */

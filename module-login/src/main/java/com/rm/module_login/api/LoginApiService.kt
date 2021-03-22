@@ -98,7 +98,6 @@ interface LoginApiService {
 
     /**
      * 根据旧密码重设密码
-     * @param password String
      * @param new_password String
      * @return BaseResponse<Any>
      */

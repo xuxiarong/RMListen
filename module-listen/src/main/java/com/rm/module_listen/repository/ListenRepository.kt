@@ -192,10 +192,10 @@ class ListenRepository(private val service: ListenApiService) : BaseRepository()
         return apiCall { service.listenUnsubscribe(audioId) }
     }
 
-    /**
-     * 添加订阅
-     */
-    suspend fun addSubscription(audioId: String): BaseResult<*> {
-        return apiCall { service.listenAddSubscription(audioId) }
-    }
+//    /**
+//     * 添加订阅
+//     */
+//    suspend fun addSubscription(audioId: String): BaseResult<*> {
+//        return apiCall { service.listenAddSubscription(audioId) }
+//    }
 }

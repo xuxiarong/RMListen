@@ -9,7 +9,7 @@
 
         </activity>
         <activity
-            android:name=".player.TestPalyerActivity"
+            android:name=".player.TestPlayerActivity"
             android:screenOrientation="portrait" /> <!-- 已购 -->
         <activity
             android:name=".activity.ListenBoughtActivity"

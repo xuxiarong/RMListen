@@ -1,6 +1,5 @@
 package com.rm.module_login.viewmodel
 
-import androidx.databinding.ObservableField
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_login.adapter.CountryListAdapter
 import com.rm.module_login.utils.CountryDataManager

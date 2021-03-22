@@ -7,9 +7,7 @@ import com.rm.baselisten.adapter.single.BaseBindVMAdapter
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.binding.bindGridLayout
 import com.rm.baselisten.binding.gridItemDecoration
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
-import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.module_listen.BR
 import com.rm.module_listen.R
 import com.rm.module_listen.bean.SheetFavorDataBean
