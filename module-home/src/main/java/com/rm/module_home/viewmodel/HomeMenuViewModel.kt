@@ -1,11 +1,8 @@
 package com.rm.module_home.viewmodel
 
 import android.content.Context
-import android.view.LayoutInflater
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import com.rm.baselisten.net.checkResult
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.business_lib.bean.SheetListBean
 import com.rm.business_lib.bean.SheetMenuInfoBean
@@ -72,7 +69,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
                     menuList.value = it
                     mPageId = it.page_id
                 },
-                onError = {it,_->
+                onError = { _, _->
                     showServiceError()
                 }
             )
@@ -87,7 +84,7 @@ class HomeMenuViewModel(private val repository: HomeRepository) : BaseVMViewMode
             repository.getSheetList(mPage, pageSize)
                 .checkResult(onSuccess = {
                     processSuccessData(it)
-                }, onError = {it,_->
+                }, onError = { _, _->
                     processFailData()
                 })
         }

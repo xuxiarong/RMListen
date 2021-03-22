@@ -34,27 +34,27 @@ fun DownloadStatusView.bindChapterList(
 
 }
 
-@BindingAdapter("bindDownloadNum")
-fun RoundTextView.bindDownloadNum(list: List<Any>?) {
-
-    if (list == null) {
-        visibility = View.GONE
-        return
-    }
-
-    if (list.isEmpty()) {
-        visibility = View.GONE
-        return
-    }
-    visibility = View.VISIBLE
-
-    if (list.size > 99) {
-        text = "99+"
-    } else {
-        text = list.size.toString()
-    }
-
-}
+//@BindingAdapter("bindDownloadNum")
+//fun RoundTextView.bindDownloadNum(list: List<Any>?) {
+//
+//    if (list == null) {
+//        visibility = View.GONE
+//        return
+//    }
+//
+//    if (list.isEmpty()) {
+//        visibility = View.GONE
+//        return
+//    }
+//    visibility = View.VISIBLE
+//
+//    if (list.size > 99) {
+//        text = "99+"
+//    } else {
+//        text = list.size.toString()
+//    }
+//
+//}
 
 @BindingAdapter("bindDownDeleteNum")
 fun TextView.bind(num: Int?) {

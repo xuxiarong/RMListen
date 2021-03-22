@@ -1,8 +1,6 @@
 package com.rm.module_home.activity.boutique
 
-import android.view.LayoutInflater
 import android.view.View
-import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.bean.BannerInfoBean
 import com.rm.business_lib.binding.paddingBindData

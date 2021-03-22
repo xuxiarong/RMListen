@@ -3,22 +3,17 @@ package com.rm.module_home.repository
 import com.mei.orc.util.json.toJson
 import com.rm.baselisten.net.api.BaseRepository
 import com.rm.baselisten.net.api.BaseResult
-import com.rm.baselisten.net.bean.BaseResponse
-import com.rm.baselisten.net.util.GsonUtils
 import com.rm.business_lib.bean.*
 import com.rm.module_home.api.HomeApiService
 import com.rm.module_home.bean.CategoryTabListBean
 import com.rm.module_home.bean.HomeTopListBean
 import com.rm.module_home.bean.MenuSheetBean
-import com.rm.module_home.model.ad.HomeBannerAdResultModel
 import com.rm.module_home.model.ad.HomeDialogAdResultModel
 import com.rm.module_home.model.ad.HomeSingleImgAdResultModel
 import com.rm.module_home.model.home.HomeModel
 import com.rm.module_home.model.home.detail.HomeCommentBean
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.http.GET
-import retrofit2.http.Query
 
 /**
  * desc   :
@@ -128,8 +123,6 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
 
     /**
      * 获取专题列表数据
-     * @param page_id Int
-     * @param block_id Int
      * @param topic_id Int
      * @param page Int
      * @param page_size Int
@@ -248,18 +241,18 @@ class HomeRepository(private val homeService: HomeApiService) : BaseRepository()
         }
     }
 
-    /**
-     *  获取首页Banner广告
-     */
-    suspend fun getHomeBannerAd(ad_key: Array<String>): BaseResult<HomeBannerAdResultModel> {
-        return apiCall {
-            val requestBean = BusinessAdRequestModel(ad_key = ad_key)
-            homeService.getHomeBannerAd(
-                requestBean.toJson().toString()
-                    .toRequestBody("application/json;charset=utf-8".toMediaType())
-            )
-        }
-    }
+//    /**
+//     *  获取首页Banner广告
+//     */
+//    suspend fun getHomeBannerAd(ad_key: Array<String>): BaseResult<HomeBannerAdResultModel> {
+//        return apiCall {
+//            val requestBean = BusinessAdRequestModel(ad_key = ad_key)
+//            homeService.getHomeBannerAd(
+//                requestBean.toJson().toString()
+//                    .toRequestBody("application/json;charset=utf-8".toMediaType())
+//            )
+//        }
+//    }
 
     /**
      *  获取首页单图广告

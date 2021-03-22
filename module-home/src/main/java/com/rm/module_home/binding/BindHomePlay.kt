@@ -9,7 +9,6 @@ import com.rm.baselisten.model.BasePlayInfoModel
 import com.rm.baselisten.model.BasePlayStatusModel
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.db.listen.ListenAudioEntity
-import com.rm.business_lib.wedgit.LivingView
 import com.rm.module_home.R
 
 /**
@@ -45,14 +44,6 @@ fun TextView.bindPlayStatusText(statusModel: BasePlayStatusModel?, playAudioMode
         val resDrawable = context.resources.getDrawable(R.drawable.home_detail_icon_all_play, null)
         resDrawable.setBounds(0, 0, resDrawable.minimumWidth, resDrawable.minimumHeight)
         setCompoundDrawables(resDrawable, null, null, null)
-    }
-}
-@BindingAdapter("bindPlayStatusModel", "bindPlayAudioModel", "bindDetailChapter", requireAll = true)
-fun TextView.bindPlayChapterText(statusModel: BasePlayStatusModel?, playAudioModel: BasePlayInfoModel?, chapter: DownloadChapter){
-    if(statusModel != null && playAudioModel != null && playAudioModel.playChapterId == chapter.chapter_id.toString()){
-        visibility = View.INVISIBLE
-    }else{
-        visibility = View.VISIBLE
     }
 }
 

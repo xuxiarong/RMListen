@@ -2,7 +2,6 @@ package com.rm.module_home.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -18,11 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rm.module_home.activity.topic.HomeTopicListActivity;
 import com.rm.module_home.model.home.hordouble.HomeAudioHorDoubleRvModel;
 
+import org.jetbrains.annotations.NotNull;
+
 
 /**
  * @author yuanfang
- * @date 1/27/21
- * @description
+
  */
 public class CYStickyNavLayouts extends LinearLayout implements NestedScrollingParent {
 
@@ -90,7 +90,7 @@ public class CYStickyNavLayouts extends LinearLayout implements NestedScrollingP
      * 必须要复写 onStartNestedScroll后调用
      */
     @Override
-    public void onNestedScrollAccepted(View child, View target, int axes) {
+    public void onNestedScrollAccepted(@NotNull View child, @NotNull View target, int axes) {
         mParentHelper.onNestedScrollAccepted(child, target, axes);
     }
 

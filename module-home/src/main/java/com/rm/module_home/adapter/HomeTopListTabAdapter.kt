@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.rm.baselisten.utilExt.dip
 import com.rm.module_home.R
 import com.rm.module_home.bean.CategoryTabBean
 

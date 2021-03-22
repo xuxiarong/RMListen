@@ -30,19 +30,19 @@ class LeftAutoScrollRecyclerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    val defaultWidth = dip(56)
+    private val defaultWidth = dip(56)
 
-    var downX = 0F
-    var downY = 0F
+    private var downX = 0F
+    private var downY = 0F
 
-    var controlX = 0F
+    private var controlX = 0F
     /**
      * 第一个的位置
      */
     /**
      * 最后一个可见的item的位置
      */
-    var lastVisibleItemPosition = 0
+    private var lastVisibleItemPosition = 0
 
     /**
      * 最后一个的位置
@@ -176,7 +176,7 @@ class LeftAutoScrollRecyclerView @JvmOverloads constructor(
     private fun checkNeedOpen(){
         if(controlX<=screenWidth - defaultWidth * 2 + 20 && controlX >0){
             blockModel?.let{
-                HomeTopicListActivity.Companion.startTopicActivity(
+                HomeTopicListActivity.startTopicActivity(
                     context,
                     it.block.topic_id,
                     it.block.block_name

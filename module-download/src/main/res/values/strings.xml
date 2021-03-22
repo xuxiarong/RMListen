@@ -26,4 +26,5 @@
     <string name="download_listen_finish">已听完</string>
     <string name="download_listen_progress">已听%d</string>
     <string name="download_count_size">%s集</string>
+    <string name="down_num_max">99+</string>
 </resources>

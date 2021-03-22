@@ -37,7 +37,7 @@ class HomeCommentDialogViewModel(
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 if (!NetworkChangeReceiver.isAvailable.get()) {
-                    showErrorToast("当前网络不可用")
+                    showErrorToast(CONTEXT.getString(R.string.net_error))
                 }
             }
         }
@@ -106,11 +106,11 @@ class HomeCommentDialogViewModel(
             if (it.length > 200) {
                 showErrorToast(CONTEXT.getString(R.string.home_comment_input_limit))
             } else {
-                showToast(BaseToastModel(content = "提交评论中", canAutoCancel = false))
+                showToast(BaseToastModel(content = CONTEXT.getString(R.string.home_commit_comment), canAutoCancel = false))
                 if (NetworkChangeReceiver.isAvailable.get()) {
                     sendComment(view, it, audioId)
                 } else {
-                    showErrorToast("当前网络不可用")
+                    showErrorToast(CONTEXT.getString(R.string.net_error))
                 }
             }
         }

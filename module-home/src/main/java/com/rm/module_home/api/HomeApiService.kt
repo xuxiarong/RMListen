@@ -116,8 +116,6 @@ interface HomeApiService {
 
     /**
      * 获取专题列表
-     * @param page_id Int
-     * @param block_id Int
      * @param topic_id Int
      * @param page Int
      * @param page_size Int

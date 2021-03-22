@@ -6,7 +6,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.rm.module_home.R
 import com.rm.module_home.bean.HomeRankSegBean
-import java.text.FieldPosition
 
 class HomeTopListPopupAdapter : BaseQuickAdapter<HomeRankSegBean, BaseViewHolder>(layoutResId = R.layout.home_item_top_list_popup) {
 

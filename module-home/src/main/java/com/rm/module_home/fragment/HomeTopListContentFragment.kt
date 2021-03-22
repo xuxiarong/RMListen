@@ -1,9 +1,7 @@
 package com.rm.module_home.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.annotation.IntDef
-import androidx.databinding.Observable
 import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.module_home.BR
 import com.rm.module_home.R

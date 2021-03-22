@@ -1,7 +1,6 @@
 package com.rm.module_home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.BaseApplication.Companion.CONTEXT
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_home.R

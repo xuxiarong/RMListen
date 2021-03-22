@@ -1,6 +1,5 @@
 package com.rm.module_home.bean
 
-import com.rm.module_home.R
 
 data class HomeTopListBean(
     var list: MutableList<HomeTopListDataBean>?,

@@ -1,7 +1,6 @@
 package com.rm.module_home.util
 
 import androidx.fragment.app.FragmentActivity
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.module_home.BR
 import com.rm.module_home.R
 import com.rm.module_home.viewmodel.HomeCommentDialogViewModel

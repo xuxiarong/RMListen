@@ -10,29 +10,23 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
 import com.rm.baselisten.util.ConvertUtils
 import com.rm.baselisten.util.SDCardUtils
-import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadConstant
 import com.rm.business_lib.download.file.DownLoadFileUtils
-import com.rm.business_lib.wedgit.download.DownloadStatusView
 import com.rm.module_download.R
-import com.rm.module_download.bean.DownloadChapterUIStatus
-import com.tencent.bugly.proguard.s
-import com.tencent.bugly.proguard.t
 
-@BindingAdapter("bindDownloadCheckSrc")
-fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
-    when (status) {
-        DownloadChapterUIStatus.DOWNLOADING, DownloadChapterUIStatus.COMPLETED -> setImageResource(R.drawable.download_ic_item_disable)
-        DownloadChapterUIStatus.UNCHECK -> setImageResource(R.drawable.download_ic_item_unchecked)
-        DownloadChapterUIStatus.CHECKED -> setImageResource(R.drawable.download_ic_item_checked)
-    }
-}
+//@BindingAdapter("bindDownloadCheckSrc")
+//fun ImageView.bindDownloadCheckSrc(status: DownloadChapterUIStatus) {
+//    when (status) {
+//        DownloadChapterUIStatus.DOWNLOADING, DownloadChapterUIStatus.COMPLETED -> setImageResource(R.drawable.download_ic_item_disable)
+//        DownloadChapterUIStatus.UNCHECK -> setImageResource(R.drawable.download_ic_item_unchecked)
+//        DownloadChapterUIStatus.CHECKED -> setImageResource(R.drawable.download_ic_item_checked)
+//    }
+//}
 
 @BindingAdapter("bindDownAll")
 fun TextView.bindDownAll(isDownAll: Boolean?) {
@@ -61,19 +55,19 @@ fun ImageView.bindDownAll(isDownAll: Boolean?) {
 }
 
 
-@BindingAdapter("bindDownloadingSize")
-fun TextView.bindDownloadingSize(downList: List<DownloadChapter>?) {
-    if (downList == null) {
-        visibility = View.GONE
-        return
-    }
-    if (downList.isEmpty()) {
-        visibility = View.GONE
-        return
-    }
-    visibility = View.GONE
-    text = String.format(context.getString(R.string.download_downloading_number), downList.size)
-}
+//@BindingAdapter("bindDownloadingSize")
+//fun TextView.bindDownloadingSize(downList: List<DownloadChapter>?) {
+//    if (downList == null) {
+//        visibility = View.GONE
+//        return
+//    }
+//    if (downList.isEmpty()) {
+//        visibility = View.GONE
+//        return
+//    }
+//    visibility = View.GONE
+//    text = String.format(context.getString(R.string.download_downloading_number), downList.size)
+//}
 
 
 @BindingAdapter("bindDownloadStatusSrc")
@@ -236,55 +230,55 @@ fun TextView.bindDownloadText(chapter: DownloadChapter, downloadChapter: Downloa
     }
 }
 
-@SuppressLint("SetTextI18n")
-@BindingAdapter("bindDownloadListen")
-fun TextView.bindDownloadListen(chapter: DownloadChapter) {
-    text = ""
-    try {
-        var result = ((chapter.listen_duration * 1.0f) / (chapter.duration * 1000L) * 100).toInt()
-        if (result <= 0) {
-            result = 1
-        }
-        if (result == 100) {
-            text = context.getString(R.string.download_listen_finish)
-            setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
-        } else {
-            setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
-            text = "${String.format(context.getString(R.string.download_listen_progress), result)}%"
-        }
+//@SuppressLint("SetTextI18n")
+//@BindingAdapter("bindDownloadListen")
+//fun TextView.bindDownloadListen(chapter: DownloadChapter) {
+//    text = ""
+//    try {
+//        var result = ((chapter.listen_duration * 1.0f) / (chapter.duration * 1000L) * 100).toInt()
+//        if (result <= 0) {
+//            result = 1
+//        }
+//        if (result == 100) {
+//            text = context.getString(R.string.download_listen_finish)
+//            setTextColor(ContextCompat.getColor(context, R.color.business_color_b1b1b1))
+//        } else {
+//            setTextColor(ContextCompat.getColor(context, R.color.business_color_ffba56))
+//            text = "${String.format(context.getString(R.string.download_listen_progress), result)}%"
+//        }
+//
+//    } catch (e: Exception) {
+//        e.printStackTrace()
+//    }
+//}
 
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-}
-
-@BindingAdapter("bindDownloadStatusChapter", "bindCurrentDownChapter")
-fun DownloadStatusView.bindDownloadStatusChapter(
-        chapter: DownloadChapter,
-        downloadChapter: DownloadChapter?
-) {
-    DownLoadFileUtils.checkChapterIsDownload(chapter)
-
-    if (downloadChapter != null && chapter.chapter_id == downloadChapter.chapter_id) {
-        chapter.down_status = downloadChapter.down_status
-        chapter.down_speed = downloadChapter.down_speed
-        chapter.current_offset = downloadChapter.current_offset
-    }
-    setDownloadStatus(chapter)
-}
-
-@BindingAdapter("bindChapterList", "bindCurrentDownChapter")
-fun DownloadStatusView.bindChapterList(
-        chapter: DownloadChapter,
-        downloadChapter: DownloadChapter?
-) {
-    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
-    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
-        chapter.down_status = downloadChapter.down_status
-        chapter.current_offset = downloadChapter.current_offset
-    }
-    setDownloadStatus(checkChapter)
-}
+//@BindingAdapter("bindDownloadStatusChapter", "bindCurrentDownChapter")
+//fun DownloadStatusView.bindDownloadStatusChapter(
+//        chapter: DownloadChapter,
+//        downloadChapter: DownloadChapter?
+//) {
+//    DownLoadFileUtils.checkChapterIsDownload(chapter)
+//
+//    if (downloadChapter != null && chapter.chapter_id == downloadChapter.chapter_id) {
+//        chapter.down_status = downloadChapter.down_status
+//        chapter.down_speed = downloadChapter.down_speed
+//        chapter.current_offset = downloadChapter.current_offset
+//    }
+//    setDownloadStatus(chapter)
+//}
+//
+//@BindingAdapter("bindChapterList", "bindCurrentDownChapter")
+//fun DownloadStatusView.bindChapterList(
+//        chapter: DownloadChapter,
+//        downloadChapter: DownloadChapter?
+//) {
+//    val checkChapter = DownLoadFileUtils.checkChapterIsDownload(chapter)
+//    if (downloadChapter != null && checkChapter.chapter_id == downloadChapter.chapter_id) {
+//        chapter.down_status = downloadChapter.down_status
+//        chapter.current_offset = downloadChapter.current_offset
+//    }
+//    setDownloadStatus(checkChapter)
+//}
 
 @BindingAdapter("bindDownloadMaxSequence","bindDownloadMinSequence",requireAll = true)
 fun EditText.bindDownloadMaxSequence(maxSelectSequence: String,minSelectSequence: String) {

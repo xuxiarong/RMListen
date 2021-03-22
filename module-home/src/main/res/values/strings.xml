@@ -59,5 +59,7 @@
     <string name="home_pause_play">全部暂停</string>
     <string name="home_menu_detail_no_data">此页面空荡荡的…什么都没有</string>
 
+    <string name="home_commit_comment">提交评论中</string>
+
 </resources>
 

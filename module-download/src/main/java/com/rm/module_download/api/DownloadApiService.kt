@@ -43,10 +43,10 @@ interface DownloadApiService {
         @Query("sort") sort: String
     ): BaseResponse<DownloadAudioResponseBean>
 
-    /**
-     * 获取听书详情
-     */
-    @GET("audio/detail")
-    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<AudioDetailBean>
+//    /**
+//     * 获取听书详情
+//     */
+//    @GET("audio/detail")
+//    suspend fun homeDetail(@Query("audio_id") id: String): BaseResponse<AudioDetailBean>
 
 }

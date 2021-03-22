@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
+@Suppress("DEPRECATION")
 class DownloadDetailPagerAdapter(
     fm: FragmentManager,
     private val tabList: MutableList<String>,

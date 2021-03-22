@@ -21,8 +21,8 @@ import com.rm.module_home.repository.HomeRepository
  */
 class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel() {
     var topicId = -1
-    var page = 1
-    val pageSize = 12
+    private var page = 1
+    private val pageSize = 12
     var blockName = ObservableField("")
 
     // 下拉刷新和加载更多控件状态控制Model
@@ -53,7 +53,7 @@ class HomeTopicListViewModel(val repository: HomeRepository) : BaseVMViewModel()
                         blockName.set(it.block_name)
                     }
                 },
-                onError = {it,_->
+                onError = { _, _->
                     if (page == 1) {
                         // 获取第一页数据就失败
                         // 显示错误视图

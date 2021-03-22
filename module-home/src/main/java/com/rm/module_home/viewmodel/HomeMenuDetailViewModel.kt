@@ -193,7 +193,7 @@ class HomeMenuDetailViewModel(private var repository: HomeRepository) : BaseVMVi
                     onSuccess = {
                         processAudioList(it)
                     },
-                    onError = { it, _ ->
+                    onError = { _, _ ->
                         if (mPage == 1) {
                             refreshStatusModel.finishRefresh(false)
                         } else {

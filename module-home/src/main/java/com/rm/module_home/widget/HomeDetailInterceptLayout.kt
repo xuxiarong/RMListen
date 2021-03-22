@@ -3,9 +3,9 @@ package com.rm.module_home.widget
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -13,10 +13,7 @@ import androidx.annotation.IntDef
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.rm.baselisten.util.DLog
 import com.rm.baselisten.utilExt.dip
-import com.rm.business_lib.LISTEN_SHEET_LIST_COLLECTED_LIST
-import com.rm.business_lib.LISTEN_SHEET_LIST_MY_LIST
 import com.rm.module_home.R
 import kotlin.math.abs
 
@@ -214,6 +211,7 @@ class HomeDetailInterceptLayout @JvmOverloads constructor(
     private var downY = 0
     private var upY = 0
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var intercept = false
         when (event.action) {

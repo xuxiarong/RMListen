@@ -16,8 +16,6 @@ import com.rm.module_home.R;
 
 /**
  * @author yuanfang
- * @date 1/27/21
- * @description
  */
 public class CYAnimatorView extends RelativeLayout {
     private View mView;

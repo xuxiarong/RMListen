@@ -1,10 +1,8 @@
 package com.rm.module_home.viewmodel
 
-import android.animation.Animator
 import android.content.Context
 import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
@@ -95,7 +93,7 @@ class HomeDetailViewModel(private val repository: HomeRepository) : BaseVMViewMo
     /**
      * 评论当前的页码
      */
-    var commentPage = 1
+    private var commentPage = 1
 
     /**
      * 评论每次加载数据的条数
