@@ -134,7 +134,7 @@ class DownloadChapterSelectionViewModel(private val repository: DownloadReposito
         mAdapter.notifyDataSetChanged()
     }
 
-    fun getDownloadChapterList(context: Context) {
+    fun getDownloadChapterList() {
         downloadAudio.get()?.audio_id?.let {
             launchOnIO {
                 repository.downloadChapterList(page = page, pageSize = pageSize, audioId = it)

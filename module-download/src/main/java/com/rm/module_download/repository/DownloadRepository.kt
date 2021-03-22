@@ -16,29 +16,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class DownloadRepository(private val apiService: DownloadApiService) : BaseRepository() {
 
     companion object {
-        const val TYPE_SEQUENCE_SELECTION = 1  // 序号方式下载
+//        const val TYPE_SEQUENCE_SELECTION = 1  // 序号方式下载
         const val TYPE_SEQUENCE_CONTINUOUS = 2  //选集下载
-    }
-
-    /**
-     * 选集下载 [1.3,5]
-     *
-     * @param audioId 音频id
-     * @param sequences (序号方式下载)对应的序号使用数组传递  [1.3,5]
-     */
-    suspend fun downloadChapterSelection(
-        audioId: Long,
-        sequences: List<Int>
-    ): BaseResult<DownloadChapterResponseBean> {
-        return apiCall {
-            var requestBean = DownloadChapterRequestBean(
-                audio_id = audioId,
-                start_sequence = 0,
-                end_sequence = 0,
-                type = TYPE_SEQUENCE_SELECTION
-            )
-            apiService.downloadChapter(requestBean.toJson().toString().toRequestBody("application/json;charset=utf-8".toMediaType()))
-        }
     }
 
     /**
@@ -54,7 +33,7 @@ class DownloadRepository(private val apiService: DownloadApiService) : BaseRepos
         endSequence: Int
     ): BaseResult<DownloadChapterResponseBean> {
         return apiCall {
-            var requestBean = DownloadChapterRequestBean(
+            val requestBean = DownloadChapterRequestBean(
                 audio_id = audioId,
                 start_sequence = startSequence,
                 end_sequence = endSequence,
@@ -64,12 +43,12 @@ class DownloadRepository(private val apiService: DownloadApiService) : BaseRepos
         }
     }
 
-    /**
-     *  获取章节列表
-     */
-    suspend fun getDownloadChapterList(page: Int, pageSize: Int, audioId: Long): BaseResult<DownloadChapterResponseBean> {
-        return apiCall { apiService.downloadGetChapterList(page = page, pageSize = pageSize, audioId = audioId.toString() ,sort = "asc") }
-    }
+//    /**
+//     *  获取章节列表
+//     */
+//    suspend fun getDownloadChapterList(page: Int, pageSize: Int, audioId: Long): BaseResult<DownloadChapterResponseBean> {
+//        return apiCall { apiService.downloadGetChapterList(page = page, pageSize = pageSize, audioId = audioId.toString() ,sort = "asc") }
+//    }
 
     /**
      *  获取章节列表

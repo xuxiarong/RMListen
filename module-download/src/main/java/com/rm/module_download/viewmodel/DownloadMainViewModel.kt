@@ -2,12 +2,10 @@ package com.rm.module_download.viewmodel
 
 import android.content.Context
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
-import com.rm.baselisten.BaseApplication
 import com.rm.baselisten.adapter.single.CommonBindVMAdapter
 import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.baselisten.dialog.TipsFragmentDialog
@@ -16,14 +14,11 @@ import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
 import com.rm.business_lib.download.DownloadMemoryCache
 import com.rm.business_lib.download.file.DownLoadFileUtils
-import com.rm.component_comm.home.HomeService
-import com.rm.component_comm.router.RouterHelper
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.activity.DownloadBookDetailActivity
-import com.rm.module_download.repository.DownloadRepository
 
-class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVMViewModel() {
+class DownloadMainViewModel : BaseVMViewModel() {
 
     val downloadingAdapter by lazy {
         CommonBindVMAdapter<DownloadChapter>(
@@ -141,7 +136,7 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         }
     }
 
-    fun chapterClick(context: Context, chapter: DownloadChapter) {
+    fun chapterClick( chapter: DownloadChapter) {
         if (downloadingEdit.get()) {
             changeDownloadChapterSelect(chapter = chapter)
             downloadingAdapter.notifyDataSetChanged()
@@ -197,8 +192,8 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
                 DownloadMemoryCache.deleteDownloadingChapter(tempList)
                 if(isDownAll){
                     if(deleteDownloading){
-                        downloadingChapter?.let {
-                            DownloadMemoryCache.downloadNextWaitChapter(it)
+                        downloadingChapter?.let { downloadChapter ->
+                            DownloadMemoryCache.downloadNextWaitChapter(downloadChapter)
                             delayDeleteChapter?.let {
                                 DownloadMemoryCache.deleteDownloadingChapter(mutableListOf(it))
                             }
@@ -282,13 +277,6 @@ class DownloadMainViewModel(private val repository: DownloadRepository) : BaseVM
         }
         downloadFinishSelectNum.set(selectNum)
         downloadFinishAdapter.notifyDataSetChanged()
-    }
-
-    fun selectFinishDelete() {
-        if (!downloadFinishDeleteListenFinish.get()) {
-            downloadFinishDeleteListenFinish.set(true)
-            downloadFinishSelectAll.set(false)
-        }
     }
 
     fun audioClick(context: Context, audio: DownloadAudio) {

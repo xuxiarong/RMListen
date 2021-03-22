@@ -1,12 +1,9 @@
 package com.rm.component_comm.play
 
 import android.content.Context
-import android.view.View
 import com.rm.business_lib.AudioSortType
-import com.rm.business_lib.PlayGlobalData
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadChapter
-import com.rm.business_lib.db.listen.ListenAudioEntity
 import com.rm.component_comm.router.ApplicationProvider
 
 /**

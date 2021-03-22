@@ -3,7 +3,6 @@ package com.rm.component_comm.login
 import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import com.rm.baselisten.viewmodel.BaseVMViewModel
 import com.rm.component_comm.router.ApplicationProvider
 
 /**

@@ -99,7 +99,7 @@ class DownloadChapterSelectionActivity :
 
     override fun initData() {
         mViewModel.downloadAudio.set(intent.getSerializableExtra(EXTRA_AUDIO_ID) as DownloadAudio)
-        mViewModel.getDownloadChapterList(this)
+        mViewModel.getDownloadChapterList()
     }
 
     override fun getLayoutId(): Int = R.layout.download_activity_chapter_selection

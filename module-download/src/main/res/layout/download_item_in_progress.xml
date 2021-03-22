@@ -22,7 +22,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="104dp"
-        bindClick="@{()->viewModel.chapterClick(context,itemBean)}"
+        bindClick="@{()->viewModel.chapterClick(itemBean)}"
         >
 
         <androidx.appcompat.widget.AppCompatImageView

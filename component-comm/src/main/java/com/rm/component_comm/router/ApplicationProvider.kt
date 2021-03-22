@@ -25,7 +25,7 @@ interface ApplicationProvider : IProvider {
          */
         fun queryApplicationDelegate(): List<IApplicationDelegate> {
             val applicationDelegateList: MutableList<IApplicationDelegate> =
-                ArrayList<IApplicationDelegate>()
+                ArrayList()
             val applicationClassList: List<Class<out IApplicationDelegate>> =
                 queryApplicationClassList()
             for (mClass in applicationClassList) {
@@ -41,7 +41,7 @@ interface ApplicationProvider : IProvider {
 
         private fun queryApplicationClassList(): List<Class<out IApplicationDelegate?>> {
             val applicationClassList: MutableList<Class<out IApplicationDelegate?>> =
-                ArrayList<Class<out IApplicationDelegate?>>()
+                ArrayList()
             val routerPathList =
                 queryRouterPath()
             for (routerPath in routerPathList) {

@@ -8,7 +8,6 @@ import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.databinding.DownloadFragmentInProgressBinding
 import com.rm.module_download.viewmodel.DownloadMainViewModel
-import kotlinx.android.synthetic.main.download_fragment_download_completed.*
 import kotlinx.android.synthetic.main.download_fragment_in_progress.*
 
 class DownloadInProgressFragment :
@@ -55,12 +54,12 @@ class DownloadInProgressFragment :
         }
     }
 
-    fun showData(){
+    private fun showData(){
         downloadEmpty.visibility = View.GONE
         downloadContent.visibility = View.VISIBLE
     }
 
-    fun showEmpty(){
+    private fun showEmpty(){
         downloadEmpty.visibility = View.VISIBLE
         downloadContent.visibility = View.GONE
     }

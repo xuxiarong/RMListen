@@ -7,5 +7,4 @@ import com.rm.component_comm.router.ApplicationProvider
  * date   : 2020/08/13
  * version: 1.0
  */
-interface PayService : ApplicationProvider {
-}
+interface PayService : ApplicationProvider

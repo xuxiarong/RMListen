@@ -6,7 +6,6 @@ import com.rm.baselisten.mvvm.BaseVMFragment
 import com.rm.business_lib.db.download.DownloadAudio
 import com.rm.business_lib.db.download.DownloadDaoUtils
 import com.rm.business_lib.download.DownloadMemoryCache
-import com.rm.business_lib.download.file.DownLoadFileUtils
 import com.rm.module_download.BR
 import com.rm.module_download.R
 import com.rm.module_download.binding.bindDownFinishAudioSize
@@ -23,7 +22,7 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
         }
     }
 
-    var totalAudioSize = 0L
+    private var totalAudioSize = 0L
 
     override fun initModelBrId(): Int = BR.viewModel
 
@@ -67,12 +66,12 @@ class DownloadCompletedFragment : BaseVMFragment<DownloadFragmentDownloadComplet
         mViewModel.getDownloadFromDao()
     }
 
-    fun showData(){
+    private fun showData(){
         downFinishContent.visibility = View.VISIBLE
         downFinishEmpty.visibility = View.GONE
     }
 
-    fun showEmpty(){
+    private fun showEmpty(){
         mViewModel.downloadFinishEdit.set(false)
         downFinishContent.visibility = View.GONE
         downFinishEmpty.visibility = View.VISIBLE
